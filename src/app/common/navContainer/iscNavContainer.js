@@ -14,7 +14,9 @@
       logoutSuccess: 'iscLogoutSuccess',
       notAuthenticated: 'iscNotAuthenticated',
       notAuthorized: 'iscNotAuthorized',
+      responseError: 'iscResponseError',
       sessionTimeout: 'iscSessionTimeout',
+      sessionTimeoutConfirm: 'iscSessionTimeoutConfirm',
       sessionTimeoutWarning: 'iscSessionTimeoutWarning',
       sessionTimeoutReset: 'iscSessionTimeoutReset'
     })
@@ -38,7 +40,8 @@
 
             views: {
               '@': {
-                templateUrl: 'app/common/navContainer/partials/iscNavContainer.html',
+                //templateUrl: 'navContainer/iscNavContainer.html',
+                templateUrl: 'common/navContainer/iscNavContainer.html',
                 controller: 'iscNavigationController as navCtrl'
               }
             },
@@ -46,10 +49,9 @@
             resolve: {
               loadConfig: function(  $log, iscCustomConfigService ){
                 //$log.debug( 'iscNavContainer.loadConfig');
-                iscCustomConfigService.loadConfig();
+                return iscCustomConfigService.loadConfig();
               }
             }
-
           });
 
 //        TODO use this for deploy, but re-write the urls on the server
@@ -67,19 +69,21 @@
         // stateChange start
         $rootScope.$on('$stateChangeStart',
           function( event, toState, toParams, fromState, fromParams ){
-            //$log.debug( 'ischNavContainer.$stateChangeStart');
-            //$log.debug( '...from: ' + fromState.name );
-            //$log.debug( '.....to: ' + toState.name );
+            $log.debug( 'ischNavContainer.$stateChangeStart');
+            $log.debug( '...from: ' + fromState.name );
+            $log.debug( '.....to: ' + toState.name );
 
-            startLoadingAnimation();
-            handleStateChangeStart( event, toState, toParams, fromState, fromParams  );
+            iscCustomConfigService.loadConfig().then( function( config ){
+              startLoadingAnimation();
+              handleStateChangeStart( event, toState, toParams, fromState, fromParams  );
+            });
           });
 
         // ------------------------
         // stateChange success
         $rootScope.$on('$stateChangeSuccess',
           function( event, toState, toParams, fromState, fromParams ){
-//              //$log.debug( 'ischNavContainer.$stateChangeSuccess');
+              $log.debug( 'ischNavContainer.$stateChangeSuccess');
 
             // end loading animation
             iscProgressLoader.end();
@@ -122,13 +126,13 @@
           var stateIsExcluded = iscCustomConfigHelper.stateIsExcluded( toState.name );
 
           if( !isAuthorized ){
-            //$log.debug( '...not authorized');
+            $log.debug( '...not authorized');
             if( !isWhiteListed ){
-              //$log.debug( '...not whitelisted');
+              $log.debug( '...not whitelisted');
               preventDefault( event );
 
               if( isAuthenticated ){
-                //$log.debug( '... going either to home or your previous state');
+                $log.debug( '... going either to home or your previous state');
                 // see iscNavigationController for the popup listeners for these events
                 $rootScope.$broadcast( AUTH_EVENTS.notAuthorized );
                 if( !fromState || !fromState.name ){
@@ -138,7 +142,7 @@
                 }
               }
               else{
-                //$log.debug( '...going to login');
+                $log.debug( '...going to login');
 
                 // if you arent logged in yet, bring the user to the log in page
                 $state.go( 'index.login' );

@@ -79,6 +79,7 @@
       credentials = {}; // for now we arent using credentials
       setCurrentUser( sessionData.UserData );
 
+      // set the timeout
       sessionTimeoutInSeconds = sessionData.SessionTimeout;
 
       $rootScope.$broadcast( AUTH_EVENTS.loginSuccess );
@@ -116,7 +117,7 @@
      * private
      */
     function doSessionTimeout(){
-      //$log.debug( 'iscSessionModel.doSessionTimeout');
+      $log.debug( 'iscSessionModel.doSessionTimeout');
 
       if( angular.isDefined( sessionTimer )){
         //$log.debug( '...already there' );
@@ -129,8 +130,7 @@
         // save off the remaining time so that on page refresh we can start from here
         var remainingTime = sessionTimeoutInSeconds - sessionTimeoutCounter;
         iscSessionStorageHelper.setSessionTimeoutCounter( sessionTimeoutCounter );
-        //
-        //$log.debug( '...TICK' );
+        //$log.debug( '...TICK ', remainingTime );
         //$log.debug( '...sessionTimeoutInSeconds ' + sessionTimeoutInSeconds );
         //$log.debug( '...sessionTimeoutCounter ' + sessionTimeoutCounter );
         //$log.debug( '...sessionTimeoutWarning ' + sessionTimeoutWarning );
@@ -138,6 +138,7 @@
 
         if( sessionTimeoutCounter >= sessionTimeoutWarning && sessionTimeoutCounter < sessionTimeoutInSeconds ){
           // warn
+          //$log.debug( '...WARN ' + remainingTime );
           $rootScope.$broadcast( AUTH_EVENTS.sessionTimeoutWarning );
         }
         else if( sessionTimeoutCounter >= sessionTimeoutInSeconds ){
@@ -151,15 +152,16 @@
     function stopSessionTimeout() {
       //$log.debug( 'iscSessionModel.stopSessionTimeout');
       if( angular.isDefined( sessionTimer )){
-        //$log.debug( '...cancelling');
+        $log.debug( '...cancelling');
         $interval.cancel( sessionTimer );
       }
     }
 
-
     function resetSessionTimeout(){
+      $log.debug( 'iscSessionModel.resetSessionTimeout');
       sessionTimeoutCounter = 0;
-      doSessionTimeout();
+      //stopSessionTimeout();
+      //doSessionTimeout();
     }
 
     // --------------
@@ -176,7 +178,6 @@
       //$log.debug( 'iscSessionModel.setCurrentUser');
       //$log.debug( '...user: ' + angular.toJson( user ));
       currentUser = user;
-
     }
 
     // --------------

@@ -23,6 +23,18 @@
     self.translationParams = {};
 
 
+    self.init = function (){
+      $log.debug( 'iscNavbarController.init');
+      self.configService.loadConfig().then( function(){
+        self.tabs = _.toArray( self.configService.getTopTabsConfig() );
+        self.logoutButton = self.configService.getLogoutButtonConfig();
+        self.loginButton = self.configService.getLoginButtonConfig();
+      })
+    };
+
+    self.init();
+
+
     self.logout = function(){
       //$log.debug( 'iscNavbarController.logout');
       iscAuthenticationApi.logout();
@@ -37,6 +49,9 @@
 
       var loggedIn = self.sessionModel.isAuthenticated();
       var isLoginPage = $state.is( 'index.login' );
+
+      //$log.debug( '......loggedIn',loggedIn);
+      //$log.debug( '...isLoginPage',isLoginPage);
 
       return !loggedIn && !isLoginPage;
     };
@@ -101,6 +116,7 @@
     angular.element(document).ready(function () {
       self.setTabActiveState( $state.$current.name );
     });
+
 
 
   } // END CLASS

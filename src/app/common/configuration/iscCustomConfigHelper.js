@@ -67,7 +67,7 @@
     function stateIsExcluded( stateName ){
 //      //$log.debug( 'iscCustomConfigHelper.stateIsExcluded' );
       if( !allStates[ stateName ] ){
-        return;
+        return true;
       }
 
       return allStates[ stateName ].exclude;

@@ -21,7 +21,7 @@
         maxCrumbs: '='
       },
 
-      templateUrl: 'app/shared/breadcrumbs/breadcrumb.html',
+      templateUrl: 'breadcrumbs/breadcrumb.html',
 
       link: link
     };

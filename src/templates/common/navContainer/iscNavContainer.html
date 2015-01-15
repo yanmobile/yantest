@@ -1,0 +1,26 @@
+<!-- Sidebars -->
+<div ng-include="'common/navContainer/iscSidebar.html'"
+     ui-track-as-search-param='true'
+     class="sidebar sidebar-left"></div>
+
+<div class="app">
+
+  <!-- Navbars -->
+  <div class="navbar navbar-app navbar-fixed-top">
+    <div ng-include="'common/navContainer/iscHeader.html'"></div>
+
+  </div>
+
+  <div class="navbar navbar-app navbar-fixed-bottom col-lg-12">
+    <div ng-include="'common/navContainer/iscFooter.html'"></div>
+  </div>
+
+  <!-- App Body -->
+  <div class="app-body">
+    <div class="app-content" ui-view></div>
+  </div>
+
+</div><!-- ~ .app -->
+
+<div ui-yield-to="modals"></div>
+

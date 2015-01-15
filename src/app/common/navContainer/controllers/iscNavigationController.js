@@ -5,21 +5,16 @@
 
   'use strict';
 
-  iscNavigationController.$inject = [ '$log', '$rootScope', '$scope', '$modalStack', '$location', '$global', 'iscSessionModel', 'iscPopupHelper', 'AUTH_EVENTS' ];
+  iscNavigationController.$inject = [ '$log', '$rootScope', '$scope', '$modalStack', 'iscSessionModel', 'iscPopupHelper', 'AUTH_EVENTS' ];
 
-  function iscNavigationController( $log, $rootScope, $scope, $modalStack,  $location, $global, iscSessionModel, iscPopupHelper, AUTH_EVENTS ){
+  function iscNavigationController( $log, $rootScope, $scope, $modalStack, iscSessionModel, iscPopupHelper, AUTH_EVENTS ){
 //    //$log.debug( 'iscNavigationController LOADED');
 
     var self = this;
 
-    // ---------------------------
-    // DJG
-    // ---------------------------
-
     // --------------
     // models
     self.sessionModel = iscSessionModel;
-
 
     // --------------
     // session / login
@@ -33,12 +28,14 @@
     // on every timer tick - dont show it if its already displayed
     self.warningDialogIsShowing = false;
 
-    self.openPopup = function( type ){
+    self.openPopup = function( type, response ){
+      //$log.debug( 'iscNavigationController.openPopup' );
       $modalStack.dismissAll( 'close' );
-      iscPopupHelper.openPopup( type );
+      iscPopupHelper.openPopup( type, response );
     };
 
     self.openDialog = function( type, okFunc, cancelFunc ){
+      $log.debug( 'iscNavigationController.openDialog' );
       $modalStack.dismissAll( 'close' );
       iscPopupHelper.openDialog( type, okFunc, cancelFunc  );
     };
@@ -52,23 +49,25 @@
     self.onCancelSession = function(){
       //$log.debug( 'iscNavigationController.onCancelSession');
       self.warningDialogIsShowing = false;
+      $rootScope.$broadcast( AUTH_EVENTS.sessionTimeoutConfirm );
     };
 
     // --------------
     // listeners
-    $scope.$on( AUTH_EVENTS.loginError, function( event, response ){
-//      //$log.debug( 'iscNavigationController.loginError' );
-      self.openPopup( AUTH_EVENTS.loginError );
+    $scope.$on( AUTH_EVENTS.responseError, function( event, response ){
+      //$log.debug( 'iscNavigationController.responseError' );
+      //$log.debug( '...response' + JSON.stringify( response ));
+      self.openPopup( AUTH_EVENTS.responseError, response );
     });
 
     $scope.$on( AUTH_EVENTS.notAuthenticated, function( event, response ){
 //      //$log.debug( 'iscNavigationController.loginError' );
-      self.openPopup( AUTH_EVENTS.notAuthenticated );
+      self.openPopup( AUTH_EVENTS.notAuthenticated, response );
     });
 
     $scope.$on( AUTH_EVENTS.notAuthorized, function( event, response ){
 //      //$log.debug( 'iscNavigationController.loginError' );
-      self.openPopup( AUTH_EVENTS.notAuthorized );
+      self.openPopup( AUTH_EVENTS.notAuthorized, response );
     });
 
     $scope.$on( AUTH_EVENTS.sessionTimeoutWarning, function( event, response ){
@@ -86,100 +85,8 @@
 
     $scope.$on( AUTH_EVENTS.sessionTimeout, function( event, response ){
       //$log.debug( 'iscNavigationController.sessionTimeout' );
-      self.openPopup( 'iscSessionTimeout' );
+      self.openPopup( AUTH_EVENTS.sessionTimeout, response );
     });
-
-    // ---------------------------
-    // END DJG
-    // ---------------------------
-
-
-    var setParent = function (children, parent) {
-      angular.forEach(children, function (child) {
-        child.parent = parent;
-        if (child.children !== undefined) {
-          setParent (child.children, child);
-        }
-      });
-    };
-
-    self.findItemByUrl = function (children, url) {
-      if( !children ) return;
-
-      for (var i = 0, length = children.length; i<length; i++) {
-        if (children[i].url && children[i].url.replace('#', '') == url) return children[i];
-        if (children[i].children !== undefined) {
-          var item = $scope.findItemByUrl (children[i].children, url);
-          if (item) return item;
-        }
-      }
-    };
-
-    setParent ($scope.menu, null);
-
-    self.openItems = [];
-    self.selectedItems = [];
-    self.selectedFromNavMenu = false;
-
-    self.select = function (item) {
-      // close open nodes
-      if (item.open) {
-        item.open = false;
-        return;
-      }
-
-      for (var i = $scope.openItems.length - 1; i >= 0; i--) {
-        self.openItems[i].open = false;
-      };
-
-      self.openItems = [];
-      var parentRef = item;
-      while (parentRef !== null) {
-        parentRef.open = true;
-        self.openItems.push(parentRef);
-        parentRef = parentRef.parent;
-      }
-
-      // handle leaf nodes
-      if (!item.children || (item.children && item.children.length<1)) {
-        self.selectedFromNavMenu = true;
-        for (var j = $scope.selectedItems.length - 1; j >= 0; j--) {
-          self.selectedItems[j].selected = false;
-        };
-        self.selectedItems = [];
-        var parentRef = item;
-        while (parentRef !== null) {
-          parentRef.selected = true;
-          self.selectedItems.push(parentRef);
-          parentRef = parentRef.parent;
-        }
-      };
-    };
-
-    $scope.$watch(function () {
-      return $location.path();
-    }, function (newVal, oldVal) {
-      if (self.selectedFromNavMenu == false) {
-        var item = self.findItemByUrl ($scope.menu, newVal);
-        if (item)
-          $timeout (function () { $scope.select (item); });
-      }
-      self.selectedFromNavMenu = false;
-    });
-
-    // searchbar
-    self.showSearchBar = function ($e) {
-      $e.stopPropagation();
-      $global.set('showSearchCollapsed', true);
-    };
-
-    $scope.$on('globalStyles:changed:showSearchCollapsed', function (event, newVal) {
-      self.style_showSearchCollapsed = newVal;
-    });
-
-    self.goToSearch = function () {
-      $location.path('/extras-search')
-    };
 
   }// END CLASS
 

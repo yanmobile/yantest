@@ -4,23 +4,23 @@
 (function(){
   'use strict';
 
-  iscGlobals.$inject = [ '$log', '$rootScope', '$document', 'iscEnquireService' ];
+  iscGlobals.$inject = [ '$log', '$rootScope', '$document' ];
 
-  function iscGlobals( $log, $rootScope, $document, iscEnquireService ){
+  function iscGlobals( $log, $rootScope, $document ){
 
     // --------------------
-    $document.ready( function() {
-      iscEnquireService.register("screen and (max-width: 767px)", {
-
-        match: function () {
-          $rootScope.$broadcast('globalStyles:maxWidth767', true);
-        },
-
-        unmatch: function () {
-          $rootScope.$broadcast('globalStyles:maxWidth767', false);
-        }
-      });
-    });
+    //$document.ready( function() {
+    //  iscEnquireService.register("screen and (max-width: 767px)", {
+    //
+    //    match: function () {
+    //      $rootScope.$broadcast('globalStyles:maxWidth767', true);
+    //    },
+    //
+    //    unmatch: function () {
+    //      $rootScope.$broadcast('globalStyles:maxWidth767', false);
+    //    }
+    //  });
+    //});
 
     // ----------------------------
     // vars

@@ -15,14 +15,14 @@
     // ----------------------------
 
     var config;
-    var statePermissions;
 
     // ----------------------------
     // class factory
     // ----------------------------
 
     var service  = {
-      // all
+      getBaseUrl: getBaseUrl,
+
       getConfig: getConfig,
       setConfig: setConfig,
       loadConfig: loadConfig,
@@ -50,21 +50,36 @@
     // ----------------------------
     // all configurations
 
+
+    function getConfig(){
+//      //$log.debug( 'iscCustomConfigService.getConfig' );
+//      //$log.debug( '...config ' + JSON.stringify( config ) );
+      return config;
+    }
+
+    function setConfig( val ){
+      //$log.debug( 'iscCustomConfigService.setConfig' );
+      //$log.debug( '...baseUrl ' + JSON.stringify( val.baseUrl ) );
+      //$log.debug( '...config ' + JSON.stringify( val ) );
+      config = val;
+    }
+
     function loadConfig(){
-      //$log.debug( 'iscCustomConfigService.loadConfig' );
+      $log.debug( 'iscCustomConfigService.loadConfig' );
 
       var deferred = $q.defer();
-      var url = '/assets/configuration/configFile.json';
+      var url = 'assets/configuration/configFile.json';
 
       if( config ){
         //$log.debug( '...exists' );
+        //$log.debug( '...exists ' + JSON.stringify( config.baseUrl ) );
         deferred.resolve( config );
       }
       else{
         //$log.debug( '...loading');
         $http.get( url ).then(
           function( results ){
-            //$log.debug( '...SUCCESS: ' + JSON.stringify( results ));
+            //$log.debug( '...SUCCESS: ', results);
             // load the config here
             setConfig( results.data );
             iscSessionModel.setStatePermissions( results.data.statePermissions );
@@ -94,20 +109,8 @@
 
     }
 
-    function getConfig(){
-//      //$log.debug( 'iscCustomConfigService.getConfig' );
-//      //$log.debug( '...config ' + JSON.stringify( config ) );
-      return config;
-    }
-
-    function setConfig( val ){
-      //$log.debug( 'iscCustomConfigService.setConfig' );
-//      //$log.debug( '...val ' + JSON.stringify( val ) );
-      config = val;
-    }
-
     function clearConfig( val ){
-//      //$log.debug( 'iscCustomConfigService.clearConfig' );
+//      $log.debug( 'iscCustomConfigService.clearConfig' );
       config = null;
     }
 
@@ -119,6 +122,17 @@
     // ----------------------------
     function getStatePermissions(){
       return config.statePermissions;
+    }
+
+    // ----------------------------
+    /*
+    private
+     */
+    function getBaseUrl(){
+      $log.debug( 'iscCustomConfigService.getBaseUrl' );
+      $log.debug( '...baseUrl', config ? config.baseUrl : '');
+      return config ? config.baseUrl : null;
+
     }
 
     // ----------------------------

@@ -9,8 +9,8 @@
   // inject
   // ----------------------------
 
-  angular.module( 'isc.common' )
-      .factory( 'iscEnquireService', ['$window', function( $window ){
-        return $window.enquire;
-      }])
+  //angular.module( 'isc.common' )
+  //    .factory( 'iscEnquireService', ['$window', function( $window ){
+  //      return $window.enquire;
+  //    }])
 })();

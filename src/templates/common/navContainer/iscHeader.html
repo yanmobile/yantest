@@ -1,0 +1,116 @@
+<div ng-controller="iscNavbarController as navbarCtrl">
+
+  <div class="navbar-brand navbar-brand-center"
+       ui-yield-to="title">{{'ISC_APP_NAME' | translate}}</div>
+
+  <!-- phone and tab-->
+  <div class="visible-xs-block visible-sm-block">
+
+    <!--menu hamburger, logo-->
+    <div class="navbar navbar-header pull-left">
+
+      <div ui-toggle="uiSidebarLeft"
+           class="btn sidebar-toggle"
+          style="padding-top: 8px;">
+        <i class="fa fa-bars"></i> {{'ISC_MENU' | translate}}
+      </div>
+
+      <img src="assets/images/logo-big.png" class="isc-logo">
+
+    </div>
+
+    <!--login, logout, info-->
+    <div class="btn-group pull-right">
+
+      <!-- logout button -->
+      <a class="isc-greeting-right"
+         ui-toggle="uiSidebarRight"
+         ng-if="navbarCtrl.sessionModel.isAuthenticated()"
+         ng-click="navbarCtrl.logout()">
+        <span class="fa fa-sign-out"></span> {{navbarCtrl.logoutButton.translationKey | translate}}
+      </a>
+
+      <!-- login button - navigates to the login tab -->
+      <a class="isc-greeting-right"
+         ui-toggle="uiSidebarRight"
+         ng-if="navbarCtrl.showLogin()"
+         ui-sref="{{navbarCtrl.loginButton.state}}">
+        <span class="fa fa-sign-in"></span> {{navbarCtrl.loginButton.translationKey | translate}}
+      </a>
+
+      <!--info button-->
+      <a class="isc-greeting-right"
+         ui-toggle="uiSidebarRight"
+         ui-sref="index.info.hsInfo">
+        <span style="font-size: large" class="fa fa-info-circle"></span>
+      </a>
+    </div>
+  </div>
+
+  <!--desktop-->
+  <div class="visible-md-block visible-lg-block">
+
+    <!--logo-->
+    <div class="navbar navbar-header pull-left">
+      <img src="assets/images/logo-big.png" class="isc-logo">
+    </div>
+
+    <div>
+      <ul class="nav navbar-nav"
+          id="top-nav">
+
+        <li ng-class="{'active':tab.$$active}"
+            ng-repeat="tab in navbarCtrl.tabs | orderBy: navbarCtrl.iscUiHelper.displayOrder"
+            data-toggle="collapse"
+            data-target=".navbar-collapse"
+            ng-if="navbarCtrl.showTab( tab )">
+
+          <a ui-sref="{{tab.state}}">
+            <span ng-attr-class="{{'glyphicon ' + tab.iconClasses}}"></span> {{tab.translationKey | translate}}
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!--login, logout, info, greeting-->
+    <div class="btn-group pull-right">
+
+      <!--greeting when logged in-->
+      <span id="greeting-logged-in"
+            class="isc-greeting-right"
+            ng-if="navbarCtrl.sessionModel.isAuthenticated()">{{'ISC_LOGGED_IN_GREETING' | translate: navbarCtrl.translationParams}}</span>
+
+      <!--greeting when logged out-->
+      <span id="greeting-logged-out"
+            class="isc-greeting-right"
+            ng-if="!navbarCtrl.sessionModel.isAuthenticated()">{{'ISC_GUEST_GREETING' | translate}}</span>
+
+      <!-- logout button -->
+      <a class="isc-greeting-right"
+         id="logout-button"
+         ui-toggle="uiSidebarRight"
+         ng-if="navbarCtrl.sessionModel.isAuthenticated()"
+         ng-click="navbarCtrl.logout()">
+        <span class="fa fa-sign-out"></span> {{navbarCtrl.logoutButton.translationKey | translate}}
+      </a>
+
+      <!-- login button - navigates to the login tab -->
+      <a class="isc-greeting-right"
+         ui-toggle="uiSidebarRight"
+         id="login-tab-button"
+         ng-if="navbarCtrl.showLogin()"
+         ui-sref="{{navbarCtrl.loginButton.state}}">
+        <span class="fa fa-sign-in"></span> {{navbarCtrl.loginButton.translationKey | translate}}
+      </a>
+
+      <!--info button-->
+      <a class="isc-greeting-right"
+         ui-toggle="uiSidebarRight"
+         id="info-button"
+         ui-sref="index.info.hsInfo">
+        <span style="font-size: large" class="fa fa-info-circle"></span>
+      </a>
+    </div>
+  </div>
+</div>
+
