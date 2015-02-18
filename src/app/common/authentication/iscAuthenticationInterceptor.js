@@ -28,9 +28,9 @@
     // ----------------------------
 
     function response( response ){
-      $log.debug( 'iscAuthenticationInterceptor.response ', response );
+      //$log.debug( 'iscAuthenticationInterceptor.response ', response );
       if( response.config.url.indexOf( 'http' ) !== -1 ){
-        $log.debug('...http call');
+        //$log.debug('...http call');
         iscSessionModel.resetSessionTimeout();
       }
 

@@ -5,9 +5,9 @@
 (function(){
   'use strict';
 
-  iscCustomConfigHelper.$inject = [ '$log' ];
+  iscCustomConfigHelper.$inject = [ '$log', '$state' ];
 
-  function iscCustomConfigHelper( $log ){
+  function iscCustomConfigHelper( $log, $state ){
 //    //$log.debug( 'iscCustomConfigHelper LOADED' );
 
     // ----------------------------
@@ -25,7 +25,13 @@
       resetStates: resetStates,
       getStateObj: getStateObj,
       getAllStates: getAllStates,
-      stateIsExcluded: stateIsExcluded
+
+      stateIsExcluded: stateIsExcluded,
+
+      getCurrentStateTranslationKey: getCurrentStateTranslationKey,
+      getSectionTranslationKeyFromName: getSectionTranslationKeyFromName,
+      getTranslationKeyFromName: getTranslationKeyFromName,
+      isCurrentState: isCurrentState
     };
 
     return factory;
@@ -61,6 +67,7 @@
 
     }
 
+    // ----------------------------
     // used to check if a top nav element is excluded
     // the interceptor uses this to disallow navigation to that state
     // see iscCustomConfigInterceptor.request()
@@ -71,6 +78,40 @@
       }
 
       return allStates[ stateName ].exclude;
+    }
+
+    // ----------------------------
+    function getCurrentStateTranslationKey(){
+      var stateName = $state.$current.name;
+      return getTranslationKeyFromName( stateName );
+    }
+
+    // get the top level section's translation key from the state name
+    function getSectionTranslationKeyFromName( stateName ){
+      //$log.debug( 'iscCustomConfigHelper.getSectionTranslationKeyFromName: ' + stateName );
+      var arr = stateName.split('.');
+      var sectArr = arr.splice(0,2); // the first two values are the section
+      var sectionName = sectArr.join( '.' );
+
+      //$log.debug( '...sectArr: ' + sectArr );
+      //$log.debug( '...sectionName: ' + sectionName );
+
+      var state = allStates[ sectionName ];
+
+      return state? state.translationKey : '';
+    }
+
+    // get the translation key from the state name
+    function getTranslationKeyFromName( stateName ){
+      //$log.debug( 'iscCustomConfigHelper.getTranslationKeyFromName: ' + stateName );
+      var state = allStates[ stateName ];
+      return state? state.translationKey : 'ISC_NOT_FOUND';
+    }
+
+    // get the translation key from the state name
+    function isCurrentState( stateName ){
+      //$log.debug( 'iscCustomConfigHelper.isCurrentState: ', stateName );
+      return $state.is( stateName );
     }
 
 

@@ -1,0 +1,179 @@
+// --------------------------------------------------
+// Variables
+// --------------------------------------------------
+
+
+// --------------------------------------------------
+// Media queries breakpoints
+// --------------------------------------------------
+
+// Extra small screen
+$screen-xs-min:              0px !default;
+
+// Small screen / phone
+$screen-sm-min:              480px !default;
+
+// Medium screen / tablet
+$screen-md-min:              960px !default;
+
+// Large screen / desktop
+$screen-lg-min:              1200px !default;
+
+// So media queries don't overlap when required, provide a maximum
+$screen-xs-max:              ($screen-sm-min - 1) !default;
+$screen-sm-max:              ($screen-md-min - 1) !default;
+$screen-md-max:              ($screen-lg-min - 1) !default;
+
+//
+// usage:
+//
+//  @media #{$desktop} {
+//    background: red;
+//  }
+//
+
+$desktop:   "only screen and (min-width: #{$screen-md-min})";
+$tablet:    "only screen and (min-width: #{$screen-sm-min}) and (max-width: #{$screen-sm-max})";
+$phone:     "only screen and (max-width: #{$screen-xs-max})";
+// desktop and tablet
+$desk-tab:  "only screen and (min-width: #{$screen-sm-min})";
+// tablet and phone
+$mobile:    "only screen and (max-width: #{$screen-sm-max})";
+
+
+// --------------------------------------------------
+// colors
+// --------------------------------------------------
+
+// -------------------------
+// Grays
+
+$black:              #000 !default;
+$gray-darker:            lighten($black, 13.5%) !default; // #222
+$gray-dark:              lighten($black, 20%) !default;   // #333
+$gray:                   lighten($black, 33.5%) !default; // #555
+$gray-light:             lighten($black, 46.7%) !default; // #777
+$gray-lighter:           lighten($black, 93.5%) !default; // #eee
+$white-smoke:            lighten($black, 96%) !default; // #?
+$white:                  lighten($black, 100%) !default; // #fff
+
+// -------------------------
+// brand colors
+
+//== SOLID DARK
+//$brand-primary:         #5e4db7 !default;
+//$brand-success:         #5cb85c !default;
+//$brand-info:            #58656a !default;
+//$brand-warning:         #f0ad4e !default;
+//$brand-danger:          #d9534f !default;
+//$brand-link:            #ca4000 !default;
+//
+//$brand-page-title-color: $brand-primary;
+//$brand-page-subtitle-color: $gray-dark;
+//
+//$nav-link:        #628080 !default;
+//$nav-text:        #fdfbff !default;
+//$button-primary:        $brand-primary !default;
+//
+//$sub-nav-background-color: #efefef;
+//$sub-nav-border-color: darken( $sub-nav-background-color, 30 );
+
+//== SOLID LIGHT
+//$brand-primary:         #b2e5dc !default;
+//$brand-primary-dark:    #25a992 !default;
+//$brand-success:         #5cb85c !default;
+//$brand-info:            #58656a !default;
+//$brand-warning:         #f0ad4e !default;
+//$brand-danger:          #d9534f !default;
+//$brand-link:            #ca4000 !default;
+//
+//$nav-link:        #628080 !default;
+//$nav-text:        #090408 !default;
+//$button-primary:        $brand-primary-dark !default;
+//
+//$brand-page-title-color: $brand-primary-dark;
+//$brand-page-subtitle-color: $gray-dark;
+//
+//$sub-nav-background-color: #efefef;
+//$sub-nav-border-color: darken( $sub-nav-background-color, 30 );
+
+//== THEME SKY
+$brand-primary:         #019aba !default;
+$brand-primary-dark:    #017fa0 !default;
+$brand-success:         #5cb85c !default;
+$brand-info:            #58656a !default;
+$brand-warning:         #f0ad4e !default;
+$brand-danger:          #d9534f !default;
+$brand-link:            #ca4000 !default;
+
+$nav-link:        #5c7b7d !default;
+$nav-text:        #000400 !default;
+$button-primary:        $brand-primary !default;
+
+$brand-page-title-color: $brand-primary;
+$brand-page-subtitle-color: $gray-dark;
+
+$sub-nav-background-color: #f2ebdb;
+$sub-nav-border-color: darken( $sub-nav-background-color, 30 );
+
+
+// --------------------------------------------------
+// application
+// --------------------------------------------------
+
+$zindex-app: 1;
+
+$isc-gutter: 50px;
+$isc-gutter-sm: 20px;
+
+//** Disabled cursor for form controls and buttons.
+$cursor-disabled: not-allowed !default;
+
+//** Global text color on `<body>`.
+$text-color:            $gray-dark !default;
+$page-font-size: 12px;
+
+
+// -------------------------
+// nav bar
+
+$isc-nav-item-spacing: 15px;
+
+$isc-side-nav-desktop-width: 285px;
+$isc-side-nav-media-width: 350px;
+$isc-side-nav-media-height: 350px;
+$isc-side-nav-width: $isc-side-nav-media-width;
+$isc-side-nav-height: $isc-side-nav-media-height;
+
+//total header height
+$app-top-nav-height-desktop: 150px;
+$app-top-nav-height-tablet: 68px;
+$app-top-nav-height-phone: 45px;
+
+// branded section height
+$app-header-height-desktop: 105px;
+$app-header-height-tablet: $app-top-nav-height-tablet;
+$app-header-height-phone: $app-top-nav-height-phone;
+
+
+$app-top-nav-logo-height: 100px;
+$app-top-nav-logo-height-sm: 45px;
+$app-top-nav-logo-width-sidebar: 230px;
+
+$app-sub-nav-height: $app-top-nav-height-desktop/4;
+
+$app-footer-height:      54px;
+$app-footer-height-sm:   30px;
+
+$nav-font-size: 10px;
+$nav-section-title-size: 16px;
+
+$nav-select-width: 160px;
+$nav-select-height: 45px;
+
+$navbar-logo-height: 45px;
+$navbar-logo-height-sm: 25px;
+
+
+
+
