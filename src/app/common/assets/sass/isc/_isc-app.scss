@@ -83,14 +83,24 @@ body{
   @include  flex();
   @include min-height-content;
 
+  h1, h2, h3{
+    margin-top: 0;
+    padding-top: 0;
+  }
+
   h1{
     color: $brand-page-title-color;
     font-weight: 400;
   }
 
-  h4{
+  h2{
     color: $brand-page-subtitle-color;
     font-weight: 900;
+  }
+
+  h3{
+    color: $gray;
+    font-weight: 400;
   }
 
   @media #{$desktop}{
@@ -99,8 +109,11 @@ body{
     h1{
       font-size: 24px;
     }
-    h4{
+    h2{
       font-size: 16px;
+    }
+    h3{
+      font-size: 14px;
     }
   }
 
@@ -109,8 +122,11 @@ body{
     h1{
       font-size: 18px;
     }
-    h4{
+    h2{
       font-size: 12px;
+    }
+    h3{
+      font-size: 10px;
     }
   }
 }
@@ -153,6 +169,10 @@ body{
 }
 
 //page content
+
+
+
+
 .isc-content {
   padding: 0;
 
