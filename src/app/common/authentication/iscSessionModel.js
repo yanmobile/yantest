@@ -25,7 +25,7 @@
     var sessionTimeoutInSeconds = 0;
     var sessionTimeoutCounter = 0;
     var sessionTimeoutWarning = 0;
-    var sessionTimer;
+    var intervalPromise;
 
     // dont require login for these views
     var noLoginRequiredList = [ 'index', 'index.login' ];
@@ -80,13 +80,14 @@
       setCurrentUser( sessionData.UserData );
 
       // set the timeout
+      //sessionTimeoutInSeconds = 20;
       sessionTimeoutInSeconds = sessionData.SessionTimeout;
 
       $rootScope.$broadcast( AUTH_EVENTS.loginSuccess );
     }
 
     function destroy(){
-      //$log.debug( 'iscSessionModel.destroy');
+      $log.debug( 'iscSessionModel.destroy');
 
       // create a session with null data
       currentUser = null;
@@ -117,14 +118,14 @@
      * private
      */
     function doSessionTimeout(){
-      $log.debug( 'iscSessionModel.doSessionTimeout');
+      //$log.debug( 'iscSessionModel.doSessionTimeout');
 
-      if( angular.isDefined( sessionTimer )){
+      if( intervalPromise ){
         //$log.debug( '...already there' );
         return;
       }
 
-      sessionTimer = $interval( function(){
+      intervalPromise = $interval( function(){
         sessionTimeoutCounter++;
 
         // save off the remaining time so that on page refresh we can start from here
@@ -151,14 +152,17 @@
 
     function stopSessionTimeout() {
       //$log.debug( 'iscSessionModel.stopSessionTimeout');
-      if( angular.isDefined( sessionTimer )){
+      if( angular.isDefined( intervalPromise )){
         $log.debug( '...cancelling');
-        $interval.cancel( sessionTimer );
+        $interval.cancel( intervalPromise );
+        intervalPromise = null;
       }
+
+      //$log.debug( '...intervalPromise',intervalPromise);
     }
 
     function resetSessionTimeout(){
-      $log.debug( 'iscSessionModel.resetSessionTimeout');
+      //$log.debug( 'iscSessionModel.resetSessionTimeout');
       sessionTimeoutCounter = 0;
       //stopSessionTimeout();
       //doSessionTimeout();
@@ -194,7 +198,7 @@
 
     // --------------
     function isAuthenticated(){
-//      //$log.debug( 'iscSessionModel.isAuthenticated' );
+      //$log.debug( 'iscSessionModel.isAuthenticated', currentUser );
       return !_.isEmpty( currentUser );
     }
 

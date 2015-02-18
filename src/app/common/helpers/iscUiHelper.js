@@ -39,6 +39,7 @@
 
     function setTabActiveState( state, allTabs ) {
       //$log.debug( 'iscShared.setTabActiveState');
+      //$log.debug( '...allTabs',allTabs);
 
       _.forEach( allTabs, function( tab ){
         if( _.contains( state, tab.state )){

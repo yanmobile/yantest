@@ -1,0 +1,253 @@
+
+body{
+  font-family: "Trebuchet MS", "Lucida Grande", sans-serif;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+}
+
+// container for the whole app
+.isc-app{
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+
+  @media #{$phone} {
+    top: 25px;
+  }
+}
+
+
+// container for the app content and header, but not the footer
+.isc-app-body {
+  @include  flex();
+  @include  flex-type( 1 );
+  @include  flex-box-align( stretch );
+  @include  flex-direction( column );
+  @include  box-sizing( border-box );
+
+  overflow: hidden;
+
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+
+  @media #{$desktop} {
+    bottom: $app-footer-height;
+  }
+
+  @media #{$mobile} {
+    top: 20px;
+    bottom: $app-footer-height-sm;
+  }
+}
+
+.isc-app-content{
+  @include  flex();
+  @include  flex-type( 1 );
+  @include  flex-box-align( stretch );
+  @include  flex-direction( column );
+  @include  box-sizing( border-box );
+
+  width: 100%;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.isc-nav-bar{
+  @include  flex();
+  margin-left: 0;
+  padding-left: 0;
+  padding-right: 0;
+  width: 100%;
+
+  @media #{$desktop} {
+    min-height: $app-top-nav-height-desktop;
+  }
+
+  @media #{$tablet} {
+    min-height: $app-top-nav-height-tablet;
+  }
+
+  @media #{$phone} {
+    min-height: $app-top-nav-height-phone;
+  }
+}
+
+// container for any page
+.isc-page-content{
+  @include  flex();
+  @include min-height-content;
+
+  h1{
+    color: $brand-page-title-color;
+    font-weight: 400;
+  }
+
+  h4{
+    color: $brand-page-subtitle-color;
+    font-weight: 900;
+  }
+
+  @media #{$desktop}{
+    @include flex-flow( row );
+
+    h1{
+      font-size: 24px;
+    }
+    h4{
+      font-size: 16px;
+    }
+  }
+
+  @media #{$mobile}{
+    @include flex-flow( column );
+    h1{
+      font-size: 18px;
+    }
+    h4{
+      font-size: 12px;
+    }
+  }
+}
+
+//sidebar nav
+.isc-side-nav {
+  padding: 0;
+
+//  background: #806c2f !important;
+
+  @media #{$desktop}{
+    background: $white;
+    margin-top: $isc-gutter;
+    margin-bottom: $isc-gutter;
+    margin-left: $isc-gutter !important;
+    margin-right: 0;
+    min-width: $isc-side-nav-desktop-width;
+    max-width: $isc-side-nav-desktop-width;
+  }
+
+  @media #{$mobile}{
+    @include min-height-content;
+    @include max-height-content;
+    background: none;
+  }
+
+  @media #{$tablet}{
+    margin-top: $isc-gutter;
+    margin-bottom: 0;
+    margin-left: $isc-gutter;
+    margin-right: $isc-gutter;
+  }
+
+  @media #{$phone}{
+    margin-top: $isc-gutter-sm;
+    margin-bottom: 0;
+    margin-left: $isc-gutter-sm;
+    margin-right: $isc-gutter-sm;
+  }
+}
+
+//page content
+.isc-content {
+  padding: 0;
+
+  border: 2px solid transparent;
+
+  background: none;
+//  background: green;
+
+  @media #{$desktop}{
+    margin: $isc-gutter $isc-gutter $isc-gutter $isc-gutter !important;
+    flex-grow: 1;
+  }
+
+  @media #{$tablet}{
+    margin: $isc-gutter/2 $isc-gutter $isc-gutter $isc-gutter !important;
+    flex-grow: 1;
+  }
+
+  @media #{$phone}{
+    margin: 0 $isc-gutter-sm $isc-gutter-sm $isc-gutter-sm !important;
+  }
+}
+
+.isc-app-footer{
+  @include  flex();
+  @include  flex-type( 1 );
+  @include  flex-box-align( stretch );
+  @include  flex-direction( column );
+  justify-content: center;
+  order: 2;
+
+  border: 2px solid transparent;
+
+  @media #{$desktop} {
+    height: $app-footer-height;
+  }
+
+  @media #{$mobile} {
+    height: $app-footer-height-sm;
+  }
+}
+
+// labels on pages
+.isc-page-label{
+  color: $text-color;
+  font-weight: 600;
+  font-size: $page-font-size;
+
+  &.left{
+    padding-left: 0;
+    padding-right: 10px;
+    text-align: right;
+  };
+
+  &.right{
+    padding-left: 10px;
+    padding-right: 0;
+    text-align: left;
+  };
+
+//  border: 1px solid green;
+}
+
+
+// --------------------------------------
+// item containers
+// --------------------------------------
+
+@mixin item-wrapper( $flexType, $order ){
+  @include  flex();
+  @include  flex-type( $flexType );
+  justify-content: center;
+  order: $order;
+}
+
+.isc-item-wrapper-1{
+  @include  item-wrapper( 1, 1 );
+//    border: 2px solid green;
+}
+
+.isc-item-wrapper-2{
+  @include  item-wrapper( 2, 1 );
+  //  border: 2px solid green;
+}
+
+.isc-item-wrapper-3{
+  @include  item-wrapper( 3, 1 );
+  //  border: 2px solid green;
+}
+
+.isc-item-wrapper-4{
+  @include  item-wrapper( 4, 1 );
+  //  border: 2px solid green;
+}
+
+
+
+

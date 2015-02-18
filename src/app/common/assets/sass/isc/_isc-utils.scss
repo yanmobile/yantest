@@ -1,0 +1,90 @@
+
+// -----------------
+// hide functions
+// -----------------
+.hide-desktop{
+  @media #{$desktop} {
+    display: none !important;
+  }
+}
+
+.hide-tablet{
+  @media #{$tablet} {
+    display: none !important;
+  }
+}
+
+.hide-phone{
+  @media #{$phone} {
+    display: none !important;
+  }
+}
+
+.hide-mobile{
+  @media #{$mobile} {
+    display: none !important;
+  }
+}
+
+// -----------------
+// show only functions
+// -----------------
+.only-desktop{
+  @media #{$mobile} {
+    display: none !important;
+  }
+}
+
+.only-tablet{
+  @media #{$desktop} {
+    display: none !important;
+  }
+
+  @media #{$phone} {
+    display: none !important;
+  }
+}
+
+.only-phone{
+  @media #{$desktop} {
+    display: none !important;
+  }
+
+  @media #{$tablet} {
+    display: none !important;
+  }
+}
+
+.only-desk-tab{
+  @media #{$phone} {
+    display: none !important;
+  }
+}
+
+.only-mobile{
+  @media #{$desktop} {
+    display: none !important;
+  }
+}
+
+// -----------------
+// float functions
+// -----------------
+.pull-right {
+  float: right !important;
+}
+.pull-left {
+  float: left !important;
+}
+
+// --------------------------------------
+// text align
+// --------------------------------------
+
+.text-left{
+  text-align: left;
+}
+
+.text-right{
+  text-align: right;
+}

@@ -1,0 +1,44 @@
+<div class="isc-nav-bar-container"
+     ng-controller="iscNavbarController as navbarCtrl">
+
+    <div class="isc-top-nav-container theme">
+
+      <div class="left">
+        <!--current section-->
+        <h5 class="isc-section-title isc-nav-item left">{{navbarCtrl.sectionTranslationKey | translate}}</h5>
+      </div>
+
+      <div class="right"
+           ng-if="navbarCtrl.sessionModel.isAuthenticated()">
+
+        <label class="isc-nav-label isc-nav-item right" >{{'ISC_VIEWING' | translate}}:</label>
+
+        <div class="isc-styled-select proxy isc-nav-item right">
+          <select>
+            <option>please select...</option>
+            <option>Gladys Smith</option>
+            <option>The Pops</option>
+          </select>
+        </div>
+
+        <!-- menu hamburger -->
+        <a class="isc-nav-item right isc-image-button isc-hamburger"
+           ng-click="navCtrl.showSideNavbar()">
+          <i class="fa fa-bars"></i>
+        </a>
+      </div>
+
+      <div class="right"
+           ng-if="!navbarCtrl.sessionModel.isAuthenticated()">
+
+        <!-- menu hamburger -->
+        <a class="isc-nav-item right isc-hamburger"
+           ng-click="navCtrl.showSideNavbar()">
+          <i class="fa fa-bars"></i>
+        </a>
+      </div>
+
+
+    </div>
+</div>
+

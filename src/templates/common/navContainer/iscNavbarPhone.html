@@ -1,0 +1,30 @@
+<div class="isc-nav-bar-container"
+     ng-controller="iscNavbarController as navbarCtrl">
+
+    <div class="isc-top-nav-container theme">
+
+      <div class="left">
+        <!--section title-->
+        <h5 class="isc-section-title isc-nav-item left">{{navbarCtrl.sectionTranslationKey | translate}}</h5>
+      </div>
+
+      <div class="right">
+        <!-- menu hamburger -->
+        <a class="isc-nav-item right isc-hamburger"
+           ng-click="navCtrl.showSideNavbar()">
+          <i class="fa fa-bars"></i>
+        </a>
+      </div>
+
+
+      <span class="isc-nav-item right isc-section-divider"></span>
+
+      <!-- help -->
+      <a class="isc-nav-item right isc-image-button isc-info-btn-phone">
+        <i class="fa fa-question"></i>
+      </a>
+
+    </div>
+
+</div>
+

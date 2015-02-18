@@ -21,6 +21,11 @@
       sessionTimeoutReset: 'iscSessionTimeoutReset'
     })
 
+    .constant('NAV_EVENTS', {
+      showSecondaryNav: 'iscShowSecondaryNav',
+      hideSecondaryNav: 'iscHideSecondaryNav'
+    })
+
     .config( ['$stateProvider', '$urlRouterProvider',
       function( $stateProvider, $urlRouterProvider ){
 
@@ -59,8 +64,8 @@
 
       }])
 
-    .run( ['$log', '$rootScope', '$state', '$window', 'iscCustomConfigHelper', 'iscProgressLoader','iscSessionModel', 'iscCustomConfigService' ,'iscSessionStorageHelper', 'AUTH_EVENTS',
-      function( $log, $rootScope, $state, $window, iscCustomConfigHelper, iscProgressLoader, iscSessionModel, iscCustomConfigService, iscSessionStorageHelper, AUTH_EVENTS ){
+    .run( ['$log', '$rootScope', '$state', '$window', 'iscProgressLoader','iscSessionModel', 'iscCustomConfigService', 'iscCustomConfigHelper' ,'iscSessionStorageHelper', 'AUTH_EVENTS',
+      function( $log, $rootScope, $state, $window, iscProgressLoader, iscSessionModel, iscCustomConfigService, iscCustomConfigHelper, iscSessionStorageHelper, AUTH_EVENTS ){
         //$log.debug( 'iscNavContainer.run' );
 
         loadDataFromStoredSession();
@@ -69,9 +74,9 @@
         // stateChange start
         $rootScope.$on('$stateChangeStart',
           function( event, toState, toParams, fromState, fromParams ){
-            $log.debug( 'ischNavContainer.$stateChangeStart');
-            $log.debug( '...from: ' + fromState.name );
-            $log.debug( '.....to: ' + toState.name );
+            //$log.debug( 'ischNavContainer.$stateChangeStart');
+            //$log.debug( '...from: ' + fromState.name );
+            //$log.debug( '.....to: ' + toState.name );
 
             iscCustomConfigService.loadConfig().then( function( config ){
               startLoadingAnimation();
@@ -83,7 +88,7 @@
         // stateChange success
         $rootScope.$on('$stateChangeSuccess',
           function( event, toState, toParams, fromState, fromParams ){
-              $log.debug( 'ischNavContainer.$stateChangeSuccess');
+              //$log.debug( 'ischNavContainer.$stateChangeSuccess');
 
             // end loading animation
             iscProgressLoader.end();
@@ -119,6 +124,8 @@
         }
 
         function handleStateChangeStart( event, toState, toParams, fromState, fromParams ){
+          //$log.debug( 'ischNavContainer.handleStateChangeStart');
+
           // get the permissions for this state
           var isAuthorized = iscSessionModel.isAuthorized( toState.name );
           var isAuthenticated = iscSessionModel.isAuthenticated();
@@ -126,13 +133,13 @@
           var stateIsExcluded = iscCustomConfigHelper.stateIsExcluded( toState.name );
 
           if( !isAuthorized ){
-            $log.debug( '...not authorized');
+            //$log.debug( '...not authorized');
             if( !isWhiteListed ){
-              $log.debug( '...not whitelisted');
+              //$log.debug( '...not whitelisted');
               preventDefault( event );
 
               if( isAuthenticated ){
-                $log.debug( '... going either to home or your previous state');
+                //$log.debug( '... going either to home or your previous state');
                 // see iscNavigationController for the popup listeners for these events
                 $rootScope.$broadcast( AUTH_EVENTS.notAuthorized );
                 if( !fromState || !fromState.name ){
@@ -142,7 +149,7 @@
                 }
               }
               else{
-                $log.debug( '...going to login');
+                //$log.debug( '...going to login');
 
                 // if you arent logged in yet, bring the user to the log in page
                 $state.go( 'index.login' );

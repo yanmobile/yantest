@@ -1,0 +1,94 @@
+
+
+.isc-form{
+  @include  flex();
+  @include  flex-type( 1 );
+  @include  flex-box-align( stretch );
+  @include  flex-direction( column );
+  @include  box-sizing( border-box );
+
+  @media #{$desk-tab}{
+    padding: 20px 20px;
+  }
+
+  @media #{$phone}{
+    padding: 10px 10px;
+  }
+
+  border: 1px solid lighten( $black, 70);
+}
+
+// container for label and control
+.isc-form-group{
+  @include  flex();
+  @include  flex-type( 1 );
+  @include  flex-box-align( stretch );
+  @include  box-sizing( border-box );
+  justify-content: center;
+
+  margin: 0px;
+
+  @media #{$desk-tab} {
+    @include  flex-direction( row );
+    padding: 10px 0 10px 0;
+
+    *{
+      &:last-child {
+        width: 100%;
+        margin-left: 10px;
+      }
+    }
+  }
+
+  @media #{$phone} {
+    @include  flex-direction( column );
+    padding: 5px 0 5px 0;
+  }
+
+  input:-webkit-autofill {
+    -webkit-box-shadow:0 0 0 50px rgba($white, 1) inset; /* Change the color to your own background color */
+    -webkit-text-fill-color: #333;
+  }
+
+  input:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0 50px rgba($white, 1) inset;
+    -webkit-text-fill-color: #333;
+  }
+
+  input:not([type=submit]):not([type=file]){
+    border: 1px solid lighten( $black, 70) !important;
+    background-color: rgba($white, 0.25) !important;
+    padding: 2px 4px;
+  }
+}
+
+// container for form items
+.isc-form-item-label{
+  @include  flex();
+  @include  flex-type( 1 );
+  margin: 0 !important;
+  min-height: 18px;
+
+ @include min-width-content();
+ @include max-width-content();
+
+//  border: 1px solid green;
+}
+
+.isc-form-item{
+  @include  flex();
+  @include  flex-type( 3 );
+  margin: 0 !important;
+  min-height: 18px;
+
+  @media #{$desk-tab}{
+    max-width: 90%;
+  }
+
+  @media #{$phone}{
+    max-width: 100%;
+  }
+
+//  border: 1px solid green;
+}
+

@@ -15,6 +15,7 @@
     // ----------------------------
 
     var config;
+    var topTabsArray;
 
     // ----------------------------
     // class factory
@@ -31,6 +32,7 @@
       getStatePermissions: getStatePermissions,
 
       getTopTabsConfig: getTopTabsConfig,
+      getTopTabsArray: getTopTabsArray,
       getHomePageConfig: getHomePageConfig,
       getLogoutButtonConfig: getLogoutButtonConfig,
       getLoginButtonConfig: getLoginButtonConfig,
@@ -65,7 +67,7 @@
     }
 
     function loadConfig(){
-      $log.debug( 'iscCustomConfigService.loadConfig' );
+      //$log.debug( 'iscCustomConfigService.loadConfig' );
 
       var deferred = $q.defer();
       var url = 'assets/configuration/configFile.json';
@@ -129,8 +131,8 @@
     private
      */
     function getBaseUrl(){
-      $log.debug( 'iscCustomConfigService.getBaseUrl' );
-      $log.debug( '...baseUrl', config ? config.baseUrl : '');
+      //$log.debug( 'iscCustomConfigService.getBaseUrl' );
+      //$log.debug( '...baseUrl', config ? config.baseUrl : '');
       return config ? config.baseUrl : null;
 
     }
@@ -140,6 +142,13 @@
 
     function getTopTabsConfig(){
       return config.topTabs;
+    }
+
+    function getTopTabsArray(){
+      if( !topTabsArray ){
+        topTabsArray = _.toArray( config.topTabs );
+      }
+      return topTabsArray;
     }
 
     function getLogoutButtonConfig(){

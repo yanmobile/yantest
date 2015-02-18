@@ -5,93 +5,151 @@
 
   'use strict';
 
-  iscNavigationController.$inject = [ '$log', '$rootScope', '$scope', '$modalStack', 'iscSessionModel', 'iscPopupHelper', 'AUTH_EVENTS' ];
+  iscNavigationController.$inject = [ '$log', '$rootScope', '$scope', 'iscSessionModel', 'iscNavContainerModel', 'iscAlertModel', 'iscCustomConfigHelper', 'iscUiHelper', 'AUTH_EVENTS', 'NAV_EVENTS' ];
 
-  function iscNavigationController( $log, $rootScope, $scope, $modalStack, iscSessionModel, iscPopupHelper, AUTH_EVENTS ){
-//    //$log.debug( 'iscNavigationController LOADED');
+  function iscNavigationController( $log, $rootScope, $scope, iscSessionModel, iscNavContainerModel, iscAlertModel, iscCustomConfigHelper, iscUiHelper, AUTH_EVENTS, NAV_EVENTS ){
+//    $log.debug( 'iscNavigationController LOADED');
 
     var self = this;
 
     // --------------
     // models
+    self.navModel = iscNavContainerModel;
     self.sessionModel = iscSessionModel;
+    self.customConfigHelper = iscCustomConfigHelper;
+
+    // --------------
+    self.secondaryNav = _.toArray( iscNavContainerModel.getSecondaryNav() );
+    self.iscUiHelper = iscUiHelper;
+
+    // --------------
+    // nav bars and alerts
+    // --------------
+    self.showAlert = false;
+    self.alertShowing = false;
+    self.showSideNav = false;
+    self.showSecondaryNav = false;
+    self.showModalBkgrnd = false;
+
+    // --------------
+    self.showSideNavbar = function(){
+      self.showSideNav = true;
+      self.showModalBkgrnd = true;
+    };
+
+    self.hideSideNavbar = function(){
+      self.showSideNav = false;
+      self.showModalBkgrnd = false;
+    };
+
+    // --------------
+    self.showSecondaryNavbar = function(){
+      //$log.debug( 'iscNavigationController.showSecondaryNavbar');
+      self.showSecondaryNav = true;
+      self.showModalBkgrnd = true;
+    };
+
+    self.hideSecondaryNavbar = function(){
+      //$log.debug( 'iscNavigationController.hideSecondaryNavbar');
+      self.showSecondaryNav = false;
+      self.showModalBkgrnd = false;
+    };
+
+    // --------------
+    self.showAlertBox = function(){
+      self.hideAlertBox(); // close any that are already up
+
+      self.showAlert = true;
+      self.showModalBkgrnd = true;
+      self.alertShowing = true;
+    };
+
+    self.hideAlertBox = function(){
+      self.showAlert = false;
+      self.showModalBkgrnd = false;
+      self.alertShowing = false;
+    };
 
     // --------------
     // session / login
+    // --------------
     self.currentUser = self.sessionModel.getCurrentUser();
     self.credentials = self.sessionModel.getCredentials();
 
     // --------------
-    // modal popup
-
-    // this is to prevent the modal popup from showing
-    // on every timer tick - dont show it if its already displayed
-    self.warningDialogIsShowing = false;
-
-    self.openPopup = function( type, response ){
-      //$log.debug( 'iscNavigationController.openPopup' );
-      $modalStack.dismissAll( 'close' );
-      iscPopupHelper.openPopup( type, response );
-    };
-
-    self.openDialog = function( type, okFunc, cancelFunc ){
-      $log.debug( 'iscNavigationController.openDialog' );
-      $modalStack.dismissAll( 'close' );
-      iscPopupHelper.openDialog( type, okFunc, cancelFunc  );
-    };
-
+    // session timeout callbacks
     self.onContinueSession = function(){
       //$log.debug( 'iscNavigationController.onContinueSession');
-      self.warningDialogIsShowing = false;
       $rootScope.$broadcast( AUTH_EVENTS.sessionTimeoutReset );
     };
 
     self.onCancelSession = function(){
       //$log.debug( 'iscNavigationController.onCancelSession');
-      self.warningDialogIsShowing = false;
       $rootScope.$broadcast( AUTH_EVENTS.sessionTimeoutConfirm );
     };
 
     // --------------
     // listeners
+    // --------------
     $scope.$on( AUTH_EVENTS.responseError, function( event, response ){
       //$log.debug( 'iscNavigationController.responseError' );
       //$log.debug( '...response' + JSON.stringify( response ));
-      self.openPopup( AUTH_EVENTS.responseError, response );
+      iscAlertModel.setOptionsByType( AUTH_EVENTS.responseError, response, null, null );
+      self.showAlertBox();
     });
 
     $scope.$on( AUTH_EVENTS.notAuthenticated, function( event, response ){
 //      //$log.debug( 'iscNavigationController.loginError' );
-      self.openPopup( AUTH_EVENTS.notAuthenticated, response );
+      iscAlertModel.setOptionsByType( AUTH_EVENTS.notAuthenticated, response, null, null );
+      self.showAlertBox();
     });
 
     $scope.$on( AUTH_EVENTS.notAuthorized, function( event, response ){
 //      //$log.debug( 'iscNavigationController.loginError' );
-      self.openPopup( AUTH_EVENTS.notAuthorized, response );
+      iscAlertModel.setOptionsByType( AUTH_EVENTS.notAuthorized, response, null, null );
+      self.showAlertBox();
     });
 
     $scope.$on( AUTH_EVENTS.sessionTimeoutWarning, function( event, response ){
       //$log.debug( 'iscNavigationController.sessionTimeoutWarning' );
-      //$log.debug( '...self.warningDialogIsShowing: ' + self.warningDialogIsShowing );
+      //$log.debug( '...self.alertShowing: ' + self.alertShowing );
 
-      if( self.warningDialogIsShowing ){
+      if( self.alertShowing ){
         //$log.debug( '...nope' );
         return;
       }
       //$log.debug( '...yup' );
-      self.warningDialogIsShowing = true;
-      self.openDialog( AUTH_EVENTS.sessionTimeoutWarning, self.onContinueSession, self.onCancelSession );
+      self.alertShowing = true;
+      iscAlertModel.setOptionsByType( AUTH_EVENTS.sessionTimeoutWarning, response, self.onContinueSession, self.onCancelSession );
+      self.showAlertBox();
     });
 
     $scope.$on( AUTH_EVENTS.sessionTimeout, function( event, response ){
       //$log.debug( 'iscNavigationController.sessionTimeout' );
-      self.openPopup( AUTH_EVENTS.sessionTimeout, response );
+      iscAlertModel.setOptionsByType( AUTH_EVENTS.sessionTimeout, response, null, null );
+      self.showAlertBox();
     });
+
+
+    $scope.$on( NAV_EVENTS.showSecondaryNav, function( event, response ){
+      $log.debug( 'iscNavigationController.iscShowModal' );
+      self.showSecondaryNavbar();
+    });
+
+    $scope.$on( NAV_EVENTS.hideSecondaryNav, function( event, response ){
+      $log.debug( 'iscNavigationController.iscHideModal' );
+      self.hideSecondaryNavbar();
+    });
+
 
   }// END CLASS
 
-
+  // --------------
+  // inject
+  // --------------
   angular.module('iscNavContainer')
-      .controller('iscNavigationController', iscNavigationController );
+    .controller('iscNavigationController', iscNavigationController );
 
 })();
+
+

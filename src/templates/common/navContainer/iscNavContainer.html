@@ -1,26 +1,59 @@
-<!-- Sidebars -->
-<div ng-include="'common/navContainer/iscSidebar.html'"
-     ui-track-as-search-param='true'
-     class="sidebar sidebar-left"></div>
 
-<div class="app">
+<!-- --------------------------- -->
+<!--  modals                     -->
+<!-- --------------------------- -->
 
-  <!-- Navbars -->
-  <div class="navbar navbar-app navbar-fixed-top">
-    <div ng-include="'common/navContainer/iscHeader.html'"></div>
+<!-- side nav -->
+<div class="isc-side-nav-wrapper"
+     ng-include="'common/navContainer/iscSideNav.html'"
+     ng-class="{'side-nav' : navCtrl.showSideNav }"></div>
 
+<!--secondary navigation -->
+<div class="secondary-nav-wrapper"
+     ng-include="'common/navContainer/iscSecondaryNav.html'"
+     ng-class="{'secondary-nav' : navCtrl.showSecondaryNav }">
+</div>
+
+<!--alert -->
+<div class="isc-alert-wrapper"
+     ng-include="'common/navContainer/iscAlert.html'"
+     ng-class="{'alert-anime' : navCtrl.showAlert }"></div>
+
+<!--modal background-->
+<div class="isc-modal-bkgrnd"
+     ng-class="{'modal-bkgrnd-anime' : navCtrl.showModalBkgrnd }"></div>
+
+
+<!-- --------------------------- -->
+<!--  main app                   -->
+<!-- --------------------------- -->
+
+<div class="isc-app-body">
+
+  <!--header nav and content-->
+  <div class="isc-app-content">
+
+    <!--desktop header-->
+    <div class="isc-nav-bar isc-nav-bar-theme only-desktop"
+         ng-include="'common/navContainer/iscNavbarDesktop.html'">
+    </div>
+
+    <!--tablet header-->
+    <div class="isc-nav-bar isc-nav-bar-theme only-tablet"
+         ng-include="'common/navContainer/iscNavbarTablet.html'">
+    </div>
+
+    <!--phone header-->
+    <div class="isc-nav-bar isc-nav-bar-theme only-phone"
+         ng-include="'common/navContainer/iscNavbarPhone.html'">
+    </div>
+
+    <!--page content-->
+    <div class="isc-page-content" ui-view></div>
   </div>
 
-  <div class="navbar navbar-app navbar-fixed-bottom col-lg-12">
-    <div ng-include="'common/navContainer/iscFooter.html'"></div>
-  </div>
+  <!--footer-->
+  <div class="isc-app-footer"
+       ng-include="'common/navContainer/iscFooter.html'"></div>
 
-  <!-- App Body -->
-  <div class="app-body">
-    <div class="app-content" ui-view></div>
-  </div>
-
-</div><!-- ~ .app -->
-
-<div ui-yield-to="modals"></div>
-
+</div>
