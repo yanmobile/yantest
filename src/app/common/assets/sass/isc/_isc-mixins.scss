@@ -1,4 +1,22 @@
 
+// --------------------------------------------------
+// style
+// --------------------------------------------------
+
+@mixin box-shadow( $type, $h, $v, $blur, $spread, $color ){
+  -moz-box-shadow:$type $h $v $blur $spread $color;
+  -webkit-box-shadow:$type $h $v $blur $spread $color;
+  box-shadow:$type $h $v $blur $spread $color;
+}
+
+@mixin background-gradient( $from, $to ){
+  background: $from;
+  background-image: -webkit-linear-gradient(top,$from, $to);
+  background-image: -moz-linear-gradient(top, $from, $to);
+  background-image: -ms-linear-gradient(top, $from, $to);
+  background-image: -o-linear-gradient(top, $from, $to);
+  background-image: linear-gradient(to bottom, $from, $to);
+}
 
 // --------------------------------------------------
 // alignment
@@ -71,14 +89,10 @@
 }
 
 @mixin flex-justify-content( $val ){
-  @if( $val == space-around ){
-    -ms-flex-pack: justify;
-  }
-  @else {
-    -ms-flex-pack: $val;
-  }
-
+  -webkit-box-pack: $val;
+  -moz-box-pack: $val;
   -webkit-justify-content: $val;
+  -ms-flex-pack: $val;
   justify-content: $val;
 }
 

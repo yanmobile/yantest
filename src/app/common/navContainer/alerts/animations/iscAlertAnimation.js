@@ -8,7 +8,7 @@
   iscAlertAnimation.$inject = ['$log', "$window", 'TweenMax', 'EASE_DUR'];
 
   function iscAlertAnimation( $log, $window, TweenMax, EASE_DUR ){
-    $log.debug( 'iscAlertAnimation.loaded' );
+    //$log.debug( 'iscAlertAnimation.loaded' );
   // --------------------
   // vars
   // --------------------
@@ -33,7 +33,7 @@
   // --------------------
 
     function beforeAddClass( element, className, done ){
-      $log.debug( 'iscAlertAnimation.beforeAddClass' );
+      //$log.debug( 'iscAlertAnimation.beforeAddClass' );
 
       if( className === 'alert-anime' ){
         var appW = $window.innerWidth;
@@ -56,7 +56,8 @@
     }
 
     function beforeRemoveClass( element, className, done ){
-      $log.debug( 'iscAlertAnimation.beforeRemoveClass' );
+      //$log.debug( 'iscAlertAnimation.beforeRemoveClass' );
+
       if( className === 'alert-anime' ){
         var xPos = - element.width() - 50;
 

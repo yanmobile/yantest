@@ -5,37 +5,45 @@
   @include  flex();
   @include  flex-type( 1 );
   @include flex-box-align( flex-end );
-  justify-content: flex-start;
+
 
   height: 40px;
+  max-height: 40px;
   width: auto;
-
 
   margin-left: $isc-gutter;
   margin-right: $isc-gutter;
   margin-bottom: -2px;
   text-align: left;
 
-  div{
-    float: left
+//  border: 1px solid green;
+
+  &.pull-left{
+    justify-content: flex-start;
+  }
+
+  &.pull-right{
+    justify-content: flex-end;
   }
 }
 
 .isc-tab-container{
   position: relative;
-  display: block;
+  display: inline-block;
   min-width: 80px;
   height: 42px;
   background: transparent;
   border: 1px solid transparent;
   bottom: 1px;
+  cursor: default;
+  cursor: pointer;
 
   &.active{
     background: $white;
     border-radius: 4px 4px 0 0;
-    border-top:1px solid $sub-nav-border-color;
-    border-left:1px solid $sub-nav-border-color;
-    border-right:1px solid $sub-nav-border-color;
+    border-top:1px solid $app-border-color;
+    border-left:1px solid $app-border-color;
+    border-right:1px solid $app-border-color;
     border-bottom:1px solid transparent;
   }
 

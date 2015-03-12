@@ -1,7 +1,7 @@
 
-// -----------------
+// --------------------------------------
 // hide functions
-// -----------------
+// --------------------------------------
 .hide-desktop{
   @media #{$desktop} {
     display: none !important;
@@ -10,6 +10,12 @@
 
 .hide-tablet{
   @media #{$tablet} {
+    display: none !important;
+  }
+}
+
+.hide-phablet{
+  @media #{$phablet} {
     display: none !important;
   }
 }
@@ -26,17 +32,26 @@
   }
 }
 
-// -----------------
+// --------------------------------------
 // show only functions
-// -----------------
+// --------------------------------------
+
+// --------------------
+// visible desktop only
 .only-desktop{
   @media #{$mobile} {
     display: none !important;
   }
 }
 
+// --------------------
+// visible tablet only
 .only-tablet{
   @media #{$desktop} {
+    display: none !important;
+  }
+
+  @media #{$phablet} {
     display: none !important;
   }
 
@@ -45,7 +60,62 @@
   }
 }
 
+// --------------------
+// visible phablet only
+.only-phablet{
+  @media #{$desktop} {
+    display: none !important;
+  }
+
+  @media #{$tablet} {
+    display: none !important;
+  }
+
+  @media #{$phone} {
+    display: none !important;
+  }
+}
+
+// --------------------
+// visible phone only
 .only-phone{
+  @media #{$desktop} {
+    display: none !important;
+  }
+
+  @media #{$tablet} {
+    display: none !important;
+  }
+
+  @media #{$phablet} {
+    display: none !important;
+  }
+}
+
+// --------------------
+// visible tablet or larger
+.only-tab-plus{
+  @media #{$phablet} {
+    display: none !important;
+  }
+
+  @media #{$phone} {
+    display: none !important;
+  }
+}
+
+
+// --------------------
+// visible phablet or larger
+.only-phab-plus{
+  @media #{$phone} {
+    display: none !important;
+  }
+}
+
+// --------------------
+// visible phablet or below
+.only-phab-or-below{
   @media #{$desktop} {
     display: none !important;
   }
@@ -55,21 +125,29 @@
   }
 }
 
-.only-desk-tab{
-  @media #{$phone} {
-    display: none !important;
-  }
-}
-
+// --------------------
+// visible mobile only
 .only-mobile{
   @media #{$desktop} {
     display: none !important;
   }
 }
 
-// -----------------
+// --------------------
+// visible tablet or phablet
+.only-tab-phab{
+  @media #{$desktop} {
+    display: none !important;
+  }
+
+  @media #{$phone} {
+    display: none !important;
+  }
+}
+
+// --------------------------------------
 // float functions
-// -----------------
+// --------------------------------------
 .pull-right {
   float: right !important;
 }
@@ -77,14 +155,24 @@
   float: left !important;
 }
 
+.clear-both{
+  clear: both;
+}
+
 // --------------------------------------
 // text align
 // --------------------------------------
-
 .text-left{
   text-align: left;
 }
 
 .text-right{
   text-align: right;
+}
+
+// --------------------------------------
+// textarea
+// --------------------------------------
+.textarea-resize{
+  resize: vertical;
 }

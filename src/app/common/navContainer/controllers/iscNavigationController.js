@@ -5,9 +5,9 @@
 
   'use strict';
 
-  iscNavigationController.$inject = [ '$log', '$rootScope', '$scope', 'iscSessionModel', 'iscNavContainerModel', 'iscAlertModel', 'iscCustomConfigHelper', 'iscUiHelper', 'AUTH_EVENTS', 'NAV_EVENTS' ];
+  iscNavigationController.$inject = [ '$log', '$rootScope', '$scope', 'iscSessionModel', 'iscNavContainerModel', 'iscAlertModel', 'iscCustomConfigHelper', 'iscUiHelper', 'iscStateManager', 'AUTH_EVENTS', 'NAV_EVENTS' ];
 
-  function iscNavigationController( $log, $rootScope, $scope, iscSessionModel, iscNavContainerModel, iscAlertModel, iscCustomConfigHelper, iscUiHelper, AUTH_EVENTS, NAV_EVENTS ){
+  function iscNavigationController( $log, $rootScope, $scope, iscSessionModel, iscNavContainerModel, iscAlertModel, iscCustomConfigHelper, iscUiHelper, iscStateManager, AUTH_EVENTS, NAV_EVENTS ){
 //    $log.debug( 'iscNavigationController LOADED');
 
     var self = this;
@@ -17,9 +17,7 @@
     self.navModel = iscNavContainerModel;
     self.sessionModel = iscSessionModel;
     self.customConfigHelper = iscCustomConfigHelper;
-
-    // --------------
-    self.secondaryNav = _.toArray( iscNavContainerModel.getSecondaryNav() );
+    self.stateManager = iscStateManager;
     self.iscUiHelper = iscUiHelper;
 
     // --------------
@@ -53,6 +51,7 @@
       //$log.debug( 'iscNavigationController.hideSecondaryNavbar');
       self.showSecondaryNav = false;
       self.showModalBkgrnd = false;
+      self.stateManager.setParentSref( '' );
     };
 
     // --------------
@@ -70,6 +69,16 @@
       self.alertShowing = false;
     };
 
+    // --------------
+    self.showSortOptions = function(){
+      self.showSortOpts = true;
+      self.showModalBkgrnd = true;
+    };
+
+    self.hideSortOptions = function(){
+      self.showSortOpts = false;
+      self.showModalBkgrnd = false;
+    };
     // --------------
     // session / login
     // --------------
@@ -125,11 +134,10 @@
     });
 
     $scope.$on( AUTH_EVENTS.sessionTimeout, function( event, response ){
-      //$log.debug( 'iscNavigationController.sessionTimeout' );
+      $log.debug( 'iscNavigationController.sessionTimeout' );
       iscAlertModel.setOptionsByType( AUTH_EVENTS.sessionTimeout, response, null, null );
       self.showAlertBox();
     });
-
 
     $scope.$on( NAV_EVENTS.showSecondaryNav, function( event, response ){
       $log.debug( 'iscNavigationController.iscShowModal' );
@@ -139,6 +147,11 @@
     $scope.$on( NAV_EVENTS.hideSecondaryNav, function( event, response ){
       $log.debug( 'iscNavigationController.iscHideModal' );
       self.hideSecondaryNavbar();
+    });
+
+    $scope.$on( NAV_EVENTS.openSortOptions, function( event, response ){
+      //$log.debug( 'iscNavigationController.openSortOptions' );
+      self.showSortOptions();
     });
 
 

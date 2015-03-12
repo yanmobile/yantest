@@ -39,6 +39,7 @@
 
       getLibrarySecondaryNav: getLibrarySecondaryNav,
       getMessagesSecondaryNav: getMessagesSecondaryNav,
+      getMessagesSecondaryNavTasks: getMessagesSecondaryNavTasks,
       getMyAccountSecondaryNav: getMyAccountSecondaryNav,
       getCustomerTabSecondaryNav: getCustomerTabSecondaryNav
     };
@@ -107,7 +108,12 @@
       var secondaryNavs = _.filter( config, 'secondaryNav' );
       _.forEach( secondaryNavs, function( obj ){
         iscCustomConfigHelper.addStates( obj.secondaryNav );
-      })
+      });
+
+      var tasks = _.filter( config, 'tasks' );
+      _.forEach( tasks, function( obj ){
+        iscCustomConfigHelper.addStates( obj.tasks );
+      });
 
     }
 
@@ -169,6 +175,10 @@
 
     function getMessagesSecondaryNav(){
       return config.messages.secondaryNav;
+    }
+
+    function getMessagesSecondaryNavTasks(){
+      return config.messages.tasks;
     }
 
     function getLibrarySecondaryNav(){

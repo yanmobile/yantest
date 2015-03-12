@@ -41,7 +41,20 @@
 
     function responseError( response ){
       //$log.debug( 'iscAuthenticationInterceptor.responseError ', response);
-      $rootScope.$broadcast( AUTH_EVENTS.responseError, response );
+
+      switch( response.status ){
+        case 401:
+          // this will happen if you just leave your computer on for a long time
+          $rootScope.$broadcast( AUTH_EVENTS.sessionTimeout, response );
+          break;
+
+        default:
+          $rootScope.$broadcast( AUTH_EVENTS.notAuthorized, response );
+          break;
+      }
+
+
+
       return $q.reject( response );
     }
 

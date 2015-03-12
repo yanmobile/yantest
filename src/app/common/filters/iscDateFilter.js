@@ -31,34 +31,41 @@
      * @param itemDate
      * @returns String 'Today' / 'Yesterday' / (date that was supplied)
      */
-    function getDateString( itemDate ){
+    function getDateString( itemDate, showTimeStamp ){
       //console.debug('isc.common.iscDateFilter.getDateStr');
       //console.debug('............itemDate: ' + itemDate );
 
-      var dateExpr = 'YYYY-MMM-DD';
-      var dateNoTime = itemDate.split(' ')[0];
-      var now = moment().local();
-      var item = moment( dateNoTime ).local().format( dateExpr );
-      var today = now.format( dateExpr );
-      var yesterday = now.subtract( 1, 'days' ).format( dateExpr );
+      var DATE_EXPR = 'YYYY-MMM-DD';
+      var TIME_EXPR = 'h:mm a';
 
+      // strip extra whitespace, split on (now single) space, join with T
+      // so '2015-03-02      04:57:00' becomes '2015-03-02T04:57:00'
+      var itemDateFormatted = itemDate.replace(/\s+/g, " ").split( ' ' ).join( 'T' );
+
+      var now = moment().local();
+      var date = moment( itemDateFormatted).local().format( DATE_EXPR );
+      var time = ', ' + moment( itemDateFormatted ).local().format( TIME_EXPR );
+      var today = now.format( DATE_EXPR );
+      var yesterday = now.subtract( 1, 'days' ).format( DATE_EXPR );
+
+      //console.debug( '...itemDateFormatted', itemDateFormatted );
       //console.debug('.......today: ' + today );
       //console.debug('...yesterday: ' + yesterday );
-      //console.debug('........item: ' + item );
+      //console.debug('........date: ' + date );
+      //console.debug('........time: ' + time );
 
-      if( item === today ){
-        return $filter('translate')('ISC_TODAY');
+      if( date === today ){
+        return showTimeStamp ? $filter('translate')('ISC_TODAY') + time : $filter('translate')('ISC_TODAY');
       }
-      else if( item === yesterday ){
-        return $filter('translate')('ISC_YESTERDAY');
+      else if( date === yesterday ){
+        return showTimeStamp ? $filter('translate')('ISC_YESTERDAY') + time : $filter('translate')('ISC_YESTERDAY');
       }
 
-      return item;
+      return showTimeStamp ? date + time : date;
     }
 
 
-  };//END CLASS
-
+  }//END CLASS
   // ----------------------------
   // injection
   // ----------------------------

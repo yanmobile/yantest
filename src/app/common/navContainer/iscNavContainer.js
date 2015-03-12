@@ -14,6 +14,7 @@
       logoutSuccess: 'iscLogoutSuccess',
       notAuthenticated: 'iscNotAuthenticated',
       notAuthorized: 'iscNotAuthorized',
+      openSortOptions: 'iscOpenSortOptions',
       responseError: 'iscResponseError',
       sessionTimeout: 'iscSessionTimeout',
       sessionTimeoutConfirm: 'iscSessionTimeoutConfirm',
@@ -64,8 +65,8 @@
 
       }])
 
-    .run( ['$log', '$rootScope', '$state', '$window', 'iscProgressLoader','iscSessionModel', 'iscCustomConfigService', 'iscCustomConfigHelper' ,'iscSessionStorageHelper', 'AUTH_EVENTS',
-      function( $log, $rootScope, $state, $window, iscProgressLoader, iscSessionModel, iscCustomConfigService, iscCustomConfigHelper, iscSessionStorageHelper, AUTH_EVENTS ){
+    .run( ['$log', '$rootScope', '$state', '$window', 'iscProgressLoader','iscSessionModel', 'iscCustomConfigService', 'iscCustomConfigHelper', 'iscUserRoleHelper' ,'iscSessionStorageHelper', 'AUTH_EVENTS',
+      function( $log, $rootScope, $state, $window, iscProgressLoader, iscSessionModel, iscCustomConfigService, iscCustomConfigHelper, iscUserRoleHelper, iscSessionStorageHelper, AUTH_EVENTS ){
         //$log.debug( 'iscNavContainer.run' );
 
         loadDataFromStoredSession();
@@ -111,7 +112,7 @@
         // ------------------------
         // sessionTimeout event
         $rootScope.$on( AUTH_EVENTS.sessionTimeout, function(){
-          //$log.debug( 'ischNavContainer.AUTH_EVENTS.sessionTimeout');
+          $log.debug( 'ischNavContainer.AUTH_EVENTS.sessionTimeout');
           $state.go( 'index.login' );
         });
 
@@ -143,14 +144,18 @@
                 // see iscNavigationController for the popup listeners for these events
                 $rootScope.$broadcast( AUTH_EVENTS.notAuthorized );
                 if( !fromState || !fromState.name ){
+                  //$log.debug( '... going home');
                   // edge case where your permissions changed underneath you
                   // and you refreshed the page - assumes the Home state is always permitted
                   $state.go( 'index.home' );
                 }
+                else{
+                  //$log.debug( '... going to ',fromState.name );
+                  $state.go( fromState.name );
+                }
               }
               else{
                 //$log.debug( '...going to login');
-
                 // if you arent logged in yet, bring the user to the log in page
                 $state.go( 'index.login' );
                 // op cit
@@ -184,6 +189,9 @@
           if( !_.isEmpty( storedLoginResponse )){
             //$log.debug( '...got storedLoginResponse: ' + JSON.stringify( storedLoginResponse ));
             iscSessionModel.create( storedLoginResponse );
+
+            var currentUser = iscSessionModel.getCurrentUser();
+            iscUserRoleHelper.setRoleForUser( currentUser );
           }
 
           var storedStatePermissions = iscSessionStorageHelper.getStoredStatePermissions();

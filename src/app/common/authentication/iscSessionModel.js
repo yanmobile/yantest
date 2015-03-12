@@ -80,14 +80,14 @@
       setCurrentUser( sessionData.UserData );
 
       // set the timeout
-      //sessionTimeoutInSeconds = 20;
+      //sessionTimeoutInSeconds = 30;
       sessionTimeoutInSeconds = sessionData.SessionTimeout;
 
       $rootScope.$broadcast( AUTH_EVENTS.loginSuccess );
     }
 
     function destroy(){
-      $log.debug( 'iscSessionModel.destroy');
+      //$log.debug( 'iscSessionModel.destroy');
 
       // create a session with null data
       currentUser = null;
@@ -143,6 +143,7 @@
           $rootScope.$broadcast( AUTH_EVENTS.sessionTimeoutWarning );
         }
         else if( sessionTimeoutCounter >= sessionTimeoutInSeconds ){
+          //$log.debug( '...logging out ' + remainingTime );
           // logout
           $rootScope.$broadcast( AUTH_EVENTS.sessionTimeout );
           stopSessionTimeout();
@@ -153,7 +154,7 @@
     function stopSessionTimeout() {
       //$log.debug( 'iscSessionModel.stopSessionTimeout');
       if( angular.isDefined( intervalPromise )){
-        $log.debug( '...cancelling');
+        //$log.debug( '...cancelling');
         $interval.cancel( intervalPromise );
         intervalPromise = null;
       }

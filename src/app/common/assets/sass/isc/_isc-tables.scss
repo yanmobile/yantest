@@ -1,0 +1,82 @@
+// --------------------------------------
+// responsive table
+// ----------------------------------------
+
+.isc-table {
+  border: none;
+
+  table{
+    width: 100%;
+    border-collapse: collapse;
+    left: 0;
+    right: 0;
+  }
+
+  tbody{
+    tr{
+      border-top: 1px solid $app-border-color;
+    }
+  }
+
+  td, th{
+    padding: 6px;
+    text-align: left;
+    text-overflow: ellipsis;
+  }
+
+  th{
+    color: $gray-light;
+    font-size: $table-th-size;
+    font-weight: 900;
+  }
+
+  td{
+    color: $gray;
+    font-size: $table-td-size;
+    font-weight: 400;
+  }
+
+  @media #{$phone} {
+
+    th{
+      font-size: $table-th-size * .75;
+    }
+
+    td{
+      font-size: $table-td-size * .75;
+    }
+
+    /* Force table to not be like tables anymore */
+    table, thead, tbody, th, td, tr {
+      display: block;
+    }
+
+    /* Hide table headers (but not display: none;, for accessibility) */
+    thead tr {
+      position: absolute;
+      top: -9999px;
+      left: -9999px;
+    }
+
+    td {
+      /* Behave  like a "row" */
+      border: none;
+      border-bottom: 1px solid $tr-bkgrnd-dark;
+      position: relative;
+      padding-left: 50%;
+    }
+
+    td:before {
+      /* Now like a table header */
+      position: absolute;
+      /* Top/left values mimic padding */
+      top: 6px;
+      left: 6px;
+      width: 45%;
+      padding-right: 10px;
+      white-space: nowrap;
+    }
+  }
+
+}
+

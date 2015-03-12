@@ -83,7 +83,17 @@
     // ----------------------------
     function getCurrentStateTranslationKey(){
       var stateName = $state.$current.name;
+      //$log.debug( 'iscCustomConfigHelper.getCurrentStateTranslationKey: ' + stateName );
+
       return getTranslationKeyFromName( stateName );
+    }
+
+
+    // get the translation key from the state name
+    function getTranslationKeyFromName( stateName ){
+      //$log.debug( 'iscCustomConfigHelper.getTranslationKeyFromName: ' + stateName );
+      var state = allStates[ stateName ];
+      return state? state.translationKey : 'ISC_NOT_FOUND';
     }
 
     // get the top level section's translation key from the state name
@@ -101,14 +111,7 @@
       return state? state.translationKey : '';
     }
 
-    // get the translation key from the state name
-    function getTranslationKeyFromName( stateName ){
-      //$log.debug( 'iscCustomConfigHelper.getTranslationKeyFromName: ' + stateName );
-      var state = allStates[ stateName ];
-      return state? state.translationKey : 'ISC_NOT_FOUND';
-    }
-
-    // get the translation key from the state name
+    // is the state currently active
     function isCurrentState( stateName ){
       //$log.debug( 'iscCustomConfigHelper.isCurrentState: ', stateName );
       return $state.is( stateName );

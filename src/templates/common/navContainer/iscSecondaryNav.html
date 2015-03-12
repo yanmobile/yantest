@@ -11,10 +11,26 @@
     <a class="isc-secondary-nav-item"
        ng-class="{'active':navCtrl.customConfigHelper.isCurrentState( tab.state )}"
        ng-click="navCtrl.hideSecondaryNavbar()"
-       ng-repeat="tab in navCtrl.navModel.getSecondaryNav() | orderBy: navCtrl.iscUiHelper.displayOrder"
+       ng-repeat="tab in ::navCtrl.navModel.getSecondaryNav() | orderBy: navCtrl.iscUiHelper.displayOrder"
        ng-if="!tab.exclude"
        ui-sref="{{::tab.state}}">{{::tab.translationKey | translate}}
     </a>
+
+    <div ng-if="navCtrl.navModel.hasSecondaryNavTasks()">
+      <hr>
+
+      <h1>{{'ISC_COMMON_TASKS' | translate}}</h1>
+
+      <a class="isc-secondary-nav-item"
+         ng-repeat="task in ::navCtrl.navModel.getSecondaryNavTasks() | orderBy: navCtrl.iscUiHelper.displayOrder"
+         ng-class="{'active':navCtrl.customConfigHelper.isCurrentState( task.state )}"
+         ng-click="navCtrl.hideSecondaryNavbar()"
+         ng-if="!task.exclude"
+         ui-sref="{{::task.state}}">
+        <span ng-include="'shared/svg/isc-task-arrow.html'"></span>
+        {{::task.translationKey | translate}}
+      </a>
+    </div>
   </div>
 
 </div>

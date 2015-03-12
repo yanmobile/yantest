@@ -1,46 +1,41 @@
 //<a href="#" class="isc-button">light red</a>
 
-$isc-button-h-shadow: 39px;
-$isc-button-v-shadow: 0;
-$isc-button-shadow-blur: 39px;
-$isc-button-spread: $isc-button-h-shadow / 2;
-$isc-button-shadow-color: $brand-primary;
-$isc-button-bkgrnd-color: darken( $brand-primary, 15);
-$isc-button-border-color: $brand-primary;
-$isc-button-txt-color: $white;
-$isc-button-font-size: 10px;
 
-@mixin box-shadow( $type, $h, $v, $blur, $spread, $color ){
-  -moz-box-shadow:$type $h $v $blur $spread $color;
-  -webkit-box-shadow:$type $h $v $blur $spread $color;
-  box-shadow:$type $h $v $blur $spread $color;
-}
 
-@mixin background-gradient( $from, $to ){
-  background: $from;
-  background-image: -webkit-linear-gradient(top,$from, $to);
-  background-image: -moz-linear-gradient(top, $from, $to);
-  background-image: -ms-linear-gradient(top, $from, $to);
-  background-image: -o-linear-gradient(top, $from, $to);
-  background-image: linear-gradient(to bottom, $from, $to);
-}
 
 .isc-btn {
-  background-color:$isc-button-bkgrnd-color;
+  display:inline-block;
+  padding:3px 15px;
+
   -moz-border-radius:4px;
   -webkit-border-radius:4px;
   border-radius:3px;
-  display:inline-block;
+
+  cursor:default;
   cursor:pointer;
-  color:$isc-button-txt-color;
+
   text-align: center;
-  font-family: inherit;
-  font-size:$isc-button-font-size;
-  padding:3px 15px;
+  font-size: $isc-button-font-size;
+  font-weight: $isc-button-font-weight;
   text-decoration:none;
   text-shadow:none;
-  min-width: 30px;
-  max-height: 30px;
+
+  min-width: $isc-button-height;
+  min-height: $isc-button-height;
+
+  // Disabled state
+  &:disabled,
+  &:disabled:hover,
+  &:disabled:focus {
+    color: darken( $white-smoke, 10 );
+    border:1px solid darken( $white-smoke, 10 );
+    background: $white-smoke;
+    cursor: not-allowed;
+
+    svg{
+      fill: darken( $white-smoke, 10 );
+    }
+  }
 
   &:focus {
     outline:0;
@@ -49,13 +44,13 @@ $isc-button-font-size: 10px;
 
 .isc-btn-primary{
   @extend .isc-btn;
-  @include background-gradient( $button-primary, $button-primary);
-  border:1px solid darken( $isc-button-border-color, 10 );
+  color: $white;
+  background: $button-primary;
+  border:1px solid darken( $button-primary, 20 );
 
   &:hover{
-    color:darken( $button-primary, 20 );
-    border:1px solid darken( $brand-primary, 30 );
-    @include background-gradient( lighten( $button-primary, 10 ), lighten( $button-primary, 5 ));
+    background: darken( $button-primary, 10 );
+    border:1px solid darken( $button-primary, 20 );
   }
 
   &:active{
@@ -63,21 +58,25 @@ $isc-button-font-size: 10px;
   }
 }
 
-.isc-btn-grey{
+.isc-btn-secondary{
   @extend .isc-btn;
-  @include background-gradient( $white-smoke, $white-smoke );
-  border:1px solid darken( $white-smoke, 20 );
-  color:darken( $white-smoke, 50 );
+  color:darken( $brand-secondary, 60 );
+  background: $brand-secondary;
+  border:1px solid darken( $brand-secondary, 20 );
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 34px;
 
   &:hover{
-    color:darken( $white-smoke, 60 );
-    border:1px solid darken( $white-smoke, 30 );
-    @include background-gradient( darken( $white-smoke, 10 ), darken( $white-smoke, 15 ));
+    color:darken( $brand-secondary, 70 );
+    background: darken( $brand-secondary, 10 );
+    border:1px solid darken( $app-border-color, 30 );
   }
 
   &:active{
     color:$white;
   }
+
 }
 
 .isc-btn-link{
@@ -122,23 +121,30 @@ a.isc-image-button {
   }
 }
 
+.isc-styled-select-navbar{
+  @extend .isc-styled-select;
+
+  select{
+    width: $nav-select-width + 15px;
+    height: $nav-select-height;
+    font-size: 10px;
+  }
+}
+
 // header select styles
 .isc-styled-select {
-  min-width: $nav-select-width - 50px;
-  max-width: $nav-select-width;
-  height: $nav-select-height;
-  margin-left: 10px;
   overflow: hidden;
   border: 1px solid rgba(255,255,255, .5);
   border-radius: 5px;
-  background: rgba(0, 0, 0, .25) url(../assets/images/down-carat.png) no-repeat 96%;
+  background: rgba(0, 0, 0, .25) url(../assets/images/down-carat.png) no-repeat 93%;
+  padding-right: 20px;
 
   select{
     background-color: rgba(0, 0, 0, 0);
-    width: $nav-select-width + 15px;
-    height: $nav-select-height;
-    padding: 0px;
-    font-size: 10px;
+    min-width: $isc-button-height;
+    min-height: $isc-button-height;
+    padding: 0px 10px;
+    font-size: $isc-button-font-size;
     color: white;
     font-weight: 400;
     line-height: 1;
@@ -150,12 +156,6 @@ a.isc-image-button {
     &:focus,
     &:hover{
       outline: 0;
-    }
-
-    option {
-      margin:40px;
-      background: rgba( 255, 153, 0, .3 );
-      color:$orange;
     }
   }
 
@@ -172,10 +172,17 @@ a.isc-image-button {
   position: relative;
   display: inline-block;
   text-align: left;
-  left: 0;
-  right: 0;
+  width: 100%;
   background-color: rgba(255,255,255, 0);
   border: 1px solid transparent;
+  z-index: 1000;
+
+  .isc-new-message-icon{
+    margin-right: 5px;
+  }
+  button{
+    margin-right: 10px
+  }
 
   @media #{$desktop} {
     padding: 0px
@@ -187,13 +194,7 @@ a.isc-image-button {
 }
 
 .isc-scroll-stick-container-fixed {
-  position: fixed;
-  display: inline-block;
-  text-align: left;
-  left: 0;
-  right: 0;
-
-  border: 1px solid rgba(0, 0, 0, .35);
+  @extend .isc-scroll-stick-container;
 
   @media #{$desktop} {
     top: 10px;
@@ -205,5 +206,4 @@ a.isc-image-button {
     padding: 10px
   }
 }
-
 

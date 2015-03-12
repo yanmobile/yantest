@@ -8,11 +8,8 @@
 
 // themed footer bar
 .isc-app-footer{
-  position: fixed;
-  width: 100%;
-  bottom: 0;
-  background-color: $brand-primary;
 
+  background-color: $brand-primary;
 
   @media #{$desktop} {
     height: $app-footer-height;

@@ -1,0 +1,55 @@
+
+<div ng-controller="iscAlertController as alertCtrl">
+  <div class="isc-alert-container">
+
+    <!--HEADER-->
+    <div class="isc-alert-header-container">
+
+      <div class="isc-item-wrapper-1">
+        <a class="isc-side-nav-close"
+           ng-click="navCtrl.hideAlertBox()"><span class="fa fa-close"></span></a>
+      </div>
+
+
+    </div>
+
+    <!--MESSAGE-->
+    <div class="isc-alert-message-container">
+      <div class="isc-item-wrapper-1">
+        <h1>{{alertCtrl.getOptions().title | translate}}</h1>
+      </div>
+
+      <div class="isc-item-wrapper-2 alert-message">
+        <span>{{alertCtrl.getOptions().message  | translate}}</span>
+      </div>
+
+      <div class="isc-item-wrapper-2 alert-message"
+           ng-if="alertCtrl.getOptions().serverResponse">
+        <span>{{alertCtrl.getOptions().serverResponse  | translate}}</span>
+      </div>
+    </div>
+
+    <!--FOOTER-->
+    <div class="isc-alert-buttons-container"
+         ng-click="navCtrl.hideAlertBox()">
+
+      <div class="isc-item-wrapper-1"
+           ng-if="alertCtrl.getOptions().showOk">
+        <button class="isc-btn-secondary isc-alert-btn-footer"
+           ng-click="alertCtrl.ok()">{{alertCtrl.getOptions().okTextKey | translate}}</span> </button>
+      </div>
+
+      <div class="isc-item-wrapper-1"
+           ng-if="alertCtrl.getOptions().showCancel">
+        <button class="isc-btn-secondary isc-alert-btn-footer"
+           ng-click="alertCtrl.cancel()"
+           ui-sref="index.login">{{alertCtrl.getOptions().cancelTextKey | translate}}</span> </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+

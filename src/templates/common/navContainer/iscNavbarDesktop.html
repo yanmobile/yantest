@@ -10,13 +10,16 @@
 
     <div class="left">
       <!-- logo -->
-      <img class="isc-logo isc-nav-item"
-           src="assets/images/logo-big.png">
+      <div class="isc-nav-item">
+        <span class="isc-logo" ng-include="'shared/svg/logo.html'"></span>
+      </div>
+      <!--<img class="isc-logo isc-nav-item"-->
+           <!--src="assets/images/logo-big.png">-->
 
       <!-- app name -->
       <div class="isc-app-name-container isc-nav-item left">
         <span class="isc-app-name-divider">&nbsp;|&nbsp;</span>
-        <span class="isc-app-name">{{'ISC_APP_NAME' | translate: navbarCtrl.translationParams}}</span>
+        <span class="isc-app-name">{{'ISC_APP_NAME' | translate }}</span>
       </div>
     </div>
 
@@ -29,7 +32,7 @@
         <!-- proxy select -->
         <label class="isc-nav-label isc-nav-item right">{{'ISC_VIEWING' | translate}}:</label>
 
-        <div class="isc-styled-select proxy isc-nav-item right">
+        <div class="isc-styled-select-navbar proxy isc-nav-item right">
           <select>
             <option>Select an Option</option>
             <option>Option 1</option>
@@ -40,7 +43,7 @@
         <!--user select-->
         <label class="isc-nav-label isc-nav-item right">{{'ISC_USER' | translate}}:</label>
 
-        <div class="isc-styled-select isc-nav-item right">
+        <div class="isc-styled-select-navbar isc-nav-item right">
           <select>
             <option>Select an Option</option>
             <option>Option 1</option>
@@ -48,28 +51,13 @@
           </select>
         </div>
       </div>
-
-      <!-- login -->
-      <div class="isc-nav-item right"
-           ng-if="navbarCtrl.showLogin()">
-        <a class="isc-image-button"
-           ui-sref="index.login">{{'ISC_LOGIN' | translate}}&nbsp;<span class="fa fa-sign-in"></span> </a>
-      </div>
-
-      <!-- logout -->
-      <div class="isc-nav-item right"
-           ng-if="navbarCtrl.showLogout()">
-        <a class="isc-image-button"
-           ng-click="navbarCtrl.logout()">{{'ISC_LOGOUT' | translate}}&nbsp;<span class="fa fa-sign-out"></span> </a>
-      </div>
-
     </div>
   </div>
 
   <!--tabs-->
   <div class="isc-sub-nav-container">
-    <div class="isc-main-tabs">
-      <div class="isc-tab-container"
+    <div class="isc-main-tabs pull-left">
+      <div class="isc-tab-container pull-left"
            ng-repeat="tab in navbarCtrl.tabs | orderBy: navbarCtrl.iscUiHelper.displayOrder"
            ng-class="{'active': tab.$$active }"
            ng-if="!tab.exclude">
@@ -78,6 +66,24 @@
            ng-click="navbarCtrl.setTabActive( tab )"
            ui-sref="{{tab.state}}">{{tab.translationKey | translate}}</a>
       </div>
+    </div>
+
+    <div class="isc-main-tabs pull-right">
+
+      <!-- login -->
+      <div class="isc-tab-container pull-right"
+           ng-if="navbarCtrl.showLogin()">
+        <a class="isc-main-tab"
+           ui-sref="index.login">{{'ISC_LOGIN' | translate}}</a>
+      </div>
+
+      <!-- logout -->
+      <div class="isc-tab-container pull-right"
+           ng-if="navbarCtrl.showLogout()">
+        <a class="isc-main-tab"
+           ng-click="navbarCtrl.logout()">{{'ISC_LOGOUT' | translate}}</a>
+      </div>
+
     </div>
   </div>
 

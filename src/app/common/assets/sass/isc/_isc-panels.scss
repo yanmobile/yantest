@@ -1,0 +1,279 @@
+
+$isc-panel-h-shadow: 39px;
+$isc-panel-v-shadow: 0;
+$isc-panel-shadow-blur: 39px;
+$isc-panel-spread: $isc-panel-h-shadow / 2;
+$isc-panel-shadow-color: $brand-primary;
+$isc-panel-bkgrnd-color: darken( $brand-primary, 15);
+$isc-panel-border-color: $brand-primary;
+$isc-panel-txt-color: $white;
+$isc-panel-font-size: 10px;
+
+@mixin box-shadow( $type, $h, $v, $blur, $spread, $color ){
+  -moz-box-shadow:$type $h $v $blur $spread $color;
+  -webkit-box-shadow:$type $h $v $blur $spread $color;
+  box-shadow:$type $h $v $blur $spread $color;
+}
+
+@mixin background-gradient( $from, $to ){
+  background: $from;
+  background-image: -webkit-linear-gradient(top,$from, $to);
+  background-image: -moz-linear-gradient(top, $from, $to);
+  background-image: -ms-linear-gradient(top, $from, $to);
+  background-image: -o-linear-gradient(top, $from, $to);
+  background-image: linear-gradient(to bottom, $from, $to);
+}
+
+.isc-div-tile {
+  overflow: hidden;
+  border-radius: 2px;
+  border: 5px solid rgba(69,69,69,0.5);
+  float: left;
+  margin: 10px;
+  padding: 0px;
+
+  @media #{$tablet} {
+
+    margin:0;
+    margin-bottom: 10px;
+
+
+  }
+
+  @media #{$phone}  {
+
+    margin:0;
+    margin-bottom: 10px;
+
+  }
+
+}
+
+.isc-tile-content {
+  ul {
+    color: #606060;
+    font-size: 16px;
+    list-style: none;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 4px;
+  }
+
+  li {
+
+    padding-top: 5px;
+  }
+
+  h1 {
+
+    border-bottom: 1px solid #F0F0F0;
+    box-shadow: 10px 0px 20px #777777;
+    color: #606060;
+    font-size: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 5px;
+
+    //I tooks this from http://hscommdev.iscinternal.com/public/HSPortal.Public.UI.Home.zen:465 dvPara
+    font-family: arial;
+    margin: 0px;
+    /* padding: 0px; */
+  }
+}
+
+
+
+  .isc-tile-content-item-title {
+    font-size: 14px;
+    font-weight: bold;
+  }
+
+  .isc-tile-content-item-text{
+    font-size: 12px;
+  }
+
+  //TODO elio note: stuff below is copied from another file, might throw it away so not worrying about alphabetical order right now
+//
+//  .isc-btn {
+//    background-color:$isc-panel-bkgrnd-color;
+//    -moz-border-radius:4px;
+//    -webkit-border-radius:4px;
+//    border-radius:3px;
+//    display:inline-block;
+//    cursor:pointer;
+//    color:$isc-panel-txt-color;
+//    text-align: center;
+//    font-family: inherit;
+//    font-size:$isc-panel-font-size;
+//    padding:3px 15px;
+//    text-decoration:none;
+//    text-shadow:none;
+//    min-width: 30px;
+//    max-height: 30px;
+//
+//    &:focus {
+//      outline:0;
+//    }
+//  }
+//
+//  .isc-btn-primary{
+//    @extend .isc-btn;
+//    @include background-gradient( $button-primary, $button-primary);
+//    border:1px solid darken( $isc-panel-border-color, 10 );
+//
+//    &:hover{
+//      color:darken( $button-primary, 20 );
+//      border:1px solid darken( $brand-primary, 30 );
+//      @include background-gradient( lighten( $button-primary, 10 ), lighten( $button-primary, 5 ));
+//    }
+//
+//    &:active{
+//      color:$white;
+//    }
+//  }
+//
+//  .isc-btn-secondary{
+//    @extend .isc-btn;
+//    @include background-gradient( $white-smoke, $white-smoke );
+//    border:1px solid darken( $white-smoke, 20 );
+//    color:darken( $white-smoke, 50 );
+//
+//    &:hover{
+//      color:darken( $white-smoke, 60 );
+//      border:1px solid darken( $white-smoke, 30 );
+//      @include background-gradient( darken( $white-smoke, 10 ), darken( $white-smoke, 15 ));
+//    }
+//
+//    &:active{
+//      color:$white;
+//    }
+//  }
+//
+//  .isc-btn-link{
+//    background-color: transparent;
+//    border: none;
+//
+//    color: darken( $brand-link, 0 );
+//
+//    &:hover,
+//    &:active{
+//      color:darken( $brand-link, 15 );
+//    }
+//  }
+//
+//  .isc-image-button {
+//    border: none;
+//    margin-top: 0px;
+//    cursor: pointer;
+//    cursor: hand;
+//  }
+//
+//  a.isc-image-button {
+//    display: inline !important;
+//    white-space: nowrap;
+//    font-size: 14px;
+//    color: $white;
+//    font-weight: 400;
+//    text-align: left;
+//    text-decoration: none;
+//
+//    // Hover state
+//    &:hover {
+//      color: lighten( $brand-primary, 20 );
+//    }
+//
+//    // Disabled state
+//    &.disabled,
+//    &.disabled:hover,
+//    &.disabled:focus {
+//      color: darken($white, 25 );
+//      cursor: $cursor-disabled;
+//    }
+//  }
+//
+//  // header select styles
+//  .isc-styled-select {
+//    min-width: $nav-select-width - 50px;
+//    max-width: $nav-select-width;
+//    height: $nav-select-height;
+//    margin-left: 10px;
+//    overflow: hidden;
+//    border: 1px solid rgba(255,255,255, .5);
+//    border-radius: 5px;
+//    background: rgba(0, 0, 0, .25) url(../assets/images/down-carat.png) no-repeat 96%;
+//
+//    select{
+//      background-color: rgba(0, 0, 0, 0);
+//      width: $nav-select-width + 15px;
+//      height: $nav-select-height;
+//      padding: 0px;
+//      font-size: 10px;
+//      color: white;
+//      font-weight: 400;
+//      line-height: 1;
+//      border: 0;
+//      border-radius: 0;
+//      -webkit-appearance: none;
+//      -moz-appearance: none;
+//
+//      &:focus,
+//      &:hover{
+//        outline: 0;
+//      }
+//
+//      option {
+//        margin:40px;
+//        background: rgba( 255, 153, 0, .3 );
+//        color:$orange;
+//      }
+//    }
+//
+//    &.proxy {
+//      background: rgba(0, 0, 0, .5) url(../assets/images/down-carat.png) no-repeat 97%;
+//
+//      select{
+//        color: #cdcdcd;
+//      }
+//    }
+//  }
+//
+//  .isc-scroll-stick-container{
+//    position: relative;
+//    display: inline-block;
+//    text-align: left;
+//    left: 0;
+//    right: 0;
+//    background-color: rgba(255,255,255, 0);
+//    border: 1px solid transparent;
+//
+//    @media #{$desktop} {
+//      padding: 0px
+//    }
+//
+//    @media #{$mobile} {
+//      padding: 0px
+//    }
+//  }
+//
+//  .isc-scroll-stick-container-fixed {
+//    position: fixed;
+//    display: inline-block;
+//    text-align: left;
+//    left: 0;
+//    right: 0;
+//
+//    border: 1px solid rgba(0, 0, 0, .35);
+//
+//    @media #{$desktop} {
+//      top: 10px;
+//      padding: 20px
+//    }
+//
+//    @media #{$mobile} {
+//      top: 20px;
+//      padding: 10px
+//    }
+//  }
+//
+
+

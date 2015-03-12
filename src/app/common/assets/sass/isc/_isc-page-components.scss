@@ -1,0 +1,48 @@
+$warning-x : #aeb160;
+
+.isc-warning-box {
+  @include flex;
+  @include flex-justify-content( space-between );
+//  @include flex-box-align( center );
+  border: 1px solid $app-border-color;
+  background-color: $brand-warning;
+  padding: 15px;
+  left: 0;
+  right: 0;
+  margin-bottom: $isc-gutter-sm;
+
+  cursor: hand;
+  cursor: pointer;
+
+  span,
+  a,
+  h1{
+    color: $gray;
+    font-size: 13px;
+    line-height: 22px;
+    margin: 0;
+    padding: 0;
+  }
+
+  @media #{$phab-or-less}{
+    a{
+      margin-right: 1%;
+      margin-left: 5%;
+    }
+  }
+
+  a{
+    span{
+      font-size: 18px;
+      color: $warning-x;
+    }
+    &:hover{
+      span{
+        color: darken($warning-x, 10);
+      }
+
+    }
+  }
+}
+
+

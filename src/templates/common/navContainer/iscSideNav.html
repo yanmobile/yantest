@@ -50,20 +50,20 @@
 
       <div class="isc-item-wrapper-1"
            ng-if="navbarCtrl.sessionModel.isAuthenticated()">
-        <a class="isc-btn-primary"
-           ui-sref="index.login">{{'ISC_MY_ACCOUNT_TAB' | translate}}</span> </a>
+        <button class="isc-btn-primary"
+           ui-sref="index.login">{{'ISC_MY_ACCOUNT_TAB' | translate}}</button>
       </div>
 
       <div class="isc-item-wrapper-1"
            ng-if="navbarCtrl.sessionModel.isAuthenticated()">
-        <a class="isc-btn-primary"
-           ng-click="navbarCtrl.logout()">{{'ISC_LOGOUT' | translate}}</span> </a>
+        <button class="isc-btn-primary"
+           ng-click="navbarCtrl.logout()">{{'ISC_LOGOUT' | translate}}</button>
       </div>
 
       <div class="isc-item-wrapper-1"
            ng-if="!navbarCtrl.sessionModel.isAuthenticated()">
-        <a class="isc-btn-primary btn-footer"
-           ui-sref="index.login">{{'ISC_LOGIN' | translate}}</span> </a>
+        <button class="isc-btn-primary btn-footer"
+           ui-sref="index.login">{{'ISC_LOGIN' | translate}}</button>
       </div>
     </div>
 

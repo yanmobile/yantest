@@ -3,20 +3,19 @@
 <!--  modals                     -->
 <!-- --------------------------- -->
 
-<!-- side nav -->
+<!-- side nav slide-in menu -->
 <div class="isc-side-nav-wrapper"
      ng-include="'common/navContainer/iscSideNav.html'"
      ng-class="{'side-nav' : navCtrl.showSideNav }"></div>
 
-<!--secondary navigation -->
-<div class="secondary-nav-wrapper"
-     ng-include="'common/navContainer/iscSecondaryNav.html'"
-     ng-class="{'secondary-nav' : navCtrl.showSecondaryNav }">
-</div>
+<!--secondary navigation slide-in menu -->
+<!--<div class="secondary-nav-wrapper"-->
+     <!--ng-include="'common/navContainer/iscSecondaryNav.html'"-->
+     <!--ng-class="{'secondary-nav' : navCtrl.showSecondaryNav }"></div>-->
 
 <!--alert -->
 <div class="isc-alert-wrapper"
-     ng-include="'common/navContainer/iscAlert.html'"
+     ng-include="'common/alerts/iscAlert.html'"
      ng-class="{'alert-anime' : navCtrl.showAlert }"></div>
 
 <!--modal background-->
@@ -28,32 +27,32 @@
 <!--  main app                   -->
 <!-- --------------------------- -->
 
-<div class="isc-app-body">
 
-  <!--header nav and content-->
-  <div class="isc-app-content">
+<!--header nav and content-->
+<div class="isc-app-content">
 
-    <!--desktop header-->
-    <div class="isc-nav-bar isc-nav-bar-theme only-desktop"
-         ng-include="'common/navContainer/iscNavbarDesktop.html'">
-    </div>
-
-    <!--tablet header-->
-    <div class="isc-nav-bar isc-nav-bar-theme only-tablet"
-         ng-include="'common/navContainer/iscNavbarTablet.html'">
-    </div>
-
-    <!--phone header-->
-    <div class="isc-nav-bar isc-nav-bar-theme only-phone"
-         ng-include="'common/navContainer/iscNavbarPhone.html'">
-    </div>
-
-    <!--page content-->
-    <div class="isc-page-content" ui-view></div>
+  <!--desktop header-->
+  <div class="isc-nav-bar isc-nav-bar-theme only-desktop"
+       ng-include="'common/navContainer/iscNavbarDesktop.html'">
   </div>
+
+  <!--tablet header-->
+  <div class="isc-nav-bar isc-nav-bar-theme only-tab-phab"
+       ng-include="'common/navContainer/iscNavbarTablet.html'">
+  </div>
+
+  <!--phone header-->
+  <div class="isc-nav-bar isc-nav-bar-theme only-phone"
+       ng-include="'common/navContainer/iscNavbarPhone.html'">
+  </div>
+
+  <!--page content-->
+  <div class="isc-page-content" ui-view></div>
 
   <!--footer-->
   <div class="isc-app-footer"
        ng-include="'common/navContainer/iscFooter.html'"></div>
-
 </div>
+
+
+

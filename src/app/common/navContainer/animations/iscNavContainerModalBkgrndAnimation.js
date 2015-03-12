@@ -5,9 +5,9 @@
 (function(){
   'use strict';
 
-  iscNavContainerModalBkgrndAnimation.$inject = ['$log', 'TweenMax', 'EASE_DUR'];
+  iscNavContainerModalBkgrndAnimation.$inject = ['$log', '$window', 'iscAnimationService', 'TweenMax', 'EASE_DUR' ];
 
-  function iscNavContainerModalBkgrndAnimation( $log,  TweenMax, EASE_DUR ){
+  function iscNavContainerModalBkgrndAnimation( $log, $window, iscAnimationService, TweenMax, EASE_DUR ){
 
   // --------------------
   // vars
@@ -16,7 +16,6 @@
   // --------------------
   // init
   // --------------------
-    TweenMax.set( $(".modal-bkgrnd-anime-dropdown-menu-bkgrnd"), { autoAlpha: 0 });
 
   // --------------------
   // class factory
@@ -36,7 +35,7 @@
     function beforeAddClass( element, className, done ){
       //$log.debug( 'iscNavContainerModalBkgrndAnimation.beforeAddClass' );
       if( className === 'modal-bkgrnd-anime' ){
-        TweenMax.set( element, {autoAlpha:0});
+        TweenMax.set( element, {autoAlpha:0, width: iscAnimationService.getFullWidth() + 50, height: iscAnimationService.getFullHeight() + 50, x: -25, y:-25});
         TweenMax.to( element, EASE_DUR, { ease: Power2.easeOut, autoAlpha:.75, onComplete: done });
       }
       else {

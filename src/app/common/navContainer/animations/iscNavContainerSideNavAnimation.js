@@ -48,8 +48,8 @@
         TweenMax.set( element, {autoAlpha:1, width: width, height: height});
 
         xPos = -width - 20; // -20 ensures its off stage
-        xPosEnd = iscAnimationService.isPhone() ? -10 : iscAnimationService.getElementCenterXpos( width );
-        yPos = iscAnimationService.isPhone()  ? -10 : iscAnimationService.getElementCenterYpos( height );
+        xPosEnd = iscAnimationService.isPhone() ? 0 : iscAnimationService.getElementCenterXpos( width );
+        yPos = iscAnimationService.isPhone()  ? 0 : iscAnimationService.getElementYPos( height );
 
         //$log.debug( '...height',height );
         //$log.debug( '...yPos',yPos );
