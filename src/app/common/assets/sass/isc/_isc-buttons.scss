@@ -1,7 +1,12 @@
 //<a href="#" class="isc-button">light red</a>
 
 
-
+.isc-btn-group{
+  button{
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+  }
+}
 
 .isc-btn {
   display:inline-block;
@@ -19,6 +24,10 @@
   font-weight: $isc-button-font-weight;
   text-decoration:none;
   text-shadow:none;
+
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 34px;
 
   min-width: $isc-button-height;
   min-height: $isc-button-height;
@@ -58,14 +67,27 @@
   }
 }
 
+.isc-btn-danger{
+  @extend .isc-btn;
+  color: $white;
+  background: $brand-danger;
+  border:1px solid darken( $brand-danger, 20 );
+
+  &:hover{
+    background: darken( $brand-danger, 10 );
+    border:1px solid darken( $brand-danger, 20 );
+  }
+
+  &:active{
+    color:$white;
+  }
+}
+
 .isc-btn-secondary{
   @extend .isc-btn;
   color:darken( $brand-secondary, 60 );
   background: $brand-secondary;
   border:1px solid darken( $brand-secondary, 20 );
-  display: inline-block;
-  vertical-align: middle;
-  line-height: 34px;
 
   &:hover{
     color:darken( $brand-secondary, 70 );
@@ -77,6 +99,51 @@
     color:$white;
   }
 
+  svg{
+    padding-left: 5px;
+    fill: darken( $brand-secondary, 60 );
+    width: 30px;
+    height: 30px;
+    vertical-align: middle;
+
+    &:hover{
+      fill: darken( $brand-secondary, 70 );
+    }
+  }
+}
+
+.isc-btn-dropdown {
+  @extend .isc-btn;
+  color:darken( $brand-secondary, 60 );
+  background: $white;
+  border:1px solid darken( $brand-secondary, 20 );
+
+  &:hover{
+    color:darken( $white, 70 );
+    background: darken( $white, 10 );
+    border:1px solid darken( $app-border-color, 30 );
+  }
+
+  &:active{
+    color:$brand-secondary;
+  }
+}
+
+.isc-btn-dropdown:after {
+  position:relative;
+  font-family: FontAwesome;
+  font-size: 24px;
+  top: 4px;
+  left: 0px;
+  right: -20px;
+  content: " "; //&#xf107 unicode for fa-angle-down
+}
+
+// icon only search
+.isc-btn-search{
+  @extend .isc-btn-secondary;
+  max-width: $isc-button-height;
+  padding: 0 5px 0 0; // t r b l
 }
 
 .isc-btn-link{

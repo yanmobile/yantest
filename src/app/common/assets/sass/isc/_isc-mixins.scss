@@ -145,6 +145,34 @@
 }
 
 // --------------------------------------------------
+// placeholder
+// --------------------------------------------------
+
+@mixin isc-placeholder( $opacity, $size, $weight ){
+  &::-webkit-input-placeholder { /* WebKit browsers */
+    opacity:     $opacity;
+    font-size:   $size;
+    font-weight: $weight;
+  }
+  &:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    opacity:     $opacity;
+    font-size:   $size;
+    font-weight: $weight;
+  }
+  &::-moz-placeholder { /* Mozilla Firefox 19+ */
+    opacity:     $opacity;
+    font-size:   $size;
+    font-weight: $weight;
+  }
+  &:-ms-input-placeholder { /* Internet Explorer 10+ */
+    opacity:     $opacity;
+    font-size:   $size;
+    font-weight: $weight;
+  }
+}
+
+
+// --------------------------------------------------
 // functions
 // --------------------------------------------------
 

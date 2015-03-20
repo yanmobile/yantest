@@ -5,9 +5,9 @@
 (function(){
   'use strict';
 
-  iscAlertAnimation.$inject = ['$log', "$window", 'TweenMax', 'EASE_DUR'];
+  iscAlertAnimation.$inject = ['$log', "$window", 'TweenMax', 'iscAnimationService', 'EASE_DUR'];
 
-  function iscAlertAnimation( $log, $window, TweenMax, EASE_DUR ){
+  function iscAlertAnimation( $log, $window, TweenMax, iscAnimationService, EASE_DUR ){
     //$log.debug( 'iscAlertAnimation.loaded' );
   // --------------------
   // vars
@@ -36,16 +36,13 @@
       //$log.debug( 'iscAlertAnimation.beforeAddClass' );
 
       if( className === 'alert-anime' ){
-        var appW = $window.innerWidth;
-        var appH = $window.innerHeight;
-        var isPhone = ( appW <= 480 );
-        var isTab = ( appW <= 960 );
 
-        var marginOffset = isPhone? 15 : 25;
+        var marginOffset = 10;
+        var width = iscAnimationService.getNavWidth() - (marginOffset * 2);
+        var offsetX = element[0].offsetLeft;
 
-        var width = getWidth( appW, isPhone, isTab );
-        var xPos = ($window.innerWidth - width - marginOffset) / 2;
-        var yPos = isPhone? 55 : 75;
+        var xPos = iscAnimationService.isPhone() ? -offsetX + marginOffset : iscAnimationService.getElementXPos( width, offsetX );
+        var yPos = iscAnimationService.isPhone()? 55 : 75;
 
         TweenMax.set( element, {autoAlpha:0, x:xPos, y: yPos, width: width});
         TweenMax.to( element, EASE_DUR, { ease: Power2.easeOut, autoAlpha: 1, onComplete: done });
@@ -69,24 +66,11 @@
     }
 
     function onRemoveComplete( element, done ){
-      var appW = $window.screen.availWidth;
-      var appH = $window.screen.availHeight;
       var xPos = -element.width() - 20;
       TweenMax.set( element, {autoAlpha:0, x:xPos });
       done();
     }
 
-    function getWidth( appW, isPhone, isTab ){
-      if( isPhone ){
-        return appW;
-      }
-      else if( isTab ){
-        return appW * .5;
-      }
-      else{
-        return appW * .35;
-      }
-    }
 
   }// END CLASS
 

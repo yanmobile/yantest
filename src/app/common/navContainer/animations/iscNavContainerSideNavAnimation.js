@@ -13,6 +13,9 @@
   // vars
   // --------------------
 
+    var X_OFFSET = 50;
+    var Y_OFFSET = 100;
+
     var width, height;
     var xPos, xPosEnd;
     var yPos;
@@ -42,14 +45,17 @@
       if( className === 'side-nav' ){
 
         width = iscAnimationService.getNavWidth();
-        height = iscAnimationService.getSecondaryNavHeight();
+        height = iscAnimationService.getSideNavHeight( element.height() );
+
+        var offsetX = element[0].offsetLeft;
+        var offsetY = element[0].offsetTop;
 
         // set the w and h now, since the other calcs are dependent on that
         TweenMax.set( element, {autoAlpha:1, width: width, height: height});
 
         xPos = -width - 20; // -20 ensures its off stage
-        xPosEnd = iscAnimationService.isPhone() ? 0 : iscAnimationService.getElementCenterXpos( width );
-        yPos = iscAnimationService.isPhone()  ? 0 : iscAnimationService.getElementYPos( height );
+        xPosEnd = iscAnimationService.isPhone() ? 0 : iscAnimationService.getElementXPos( width, offsetX );
+        yPos = iscAnimationService.isPhone()  ? 0 : iscAnimationService.getElementYPos( height, offsetY );
 
         //$log.debug( '...height',height );
         //$log.debug( '...yPos',yPos );
@@ -66,7 +72,7 @@
     function beforeRemoveClass( element, className, done ){
       //$log.debug( 'iscNavContainerSideNavAnimation.beforeRemoveClass' );
       if( className === 'side-nav' ){
-        xPos = - element.width() - 50;
+        xPos = - element.width() - 50 -element[0].offsetLeft;
         TweenMax.to( element, EASE_DUR, { ease: Power2.easeOut, x: xPos, onComplete: onRemoveComplete, onCompleteParams:[element, done] });
       }
       else {

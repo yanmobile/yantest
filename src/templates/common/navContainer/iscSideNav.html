@@ -29,7 +29,7 @@
          ng-repeat="tab in navbarCtrl.tabs | orderBy: navbarCtrl.iscUiHelper.displayOrder">
 
       <a class="isc-side-nav-button"
-         ng-class="{'active':tab.$$active}"
+         ng-class="{'selected':tab.$$active}"
          ui-sref="{{tab.state}}">{{tab.translationKey | translate}}
       </a>
     </div>

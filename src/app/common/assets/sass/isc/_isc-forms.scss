@@ -27,6 +27,7 @@
 
   border: 1px solid transparent;
   margin: 0px;
+  padding: 5px 0 5px 0;
 
   &.left{
     @include  flex-justify-content( flex-start );
@@ -50,19 +51,16 @@
 
   @media #{$phone} {
     @include  flex-direction( column );
-    padding: 5px 0 5px 0;
     @include  flex-box-align( stretch );
   }
 
   @media #{$phab-plus} {
     @include  flex-direction( row );
-    padding: 10px 0 10px 0;
     @include  flex-box-align( center );
   }
 
   &.nowrap{
     @include  flex-direction( row );
-    padding: 10px 0 10px 0;
     @include  flex-box-align( center );
   }
 }
@@ -93,7 +91,7 @@
 
   color: $text-color;
   font-weight: 600;
-  font-size: $page-font-size;
+  font-size: $body-font-size;
 
   margin: 0 !important;
   min-height: $form-input-height;
@@ -102,7 +100,7 @@
   white-space:nowrap;
   border: 1px solid transparent;
 
-  padding-top: $page-font-size/3;
+  padding-top: $body-font-size/3;
   padding-right: 10px;
 
   @media #{$phab-plus} {
@@ -145,6 +143,15 @@
   }
 }
 
+.isc-radio{
+  @extend .isc-check-box;
+
+  circle,
+  path{
+    fill: darken( $app-border-color, 30 );
+  }
+}
+
 .isc-form-checkbox{
   display:inline-block;
 
@@ -182,6 +189,7 @@
   width: 100%;
   height: 100%;
   outline:none;
+  padding: 5px;
 
   color: $gray;
   font-size: 12px;

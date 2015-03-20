@@ -6,16 +6,13 @@
 .isc-side-nav-wrapper {
   position: absolute !important;
   top: -1000 ;
-  z-index: 100001;
+  z-index: $modal-z-index;
   opacity:0;
   visibility: hidden;
-
-//  background-color: $brand-secondary ;
-//  border: 5px solid $app-border-color ;
 }
 
 .isc-side-nav-container {
-  width: auto;
+  width: 100%;
   height: 100%;
   margin: 0;
   padding: 0;
@@ -163,6 +160,7 @@
   @include min-height-content;
 }
 
+
 .isc-side-nav-button {
   width: 100%;
   height: 100%;
@@ -189,6 +187,7 @@
   }
 
   // Active class on item itself, not parent
+  &.selected,
   &.active,
   &.active:hover,
   &.active:focus {
@@ -196,6 +195,8 @@
     color: $nav-link;
     font-weight: 600;
     background-color: $white;
+    border-top: 1px solid $app-border-color;
+    border-bottom: 1px solid $app-border-color;
 
     .side-nav-item-text {
       color: $brand-link;
@@ -206,6 +207,7 @@
 a.isc-side-nav-button {
   text-decoration: none;
   z-index: 1;
+  width: 100%;
 
   // Hover state
   &.active,

@@ -115,28 +115,28 @@ $white:                  lighten($black, 100%) !default; // #fff
 //--------------------------------------------
 //SOLID DARK
 //--------------------------------------------
-$brand-primary:         #5e4db7 !default;
-$brand-primary-dark:    $brand-primary !default;
-$brand-success:         #5cb85c !default;
-$brand-info:            #58656a !default;
-$brand-warning:         #f7f7c5 !default;
-$brand-danger:          #d9534f !default;
-$brand-link:            #ca4000 !default;
-$logo-color: $white;
-
-$brand-page-title-color: $brand-primary;
-$brand-page-subtitle-color: $gray-dark;
-
-$nav-link:        #628080 !default;
-$nav-text:        #fdfbff !default;
-$button-primary:        $brand-primary !default;
-$button-primary-disabled: #bfddd7 !default;
-
-$brand-secondary: #f5f5f5;
-$app-border-color: darken( $brand-secondary, 30 );
-
-$tr-bkgrnd-light: $brand-secondary;
-$tr-bkgrnd-dark: $white;
+//$brand-primary:         #5e4db7 !default;
+//$brand-primary-dark:    $brand-primary !default;
+//$brand-success:         #5cb85c !default;
+//$brand-info:            #58656a !default;
+//$brand-warning:         #f7f7c5 !default;
+//$brand-danger:          #d9534f !default;
+//$brand-link:            #ca4000 !default;
+//$logo-color: $white;
+//
+//$brand-page-title-color: $brand-primary;
+//$brand-page-subtitle-color: $gray-dark;
+//
+//$nav-link:        #628080 !default;
+//$nav-text:        #fdfbff !default;
+//$button-primary:        $brand-primary !default;
+//$button-primary-disabled: #bfddd7 !default;
+//
+//$brand-secondary: #f5f5f5;
+//$app-border-color: darken( $brand-secondary, 30 );
+//
+//$tr-bkgrnd-light: $brand-secondary;
+//$tr-bkgrnd-dark: $white;
 
 
 // --------------------------------------------
@@ -149,7 +149,7 @@ $tr-bkgrnd-dark: $white;
 //$brand-warning:         #f7f7c5 !default;
 //$brand-danger:          #d9534f !default;
 //$brand-link:            #ca4000 !default;
-//$logo-color: #2E3191;
+//$logo-color: darken( $brand-primary-dark, 10 );
 //
 //$nav-link:        #628080 !default;
 //$nav-text:        #090408 !default;
@@ -169,28 +169,28 @@ $tr-bkgrnd-dark: $white;
 // --------------------------------------------
 // THEME SKY
 // --------------------------------------------
-//$brand-primary:         #019aba !default;
-//$brand-primary-dark:    #017fa0 !default;
-//$brand-secondary:       #f5f1e6;
-//$brand-success:         #5cb85c !default;
-//$brand-info:            #58656a !default;
-//$brand-warning:         #f7f7c5 !default;
-//$brand-danger:          #d9534f !default;
-//$brand-link: #de750c !default;
-//$logo-color: $white;
-//
-//$nav-link:                   #5c7b7d !default;
-//$nav-text:                   #000400 !default;
-//$button-primary:             $brand-primary !default;
-//$button-primary-disabled: #bfddd7 !default;
-//
-//$brand-page-title-color: $brand-primary;
-//$brand-page-subtitle-color: $gray-dark;
-//
-//$app-border-color: #dfe0db;
-//
-//$tr-bkgrnd-dark: lighten( $brand-secondary, 5 );
-//$tr-bkgrnd-light: $white;
+$brand-primary:         #019aba !default;
+$brand-primary-dark:    #017fa0 !default;
+$brand-secondary:       #f5f1e6;
+$brand-success:         #5cb85c !default;
+$brand-info:            #58656a !default;
+$brand-warning:         #f7f7c5 !default;
+$brand-danger:          #d9534f !default;
+$brand-link: #de750c !default;
+$logo-color: $white;
+
+$nav-link:                   #5c7b7d !default;
+$nav-text:                   #000400 !default;
+$button-primary:             $brand-primary !default;
+$button-primary-disabled: #bfddd7 !default;
+
+$brand-page-title-color: $brand-primary;
+$brand-page-subtitle-color: $gray-dark;
+
+$app-border-color: #dfe0db;
+
+$tr-bkgrnd-dark: lighten( $brand-secondary, 5 );
+$tr-bkgrnd-light: $white;
 
 
 // --------------------------------------------------
@@ -198,6 +198,7 @@ $tr-bkgrnd-dark: $white;
 // --------------------------------------------------
 
 $zindex-app: 1;
+$modal-z-index: 2147483647;
 
 $isc-gutter: 50px;
 $isc-gutter-sm: 20px;
@@ -207,10 +208,12 @@ $cursor-disabled: not-allowed !default;
 
 //** Global text color on `<body>`.
 $text-color:            $gray-dark !default;
-$page-font-size: 12px;
+$body-font-size: 12px;
+$header-font-size: 16px;
+$subheader-font-size: 14px;
 
 $table-th-size: 14px;
-$table-td-size: 12px;
+$table-td-size: $body-font-size;
 
 // -------------------------
 // nav bar
@@ -248,7 +251,7 @@ $app-footer-height-sm:   30px;
 
 // -------------------------
 // buttons
-$isc-button-font-size: 13px;
+$isc-button-font-size: $body-font-size;
 $isc-button-font-weight: 700;
 $isc-button-height: 45px;
 

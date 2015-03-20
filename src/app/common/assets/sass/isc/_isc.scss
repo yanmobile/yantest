@@ -3,8 +3,8 @@
 // then comment in/out the right theme file
 @import "variables";
 
-//@import "theme-sky/isc-theme-sky";
-@import "theme-solid/isc-theme-solid";
+@import "theme-sky/isc-theme-sky";
+//@import "theme-solid/isc-theme-solid";
 
 @import "isc-utils";
 @import "isc-mixins";
@@ -16,7 +16,6 @@
 @import "isc-forms";
 @import "isc-footer";
 @import "isc-main-tabs";
-@import "isc-modal-background";
 @import "isc-page-components";
 @import "isc-nav-bar";
 @import "isc-panels";
