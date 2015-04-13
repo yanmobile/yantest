@@ -49,6 +49,7 @@
     var src = [
       '../hs-ui-angular-core/bower.json',
       '../hs-ui-angular-core/gulpfile.js',
+      '../hs-ui-angular-core/config.xml',
       '../hs-ui-angular-core/package.json'
     ];
     var dest = '';
