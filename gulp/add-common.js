@@ -33,17 +33,6 @@
   //});
   //
 
-  /*==============================
-   =     inject js and assets    =
-   ===============================*/
-
-  gulp.task('inject-common-js', function () {
-    var js = ['../hs-ui-angular-core/src/app/common/**/*'];
-    var dest = 'src/js/common/';
-
-    return gulp.src( js )
-        .pipe( gulp.dest( dest ));
-  });
 
   /*==============================
    =   inject gulp and configs   =
@@ -77,6 +66,19 @@
     var dest = 'test/';
 
     return gulp.src( src )
+      .pipe( gulp.dest( dest ));
+  });
+
+
+  /*==============================
+   =     inject js and assets    =
+   ===============================*/
+
+  gulp.task('inject-common-js', function () {
+    var js = ['../hs-ui-angular-core/src/js/common/**/*'];
+    var dest = 'src/js/common/';
+
+    return gulp.src( js )
       .pipe( gulp.dest( dest ));
   });
 
