@@ -88,8 +88,8 @@
    ===============================*/
 
   gulp.task('inject-common-templates', function () {
-    var html = ['../hs-ui-angular-core/src/templates/**/*'];
-    var dest = 'src/templates/';
+    var html = ['../hs-ui-angular-core/src/templates/common/**/*'];
+    var dest = 'src/templates/common/';
 
     return gulp.src( html )
       .pipe( gulp.dest( dest ));
