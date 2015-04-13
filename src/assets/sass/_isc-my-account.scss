@@ -1,0 +1,35 @@
+
+.isc-history-table{
+  @extend .isc-table;
+
+  @media #{$mobile} {
+
+    padding-bottom: 15px;
+
+    td {
+
+        display: table-cell;
+        min-width: 150px;
+        padding-left: 0px!important;
+    }
+    
+    tr {
+      display: table-row;
+    }
+
+    td:nth-of-type(2){
+      width:100%;
+    }
+
+    tr:nth-of-type(even){
+      background-color: $brand-secondary;
+    }
+
+    tr:nth-of-type(odd){
+      background-color: white;
+    }
+  }
+
+}
+
+

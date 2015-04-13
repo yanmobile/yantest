@@ -1,0 +1,79 @@
+{
+  "Proxies": [
+    {
+      "DateCreated": "2014-10-03",
+      "DateModified": "2014-10-03",
+      "DisplayExpiration": "October 1, 2015",
+      "DisplayName": "BOB LONGDISPLAYNAME RUBLIC",
+      "Expiration": "2015-10-01",
+      "Expired": 0,
+      "FirstName": "BOB",
+      "LastModified": "2014-10-03 10:21:28.806338",
+      "LastModifiedDisplay": "October 3, 2014",
+      "LastName": "RUBLIC",
+      "ProxyID": 57,
+      "Relation": "other",
+      "StagedUserID": "",
+      "TimeCreated": "2014-10-03 10:21:28.806331",
+      "TimeCreatedDisplay": "October 3, 2014",
+      "UserID": 1799
+    },
+    {
+      "DateCreated": "2014-10-01",
+      "DateModified": "2014-10-13",
+      "DisplayExpiration": "October 1, 2018",
+      "DisplayName": "MICK EYMOUSE",
+      "Expiration": "2015-10-01",
+      "Expired": 0,
+      "FirstName": "Mickey",
+      "LastModified": "2014-10-03 10:21:28.806338",
+      "LastModifiedDisplay": "October 3, 2014",
+      "LastName": "Mouse",
+      "ProxyID": 57,
+      "Relation": "other",
+      "StagedUserID": "",
+      "TimeCreated": "2014-10-03 10:21:28.806331",
+      "TimeCreatedDisplay": "October 3, 2014",
+      "UserID": 1799
+    }
+  ],
+  "ProxyFor": [
+    {
+      "DateCreated": "2014-10-03",
+      "DateModified": "2014-10-03",
+      "DisplayExpiration": "October 1, 2015",
+      "DisplayName": "BEA ADAMS",
+      "Expiration": "2015-10-01",
+      "Expired": 0,
+      "FirstName": "BEA",
+      "LastModified": "2014-10-03 10:37:37.453696",
+      "LastModifiedDisplay": "October 3, 2014",
+      "LastName": "ADAMS",
+      "ProxyID": 58,
+      "Relation": "other",
+      "StagedUserID": "",
+      "TimeCreated": "2014-10-03 10:37:37.453688",
+      "TimeCreatedDisplay": "October 3, 2014",
+      "UserID": 502
+    },
+    {
+      "DateCreated": "2014-11-03",
+      "DateModified": "2014-10-07",
+      "DisplayExpiration": "October 1, 2017",
+      "DisplayName": "BUGS BUNNY",
+      "Expiration": "2015-10-01",
+      "Expired": 0,
+      "FirstName": "BEA",
+      "LastModified": "2014-10-03 10:37:37.453696",
+      "LastModifiedDisplay": "October 3, 2014",
+      "LastName": "ADAMS",
+      "ProxyID": 58,
+      "Relation": "other",
+      "StagedUserID": "",
+      "TimeCreated": "2014-10-03 10:37:37.453688",
+      "TimeCreatedDisplay": "October 3, 2014",
+      "UserID": 502
+    }
+  ],
+  "ProxyMode": 0
+}

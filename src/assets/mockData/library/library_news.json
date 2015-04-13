@@ -1,0 +1,41 @@
+{
+  "children": [
+    {
+      "Date": "2015-01-10 05:08:00",
+      "Description": "When Bob Smithson could no longer breathe on his own and surgeons wanted to operate, his doctor decided to take a chance on a different treatment. That decision gave Bob another chance at life.",
+      "Feed": "feed://www.npr.org/rss/rss.php?id=1027",
+      "FeedTag": "NPR Health",
+      "FeedTitle": "Health Care",
+      "Link": "http://www.npr.org/blogs/health/2014/12/08/368541747/medicines-subtle-art-gives-a-man-the-chance-to-breathe-again?utm_medium=RSS&utm_campaign=healthcare",
+      "Title": "Medicine's Subtle Art Gives A Man The Chance To Breathe Again"
+    },
+    {
+      "Date": "2015-01-10 04:57:00",
+      "Description": "Way too many residents of U.S. nursing homes are on antipsychotic drugs, critics say. It's often just for the convenience of the staff, to sedate patients agitated by dementia. That's illegal.",
+      "Feed": "feed://www.npr.org/rss/rss.php?id=1027",
+      "FeedTag": "NPR Health",
+      "FeedTitle": "Health Care",
+      "Link": "http://www.npr.org/blogs/health/2014/12/08/368524824/old-and-overmedicated-the-real-drug-problem-in-nursing-homes?utm_medium=RSS&utm_campaign=healthcare",
+      "Title": "Old And Overmedicated: The Real Drug Problem In Nursing Homes"
+    },
+    {
+      "Date": "2015-01-09 05:20:00",
+      "Description": "Industrialized medical care drives up costs and leaves doctors and patients frazzled. Now some doctors are trying a more deliberate and mindful approach to the practice of medicine.",
+      "Feed": "feed://www.npr.org/rss/rss.php?id=1027",
+      "FeedTag": "NPR Health",
+      "FeedTitle": "Health Care",
+      "Link": "http://www.npr.org/blogs/health/2014/12/05/368736643/if-slow-is-good-for-food-why-not-medicine?utm_medium=RSS&utm_campaign=healthcare",
+      "Title": "If Slow Is Good For Food, Why Not Medicine?"
+    },
+    {
+      "Date": "2015-01-08 16:30:00",
+      "Description": "How do you get dental care or new glasses when you don't have insurance and you live hours from medical facilities? Usually, you don't. A documentary tells the story of a group trying to change that.",
+      "Feed": "feed://www.npr.org/rss/rss.php?id=1027",
+      "FeedTag": "NPR Health",
+      "FeedTitle": "Health Care",
+      "Link": "http://www.npr.org/blogs/health/2014/12/05/365280772/delivering-health-care-to-the-uninsured-for-15-a-pop?utm_medium=RSS&utm_campaign=healthcare",
+      "Title": "Delivering Health Care To The Uninsured For $15 A Pop"
+    }
+  ],
+  "hasFeeds": 1
+}

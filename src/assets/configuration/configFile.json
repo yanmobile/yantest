@@ -1,0 +1,266 @@
+{
+  "baseUrl": "http://hscommdev.iscinternal.com/public/api/v1/",
+
+  "noLoginRequired": [
+    "index",
+    "index.login",
+    "index.home",
+    "index.library.*",
+    "index.calendar.*",
+    "index.info.*"
+  ],
+
+  "userRoles": [
+    "user",
+    "proxy"
+  ],
+
+  "statePermissions": {
+    "index.messages.outbox": ["user"]
+  },
+
+  "topTabs": {
+    "index.home": {
+      "state": "index.home",
+      "translationKey": "ISC_HOME_TAB",
+      "displayOrder": 1,
+      "exclude": false
+    },
+
+    "index.wellness":  {
+      "state": "index.wellness",
+      "translationKey": "ISC_WELLNESS_TAB",
+      "displayOrder": 2,
+      "exclude": false
+    },
+
+    "index.messages": {
+      "state": "index.messages",
+      "translationKey": "ISC_MESSAGES_TAB",
+      "displayOrder": 3,
+      "exclude": false
+    },
+
+    "index.library":  {
+      "state": "index.library",
+      "translationKey": "ISC_LIBRARY_TAB",
+      "displayOrder": 4,
+      "exclude": false
+    },
+
+    "index.calendar": {
+      "state": "index.calendar",
+      "translationKey": "ISC_CALENDAR_TAB",
+      "displayOrder": 5,
+      "exclude": false
+    },
+
+    "index.myAccount":  {
+      "state": "index.myAccount",
+      "translationKey": "ISC_MY_ACCOUNT_TAB",
+      "displayOrder": 6,
+      "exclude": false
+    },
+
+    "index.customerTab":  {
+      "state": "index.customerTab",
+      "translationKey": "ISC_CUSTOMER_TAB",
+      "displayOrder": 7,
+      "exclude": true
+    }
+  },
+
+  "loginButton": {
+    "state": "index.login",
+    "translationKey": "ISC_LOGIN_BTN",
+    "displayOrder": 8,
+    "exclude": false
+  },
+
+  "logoutButton": {
+    "translationKey": "ISC_LOGOUT_BTN",
+    "exclude": false
+  },
+
+  "home": {
+  },
+
+  "wellness": {
+  },
+
+  "messages": {
+    "secondaryNav": {
+
+      "index.messages.inbox": {
+        "state": "index.messages.inbox",
+        "translationKey": "ISC_MESSAGES_INBOX_BTN",
+        "displayOrder": 1,
+        "exclude": false
+      },
+
+      "index.messages.outbox": {
+        "state": "index.messages.outbox",
+        "translationKey": "ISC_MESSAGES_OUTBOX_BTN",
+        "displayOrder": 2,
+        "exclude": false
+      },
+
+      "index.messages.archivedInbox": {
+        "state": "index.messages.archivedInbox",
+        "translationKey": "ISC_MESSAGES_ARCHIVED_INBOX_BTN",
+        "displayOrder": 3,
+        "exclude": false
+      },
+
+      "index.messages.archivedOutbox": {
+        "state": "index.messages.archivedOutbox",
+        "translationKey": "ISC_MESSAGES_ARCHIVED_OUTBOX_BTN",
+        "displayOrder": 4,
+        "exclude": false
+      }
+    },
+
+    "tasks": {
+      "index.messages.medicalQuestion": {
+        "state": "index.messages.medicalQuestion",
+        "translationKey": "ISC_MESSAGES_MEDICAL_QUESTION",
+        "displayOrder": 1,
+        "exclude": false
+      },
+
+      "index.messages.generalQuestion": {
+        "state": "index.messages.generalQuestion",
+        "translationKey": "ISC_MESSAGES_GENERAL_QUESTION",
+        "displayOrder": 2,
+        "exclude": false
+      },
+
+      "index.messages.requestAppointment": {
+        "state": "index.messages.requestAppointment",
+        "translationKey": "ISC_MESSAGES_REQUEST_APPOINTMENT",
+        "displayOrder": 3,
+        "exclude": false
+      },
+
+      "index.messages.refillPrescription": {
+        "state": "index.messages.refillPrescription",
+        "translationKey": "ISC_MESSAGES_REFILL_PRESCRIPTION",
+        "displayOrder": 4,
+        "exclude": false
+      },
+
+      "index.messages.requestReferral": {
+        "state": "index.messages.requestReferral",
+        "translationKey": "ISC_MESSAGES_REQUEST_REFERRAL",
+        "displayOrder": 5,
+        "exclude": false
+      },
+
+      "index.messages.requestTestResult": {
+        "state": "index.messages.requestTestResult",
+        "translationKey": "ISC_MESSAGES_REQUEST_TEST_RESULT",
+        "displayOrder": 6,
+        "exclude": false
+      }
+    }
+  },
+
+  "library": {
+    "secondaryNav": {
+
+      "index.library.healthDictionary": {
+        "state": "index.library.healthDictionary",
+        "translationKey": "ISC_LIBRARY_HEALTH_DICT_BTN",
+        "iconClasses": "fa fa-list-alt",
+        "displayOrder": 1,
+        "exclude": false
+      },
+
+      "index.library.news": {
+        "state": "index.library.news",
+        "translationKey": "ISC_LIBRARY_NEWS_BTN",
+        "iconClasses": "fa fa-list-alt",
+        "displayOrder": 2,
+        "exclude": false
+      },
+
+      "index.library.forms": {
+        "state": "index.library.forms",
+        "translationKey": "ISC_LIBRARY_FORMS_BTN",
+        "iconClasses": "fa fa-list-alt",
+        "displayOrder": 2,
+        "exclude": false
+      }
+    }
+  },
+
+  "calendar": {
+  },
+
+  "myAccount": {
+    "secondaryNav": {
+
+      "index.myAccount.summary": {
+        "state": "index.myAccount.summary",
+        "translationKey": "ISC_MY_ACCT_SUMMARY_BTN",
+        "iconClasses": "fa fa-list-alt",
+        "displayOrder": 1,
+        "exclude": false
+      },
+
+      "index.myAccount.history": {
+        "state": "index.myAccount.history",
+        "translationKey": "ISC_MY_ACCT_HISTORY_BTN",
+        "iconClasses": "fa fa-th",
+        "displayOrder": 2,
+        "exclude": false
+      },
+
+      "index.myAccount.password":{
+        "state": "index.myAccount.password",
+        "translationKey": "ISC_MY_ACCT_CHANGE_PASSWORD_BTN",
+        "iconClasses": "fa fa-asterisk",
+        "displayOrder": 3,
+        "exclude": false
+      },
+
+      "index.myAccount.email": {
+        "state": "index.myAccount.email",
+        "translationKey": "ISC_MY_ACCT_CHANGE_EMAIL_BTN",
+        "iconClasses": "fa fa-envelope",
+        "displayOrder": 4,
+        "exclude": false
+      },
+
+      "index.myAccount.proxies": {
+        "state": "index.myAccount.proxies",
+        "translationKey": "ISC_MY_ACCT_PROXIES_BTN",
+        "iconClasses": "fa fa-star-empty",
+        "displayOrder": 5,
+        "exclude": false
+      }
+    }
+  },
+
+  "customerTab": {
+    "secondaryNav": {
+
+      "index.customerTab.tab1": {
+        "state": "index.customerTab.tab1",
+        "translationKey": "ISC_CUSTOMER_TAB_1_BTN",
+        "iconClasses": "fa fa-list-alt",
+        "displayOrder": 1,
+        "exclude": false
+      },
+
+      "index.customerTab.tab2": {
+        "state": "index.customerTab.tab2",
+        "translationKey": "ISC_CUSTOMER_TAB_2_BTN",
+        "iconClasses": "fa fa--list-alt",
+        "displayOrder": 2,
+        "exclude": false
+      }
+    }
+  }
+
+}

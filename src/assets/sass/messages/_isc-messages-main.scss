@@ -1,0 +1,293 @@
+
+.isc-in-out-box{
+  @extend .isc-table;
+
+  th{
+    a{
+      color: $gray-light;
+      font-size: $table-th-size;
+      font-weight: 900;
+      text-decoration: none;
+
+      &:hover{
+        color: $gray;
+      }
+
+      &:focus{
+        color: $gray-light;
+      }
+
+      &.selected{
+        color: $gray-light;
+      }
+
+      &.selected:after{
+        font-family: FontAwesome;
+        content: ' \F078'; // chev down
+      }
+
+      &.reverse.selected:after{
+        font-family: FontAwesome;
+        content: " \F077"; // chev up
+      }
+    }
+  }
+}
+
+.isc-message-mobile{
+  clear: both;
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  height: 60px;
+//    border: 1px solid red;
+  border-top: 1px solid $app-border-color;
+  margin-top: 10px;
+  padding-top: 10px;
+
+  &:last-child{
+    margin-bottom: 10px;
+  }
+
+  .icons{
+    display: inline-block;
+    vertical-align: middle;
+//    border: 1px solid #64ff8c;
+
+    .isc-check-box{
+      margin-top: 0;
+      margin-right: $isc-nav-item-spacing / 2;
+    }
+  }
+
+  .content{
+    display: inline-block;
+    height: 60px;
+    margin-top: 3px;
+    margin-bottom: 0px;
+
+    span{
+      display: block;
+      margin-left: 5px;
+      margin-bottom: 5px;
+      padding: 0;
+    }
+  }
+}
+
+.isc-message-from{
+  font-size: 14px;
+  font-weight: 400;
+  color: $brand-link;
+}
+
+.isc-message-subject{
+  font-size: 14px;
+  font-weight: 400;
+  color: $gray;
+}
+
+.isc-read-message-count{
+  font-weight: 400;
+  color: $brand-primary-dark;
+}
+
+.isc-td-clickable{
+  cursor: hand;
+  cursor: pointer;
+}
+
+// ---------------------------
+// page elements
+// ---------------------------
+.isc-no-messages-warning{
+  @include flex;
+  border: 1px solid $app-border-color;
+  background: $gray-lighter;
+  padding: 20px;
+
+  h1{
+    font-size: 16px;
+    color: $gray;
+    padding: 0;
+    margin: 0;
+  }
+}
+
+.isc-message-reply-form{
+  @extend .isc-form;
+  border: none;
+  padding: 0;
+  margin : 0;
+}
+
+.isc-message-wrapper{
+  @include flex;
+  @include flex-direction( column );
+  @include flex-box-align( stretch );
+  flex-grow: 2;
+  min-height: 100%;
+}
+
+.isc-show-message-wrapper{
+ width: 100%;
+}
+
+.isc-edit-message-wrapper{
+  width: 100%;
+  visibility: hidden;
+}
+
+.isc-message{
+  top: 0;
+  bottom: 0;
+  flex-grow: 2;
+}
+
+.isc-message-info{
+  margin-top: 20px;
+  clear: both;
+
+  h1,
+  h2{
+    font-size: 13px;
+    font-weight: 900;
+    color: $black;
+  }
+
+  h1{
+    font-weight: 400;
+    color: $gray;
+    min-width: 70px;
+  }
+
+
+  input,
+  textarea{
+    width: 100%;
+  }
+
+  textarea{
+    height: 100px;
+  }
+}
+
+.isc-message-body{
+  clear: both;
+  padding-top: 20px;
+
+  p{
+    font-size: 13px;
+    color: $gray;
+    padding: 5px 0;
+    margin: 0
+  }
+}
+
+// ---------------------------
+// svg elements
+// ---------------------------
+
+.isc-new-message-icon{
+  @extend .isc-btn-primary;
+  max-width: 55px;
+  padding: 0 10px 4px 10px !important;
+
+  svg{
+    display: inline-block;
+    vertical-align: middle;
+    width: 32px;
+    height: 23px;
+    fill: $white;
+  }
+
+  &:disabled,
+  &:disabled:hover,
+  &:disabled:focus {
+    svg{
+      fill: darken( $white-smoke, 10 );
+    }
+  }
+}
+
+.isc-back-arrow-icon{
+  @extend .isc-btn-secondary;
+  min-width: 60px;
+  max-height: $isc-button-height;
+  padding: 0 10px !important;
+  margin: 0;
+
+  svg{
+    width: 24px;
+//    height: 45px;
+    fill: darken( $brand-secondary, 60 );
+  }
+}
+
+.isc-sort-button{
+  @extend .isc-btn-secondary;
+
+  svg{
+    width: 24px;
+    height: 24px;
+    fill: darken( $brand-secondary, 60 );
+  }
+}
+
+.isc-star-icon{
+  fill: $white;
+  stroke: $brand-link;
+  stroke-width: 2px;
+}
+
+.isc-archive-icon{
+  fill: $brand-link;
+  stroke-width: 0;
+  width: 22px;
+  height: 22px;
+
+}
+
+.isc-read-message-icon{
+  margin-top: auto;
+  margin-bottom: auto;
+
+  width: 20px;
+  height: 20px;
+
+  @media #{$phab-or-less} {
+    width: 35px;
+    height: 35px;
+  }
+
+  .dot{
+    stroke: $white;
+    stroke-width: 1px;
+    fill: $white;
+
+    &.read{
+      stroke: $brand-primary-dark;
+      stroke-width: 1px;
+      fill: $brand-primary-dark;
+    }
+  }
+}
+
+.isc-reverse-sort-cb{
+  padding-top: 15px;
+  margin-left: $isc-nav-item-spacing;
+
+  .isc-check-box{
+    padding-top: 2px;
+  }
+
+  label{
+    @extend .isc-message-subject;
+    padding-top: 0;
+    margin-top: 0;
+    margin-left: 5px;
+    white-space: nowrap;
+  }
+}
+
+

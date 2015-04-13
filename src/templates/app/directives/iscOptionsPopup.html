@@ -1,0 +1,33 @@
+
+<div class="isc-popup-wrapper">
+
+  <div class="isc-popup-container">
+
+    <div class="isc-item-wrapper-1">
+      <a class="isc-popup-close"
+         ng-click="onClose()"><span class="fa fa-close"></span></a>
+    </div>
+
+    <div class="title"
+         ng-if="!!title">
+      <h1>{{title | translate }}</h1>
+    </div>
+
+    <div class="list-items">
+
+      <a class="isc-secondary-nav-item"
+         isc-radio-group="listItems"
+         ng-click="onSelect( {selection: item} ); radioSelect( item )"
+         ng-repeat="item in listItems"
+         ng-class="{'active' : item.$$selected }">
+
+        {{::item.label | translate}}
+
+        <span class="pull-right"
+              ng-if="item.secondaryLabel">{{::item.secondaryLabel | translate}}</span>
+      </a>
+    </div>
+
+  </div>
+</div>
+

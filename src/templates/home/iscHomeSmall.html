@@ -1,0 +1,24 @@
+<div class="only-phone">
+
+    <!--not logged in-->
+    <div ng-if="!homeCtrl.sessionModel.isAuthenticated()">
+
+        <!--log in-->
+        <div ng-include="'home/iscLoginForm.html'"></div>
+
+        <!--fake content-->
+        <div class="isc-home-fake-phone">
+            <img style="width: 100%" src="assets/images/demo/home/small/home-phone.png">
+        </div>
+    </div>
+
+    <!--logged in-->
+    <div ng-if="homeCtrl.sessionModel.isAuthenticated()">
+
+        <!--fake content-->
+        <div class="isc-home-fake-phone">
+            <img style="width: 100%" src="assets/images/demo/home/small/home-phone-logged-in.png">
+        </div>
+    </div>
+
+</div>

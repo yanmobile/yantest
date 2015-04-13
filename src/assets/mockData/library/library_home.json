@@ -1,0 +1,8 @@
+{
+  "welcomeContent": {
+    "content": "<div class=\"hsp-content-debug\"><div class=\"hsp-content-debug-meta\"><span class=\"hsp-content-debug-app\">public</span><span class=\"hsp-content-debug-type\">content</span><span class=\"hsp-content-debug-key\">content-library-home</span></div><div class=\"hsp-content-debug-content\"><h1 style=\"color:#606060;padding-bottom:10px;\">welcome to the library</h1><div>In the library you can view up-to-the-minute news as well as find useful documents and forms.</div></div></div>",
+    "id": "content-library-home",
+    "image": "assets/library-home.jpg",
+    "imageCaption": "Library"
+  }
+}

@@ -1,0 +1,21 @@
+<div>
+  <div class="isc-lookup-provider">
+    <label>{{selectedProvider.label | translate}}</label>
+
+    <div class="isc-button-group">
+      <button class="isc-btn-dropdown"
+              ng-click="onClose()">{{'ISC_SELECT' | translate}}</button>
+
+      <button class="isc-btn-secondary"
+              ng-click="onClose()">X</button>
+
+      <button class="isc-btn-search">
+        <span ng-include="'common/svg/isc-search-icon.html'"></span>
+      </button>
+    </div>
+
+  </div>
+
+  <div ng-include="'messages/workflows/directives/lookupProvider/providerSearch/iscProviderSearchTable.html'"></div>
+
+</div>

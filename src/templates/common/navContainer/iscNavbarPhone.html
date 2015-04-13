@@ -1,30 +1,33 @@
 <div class="isc-nav-bar-container"
      ng-controller="iscNavbarController as navbarCtrl">
 
-    <div class="isc-top-nav-container theme">
+  <div class="isc-top-nav-container theme">
 
-      <div class="left">
-        <!--section title-->
-        <h5 class="isc-section-title isc-nav-item left">{{navbarCtrl.sectionTranslationKey | translate}}</h5>
-      </div>
+    <div class="left">
 
-      <div class="right">
-        <!-- menu hamburger -->
-        <a class="isc-nav-item right isc-hamburger"
-           ng-click="navCtrl.showSideNavbar()">
-          <i class="fa fa-bars"></i>
-        </a>
-      </div>
+      <!-- menu hamburger -->
+      <button class="isc-hamburger-icon"
+              ng-click="navCtrl.showSideNavbar()">
+        <span ng-include="'common/svg/isc-hamburger-icon.html'"></span>
+      </button>
 
-
-      <span class="isc-nav-item right isc-section-divider"></span>
-
-      <!-- help -->
-      <a class="isc-nav-item right isc-image-button isc-info-btn-phone">
-        <i class="fa fa-question"></i>
-      </a>
+      <!--section title-->
+      <h5 class="isc-section-title">{{navbarCtrl.sectionTranslationKey | translate}}</h5>
 
     </div>
 
+    <div class="right">
+
+      <div class="isc-help-button-wrapper">
+
+        <!-- help -->
+        <button class="isc-question-icon">
+          <span ng-include="'common/svg/isc-question-icon.html'"></span>
+        </button>
+      </div>
+
+    </div>
+
+  </div>
 </div>
 

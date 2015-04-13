@@ -1,0 +1,15 @@
+
+<div class="jumbotron" style="min-height: 500px;">
+
+  <h3>{{ 'ISC_LEGAL_TITLE' | translate }}</h3>
+
+  <div>
+    <span class="text-info" ng-bind-html="infoCtrl.legalInfo"></span>
+
+    <a ng-click="infoCtrl.back()"
+       class="btn btn-link"><span class="fa fa-chevron-circle-left"></span>&nbsp; {{'ISC_BACK' | translate}}</a>
+
+  </div>
+</div>
+
+

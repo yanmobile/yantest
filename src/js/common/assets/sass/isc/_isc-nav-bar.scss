@@ -1,0 +1,330 @@
+
+
+
+// container for all the nav
+.isc-nav-bar-container{
+  @include  flex();
+  @include  flex-direction( column );
+  margin-left: 0;
+  padding-left: 0;
+  padding-right: 0;
+  width: 100%;
+
+  @media #{$desktop} {
+    height: $app-top-nav-height-desktop;
+    max-height: $app-top-nav-height-desktop;
+  }
+
+  @media #{$tablet} {
+    height: $app-top-nav-height-tablet;
+    max-height: $app-top-nav-height-tablet;
+  }
+
+  @media #{$phablet} {
+    height: $app-top-nav-height-tablet;
+    max-height: $app-top-nav-height-tablet;
+  }
+
+  @media #{$phone} {
+    height: $app-top-nav-height-phone;
+    max-height: $app-top-nav-height-phone;
+  }
+}
+
+// container for header and tabs
+.isc-top-nav-container{
+  @include  flex();
+  @include  flex-type( 3 );
+  @include  flex-box-align( space-between );
+  @include  flex-direction( row );
+  @include  box-sizing( border-box );
+  @include flex-wrap( nowrap );
+  order: 1;
+
+  width: 100%;
+
+  @media #{$desktop} {
+    height: $app-top-nav-height-desktop;
+  }
+
+  @media #{$tab-phab} {
+    height: $app-top-nav-height-tablet;
+  }
+
+  @media #{$phone} {
+    height: $app-top-nav-height-phone;
+  }
+
+  @include flexbox-align-items( stretch );
+
+  .left{
+    @include  flex();
+    @include flex-type( 1 );
+    @include flexbox-align-items( center );
+    @include flex-justify-content( flex-start );
+    order: 1;
+
+    @media #{$tab-plus} {
+      margin-left: $isc-gutter;
+    }
+
+    @media #{$phab-or-less} {
+      margin-left: $isc-gutter-sm;
+    }
+  }
+
+  .right{
+    @include flex-justify-content( flex-end );
+
+    margin-left: 0;
+
+    @include  flex();
+    @include flex-type( 4 );
+    @include flexbox-align-items( center );
+    @include flex-justify-content( flex-end );
+    order: 2;
+
+    @media #{$desktop} {
+      @include flex-type( 1 );
+    }
+
+    @media #{$tab-plus} {
+      margin-right: $isc-gutter;
+    }
+
+    @media #{$phab-or-less} {
+      margin-right: $isc-gutter-sm;
+    }
+  }
+}
+
+// tabs
+// container for tabs
+.isc-sub-nav-container{
+  @include  flex();
+  @include  flex-type( 1 );
+  order: 2;
+
+  width: 100%;
+  max-height: $app-sub-nav-height;
+  height: $app-sub-nav-height;
+  background-color: $brand-secondary;
+  border: 1px solid $app-border-color;
+}
+
+
+// container for header
+.isc-nav-item{
+  @include  flex();
+  @include flexbox-align-items( center );
+
+  margin: 0;
+  min-height: 18px;
+
+  &.right{
+    padding-left: $isc-nav-item-spacing;
+    margin-right: 15px;
+  }
+
+  &.left{
+    padding-right: $isc-nav-item-spacing;
+  }
+}
+
+
+
+.isc-tabpanel{
+  position: absolute;
+  height: $app-sub-nav-height;
+  bottom: 0;
+  padding-left: 20px;
+}
+
+.isc-info-btn-mobile {
+  background: url("../assets/images/info-bkgrnd.png");
+  background-size: cover;
+  width: 31px;
+  float: right;
+
+  @media #{$tablet} {
+    height: $app-header-height-tablet;
+    max-height: $app-header-height-tablet;
+  }
+
+  @media #{$phone}  {
+    height: $app-header-height-phone;
+    max-height: $app-header-height-phone;
+  }
+}
+
+// header logo
+.isc-logo {
+  background-color: transparent;
+  fill: $logo-color;
+
+  @media #{$desktop} {
+    width: 250px;
+    //border: 1px solid #ff87f3;
+  }
+
+  @media #{$tablet} {
+    width: 180px;
+    //border: 1px solid red;
+  }
+
+  @media #{$phablet} {
+    width: 180px;
+    //border: 1px solid green;
+  }
+}
+
+.isc-logo-sidenav{
+  background-color: transparent;
+  fill: $logo-color;
+  width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.logo-svg{
+  fill: $logo-color;
+  width: 100%;
+
+  @media #{$desktop} {
+    margin-top: -10px;
+  }
+}
+
+// container for the app name and divider (desktop)
+.isc-app-name-container{
+  @include flex;
+  @include flex-direction(row);
+  @include flexbox-align-items( center );
+  @include flex-justify-content( flex-end );
+
+  min-height: $app-header-height-tablet / 2;
+
+  @media #{$desktop} {
+    margin-top: -5px;
+  }
+
+  @media #{$tab-phab} {
+    margin-top: 2px;
+  }
+}
+
+.isc-app-name-divider{
+  border-right: 3px solid white;
+  min-width: 1px;
+
+  @media #{$desktop} {
+    margin-left: 10px;
+    margin-right: 10px;
+    min-height: $app-top-nav-height-desktop / 3;
+  }
+
+  @media #{$tab-phab} {
+    margin-left: 20px;
+    margin-right: 10px;
+    min-height: $app-header-height-tablet / 2.5;
+  }
+}
+
+.isc-hamburger-wrapper{
+  @include box-sizing( border-box );
+}
+
+.isc-help-button-wrapper{
+  @include box-sizing( border-box );
+  border-left: 2px solid white;
+  padding-top: 6px;
+  padding-left: 3px;
+
+  max-width: 50px;
+
+  @media #{$desktop} {
+    min-height: $app-top-nav-height-desktop;
+    margin-right: -$isc-gutter;
+  }
+
+  @media #{$tab-phab} {
+    min-height: $app-header-height-tablet;
+    margin-right: -$isc-gutter-sm;
+  }
+
+  @media #{$phone} {
+    min-height: $app-header-height-phone;
+    margin-right: -$isc-gutter-sm;
+  }
+}
+
+
+// name of the app that appears next to the logo
+.isc-app-name{
+  margin: 0;
+  padding: 0;
+  color: #f5f5f5;
+  font-weight: bolder;
+  white-space: nowrap;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+
+  @media #{$desktop} {
+    margin-top: 5px;
+    font-size: 22px;
+  }
+
+  @media #{$tablet} {
+    font-size: 14px;
+  }
+
+  @media #{$phablet} {
+    font-size: 14px;
+  }
+}
+
+
+// general styles for nav text
+.isc-nav-text{
+  color: white;
+  font-weight: 600;
+  font-size: $nav-font-size;
+}
+
+// page title that appears in the header
+.isc-section-title{
+  font-size: $nav-section-title-size;
+  color: $white;
+  white-space: nowrap;
+  padding: 0 0 0 0;
+  margin: 0 20px 0 0;
+}
+
+// labels that appear in the header
+.isc-nav-label{
+  @extend .isc-nav-text;
+  letter-spacing: 0;
+  max-width: 50px;
+  text-align: right;
+  margin-left: $isc-nav-item-spacing;
+  margin-right: $isc-nav-item-spacing;
+  text-transform: uppercase;
+}
+
+// login button
+.isc-login{
+  @extend .isc-image-button;
+  max-width: 70px;
+}
+
+// info button for phone
+.isc-info-btn-phone{
+  @extend .isc-image-button;
+  max-width: 20px;
+}
+
+
+
+
+
+

@@ -1,0 +1,15 @@
+
+
+<div class="isc-workflow-wrapper">
+
+  <div class="header">
+    <h1 class="only-desktop"
+                          ng-if="!navCtrl.sessionModel.isAuthenticated()">{{::'v' | translate}}</h1>
+    <h1 class="only-desktop"
+        ng-if="navCtrl.sessionModel.isAuthenticated()">{{navCtrl.sessionModel.getFullName()}}'s {{'ISC_MESSAGES_MEDICAL_QUESTION_TITLE' | translate}}</h1>
+  </div>
+
+  <div class="content">Content</div>
+
+  <div class="footer">Footer</div>
+</div>

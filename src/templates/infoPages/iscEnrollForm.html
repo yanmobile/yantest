@@ -1,0 +1,176 @@
+
+
+<div class="pre-scrollable jumbotron">
+
+  <h2>{{'ISC_ENROLL_TITLE' | translate}}</h2>
+
+  <form name="enrollForm"
+        role="form"
+        ng-submit="infoCtrl.enroll()"
+        novalidate>
+
+    <div class="form-group">
+      <label for="FirstName">{{'ISC_FIRST_NAME' | translate}}:</label>
+
+      <input type="text"
+             class="form-control"
+             id="FirstName"
+             placeholder="{{'ISC_FIRST_NAME' | translate}}"
+             ng-required="true"
+             ng-model="infoCtrl.enrollOptions.FirstName">
+    </div>
+
+    <div class="form-group">
+      <label for="MiddleName">{{'ISC_MIDDLE_NAME' | translate}}:</label>
+
+      <input type="text"
+             class="form-control"
+             id="MiddleName"
+             placeholder="{{'ISC_MIDDLE_NAME' | translate}}"
+             ng-required="false"
+             ng-model="infoCtrl.enrollOptions.MiddleName">
+    </div>
+
+    <div class="form-group">
+      <label for="LastName">{{'ISC_LAST_NAME' | translate}}:</label>
+
+      <input type="text"
+             class="form-control"
+             id="LastName"
+             placeholder="{{'ISC_LAST_NAME' | translate}}"
+             ng-required="true"
+             ng-model="infoCtrl.enrollOptions.LastName">
+    </div>
+
+    <div class="form-group">
+      <label for="Gender">{{'ISC_GENDER' | translate}}:</label>
+
+      <select class="form-control"
+              id="Gender"
+              ng-required="true"
+              ng-options="gender.value as gender.label | translate for gender in infoCtrl.genderOptions"
+              ng-model="infoCtrl.enrollOptions.Sex">
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="MothersMaiden">{{'ISC_GENDER' | translate}}:</label>
+
+      <input type="text"
+             class="form-control"
+             id="MothersMaiden"
+             placeholder="{{'ISC_MOTHERS_MAIDEN_NAME' | translate}}"
+             ng-required="true"
+             ng-model="infoCtrl.enrollOptions.MothersMaidenName">
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>{{'ISC_SSN' | translate}}:</label>
+
+      <input type="{{infoCtrl.enrollOptions.$$showSSN ? 'text' : 'password' }}"
+             ng-cloak
+             class="form-control"
+             placeholder="{{'ISC_SSN' | translate}}"
+             ng-required="true"
+             ng-model="infoCtrl.enrollOptions.SSN">
+
+      <label class="checkbox-inline">
+        <input type="checkbox"
+               id="showSSN"
+               ng-model="infoCtrl.enrollOptions.$$showSSN">{{'ISC_SHOW_SSN' | translate}}
+      </label>
+
+
+    </div>
+
+    <div class="form-group">
+      <label for="date">{{'ISC_BIRTHDAY' | translate}}:</label>
+
+      <div class="row">
+        <div class="input-group">
+          <input type="text"
+                 id="date"
+                 class="form-control"
+                 datepicker-popup="{{infoCtrl.dateFormat}}"
+                 ng-model="infoCtrl.enrollOptions.DateOfBirth"
+                 is-open="infoCtrl.dateOpen"
+                 max-date="'2015-06-22'"
+                 datepicker-options="infoCtrl.dateOptions"
+                 ng-required="true"
+                 close-text="{{'ISC_CLOSE' | translate }}" />
+          <span class="input-group-btn">
+                <button type="button" class="btn btn-default" ng-click="infoCtrl.openDate($event)"><i class="fa fa-calendar"></i></button>
+         </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="Address">{{'ISC_ADDRESS' | translate}}:</label>
+
+      <input type="text"
+             class="form-control"
+             id="Address"
+             placeholder="{{'ISC_ADDRESS' | translate}}"
+             ng-required="true"
+             ng-model="infoCtrl.enrollOptions.Address1">
+    </div>
+
+    <label >{{'ISC_CITY_AND_STATE' | translate}}:</label>
+
+    <div class="form-inline">
+      <div class="form-group">
+
+        <label class="sr-only" for="City">City</label>
+        <input type="text"
+               class="form-control"
+               id="City"
+               placeholder="{{'ISC_CITY' | translate}}"
+               ng-required="true"
+               ng-model="infoCtrl.enrollOptions.City">
+      </div>
+
+      <div class="form-group">
+
+        <label class="sr-only" for="State">State</label>
+        <select class="form-control"
+                id="State"
+                ng-required="true"
+                ng-options="state.abbreviation as state.name for state in infoCtrl.states"
+                ng-model="infoCtrl.enrollOptions.State"></select>
+      </div>
+    </div>
+
+    <div class="form-group" style="padding-top: 20px">
+      <label for="Zip">{{'ISC_ZIP' | translate}}:</label>
+
+      <input type="text"
+             class="form-control"
+             id="Zip"
+             placeholder="{{'ISC_ZIP' | translate}}"
+             ng-required="true"
+             ng-model="infoCtrl.enrollOptions.ZipCode">
+    </div>
+
+    <div class="form-group">
+      <label for="Email">{{'ISC_EMAIL' | translate}}:</label>
+
+      <input type="email"
+             class="form-control"
+             id="Email"
+             placeholder="{{'ISC_EMAIL' | translate}}"
+             ng-required="true"
+             ng-model="infoCtrl.enrollOptions.Email">
+    </div>
+
+    <!--submit-->
+    <button type="submit"
+            ng-disabled="enrollForm.$invalid || !infoCtrl.enrollOptions.TermsAccepted"
+            class="btn btn-primary">{{'ISC_ENROLL' | translate}}</button>
+
+    <button  ui-sref="index.login"
+             class="btn btn-default">{{'ISC_CANCEL_BTN' | translate}}</button>
+
+  </form>
+</div>

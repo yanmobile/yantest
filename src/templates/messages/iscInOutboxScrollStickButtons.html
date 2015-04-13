@@ -1,0 +1,22 @@
+<div id="fixed-scroll"
+     class="isc-scroll-stick-container"
+     ng-class="{'scroll-stick':mssgCtrl.scrollStick}"
+     isc-scroll-detect
+     top-pos-array="[150, 110, 300]"
+     add-class="mssgCtrl.setButtonClass( val )">
+
+  <button class="pull-left isc-new-message-icon"
+          ng-if="mssgCtrl.model.sortOptions.isInbox">
+    <span ng-include="'common/svg/isc-new-message-icon.html'"></span>
+  </button>
+
+  <button class="isc-btn-secondary pull-left"
+          ng-click="mssgCtrl.archive()"
+          ng-disabled="!mssgCtrl.mailMessageService.someMessageIsSelected()">{{'ISC_ARCHIVE' | translate}}</button>
+
+  <div class="pull-left only-phone">
+    <button class="isc-btn-secondary"
+            ng-click="mssgCtrl.openSortOptions()">{{'ISC_SORT' | translate}}&nbsp;<span class="fa fa-chevron-down"></span></button>
+  </div>
+
+</div>

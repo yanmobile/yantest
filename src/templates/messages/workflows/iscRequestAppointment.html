@@ -1,0 +1,12 @@
+<div class="isc-page">
+  <h1 class="only-desktop"
+      ng-if="!navCtrl.sessionModel.isAuthenticated()">{{::'ISC_MESSAGES_REQUEST_APPOINTMENT_TITLE' | translate}}</h1>
+  <h1 class="only-desktop"
+      ng-if="navCtrl.sessionModel.isAuthenticated()">{{navCtrl.sessionModel.getFullName()}}'s {{'ISC_MESSAGES_REQUEST_APPOINTMENT_TITLE' | translate}}</h1>
+
+  <isc-appointment-type-directive model-data="raCtrl.appointmentTypeData"
+                                  on-change="raCtrl.isStep4Complete( valid )"></isc-appointment-type-directive>
+
+  <!--<isc-lookup-provider list-data="raCtrl.lookupProviderDataModel"></isc-lookup-provider>-->
+
+</div>

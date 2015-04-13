@@ -1,0 +1,24 @@
+<div class="only-tab-phab home-tab-fake-wrapper">
+
+    <!--not logged in-->
+    <div ng-if="!homeCtrl.sessionModel.isAuthenticated()">
+
+        <div class="isc-mobile-greeting">
+            <h1>Welcome to your online health community</h1>
+        </div>
+
+        <!--log in-->
+        <div ng-include="'home/iscLoginForm.html'"></div>
+        <img style="width: 100%" src="assets/images/demo/home/med/content.jpg">
+    </div>
+
+    <!--logged in-->
+    <div ng-if="homeCtrl.sessionModel.isAuthenticated()">
+
+        <!--fake content-->
+        <div class="isc-home-fake-phone">
+            <img style="width: 100%" src="assets/images/demo/home/med/content-logged-in.jpg">
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,156 @@
+
+
+.isc-wellness-tiles-wrapper{
+  @include flex();
+  @include flex-type(1);
+  @include flex-wrap( wrap );
+
+  height: 100%;
+  padding: 10px;
+  overflow: hidden;
+
+  @media #{$desktop}{
+    @include flex-flow( row, wrap );
+    @include flex-justify-content( flex-start );
+    @include flexbox-align-items( flex-start );
+  }
+
+  @media #{$tab-phab}{
+    @include flex-flow( column, wrap );
+    @include flex-justify-content( flex-start );
+    @include flexbox-align-items( flex-start );
+    padding: 0;
+    //border: 5px solid #808010;
+  }
+
+  @media #{$phone}{
+    @include flex-flow( column, wrap );
+    @include flex-justify-content( center );
+    @include flexbox-align-items( stretch );
+    padding: 0;
+  }
+
+}
+
+//$tile-0: #add9e4;
+//$tile-1: #9DC64A;
+//$tile-2: #84ac28;
+//$tile-3: #E152A3;
+//$tile-4: #FFB85E;
+//$tile-5: #b3bd52;
+//$tile-6: #397cad;
+//$tile-7: #B84084;
+//$tile-8: #E6A450;
+//$tile-9: #ae377d;
+//$tile-10: #5ea29c;
+$tile-0:  $brand-secondary;
+$tile-1:  $brand-secondary;
+$tile-2:  $brand-secondary;
+$tile-3:  $brand-secondary;
+$tile-4:  $brand-secondary;
+$tile-5:  $brand-secondary;
+$tile-6:  $brand-secondary;
+$tile-7:  $brand-secondary;
+$tile-8:  $brand-secondary;
+$tile-9:  $brand-secondary;
+$tile-10: $brand-secondary;
+
+$tile-height-lg: 100px;
+$tile-width-lg: 200px;
+$tile-height-sm: 60px;
+$tile-margin: 5px;
+
+
+.isc-info-tile-wrapper{
+  @include box-sizing( border-box );
+  @include flex();
+  @include flex-type(1);
+  @include flex-direction( row );
+
+  padding: $tile-margin;
+
+  @media #{$desktop}{
+    min-width: $tile-width-lg;
+    max-width: $tile-width-lg;
+    min-height: $tile-height-lg;
+    max-height: $tile-height-lg;
+  }
+
+  @media #{$tab-phab}{
+    min-width: 100%;
+    max-width: 100%;
+    min-height: $tile-height-sm + $tile-margin*2;
+    max-height: $tile-height-sm + $tile-margin*2;
+  }
+
+  @media #{$phone}{
+    min-width: 100%;
+    min-width: 100%;
+    min-height: $tile-height-sm + $tile-margin*2;
+    max-height: $tile-height-sm + $tile-margin*2;;
+  }
+
+  //border: 1px solid green;
+}
+
+.isc-info-tile{
+  @include box-sizing( border-box );
+  @include flex;
+  @include flex-type(1);
+  margin: 0;
+  padding: 0;
+
+  @media #{$desktop}{
+    @include flex-direction( row );
+    @include flex-justify-content( space-between );
+    @include flexbox-align-items( center );
+  }
+
+  @media #{$tab-phab}{
+    @include flex-direction( row );
+    @include flex-justify-content( space-between );
+    @include flexbox-align-items( center );
+    min-width: 100%;
+    min-height: 100%;
+  }
+
+  @media #{$phone}{
+    @include flex-direction( row );
+    @include flex-justify-content( space-between );
+    @include flexbox-align-items( center );
+    min-width: 100%;
+    min-height: 100%;
+  }
+
+  .title{
+    @include flex;
+    @include flex-type( 10 );
+    @include flex-item-order( 2 );
+
+    padding: 10px;
+    color: $gray;
+    font-size: $header-font-size;
+    font-weight: 900;
+
+    @media #{$tab-or-less}{
+      @include flex-item-order( 2 );
+      @include flex-type(6);
+    }
+  }
+
+  .bar{
+    @include flex;
+    @include flex-type(1);
+    @include flex-item-order( 1 );
+    @include box-sizing( border-box );
+    max-width: 15px;
+    height: $tile-height-sm/2;
+    border: 1px solid darken( $brand-secondary, 20);
+    background-color: darken( $brand-secondary, 20);;
+  }
+
+  border: 2px solid darken( $brand-secondary, 20 );
+  background: $brand-secondary;
+
+
+}

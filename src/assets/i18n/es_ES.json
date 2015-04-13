@@ -1,0 +1,23 @@
+{
+  "FOOBAR_BTN" : "Traduce esta pajina",
+  "ISC_PHONE" : "Telefono",
+  "ISC_EMAIL" : "Correo",
+  "ISC_PRIMARY_CARE" : "Médico Primaria",
+  "ISC_HOME_TITLE": "Bienvenido",
+  "ISC_HOME_CALLOUT_TITLE":"Bienvenido a su comunidad de salud virtual.",
+  "ISC_HOME_CALLOUT":"La comunidad provea por acceso directo a su registro corriente medico, citas y informacion sobre su cuenta. Como miembro, usted tiene acceso a lo mejor de cuidado y servicio de la nacion.",
+
+  "ISC_HOME_TAB": "Inicio",
+  "ISC_WELLNESS_TAB": "Bienestar",
+  "ISC_MESSAGES_TAB": "Mensajes",
+  "ISC_LIBRARY_TAB": "Bibleaoteca",
+  "ISC_CALENDAR_TAB": "Calendario",
+  "ISC_MY_ACCOUNT_TAB": "Mi Cuenta",
+  "ISC_HISTORY_TAB": "Historia",
+
+  "ISC_LOGOUT_BTN": "Terminar",
+  "ISC_LOGIN_BTN": "Conectar",
+  "ISC_LOGGED_IN_GREETING":  "Bienvenido, {{userName}}.",
+  "ISC_GUEST_GREETING":  "Bienvienido a InterSystems."
+
+}

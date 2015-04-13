@@ -1,0 +1,18 @@
+<div class="container-fluid">
+
+    <div class="col-md-10 col-md-offset-1">
+
+      <div style="height: 25px; background-color: #a7a7a7; border: none">
+
+        <button ng-click="infoCtrl.back()"
+                style="position: relative; top: -22%; color: #ffffff"
+                ng-disabled="loginForm.$invalid"
+                class="btn btn-link pull-left ">
+          <span class="fa fa-chevron-circle-left"></span>
+        </button>
+      </div>
+
+      <div ui-view></div>
+    </div>
+  </div>
+</div>

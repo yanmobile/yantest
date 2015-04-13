@@ -1,0 +1,266 @@
+
+// --------------------------------------
+// side nav container
+// ----------------------------------------
+
+.isc-side-nav-wrapper {
+  position: absolute !important;
+  top: -1000 ;
+  z-index: $modal-z-index;
+  opacity:0;
+  visibility: hidden;
+}
+
+.isc-side-nav-container {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: $brand-secondary ;
+  border: 1px solid $app-border-color ;
+  font-size: 14px;
+  text-align: left;
+
+
+  @media #{$desktop}{
+    max-width: 300px;
+  }
+}
+
+.isc-side-nav-header-container{
+  @include  flex();
+  @include  flex-type( 2 );
+  @include  flex-box-align( stretch );
+  @include  box-sizing( border-box );
+  @include  flex-direction( column );
+  justify-content: center;
+  order: 1;
+  background-color: $brand-primary;
+
+//  border: 3px solid #9effc6;
+}
+
+.isc-side-bar-nav-item-container{
+  @include  flex();
+  @include  flex-type( 3 );
+  @include  flex-box-align( stretch );
+  @include  box-sizing( border-box );
+  @include  flex-direction( column );
+  justify-content: flex-start;
+  order: 2;
+  overflow-x: hidden;
+  overflow-y: auto;
+  margin: 0px;
+
+}
+
+.isc-footer-container{
+  @include  flex();
+  @include  flex-type( 1 );
+  @include  flex-box-align( stretch );
+  @include  box-sizing( border-box );
+  @include  flex-direction( column );
+  justify-content: flex-end;
+  order: 3;
+
+//  border: 4px solid $app-border-color ;
+
+  margin-top: 0;
+  margin-left: -1px;
+  margin-bottom: -1px;
+  margin-right: -1px;
+
+  .user-container{
+    @include  flex();
+    @include  flex-type( 1 );
+    @include  flex-direction( column );
+    @include  flex-box-align( stretch );
+    justify-content: center;
+    order: 1;
+
+    padding: 20px 0 10px 0;
+  }
+
+  .button-container{
+    @include  flex();
+    @include  flex-type( 1 );
+    @include  flex-direction( row );
+    @include flex-box-align( center );
+    justify-content: center;
+    margin-left: 30px;
+    margin-right: 30px;
+    order: 2;
+
+//    border: 1px solid red;
+
+    padding: 10px 0 10px 0;
+
+    button {
+      min-width: 120px;
+    }
+  }
+
+  .legal-notices{
+    @include  flex();
+    @include  flex-type( 1 );
+    @include  flex-direction( row );
+    @include flex-justify-content( space-between );
+    margin-left: 30px;
+    margin-right: 30px;
+    order: 2;
+
+    a{
+      text-align: center;
+      padding: 0;
+      margin: 0;
+    }
+
+    padding: 10px 0 20px 0;
+  }
+}
+
+
+// --------------------------------------
+// header item styles
+// --------------------------------------
+
+.isc-side-nav-close{
+  color: $white;
+  font-size: 20px;
+  text-align: right;
+  width: 100%;
+  padding: 10px 15px 0 0;
+
+  // Hover state
+  &:hover,
+  &:focus {
+    text-decoration: none;
+    color: darken( $white, 20 );
+  }
+}
+
+.isc-side-nav-logo{
+  margin: auto;
+  width: 100%;
+  height: 60px;
+  display: inline-block;
+  margin: 4px;
+  border: 1px solid transparent;
+  background: url("../assets/images/logo-big.png");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.isc-app-name-sidebar{
+  color: $white;
+  font-weight: 500;
+  font-size: 18px;
+  letter-spacing: 2px;
+  text-align: center;
+  text-transform: capitalize;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+// --------------------------------------
+// nav item styles
+// --------------------------------------
+
+.isc-side-bar-nav-item-wrapper{
+  @extend .isc-sidebar-item-container-1;
+  @include min-height-content;
+}
+
+
+.isc-side-nav-button {
+  width: 100%;
+  height: 100%;
+  color: $nav-link;
+  font-size: 14px;
+  font-weight: 400;
+  text-align: center;
+
+  padding: 15px 20px;
+
+  // slide up so the borders overlap
+  margin-bottom: 0px;
+  margin-top: -1px;
+
+  background-color: $brand-secondary;
+
+  // Disabled state
+  &.disabled,
+  &.disabled:hover,
+  &.disabled:focus {
+    background-color: $gray-light;
+    color: lighten($nav-link, 25 );
+    cursor: $cursor-disabled;
+  }
+
+  // Active class on item itself, not parent
+  &.selected,
+  &.active,
+  &.active:hover,
+  &.active:focus {
+    z-index: 2; // Place active items above their siblings for proper border styling
+    color: $nav-link;
+    font-weight: 600;
+    background-color: $white;
+    border-top: 1px solid $app-border-color;
+    border-bottom: 1px solid $app-border-color;
+
+    .side-nav-item-text {
+      color: $brand-link;
+    }
+  }
+}
+
+a.isc-side-nav-button {
+  text-decoration: none;
+  z-index: 1;
+  width: 100%;
+
+  // Hover state
+  &.active,
+  &:hover,
+  &:focus {
+    text-decoration: none;
+    color: darken( $nav-link, 20 );
+    background-color: $white;
+    border-top: 1px solid $app-border-color;
+    border-bottom: 1px solid $app-border-color;
+    z-index: 10;
+  }
+}
+
+// --------------------------------------
+// footer item styles
+// --------------------------------------
+
+
+.btn-footer{
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.label-footer{
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-left: 0;
+  margin-right: auto;
+  color: $nav-link;
+  font-size: 12px;
+  font-weight: normal;
+}
+
+.label-footer-bold{
+  @extend .label-footer;
+  margin-left: auto;
+  margin-right: 0;
+  font-weight: bolder;
+  text-transform: uppercase;
+}

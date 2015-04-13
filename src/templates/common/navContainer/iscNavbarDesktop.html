@@ -11,14 +11,13 @@
     <div class="left">
       <!-- logo -->
       <div class="isc-nav-item">
-        <span class="isc-logo" ng-include="'shared/svg/logo.html'"></span>
+        <span class="isc-logo"
+              ng-include="'common/svg/logo.html'"></span>
       </div>
-      <!--<img class="isc-logo isc-nav-item"-->
-           <!--src="assets/images/logo-big.png">-->
 
       <!-- app name -->
-      <div class="isc-app-name-container isc-nav-item left">
-        <span class="isc-app-name-divider">&nbsp;|&nbsp;</span>
+      <div class="isc-app-name-container">
+        <span class="isc-app-name-divider"></span>
         <span class="isc-app-name">{{'ISC_APP_NAME' | translate }}</span>
       </div>
     </div>
@@ -29,27 +28,32 @@
       <div ng-if="navbarCtrl.sessionModel.isAuthenticated()"
            class="isc-nav-item right">
 
-        <!-- proxy select -->
-        <label class="isc-nav-label isc-nav-item right">{{'ISC_VIEWING' | translate}}:</label>
+        <!--proxy dd-->
+        <div class="isc-nav-item">
+          <label class="isc-nav-label" >{{'ISC_VIEWING' | translate}}:</label>
 
-        <div class="isc-styled-select-navbar proxy isc-nav-item right">
-          <select>
-            <option>Select an Option</option>
-            <option>Option 1</option>
-            <option>Option 2</option>
-          </select>
+          <div class="isc-styled-select-navbar proxy">
+            <select>
+              <option>please select...</option>
+              <option>Gladys Smith</option>
+              <option>The Pops</option>
+            </select>
+          </div>
         </div>
 
-        <!--user select-->
-        <label class="isc-nav-label isc-nav-item right">{{'ISC_USER' | translate}}:</label>
+        <!--user dd-->
+        <div class="isc-nav-item">
+          <label class="isc-nav-label" >{{'ISC_USER' | translate}}:</label>
 
-        <div class="isc-styled-select-navbar isc-nav-item right">
-          <select>
-            <option>Select an Option</option>
-            <option>Option 1</option>
-            <option>Option 2</option>
-          </select>
+          <div class="isc-styled-select-navbar">
+            <select>
+              <option>please select...</option>
+              <option>Gladys Smith</option>
+              <option>The Pops</option>
+            </select>
+          </div>
         </div>
+
       </div>
     </div>
   </div>
@@ -86,5 +90,6 @@
 
     </div>
   </div>
+
 
 </div>

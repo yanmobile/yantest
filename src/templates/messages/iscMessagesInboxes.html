@@ -1,0 +1,52 @@
+
+
+<div class="isc-in-out-box only-phab-plus"
+     ng-if="mssgCtrl.model.getCurrentMail().length > 0">
+  <table>
+    <thead>
+    <tr>
+      <th>
+        <div isc-check-box
+             ng-model="mssgCtrl.mailMessageService.selectedParams.allSelected"
+             on-toggle="mssgCtrl.mailMessageService.onSelectAll( selected )"></div>
+      </th>
+      <th></th>
+      <th><a href=""
+             ng-class="{'reverse':mssgCtrl.model.sortOptions.ascending, 'selected' : mssgCtrl.getColumnIsSelected('From')}"
+             ng-click="mssgCtrl.model.setCurrentSortOption( {sortField:'From', ascending:!mssgCtrl.model.sortOptions.ascending})">{{'ISC_FROM' | translate}}</a></th>
+
+      <th><a href=""
+             ng-class="{'reverse': mssgCtrl.model.sortOptions.ascending, 'selected' : mssgCtrl.getColumnIsSelected('Subject')}"
+             ng-click="mssgCtrl.model.setCurrentSortOption( {sortField:'Subject', ascending:!mssgCtrl.model.sortOptions.ascending})">{{'ISC_SUBJECT' | translate}}</a></th>
+
+      <th><a href=""
+             ng-class="{'reverse': mssgCtrl.model.sortOptions.ascending, 'selected' : mssgCtrl.getColumnIsSelected('Time')}"
+             ng-click="mssgCtrl.model.setCurrentSortOption( {sortField:'Time', ascending:!mssgCtrl.model.sortOptions.ascending})">{{'ISC_DATE' | translate}}</a></th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr isc-mail-message
+        ng-repeat="mail in mssgCtrl.model.getCurrentMail() | orderBy: mssgCtrl.model.sortOptions.sortField : mssgCtrl.model.sortOptions.ascending"
+        on-toggle-message="mssgCtrl.mailMessageService.onToggleMessage( mail )"
+        mail="mail"
+        index="$index" >
+    </tr>
+    </tbody>
+
+  </table>
+</div>
+
+<div class="isc-in-out-box-mobile only-phone"
+     ng-if="mssgCtrl.model.getCurrentMail().length !== 0">
+  <div isc-mail-message-mobile
+       ng-repeat="mail in mssgCtrl.model.getCurrentMail() | orderBy: mssgCtrl.model.sortOptions.sortField : mssgCtrl.model.sortOptions.ascending"
+       on-toggle-message="mssgCtrl.mailMessageService.onToggleMessage( mail )"
+       mail="mail">
+  </div>
+</div>
+
+<div class="isc-no-messages-warning"
+     ng-if="mssgCtrl.model.getCurrentMail().length === 0">
+  <h1>{{'ISC_NO_MESSAGE_WARNING' | translate}}</h1>
+</div>

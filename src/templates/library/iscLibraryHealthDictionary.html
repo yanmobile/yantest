@@ -1,0 +1,26 @@
+<div class="isc-page">
+
+  <h1 class="only-desktop"
+      ng-if="!navCtrl.sessionModel.isAuthenticated()">{{'ISC_LIBRARY_HEALTH_DICT' | translate}}</h1>
+  <h1 class="only-desktop"
+      ng-if="navCtrl.sessionModel.isAuthenticated()">{{navCtrl.sessionModel.getFullName()}}'s {{'ISC_LIBRARY_HEALTH_DICT' | translate}}</h1>
+
+  <h2>{{'ISC_LIBRARY_HEALTH_DICT_SUBTITLE' | translate}}</h2>
+  <h3>{{'ISC_LIBRARY_HEALTH_DICT_CALLOUT_1' | translate}}</h3>
+  <h3>{{'ISC_LIBRARY_HEALTH_DICT_CALLOUT_2' | translate}} </h3>
+
+  <hr>
+
+  <div ng-if="libCtrl.model.searchResults.results"
+       ng-repeat="item in libCtrl.model.searchResults.results"
+       isc-library-search-result-item item="item">
+    <hr ng-if="!$last">
+  </div>
+</div>
+
+
+
+
+
+
+

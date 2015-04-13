@@ -1,0 +1,16 @@
+<div class="search-result">
+
+    <h4 >
+      <a href="#"><span class="glyphicon glyphicon-comment"></span>&nbsp;{{item.Title | iscHtmlToPlainText }} </a>
+    </h4>
+
+
+    <p
+       ng-if="!!item.Content">{{item.Content | iscHtmlToPlainText}}</p>
+
+    <a style="padding-left: 10px;"
+       target="_blank"
+       ng-href="{{item.URL}}">{{'ISC_LIBRARY_MORE_LINK' | translate}}</a>
+
+
+</div>

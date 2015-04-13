@@ -1,0 +1,64 @@
+
+<div class="jumbotron" style="min-height: 500px;">
+
+  <h3>{{ 'ISC_ACTIVATE_ACCOUNT_TITLE' | translate }}</h3>
+
+  <p class="text-info">{{ 'ISC_ACTIVATE_ACCOUNT_P1' | translate }}</p>
+
+  <form name="activateForm"
+        role="form"
+        ng-submit="loginCtrl.login( loginCtrl.credentials )"
+        novalidate>
+
+    <div class="form-group">
+      <label for="accessCode">{{'ISC_ACCESS_CODE' | translate}}:</label>
+
+      <input type="text"
+             id="accessCode"
+             class="form-control"
+             ng-required="true"
+             ng-model="infoCtrl.activateOptions.AccessCode"/>
+
+    </div>
+
+    <div class="form-group">
+      <label for="date">{{'ISC_BIRTHDAY' | translate}}:</label>
+
+      <div class="row">
+        <div class="input-group">
+          <input type="text"
+                 id="date"
+                 class="form-control"
+                 datepicker-popup="{{infoCtrl.dateFormat}}"
+                 ng-model="infoCtrl.activateOptions.Birthday"
+                 is-open="infoCtrl.dateOpen"
+                 max-date="'2015-06-22'"
+                 datepicker-options="infoCtrl.dateOptions"
+                 ng-required="true"
+                 close-text="{{'ISC_CLOSE' | translate }}" />
+          <span class="input-group-btn">
+                <button type="button" class="btn btn-default" ng-click="infoCtrl.openDate($event)"><i class="fa fa-calendar"></i></button>
+         </span>
+        </div>
+      </div>
+    </div>
+
+
+  </form>
+
+  <a ng-click="infoCtrl.back()"
+     class="btn btn-link"><span class="fa fa-chevron-circle-left"></span>&nbsp; {{'ISC_BACK' | translate}}</a>
+
+  <button type="submit"
+          class="btn btn-primary"
+          ng-disabled="activateForm.$invalid"
+          ng-click="infoCtrl.activateAccount()">{{'ISC_SUBMIT' | translate }}</button>
+
+</div>
+
+
+
+
+
+
+

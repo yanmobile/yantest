@@ -1,0 +1,71 @@
+.isc-home-content-wrapper{
+
+  @include box-sizing( border-box );
+
+  @media #{$phone} {
+    margin-top: $isc-gutter-sm;
+  }
+
+  @media #{$phab-plus} {
+    margin-top: $isc-gutter;
+  }
+}
+
+
+.home-tab-fake-wrapper{
+  @include box-sizing(border-box);
+
+  margin: -$isc-gutter;
+  //margin-top: 0;
+
+  @media #{$phablet} {
+    margin: -$isc-gutter-sm;
+    //border: 5px solid #00c9ee;
+  }
+
+  @media #{$tablet} {
+    margin: -$isc-gutter;
+    margin-top:  -$isc-gutter-sm;
+    //border: 5px solid #ee9700;
+  }
+}
+
+.form-wrapper-tablet{
+  @extend .isc-login-form-wrapper;
+  position: absolute;
+  top: 115px;
+  left: 20px;
+  width: 320px;
+  height: 350px !important;
+}
+
+.isc-login-form-group{
+  @extend .isc-form-group;
+  @media #{$phab-plus} {
+    @include  flex-direction( column );
+    @include  flex-box-align( flex-start );
+  }
+}
+
+.isc-mobile-greeting{
+
+  padding: $isc-gutter;
+
+  @media #{$phab-or-less} {
+    padding: $isc-gutter-sm;
+  }
+
+  h1{
+    font-size: 36px;
+    color: white;
+    font-weight: 400;
+    letter-spacing: 1px;
+    margin: 0;
+    padding: 0;
+  }
+
+  background-image: url("../assets/images/sky-header.jpg");
+  background-repeat: no-repeat;
+  -webkit-background-size: cover;
+  background-size: cover;
+}

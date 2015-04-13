@@ -1,0 +1,17 @@
+<div class="panel panel-info">
+
+	<div class="panel-heading">
+		<h4 style="text-transform: none;">{{ 'ISC_CUSTOMER_TAB_1_TITLE' | translate }}</h4>
+	</div>
+
+	<div class="panel-body">
+    <p>Put your stuff here</p>
+
+    <div>
+      <div ng-repeat="thing in customerTabCtrl.model.getData()">
+        <p>{{thing.title}}</p>
+      </div>
+    </div>
+
+	</div>
+</div>

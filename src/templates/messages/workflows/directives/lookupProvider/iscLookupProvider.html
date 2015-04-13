@@ -1,0 +1,18 @@
+<div>
+  <div class="isc-provider-lookup-element"
+       ng-class="{'blink-out-fade-in' : hideSelectedProvider }">
+
+    <isc-selected-provider selected-provider="listData.selectedProvider"
+                           search-providers="searchProviders()"></isc-selected-provider>
+
+    <isc-favorite-providers-list ng-if="!!listData.favoritesList"
+                            favorites-list="listData.favoritesList"
+                            on-select="onSelectFavorite( item )"></isc-favorite-providers-list>
+  </div>
+
+  <div class="isc-provider-lookup-element hide"
+       ng-class="{'blink-out-fade-in' : !hideSelectedProvider }">
+    <isc-provider-search on-close="closeSearchProviders()"></isc-provider-search>
+  </div>
+
+</div>

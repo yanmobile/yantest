@@ -1,0 +1,27 @@
+<div class="container-fluid">
+  <div class="row">
+
+      <div class="col-md-3">
+          <div class="list-group" style="border-radius:0px !important">
+            <a class="list-group-item"> Some Title </a>
+            <a class="list-group-item"
+               ng-repeat="tab in customerTabCtrl.secondaryNav | orderBy: customerTabCtrl.iscUiHelper.displayOrder"
+               ng-if="!tab.exclude"
+               ng-class="{active: item.selected}"
+               ui-sref="{{tab.state}}"
+               ng-click="selectItem(item)">{{item.name}}
+              <span ng-attr-class="{{'glyphicon ' + tab.iconClasses}}"></span>&nbsp;&nbsp;{{tab.translationKey | translate}}
+            </a>
+
+          </div>
+       </div>
+
+       <div class="col-md-9" ui-view>
+
+       </div>
+
+
+  </div>
+</div>
+
+

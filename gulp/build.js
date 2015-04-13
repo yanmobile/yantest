@@ -1,151 +1,307 @@
-'use strict';
+/**
+ * Created by douglasgoodman on 1/16/15.
+ */
 
-var gulp = require('gulp');
+(function(){
+  'use strict';
 
-var $ = require('gulp-load-plugins')({
-  pattern: ['gulp-*', 'main-bower-files', 'uglify-save-license', 'del']
-});
+  /*=====================================
+   ------    Configuration      ------- */
 
-gulp.task('styles', ['wiredep', 'injector:css:preprocessor'], function () {
-  return gulp.src(['src/app/index.less', 'src/app/vendor.less'])
-    .pipe($.less({
-      paths: [
-        'src/bower_components',
-        'src/app',
-        'src/components'
+// Please use config.js to override these selectively:
+  var config = {
+    dest: 'www',
+    cordova: true,
+    minify_images: true,
+
+    unit_test_dir: 'test/karma.conf.js',
+
+    vendor: {
+      js: [
+        './bower_components/jquery/dist/jquery.js',
+
+        './bower_components/lodash/dist/lodash.js',
+        './bower_components/greensock/src/minified/TweenMax.min.js',
+
+        './bower_components/angular/angular.js',
+
+        './bower_components/angular-ui-calendar/src/calendar.js',
+        './bower_components/fullcalendar/fullcalendar.js',
+
+        './bower_components/angular-ui-router/release/angular-ui-router.js',
+        './bower_components/angular-animate/angular-animate.js',
+        './bower_components/angular-filter/dist/angular-filter.js',
+        './bower_components/angular-sanitize/angular-sanitize.js',
+
+        './bower_components/angular-translate/angular-translate.js',
+        './bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js',
+
+        './bower_components/mobile-angular-ui/dist/js/mobile-angular-ui.gestures.js',
+        './bower_components/mobile-angular-ui/dist/js/mobile-angular-ui.migrate.js',
+        './bower_components/mobile-angular-ui/dist/js/mobile-angular-ui.js',
+
+        './bower_components/moment/moment.js',
+        './src/assets/plugins/progress-skylo/skylo.js',
+        './src/assets/plugins/plugins.js'
+      ],
+
+      fonts: [
+        './bower_components/font-awesome/fonts/fontawesome-webfont.*'
+      ],
+
+      css: [
+        './bower_components/bootstrap/dist/css/bootstrap.min.css'
       ]
-    }))
-    .on('error', function handleError(err) {
-      console.error(err.toString());
-      this.emit('end');
-    })
-    .pipe($.autoprefixer('last 1 version'))
-    .pipe(gulp.dest('.tmp/app/'));
-});
+    }
+  };
 
-gulp.task('injector:css:preprocessor', function () {
-  return gulp.src('src/app/index.less')
-    .pipe($.inject(gulp.src([
-        'src/{app,components}/**/*.less',
-        '!src/app/index.less',
-        '!src/app/vendor.less' 
-      ], {read: false}), {
-      transform: function(filePath) {
-        filePath = filePath.replace('src/app/', '');
-        filePath = filePath.replace('src/components/', '../components/');
-        return '@import \'' + filePath + '\';';
-      },
-      starttag: '// injector',
-      endtag: '// endinjector',
-      addRootSlash: false
-    }))
-    .pipe(gulp.dest('src/app/'));
-});
+  /*-------  End of Configuration  --------
+  ========================================*/
 
-gulp.task('injector:css', ['styles'], function () {
-  return gulp.src('src/index.html')
-    .pipe($.inject(gulp.src([
-        '.tmp/{app,components}/**/*.css',
-        '!.tmp/app/vendor.css'
-      ], {read: false}), {
-      ignorePath: '.tmp',
-      addRootSlash: false
-    }))
-    .pipe(gulp.dest('src/'));
-});
 
-gulp.task('jshint', function () {
-  return gulp.src('src/{app,components}/**/*.js')
-    .pipe($.jshint())
-    .pipe($.jshint.reporter('jshint-stylish'));
-});
+  /*========================================
+   =                 require                =
+   ========================================*/
 
-gulp.task('injector:js', ['jshint', 'injector:css'], function () {
-  return gulp.src('src/index.html')
-    .pipe($.inject(gulp.src([
-        'src/{app,components}/**/*.js',
-        '!src/{app,components}/**/*.spec.js',
-        '!src/{app,components}/**/*.mock.js'
-      ]).pipe($.angularFilesort()), {
-      ignorePath: 'src',
-      addRootSlash: false
-    }))
-    .pipe(gulp.dest('src/'));
-});
+  //require('require-dir')('./gulp');
 
-gulp.task('partials', function () {
-  return gulp.src('src/{app,components}/**/*.html')
-    .pipe($.minifyHtml({
-      empty: true,
-      spare: true,
-      quotes: true
-    }))
-    .pipe($.angularTemplatecache('templateCacheHtml.js', {
-      module: 'hsUiAngularCore'
-    }))
-    .pipe(gulp.dest('.tmp/inject/'));
-});
+  var gulp         = require('gulp'),
+    connect        = require('gulp-connect'),
+    concat         = require('gulp-concat'),
+    cssmin         = require('gulp-cssmin'),
+    ignore         = require('gulp-ignore'),
+    imagemin       = require('gulp-imagemin'),
+    karma          = require('karma').server,
+    less           = require('gulp-less'),
+    mobilizer      = require('gulp-mobilizer'),
+    order          = require('gulp-order'),
+    path           = require('path'),
+    pngcrush       = require('imagemin-pngcrush'),
+    ngAnnotate     = require('gulp-ng-annotate'),
+    ngFilesort     = require('gulp-angular-filesort'),
+    rename         = require('gulp-rename'),
+    replace        = require('gulp-replace'),
+    sass           = require('gulp-sass'),
+    seq            = require('run-sequence'),
+    sourcemaps     = require('gulp-sourcemaps'),
+    streamqueue    = require('streamqueue'),
+    templateCache  = require('gulp-angular-templatecache'),
+    uglify         = require('gulp-uglify'),
+    wiredep        = require('wiredep'),
+    zip            = require('gulp-zip');
 
-gulp.task('html', ['wiredep', 'injector:css', 'injector:js', 'partials'], function () {
-  var htmlFilter = $.filter('*.html');
-  var jsFilter = $.filter('**/*.js');
-  var cssFilter = $.filter('**/*.css');
-  var assets;
+  var $ = require('gulp-load-plugins')({
+    pattern: ['gulp-*', 'main-bower-files', 'del', 'path']
+  });
 
-  return gulp.src('src/*.html')
-    .pipe($.inject(gulp.src('.tmp/inject/templateCacheHtml.js', {read: false}), {
-      starttag: '<!-- inject:partials -->',
-      ignorePath: '.tmp',
-      addRootSlash: false
-    }))
-    .pipe(assets = $.useref.assets())
-    .pipe($.rev())
-    .pipe(jsFilter)
-    .pipe($.ngAnnotate())
-    .pipe($.uglify({preserveComments: $.uglifySaveLicense}))
-    .pipe(jsFilter.restore())
-    .pipe(cssFilter)
-    .pipe($.replace('bower_components/bootstrap/fonts','fonts'))
-    .pipe($.csso())
-    .pipe(cssFilter.restore())
-    .pipe(assets.restore())
-    .pipe($.useref())
-    .pipe($.revReplace())
-    .pipe(htmlFilter)
-    .pipe($.minifyHtml({
-      empty: true,
-      spare: true,
-      quotes: true
-    }))
-    .pipe(htmlFilter.restore())
-    .pipe(gulp.dest('dist/'))
-    .pipe($.size({ title: 'dist/', showFiles: true }));
-});
+  /*================================================
+   =            Report Errors to Console           =
+   ================================================*/
 
-gulp.task('images', function () {
-  return gulp.src('src/assets/images/**/*')
-    .pipe($.imagemin({
-      optimizationLevel: 3,
-      progressive: true,
-      interlaced: true
-    }))
-    .pipe(gulp.dest('dist/assets/images/'));
-});
+  gulp.on('err', function(e) {
+    console.log(e.err.stack);
+  });
 
-gulp.task('fonts', function () {
-  return gulp.src($.mainBowerFiles())
-    .pipe($.filter('**/*.{eot,svg,ttf,woff}'))
-    .pipe($.flatten())
-    .pipe(gulp.dest('dist/fonts/'));
-});
+  function handleError(err) {
+    console.error(err.toString());
+    this.emit('end');
+  }
 
-gulp.task('misc', function () {
-  return gulp.src('src/**/*.ico')
-    .pipe(gulp.dest('dist/'));
-});
+  /*=========================================
+   =            Clean dest folder            =
+   =========================================*/
 
-gulp.task('clean', function (done) {
-  $.del(['dist/', '.tmp/'], done);
-});
+  gulp.task('clean', function( done ){
+    $.del([ 'www/**', '.tmp-css/**'], done );
+  });
 
-gulp.task('build', ['html', 'images', 'fonts', 'misc']);
+  /*=========================================
+   =            jshint            =
+   =========================================*/
+
+  gulp.task('jshint', function () {
+    return gulp.src('src/js/**/*.js')
+        .pipe($.jshint())
+        .pipe($.jshint.reporter('jshint-stylish'))
+        .pipe($.size());
+  });
+
+  /*==================================
+   =            Copy fonts            =
+   ==================================*/
+
+  gulp.task('fonts', function() {
+    return gulp.src( config.vendor.fonts )
+      .pipe( gulp.dest( path.join( config.dest, 'fonts' )));
+  });
+
+
+  /*==================================
+   =            Copy css            =
+   ==================================*/
+
+  gulp.task('vendor:css', function() {
+    return gulp.src( config.vendor.css )
+      .pipe( gulp.dest( path.join( config.dest, 'css' )));
+  });
+
+  /*==================================
+   =           Copy assets           =
+   ==================================*/
+
+  gulp.task('i18n', function() {
+    return gulp.src( ['./src/assets/i18n/**'] )
+        .pipe(gulp.dest(path.join(config.dest, 'assets/i18n')));
+  });
+
+  gulp.task('configuration', function() {
+    return gulp.src( ['./src/assets/configuration/**'] )
+        .pipe(gulp.dest(path.join(config.dest, 'assets/configuration')));
+  });
+
+  gulp.task('mocks', function() {
+    return gulp.src( ['./src/assets/mockData/**'] )
+        .pipe(gulp.dest(path.join(config.dest, 'assets/mockData')));
+  });
+
+  gulp.task('assets', function( done ){
+    var tasks = ['i18n', 'configuration', 'mocks'];
+    seq( tasks, done );
+  });
+
+  /*=====================================
+   =            Minify images           =
+   =                                    =
+   this will pull in images from src/assets and src/js/common/assets
+   as well as any images in the plugins directory
+   =====================================*/
+
+  gulp.task('images', function () {
+    var stream = gulp.src(['./src/assets/images/**/*', './src/js/common/assets/images/**/*', '.src/assets/plugins/**/*.{jpg,png}']);
+
+    if (config.minify_images) {
+      stream = stream.pipe(imagemin({
+        progressive: true,
+        svgoPlugins: [{removeViewBox: false}],
+        use: [pngcrush()]
+      }))
+    }
+
+    return stream.pipe(gulp.dest(path.join(config.dest, 'assets/images')));
+  });
+
+  /*=========================================
+   =               styles                   =
+   =========================================*/
+
+  gulp.task('sass', ['wiredep'],  function () {
+    return gulp.src(
+      ['./src/assets/sass/main.scss'] )
+      .pipe($.sass() )
+      .on('error', handleError)
+      .pipe(mobilizer('app.css', {
+        'app.css': {
+          hover: 'exclude',
+          screens: ['0px']
+        },
+        'hover.css': {
+          hover: 'only',
+          screens: ['0px']
+        }
+      }))
+      //.pipe(cssmin())
+      .pipe(gulp.dest('.tmp-css'))
+      .pipe(concat('app.css'))
+      .pipe(rename({basename: "main", suffix: '.min'}))
+      .pipe(gulp.dest(path.join(config.dest, 'css')))
+      .pipe($.size());
+  });
+
+  /*====================================================================
+   =            Compile and minify js generating source maps            =
+   ====================================================================*/
+// - Orders ng deps automatically
+// - Precompile templates to ng templateCache
+
+  gulp.task('js', function() {
+    streamqueue({ objectMode: true },
+      gulp.src(config.vendor.js),
+      gulp.src('./src/js/**/*.js').pipe(ngFilesort()),
+      gulp.src(['src/templates/**/*.html']).pipe(templateCache({ module: 'iscHsCommunityAngular' }))
+    )
+      .pipe(sourcemaps.init())
+      .pipe(concat('app.js'))
+      .pipe(ngAnnotate())
+      //.pipe(uglify())
+      .pipe(rename({suffix: '.min'}))
+      .pipe(sourcemaps.write('.'))
+      .pipe(gulp.dest(path.join(config.dest, 'js')));
+  });
+
+
+  gulp.task('js:phonegap', function() {
+    streamqueue({ objectMode: true },
+      gulp.src(config.vendor.js),
+      gulp.src('./src/js/**/*.js').pipe(ngFilesort()),
+      gulp.src(['src/templates/phonegap/**/*.html']).pipe(templateCache({ module: 'iscHsCommunityAngular' }))
+    )
+      .pipe(sourcemaps.init())
+      .pipe(concat('app.js'))
+      .pipe(ngAnnotate())
+      //.pipe(uglify())
+      .pipe(rename({suffix: '.min'}))
+      .pipe(sourcemaps.write('.'))
+      .pipe(gulp.dest(path.join(config.dest, 'js')));
+  });
+
+  /*=================================================
+   =            Copy html files to dest              =
+   =================================================*/
+
+  gulp.task('html', function() {
+    var inject = [];
+
+    if (config.cordova) {
+      inject.push('<script src="cordova.js"></script>');
+    }
+
+    gulp.src(['src/index.html'])
+      .pipe( replace( '<!-- inject:js -->', inject.join('\n') ))
+      .pipe(gulp.dest(config.dest));
+
+    gulp.src(['config.xml'])
+      .pipe(gulp.dest(config.dest));
+  });
+
+  /*=================================================
+   =            create zip file for build           =
+   =================================================*/
+
+  gulp.task('add-zip', function() {
+    var inject = [];
+
+    if (config.cordova) {
+      inject.push('<script src="cordova.js"></script>');
+    }
+
+    gulp.src(['www/*'])
+      .pipe( zip( 'archive.zip' ))
+      .pipe(gulp.dest('dist'));
+
+  });
+
+  /*======================================
+   =                BUILD                =
+   ======================================*/
+
+  gulp.task('build', function(done) {
+    var tasks = ['html', 'fonts', 'images', 'js', 'assets', 'sass'];
+    seq('clean', tasks,  done);
+  });
+
+  gulp.task('build:phonegap', function(done) {
+    var tasks = ['html', 'jshint', 'fonts', 'images', 'js:phonegap', 'assets', 'sass'];
+    seq('clean', tasks,  done);
+  });
+
+})();

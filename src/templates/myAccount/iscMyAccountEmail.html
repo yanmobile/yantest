@@ -1,0 +1,116 @@
+<div class="isc-page">
+  <h1 class="only-desktop">{{navCtrl.sessionModel.getFullName()}}'s {{'ISC_MY_ACCT_EMAIL_TITLE' | translate}}</h1>
+
+  <!--------------------- -->
+  <!-- hide password form -->
+  <!--------------------- -->
+  <form class="isc-form"
+        autocomplete="off"
+        name="changeEmailForm"
+        id="changeEmailFormHide"
+        role="form"
+        ng-submit="myAcctCtrl.changeEmail()"
+        ng-hide="myAcctCtrl.showEmailPagePassword"
+        novalidate>
+
+    <!-- new email -->
+    <div class="isc-form-group">
+      <label class="isc-form-item-label"
+             for="email">{{'ISC_NEW_EMAIL' | translate}}:</label>
+
+      <input type="email"
+             class="isc-item-wrapper-4"
+             id="email"
+             placeholder="{{'ISC_NEW_EMAIL_PLACEHOLDER' | translate}}"
+             required
+             ng-model="myAcctCtrl.changeEmailData.NewEmail">
+    </div>
+
+    <!-- password -->
+    <div class="isc-form-group">
+      <label class="isc-form-item-label"
+             for="password">{{'ISC_PASSWORD' | translate}}:</label>
+
+      <input type="password"
+             class="isc-item-wrapper-4"
+             id="password"
+             placeholder="{{'ISC_PASSWORD_PLACEHOLDER' | translate}}"
+             required
+             ng-model="myAcctCtrl.changePasswordData.NewPassword">
+    </div>
+
+    <!--show password checkbox-->
+    <div class="isc-form-group right">
+      <label ng-click="myAcctCtrl.showEmailPagePassword = !myAcctCtrl.showEmailPagePassword"
+             class="isc-form-item-label">{{'Show Password' | translate}}: </label>
+
+      <div id="showEmailPagePassword"
+           isc-check-box
+           ng-model="myAcctCtrl.showEmailPagePassword"></div>
+    </div>
+
+    <!--submit-->
+    <div class="isc-form-group center">
+      <button type="submit"
+              ng-disabled="changeEmailForm.$invalid"
+              class="isc-btn-primary">{{'ISC_CHANGE_EMAIL' | translate}}</button>
+    </div>
+  </form>
+
+  <!--------------------- -->
+  <!-- show password form -->
+  <!--------------------- -->
+  <form class="isc-form"
+        autocomplete="off"
+        name="changeEmailForm"
+        id="changeEmailForm"
+        role="form"
+        ng-submit="myAcctCtrl.changePassword()"
+        ng-show="myAcctCtrl.showEmailPagePassword"
+        novalidate>
+
+    <!-- new email -->
+    <div class="isc-form-group">
+      <label class="isc-form-item-label"
+             for="email2">{{'ISC_NEW_EMAIL' | translate}}:</label>
+
+      <input type="text"
+             class="isc-item-wrapper-4"
+             id="email2"
+             placeholder="{{'ISC_NEW_EMAIL_PLACEHOLDER' | translate}}"
+             required
+             ng-model="myAcctCtrl.changeEmailData.NewEmail">
+    </div>
+
+    <!-- password -->
+    <div class="isc-form-group">
+      <label class="isc-form-item-label"
+             for="password2">{{'ISC_PASSWORD' | translate}}:</label>
+
+      <input type="text"
+             class="isc-item-wrapper-4"
+             id="password2"
+             placeholder="{{'ISC_PASSWORD_PLACEHOLDER' | translate}}"
+             required
+             ng-model="myAcctCtrl.changePasswordData.NewPassword">
+    </div>
+
+    <!--checkbox to show / hide password-->
+    <div class="isc-form-group right">
+      <label ng-click="myAcctCtrl.showEmailPagePassword = !myAcctCtrl.showEmailPagePassword"
+             class="isc-form-item-label">{{'Show Password' | translate}}: </label>
+      <div isc-check-box
+           ng-model="myAcctCtrl.showEmailPagePassword"></div>
+    </div>
+
+    <!--submit-->
+    <div class="isc-form-group center">
+      <button type="submit"
+              ng-disabled="changeEmailForm.$invalid"
+              class="isc-btn-primary">{{'ISC_CHANGE_EMAIL' | translate}}</button>
+    </div>
+
+  </form>
+
+</div>
+

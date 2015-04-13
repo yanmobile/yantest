@@ -1,0 +1,27 @@
+
+// to change themes, comment in/out the right variables
+// then comment in/out the right theme file
+@import "isc-variables";
+
+@import "theme-sky/isc-theme-sky";
+//@import "theme-solid/isc-theme-solid";
+
+@import "isc-utils";
+@import "isc-mixins";
+
+@import "isc-app";
+@import "isc-alerts";
+@import "isc-account-summary";
+@import "isc-buttons";
+@import "isc-forms";
+@import "isc-footer";
+@import "isc-main-tabs";
+@import "isc-page-components";
+@import "isc-nav-bar";
+@import "isc-panels";
+@import "isc-proxies";
+@import "isc-secondary-nav";
+@import "isc-side-nav";
+@import "isc-tables";
+
+

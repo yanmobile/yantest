@@ -1,0 +1,40 @@
+<div>
+
+  <div>
+    <button class="isc-btn-dropdown"
+            ng-click="showAppointmentTypes()">{{modelData.appointmentType.label | translate}}</button>
+  </div>
+
+  <div class="isc-radio-selects"
+       ng-class="{'fade-in-out' : showRadioButtons }">
+
+
+      <div ng-repeat="selectedType in modelData.appointmentType.allTypes"
+           isc-radio-group="modelData.appointmentType.allTypes"
+           ng-if="modelData.appointmentType.allTypes.length > 0">
+
+        <div class="isc-form-group">
+          <input type="radio"
+                 id="rb{{$index}}"
+                 name="type"
+                 ng-change="doValidation()"
+                 ng-model="modelData.appointmentType.selectedType"
+                 ng-value="selectedType">
+          <label for="rb{{$index}}">&nbsp;{{ selectedType.label | translate}}</label>
+        </div>
+
+        <div class="isc-inline-text-area"
+             ng-if="selectedType.reasonRequired && modelData.appointmentType.selectedType === selectedType">
+        <textarea class='autoExpand'
+                  rows='3'
+                  data-min-rows='3'
+                  ng-model="selectedType.reason"
+                  ng-change="doValidation()"
+                  ng-required
+                  placeholder="{{'ISC_ENTER_REASON' | translate}}"></textarea>
+        </div>
+      </div>
+
+  </div>
+
+</div>

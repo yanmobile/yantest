@@ -1,0 +1,28 @@
+
+<div class="jumbotron" style="min-height: 500px;">
+
+  <h3>{{ 'ISC_TERMS_AND_CONDITIONS_TITLE' | translate }}</h3>
+
+  <div class="pre-scrollable"
+       style="max-height: 200px"
+       ng-bind-html="infoCtrl.termsAndConditions"></div>
+
+  <a ng-click="infoCtrl.back()"
+     class="btn btn-link"><span class="fa fa-chevron-circle-left"></span>&nbsp; {{'ISC_BACK' | translate}}
+  </a>
+
+  <button type="submit"
+          class="btn btn-primary"
+          ng-disabled="activateForm.$invalid"
+          ui-sref="index.info.enroll"
+          ng-click="infoCtrl.acceptTermsAndConditions()">{{'ISC_AGREE_TO_TERMS' | translate }}
+    <span class="fa fa-chevron-circle-right"></span>
+  </button>
+
+</div>
+
+
+
+
+
+

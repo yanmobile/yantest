@@ -1,0 +1,23 @@
+
+
+<div class="isc-message-mobile isc-td-clickable">
+  <div class="icons pull-left">
+    <div isc-check-box
+         class="pull-left"
+         ng-model="mail.$$selected"
+         on-toggle="mmCtrl.toggleSelected( selected )"></div>
+
+    <span class="isc-read-message-icon isc-td-clickable pull-left"
+          ng-click="mmCtrl.onSelectMessage( mmCtrl.mail )"
+          ng-include="'common/svg/isc-read-message-icon.html'"></span>
+  </div>
+
+  <div class="content">
+    <span class="isc-message-from clear-both"
+          ng-click="mmCtrl.onSelectMessage( mmCtrl.mail )">{{::mmCtrl.actor}}</span>
+
+    <span class="isc-message-subject clear-both">{{::mmCtrl.mail.Subject}}</span>
+    <span class="isc-message-subject clear-both">{{::mmCtrl.mail.Time | iscDateFilter:true}}</span>
+  </div>
+
+</div>
