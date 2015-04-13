@@ -27,15 +27,11 @@
     del([ 'src/js/common/*', 'src/templates/common/*' ], done );
   });
 
-  // phonegap
-  gulp.task('clean-common:phonegap', function (done) {
-    del([ 'src/js/common/*', 'src/templates/phonegap/common/*' ], done );
-  });
-
-  // both
-  gulp.task('clean-common', function (done) {
-    del([ 'src/js/common/*', 'src/templates/common/*', 'src/templates/phonegap/common/*' ], done );
-  });
+  //// phonegap
+  //gulp.task('clean-common:phonegap', function (done) {
+  //  del([ 'src/js/common/*', 'src/templates/phonegap/common/*' ], done );
+  //});
+  //
 
   /*==============================
    =     inject js and assets    =
@@ -85,26 +81,25 @@
   });
 
 
-
   /*==============================
    =       inject templates      =
    ===============================*/
 
   gulp.task('inject-common-templates', function () {
     var html = ['../hs-ui-angular-core/src/templates/**/*'];
-    var dest = 'src/templates/desktop/';
+    var dest = 'src/templates/';
 
     return gulp.src( html )
       .pipe( gulp.dest( dest ));
   });
 
-  gulp.task('inject-common-templates:phonegap', function () {
-    var html = ['../hs-ui-angular-core/src/templates/**/*'];
-    var dest = 'src/templates/phonegap/';
-
-    return gulp.src( html )
-      .pipe( gulp.dest( dest ));
-  });
+  //gulp.task('inject-common-templates:phonegap', function () {
+  //  var html = ['../hs-ui-angular-core/src/templates/**/*'];
+  //  var dest = 'src/templates/phonegap/';
+  //
+  //  return gulp.src( html )
+  //    .pipe( gulp.dest( dest ));
+  //});
 
   /*==============================
    =           copy              =
@@ -130,19 +125,19 @@
   // js + desktop html
   gulp.task('add-common', function(done) {
     var tasks = ['inject-common-js','inject-common-templates' ];
-    seq('clean-common:desktop', tasks, done);
-  });
-
-  // js + phonegap html
-  gulp.task('add-common:phonegap', function(done) {
-    var tasks = ['inject-common-js','inject-common-templates:phonegap' ];
-    seq('clean-common:phonegap', tasks, done);
-  });
-
-  // all
-  gulp.task('add-common:all', function(done) {
-    var tasks = ['inject-common-js','inject-common-templates','inject-common-templates:phonegap' ];
     seq('clean-common', tasks, done);
   });
+
+  //// js + phonegap html
+  //gulp.task('add-common:phonegap', function(done) {
+  //  var tasks = ['inject-common-js','inject-common-templates:phonegap' ];
+  //  seq('clean-common:phonegap', tasks, done);
+  //});
+  //
+  //// all
+  //gulp.task('add-common:all', function(done) {
+  //  var tasks = ['inject-common-js','inject-common-templates','inject-common-templates:phonegap' ];
+  //  seq('clean-common', tasks, done);
+  //});
 
 })();
