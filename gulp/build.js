@@ -72,7 +72,6 @@
     ignore         = require('gulp-ignore'),
     imagemin       = require('gulp-imagemin'),
     karma          = require('karma').server,
-    less           = require('gulp-less'),
     mobilizer      = require('gulp-mobilizer'),
     order          = require('gulp-order'),
     path           = require('path'),

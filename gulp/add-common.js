@@ -23,8 +23,8 @@
    ===============================*/
 
   // desktop
-  gulp.task('clean-common:desktop', function (done) {
-    del([ 'src/js/common/*', 'src/templates/desktop/common/*' ], done );
+  gulp.task('clean-common', function (done) {
+    del([ 'src/js/common/*', 'src/templates/common/*' ], done );
   });
 
   // phonegap
@@ -34,7 +34,7 @@
 
   // both
   gulp.task('clean-common', function (done) {
-    del([ 'src/js/common/*', 'src/templates/desktop/common/*', 'src/templates/phonegap/common/*' ], done );
+    del([ 'src/js/common/*', 'src/templates/common/*', 'src/templates/phonegap/common/*' ], done );
   });
 
   /*==============================
@@ -50,10 +50,47 @@
   });
 
   /*==============================
+   =   inject gulp and configs   =
+   ===============================*/
+  gulp.task('inject-gulp', function () {
+    var src = ['../hs-ui-angular-core/gulp/**/*'];
+    var dest = 'gulp/';
+
+    return gulp.src( src )
+      .pipe( gulp.dest( dest ));
+  });
+
+  gulp.task('inject-main-configs', function () {
+    var src = [
+      '../hs-ui-angular-core/bower.json',
+      '../hs-ui-angular-core/gulpfile.js',
+      '../hs-ui-angular-core/package.json'
+    ];
+    var dest = '';
+
+    return gulp.src( src )
+      .pipe( gulp.dest( dest ));
+  });
+
+  gulp.task('inject-test-configs', function () {
+    var src = [
+      '../hs-ui-angular-core/karma.conf.js',
+      '../hs-ui-angular-core/protractor.conf.js'
+    ];
+
+    var dest = 'test/';
+
+    return gulp.src( src )
+      .pipe( gulp.dest( dest ));
+  });
+
+
+
+  /*==============================
    =       inject templates      =
    ===============================*/
 
-  gulp.task('inject-common-templates:desktop', function () {
+  gulp.task('inject-common-templates', function () {
     var html = ['../hs-ui-angular-core/src/templates/**/*'];
     var dest = 'src/templates/desktop/';
 
@@ -73,6 +110,17 @@
    =           copy              =
    ===============================*/
 
+  gulp.task('add-configs', function(done) {
+    var tasks = [
+      'inject-gulp',
+      'inject-main-configs',
+      'inject-test-configs'
+    ];
+
+    seq( tasks, done);
+  });
+
+
   // js only
   gulp.task('add-common:js', function(done) {
     var tasks = ['inject-common-js' ];
@@ -80,8 +128,8 @@
   });
 
   // js + desktop html
-  gulp.task('add-common:desktop', function(done) {
-    var tasks = ['inject-common-js','inject-common-templates:desktop' ];
+  gulp.task('add-common', function(done) {
+    var tasks = ['inject-common-js','inject-common-templates' ];
     seq('clean-common:desktop', tasks, done);
   });
 
@@ -93,7 +141,7 @@
 
   // all
   gulp.task('add-common:all', function(done) {
-    var tasks = ['inject-common-js','inject-common-templates:desktop','inject-common-templates:phonegap' ];
+    var tasks = ['inject-common-js','inject-common-templates','inject-common-templates:phonegap' ];
     seq('clean-common', tasks, done);
   });
 
