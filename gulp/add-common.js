@@ -49,7 +49,6 @@
     var src = [
       '../hs-ui-angular-core/bower.json',
       '../hs-ui-angular-core/gulpfile.js',
-      '../hs-ui-angular-core/config.xml',
       '../hs-ui-angular-core/package.json'
     ];
     var dest = '';
@@ -65,6 +64,15 @@
     ];
 
     var dest = 'test/';
+
+    return gulp.src( src )
+      .pipe( gulp.dest( dest ));
+  });
+
+  gulp.task('inject-phonegap-config', function () {
+    var src = ['../hs-ui-angular-core/src/config.xml'];
+
+    var dest = 'src/';
 
     return gulp.src( src )
       .pipe( gulp.dest( dest ));
@@ -112,7 +120,8 @@
     var tasks = [
       'inject-gulp',
       'inject-main-configs',
-      'inject-test-configs'
+      'inject-test-configs',
+      'inject-phonegap-config'
     ];
 
     seq( tasks, done);
