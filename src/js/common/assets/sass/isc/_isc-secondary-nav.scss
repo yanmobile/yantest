@@ -25,7 +25,7 @@
 
   h1{
     padding-top: 15px;
-    margin: 0 0 0 10px;
+    margin: 0 0 10px 10px;
     font-size: 13px;
     text-transform: uppercase;
     color: $brand-primary-dark;
@@ -40,11 +40,12 @@
     max-width: 300px;
     background-color: $brand-secondary;
     border: 1px solid $app-border-color;
+    padding: 10px;
   }
 
   @media #{$mobile}{
-//    height: auto;
-//    width: auto;
+    //    height: auto;
+    //    width: auto;
     background-color: transparent;
     border: none;
   }
@@ -243,7 +244,7 @@ a.isc-secondary-nav-item {
 // nav dropdown for mobile pages
 .isc-secondary-nav-mobile-dropdown-wrapper{
   width: 100%;
-//  border: 1px solid blueviolet;
+  //  border: 1px solid blueviolet;
 
 }
 
@@ -255,7 +256,7 @@ a.isc-secondary-nav-item {
 
   cursor: default;
   cursor: pointer;
-//  border: 2px solid green;
+  //  border: 2px solid green;
 
   &:before{
     //border: 2px solid $brand-page-title-color;
@@ -275,10 +276,10 @@ a.isc-secondary-nav-item {
 
 .isc-secondary-nav-link {
   display: inline-block;
-//  white-space: nowrap;
-//  overflow: hidden;
-//  text-overflow: ellipsis;
-//  border: 1px solid red;
+  //  white-space: nowrap;
+  //  overflow: hidden;
+  //  text-overflow: ellipsis;
+  //  border: 1px solid red;
   max-width: 90%;
   @include box-sizing( border-box );
 
