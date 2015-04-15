@@ -1,9 +1,6 @@
 /**
  * Created by dgoodman on 2/12/15.
  */
-/**
- * Created by douglas goodman on 2/12/15.
- */
 
 (function(){
   'use strict';
@@ -17,10 +14,16 @@
     // vars
     // ----------------------------
 
-    var X_OFFSET = 50;
+    var GUTTER = 50;
+    var GUTTER_SM = 20;
 
-    var PHONE_MAX = 640;
-    var TABLET_MAX = 960;
+    var PHABLET_MIN = 640;
+    var TABLET_MIN = 960;
+    var DESKTOP_MIN = 1200;
+
+    var PHONE_MAX = PHABLET_MIN - 1;
+    var PHABLET_MAX = TABLET_MIN - 1;
+    var TABLET_MAX = DESKTOP_MIN - 1;
 
     var SIDE_NAV_MIN_H = 450;
     var SECONDARY_NAV_MIN_H = 600;
@@ -34,7 +37,9 @@
       getAppHeight: getAppHeight,
 
       isPhone: isPhone,
+      isPhablet: isPhablet,
       isTablet: isTablet,
+      isDesktop: isDesktop,
 
       getElementXPos: getElementXPos,
       getElementYPos: getElementYPos,
@@ -65,9 +70,19 @@
       return getAppWidth() <= PHONE_MAX;
     }
 
+    function isPhablet(){
+      var appW = getAppWidth();
+      return appW <= PHABLET_MAX && appW >= PHABLET_MIN;
+    }
+
     function isTablet(){
       var appW = getAppWidth();
-      return appW <= TABLET_MAX && appW > PHONE_MAX;
+      return appW <= TABLET_MAX && appW >= TABLET_MIN;
+    }
+
+    function isDesktop(){
+      var appW = getAppWidth();
+      return appW >= DESKTOP_MIN;
     }
 
     function getElementXPos( elemW, offset ){
