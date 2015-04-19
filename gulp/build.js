@@ -27,6 +27,7 @@
 
         './bower_components/angular-ui-calendar/src/calendar.js',
         './bower_components/fullcalendar/fullcalendar.js',
+        './bower_components/angular-utils-pagination/dirPagination.js',
 
         './bower_components/angular-ui-router/release/angular-ui-router.js',
         './bower_components/angular-animate/angular-animate.js',
@@ -86,8 +87,7 @@
     streamqueue    = require('streamqueue'),
     templateCache  = require('gulp-angular-templatecache'),
     uglify         = require('gulp-uglify'),
-    wiredep        = require('wiredep'),
-    zip            = require('gulp-zip');
+    wiredep        = require('wiredep');
 
   var $ = require('gulp-load-plugins')({
     pattern: ['gulp-*', 'main-bower-files', 'del', 'path']
@@ -176,7 +176,7 @@
    =====================================*/
 
   gulp.task('images', function () {
-    var stream = gulp.src(['./src/assets/images/**/*', './src/js/common/assets/images/**/*', '.src/assets/plugins/**/*.{jpg,png}']);
+    var stream = gulp.src(['./src/assets/images/**/*.{jpg,png,gif}', './src/js/common/assets/images/**/*.{jpg,png,gif}', '.src/assets/plugins/**/*.{jpg,png,gif}']);
 
     if (config.minify_images) {
       stream = stream.pipe(imagemin({

@@ -46,7 +46,6 @@
 
             views: {
               '@': {
-                //templateUrl: 'navContainer/iscNavContainer.html',
                 templateUrl: 'common/navContainer/iscNavContainer.html',
                 controller: 'iscNavigationController as navCtrl'
               }
@@ -70,6 +69,8 @@
         //$log.debug( 'iscNavContainer.run' );
 
         loadDataFromStoredSession();
+
+        var requestedState;
 
         // ------------------------
         // stateChange start
@@ -99,21 +100,23 @@
         // login success event
         $rootScope.$on( AUTH_EVENTS.loginSuccess, function(){
           //$log.debug( 'ischNavContainer.AUTH_EVENTS.loginSuccess');
-          $state.go( 'index.home' );
+          var nextState = requestedState ? requestedState.name : 'index.home';
+          $state.go( nextState );
+          requestedState = null;
         });
 
         // ------------------------
         // logout success event
         $rootScope.$on( AUTH_EVENTS.logoutSuccess, function(){
           //$log.debug( 'ischNavContainer.AUTH_EVENTS.logoutSuccess');
-          $state.go( 'index.login' );
+          $state.go( 'index.home' );
         });
 
         // ------------------------
         // sessionTimeout event
         $rootScope.$on( AUTH_EVENTS.sessionTimeout, function(){
           //$log.debug( 'ischNavContainer.AUTH_EVENTS.sessionTimeout');
-          $state.go( 'index.login' );
+          $state.go( 'index.home' );
         });
 
         // ------------------------
@@ -158,7 +161,7 @@
                 //$log.debug( '...going to login');
                 // if you arent logged in yet, bring the user to the log in page
                 $state.go( 'index.login' );
-                // op cit
+                requestedState = toState;
                 $rootScope.$broadcast( AUTH_EVENTS.notAuthenticated );
               }
             }
