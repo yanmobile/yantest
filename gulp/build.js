@@ -208,7 +208,7 @@
           screens: ['0px']
         }
       }))
-      //.pipe(cssmin())
+      .pipe(cssmin())
       .pipe(gulp.dest('.tmp-css'))
       .pipe(concat('app.css'))
       .pipe(rename({basename: "main", suffix: '.min'}))
@@ -231,27 +231,12 @@
       .pipe(sourcemaps.init())
       .pipe(concat('app.js'))
       .pipe(ngAnnotate())
-      //.pipe(uglify())
+      .pipe(uglify())
       .pipe(rename({suffix: '.min'}))
       .pipe(sourcemaps.write('.'))
       .pipe(gulp.dest(path.join(config.dest, 'js')));
   });
 
-
-  gulp.task('js:phonegap', function() {
-    streamqueue({ objectMode: true },
-      gulp.src(config.vendor.js),
-      gulp.src('./src/js/**/*.js').pipe(ngFilesort()),
-      gulp.src(['src/templates/phonegap/**/*.html']).pipe(templateCache({ module: 'iscHsCommunityAngular' }))
-    )
-      .pipe(sourcemaps.init())
-      .pipe(concat('app.js'))
-      .pipe(ngAnnotate())
-      //.pipe(uglify())
-      .pipe(rename({suffix: '.min'}))
-      .pipe(sourcemaps.write('.'))
-      .pipe(gulp.dest(path.join(config.dest, 'js')));
-  });
 
   /*=================================================
    =            Copy html files to dest              =
@@ -272,22 +257,6 @@
       .pipe(gulp.dest(config.dest));
   });
 
-  /*=================================================
-   =            create zip file for build           =
-   =================================================*/
-
-  gulp.task('add-zip', function() {
-    var inject = [];
-
-    if (config.cordova) {
-      inject.push('<script src="cordova.js"></script>');
-    }
-
-    gulp.src(['www/*'])
-      .pipe( zip( 'archive.zip' ))
-      .pipe(gulp.dest('dist'));
-
-  });
 
   /*======================================
    =                BUILD                =
@@ -298,9 +267,5 @@
     seq('clean', tasks,  done);
   });
 
-  gulp.task('build:phonegap', function(done) {
-    var tasks = ['html', 'jshint', 'fonts', 'images', 'js:phonegap', 'assets', 'sass'];
-    seq('clean', tasks,  done);
-  });
 
 })();
