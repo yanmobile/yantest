@@ -1,0 +1,26 @@
+
+	<div class="isc-dropdown isc-dd" id="{{dropId}}-main">
+		<div class="isc-drop-click isc-dd" ng-click="showHideItems(dropId,event)">&nbsp;</div>
+		<div  class="isc-dropdown-btn clickable isc-dd" id="{{dropId}}-block"  >
+			<div class="isc-dropdown-item {{dropId}}-btn isc-dd" id="{{dropId}}-btn"  ><span class="{{dropIcon}} isc-dd" > </span>&nbsp;{{dropTitle}}  </div>
+			<div  ng-repeat="item in listData" id="{{dropId}}-list"  ng-click="selectItem(item[listField])" class="isc-dropdown-item {{dropId}}-btn isc-dd" >{{item[listField] | translate}} <span class="{{dropIcon}} isc-dd" ></span></div>
+		</div>
+		<div class="isc-drop-icon isc-dd" id="{{dropId}}-icon" >
+			<svg width="11"
+				 height="15"
+				 viewBox="0 0 33 45">
+			  	<g>
+					<g>
+				  		<rect x="11.8" y="17.8" transform="matrix(-0.7071 0.7071 -0.7071 -0.7071 52.581 18.462)" width="21.4" height="4.6"/>
+					</g>
+			  	</g>
+			  	<g>
+					<g>
+				  		<rect x="-0.1" y="17.8" transform="matrix(0.7071 0.7071 -0.7071 0.7071 17.3277 -1.591)" width="21.4" height="4.6"/>
+					</g>
+			  	</g>
+			</svg>
+		</div>
+
+	</div>
+

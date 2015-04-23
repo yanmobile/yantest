@@ -1,0 +1,107 @@
+//DROPDOWN
+$isc-height-number: 25;
+$isc-dropdown-height: $isc-height-number + px;
+$isc-btn-color: #FFFFFF;
+#modal-dropdown{
+	visibility: hidden;
+}
+.isc-dropdown{
+	height: $isc-dropdown-height;
+	display:inline-block;
+	background-color:$isc-btn-color;
+	position:relative;
+	font-size: ($isc-height-number/2) + px;
+	font-weight: normal;
+	border: 1px solid lighten($color-darkGrey, 20);
+	min-width:75px;
+}
+.isc-dropdown-list{
+	background-color: $isc-btn-color;
+	top:$isc-height-number + 1 + px;
+	position:absolute;
+	left:0;
+	visibility: hidden;
+	border:1px solid lighten($color-darkGrey, 20);
+}
+
+.isc-dropdown-selection-list{
+	background-color: $isc-btn-color;
+	top:50px;
+	position:absolute;
+	left:550px;
+	visibility: visible;
+	border:1px solid lighten($color-darkGrey, 20);
+}
+.isc-dropdown-btn{
+	height:$isc-dropdown-height;
+	display:inline-block;
+	overflow:hidden;
+	background-color: $isc-btn-color;
+	overflow: hidden;
+  	text-overflow: ellipsis;
+  	cursor: pointer;
+  	white-space: nowrap;
+
+
+}
+.isc-dropdown-item{
+	padding:($isc-height-number/4) +px 10px;
+	background-color: $isc-btn-color;
+	height: $isc-dropdown-height;
+	white-space: nowrap;
+  	overflow: hidden;
+  	text-overflow: ellipsis;
+  	cursor: pointer;
+	// font-size: ($isc-height-number/3) + px;
+
+}
+.isc-dropdown-hidden{
+	@extend .isc-dropdown-item;
+	visibility: hidden;
+}
+.isc-dropdown-select-item{
+	@extend .isc-dropdown-item;
+	padding-right:30px;
+}
+
+.isc-dropdown-item:hover{
+	background-color: $brand-secondary;
+}
+.isc-dropdown-active{
+	overflow:visible;
+	position:absolute;
+}
+.isc-drop-icon{
+	width: 20px;
+	// border: 1px solid lighten($color-darkGrey, 20);
+	display:inline-block;
+	background-color:$isc-btn-color;
+	float:right;
+	// height: $isc-dropdown-height;
+	padding-left:5px;
+	margin-left: -1px;
+	position: relative;
+	font-size: .9em;
+	color:lighten($color-darkGrey,10);
+	padding-top:($isc-height-number/4)+px;
+
+}
+.isc-icon{
+	padding-top:($isc-height-number/4)+px;
+	padding-left:2px;
+	user-select: none;
+}
+.isc-drop-icon-active{
+	position:absolute;
+}
+.isc-drop-click{
+	background-color:$isc-btn-color;
+	width:100%;
+	position:absolute;
+	z-index:100000;
+	height:100%;
+	opacity:0;
+	cursor: pointer;
+}
+
+//END DROPDOWN
