@@ -27,13 +27,6 @@
     del([ 'src/js/common/*', 'src/templates/common/*' ], done );
   });
 
-  //// phonegap
-  //gulp.task('clean-common:phonegap', function (done) {
-  //  del([ 'src/js/common/*', 'src/templates/phonegap/common/*' ], done );
-  //});
-  //
-
-
   /*==============================
    =   inject gulp and configs   =
    ===============================*/
@@ -104,14 +97,6 @@
       .pipe( gulp.dest( dest ));
   });
 
-  //gulp.task('inject-common-templates:phonegap', function () {
-  //  var html = ['../hs-ui-angular-core/src/templates/**/*'];
-  //  var dest = 'src/templates/phonegap/';
-  //
-  //  return gulp.src( html )
-  //    .pipe( gulp.dest( dest ));
-  //});
-
   /*==============================
    =           copy              =
    ===============================*/
@@ -127,7 +112,6 @@
     seq( tasks, done);
   });
 
-
   // js only
   gulp.task('add-common:js', function(done) {
     var tasks = ['inject-common-js' ];
@@ -139,17 +123,5 @@
     var tasks = ['inject-common-js','inject-common-templates' ];
     seq('clean-common', tasks, done);
   });
-
-  //// js + phonegap html
-  //gulp.task('add-common:phonegap', function(done) {
-  //  var tasks = ['inject-common-js','inject-common-templates:phonegap' ];
-  //  seq('clean-common:phonegap', tasks, done);
-  //});
-  //
-  //// all
-  //gulp.task('add-common:all', function(done) {
-  //  var tasks = ['inject-common-js','inject-common-templates','inject-common-templates:phonegap' ];
-  //  seq('clean-common', tasks, done);
-  //});
 
 })();
