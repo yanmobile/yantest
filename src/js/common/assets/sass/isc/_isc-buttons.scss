@@ -133,6 +133,35 @@
   }
 }
 
+.isc-btn-white{
+  @extend .isc-btn;
+  color:darken( $brand-secondary, 60 );
+  background: $white;
+  border:1px solid darken( $app-border-color, 10 );
+
+  &:hover{
+    color:darken( $brand-secondary, 70 );
+    background: darken( $brand-secondary, 10 );
+    border:1px solid darken( $app-border-color, 30 );
+  }
+
+  &:active{
+    color:$app-border-color;
+  }
+
+  svg{
+    padding-left: 5px;
+    fill: darken( $brand-secondary, 60 );
+    width: 30px;
+    height: 30px;
+    vertical-align: middle;
+
+    &:hover{
+      fill: darken( $brand-secondary, 70 );
+    }
+  }
+}
+
 .isc-btn-dropdown {
   @extend .isc-btn;
   color:darken( $brand-secondary, 60 );
@@ -213,14 +242,27 @@
 }
 
 .isc-btn-link{
+  text-align: left;
+  font-size: $isc-button-font-size;
+  font-weight: $isc-button-font-weight;
+  text-decoration:none;
+  text-shadow:none;
   background-color: transparent;
   border: none;
+  outline: none;
+  margin: 0;
+  padding: 0;
 
   color: darken( $brand-link, 0 );
 
   &:hover,
   &:active{
     color:darken( $brand-link, 15 );
+  }
+
+  &:disabled{
+    color:$gray-30;
+    cursor: not-allowed;
   }
 }
 

@@ -29,6 +29,7 @@
       'src/templates/**/*.html',
       'src/assets/plugins/**/*.js',
       './bower_components/mobile-angular-ui/dist/js/**/*',
+      './bower_components/angular-utils-pagination/dirPagination.js',
       'test/unit/**/*.js'
     ]);
 
