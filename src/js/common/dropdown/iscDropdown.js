@@ -10,9 +10,9 @@
 (function(){
 	'use strict';
 
-	iscDropdown.$inject = [ '$log', '$parse', '$timeout', '$rootScope', 'iscDropdownHelper' ];
+	iscDropdown.$inject = [ '$log', '$parse', '$timeout', '$rootScope' ];
 
-	function iscDropdown( $log, $parse , $timeout, $rootScope, iscDropdownHelper){
+	function iscDropdown( $log, $parse , $timeout, $rootScope){
 
 		// ----------------------------
 		// vars
