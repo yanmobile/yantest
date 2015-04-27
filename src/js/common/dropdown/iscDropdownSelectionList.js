@@ -14,9 +14,9 @@
 (function(){
 	'use strict';
 
-	iscDropdownSelectionListDirective.$inject = [ '$log', '$parse', '$timeout', '$rootScope', 'iscDropdownHelper', '$window' ];
+	iscDropdownSelectionListDirective.$inject = [ '$log', '$parse', '$timeout', '$rootScope', '$window' ];
 
-	function iscDropdownSelectionListDirective( $log, $parse , $timeout, $rootScope, iscDropdownHelper, $window){
+	function iscDropdownSelectionListDirective( $log, $parse , $timeout, $rootScope, $window){
 
 		// ----------------------------
 		// vars
@@ -50,9 +50,11 @@
 		// ----------------------------
 
 		function link( scope, elem, attr ){
+
 			scope.selectItem = function(value){
 				var selectArray = [value, scope.dropId];
-				$rootScope.$broadcast('DROPDOWN_ITEM_SELECTED', selectArray)
+				$rootScope.$broadcast('DROPDOWN_ITEM_SELECTED', selectArray);
+				hideDropdownList();
 			};
 			scope.$on('destroy',function(){
 				console.log('DESTROY THIS LIST not presently used');
@@ -64,7 +66,7 @@
 				if(dropCt === 0){
 					//IF THIS IS A CALL FROM A DIFFERENT DROPDOWN HIDE PREVIOUS DROPDOWN
 					if(scope.dropId != dropID){
-						angular.element('#modal-dropdown').css('visibility','hidden')
+						hideDropdownList();
 					}
 					//IF HIDDEN THEN SETUP AND SHOW IF NOT THEN HIDE AND REMOVE LISTENERS
 					if(angular.element('#modal-dropdown').css('visibility') === 'hidden'){
@@ -80,7 +82,7 @@
 						scope.setDropScroll(dropID)
 						scope.setClickWatcher();
 					}else{
-						angular.element('#modal-dropdown').css('visibility','hidden');
+						hideDropdownList();
 						angular.element(document).unbind('click');
 						angular.element($window).unbind('scroll');
 					}
@@ -146,9 +148,12 @@
 						angular.element(document).unbind('click');
 						angular.element($window).unbind('scroll');
 						scope.showDropList = false;
-						angular.element('#modal-dropdown').css({'visibility':'hidden'})
+						hideDropdownList();
 					}
 				});
+			}
+			function hideDropdownList(){
+				angular.element('#modal-dropdown').css({'visibility':'hidden'})
 			}
 
 			$rootScope.$on('DROPDOWN_ITEM_SELECTED',function(){
