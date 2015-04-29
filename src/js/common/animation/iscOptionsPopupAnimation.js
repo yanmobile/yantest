@@ -34,7 +34,7 @@
 
     function beforeAddClass( element, className, done ){
       //$log.debug( 'iscOptionsPopupAnimation.beforeAddClass' );
-
+      //
       if( className === 'popup-anime' ){
 
         var offsetX = element[0].offsetLeft;
@@ -44,10 +44,8 @@
         var height = iscAnimationService.getSecondaryNavHeight( element.height() );
 
         // set the w and h now, since the other calcs are dependent on that
-        TweenMax.set( element, {autoAlpha:1, width: width, height: height});
+        TweenMax.set( element, {autoAlpha:1, width: width, height: height, x: 0, y: 0});
 
-
-        // when its inside the page
         var xPos = iscAnimationService.isPhone() ? 0 : iscAnimationService.getElementXPos( width, offsetX );
         var yPos = -height - 50; // -50 ensures its offstage
         var yPosEnd = iscAnimationService.getElementYPos( height, offsetY );
@@ -55,8 +53,11 @@
         //$log.debug( '...iscAnimationService.getAppWidth()',iscAnimationService.getAppWidth() );
         //$log.debug( '...width',width );
         //$log.debug( '...offsetX',offsetX );
+        //$log.debug( '...xPos',xPos );
+        //$log.debug( '...yPos',yPos );
+        //$log.debug( '...yPosEnd',yPosEnd );
 
-        TweenMax.set( element, {x:xPos, y: yPos});
+        TweenMax.set( element, { x:xPos, y: yPos, autoAlpha: 1 });
         TweenMax.to( element, EASE_DUR, { ease: Power2.easeOut, y: yPosEnd, onComplete: done });
       }
       else {

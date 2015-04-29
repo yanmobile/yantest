@@ -135,7 +135,7 @@ $gray-90:          darken( $white, 90 );
 //$brand-info:            #58656a !default;
 //$brand-warning:         #f7f7c5 !default;
 //$brand-danger:          #d9534f !default;
-//$brand-link:            #ca4000 !default;
+//$brand-link: #4aafca !default;
 //$logo-color: $white;
 //
 //$brand-page-title-color: $brand-primary;
@@ -228,6 +228,8 @@ $subheader-font-size: 14px;
 
 $table-th-size: $subheader-font-size;
 $table-td-size: $body-font-size;
+
+$isc-highlight-color: lighten( $brand-primary, 45 );
 
 // -------------------------
 // nav bar

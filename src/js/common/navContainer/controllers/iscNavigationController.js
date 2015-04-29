@@ -84,18 +84,6 @@
     };
 
     // --------------
-    self.showSortOptions = function(){
-      self.hideAllPopups(); // close any that are already up
-
-      self.showSortOpts = true;
-      self.showModalBkgrnd = true;
-    };
-
-    self.hideSortOptions = function(){
-      self.showSortOpts = false;
-      self.showModalBkgrnd = false;
-    };
-    // --------------
     // session / login
     // --------------
     self.currentUser = self.sessionModel.getCurrentUser();
@@ -163,11 +151,6 @@
     $scope.$on( NAV_EVENTS.hideSecondaryNav, function( event, response ){
       //$log.debug( 'iscNavigationController.iscHideModal' );
       self.hideSecondaryNavbar();
-    });
-
-    $scope.$on( NAV_EVENTS.openSortOptions, function( event, response ){
-      //$log.debug( 'iscNavigationController.openSortOptions' );
-      self.showSortOptions();
     });
 
 

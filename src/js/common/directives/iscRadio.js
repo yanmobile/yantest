@@ -5,9 +5,9 @@
 (function(){
   'use strict';
 
-  iscRadio.$inject = [ '$log'];
+  iscRadio.$inject = [ '$log', 'iscRadioGroupHelper'];
 
-  function iscRadio( $log ){
+  function iscRadio( $log, iscRadioGroupHelper ){
 //    //$log.debug( 'iscRadio LOADED');
 
     // ----------------------------
@@ -20,9 +20,10 @@
     var directive = {
       restrict: 'EA',
       transclude: true,
-      require: '?ngModel',
       scope: {
-        onToggle: '&'
+        onToggle: '&',
+        radioGroup: '=',
+        radioItem: '='
       },
       link: link,
       templateUrl: 'common/svg/isc-radio.html'
@@ -34,25 +35,10 @@
     // functions
     // ----------------------------
 
-    function link( scope, elem, attr, ngModelCtrl ){
-
-      scope.selected = false;
-
-      if( ngModelCtrl ){
-        ngModelCtrl.$render = function(){
-          scope.selected = ngModelCtrl.$viewValue;
-        };
-      }
+    function link( scope, elem, attr ){
 
       scope.toggle = function(){
-        //$log.debug( 'iscRadio.toggle' );
-        scope.selected = !scope.selected;
-        scope.onToggle( {selected: scope.selected} );
-
-        if( ngModelCtrl ){
-          //$log.debug( 'iscRadio.$setViewValue');
-          ngModelCtrl.$setViewValue( !ngModelCtrl.$viewValue );
-        }
+        iscRadioGroupHelper.radioSelect( scope.radioItem, scope.radioGroup );
       };
     }
 
