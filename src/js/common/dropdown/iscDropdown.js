@@ -10,9 +10,9 @@
 (function(){
 	'use strict';
 
-	iscDropdown.$inject = [ '$log', '$parse', '$timeout', '$rootScope' ];
+	iscDropdown.$inject = [ '$log', '$parse', '$timeout', '$rootScope', 'DROPDOWN_EVENTS' ];
 
-	function iscDropdown( $log, $parse , $timeout, $rootScope){
+	function iscDropdown( $log, $parse , $timeout, $rootScope, DROPDOWN_EVENTS){
 
 		// ----------------------------
 		// vars
@@ -23,6 +23,8 @@
 		// ----------------------------
 		var directive = {
 			link: link,
+      restrict: 'EA',
+      replace: true,
 			scope: {
 				listData: '=',
 				listField: '@',
@@ -43,15 +45,16 @@
 		// ----------------------------
 
 		function link( scope, elem, attr ){
-			$log.debug( 'iscDropdown' );
+			//$log.debug( 'iscDropdown' );
 			scope.dropOpen = false;
 			scope.iconLeft = 0;
 			scope.itemWidth = 0;
 			scope.isShowDrop = false;
 			scope.listField = 'label';
+
 			angular.element(window).resize(function(){
 				scope.setWidth();
-			})
+			});
 
 			scope.setWidth = function(){
 				var hiddenList = angular.element('#'+scope.dropId+'-list');
@@ -65,34 +68,34 @@
 					blockMain.css({'max-width':scope.dropMaxwidth});
 				}
 				if(scope.dropWidth){
-					blockMain.width(scope.dropWidth)
-					blockTitle.width(blockMain.width() - iconWidth);
+					blockMain.width(scope.dropWidth);
+					blockTitle.width(blockMain.width() - iconWidth - 2);
 				}else{
 					if(angular.element('form').width()-50 < angular.element('#'+scope.dropId).width()){
 						angular.element('#'+scope.dropId).width(angular.element('form').width()-20)
 					}else{
 						//SET WIDTH OF TITLE BLOCK BASED ON LARGER OF TITLE OR DROPDOWN CONTENT
-						console.log('set larger')
+						//console.log('set larger');
 						hiddenList.css({'width':'auto'});
 						if(hiddenList.width() > blockTitle.width()){
 							blockTitle.width(hiddenList.width());
 						}
 					}
 				}
-			}
+			};
 
 			function domReady(){
 				$timeout(function(){
 					scope.setWidth();
 				})
 			}
-			domReady()
+			domReady();
 
 			scope.showHideItems = function(){
-				$rootScope.$broadcast('SHOW_DROPDOWN_LIST',scope.listData, scope.dropId, scope.listField)
-			}
+				$rootScope.$broadcast( DROPDOWN_EVENTS.showDropdownList ,scope.listData, scope.dropId, scope.listField)
+			};
 
-			$rootScope.$on('DROPDOWN_ITEM_SELECTED', function(e,selectArray){
+			$rootScope.$on( DROPDOWN_EVENTS.dropdownItemSelected, function(e,selectArray){
 				//CHECK TO ASSURE THAT CORRECT ITEM
 				if(scope.dropId === selectArray[1]){
 					scope.dropTitle = selectArray[0];

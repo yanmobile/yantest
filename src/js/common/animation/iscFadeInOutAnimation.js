@@ -8,29 +8,29 @@
   iscFadeInOutAnimation.$inject = ['$log', "$window", 'TweenMax', 'EASE_DUR'];
 
   function iscFadeInOutAnimation( $log, $window, TweenMax, EASE_DUR ){
-    $log.debug( 'iscFadeInOutAnimation.LOADED');
-    // --------------------
-    // vars
-    // --------------------
 
-    // --------------------
-    // init
-    // --------------------
+  // --------------------
+  // vars
+  // --------------------
 
-    // --------------------
-    // class factory
-    // --------------------
+  // --------------------
+  // init
+  // --------------------
 
-    var animations = {
-      beforeAddClass: beforeAddClass,
-      beforeRemoveClass: beforeRemoveClass
-    };
+  // --------------------
+  // class factory
+  // --------------------
 
-    return animations;
+  var animations = {
+    beforeAddClass: beforeAddClass,
+    beforeRemoveClass: beforeRemoveClass
+  };
 
-    // --------------------
-    // functions
-    // --------------------
+  return animations;
+
+  // --------------------
+  // functions
+  // --------------------
 
     function beforeAddClass( element, className, done ){
       //$log.debug( 'iscFadeInOutAnimation.beforeAddClass' );

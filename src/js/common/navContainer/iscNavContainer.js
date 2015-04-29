@@ -27,6 +27,12 @@
       hideSecondaryNav: 'iscHideSecondaryNav'
     })
 
+    .constant('DROPDOWN_EVENTS', {
+      dropdownShow: 'DROPDOWN_SHOW',
+      showDropdownList: 'SHOW_DROPDOWN_LIST',
+      dropdownItemSelected: 'DROPDOWN_ITEM_SELECTED'
+    })
+
     .config( ['$stateProvider', '$urlRouterProvider',
       function( $stateProvider, $urlRouterProvider ){
 
@@ -158,7 +164,7 @@
                 }
               }
               else{
-                //$log.debug( '...going to login');
+                $log.debug( '...going to login');
                 // if you arent logged in yet, bring the user to the log in page
                 $state.go( 'index.login' );
                 requestedState = toState;

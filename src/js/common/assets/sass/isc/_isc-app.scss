@@ -7,6 +7,10 @@ body{
 
   margin: 0;
   padding: 0;
+
+  div{
+    @include box-sizing(border-box);
+  }
 }
 
 textarea{
@@ -50,6 +54,15 @@ textarea{
   border: 1px solid $app-border-color;
   background-color: rgba($white, 0.25);
   padding: 2px 4px;
+}
+
+.isc-highlighted{
+  background-color: $isc-highlight-color;
+}
+
+.isc-clickable{
+  cursor: hand;
+  cursor: pointer;
 }
 
 .isc-app-content{
@@ -141,7 +154,7 @@ textarea{
   }
 
   @media #{$desktop}{
-    @include flex-flow( row, wrap );
+    @include flex-flow( row,nowrap );
   }
 
   @media #{$mobile}{

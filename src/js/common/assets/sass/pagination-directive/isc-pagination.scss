@@ -1,0 +1,54 @@
+
+.pagination{
+  padding: 0;
+  width: 100%;
+  border-top: 1px solid $app-border-color;
+  list-style-type: none;
+
+  li{
+    padding: 5px 10px;
+    min-width: 18px;
+    max-width: 18px;
+    height: 18px;
+    margin: 0 -1px 0 0;
+    float: left;
+
+    a{
+      display: inline-block;
+      vertical-align: middle;
+      text-decoration: none;
+      color: $brand-link;
+      font-weight: 200;
+      font-size: $header-font-size;
+      text-align: center;
+
+      &:hover{
+        font-weight: 800;
+      }
+    }
+
+    &.active{
+      a{
+        font-weight: 800;
+      }
+    }
+
+    &.disabled{
+      a{
+        color: $gray-30;
+      }
+
+      svg{
+        fill: $gray-30;
+      }
+    }
+  }
+}
+
+
+.isc-pagination-arrow{
+  display: inline;
+  vertical-align: middle;
+  margin-top: 0px;
+  fill: $brand-link;
+}
