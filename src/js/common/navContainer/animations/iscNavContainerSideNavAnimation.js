@@ -51,7 +51,7 @@
         var offsetY = element[0].offsetTop;
 
         // set the w and h now, since the other calcs are dependent on that
-        TweenMax.set( element, {autoAlpha:1, width: width, height: height});
+        TweenMax.set( element, {autoAlpha:1, width: width, height: height, display:'block'});
 
         xPos = -width - 20; // -20 ensures its off stage
         xPosEnd = iscAnimationService.isPhone() ? -offsetX : iscAnimationService.getElementXPos( width, offsetX );
@@ -81,7 +81,7 @@
     }
 
     function onRemoveComplete( elem, done ){
-      TweenMax.set( elem, {autoAlpha:0});
+      TweenMax.set( elem, {autoAlpha:0, display:'none'});
       done();
     }
 

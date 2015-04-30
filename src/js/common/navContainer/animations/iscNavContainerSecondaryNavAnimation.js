@@ -56,7 +56,7 @@
         //$log.debug( '...offsetTop',element[0].offsetTop );
         //$log.debug( '...yPosEnd',yPosEnd );
 
-        TweenMax.set( element, {x:xPos, y: yPos});
+        TweenMax.set( element, {x:xPos, y: yPos, display: 'block'});
         TweenMax.to( element, EASE_DUR, { ease: Power2.easeOut, y: yPosEnd, onComplete: done });
       }
       else {
@@ -76,7 +76,7 @@
     }
 
     function onRemoveComplete( elem, done ){
-      TweenMax.set( elem, {autoAlpha:0});
+      TweenMax.set( elem, {autoAlpha:0, display: 'none'});
       done();
     }
 
