@@ -253,7 +253,7 @@
       .pipe( replace( '<!-- inject:js -->', inject.join('\n') ))
       .pipe(gulp.dest(config.dest));
 
-    gulp.src(['config.xml'])
+    gulp.src(['src/config.xml'])
       .pipe(gulp.dest(config.dest));
   });
 
