@@ -17,8 +17,6 @@
     // vars
     // ----------------------------
 
-    var X_OFFSET = 50;
-
     var PHONE_MAX = 640;
     var TABLET_MAX = 960;
 
@@ -124,15 +122,15 @@
     }
 
     function getFullHeight(){
-      var body = document.body,
-          html = document.documentElement;
+      var body = document.body,//jshint ignore:line
+          html = document.documentElement;//jshint ignore:line
 
       return Math.max( body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight );
     }
 
     function getFullWidth(){
-      var body = document.body,
-          html = document.documentElement;
+      var body = document.body,//jshint ignore:line
+          html = document.documentElement;//jshint ignore:line
 
       return Math.max( body.scrollWidth, body.offsetWidth, html.clientWidth, html.scrollWidth, html.offsetWidth );
     }

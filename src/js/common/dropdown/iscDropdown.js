@@ -12,7 +12,7 @@
 
 	iscDropdown.$inject = [ '$log', '$parse', '$timeout', '$rootScope', 'DROPDOWN_EVENTS' ];
 
-	function iscDropdown( $log, $parse , $timeout, $rootScope, DROPDOWN_EVENTS){
+	function iscDropdown( $log, $parse , $timeout, $rootScope, DROPDOWN_EVENTS){//jshint ignore:line
 
 		// ----------------------------
 		// vars
@@ -44,15 +44,14 @@
 		// functions
 		// ----------------------------
 
-		function link( scope, elem, attr ){
+		function link( scope, elem, attr ){//jshint ignore:line
 			//$log.debug( 'iscDropdown' );
 			scope.dropOpen = false;
 			scope.iconLeft = 0;
 			scope.itemWidth = 0;
 			scope.isShowDrop = false;
 			scope.listField = 'label';
-
-			angular.element(window).resize(function(){
+			angular.element(window).resize(function(){//jshint ignore:line
 				scope.setWidth();
 			});
 
@@ -72,7 +71,7 @@
 					blockTitle.width(blockMain.width() - iconWidth - 2);
 				}else{
 					if(angular.element('form').width()-50 < angular.element('#'+scope.dropId).width()){
-						angular.element('#'+scope.dropId).width(angular.element('form').width()-20)
+						angular.element('#'+scope.dropId).width(angular.element('form').width()-20);
 					}else{
 						//SET WIDTH OF TITLE BLOCK BASED ON LARGER OF TITLE OR DROPDOWN CONTENT
 						//console.log('set larger');
@@ -87,18 +86,19 @@
 			function domReady(){
 				$timeout(function(){
 					scope.setWidth();
-				})
+				});
 			}
 			domReady();
 
 			scope.showHideItems = function(){
-				$rootScope.$broadcast( DROPDOWN_EVENTS.showDropdownList ,scope.listData, scope.dropId, scope.listField)
+				$rootScope.$broadcast( DROPDOWN_EVENTS.showDropdownList ,scope.listData, scope.dropId, scope.listField);
 			};
 
-			$rootScope.$on( DROPDOWN_EVENTS.dropdownItemSelected, function(e,selectArray){
+			$rootScope.$on( DROPDOWN_EVENTS.dropdownItemSelected, function(e, selection){
+        $log.debug('iscDropdown.DROPDOWN_ITEM_SELECTED', selection);
 				//CHECK TO ASSURE THAT CORRECT ITEM
-				if(scope.dropId === selectArray[1]){
-					scope.dropTitle = selectArray[0];
+				if(scope.dropId === selection.dropId ){
+					scope.dropTitle = selection.title ;
 				}
 			});
 

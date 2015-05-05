@@ -35,8 +35,8 @@
     function beforeAddClass( element, className, done ){
       //$log.debug( 'iscNavContainerModalBkgrndAnimation.beforeAddClass' );
       if( className === 'modal-bkgrnd-anime' ){
-        TweenMax.set( element, {autoAlpha:0, width: iscAnimationService.getFullWidth() + 50, height: iscAnimationService.getFullHeight() + 50, x: -25, y:-25});
-        TweenMax.to( element, EASE_DUR, { ease: Power2.easeOut, autoAlpha:.75, onComplete: done });
+        TweenMax.set( element, {autoAlpha:0, display: 'block', width: iscAnimationService.getFullWidth() + 50, height: iscAnimationService.getFullHeight() + 50, x: -25, y:-25});
+        TweenMax.to( element, EASE_DUR, { ease: Power2.easeOut, autoAlpha:.75, onComplete: done });//jshint ignore:line
       }
       else {
         done();
@@ -46,7 +46,7 @@
     function beforeRemoveClass( element, className, done ){
       //$log.debug( 'iscNavContainerModalBkgrndAnimation.beforeRemoveClass' );
       if( className === 'modal-bkgrnd-anime' ){
-        TweenMax.to( element, EASE_DUR, { ease: Power2.easeOut, autoAlpha: 0, onComplete: onRemoveComplete, onCompleteParams:[element, done] });
+        TweenMax.to( element, EASE_DUR, { ease: Power2.easeOut, autoAlpha: 0, onComplete: onRemoveComplete, onCompleteParams:[element, done] });//jshint ignore:line
       }
       else {
         done();
@@ -54,7 +54,7 @@
     }
 
     function onRemoveComplete( elem, done ){
-      TweenMax.set( elem, {autoAlpha:0});
+      TweenMax.set( elem, {autoAlpha:0, display: 'none'});
       done();
     }
 

@@ -7,7 +7,7 @@
 
   iscDynamicHtml.$inject = [ '$log', '$compile', '$templateCache' ];
 
-  function iscDynamicHtml( $log, $compile, $templateCache ){
+  function iscDynamicHtml( $log, $compile, $templateCache ){//jshint ignore:line
 //    //$log.debug( 'iscDynamicHtml LOADED');
 
     // ----------------------------

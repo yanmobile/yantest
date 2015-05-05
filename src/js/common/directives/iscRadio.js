@@ -35,7 +35,7 @@
     // functions
     // ----------------------------
 
-    function link( scope, elem, attr ){
+    function link( scope, elem, attr ){//jshint ignore:line
 
       scope.toggle = function(){
         iscRadioGroupHelper.radioSelect( scope.radioItem, scope.radioGroup );

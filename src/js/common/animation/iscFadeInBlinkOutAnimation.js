@@ -5,7 +5,7 @@
 (function(){
   'use strict';
 
-  iscFadeInBlinkOutAnimation.$inject = ['$log', "$window", 'TweenMax', 'EASE_DUR'];
+  iscFadeInBlinkOutAnimation.$inject = ['$log', '$window', 'TweenMax', 'EASE_DUR'];
 
   function iscFadeInBlinkOutAnimation( $log, $window, TweenMax, EASE_DUR ){
 
@@ -35,8 +35,8 @@
     function beforeAddClass( element, className, done ){
       //$log.debug( 'iscFadeInBlinkOutAnimation.beforeRemoveClass' );
       if( className === 'fade-in-blink-out' ){
-        TweenMax.set( element, {autoAlpha: 0, display: 'block'});
-        TweenMax.to( element, EASE_DUR, {autoAlpha: 1, onComplete: done})
+        TweenMax.set( element, {autoAlpha: 0, display: 'block'});//jshint ignore:line
+        TweenMax.to( element, EASE_DUR, {autoAlpha: 1, onComplete: done})//jshint ignore:line
       }
       else {
         done();

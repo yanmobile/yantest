@@ -84,7 +84,7 @@
      */
     function getCurrentStateTranslationKey(){
       if( parentSref ){
-        return iscCustomConfigHelper.getTranslationKeyFromName( parentSref )
+        return iscCustomConfigHelper.getTranslationKeyFromName( parentSref );
       }
 
       return iscCustomConfigHelper.getCurrentStateTranslationKey();

@@ -6,7 +6,7 @@
 
   iscProgressLoader.$inject = [ '$log' ];
 
-  function iscProgressLoader( $log ){
+  function iscProgressLoader( $log ){//jshint ignore:line
 
     // ----------------------------
     // vars
@@ -31,24 +31,24 @@
     // ----------------------------
 
     function start () {
-      $(document).skylo('start');
+      $(document).skylo('start');//jshint ignore:line
     }
 
     function set (position) {
-      $(document).skylo('set', position);
+      $(document).skylo('set', position);//jshint ignore:line
     }
 
     function end () {
-      $(document).skylo('end');
+      $(document).skylo('end');//jshint ignore:line
     }
 
     function get () {
-      return $(document).skylo('get');
+      return $(document).skylo('get');//jshint ignore:line
     }
 
     function inch (amount) {
-      $(document).skylo('show',function(){
-        $(document).skylo('inch', amount);
+      $(document).skylo('show',function(){//jshint ignore:line
+        $(document).skylo('inch', amount);//jshint ignore:line
       });
     }
 

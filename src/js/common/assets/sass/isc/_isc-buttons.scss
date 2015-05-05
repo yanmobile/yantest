@@ -388,34 +388,28 @@ a.isc-image-button {
 }
 
 .isc-scroll-stick-container{
+  @include box-sizing( border-box );
   position: relative;
-  display: inline-block;
+  display: block;
   text-align: left;
   width: 100%;
   background-color: rgba(255,255,255, 0);
   border: 1px solid transparent;
-  z-index: 1000;
+  z-index: $modal-z-index - 1;
 
   .section{
+    padding: 5px 0 5px 0;
     display: block;
     min-height: 25px;
 
-    &:first-child{
-      border-bottom: 1px solid $app-border-color;
-      margin-bottom: 10px;
+    &:not(first-child){
+      border-top: 1px solid $app-border-color;
+      margin-top: 5px;
     }
   }
 
   button{
     margin-right: 10px
-  }
-
-  @media #{$desktop} {
-    padding: 0px
-  }
-
-  @media #{$mobile} {
-    padding: 0px
   }
 }
 

@@ -8,6 +8,9 @@
     var scope,
       self,
       rootScope,
+      httpBackend,
+      timeout,
+      sessionStorageHelper,
       alertModel,
       AUTH_EVENTS,
       NAV_EVENTS,
@@ -23,13 +26,20 @@
       $provide.value('$log', console);
     }));
 
+    // this loads all the external templates used in directives etc
+    // eg, everything in **/partials/*.html
+    beforeEach( module('isc.templates') );
 
-    beforeEach( inject( function( $rootScope, $controller, _$state_, _AUTH_EVENTS_, _NAV_EVENTS_, iscAlertModel, iscCustomConfigService, iscSessionModel  ){
+
+    beforeEach( inject( function( $rootScope, $controller, _$state_, $httpBackend, $timeout, _AUTH_EVENTS_, _NAV_EVENTS_, iscAlertModel, iscCustomConfigService, iscSessionModel, iscSessionStorageHelper  ){
 
       mockConfig = angular.copy( customConfig );
       iscCustomConfigService.setConfig( mockConfig );
 
       rootScope = $rootScope;
+      sessionStorageHelper = iscSessionStorageHelper;
+      timeout = $timeout;
+      httpBackend = $httpBackend;
       alertModel = iscAlertModel;
       scope = $rootScope.$new();
       controller = $controller('iscNavigationController as navCtrl',
@@ -44,7 +54,69 @@
       AUTH_EVENTS = _AUTH_EVENTS_;
       NAV_EVENTS = _NAV_EVENTS_;
 
+      // dont worry about calls to assets
+      httpBackend.when( 'GET', 'assets/i18n/en_US.json' )
+        .respond( 200, {} );
+
+      // mock calls to the config
+      httpBackend.when( 'GET', 'assets/configuration/configFile.json' )
+        .respond( 200, customConfig );
+
+      // dont worry about calls to home page mocks
+      httpBackend.when( 'GET', 'assets/mockData/home/mockPatientData.json' )
+        .respond( 200, {} );
+
+      // dont worry about calls to home page mocks
+      httpBackend.when( 'GET', 'assets/mockData/home/mockPanelData.json' )
+        .respond( 200, {} );
+
     }));
+
+    // -------------------------
+    describe( 'onLoad tests ', function(){
+
+      it( 'should have a function showSideNavbar', function(){
+        expect( angular.isFunction( self.onLoad )).toBe( true );
+      });
+
+      it( 'should know what to do onLoad, dont show warning', function(){
+        spyOn( sessionStorageHelper, 'getShowTimedOutAlert' ).andReturn( false );
+        spyOn( sessionStorageHelper, 'setShowTimedOutAlert' );
+        spyOn( alertModel, 'setOptionsByType' );
+        spyOn( self, 'showAlertBox' );
+        spyOn( self, 'onLoad' );
+
+        // these tests are a little odd since the onLoad function is called every time the controller is instantiated
+        // so the call counts are off
+        self.onLoad();
+        timeout.flush();
+
+        expect( sessionStorageHelper.setShowTimedOutAlert.callCount ).toBe( 0 );
+        expect( alertModel.setOptionsByType.callCount ).toBe( 1 );
+        expect( self.showAlertBox.callCount ).toBe( 1 );
+        expect( sessionStorageHelper.setShowTimedOutAlert).not.toHaveBeenCalled();
+      });
+
+      it( 'should know what to do onLoad, show warning', function(){
+        spyOn( sessionStorageHelper, 'getShowTimedOutAlert' ).andReturn( true );
+        spyOn( sessionStorageHelper, 'setShowTimedOutAlert' );
+        spyOn( alertModel, 'setOptionsByType' );
+        spyOn( self, 'showAlertBox' );
+
+        // these tests are a little odd since the onLoad function is called every time the controller is instantiated
+        // so the call counts are off
+        timeout.flush();
+        self.onLoad();
+
+        expect( sessionStorageHelper.setShowTimedOutAlert.callCount ).toBe( 1 );
+        expect( sessionStorageHelper.setShowTimedOutAlert ).toHaveBeenCalledWith( false );
+        expect( alertModel.setOptionsByType.callCount ).toBe( 2 );
+        expect( alertModel.setOptionsByType ).toHaveBeenCalledWith( AUTH_EVENTS.sessionTimeout, null, null, null );
+        expect( self.showAlertBox.callCount ).toBe( 2 );
+        expect( self.showAlertBox ).toHaveBeenCalled();
+      });
+
+    });
 
     // -------------------------
     describe( 'showAlertBox tests ', function(){
@@ -68,10 +140,6 @@
         rootScope.$broadcast( AUTH_EVENTS.notAuthorized );
         expect( self.showAlertBox ).toHaveBeenCalled();
         expect( alertModel.setOptionsByType ).toHaveBeenCalledWith( AUTH_EVENTS.notAuthorized, undefined, null, null);
-
-        rootScope.$broadcast( AUTH_EVENTS.sessionTimeout );
-        expect( self.showAlertBox ).toHaveBeenCalled();
-        expect( alertModel.setOptionsByType ).toHaveBeenCalledWith( AUTH_EVENTS.sessionTimeout, undefined, null, null);
       });
 
       it( 'should open the warning alert with the right args', function(){

@@ -5,7 +5,7 @@
 (function(){
   'use strict';
 
-  iscNavContainerSideNavAnimation.$inject = ['$log', '$rootScope', "$window", 'iscAnimationService', 'TweenMax', 'EASE_DUR'];
+  iscNavContainerSideNavAnimation.$inject = ['$log', '$rootScope', '$window', 'iscAnimationService', 'TweenMax', 'EASE_DUR'];
 
   function iscNavContainerSideNavAnimation( $log, $rootScope, $window, iscAnimationService, TweenMax, EASE_DUR ){
 
@@ -13,8 +13,8 @@
   // vars
   // --------------------
 
-    var X_OFFSET = 50;
-    var Y_OFFSET = 100;
+    //var X_OFFSET = 50;
+    //var Y_OFFSET = 100;
 
     var width, height;
     var xPos, xPosEnd;
@@ -62,7 +62,7 @@
 
         // now set the x and y pos, based on the new sizes
         TweenMax.set( element, {x:xPos, y: yPos});
-        TweenMax.to( element, EASE_DUR, { ease: Power2.easeOut, x: xPosEnd, onComplete: done });
+        TweenMax.to( element, EASE_DUR, { ease: Power2.easeOut, x: xPosEnd, onComplete: done });//jshint ignore:line
       }
       else {
         done();
@@ -73,7 +73,7 @@
       //$log.debug( 'iscNavContainerSideNavAnimation.beforeRemoveClass' );
       if( className === 'side-nav' ){
         xPos = - element.width() - 50 -element[0].offsetLeft;
-        TweenMax.to( element, EASE_DUR, { ease: Power2.easeOut, x: xPos, onComplete: onRemoveComplete, onCompleteParams:[element, done] });
+        TweenMax.to( element, EASE_DUR, { ease: Power2.easeOut, x: xPos, onComplete: onRemoveComplete, onCompleteParams:[element, done] });//jshint ignore:line
       }
       else {
         done();

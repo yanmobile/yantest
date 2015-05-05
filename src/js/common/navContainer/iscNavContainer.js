@@ -70,8 +70,8 @@
 
       }])
 
-    .run( ['$log', '$rootScope', '$state', '$window', 'iscProgressLoader','iscSessionModel', 'iscCustomConfigService', 'iscCustomConfigHelper', 'iscUserRoleHelper' ,'iscSessionStorageHelper', 'AUTH_EVENTS',
-      function( $log, $rootScope, $state, $window, iscProgressLoader, iscSessionModel, iscCustomConfigService, iscCustomConfigHelper, iscUserRoleHelper, iscSessionStorageHelper, AUTH_EVENTS ){
+    .run( ['$log', '$rootScope', '$state', '$window', 'iscProgressLoader','iscSessionModel', 'iscCustomConfigService', 'iscCustomConfigHelper', 'iscUserRoleHelper' ,'iscSessionStorageHelper', 'iscAuthenticationApi', 'AUTH_EVENTS',
+      function( $log, $rootScope, $state, $window, iscProgressLoader, iscSessionModel, iscCustomConfigService, iscCustomConfigHelper, iscUserRoleHelper, iscSessionStorageHelper, iscAuthenticationApi, AUTH_EVENTS ){
         //$log.debug( 'iscNavContainer.run' );
 
         loadDataFromStoredSession();
@@ -86,7 +86,7 @@
             //$log.debug( '...from: ' + fromState.name );
             //$log.debug( '.....to: ' + toState.name );
 
-            iscCustomConfigService.loadConfig().then( function( config ){
+            iscCustomConfigService.loadConfig().then( function( config ){//jshint ignore:line
               startLoadingAnimation();
               handleStateChangeStart( event, toState, toParams, fromState, fromParams  );
             });
@@ -95,7 +95,7 @@
         // ------------------------
         // stateChange success
         $rootScope.$on('$stateChangeSuccess',
-          function( event, toState, toParams, fromState, fromParams ){
+          function( event, toState, toParams, fromState, fromParams ){//jshint ignore:line
               //$log.debug( 'ischNavContainer.$stateChangeSuccess');
 
             // end loading animation
@@ -120,9 +120,13 @@
 
         // ------------------------
         // sessionTimeout event
+        // This triggers the logout, destroys the session, and reloads the page
+        // The session model, on sessionTimeout, sets a localStorage var
+        // that on page reload, tells the navigationController to show an alert
         $rootScope.$on( AUTH_EVENTS.sessionTimeout, function(){
-          //$log.debug( 'ischNavContainer.AUTH_EVENTS.sessionTimeout');
-          $state.go( 'index.home' );
+          $log.debug( 'ischNavContainer.sessionTimeout');
+          iscAuthenticationApi.logout();
+          $window.location.reload();
         });
 
         // ------------------------
@@ -133,7 +137,7 @@
           iscProgressLoader.set(50);
         }
 
-        function handleStateChangeStart( event, toState, toParams, fromState, fromParams ){
+        function handleStateChangeStart( event, toState, toParams, fromState, fromParams ){//jshint ignore:line
           //$log.debug( 'ischNavContainer.handleStateChangeStart');
 
           // get the permissions for this state
@@ -164,7 +168,7 @@
                 }
               }
               else{
-                $log.debug( '...going to login');
+                //$log.debug( '...going to login');
                 // if you arent logged in yet, bring the user to the log in page
                 $state.go( 'index.login' );
                 requestedState = toState;
@@ -194,6 +198,13 @@
         function loadDataFromStoredSession(){
           //$log.debug( 'ischNavContainer.loadDataFromStoredSession');
 
+          var timeoutCounter = iscSessionStorageHelper.getSessionTimeoutCounter();
+          //$log.debug( '...got a counter: ' + timeoutCounter );
+          if( timeoutCounter > 0 ){
+            //$log.debug( '...got a counter: ' + timeoutCounter );
+            iscSessionModel.initSessionTimeout( timeoutCounter );
+          }
+
           var storedLoginResponse = iscSessionStorageHelper.getLoginResponse();
           if( !_.isEmpty( storedLoginResponse )){
             //$log.debug( '...got storedLoginResponse: ' + JSON.stringify( storedLoginResponse ));
@@ -207,12 +218,6 @@
           if( !_.isEmpty( storedStatePermissions )){
             //$log.debug( '...got permissions: ' + JSON.stringify( storedStatePermissions ));
             iscSessionModel.setStatePermissions( storedStatePermissions );
-          }
-
-          var timeoutCounter = iscSessionStorageHelper.getSessionTimeoutCounter();
-          if( timeoutCounter > 0 ){
-            //$log.debug( '...got a counter: ' + timeoutCounter );
-            iscSessionModel.initSessionTimeout( timeoutCounter );
           }
         }
 

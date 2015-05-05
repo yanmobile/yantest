@@ -80,7 +80,7 @@
       setCurrentUser( sessionData.UserData );
 
       // set the timeout
-      //sessionTimeoutInSeconds = 30;
+      //sessionTimeoutInSeconds = 10;
       sessionTimeoutInSeconds = sessionData.SessionTimeout;
 
       $rootScope.$broadcast( AUTH_EVENTS.loginSuccess );
@@ -109,7 +109,7 @@
       sessionTimeoutCounter = (timeoutCounter > 0) ? timeoutCounter : 0;
       //$log.debug( '...sessionTimeoutCounter: ' + sessionTimeoutCounter );
 
-      sessionTimeoutWarning = parseInt( sessionTimeoutInSeconds *.75 );
+      sessionTimeoutWarning = parseInt( sessionTimeoutInSeconds *0.75 );
 
       doSessionTimeout();
     }
@@ -129,7 +129,8 @@
         sessionTimeoutCounter++;
 
         // save off the remaining time so that on page refresh we can start from here
-        var remainingTime = sessionTimeoutInSeconds - sessionTimeoutCounter;
+        //var remainingTime = sessionTimeoutInSeconds - sessionTimeoutCounter;
+
         iscSessionStorageHelper.setSessionTimeoutCounter( sessionTimeoutCounter );
         //$log.debug( '...TICK ', remainingTime );
         //$log.debug( '...sessionTimeoutInSeconds ' + sessionTimeoutInSeconds );
@@ -139,16 +140,17 @@
 
         if( sessionTimeoutCounter >= sessionTimeoutWarning && sessionTimeoutCounter < sessionTimeoutInSeconds ){
           // warn
-          //$log.debug( '...WARN ' + remainingTime );
+          //$log.debug( '...WARN ' + sessionTimeoutCounter );
           $rootScope.$broadcast( AUTH_EVENTS.sessionTimeoutWarning );
         }
         else if( sessionTimeoutCounter >= sessionTimeoutInSeconds ){
-          //$log.debug( '...logging out ' + remainingTime );
+          //$log.debug( '...TIMEOUT ' + sessionTimeoutCounter );
           // logout
           $rootScope.$broadcast( AUTH_EVENTS.sessionTimeout );
+          iscSessionStorageHelper.setShowTimedOutAlert( true );
           stopSessionTimeout();
         }
-      }, 1000)
+      }, 1000);
     }
 
     function stopSessionTimeout() {
@@ -341,10 +343,6 @@
       //$log.debug( '...noLoginRequiredWildcardList: ' + JSON.stringify( noLoginRequiredWildcardList ));
     }
 
-    function getNoLoginRequiredList(){
-      return noLoginRequiredList;
-    }
-
     // --------------
     function getFullName(){
       //$log.debug( 'iscSessionModel.getFullName');
@@ -359,7 +357,7 @@
       return {
         statePermittedToRole: statePermittedToRole,
         getStateToCheck: getStateToCheck
-      }
+      };
     }
 
   }// END CLASS

@@ -18,12 +18,11 @@
 
   function iscDropdownSelectionListDirective( $log, $parse , $timeout, $rootScope, $window, DROPDOWN_EVENTS){
 
-    // ----------------------------
-    // vars
-    // ----------------------------
-    var dropTruncated = false;
-    var clickCt = 0;
-    var dropCt = 0;
+		// ----------------------------
+		// vars
+		// ----------------------------
+
+		var dropCt = 0;
 
 
     // ----------------------------
@@ -49,16 +48,17 @@
     // functions
     // ----------------------------
 
-    function link( scope, elem, attr ){
+    function link( scope, elem, attr ){//jshint ignore:line
 
-      scope.selectItem = function(value){
-
+      scope.selectItem = function( value, title ){
+        $log.debug('iscDropdownSelectionList.selectItem', value, title );
         //var selectArray = [value, scope.dropId];
         var selectCriteria = {
           dropId: scope.dropId,
+          title: title ? title : value,
           value: value
         };
-        $rootScope.$broadcast( DROPDOWN_EVENTS.dropdownItemSelected, selectCriteria);
+        $rootScope.$broadcast( DROPDOWN_EVENTS.dropdownItemSelected, selectCriteria );
         hideDropdownList();
       };
 
@@ -71,7 +71,7 @@
         //COUNT IS TO DEAL WITH CALL BEING RECEIVED TWICE
         if(dropCt === 0){
           //IF THIS IS A CALL FROM A DIFFERENT DROPDOWN HIDE PREVIOUS DROPDOWN
-          if(scope.dropId != dropID){
+          if(scope.dropId !== dropID){
             hideDropdownList();
           }
           //IF HIDDEN THEN SETUP AND SHOW IF NOT THEN HIDE AND REMOVE LISTENERS
@@ -90,13 +90,13 @@
           }
           else{
             hideDropdownList();
-            angular.element(document).unbind('click');
+            angular.element(document).unbind('click'); //jshint ignore:line
             angular.element($window).unbind('scroll');
           }
 
         }
         if(dropCt === 1){
-          dropCt = -1
+          dropCt = -1;
         }
         dropCt++;
         scope.dropId = dropID;
@@ -137,23 +137,24 @@
             'height': elHeight,
             'overflow':'auto',
             'width': elWidth
-          })
+          });
       };
 
       scope.setDropScroll = function(dropID){
-        angular.element($window).bind('scroll',function(event){
+        angular.element($window).bind('scroll',function(){
           scope.setDropDown(dropID);
-        })
+        });
       };
 
       scope.setClickWatcher = function(){
-        angular.element(document).unbind('click');
+        var doc = angular.element(document); //jshint ignore:line
+        doc.unbind('click');
         //CLICK BINDING IS TO BE ABLE TO REMOVE ON NON DROPDOWN CLICKS
-        angular.element(document).bind('click',function(event){
+        doc.bind('click',function(event){//jshint ignore:line
           // REMOVE BINDING, CLOSE SELECTION LIST WHEN USER CLICKS ON NON-DROPDOWN ITEM
           var evtStatus = angular.element(event.target).hasClass('isc-dd');
           if(!evtStatus){
-            angular.element(document).unbind('click');
+            doc.unbind('click');
             angular.element($window).unbind('scroll');
             scope.showDropList = false;
             hideDropdownList();
@@ -162,12 +163,12 @@
       };
 
       function hideDropdownList(){
-        angular.element('#modal-dropdown').css({'visibility':'hidden'})
+        angular.element('#modal-dropdown').css({'visibility':'hidden'});
       }
 
       $rootScope.$on( DROPDOWN_EVENTS.dropdownItemSelected ,function(){
         scope.showDropList = false;
-      })
+      });
 
     }//END LINK
 

@@ -202,6 +202,8 @@ $brand-page-title-color: $brand-primary;
 $brand-page-subtitle-color: $gray-dark;
 
 $app-border-color: #dfe0db;
+$app-border-drop-shadow: 0px 3px 8px 0px rgba(0,0,0,0.65);
+
 
 $tr-bkgrnd-dark: lighten( $brand-secondary, 5 );
 $tr-bkgrnd-light: $white;
