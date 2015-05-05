@@ -5,7 +5,7 @@
 (function(){
   'use strict';
 
-  angular.module( 'isc.common', ['iscNavContainer', 'angularUtils.directives.dirPagination'])
+  angular.module( 'isc.common', ['iscNavContainer', 'angularUtils.directives.dirPagination']);
 
 })();
 

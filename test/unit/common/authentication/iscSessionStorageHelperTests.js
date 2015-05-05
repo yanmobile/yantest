@@ -36,6 +36,7 @@
         expect( window.sessionStorage.removeItem ).toHaveBeenCalledWith( 'loginResponse' );
         expect( window.sessionStorage.removeItem ).toHaveBeenCalledWith( 'statePermissions' );
         expect( window.sessionStorage.removeItem ).toHaveBeenCalledWith( 'sessionTimeoutCounter' );
+        expect( window.sessionStorage.removeItem ).toHaveBeenCalledWith( 'sessionTimeoutCounter' );
       });
     });
 
@@ -163,6 +164,52 @@
 
         helper.setSessionTimeoutCounter(); // should return the default val
         var expected = helper.getSessionTimeoutCounter();
+        expect( expected ).toEqual( defaultVal );
+      });
+    });
+
+    // -------------------------
+    describe( 'get/setShowTimedOutAlert tests ', function(){
+
+      it( 'should have a function getShowTimedOutAlert', function(){
+        expect( angular.isFunction( helper.getShowTimedOutAlert )).toBe( true );
+      });
+
+      it( 'should have a function setShowTimedOutAlert', function(){
+        expect( angular.isFunction( helper.setShowTimedOutAlert )).toBe( true );
+      });
+
+      it( 'should get a showTimedOutAlert', function(){
+        helper.destroy();
+
+        var defaultVal = false; // see class for details
+        var expected = helper.getShowTimedOutAlert();
+        expect( expected ).toEqual( defaultVal );
+
+        var value = true;
+        window.sessionStorage.setItem( 'showTimedOutAlert', angular.toJson( value ));
+
+        var expected = helper.getShowTimedOutAlert();
+        expect( expected ).toEqual( value );
+      });
+
+      it( 'should set a showTimedOutAlert', function(){
+        helper.destroy();
+
+        var defaultVal = false; // see class for details
+
+        var alertVal = 'asdfasdf'; // bad data should return the default
+        helper.setShowTimedOutAlert( alertVal );
+        var expected = helper.getShowTimedOutAlert();
+        expect( expected ).toEqual( defaultVal );
+
+        var alertVal = true;
+        helper.setShowTimedOutAlert( alertVal );
+        var expected = helper.getShowTimedOutAlert();
+        expect( expected ).toEqual( alertVal );
+
+        helper.setShowTimedOutAlert(); // should return the default val
+        var expected = helper.getShowTimedOutAlert();
         expect( expected ).toEqual( defaultVal );
       });
     });

@@ -10,7 +10,7 @@
 
   iscAlertModel.$inject = ['$log'];
 
-  function iscAlertModel( $log ){
+  function iscAlertModel( $log ){//jshint ignore:line
 //    $log.debug( 'iscAlertModel LOADED');
 
     // ----------------------------
@@ -115,7 +115,7 @@
 
       if( response ){
         if( response.data && response.data.error ){
-          return response.data.error
+          return response.data.error;
         }
         else{
           return naMessage; // if there is a response, but no data, give this message

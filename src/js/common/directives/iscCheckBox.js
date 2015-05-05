@@ -7,7 +7,7 @@
 
   iscCheckBox.$inject = [ '$log'];
 
-  function iscCheckBox( $log ){
+  function iscCheckBox( $log ){//jshint ignore:line
 //    //$log.debug( 'iscCheckBox LOADED');
 
     // ----------------------------

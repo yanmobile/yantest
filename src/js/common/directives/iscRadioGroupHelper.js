@@ -11,7 +11,7 @@
 
   iscRadioGroupHelper.$inject = [ '$log' ];
 
-  function iscRadioGroupHelper( $log ){
+  function iscRadioGroupHelper( $log ){//jshint ignore:line
     //$log.debug( 'iscRadioGroupHelper LOADED');
 
     // ----------------------------

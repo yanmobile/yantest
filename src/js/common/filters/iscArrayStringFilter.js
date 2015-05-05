@@ -7,7 +7,7 @@
 
   iscArrayStringFilter.$inject = [ '$log', '$filter' ];
 
-  function iscArrayStringFilter( $log, $filter ){
+  function iscArrayStringFilter( $log, $filter ){//jshint ignore:line
 //    //$log.debug( 'iscArrayStringFilter LOADED');
 
     // ----------------------------
@@ -35,12 +35,16 @@
         return '';
       }
 
+      array.sort();
+
       var string = '';
       var len = array.length;
       array.forEach( function( item, idx ){
         string += item.toString();
-        if( idx < (len-1) )
+        if( idx < (len-1) ){
           string += ', ';
+        }
+
       });
 
       return string;

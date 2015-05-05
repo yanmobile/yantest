@@ -114,12 +114,12 @@ textarea{
   @include  flex();
   @include  flex-type( 1 );
 
-//  border: 5px solid blue;
+  //border: 5px solid blue;
 
   /**
   styles for page headers
   **/
-  h1, h2, h3{
+  h1, h2, h3, h4, p{
     margin-top: 0;
     padding-top: 0;
   }
@@ -277,7 +277,7 @@ textarea{
   width: 100%;
   height: 100%;
   background: none;
-//  border: 5px solid #2fff64;
+  //border: 5px solid #2fff64;
 }
 
 //page content
@@ -290,22 +290,22 @@ textarea{
 //  border: 2px solid #ff41f9;
 
   @media #{$desktop}{
-    margin: $isc-gutter !important;
+    margin:$isc-gutter;
     flex-grow: 1;
   }
 
   @media #{$tablet}{
-    margin: $isc-gutter/2 $isc-gutter $isc-gutter $isc-gutter !important;
+    margin: $isc-gutter/2 $isc-gutter $isc-gutter $isc-gutter;
     flex-grow: 1;
   }
 
   @media #{$phablet}{
-    margin: $isc-gutter-sm !important;
+    margin: $isc-gutter-sm;
     flex-grow: 1;
   }
 
   @media #{$phone}{
-    margin: $isc-gutter-sm !important;
+    margin: $isc-gutter-sm;
   }
 }
 

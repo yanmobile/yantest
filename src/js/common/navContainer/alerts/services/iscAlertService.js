@@ -41,6 +41,7 @@
       iscSessionTimeout: 'Your session has expired. Please click Login to continue.'
     };
 
+    /* jshint ignore:start */
     var OK_BUTTON_KEYS = {
       iscResponseError: 'Unable to complete your request.',
       iscNotAuthenticated: 'Please log in to view this page.',
@@ -48,6 +49,7 @@
       iscSessionTimeoutWarning: 'Your session is about to expire. Click Ok to continue or Cancel to log out.',
       iscSessionTimeout: 'Your session has expired. Please click Login to continue.'
     };
+    /* jshint ignore:end */
 
 
     // ----------------------------
@@ -67,7 +69,7 @@
     function open( type ){
       //$log.debug( 'iscAlertService open' );
 
-      var options =
+    //  var options =
       //$log.debug( 'iscAlertService open' );
       iscAlertModel.options = getOptions( type );
     }

@@ -5,7 +5,7 @@
 (function(){
   'use strict';
 
-  iscFadeOutInAnimation.$inject = ['$log', "$window", 'TweenMax', 'EASE_DUR'];
+  iscFadeOutInAnimation.$inject = ['$log', '$window', 'TweenMax', 'EASE_DUR'];
 
   function iscFadeOutInAnimation( $log, $window, TweenMax, EASE_DUR ){
 
@@ -37,7 +37,7 @@
 
       if( className === 'fade-out-in' ){
         TweenMax.set( element, {autoAlpha: 1, display: 'block'});
-        TweenMax.to( element, EASE_DUR, {autoAlpha: 0, onComplete: onRemoveComplete, onCompleteParams:[element, done]})
+        TweenMax.to( element, EASE_DUR, {autoAlpha: 0, onComplete: onRemoveComplete, onCompleteParams:[element, done]});
       }
       else {
         done();
@@ -47,7 +47,7 @@
     function beforeRemoveClass( element, className, done ){
       //$log.debug( 'iscFadeOutInAnimation.beforeRemoveClass' );
       if( className === 'fade-out-in' ){
-        TweenMax.to( element, EASE_DUR, {autoAlpha: 1, onComplete: done})
+        TweenMax.to( element, EASE_DUR, {autoAlpha: 1, onComplete: done});
       }
       else {
         done();

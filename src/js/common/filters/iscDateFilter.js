@@ -40,11 +40,11 @@
 
       // strip extra whitespace, split on (now single) space, join with T
       // so '2015-03-02      04:57:00' becomes '2015-03-02T04:57:00'
-      var itemDateFormatted = itemDate.replace(/\s+/g, " ").split( ' ' ).join( 'T' );
+      var itemDateFormatted = itemDate.replace(/\s+/g, ' ').split( ' ' ).join( 'T' );
 
-      var now = moment().local();
-      var date = moment( itemDateFormatted).local().format( DATE_EXPR );
-      var time = ', ' + moment( itemDateFormatted ).local().format( TIME_EXPR );
+      var now = moment().local();//jshint ignore:line
+      var date = moment( itemDateFormatted).local().format( DATE_EXPR );//jshint ignore:line
+      var time = ', ' + moment( itemDateFormatted ).local().format( TIME_EXPR );//jshint ignore:line
       var today = now.format( DATE_EXPR );
       var yesterday = now.subtract( 1, 'days' ).format( DATE_EXPR );
 

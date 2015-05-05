@@ -5,7 +5,7 @@
 (function(){
   'use strict';
 
-  iscAlertAnimation.$inject = ['$log', "$window", 'TweenMax', 'iscAnimationService', 'EASE_DUR'];
+  iscAlertAnimation.$inject = ['$log', '$window', 'TweenMax', 'iscAnimationService', 'EASE_DUR'];
 
   function iscAlertAnimation( $log, $window, TweenMax, iscAnimationService, EASE_DUR ){
     //$log.debug( 'iscAlertAnimation.loaded' );
@@ -45,7 +45,7 @@
         var yPos = iscAnimationService.isPhone()? 55 : 75;
 
         TweenMax.set( element, {autoAlpha:0, x:xPos, y: yPos, width: width});
-        TweenMax.to( element, EASE_DUR, { ease: Power2.easeOut, autoAlpha: 1, onComplete: done });
+        TweenMax.to( element, EASE_DUR, { ease: Power2.easeOut, autoAlpha: 1, onComplete: done });//jshint ignore:line
       }
       else {
         done();
@@ -56,9 +56,9 @@
       //$log.debug( 'iscAlertAnimation.beforeRemoveClass' );
 
       if( className === 'alert-anime' ){
-        var xPos = - element.width() - 50;
+        //var xPos = - element.width() - 50;
 
-        TweenMax.to( element, EASE_DUR, { ease: Power2.easeOut, autoAlpha: 0, onComplete: onRemoveComplete, onCompleteParams:[element, done] });
+        TweenMax.to( element, EASE_DUR, { ease: Power2.easeOut, autoAlpha: 0, onComplete: onRemoveComplete, onCompleteParams:[element, done] });//jshint ignore:line
       }
       else {
         done();

@@ -1,6 +1,7 @@
 //DROPDOWN
 $isc-height-number: 45;
 $isc-dropdown-height: $isc-height-number + px;
+$isc-dropdown-item-height: 25px;
 $isc-btn-color: #FFFFFF;
 $color-darkGrey: #8e9294;
 
@@ -70,7 +71,7 @@ $color-darkGrey: #8e9294;
   margin-top: 3px;
   padding:($isc-height-number/4) +px 10px;
   background-color: $isc-btn-color;
-  height: $isc-dropdown-height;
+  height: $isc-dropdown-item-height;
 
   text-overflow: ellipsis;
   cursor: pointer;
