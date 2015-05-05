@@ -6,7 +6,7 @@
 
   iscGlobals.$inject = [ '$log', '$rootScope', '$document' ];
 
-  function iscGlobals( $log, $rootScope, $document ){
+  function iscGlobals( $log, $rootScope, $document ){//jshint ignore:line
 
     // --------------------
     //$document.ready( function() {

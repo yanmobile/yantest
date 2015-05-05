@@ -29,7 +29,10 @@
       setSessionTimeoutCounter: setSessionTimeoutCounter,
 
       getStoredStatePermissions: getStoredStatePermissions,
-      setStoredStatePermissions: setStoredStatePermissions
+      setStoredStatePermissions: setStoredStatePermissions,
+
+      getShowTimedOutAlert: getShowTimedOutAlert,
+      setShowTimedOutAlert: setShowTimedOutAlert
     };
 
     return service;
@@ -45,6 +48,7 @@
       $window.sessionStorage.removeItem('loginResponse');
       $window.sessionStorage.removeItem('statePermissions');
       $window.sessionStorage.removeItem('sessionTimeoutCounter');
+      $window.sessionStorage.removeItem('showTimedOutAlert');
     }
 
     // ----------------------------
@@ -77,7 +81,21 @@
     }
 
     function setSessionTimeoutCounter( val ){
+      //$log.debug( 'iscSessionStorageHelper.setSessionTimeoutCounter:', val );
       setSessionStorageValue( 'sessionTimeoutCounter', val );
+    }
+
+
+    // ----------------------------
+    function getShowTimedOutAlert(){
+      return getValFromSessionStorage( 'showTimedOutAlert', false );
+    }
+
+    function setShowTimedOutAlert( val ){
+      if( typeof val !== 'boolean' ){
+        val = false;
+      }
+      setSessionStorageValue( 'showTimedOutAlert', val );
     }
 
     // ----------------------------
@@ -85,7 +103,7 @@
      * private
      */
     function canParse( val ){
-      var canParse =  (!_.isEmpty(val) && val !== 'null' && val !== 'undefined');
+      var canParse =  (!_.isEmpty(val) && val !== 'null' && val !== 'undefined');//jshint ignore:line
       //$log.debug( '...canParse: ' +  canParse );
       return canParse;
     }
@@ -99,7 +117,7 @@
 
       if( canParse( valStr ) ){
         //$log.debug( '...TRYING TO PARSE: ' +  valStr );
-        return angular.fromJson( valStr )
+        return angular.fromJson( valStr );
       }
       return defaultVal;
     }

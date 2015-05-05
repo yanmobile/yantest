@@ -116,14 +116,9 @@
 
     }
 
-    function clearConfig( val ){
+    function clearConfig( val ){//jshint ignore:line
 //      //$log.debug( 'iscCustomConfigService.clearConfig' );
       config = null;
-    }
-
-    // ----------------------------
-    function getUserRoles() {
-      return config.userRoles;
     }
 
     // ----------------------------

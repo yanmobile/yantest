@@ -115,6 +115,23 @@
   }
 }
 
+.isc-form-group-workflow {
+  @extend .isc-form-group;
+
+
+  @media #{$phone} {
+    @include  flex-direction( row );
+
+  }
+
+  label{
+
+    margin-top: auto;
+    margin-bottom: auto;
+  }
+
+}
+
 .isc-form-group-stacked{
   @extend .isc-form-group;
 
@@ -193,7 +210,11 @@
 
   .isc-check-mark,
   .isc-checkbox-outline{
-    fill: darken( $app-border-color, 15 );
+    fill: darken( $app-border-color, 25 );
+  }
+
+  .isc-checkbox-background{
+    fill: $white;
   }
 }
 

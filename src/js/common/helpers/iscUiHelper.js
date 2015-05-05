@@ -7,7 +7,7 @@
 
   iscUiHelper.$inject = [ '$log' ];
 
-  function iscUiHelper( $log ){
+  function iscUiHelper( $log ){//jshint ignore:line
 //    //$log.debug( 'iscUiHelper LOADED' );
 
     // ----------------------------

@@ -7,7 +7,7 @@
 
   iscNavbarController.$inject = [ '$log', '$scope', '$state', '$rootScope', 'iscCustomConfigService', 'iscCustomConfigHelper', 'iscUiHelper', 'iscSessionModel', 'iscAuthenticationApi', 'SharedState' ];
 
-  function iscNavbarController( $log, $scope, $state, $rootScope, iscCustomConfigService, iscCustomConfigHelper, iscUiHelper, iscSessionModel, iscAuthenticationApi, SharedState ){
+  function iscNavbarController( $log, $scope, $state, $rootScope, iscCustomConfigService, iscCustomConfigHelper, iscUiHelper, iscSessionModel, iscAuthenticationApi, SharedState ){//jshint ignore:line
 //    //$log.debug( 'iscNavbarController LOADED');
 
     var self = this;
@@ -56,7 +56,7 @@
       function(){
         return self.sessionModel.getCurrentUser();
       },
-      function( newVal, oldVal ){
+      function( newVal, oldVal ){//jshint ignore:line
         self.translationParams = {
           userName: self.sessionModel.getFullName()
         };
@@ -67,13 +67,13 @@
     // -----------------------------
 
     $rootScope.$on('$stateChangeSuccess',
-      function( event, toState, toParams, fromState, fromParams ){
+      function( event, toState, toParams, fromState, fromParams ){//jshint ignore:line
         //$log.debug( 'iscNavbarController.$stateChangeSuccess', arguments);
         setPageState( toState.name );
       });
 
     // when you refresh the page, this will reset the active state of the selected tab
-    angular.element(document).ready(function () {
+    angular.element(document).ready(function () {//jshint ignore:line
       setPageState( $state.$current.name );
     });
 

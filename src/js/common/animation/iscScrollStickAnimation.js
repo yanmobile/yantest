@@ -43,7 +43,7 @@
           position: 'fixed',
           top: params.top,
           border: '1px solid rgba(0,0,0,.35)',
-          backgroundColor: "rgba(255,255,255,1)",
+          backgroundColor: 'rgba(255,255,255,1)',
           boxShadow: '7px 7px 20px 0px rgba(0,0,0,0.25)',
           padding: '10px',
           width: params.width,
@@ -52,7 +52,7 @@
 
         var options = {
           css: css,
-          ease: Power2.easeOut,
+          ease: Power2.easeOut,//jshint ignore:line
           onComplete: done
         };
 
@@ -75,14 +75,14 @@
           width:'100%',
           paddingLeft: '0px',
           paddingBottom: '5px',
-          backgroundColor: "rgba(255,255,255,0)",
+          backgroundColor: 'rgba(255,255,255,0)',
           border: '1px solid rgba(0,0,0,0)',
           boxShadow: '0px 0px 0px 0px rgba(0,0,0,0)'
         };
 
         var options = {
           css: css,
-          ease: Power2.easeOut,
+          ease: Power2.easeOut,//jshint ignore:line
           onComplete: onRemoveComplete,
           onCompleteParams:[element, done]
 
@@ -100,7 +100,7 @@
       done();
     }
 
-    function getParams( elem ){
+    function getParams( elem ){//jshint ignore:line
       var winW = $window.innerWidth;
       var tabletOrlarger = winW >= 960;
       var margin = tabletOrlarger? 50 : 20;
@@ -111,7 +111,7 @@
         width: winW - (margin * 2) - scrollbarWidth,
         margin: margin,
         top: top
-      }
+      };
     }
 
   }// END CLASS

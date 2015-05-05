@@ -7,7 +7,7 @@
 
   iscHtmlToPlainText.$inject = [ '$log' ];
 
-  function iscHtmlToPlainText( $log ){
+  function iscHtmlToPlainText( $log ){//jshint ignore:line
 //    //$log.debug( 'iscHtmlToPlainText LOADED');
 
 
@@ -29,7 +29,7 @@
     }
 
 
-  };//END CLASS
+  }//END CLASS
 
   // ----------------------------
   // injection

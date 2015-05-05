@@ -41,10 +41,6 @@
     border:1px solid darken( $white-smoke, 10 );
     background: $white-smoke;
     cursor: not-allowed;
-
-    svg{
-      fill: darken( $white-smoke, 10 );
-    }
   }
 
   &:focus {
@@ -58,24 +54,36 @@
   background: $button-primary;
   border:1px solid darken( $button-primary, 10 );
 
+  svg{
+    padding-left: 5px;
+    fill: darken( $brand-secondary, 60 );
+    width: 30px;
+    height: 30px;
+    vertical-align: middle;
+  }
+
   &:hover{
     background: darken( $button-primary, 10 );
     border:1px solid darken( $button-primary, 20 );
 
     &:disabled{
       background: $button-primary-disabled;
-      color: $brand-primary;
+      color: darken( $button-primary-disabled, 25 );
+      svg{
+        fill: darken( $button-primary-disabled, 25 );
+      }
     }
-  }
-
-  &:active{
-    color:$white;
   }
 
   &:disabled{
     background: $button-primary-disabled;
-    color: $brand-primary;
+    color: darken( $button-primary-disabled, 25 );
+    svg{
+      fill: darken( $button-primary-disabled, 25 );
+    }
   }
+
+
 }
 
 .isc-btn-danger{
@@ -118,7 +126,34 @@
     background: lighten( $brand-secondary, 20 );
   }
 
+  svg{
+    padding-left: 5px;
+    fill: darken( $brand-secondary, 60 );
+    width: 30px;
+    height: 30px;
+    vertical-align: middle;
 
+    &:hover{
+      fill: darken( $brand-secondary, 70 );
+    }
+  }
+}
+
+.isc-btn-white{
+  @extend .isc-btn;
+  color:darken( $brand-secondary, 60 );
+  background: $white;
+  border:1px solid darken( $app-border-color, 10 );
+
+  &:hover{
+    color:darken( $brand-secondary, 70 );
+    background: darken( $brand-secondary, 10 );
+    border:1px solid darken( $app-border-color, 30 );
+  }
+
+  &:active{
+    color:$app-border-color;
+  }
 
   svg{
     padding-left: 5px;
@@ -205,16 +240,21 @@
   }
 }
 
-// icon only search
-.isc-btn-search{
-  @extend .isc-btn-secondary;
-  max-width: $isc-button-height;
-  padding: 0 5px 0 0; // t r b l
-}
-
 .isc-btn-link{
+  text-align: left;
+  font-size: $isc-button-font-size;
+  font-weight: $isc-button-font-weight;
+  text-decoration:none;
+  text-shadow:none;
   background-color: transparent;
   border: none;
+  outline: none;
+  margin: 0;
+  padding: 0;
+
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-kerning: auto;
+  font-size: 16px;
 
   color: darken( $brand-link, 0 );
 
@@ -222,7 +262,52 @@
   &:active{
     color:darken( $brand-link, 15 );
   }
+
+  &:disabled{
+    color:$gray-30;
+    cursor: not-allowed;
+  }
 }
+
+.isc-btn-search{
+  @extend .isc-btn-primary;
+  max-height: $isc-button-height;
+  vertical-align: middle;
+  line-height:30px;
+
+  @media #{$tab-or-less} {
+    font-size: 1em;
+    color: transparent;
+    line-height: 1;
+    min-width: $isc-button-height * 1.25;
+    max-width: $isc-button-height * 1.25;
+
+    &:active,
+    &:disabled,
+    &:disabled:hover{
+      font-size: 1em;
+      color: transparent;
+      line-height: 1;
+    }
+
+    svg{
+      position: relative;
+      display: block;
+      top: -10px;
+      left: -6px;
+    }
+  }
+
+  svg{
+    display: inline-block;
+    padding-left: 5px;
+    fill: $white;
+    width: 30px;
+    height: 30px;
+    vertical-align: middle;
+  }
+}
+
 
 .isc-image-button {
   border: none;
@@ -258,8 +343,6 @@ a.isc-image-button {
   @extend .isc-styled-select;
 
   select{
-    width: $nav-select-width + 15px;
-    height: $nav-select-height;
     font-size: 10px;
   }
 }
@@ -272,11 +355,14 @@ a.isc-image-button {
   background: rgba(0, 0, 0, .25) url(../assets/images/down-carat.png) no-repeat 93%;
   padding-right: 20px;
 
+  width: $nav-select-width;
+
   select{
     background-color: rgba(0, 0, 0, 0);
-    min-width: $isc-button-height;
+    min-width: 100%;
+    max-width: 100%;
     min-height: $isc-button-height;
-    padding: 0px 10px;
+    padding: 0px 20px 0 0;
     font-size: $isc-button-font-size;
     color: white;
     font-weight: 400;
@@ -302,24 +388,28 @@ a.isc-image-button {
 }
 
 .isc-scroll-stick-container{
+  @include box-sizing( border-box );
   position: relative;
-  display: inline-block;
+  display: block;
   text-align: left;
   width: 100%;
   background-color: rgba(255,255,255, 0);
   border: 1px solid transparent;
-  z-index: 1000;
+  z-index: $modal-z-index - 1;
+
+  .section{
+    padding: 5px 0 5px 0;
+    display: block;
+    min-height: 25px;
+
+    &:not(first-child){
+      border-top: 1px solid $app-border-color;
+      margin-top: 5px;
+    }
+  }
 
   button{
     margin-right: 10px
-  }
-
-  @media #{$desktop} {
-    padding: 0px
-  }
-
-  @media #{$mobile} {
-    padding: 0px
   }
 }
 

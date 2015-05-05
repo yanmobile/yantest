@@ -44,8 +44,8 @@
   }
 
   @media #{$mobile}{
-    //    height: auto;
-    //    width: auto;
+//    height: auto;
+//    width: auto;
     background-color: transparent;
     border: none;
   }
@@ -244,7 +244,7 @@ a.isc-secondary-nav-item {
 // nav dropdown for mobile pages
 .isc-secondary-nav-mobile-dropdown-wrapper{
   width: 100%;
-  //  border: 1px solid blueviolet;
+//  border: 1px solid blueviolet;
 
 }
 
@@ -256,19 +256,16 @@ a.isc-secondary-nav-item {
 
   cursor: default;
   cursor: pointer;
-  //  border: 2px solid green;
+//  border: 2px solid green;
 
   &:before{
-    //border: 2px solid $brand-page-title-color;
-    position:relative;
-    display: inline-block;
+    //border: 1px solid $brand-page-title-color;
+    float:left;
+    margin-right: 5px;
     font-family: FontAwesome;
     color: $brand-page-title-color;
     font-size: 30px;
     font-weight: 400;
-    top: 3px;
-    left: 0px;
-    right: -10px;
     content: " \F107"; //&#xf107 unicode for fa-angle-down
   }
 
@@ -276,10 +273,6 @@ a.isc-secondary-nav-item {
 
 .isc-secondary-nav-link {
   display: inline-block;
-  //  white-space: nowrap;
-  //  overflow: hidden;
-  //  text-overflow: ellipsis;
-  //  border: 1px solid red;
   max-width: 90%;
   @include box-sizing( border-box );
 

@@ -56,8 +56,8 @@
         //$log.debug( '...offsetTop',element[0].offsetTop );
         //$log.debug( '...yPosEnd',yPosEnd );
 
-        TweenMax.set( element, {x:xPos, y: yPos});
-        TweenMax.to( element, EASE_DUR, { ease: Power2.easeOut, y: yPosEnd, onComplete: done });
+        TweenMax.set( element, {x:xPos, y: yPos, display: 'block'});
+        TweenMax.to( element, EASE_DUR, { ease: Power2.easeOut, y: yPosEnd, onComplete: done });//jshint ignore:line
       }
       else {
         done();
@@ -68,7 +68,7 @@
       //$log.debug( 'iscNavContainerSecondaryNavAnimation.beforeRemoveClass' );
       if( className === 'secondary-nav' ){
         var yPos = -element.height() - element[0].offsetTop;
-        TweenMax.to( element, EASE_DUR, { ease: Power2.easeOut, y: yPos, onComplete: onRemoveComplete, onCompleteParams:[element, done] });
+        TweenMax.to( element, EASE_DUR, { ease: Power2.easeOut, y: yPos, onComplete: onRemoveComplete, onCompleteParams:[element, done] });//jshint ignore:line
       }
       else {
         done();
@@ -76,7 +76,7 @@
     }
 
     function onRemoveComplete( elem, done ){
-      TweenMax.set( elem, {autoAlpha:0});
+      TweenMax.set( elem, {autoAlpha:0, display: 'none'});
       done();
     }
 

@@ -5,39 +5,39 @@
 (function(){
   'use strict';
 
-  iscFadeInOutAnimation.$inject = ['$log', "$window", 'TweenMax', 'EASE_DUR'];
+  iscFadeInOutAnimation.$inject = ['$log', '$window', 'TweenMax', 'EASE_DUR'];
 
   function iscFadeInOutAnimation( $log, $window, TweenMax, EASE_DUR ){
-    $log.debug( 'iscFadeInOutAnimation.LOADED');
-    // --------------------
-    // vars
-    // --------------------
 
-    // --------------------
-    // init
-    // --------------------
+  // --------------------
+  // vars
+  // --------------------
 
-    // --------------------
-    // class factory
-    // --------------------
+  // --------------------
+  // init
+  // --------------------
 
-    var animations = {
-      beforeAddClass: beforeAddClass,
-      beforeRemoveClass: beforeRemoveClass
-    };
+  // --------------------
+  // class factory
+  // --------------------
 
-    return animations;
+  var animations = {
+    beforeAddClass: beforeAddClass,
+    beforeRemoveClass: beforeRemoveClass
+  };
 
-    // --------------------
-    // functions
-    // --------------------
+  return animations;
+
+  // --------------------
+  // functions
+  // --------------------
 
     function beforeAddClass( element, className, done ){
       //$log.debug( 'iscFadeInOutAnimation.beforeAddClass' );
 
       if( className === 'fade-in-out' ){
         TweenMax.set( element, {autoAlpha: 0, display: 'block'});
-        TweenMax.to( element, EASE_DUR, {autoAlpha: 1, onComplete: done} )
+        TweenMax.to( element, EASE_DUR, {autoAlpha: 1, onComplete: done} );
       }
       else {
         done();
@@ -47,7 +47,7 @@
     function beforeRemoveClass( element, className, done ){
       //$log.debug( 'iscFadeInOutAnimation.beforeRemoveClass' );
       if( className === 'fade-in-out' ){
-        TweenMax.to( element, EASE_DUR, {autoAlpha: 0, onComplete: onRemoveComplete, onCompleteParams: [element, done]})
+        TweenMax.to( element, EASE_DUR, {autoAlpha: 0, onComplete: onRemoveComplete, onCompleteParams: [element, done]});//jshint ignore:line
       }
       else {
         done();

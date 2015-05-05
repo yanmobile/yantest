@@ -45,8 +45,8 @@
     // ----------------
 
     self.getOptions = function(){
-      return iscAlertModel.getOptions()
-    }
+      return iscAlertModel.getOptions();
+    };
 
   }// END CLASS
 

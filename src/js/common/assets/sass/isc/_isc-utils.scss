@@ -36,6 +36,10 @@
   display: none;
 }
 
+.invisible{
+  visibility: hidden;
+}
+
 // --------------------------------------
 // show only functions
 // --------------------------------------
@@ -79,7 +83,6 @@
     display: none !important;
   }
 }
-
 // --------------------
 // visible phone only
 .only-phone{

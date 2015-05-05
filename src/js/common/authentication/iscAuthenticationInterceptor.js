@@ -6,7 +6,7 @@
 
   iscAuthenticationInterceptor.$inject = ['$log', '$rootScope', '$q', 'iscSessionModel', 'AUTH_EVENTS', '$templateCache'];
 
-  function iscAuthenticationInterceptor( $log, $rootScope, $q, iscSessionModel, AUTH_EVENTS, $templateCache ){
+  function iscAuthenticationInterceptor( $log, $rootScope, $q, iscSessionModel, AUTH_EVENTS, $templateCache ){//jshint ignore:line
 
     // ----------------------------
     // vars
@@ -27,7 +27,7 @@
     // functions
     // ----------------------------
 
-    function response( response ){
+    function response( response ){//jshint ignore:line
       //$log.debug( 'iscAuthenticationInterceptor.response ', response );
       if( response.config.url.indexOf( 'http' ) !== -1 ){
         //$log.debug('...http call');

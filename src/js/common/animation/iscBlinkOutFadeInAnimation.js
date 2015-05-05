@@ -5,7 +5,7 @@
 (function(){
   'use strict';
 
-  iscBlinkOutFadeInAnimation.$inject = ['$log', "$window", 'TweenMax', 'EASE_DUR'];
+  iscBlinkOutFadeInAnimation.$inject = ['$log', '$window', 'TweenMax', 'EASE_DUR'];
 
   function iscBlinkOutFadeInAnimation( $log, $window, TweenMax, EASE_DUR ){
 
@@ -47,7 +47,7 @@
       //$log.debug( 'iscBlinkOutFadeInAnimation.beforeRemoveClass' );
       if( className === 'blink-out-fade-in' ){
         TweenMax.set( element, {autoAlpha: 0, display: 'block'});
-        TweenMax.to( element, EASE_DUR, {autoAlpha: 1, onComplete: done})
+        TweenMax.to( element, EASE_DUR, {autoAlpha: 1, onComplete: done});
       }
       else {
         done();
