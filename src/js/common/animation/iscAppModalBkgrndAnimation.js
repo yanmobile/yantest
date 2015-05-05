@@ -35,7 +35,7 @@
     function beforeAddClass( element, className, done ){
       //$log.debug( 'iscAppModalBkgrndAnimation.beforeAddClass' );
       if( className === 'modal-bg-anime' ){
-        TweenMax.set( element, {autoAlpha:0, width: iscAnimationService.getFullWidth() + 50, height: iscAnimationService.getFullHeight() + 50, x: -25, y:-25});//jshint ignore:line
+        TweenMax.set( element, {display:'block', autoAlpha:0, width: iscAnimationService.getFullWidth() + 50, height: iscAnimationService.getFullHeight() + 50, x: -25, y:-25});//jshint ignore:line
         TweenMax.to( element, EASE_DUR, { ease: Power2.easeOut, autoAlpha:0.75, onComplete: done });//jshint ignore:line
       }
       else {
@@ -54,7 +54,7 @@
     }
 
     function onRemoveComplete( elem, done ){
-      TweenMax.set( elem, {autoAlpha:0});
+      TweenMax.set( elem, {display:'none', autoAlpha:0});
       done();
     }
 
