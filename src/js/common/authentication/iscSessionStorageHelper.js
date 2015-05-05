@@ -81,6 +81,7 @@
     }
 
     function setSessionTimeoutCounter( val ){
+      //$log.debug( 'iscSessionStorageHelper.setSessionTimeoutCounter:', val );
       setSessionStorageValue( 'sessionTimeoutCounter', val );
     }
 

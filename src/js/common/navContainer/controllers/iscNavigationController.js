@@ -113,10 +113,10 @@
       // Wrapped in a timeout to ensure the dom is loaded
       $timeout( function(){
         var showTimedOutAlert = !!iscSessionStorageHelper.getShowTimedOutAlert();
-        $log.debug( '...showTimedOutAlert',showTimedOutAlert);
+        //$log.debug( '...showTimedOutAlert',showTimedOutAlert);
 
         if( showTimedOutAlert ){
-          $log.debug( '...showTimedOutAlert 2',showTimedOutAlert);
+          //$log.debug( '...showTimedOutAlert 2',showTimedOutAlert);
           iscSessionStorageHelper.setShowTimedOutAlert( false );
           iscAlertModel.setOptionsByType( AUTH_EVENTS.sessionTimeout, null, null, null );
           self.showAlertBox();

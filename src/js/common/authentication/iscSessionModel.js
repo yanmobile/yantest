@@ -108,8 +108,10 @@
       // otherwise assume it to be 0
       sessionTimeoutCounter = (timeoutCounter > 0) ? timeoutCounter : 0;
       //$log.debug( '...sessionTimeoutCounter: ' + sessionTimeoutCounter );
+      //$log.debug( '...sessionTimeoutInSeconds: ' + sessionTimeoutInSeconds );
 
       sessionTimeoutWarning = parseInt( sessionTimeoutInSeconds *0.75 );
+      //$log.debug( '...sessionTimeoutWarning: ' + sessionTimeoutWarning );
 
       doSessionTimeout();
     }
@@ -129,10 +131,10 @@
         sessionTimeoutCounter++;
 
         // save off the remaining time so that on page refresh we can start from here
-        //var remainingTime = sessionTimeoutInSeconds - sessionTimeoutCounter;
+        var remainingTime = sessionTimeoutInSeconds - sessionTimeoutCounter;
 
         iscSessionStorageHelper.setSessionTimeoutCounter( sessionTimeoutCounter );
-        //$log.debug( '...TICK ', remainingTime );
+        //$log.debug( '...TICK ' );
         //$log.debug( '...sessionTimeoutInSeconds ' + sessionTimeoutInSeconds );
         //$log.debug( '...sessionTimeoutCounter ' + sessionTimeoutCounter );
         //$log.debug( '...sessionTimeoutWarning ' + sessionTimeoutWarning );
@@ -167,6 +169,7 @@
     function resetSessionTimeout(){
       //$log.debug( 'iscSessionModel.resetSessionTimeout');
       sessionTimeoutCounter = 0;
+      iscSessionStorageHelper.setSessionTimeoutCounter( sessionTimeoutCounter );
       //stopSessionTimeout();
       //doSessionTimeout();
     }

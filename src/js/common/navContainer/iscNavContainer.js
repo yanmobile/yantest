@@ -196,13 +196,13 @@
         }
 
         function loadDataFromStoredSession(){
-          $log.debug( 'ischNavContainer.loadDataFromStoredSession');
+          //$log.debug( 'ischNavContainer.loadDataFromStoredSession');
 
           // NOTE - set the login response and create the session BEFORE calling initSessionTimeout
           // since the warning for sessionTimeout time is predicate on setting the sessionTimeout time first
           var storedLoginResponse = iscSessionStorageHelper.getLoginResponse();
           if( !_.isEmpty( storedLoginResponse )){
-            $log.debug( '...got storedLoginResponse: ' + JSON.stringify( storedLoginResponse ));
+            //$log.debug( '...got storedLoginResponse: ' + JSON.stringify( storedLoginResponse ));
             iscSessionModel.create( storedLoginResponse );
 
             var currentUser = iscSessionModel.getCurrentUser();
@@ -211,12 +211,12 @@
 
           var storedStatePermissions = iscSessionStorageHelper.getStoredStatePermissions();
           if( !_.isEmpty( storedStatePermissions )){
-            $log.debug( '...got permissions: ' + JSON.stringify( storedStatePermissions ));
+            //$log.debug( '...got permissions: ' + JSON.stringify( storedStatePermissions ));
             iscSessionModel.setStatePermissions( storedStatePermissions );
           }
 
           var timeoutCounter = iscSessionStorageHelper.getSessionTimeoutCounter();
-          $log.debug( '...got a counter: ' + timeoutCounter );
+          //$log.debug( '...got a counter: ' + timeoutCounter );
           if( timeoutCounter > 0 ){
             //$log.debug( '...got a counter: ' + timeoutCounter );
             iscSessionModel.initSessionTimeout( timeoutCounter );
