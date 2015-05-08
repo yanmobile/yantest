@@ -66,10 +66,8 @@
         //console.log('DESTROY THIS LIST not presently used');
       });
 
-      $rootScope.$on('SHOW_DROPDOWN_LIST', function(event, data, dropID, listField){
-        //console.log('GOT SHOW DROP IN LIST DIRECTIVE');
-        //COUNT IS TO DEAL WITH CALL BEING RECEIVED TWICE
-        if(dropCt === 0){
+      $rootScope.$on(DROPDOWN_EVENTS.showDropdownList, function(event, data, dropID, listField){
+
           //IF THIS IS A CALL FROM A DIFFERENT DROPDOWN HIDE PREVIOUS DROPDOWN
           if(scope.dropId !== dropID){
             hideDropdownList();
@@ -93,12 +91,6 @@
             angular.element(document).unbind('click'); //jshint ignore:line
             angular.element($window).unbind('scroll');
           }
-
-        }
-        if(dropCt === 1){
-          dropCt = -1;
-        }
-        dropCt++;
         scope.dropId = dropID;
       });
 
@@ -108,7 +100,8 @@
         var clickOffset =angular.element('#'+dropID+'-block').offset();
         var bodyScrollTop = angular.element('body').scrollTop();
         var elTop = clickOffset.top + offsetHeight - bodyScrollTop;
-        var elHeight = angular.element('#'+dropID+'-list').outerHeight() * scope.listData.length;
+        //THE +3 IS TO ACCOUNT FOR THE TOP MARGIN WHICH IS NOT CALC IN OUTER. THE .5 ADDS HALF A HEIGHT TO GIVE SPACE AT THE BOTTOM OF THE LIST.
+        var elHeight = ((angular.element('#'+dropID+'-list').outerHeight()+3) * (scope.listData.length + .5));
         var elWidth = angular.element('#'+dropID+'-block').outerWidth() + angular.element('#'+dropID+'-icon').outerWidth() -1;
 
         //DETERMINE IF HEIGHT NEEDS TO BE TRUNCATED OR DROPDOWN NEEDS TO BE DROP UP
@@ -129,7 +122,6 @@
             elHeight = $window.innerHeight - elTop - 25;
           }
         }
-
         angular.element('#modal-dropdown').css(
           {'left': clickOffset.left,
             'top':elTop,
@@ -154,21 +146,25 @@
           // REMOVE BINDING, CLOSE SELECTION LIST WHEN USER CLICKS ON NON-DROPDOWN ITEM
           var evtStatus = angular.element(event.target).hasClass('isc-dd');
           if(!evtStatus){
-            doc.unbind('click');
-            angular.element($window).unbind('scroll');
-            scope.showDropList = false;
-            hideDropdownList();
+            unbindEvents();
           }
         });
       };
+      function unbindEvents(){
+        angular.element(document).unbind('click');
+        angular.element($window).unbind('scroll');
+        scope.showDropList = false;
+        hideDropdownList();
+      }
 
       function hideDropdownList(){
         angular.element('#modal-dropdown').css({'visibility':'hidden'});
       }
 
       $rootScope.$on( DROPDOWN_EVENTS.dropdownItemSelected ,function(){
-        scope.showDropList = false;
+        unbindEvents();
       });
+
 
     }//END LINK
 

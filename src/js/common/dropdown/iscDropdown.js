@@ -2,7 +2,7 @@
  * Created by yale marc on 3/17/15.
  SAMPLE HTML USAGE
  <div style="display:inline-block;width:100%">
-	<isc-dropdown list-data="listData" drop-width="'70%'" drop-maxwidth="180" drop-minwidth="75" list-field="value" drop-Title="'SELECT USER'" drop-id="UserBtn" drop-icon="fa fa-user">
+	<isc-dropdown list-data="listData" drop-width="'70%'" drop-placeholder="Sort" drop-maxwidth="180" drop-minwidth="75" list-field="value" drop-selected-item="'Tom'" drop-id="UserBtn" drop-icon="fa fa-user">
 	</isc-dropdown>
 </div>
  */
@@ -28,12 +28,13 @@
 			scope: {
 				listData: '=',
 				listField: '@',
-				dropTitle: '=',
+				dropSelectedItem: '=',
 				dropId: '@',
 				dropIcon: '@',
 				dropMinwidth: '=',
 				dropMaxwidth: '=',
-				dropWidth: '='
+				dropWidth: '=',
+				dropPlaceholder: '='
 			},
 			templateUrl: 'common/dropdown/iscDropdown.html'
 		};
@@ -51,6 +52,7 @@
 			scope.itemWidth = 0;
 			scope.isShowDrop = false;
 			scope.listField = 'label';
+
 			angular.element(window).resize(function(){//jshint ignore:line
 				scope.setWidth();
 			});
@@ -74,7 +76,6 @@
 						angular.element('#'+scope.dropId).width(angular.element('form').width()-20);
 					}else{
 						//SET WIDTH OF TITLE BLOCK BASED ON LARGER OF TITLE OR DROPDOWN CONTENT
-						//console.log('set larger');
 						hiddenList.css({'width':'auto'});
 						if(hiddenList.width() > blockTitle.width()){
 							blockTitle.width(hiddenList.width());
@@ -86,6 +87,11 @@
 			function domReady(){
 				$timeout(function(){
 					scope.setWidth();
+					if(scope.dropSelectedItem){
+						scope.dropTitle = scope.dropSelectedItem;
+					}else{
+						scope.dropTitle = scope.dropPlaceholder;
+					}
 				});
 			}
 			domReady();
@@ -95,10 +101,11 @@
 			};
 
 			$rootScope.$on( DROPDOWN_EVENTS.dropdownItemSelected, function(e, selection){
-        $log.debug('iscDropdown.DROPDOWN_ITEM_SELECTED', selection);
+        		$log.debug('iscDropdown.DROPDOWN_ITEM_SELECTED', selection);
 				//CHECK TO ASSURE THAT CORRECT ITEM
 				if(scope.dropId === selection.dropId ){
 					scope.dropTitle = selection.title ;
+					scope.selectedItem = selection.title;
 				}
 			});
 
