@@ -35,7 +35,7 @@
     var dest = 'gulp/';
 
     return gulp.src( src )
-      .pipe( gulp.dest( dest ));
+        .pipe( gulp.dest( dest ));
   });
 
   gulp.task('inject-main-configs', function () {
@@ -47,7 +47,7 @@
     var dest = '';
 
     return gulp.src( src )
-      .pipe( gulp.dest( dest ));
+        .pipe( gulp.dest( dest ));
   });
 
   gulp.task('inject-test-configs', function () {
@@ -59,7 +59,7 @@
     var dest = 'test/';
 
     return gulp.src( src )
-      .pipe( gulp.dest( dest ));
+        .pipe( gulp.dest( dest ));
   });
 
   gulp.task('inject-phonegap-config', function () {
@@ -68,7 +68,7 @@
     var dest = 'src/';
 
     return gulp.src( src )
-      .pipe( gulp.dest( dest ));
+        .pipe( gulp.dest( dest ));
   });
 
 
@@ -81,21 +81,9 @@
     var dest = 'src/js/common/';
 
     return gulp.src( js )
-      .pipe( gulp.dest( dest ));
+        .pipe( gulp.dest( dest ));
   });
 
-
-  /*==============================
-   =       inject templates      =
-   ===============================*/
-
-  gulp.task('inject-common-templates', function () {
-    var html = ['../hs-ui-angular-core/src/templates/common/**/*'];
-    var dest = 'src/templates/common/';
-
-    return gulp.src( html )
-      .pipe( gulp.dest( dest ));
-  });
 
   /*==============================
    =           copy              =
@@ -120,7 +108,7 @@
 
   // js + desktop html
   gulp.task('add-common', function(done) {
-    var tasks = ['inject-common-js','inject-common-templates' ];
+    var tasks = ['inject-common-js','inject-common-templates', 'add-configs'  ];
     seq('clean-common', tasks, done);
   });
 

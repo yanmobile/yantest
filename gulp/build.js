@@ -20,7 +20,7 @@
       js: [
         './bower_components/jquery/dist/jquery.js',
 
-        './bower_components/lodash/dist/lodash.js',
+        './bower_components/lodash/lodash.js',
         './bower_components/greensock/src/minified/TweenMax.min.js',
 
         './bower_components/angular/angular.js',
