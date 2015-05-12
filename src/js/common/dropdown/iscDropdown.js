@@ -2,7 +2,7 @@
  * Created by yale marc on 3/17/15.
  SAMPLE HTML USAGE
  <div style="display:inline-block;width:100%">
-	<isc-dropdown list-data="listData" drop-width="'70%'" drop-placeholder="Sort" drop-maxwidth="180" drop-minwidth="75" list-field="value" drop-selected-item="'Tom'" drop-id="UserBtn" drop-icon="fa fa-user">
+	<isc-dropdown list-data="listData" drop-width="'70%'" drop-placeholder="Sort" drop-maxwidth="180" drop-minwidth="75" list-field="value" drop-selected-item="sampleItem" drop-id="UserBtn" drop-icon="fa fa-user">
 	</isc-dropdown>
 </div>
  */
@@ -46,7 +46,6 @@
 		// ----------------------------
 
 		function link( scope, elem, attr ){//jshint ignore:line
-			//$log.debug( 'iscDropdown' );
 			scope.dropOpen = false;
 			scope.iconLeft = 0;
 			scope.itemWidth = 0;
@@ -88,7 +87,7 @@
 				$timeout(function(){
 					scope.setWidth();
 					if(scope.dropSelectedItem){
-						scope.dropTitle = scope.dropSelectedItem;
+						scope.dropTitle = scope.dropSelectedItem[scope.listField];
 					}else{
 						scope.dropTitle = scope.dropPlaceholder;
 					}
@@ -101,11 +100,10 @@
 			};
 
 			$rootScope.$on( DROPDOWN_EVENTS.dropdownItemSelected, function(e, selection){
-        		$log.debug('iscDropdown.DROPDOWN_ITEM_SELECTED', selection);
 				//CHECK TO ASSURE THAT CORRECT ITEM
 				if(scope.dropId === selection.dropId ){
-					scope.dropTitle = selection.title ;
-					scope.selectedItem = selection.title;
+					scope.dropTitle = selection.selectedItem[scope.listField] ;
+					scope.dropSelectedItem = selection.selectedItem;
 				}
 			});
 

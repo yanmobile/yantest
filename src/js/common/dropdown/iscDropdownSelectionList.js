@@ -50,13 +50,12 @@
 
     function link( scope, elem, attr ){//jshint ignore:line
 
-      scope.selectItem = function( value, title ){
-        $log.debug('iscDropdownSelectionList.selectItem', value, title );
-        //var selectArray = [value, scope.dropId];
+      scope.selectItem = function( selectedObj ){
+        $log.debug('iscDropdownSelectionList.selectItem', selectedObj );
+
         var selectCriteria = {
           dropId: scope.dropId,
-          title: title ? title : value,
-          value: value
+          selectedItem: selectedObj
         };
         $rootScope.$broadcast( DROPDOWN_EVENTS.dropdownItemSelected, selectCriteria );
         hideDropdownList();
