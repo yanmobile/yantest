@@ -130,9 +130,6 @@
       intervalPromise = $interval( function(){
         sessionTimeoutCounter++;
 
-        // save off the remaining time so that on page refresh we can start from here
-        var remainingTime = sessionTimeoutInSeconds - sessionTimeoutCounter;
-
         iscSessionStorageHelper.setSessionTimeoutCounter( sessionTimeoutCounter );
         //$log.debug( '...TICK ' );
         //$log.debug( '...sessionTimeoutInSeconds ' + sessionTimeoutInSeconds );

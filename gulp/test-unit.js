@@ -26,7 +26,7 @@
 
     var testFiles = bowerDeps.js.concat([
       'src/js/**/*.js',
-      'src/templates/**/*.html',
+      'src/js/**/*.html',
       'src/assets/plugins/**/*.js',
       './bower_components/mobile-angular-ui/dist/js/**/*',
       './bower_components/angular-utils-pagination/dirPagination.js',

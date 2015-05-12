@@ -64,7 +64,6 @@
       var s =  allStates[state];
 //      //$log.debug( '...s: ' + JSON.stringify( s ));
       return s;
-
     }
 
     // ----------------------------
