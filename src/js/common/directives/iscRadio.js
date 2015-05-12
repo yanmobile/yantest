@@ -1,5 +1,13 @@
 /**
  * Created by douglas goodman on 2/26/15.
+ *
+ *  @params
+ *  radioGroup Array - a list of objects that form the group of radio buttons
+ *  radioItem Object - the selected item from the radioGroup
+ *                    (MUST be a member of the radioGroup array to work properly)
+ *
+ *  SAMPLE HTML USAGE*
+ * <isc-radio radio-item="scope.selectedItem" radio-group="myRadioGroup" ng-click="onRadioSelect( scope.selectedItem )><isc-radio>
  */
 
 (function(){
