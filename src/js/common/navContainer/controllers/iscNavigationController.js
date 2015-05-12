@@ -121,7 +121,7 @@
           iscAlertModel.setOptionsByType( AUTH_EVENTS.sessionTimeout, null, null, null );
           self.showAlertBox();
         }
-      }, 250)
+      }, 250);
     };
 
     self.onLoad();

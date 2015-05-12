@@ -44,7 +44,7 @@
         var xPos = iscAnimationService.isPhone() ? -offsetX + marginOffset : iscAnimationService.getElementXPos( width, offsetX );
         var yPos = iscAnimationService.isPhone()? 55 : 75;
 
-        TweenMax.set( element, {autoAlpha:0, x:xPos, y: yPos, width: width});
+        TweenMax.set( element, {autoAlpha:0, x:xPos, y: yPos, width: width, display:'block'});
         TweenMax.to( element, EASE_DUR, { ease: Power2.easeOut, autoAlpha: 1, onComplete: done });//jshint ignore:line
       }
       else {
@@ -67,7 +67,7 @@
 
     function onRemoveComplete( element, done ){
       var xPos = -element.width() - 20;
-      TweenMax.set( element, {autoAlpha:0, x:xPos });
+      TweenMax.set( element, {autoAlpha:0, x:xPos, display: 'none' });
       done();
     }
 

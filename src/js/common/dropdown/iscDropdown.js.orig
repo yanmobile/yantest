@@ -46,8 +46,11 @@
 		// ----------------------------
 
 		function link( scope, elem, attr ){//jshint ignore:line
+<<<<<<< HEAD
+=======
 			//$log.debug( 'iscDropdown' );
 
+>>>>>>> master
 			scope.dropOpen = false;
 			scope.iconLeft = 0;
 			scope.itemWidth = 0;
@@ -109,8 +112,12 @@
 			$rootScope.$on( DROPDOWN_EVENTS.dropdownItemSelected, function(e, selection){
 				//CHECK TO ASSURE THAT CORRECT ITEM
 				if(scope.dropId === selection.dropId ){
+<<<<<<< HEAD
 					scope.dropTitle = selection.selectedItem[scope.listField] ;
 					scope.dropSelectedItem = selection.selectedItem;
+=======
+					scope.dropTitle = selection.title;
+>>>>>>> master
 				}
 			});
 

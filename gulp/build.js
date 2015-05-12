@@ -226,15 +226,25 @@
     streamqueue({ objectMode: true },
       gulp.src(config.vendor.js),
       gulp.src('./src/js/**/*.js').pipe(ngFilesort()),
-      gulp.src(['src/templates/**/*.html']).pipe(templateCache({ module: 'iscHsCommunityAngular' }))
+      gulp.src(['src/js/**/*.html']).pipe(templateCache({ module: 'iscHsCommunityAngular' }))
     )
       .pipe(sourcemaps.init())
       .pipe(concat('app.js'))
       .pipe(ngAnnotate())
-      .pipe(uglify())
+      //.pipe(uglify())
       .pipe(rename({suffix: '.min'}))
       .pipe(sourcemaps.write('.'))
       .pipe(gulp.dest(path.join(config.dest, 'js')));
+  });
+
+
+  /*=================================================
+   =                  Copy favicon                  =
+   =================================================*/
+
+  gulp.task('favicon', function() {
+    return gulp.src( ['src/favicon.ico', 'src/favicon-16x16.png'] )
+      .pipe(gulp.dest( config.dest ));
   });
 
 
@@ -263,7 +273,7 @@
    ======================================*/
 
   gulp.task('build', function(done) {
-    var tasks = ['html', 'fonts', 'images', 'js', 'assets', 'sass'];
+    var tasks = ['html', 'fonts', 'images', 'js', 'assets', 'sass', 'favicon'];
     seq('clean', tasks,  done);
   });
 
