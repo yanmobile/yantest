@@ -46,11 +46,13 @@
 
 		function link( scope, elem, attr ){//jshint ignore:line
 			//$log.debug( 'iscDropdown' );
+
 			scope.dropOpen = false;
 			scope.iconLeft = 0;
 			scope.itemWidth = 0;
 			scope.isShowDrop = false;
 			scope.listField = 'label';
+
 			angular.element(window).resize(function(){//jshint ignore:line
 				scope.setWidth();
 			});
@@ -60,19 +62,24 @@
 				var blockTitle = angular.element('#'+scope.dropId+'-block');
 				var blockMain = angular.element('#'+scope.dropId+'-main');
 				var iconWidth = angular.element('#'+scope.dropId+'-icon').outerWidth();
+
 				if(scope.dropMinwidth){
 					blockMain.css({'min-width': (scope.dropMinwidth)});
 				}
+
 				if(scope.dropMaxwidth){
 					blockMain.css({'max-width':scope.dropMaxwidth});
 				}
+
 				if(scope.dropWidth){
 					blockMain.width(scope.dropWidth);
 					blockTitle.width(blockMain.width() - iconWidth - 2);
-				}else{
+				}
+        else{
 					if(angular.element('form').width()-50 < angular.element('#'+scope.dropId).width()){
 						angular.element('#'+scope.dropId).width(angular.element('form').width()-20);
-					}else{
+					}
+          else{
 						//SET WIDTH OF TITLE BLOCK BASED ON LARGER OF TITLE OR DROPDOWN CONTENT
 						//console.log('set larger');
 						hiddenList.css({'width':'auto'});
@@ -98,7 +105,7 @@
         $log.debug('iscDropdown.DROPDOWN_ITEM_SELECTED', selection);
 				//CHECK TO ASSURE THAT CORRECT ITEM
 				if(scope.dropId === selection.dropId ){
-					scope.dropTitle = selection.title ;
+					scope.dropTitle = selection.title;
 				}
 			});
 

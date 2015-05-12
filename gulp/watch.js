@@ -14,7 +14,7 @@
     gulp.watch('src/assets/mockData/**/*',         ['mocks', 'html']);
     gulp.watch('src/assets/plugins/**/*',          ['js', 'html']);
     gulp.watch('src/js/**/*.js',                   ['js']);
-    gulp.watch('src/templates/**/*.html',          ['js', 'html']);
+    gulp.watch('src/js/**/*.html',          [ 'html', 'js']);
     gulp.watch('src/index.html',                   ['html']);
     gulp.watch('bower.json',                       ['wiredep']);
   });
