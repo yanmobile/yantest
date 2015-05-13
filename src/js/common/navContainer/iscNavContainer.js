@@ -52,7 +52,7 @@
 
             views: {
               '@': {
-                templateUrl: 'common/navContainer/iscNavContainer.html',
+                templateUrl: 'app/iscNavContainer.html',
                 controller: 'iscNavigationController as navCtrl'
               }
             },
@@ -70,12 +70,16 @@
 
       }])
 
-    .run( ['$log', '$rootScope', '$state', '$window', 'iscProgressLoader','iscSessionModel', 'iscCustomConfigService', 'iscCustomConfigHelper','iscSessionStorageHelper', 'iscAuthenticationApi', 'AUTH_EVENTS',
-      function( $log, $rootScope, $state, $window, iscProgressLoader, iscSessionModel, iscCustomConfigService, iscCustomConfigHelper, iscSessionStorageHelper, iscAuthenticationApi, AUTH_EVENTS ){
+    .run( ['$log', '$rootScope', '$state', '$window', '$timeout', 'iscProgressLoader','iscSessionModel', 'iscCustomConfigService', 'iscCustomConfigHelper','iscSessionStorageHelper', 'iscAuthenticationApi', 'AUTH_EVENTS',
+      function( $log, $rootScope, $state, $window, $timeout, iscProgressLoader, iscSessionModel, iscCustomConfigService, iscCustomConfigHelper, iscSessionStorageHelper, iscAuthenticationApi, AUTH_EVENTS ){
         //$log.debug( 'iscNavContainer.run' );
 
-        loadDataFromStoredSession();
+        // wrapped in a timeout to ensure that the dom is loaded
+        $timeout( function(){
+          loadDataFromStoredSession();
+        },0);
 
+        // when you click on an unavailable state, this stores it, requires login, then navigates to the state
         var requestedState;
 
         // ------------------------
@@ -171,12 +175,14 @@
             //$log.debug( '...not authorized');
 
             if( !isAuthenticated ){
+              //$log.debug( '...not authenticated');
+
               $state.go( 'index.login' );
               requestedState = toState;
               $rootScope.$broadcast( AUTH_EVENTS.notAuthenticated );
             }
             else{
-              //$log.debug( '... logged in, but not authorized')
+              //$log.debug( '... logged in, but not authorized');
               $rootScope.$broadcast( AUTH_EVENTS.notAuthorized );
 
               if( !fromState || !fromState.name ){
@@ -206,12 +212,12 @@
           // since the warning for sessionTimeout time is predicate on setting the sessionTimeout time first
           var storedLoginResponse = iscSessionStorageHelper.getLoginResponse();
           if( !_.isEmpty( storedLoginResponse )){
-            //$log.debug( '...got storedLoginResponse: ' + JSON.stringify( storedLoginResponse ));
+            //$log.debug( '...got storedLoginResponse: ',storedLoginResponse );
             iscSessionModel.create( storedLoginResponse );
           }
 
           var timeoutCounter = iscSessionStorageHelper.getSessionTimeoutCounter();
-          //$log.debug( '...got a counter: ' + timeoutCounter );
+          //$log.debug( '...got a counter: ', timeoutCounter );
           if( timeoutCounter > 0 ){
             //$log.debug( '...got a counter: ' + timeoutCounter );
             iscSessionModel.initSessionTimeout( timeoutCounter );
@@ -219,6 +225,7 @@
         }
 
         function updateStateByRole(){
+          //$log.debug( 'ischNavContainer.updateStateByRole');
           var currentUser = iscSessionModel.getCurrentUser();
           var userRole = !!currentUser ? currentUser.userRole : '';
           iscCustomConfigService.updateStateByRole( userRole );
