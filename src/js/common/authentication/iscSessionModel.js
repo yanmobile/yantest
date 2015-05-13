@@ -5,9 +5,9 @@
 (function(){
   'use strict';
 
-  iscSessionModel.$inject = [ '$log', '$rootScope', '$window', '$interval', '$timeout', 'iscSessionStorageHelper', 'AUTH_EVENTS' ];
+  iscSessionModel.$inject = [ '$log', '$rootScope', '$interval',  'iscSessionStorageHelper', 'AUTH_EVENTS' ];
 
-  function iscSessionModel( $log, $rootScope, $window, $interval, $timeout, iscSessionStorageHelper, AUTH_EVENTS ){
+  function iscSessionModel( $log, $rootScope, $interval, iscSessionStorageHelper, AUTH_EVENTS ){
 //    //$log.debug( 'iscSessionModel LOADED');
 
     // ----------------------------
@@ -20,7 +20,8 @@
     // contains a list of states with restricted permission
     // and what those permissions are
     // anything not forbidden is presumed to be allowed
-    var statePermissions = null;
+    //var statePermissions = null;
+    var permittedStates;
 
     var sessionTimeoutInSeconds = 0;
     var sessionTimeoutCounter = 0;
@@ -48,8 +49,8 @@
       getCurrentUser: getCurrentUser,
       setCurrentUser: setCurrentUser,
 
-      getStatePermissions: getStatePermissions,
-      setStatePermissions: setStatePermissions,
+      getPermittedStates: getPermittedStates,
+      setPermittedStates: setPermittedStates,
 
       isAuthorized: isAuthorized,
       isAuthenticated: isAuthenticated,
@@ -57,10 +58,7 @@
 
       setNoLoginRequiredList: setNoLoginRequiredList,
 
-      getFullName: getFullName,
-
-      // private methods that I think still should be unit tested
-      getUnitTestPrivate: getUnitTestPrivate
+      getFullName: getFullName
     };
 
     return model;
@@ -71,7 +69,7 @@
 
     function create( sessionData ){
       //$log.debug( 'iscSessionModel.create');
-      //$log.debug( '...sessionData: ' + JSON.stringify( sessionData ));
+      //$log.debug( '...sessionData: ' + JSON.stringify( sessionData.UserData  ));
 
       // store the login response for page refreshes
       iscSessionStorageHelper.setLoginResponse( sessionData );
@@ -97,6 +95,8 @@
       // WONT stay logged in on page refresh
       iscSessionStorageHelper.destroy();
       stopSessionTimeout();
+
+      $rootScope.$broadcast( AUTH_EVENTS.logoutSuccess );
     }
 
     // --------------
@@ -187,16 +187,14 @@
       currentUser = user;
     }
 
+
     // --------------
-    function getStatePermissions(){
-      return statePermissions;
+    function getPermittedStates(){
+      return permittedStates;
     }
 
-    function setStatePermissions( val ){
-      //$log.debug( 'iscSessionModel.setStatePermissions');
-      //$log.debug( '...val: ' + angular.toJson( val ));
-      statePermissions = val;
-      iscSessionStorageHelper.setStoredStatePermissions( statePermissions );
+    function setPermittedStates( val ){
+      permittedStates = val;
     }
 
     // --------------
@@ -209,82 +207,53 @@
       //$log.debug( 'iscSessionModel.isAuthorized' );
       //$log.debug( '...stateName: ' + stateName  );
 
-      if( !currentUser ){
-        //$log.debug( '...no user!' );
-        return false;
+      // everything permitted
+      if (_.contains( permittedStates, '*')) {
+        //$log.debug('...allowing everything');
+        //turn everything on
+        return true;
       }
 
-      var permitted = getPermitted( stateName );
-      var authenticated = isAuthenticated();
-      //$log.debug( '...permitted: ' + permitted );
-      //$log.debug( '...authenticated: ' + authenticated );
-      //$log.debug( '...currentUser: ' + JSON.stringify(currentUser) );
+      // otherwise check for wild cards or existence
+      var wildCardSuperState = getWildCardStateForState( stateName );
+      //$log.debug('...wildCardSuperState: ' + wildCardSuperState);
 
-      return permitted && authenticated;
+      if (wildCardSuperState) {
+        //$log.debug('...stateName.indexOf( wildCardSuperState ): ' + stateName.indexOf( wildCardSuperState ));
+        // weird bug in lodash where if the stateName === wildCardSuperState, _.indexOf returns -1
+        // so using this other form for checking
+        return stateName.indexOf( wildCardSuperState ) > -1;
+      }
+      else {
+        return _.indexOf(permittedStates, stateName) > -1;
+      }
     }
 
     /**
      * private
+     * @param stateName String
+     * @returns String wildCardSuperState || undefined
      */
-    function getPermitted( stateName ){
-      //$log.debug( 'iscSessionModel.getPermitted' );
-      //$log.debug( '...stateName: ' + stateName );
-      //$log.debug( '...statePermissions: ' + JSON.stringify( statePermissions ));
+    function getWildCardStateForState( stateName ){
+      //$log.debug('...getWildCardStateForState, stateName', stateName);
 
-      if( !currentUser ){
-        //$log.debug( '...no user!' );
-        return false;
-      }
+      var wildCardSuperState;
+      var stateToCheck;
 
-      var stateToCheck = getStateToCheck( stateName );
-      //$log.debug( '...stateToCheck: ' + stateToCheck  );
-
-      return statePermittedToRole( stateToCheck );
-    }
-
-    /**
-     * private
-     * if the stateName is included in the statePermissions, return it,
-     * otherwise return the state you passed in
-     */
-    function getStateToCheck( stateName ){
-      var keys = _.keys( statePermissions );
-      _.forEach( keys, function( key ){
-        //$log.debug( '...key: ' + key  );
-        if( stateName.indexOf( key ) !== -1 ){
-          return key;
+      _.forEach( permittedStates, function (permittedState) {
+        var starIdx = permittedState.indexOf('.*');
+        if (starIdx > -1) {
+          // got a wildcard
+          stateToCheck = permittedState.substr(0, starIdx);
+          //$log.debug('...stateToCheck: ' + stateToCheck);
+          if( stateName.indexOf( stateToCheck ) >-1 || stateName === stateToCheck ){
+            //$log.debug('...gotcha');
+            wildCardSuperState = stateToCheck;
+          }
         }
       });
 
-      return stateName;
-    }
-
-    /**
-     * private
-     * with no logged in user, return false
-     * if the stateName is included in the statePermissions, return whether the user has that role
-     * otherwise return true (not forbidden means allowed)
-     */
-    function statePermittedToRole( stateName ){
-      //$log.debug( 'iscSessionModel.statePermittedToRole' );
-      //$log.debug( '...statePermissions: ' + JSON.stringify( statePermissions ));
-      //$log.debug( '...stateName: ' + stateName );
-
-      if( !currentUser ){
-        return false;
-      }
-
-      var role = currentUser.userRole;
-      //$log.debug( '...role: ' + role  );
-
-      if(_.has( statePermissions, stateName )){
-        var permittedRoles = statePermissions[ stateName ];
-        //$log.debug( '...permittedRoles: ' + JSON.stringify( permittedRoles ));
-        return _.indexOf( permittedRoles, role ) !== -1;
-      }
-
-      //$log.debug( '...not forbidden, ergo permitted');
-      return true;
+      return wildCardSuperState;
     }
 
     /**
@@ -349,16 +318,6 @@
       return !!currentUser ? currentUser.FullName : '';
     }
 
-    /**
-     * PRIVATE, FOR UNIT TESTING ONLY
-     * @returns {{statePermittedToRole: statePermittedToRole, doSessionTimeout: doSessionTimeout, getPermitted: getPermitted, getStateToCheck: getStateToCheck}}
-     */
-    function getUnitTestPrivate() {
-      return {
-        statePermittedToRole: statePermittedToRole,
-        getStateToCheck: getStateToCheck
-      };
-    }
 
   }// END CLASS
 

@@ -5,7 +5,7 @@
 (function(){
   'use strict';
 
-  iscCustomConfigService.$inject = [ '$log', '$q', '$http' ,'iscSessionModel', 'iscCustomConfigHelper' ];
+  iscCustomConfigService.$inject = [ '$log','$q', '$http' ,'iscSessionModel', 'iscCustomConfigHelper' ];
 
   function iscCustomConfigService( $log, $q, $http, iscSessionModel, iscCustomConfigHelper ){
 //    //$log.debug( 'iscCustomConfigService LOADED' );
@@ -31,6 +31,8 @@
 
       getStatePermissions: getStatePermissions,
 
+      updateStateByRole: updateStateByRole,
+
       getTopTabsConfig: getTopTabsConfig,
       getTopTabsArray: getTopTabsArray,
       getHomePageConfig: getHomePageConfig,
@@ -51,8 +53,16 @@
     // ----------------------------
 
     // ----------------------------
-    // all configurations
+    // base url
 
+    function getBaseUrl(){
+      //$log.debug( 'iscCustomConfigService.getBaseUrl' );
+      //$log.debug( '...baseUrl', config ? config.baseUrl : '');
+      return config ? config.baseUrl : null;
+    }
+
+    // ----------------------------
+    // all configurations
 
     function getConfig(){
 //      //$log.debug( 'iscCustomConfigService.getConfig' );
@@ -84,9 +94,14 @@
             //$log.debug( '...SUCCESS: ', results);
             // load the config here
             setConfig( results.data );
-            iscSessionModel.setStatePermissions( results.data.statePermissions );
             iscSessionModel.setNoLoginRequiredList( results.data.noLoginRequired );
+            iscSessionModel.setPermittedStates( [] );
             addStates();
+
+            // update the states based on the user's role, if any
+            var currentUser = iscSessionModel.getCurrentUser();
+            var userRole = !!currentUser ? currentUser.userRole : '';
+            updateStateByRole( userRole );
 
             deferred.resolve( results.data );
           }
@@ -101,22 +116,27 @@
 
       // add the top tabs
       iscCustomConfigHelper.addStates( config.topTabs );
-      iscCustomConfigHelper.addStates( config.loginButton );
+
+      iscCustomConfigHelper.addStates( {
+        loginButton: config.loginButton
+      });
 
       // add the secondary tabs
       var secondaryNavs = _.filter( config, 'secondaryNav' );
+      //$log.debug( '...secondaryNavs', secondaryNavs );
       _.forEach( secondaryNavs, function( obj ){
         iscCustomConfigHelper.addStates( obj.secondaryNav );
       });
 
       var tasks = _.filter( config, 'tasks' );
+      //$log.debug( '...tasks', tasks );
       _.forEach( tasks, function( obj ){
         iscCustomConfigHelper.addStates( obj.tasks );
       });
 
     }
 
-    function clearConfig( val ){//jshint ignore:line
+    function clearConfig(){
 //      //$log.debug( 'iscCustomConfigService.clearConfig' );
       config = null;
     }
@@ -126,17 +146,85 @@
       return config.statePermissions;
     }
 
-
-
     // ----------------------------
-    /*
-    private
+    /**
+     * adds or removes tabs based on the user's permissions in the configFile.json
+     * eg:
+        "userPermittedTabs": {
+            "user":["*"],
+            "guest":["index.home","index.library"]
+       }
+     * supports wildcards (eg 'index.home.*')
+     * where '*' will allow all tabs
+     * NOTE - if you want to include some but not all subtabs,
+     *        be sure to also include the parent tab (eg ['index.messages', 'index.messages.subtab1' ])
+     *
+     * @param role String
      */
-    function getBaseUrl(){
-      //$log.debug( 'iscCustomConfigService.getBaseUrl' );
-      //$log.debug( '...baseUrl', config ? config.baseUrl : '');
-      return config ? config.baseUrl : null;
+    function updateStateByRole( role ){
+      //$log.debug( 'iscCustomConfigService.updateStateByRole', role );
 
+      var allStates = iscCustomConfigHelper.getAllStates();
+      //$log.debug( '...allStates', allStates );
+
+      // start by excluding everything
+      _.forEach( allStates, function( tab ){
+        if( tab ){
+          tab.exclude = true;
+        }
+
+      });
+
+      if( !config ){
+        return;
+      }
+
+      var noLoginRequired = angular.copy( config.noLoginRequired );
+      var userPermittedStates = angular.copy( config.userPermittedTabs[role] );
+      var allPermittedStates = [];
+      if( !!userPermittedStates ){
+        allPermittedStates = noLoginRequired.concat( userPermittedStates );
+      }
+      else{
+        allPermittedStates = noLoginRequired;
+      }
+
+      iscSessionModel.setPermittedStates( allPermittedStates );
+
+      //$log.debug( '...allPermittedStates', allPermittedStates );
+
+      if( _.contains( allPermittedStates,  '*' )){
+        //console.debug( '...adding all' );
+        //turn everything on
+        _.forEach( allStates, function( state ){
+          state.exclude = false;
+        });
+      }
+      else{
+
+        _.forEach( allPermittedStates, function( permittedTab ){
+          //$log.debug( '...permittedTab', permittedTab );
+
+          // handle wildcards
+          var starIdx = permittedTab.indexOf( '.*' );
+          if( starIdx > -1 ){
+            var superState = permittedTab.substr( 0, starIdx );
+            //$log.debug( '...superState', superState );
+
+            _.forEach( allStates, function( state ){
+              if( state.state.indexOf( superState ) > -1 ){
+                state.exclude = false;
+              }
+            });
+          }
+          else{
+            //$log.debug( '...allStates[permittedTab]', allStates[permittedTab] );
+            if( allStates[permittedTab] ){
+              allStates[permittedTab].exclude = false;
+            }
+          }
+        });
+      }
     }
 
     // ----------------------------
@@ -184,7 +272,6 @@
     function getCustomerTabSecondaryNav(){
       return config.customerTab.secondaryNav;
     }
-
 
   }// END CLASS
 

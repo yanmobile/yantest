@@ -70,8 +70,8 @@
 
       }])
 
-    .run( ['$log', '$rootScope', '$state', '$window', 'iscProgressLoader','iscSessionModel', 'iscCustomConfigService', 'iscCustomConfigHelper', 'iscUserRoleHelper' ,'iscSessionStorageHelper', 'iscAuthenticationApi', 'AUTH_EVENTS',
-      function( $log, $rootScope, $state, $window, iscProgressLoader, iscSessionModel, iscCustomConfigService, iscCustomConfigHelper, iscUserRoleHelper, iscSessionStorageHelper, iscAuthenticationApi, AUTH_EVENTS ){
+    .run( ['$log', '$rootScope', '$state', '$window', 'iscProgressLoader','iscSessionModel', 'iscCustomConfigService', 'iscCustomConfigHelper','iscSessionStorageHelper', 'iscAuthenticationApi', 'AUTH_EVENTS',
+      function( $log, $rootScope, $state, $window, iscProgressLoader, iscSessionModel, iscCustomConfigService, iscCustomConfigHelper, iscSessionStorageHelper, iscAuthenticationApi, AUTH_EVENTS ){
         //$log.debug( 'iscNavContainer.run' );
 
         loadDataFromStoredSession();
@@ -106,6 +106,10 @@
         // login success event
         $rootScope.$on( AUTH_EVENTS.loginSuccess, function(){
           //$log.debug( 'ischNavContainer.AUTH_EVENTS.loginSuccess');
+
+          var userRole = iscSessionModel.getCurrentUser().userRole;
+          updateStateByRole( userRole );
+
           var nextState = requestedState ? requestedState.name : 'index.home';
           $state.go( nextState );
           requestedState = null;
@@ -115,6 +119,8 @@
         // logout success event
         $rootScope.$on( AUTH_EVENTS.logoutSuccess, function(){
           //$log.debug( 'ischNavContainer.AUTH_EVENTS.logoutSuccess');
+
+          updateStateByRole();
           $state.go( 'index.home' );
         });
 
@@ -124,7 +130,7 @@
         // The session model, on sessionTimeout, sets a localStorage var
         // that on page reload, tells the navigationController to show an alert
         $rootScope.$on( AUTH_EVENTS.sessionTimeout, function(){
-          $log.debug( 'ischNavContainer.sessionTimeout');
+          //$log.debug( 'ischNavContainer.sessionTimeout');
           iscAuthenticationApi.logout();
           $window.location.reload();
         });
@@ -140,42 +146,7 @@
         function handleStateChangeStart( event, toState, toParams, fromState, fromParams ){//jshint ignore:line
           //$log.debug( 'ischNavContainer.handleStateChangeStart');
 
-          // get the permissions for this state
-          var isAuthorized = iscSessionModel.isAuthorized( toState.name );
-          var isAuthenticated = iscSessionModel.isAuthenticated();
-          var isWhiteListed = iscSessionModel.isWhiteListed( toState.name );
           var stateIsExcluded = iscCustomConfigHelper.stateIsExcluded( toState.name );
-
-          if( !isAuthorized ){
-            //$log.debug( '...not authorized');
-            if( !isWhiteListed ){
-              //$log.debug( '...not whitelisted');
-              preventDefault( event );
-
-              if( isAuthenticated ){
-                //$log.debug( '... going either to home or your previous state');
-                // see iscNavigationController for the popup listeners for these events
-                $rootScope.$broadcast( AUTH_EVENTS.notAuthorized );
-                if( !fromState || !fromState.name ){
-                  //$log.debug( '... going home');
-                  // edge case where your permissions changed underneath you
-                  // and you refreshed the page - assumes the Home state is always permitted
-                  $state.go( 'index.home' );
-                }
-                else{
-                  //$log.debug( '... going to ',fromState.name );
-                  $state.go( fromState.name );
-                }
-              }
-              else{
-                //$log.debug( '...going to login');
-                // if you arent logged in yet, bring the user to the log in page
-                $state.go( 'index.login' );
-                requestedState = toState;
-                $rootScope.$broadcast( AUTH_EVENTS.notAuthenticated );
-              }
-            }
-          }
 
           if( stateIsExcluded ){
             //$log.debug( '...excluded state');
@@ -188,9 +159,42 @@
             // no double taps
             preventDefault( event );
           }
+
+          // get the permissions for this state
+          var isAuthorized = iscSessionModel.isAuthorized( toState.name ); // either your role is permitted or the state is whitelisted
+          var isAuthenticated = iscSessionModel.isAuthenticated(); // you are logged i
+
+          //$log.debug( '...isAuthorized',isAuthorized);
+          //$log.debug( '...isAuthenticated',isAuthenticated);
+
+          if( !isAuthorized ){
+            //$log.debug( '...not authorized');
+
+            if( !isAuthenticated ){
+              $state.go( 'index.login' );
+              requestedState = toState;
+              $rootScope.$broadcast( AUTH_EVENTS.notAuthenticated );
+            }
+            else{
+              //$log.debug( '... logged in, but not authorized')
+              $rootScope.$broadcast( AUTH_EVENTS.notAuthorized );
+
+              if( !fromState || !fromState.name ){
+                //$log.debug( '... going home');
+                // edge case where your permissions changed underneath you
+                // and you refreshed the page - assumes the Home state is always permitted
+                $state.go( 'index.home' );
+              }
+              else{
+                //$log.debug( '... going to ',fromState.name );
+                $state.go( fromState.name );
+              }
+            }
+          }
         }
 
         function preventDefault( event ){
+          //$log.debug( '...preventDefault');
           iscProgressLoader.end();
           event.preventDefault();
         }
@@ -204,15 +208,6 @@
           if( !_.isEmpty( storedLoginResponse )){
             //$log.debug( '...got storedLoginResponse: ' + JSON.stringify( storedLoginResponse ));
             iscSessionModel.create( storedLoginResponse );
-
-            var currentUser = iscSessionModel.getCurrentUser();
-            iscUserRoleHelper.setRoleForUser( currentUser );
-          }
-
-          var storedStatePermissions = iscSessionStorageHelper.getStoredStatePermissions();
-          if( !_.isEmpty( storedStatePermissions )){
-            //$log.debug( '...got permissions: ' + JSON.stringify( storedStatePermissions ));
-            iscSessionModel.setStatePermissions( storedStatePermissions );
           }
 
           var timeoutCounter = iscSessionStorageHelper.getSessionTimeoutCounter();
@@ -221,7 +216,12 @@
             //$log.debug( '...got a counter: ' + timeoutCounter );
             iscSessionModel.initSessionTimeout( timeoutCounter );
           }
+        }
 
+        function updateStateByRole(){
+          var currentUser = iscSessionModel.getCurrentUser();
+          var userRole = !!currentUser ? currentUser.userRole : '';
+          iscCustomConfigService.updateStateByRole( userRole );
         }
 
       }]);

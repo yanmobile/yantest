@@ -28,9 +28,6 @@
       getSessionTimeoutCounter: getSessionTimeoutCounter,
       setSessionTimeoutCounter: setSessionTimeoutCounter,
 
-      getStoredStatePermissions: getStoredStatePermissions,
-      setStoredStatePermissions: setStoredStatePermissions,
-
       getShowTimedOutAlert: getShowTimedOutAlert,
       setShowTimedOutAlert: setShowTimedOutAlert
     };
@@ -46,7 +43,6 @@
     function destroy(){
       //$log.debug( 'iscSessionStorageHelper.destroy');
       $window.sessionStorage.removeItem('loginResponse');
-      $window.sessionStorage.removeItem('statePermissions');
       $window.sessionStorage.removeItem('sessionTimeoutCounter');
       $window.sessionStorage.removeItem('showTimedOutAlert');
     }
@@ -58,15 +54,6 @@
 
     function setLoginResponse( val ){
       setSessionStorageValue( 'loginResponse', val );
-    }
-
-    // ----------------------------
-    function getStoredStatePermissions(){
-      return getValFromSessionStorage( 'statePermissions', {} );
-    }
-
-    function setStoredStatePermissions( val ){
-      setSessionStorageValue( 'statePermissions', val );
     }
 
     // ----------------------------

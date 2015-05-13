@@ -47,8 +47,6 @@
       _.forEach( states, function( state ){
         allStates[ state.state ] = state;
       });
-
-      //$log.debug( '...allStates: ' + JSON.stringify( allStates ));
     }
 
     function resetStates(){
