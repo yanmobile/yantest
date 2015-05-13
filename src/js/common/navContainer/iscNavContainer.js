@@ -79,7 +79,9 @@
           loadDataFromStoredSession();
         },0);
 
-        // when you click on an unavailable state, this stores it, requires login, then navigates to the state
+        // when you refresh the page, this stores your requested state,
+        // so that you dont loose it when refreshing the sessionModel causes a loginSuccess event
+        // and the ensuing navigation
         var requestedState;
 
         // ------------------------
@@ -89,6 +91,8 @@
             //$log.debug( 'ischNavContainer.$stateChangeStart');
             //$log.debug( '...from: ' + fromState.name );
             //$log.debug( '.....to: ' + toState.name );
+
+            requestedState = toState;
 
             iscCustomConfigService.loadConfig().then( function( config ){//jshint ignore:line
               startLoadingAnimation();
