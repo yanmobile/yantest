@@ -23,6 +23,7 @@
 
     var service  = {
       getBaseUrl: getBaseUrl,
+      getBaseUrlSecondary: getBaseUrlSecondary,
 
       getConfig: getConfig,
       setConfig: setConfig,
@@ -59,6 +60,10 @@
       //$log.debug( 'iscCustomConfigService.getBaseUrl' );
       //$log.debug( '...baseUrl', config ? config.baseUrl : '');
       return config ? config.baseUrl : null;
+    }
+
+    function getBaseUrlSecondary(){
+      return config.baseUrlSecondary;
     }
 
     // ----------------------------
