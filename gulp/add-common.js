@@ -108,7 +108,7 @@
 
   // js + desktop html
   gulp.task('add-common', function(done) {
-    var tasks = ['inject-common-js','inject-common-templates', 'add-configs'  ];
+    var tasks = [ 'inject-common-js', 'add-configs'  ];
     seq('clean-common', tasks, done);
   });
 
