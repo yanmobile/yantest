@@ -30,8 +30,6 @@
       loadConfig: loadConfig,
       clearConfig: clearConfig,
 
-      getStatePermissions: getStatePermissions,
-
       updateStateByRole: updateStateByRole,
 
       getTopTabsConfig: getTopTabsConfig,
@@ -147,11 +145,6 @@
     }
 
     // ----------------------------
-    function getStatePermissions(){
-      return config.statePermissions;
-    }
-
-    // ----------------------------
     /**
      * adds or removes tabs based on the user's permissions in the configFile.json
      * eg:
@@ -177,7 +170,6 @@
         if( tab ){
           tab.exclude = true;
         }
-
       });
 
       if( !config ){

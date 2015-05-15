@@ -20,7 +20,6 @@
     // contains a list of states with restricted permission
     // and what those permissions are
     // anything not forbidden is presumed to be allowed
-    //var statePermissions = null;
     var permittedStates;
 
     var sessionTimeoutInSeconds = 0;
@@ -78,7 +77,7 @@
       setCurrentUser( sessionData.UserData );
 
       // set the timeout
-      //sessionTimeoutInSeconds = 10;
+      //sessionTimeoutInSeconds = 10; // DEV ONLY
       sessionTimeoutInSeconds = sessionData.SessionTimeout;
 
       $rootScope.$broadcast( AUTH_EVENTS.loginSuccess );
