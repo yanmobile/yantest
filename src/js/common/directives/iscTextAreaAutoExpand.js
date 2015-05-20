@@ -43,9 +43,9 @@
 (function(){
   'use strict';
 
-  iscTextAreaAutoExpand.$inject = [ '$log', '$document' ];
+  iscTextAreaAutoExpand.$inject = [ '$log' ];
 
-  function iscTextAreaAutoExpand( $log ){
+  function iscTextAreaAutoExpand( $log ){ //jshint ignore: line
 //    //$log.debug( 'iscTextAreaAutoExpand LOADED');
 
     // ----------------------------
@@ -128,7 +128,7 @@
       });
 
       scope.$on('$destroy', function() {
-        $log.debug( '...$destroy' );
+        //$log.debug( '...$destroy' );
         $shadow.remove();
       });
 

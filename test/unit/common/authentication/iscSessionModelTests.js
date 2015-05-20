@@ -1,6 +1,7 @@
 
 (function(){
   'use strict';
+  //console.log( 'iscSessionModel Tests' );
 
   describe('iscSessionModel', function(){
     var scope,
@@ -13,10 +14,16 @@
       loginData,
       loginDataProxy;
 
-    var statePermissions = {
-      "index.messages.outbox": ["user"],
-      "index.myAccount": ["user"]
+    var  userPermittedTabs = {
+      "user":[ "index.wellness.*", "index.messages.*", "index.library.*", "index.calendar.*", "index.myAccount.*" ],
+      "proxy":["index.myAccount.*", "index.messages",  "index.messages.inbox", "index.messages.outbox", "index.messages.refillPrescription"]
     };
+
+    var noLoginRequired = [
+      "index",
+      "index.login",
+      "index.home"
+    ];
 
     var mockLoginResponse = {
       "ChangePassword": 0,
@@ -43,7 +50,7 @@
       "reload": 0
     };
 
-    beforeEach( module('isc.common', 'iscHsCommunityAngular') );
+    beforeEach( module('iscHsCommunityAngular', 'isc.common') );
 
     // show $log statements
     beforeEach( module( 'isc.common', function( $provide ){
@@ -73,12 +80,9 @@
       loginDataProxy = angular.copy( mockLoginResponseProxy );
 
       model.create( loginData );
-      model.setStatePermissions( statePermissions );
 
       $window.sessionStorage.setItem( 'currentUser', '');
       $window.sessionStorage.setItem( 'statePermissions', '');
-
-      spyOn( configService, 'getStatePermissions').andReturn( statePermissions );
 
     }));
 
@@ -153,66 +157,6 @@
         model.destroy();
         var expected  = model.isAuthenticated();
         expect( expected ).toBe( false );
-
-      });
-    });
-
-    // -------------------------
-    describe( 'statePermittedToRole tests ', function(){
-
-      it( 'should have a function statePermittedToRole', function(){
-        expect( angular.isFunction( model.getUnitTestPrivate().statePermittedToRole )).toBe( true );
-      });
-
-      it( 'should know when state is permitted to a role', function(){
-
-        // user is allowed
-        var permitted  = model.getUnitTestPrivate().statePermittedToRole( 'index.messages.outbox' );
-        expect( permitted ).toBe( true );
-
-        var permitted  = model.getUnitTestPrivate().statePermittedToRole( 'index.myAccount' );
-        expect( permitted ).toBe( true );
-
-        // not specifically forbidden
-        var permitted  = model.getUnitTestPrivate().statePermittedToRole( 'foobar' );
-        expect( permitted ).toBe( true );
-
-        // no user
-        model.destroy();
-        var permitted  = model.getUnitTestPrivate().statePermittedToRole( 'index.myAccount' );
-        expect( permitted ).toBe( false );
-
-        // proxy (restricted role)
-        model.create( loginDataProxy );
-
-        // not specifically forbidden
-        var permitted  = model.getUnitTestPrivate().statePermittedToRole( 'foobar' );
-        expect( permitted ).toBe( true );
-
-        // user is restricted
-        var permitted  = model.getUnitTestPrivate().statePermittedToRole( 'index.messages.outbox' );
-        expect( permitted ).toBe( false );
-      });
-    });
-
-    // -------------------------
-    describe( 'getStateToCheck tests ', function(){
-
-      it( 'should have a function getStateToCheck', function(){
-        expect( angular.isFunction( model.getUnitTestPrivate().getStateToCheck )).toBe( true );
-      });
-
-      it( 'should know what state to check', function(){
-
-        var expected  = model.getUnitTestPrivate().getStateToCheck( 'index.messages.outbox' );
-        expect( expected ).toBe( 'index.messages.outbox' );
-
-        var expected  = model.getUnitTestPrivate().getStateToCheck( 'index.myAccount' );
-        expect( expected ).toBe( 'index.myAccount' );
-
-        var expected  = model.getUnitTestPrivate().getStateToCheck( 'foobar' );
-        expect( expected ).toBe( 'foobar' );
-
       });
     });
 
@@ -223,31 +167,63 @@
         expect( angular.isFunction( model.isAuthorized )).toBe( true );
       });
 
-      it( 'should know if someone is authorized, restricted role', function(){
-        model.create( loginDataProxy );
+      it( 'should have a function getPermittedStates', function(){
+        expect( angular.isFunction( model.getPermittedStates )).toBe( true );
+      });
+
+      it( 'should have a function setPermittedStates', function(){
+        expect( angular.isFunction( model.setPermittedStates )).toBe( true );
+      });
+
+      it( 'should know if someone is authorized, all permitted', function(){
+        model.create( loginData );
+        model.setPermittedStates( ['*'] );
 
         var expected  = model.isAuthorized( 'index.messages.outbox' );
-        expect( expected ).toBe( false );
+        expect( expected ).toBe( true );
 
         var expected  = model.isAuthorized( 'index' );
         expect( expected ).toBe( true );
-      });
 
-      it( 'should know if someone is authorized, right roles', function(){
-        model.create( loginData );
-        var expected  = model.isAuthorized( 'index.messages.outbox' );
+        var expected  = model.isAuthorized( 'foo' );
         expect( expected ).toBe( true );
       });
 
-      it( 'should know if someone is authorized, after destroy', function(){
+      it( 'should know if someone is authorized, some permitted', function(){
         model.create( loginData );
+        model.setPermittedStates( ['index.messages.outbox', 'foo'] );
+
         var expected  = model.isAuthorized( 'index.messages.outbox' );
         expect( expected ).toBe( true );
 
-        model.destroy();
+        var expected  = model.isAuthorized( 'index' );
+        expect( expected ).toBe( false );
+
+        var expected  = model.isAuthorized( 'foo' );
+        expect( expected ).toBe( true );
+      });
+
+      it( 'should know if someone is authorized, some permitted by wildcard', function(){
+        model.create( loginData );
+        model.setPermittedStates( ['index.messages.*'] );
+
+        var expected  = model.isAuthorized( 'index.messages' );
+        expect( expected ).toBe( true );
+
         var expected  = model.isAuthorized( 'index.messages.outbox' );
+        expect( expected ).toBe( true );
+
+        var expected  = model.isAuthorized( 'index.messages.inbox' );
+        expect( expected ).toBe( true );
+
+        var expected  = model.isAuthorized( 'index' );
+        expect( expected ).toBe( false );
+
+        var expected  = model.isAuthorized( 'foo' );
         expect( expected ).toBe( false );
       });
+
+
     });
 
     // -------------------------

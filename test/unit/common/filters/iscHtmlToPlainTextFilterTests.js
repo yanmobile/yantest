@@ -1,6 +1,7 @@
 
 (function(){
   'use strict';
+  //console.log( 'iscHtmlToPlainText Tests' );
 
   var mockConfig = angular.copy( customConfig );
 

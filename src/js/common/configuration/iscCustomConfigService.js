@@ -65,20 +65,7 @@
     }
 
     // ----------------------------
-    // all configurations
-
-    function getConfig(){
-//      //$log.debug( 'iscCustomConfigService.getConfig' );
-//      //$log.debug( '...config ' + JSON.stringify( config ) );
-      return config;
-    }
-
-    function setConfig( val ){
-      //$log.debug( 'iscCustomConfigService.setConfig' );
-      //$log.debug( '...baseUrl ' + JSON.stringify( val.baseUrl ) );
-      //$log.debug( '...config ' + JSON.stringify( val ) );
-      config = val;
-    }
+    // config
 
     function loadConfig(){
       //$log.debug( 'iscCustomConfigService.loadConfig' );
@@ -114,23 +101,44 @@
       return deferred.promise;
     }
 
+    function getConfig(){
+//      //$log.debug( 'iscCustomConfigService.getConfig' );
+//      //$log.debug( '...config ' + JSON.stringify( config ) );
+      return config;
+    }
+
+    function setConfig( val ){
+      //$log.debug( 'iscCustomConfigService.setConfig' );
+      //$log.debug( '...baseUrl ' + JSON.stringify( val.baseUrl ) );
+      //$log.debug( '...config ' + JSON.stringify( val ) );
+      config = val;
+    }
+
+    // ----------------------------
+    // states
+
     function addStates(){
       //$log.debug( 'iscCustomConfigService.addStates' );
 
       // add the top tabs
       iscCustomConfigHelper.addStates( config.topTabs );
 
-      iscCustomConfigHelper.addStates( {
-        loginButton: config.loginButton
-      });
+      // add the login button if it exists
+      var login = config.loginButton;
+      if( !!login ){
+        iscCustomConfigHelper.addStates( {
+          loginButton: config.loginButton
+        });
+      }
 
-      // add the secondary tabs
+      // add the secondary navs
       var secondaryNavs = _.filter( config, 'secondaryNav' );
       //$log.debug( '...secondaryNavs', secondaryNavs );
       _.forEach( secondaryNavs, function( obj ){
         iscCustomConfigHelper.addStates( obj.secondaryNav );
       });
 
+      // add the secondary tasks
       var tasks = _.filter( config, 'tasks' );
       //$log.debug( '...tasks', tasks );
       _.forEach( tasks, function( obj ){

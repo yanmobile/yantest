@@ -4,8 +4,6 @@
 
   var mockConfig = angular.copy( customConfig );
 
-
-
   describe('iscDateFilter', function(){
     var scope,
         filter;

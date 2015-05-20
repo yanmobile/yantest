@@ -1,6 +1,7 @@
 
 (function(){
   'use strict';
+  //console.log( 'iscAuthenticationInterceptor Tests' );
 
   describe('iscAuthenticationInterceptor', function(){
     var rootScope,

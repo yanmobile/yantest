@@ -29,7 +29,6 @@
       restrict: 'EA',
       transclude: true,
       scope: {
-        onToggle: '&',
         radioGroup: '=',
         radioItem: '='
       },

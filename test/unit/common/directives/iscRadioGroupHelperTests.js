@@ -1,6 +1,7 @@
 
 (function(){
   'use strict';
+  //console.log( 'iscRadioGroupHelper Tests' );
 
   describe('iscRadioGroupHelper', function(){
     var rootScope,

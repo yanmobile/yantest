@@ -1,14 +1,16 @@
 
 (function(){
   'use strict';
+  //console.log( 'iscCustomConfigHelper Tests' );
 
-  var mockConfig = angular.copy( customConfig );
 
   describe('iscCustomConfigHelper', function(){
     var scope,
-      log,
-      sessionModel,
-      helper;
+        mockConfig,
+        log,
+        httpBackend,
+        sessionModel,
+        helper;
 
     beforeEach( module('iscHsCommunityAngular'));
     beforeEach( module('isc.common'));
@@ -18,12 +20,18 @@
       $provide.value('$log', console);
     });
 
-    beforeEach( inject( function( $log, $rootScope, iscCustomConfigHelper, iscSessionModel ){
+    beforeEach( inject( function( $log, $rootScope, $httpBackend, iscCustomConfigHelper, iscSessionModel ){
       scope = $rootScope.$new();
       log = $log;
+
+      mockConfig = angular.copy( customConfig );
       sessionModel = iscSessionModel;
       helper = iscCustomConfigHelper;
-      mockConfig = angular.copy( customConfig );
+
+      httpBackend = $httpBackend;
+      // mock calls to the config
+      httpBackend.when( 'GET', 'assets/configuration/configFile.json' )
+        .respond( 200, mockConfig );
     }));
 
     // -------------------------
@@ -103,6 +111,8 @@
         expect( expected ).toBe( false );
       });
     });
+
+
 
   });
 })();

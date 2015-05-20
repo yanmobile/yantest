@@ -1,6 +1,7 @@
 
 (function(){
   'use strict';
+  //console.log( 'iscSessionStorageHelper Tests' );
 
   describe('iscSessionStorageHelper', function(){
     var rootScope,
@@ -34,7 +35,6 @@
         helper.destroy();
 
         expect( window.sessionStorage.removeItem ).toHaveBeenCalledWith( 'loginResponse' );
-        expect( window.sessionStorage.removeItem ).toHaveBeenCalledWith( 'statePermissions' );
         expect( window.sessionStorage.removeItem ).toHaveBeenCalledWith( 'sessionTimeoutCounter' );
         expect( window.sessionStorage.removeItem ).toHaveBeenCalledWith( 'sessionTimeoutCounter' );
       });
@@ -77,47 +77,6 @@
 
         helper.setLoginResponse(); // should return the default val
         var expected = helper.getLoginResponse();
-        expect( expected ).toEqual( defaultVal );
-      });
-    });
-
-    // -------------------------
-    describe( 'get/setStoredStatePermissions tests ', function(){
-
-      it( 'should have a function getStoredStatePermissions', function(){
-        expect( angular.isFunction( helper.getStoredStatePermissions )).toBe( true );
-      });
-
-      it( 'should have a function setStoredStatePermissions', function(){
-        expect( angular.isFunction( helper.setStoredStatePermissions )).toBe( true );
-      });
-
-      it( 'should get a state permissions', function(){
-        helper.destroy();
-
-        var defaultVal = {}; // see class for details
-        var expected = helper.getStoredStatePermissions();
-        expect( expected ).toEqual( defaultVal );
-
-        var response = {foo: 'bar'};
-        window.sessionStorage.setItem( 'statePermissions', angular.toJson( response ));
-
-        var expected = helper.getStoredStatePermissions();
-        expect( expected ).toEqual( response );
-      });
-
-      it( 'should set a state permssions', function(){
-        helper.destroy();
-
-        var defaultVal = {}; // see class for details
-        var response = {foo: 'bar'};
-
-        helper.setStoredStatePermissions( response );
-        var expected = helper.getStoredStatePermissions();
-        expect( expected ).toEqual( response );
-
-        helper.setStoredStatePermissions(); // should return the default val
-        var expected = helper.getStoredStatePermissions();
         expect( expected ).toEqual( defaultVal );
       });
     });
