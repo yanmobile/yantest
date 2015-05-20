@@ -1,6 +1,7 @@
 
 (function(){
   'use strict';
+  console.log( 'iscRadio Tests' );
 
   describe('iscRadio', function(){
     var scope,

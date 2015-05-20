@@ -1,16 +1,16 @@
 
 (function(){
   'use strict';
-  //console.log( 'iscCheckbox Tests' );
+  console.log( 'iscTextAreaAutoExpand Tests' );
 
-  describe('iscCheckbox', function(){
+  describe('iscTextAreaAutoExpand', function(){
     var scope,
       rootScope,
       isolateScope,
       httpBackend,
       element;
 
-    var html = '<isc-check-box data-ng-model="provider.isFavorite"></isc-check-box>';
+    var html = '<textarea isc-text-area-auto-expand ng-model="theText"></textarea>';
 
     beforeEach( module('iscHsCommunityAngular', 'iscMessages') );
 
@@ -26,11 +26,15 @@
     beforeEach( inject( function( $rootScope, $compile, $httpBackend  ){
       rootScope = $rootScope;
       scope = $rootScope.$new();
+      scope.theText = '';
 
       httpBackend = $httpBackend;
 
       // dont worry about calls to assets
       httpBackend.when( 'GET', 'assets/i18n/en_US.json' )
+        .respond( 200, {} );
+
+      httpBackend.when( 'GET', 'assets/configuration/configFile.json' )
         .respond( 200, {} );
 
       element = $compile( html )( scope );
@@ -39,27 +43,24 @@
       isolateScope = element.isolateScope();
     }));
 
-
     // -------------------------
-    describe( 'selected tests ', function(){
+    describe( 'autoExpand tests ', function(){
 
-      it("should update selected based on the model, selected true", function() {
-        scope.provider =  {
-          isFavorite: true
-        };
-
+      it("should start the directive with the default height", function() {
         scope.$digest();
-        expect( isolateScope.selected ).toBe( true );
+        var height = parseInt( element.css( 'height' ), 10 );
+        expect( height ).toBe( 45 );
       });
 
-      it("should update selected based on the model, selected true", function() {
-        scope.provider =  {
-          isFavorite: false
-        };
-
+      it("should change the height on update", inject( function( $compile ) {
+        scope.theText = 'foo \n bar \n baz';
+        element = $compile( html )( scope );
         scope.$digest();
-        expect( isolateScope.selected ).toBe( false );
-      });
+
+        var height = parseInt( element.css( 'height' ), 10 );
+        expect( height ).toBeGreaterThan( 45 );
+      }));
+
     });
 
   });

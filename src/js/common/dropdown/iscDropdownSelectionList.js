@@ -22,9 +22,6 @@
 		// vars
 		// ----------------------------
 
-		var dropCt = 0;
-
-
     // ----------------------------
     // class factory
     // ----------------------------
@@ -100,7 +97,7 @@
         var bodyScrollTop = angular.element('body').scrollTop();
         var elTop = clickOffset.top + offsetHeight - bodyScrollTop;
         //THE +3 IS TO ACCOUNT FOR THE TOP MARGIN WHICH IS NOT CALC IN OUTER. THE .5 ADDS HALF A HEIGHT TO GIVE SPACE AT THE BOTTOM OF THE LIST.
-        var elHeight = ((angular.element('#'+dropID+'-list').outerHeight()+3) * (scope.listData.length + .5));
+        var elHeight = ((angular.element('#'+dropID+'-list').outerHeight()+3) * (scope.listData.length + .5)); //jshint ignore: line
         var elWidth = angular.element('#'+dropID+'-block').outerWidth() + angular.element('#'+dropID+'-icon').outerWidth() -1;
 
         //DETERMINE IF HEIGHT NEEDS TO BE TRUNCATED OR DROPDOWN NEEDS TO BE DROP UP
@@ -150,7 +147,7 @@
         });
       };
       function unbindEvents(){
-        angular.element(document).unbind('click');
+        angular.element(document).unbind('click');//jshint ignore: line
         angular.element($window).unbind('scroll');
         scope.showDropList = false;
         hideDropdownList();

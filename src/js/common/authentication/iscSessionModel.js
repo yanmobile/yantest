@@ -20,6 +20,7 @@
     // contains a list of states with restricted permission
     // and what those permissions are
     // anything not forbidden is presumed to be allowed
+    //var statePermissions = null;
     var permittedStates;
 
     var sessionTimeoutInSeconds = 0;
