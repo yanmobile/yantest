@@ -19,3 +19,5 @@ To use:
     -From within hs-ui-core, copy the gulp/add-common.js folder into your project, and then, from a terminal window, run
         gulp add-common
         
+In order to make a funcitonal app
+        
