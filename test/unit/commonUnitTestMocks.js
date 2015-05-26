@@ -3,6 +3,8 @@
  */
 
 var customConfig = {
+  "devlogWhitelist": [],
+
   "baseUrl": "http://hscommdev.iscinternal.com/public/api/v1/",
 
   "noLoginRequired": [
