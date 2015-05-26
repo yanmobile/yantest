@@ -41,8 +41,17 @@
       'channel usage with no channels',
       function() {
         it(
+          'should not go through - no whitelist present',
+          function() {
+            customConfig.devlogWhitelist = undefined;
+            devlog.channel().debug("This is a debug message");
+            expect( $log.debug.logs ).toEqual( [] );
+          }
+        );
+        it(
           'should always go through - no whitelist entries',
           function() {
+            customConfig.devlogWhitelist = [];
             devlog.channel().debug("This is a debug message");
             expect( $log.debug.logs[0][0] ).toBe( "This is a debug message" );
           }
@@ -50,6 +59,7 @@
         it(
           'should always go through - with whitelist entries',
           function() {
+            customConfig.devlogWhitelist = [];
             customConfig.devlogWhitelist.push('apple');
             customConfig.devlogWhitelist.push('banana');
             devlog.channel().debug("This is a debug message");
@@ -63,8 +73,17 @@
       'channel usage with one channel',
       function() {
         it(
+          'should not go through with no whitelist present',
+          function() {
+            customConfig.devlogWhitelist = undefined;
+            devlog.channel('banana').debug("This is a debug message");
+            expect( $log.debug.logs ).toEqual( [] );
+          }
+        );
+        it(
           'should go through when whitelisted',
           function() {
+            customConfig.devlogWhitelist = [];
             customConfig.devlogWhitelist.push('apple');
             customConfig.devlogWhitelist.push('banana');
             devlog.channel('banana').debug("This is a debug message");
@@ -74,6 +93,7 @@
         it(
           'should not go through when not whitelisted',
           function() {
+            customConfig.devlogWhitelist = [];
             customConfig.devlogWhitelist.push('apple');
             customConfig.devlogWhitelist.push('banana');
             devlog.channel('cookie').debug("This is a debug message");
@@ -86,6 +106,14 @@
     describe(
       'channel usage with multiple channels',
       function() {
+        it(
+          'should not go through with no whitelist present',
+          function() {
+            customConfig.devlogWhitelist = undefined;
+            devlog.channel('cookie', 'banana', 'duck').debug("This is a debug message");
+            expect( $log.debug.logs ).toEqual( [] );
+          }
+        );
         it(
           'should go through when any are whitelisted',
           function() {

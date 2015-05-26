@@ -45,13 +45,17 @@
       var config = iscCustomConfigService.getConfig();
       var whitelist = config.devlogWhitelist;
 
-      //no channel
-      //or no whitelist present in config
+      //no whitelist present
+      //means suppress
+      if( !whitelist ) {
+        return nullobj;
+      }
+
+      //no channel specified
       //or wildcard in whitelist
       //means send it directly through
       if (
         !args.length
-	|| !whitelist
         || (whitelist.indexOf("*") >= 0)
       ) {
         return devlog;
