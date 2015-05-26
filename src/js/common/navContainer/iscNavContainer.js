@@ -112,6 +112,11 @@
                 var userRole = iscSessionModel.getCurrentUser().userRole;
                 updateStateByRole( userRole );
 
+                // dont go back to the login page
+                if( requestedState.name === 'index.login' ){
+                    requestedState = null;
+                }
+
                 var nextState = requestedState ? requestedState.name : iscDefaultPages.afterLoginSref;
                 $state.go( nextState );
                 requestedState = null;
