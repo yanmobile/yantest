@@ -1,0 +1,687 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="8d122076-6d9a-462b-b137-d98023d037f2" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gulp/common.json" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/e2e/main.po.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/e2e/main.spec.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/gulp/add-common.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/gulp/build.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/gulp/proxy.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/gulp/server.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/gulp/test-e2e.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/gulp/test-unit.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/gulp/watch.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/gulp/wiredep.js" afterPath="" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/config.xml" afterPath="$PROJECT_DIR$/config.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/alerts/iscAlert.html" afterPath="$PROJECT_DIR$/src/modules/alerts/iscAlert.html" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/animation/iscAnimationService.js" afterPath="$PROJECT_DIR$/src/modules/animation/iscAnimationService.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/animation/iscAppModalBkgrndAnimation.js" afterPath="$PROJECT_DIR$/src/modules/animation/iscAppModalBkgrndAnimation.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/animation/iscBlinkOutFadeInAnimation.js" afterPath="$PROJECT_DIR$/src/modules/animation/iscBlinkOutFadeInAnimation.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/animation/iscFadeInBlinkOutAnimation.js" afterPath="$PROJECT_DIR$/src/modules/animation/iscFadeInBlinkOutAnimation.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/animation/iscFadeInOutAnimation.js" afterPath="$PROJECT_DIR$/src/modules/animation/iscFadeInOutAnimation.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/animation/iscFadeOutInAnimation.js" afterPath="$PROJECT_DIR$/src/modules/animation/iscFadeOutInAnimation.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/animation/iscOptionsPopupAnimation.js" afterPath="$PROJECT_DIR$/src/modules/animation/iscOptionsPopupAnimation.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/animation/iscScrollStickAnimation.js" afterPath="$PROJECT_DIR$/src/modules/animation/iscScrollStickAnimation.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/assets/fonts/font-awesome/FontAwesome.otf" afterPath="$PROJECT_DIR$/src/assets/fonts/font-awesome/FontAwesome.otf" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/assets/fonts/font-awesome/css/font-awesome.css" afterPath="$PROJECT_DIR$/src/assets/fonts/font-awesome/css/font-awesome.css" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/assets/fonts/font-awesome/css/font-awesome.min.css" afterPath="$PROJECT_DIR$/src/assets/fonts/font-awesome/css/font-awesome.min.css" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/assets/fonts/font-awesome/fontawesome-webfont.eot" afterPath="$PROJECT_DIR$/src/assets/fonts/font-awesome/fontawesome-webfont.eot" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/assets/fonts/font-awesome/fontawesome-webfont.svg" afterPath="$PROJECT_DIR$/src/assets/fonts/font-awesome/fontawesome-webfont.svg" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/assets/fonts/font-awesome/fontawesome-webfont.ttf" afterPath="$PROJECT_DIR$/src/assets/fonts/font-awesome/fontawesome-webfont.ttf" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/assets/fonts/font-awesome/fontawesome-webfont.woff" afterPath="$PROJECT_DIR$/src/assets/fonts/font-awesome/fontawesome-webfont.woff" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/assets/images/down-carat-.png" afterPath="$PROJECT_DIR$/src/assets/images/down-carat-.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/assets/images/down-carat.png" afterPath="$PROJECT_DIR$/src/assets/images/down-carat.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/assets/images/logo-big.png" afterPath="$PROJECT_DIR$/src/assets/images/logo-big.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/assets/images/logo.png" afterPath="$PROJECT_DIR$/src/assets/images/logo.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/assets/images/sky-footer.jpg" afterPath="$PROJECT_DIR$/src/assets/images/sky-footer.jpg" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/assets/images/sky-header.jpg" afterPath="$PROJECT_DIR$/src/assets/images/sky-header.jpg" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/assets/plugins/plugins.js" afterPath="$PROJECT_DIR$/src/assets/plugins/plugins.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/assets/sass/_helpers.scss" afterPath="$PROJECT_DIR$/src/assets/sass/_helpers.scss" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/assets/sass/font-awesome/_bordered-pulled.scss" afterPath="$PROJECT_DIR$/src/assets/sass/font-awesome/_bordered-pulled.scss" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/assets/sass/font-awesome/_core.scss" afterPath="$PROJECT_DIR$/src/assets/sass/font-awesome/_core.scss" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/assets/sass/font-awesome/_extras.scss" afterPath="$PROJECT_DIR$/src/assets/sass/font-awesome/_extras.scss" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/assets/sass/font-awesome/_fixed-width.scss" afterPath="$PROJECT_DIR$/src/assets/sass/font-awesome/_fixed-width.scss" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/assets/sass/font-awesome/_icons.scss" afterPath="$PROJECT_DIR$/src/assets/sass/font-awesome/_icons.scss" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/assets/sass/font-awesome/_larger.scss" afterPath="$PROJECT_DIR$/src/assets/sass/font-awesome/_larger.scss" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/assets/sass/font-awesome/_list.scss" afterPath="$PROJECT_DIR$/src/assets/sass/font-awesome/_list.scss" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/assets/sass/font-awesome/_mixins.scss" afterPath="$PROJECT_DIR$/src/assets/sass/font-awesome/_mixins.scss" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/assets/sass/font-awesome/_path.scss" afterPath="$PROJECT_DIR$/src/assets/sass/font-awesome/_path.scss" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/assets/sass/font-awesome/_rotated-flipped.scss" afterPath="$PROJECT_DIR$/src/assets/sass/font-awesome/_rotated-flipped.scss" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/assets/sass/font-awesome/_spinning.scss" afterPath="$PROJECT_DIR$/src/assets/sass/font-awesome/_spinning.scss" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/assets/sass/font-awesome/_stacked.scss" afterPath="$PROJECT_DIR$/src/assets/sass/font-awesome/_stacked.scss" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/assets/sass/font-awesome/_variables.scss" afterPath="$PROJECT_DIR$/src/assets/sass/font-awesome/_variables.scss" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/assets/sass/font-awesome/font-awesome.scss" afterPath="$PROJECT_DIR$/src/assets/sass/font-awesome/font-awesome.scss" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/assets/sass/fullcalendar/fullcalendar.scss" afterPath="$PROJECT_DIR$/src/assets/sass/fullcalendar/fullcalendar.scss" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/assets/sass/isc/_isc-account-summary.scss" afterPath="$PROJECT_DIR$/src/assets/sass/isc/_isc-account-summary.scss" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/assets/sass/isc/_isc-alerts.scss" afterPath="$PROJECT_DIR$/src/assets/sass/isc/_isc-alerts.scss" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/assets/sass/isc/_isc-app.scss" afterPath="$PROJECT_DIR$/src/assets/sass/isc/_isc-app.scss" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/assets/sass/isc/_isc-buttons.scss" afterPath="$PROJECT_DIR$/src/assets/sass/isc/_isc-buttons.scss" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/assets/sass/isc/_isc-dropdown.scss" afterPath="$PROJECT_DIR$/src/assets/sass/isc/_isc-dropdown.scss" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/assets/sass/isc/_isc-footer.scss" afterPath="$PROJECT_DIR$/src/assets/sass/isc/_isc-footer.scss" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/assets/sass/isc/_isc-forms.scss" afterPath="$PROJECT_DIR$/src/assets/sass/isc/_isc-forms.scss" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/assets/sass/isc/_isc-main-tabs.scss" afterPath="$PROJECT_DIR$/src/assets/sass/isc/_isc-main-tabs.scss" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/assets/sass/isc/_isc-mixins.scss" afterPath="$PROJECT_DIR$/src/assets/sass/isc/_isc-mixins.scss" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/assets/sass/isc/_isc-modal-popups.scss" afterPath="$PROJECT_DIR$/src/assets/sass/isc/_isc-modal-popups.scss" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/assets/sass/isc/_isc-nav-bar.scss" afterPath="$PROJECT_DIR$/src/assets/sass/isc/_isc-nav-bar.scss" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/assets/sass/isc/_isc-page-components.scss" afterPath="$PROJECT_DIR$/src/assets/sass/isc/_isc-page-components.scss" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/assets/sass/isc/_isc-panels.scss" afterPath="$PROJECT_DIR$/src/assets/sass/isc/_isc-panels.scss" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/assets/sass/isc/_isc-proxies.scss" afterPath="$PROJECT_DIR$/src/assets/sass/isc/_isc-proxies.scss" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/assets/sass/isc/_isc-scrollable.scss" afterPath="$PROJECT_DIR$/src/assets/sass/isc/_isc-scrollable.scss" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/assets/sass/isc/_isc-secondary-nav.scss" afterPath="$PROJECT_DIR$/src/assets/sass/isc/_isc-secondary-nav.scss" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/assets/sass/isc/_isc-side-nav.scss" afterPath="$PROJECT_DIR$/src/assets/sass/isc/_isc-side-nav.scss" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/assets/sass/isc/_isc-tables.scss" afterPath="$PROJECT_DIR$/src/assets/sass/isc/_isc-tables.scss" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/assets/sass/isc/_isc-utils.scss" afterPath="$PROJECT_DIR$/src/assets/sass/isc/_isc-utils.scss" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/assets/sass/isc/_isc-variables.scss" afterPath="$PROJECT_DIR$/src/assets/sass/isc/_isc-variables.scss" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/assets/sass/isc/_isc.scss" afterPath="$PROJECT_DIR$/src/assets/sass/isc/_isc.scss" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/assets/sass/isc/theme-sky/_isc-theme-sky.scss" afterPath="$PROJECT_DIR$/src/assets/sass/isc/theme-sky/_isc-theme-sky.scss" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/assets/sass/isc/theme-solid/_isc-theme-solid.scss" afterPath="$PROJECT_DIR$/src/assets/sass/isc/theme-solid/_isc-theme-solid.scss" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/assets/sass/main.scss" afterPath="$PROJECT_DIR$/src/assets/sass/main.scss" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/assets/sass/pagination-directive/isc-pagination.scss" afterPath="$PROJECT_DIR$/src/assets/sass/pagination-directive/isc-pagination.scss" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/authentication/iscAuthenticationInterceptor.js" afterPath="$PROJECT_DIR$/src/modules/authentication/iscAuthenticationInterceptor.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/authentication/iscSessionModel.js" afterPath="$PROJECT_DIR$/src/modules/authentication/iscSessionModel.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/authentication/iscSessionStorageHelper.js" afterPath="$PROJECT_DIR$/src/modules/authentication/iscSessionStorageHelper.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/configuration/iscCustomConfigHelper.js" afterPath="$PROJECT_DIR$/src/modules/configuration/iscCustomConfigHelper.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/configuration/iscCustomConfigService.js" afterPath="$PROJECT_DIR$/src/modules/configuration/iscCustomConfigService.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/devlog/devlog.js" afterPath="$PROJECT_DIR$/src/modules/devlog/devlog.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/directives/iscCheckBox.js" afterPath="$PROJECT_DIR$/src/modules/directives/iscCheckBox.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/directives/iscDynamicHtml.js" afterPath="$PROJECT_DIR$/src/modules/directives/iscDynamicHtml.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/directives/iscRadio.js" afterPath="$PROJECT_DIR$/src/modules/directives/iscRadio.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/directives/iscRadioGroupHelper.js" afterPath="$PROJECT_DIR$/src/modules/directives/iscRadioGroupHelper.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/directives/iscRoundCheckBox.js" afterPath="$PROJECT_DIR$/src/modules/directives/iscRoundCheckBox.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/directives/iscTextAreaAutoExpand.js" afterPath="$PROJECT_DIR$/src/modules/directives/iscTextAreaAutoExpand.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/dropdown/iscDropdown.html" afterPath="$PROJECT_DIR$/src/modules/dropdown/iscDropdown.html" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/dropdown/iscDropdown.js" afterPath="$PROJECT_DIR$/src/modules/dropdown/iscDropdown.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/dropdown/iscDropdownList.html" afterPath="$PROJECT_DIR$/src/modules/dropdown/iscDropdownList.html" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/dropdown/iscDropdownSelectionList.js" afterPath="$PROJECT_DIR$/src/modules/dropdown/iscDropdownSelectionList.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/filters/iscArrayStringFilter.js" afterPath="$PROJECT_DIR$/src/modules/filters/iscArrayStringFilter.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/filters/iscDateFilter.js" afterPath="$PROJECT_DIR$/src/modules/filters/iscDateFilter.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/filters/iscHighlightFilter.js" afterPath="$PROJECT_DIR$/src/modules/filters/iscHighlightFilter.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/filters/iscHtmlToPlainTextFilter.js" afterPath="$PROJECT_DIR$/src/modules/filters/iscHtmlToPlainTextFilter.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/global/iscGlobals.js" afterPath="$PROJECT_DIR$/src/modules/global/iscGlobals.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/helpers/iscUiHelper.js" afterPath="$PROJECT_DIR$/src/modules/helpers/iscUiHelper.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/isc.common.js" afterPath="$PROJECT_DIR$/src/modules/isc.common.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/navContainer/alerts/animations/iscAlertAnimation.js" afterPath="$PROJECT_DIR$/src/modules/navContainer/alerts/animations/iscAlertAnimation.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/navContainer/alerts/controllers/iscAlertController.js" afterPath="$PROJECT_DIR$/src/modules/navContainer/alerts/controllers/iscAlertController.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/navContainer/alerts/models/iscAlertModel.js" afterPath="$PROJECT_DIR$/src/modules/navContainer/alerts/models/iscAlertModel.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/navContainer/alerts/services/iscAlertService.js" afterPath="$PROJECT_DIR$/src/modules/navContainer/alerts/services/iscAlertService.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/navContainer/animations/iscNavContainerModalBkgrndAnimation.js" afterPath="$PROJECT_DIR$/src/modules/navContainer/animations/iscNavContainerModalBkgrndAnimation.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/navContainer/animations/iscNavContainerSecondaryNavAnimation.js" afterPath="$PROJECT_DIR$/src/modules/navContainer/animations/iscNavContainerSecondaryNavAnimation.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/navContainer/animations/iscNavContainerSideNavAnimation.js" afterPath="$PROJECT_DIR$/src/modules/navContainer/animations/iscNavContainerSideNavAnimation.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/navContainer/controllers/iscNavigationController.js" afterPath="$PROJECT_DIR$/src/modules/navContainer/controllers/iscNavigationController.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/navContainer/iscFooter.html" afterPath="$PROJECT_DIR$/src/modules/navContainer/iscFooter.html" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/navContainer/iscNavContainer.html" afterPath="$PROJECT_DIR$/src/modules/navContainer/iscNavContainer.html" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/navContainer/iscNavContainer.js" afterPath="$PROJECT_DIR$/src/modules/navContainer/iscNavContainer.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/navContainer/iscNavbarDesktop.html" afterPath="$PROJECT_DIR$/src/modules/navContainer/iscNavbarDesktop.html" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/navContainer/iscNavbarPhone.html" afterPath="$PROJECT_DIR$/src/modules/navContainer/iscNavbarPhone.html" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/navContainer/iscNavbarTablet.html" afterPath="$PROJECT_DIR$/src/modules/navContainer/iscNavbarTablet.html" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/navContainer/iscPageSideNav.html" afterPath="$PROJECT_DIR$/src/modules/navContainer/iscPageSideNav.html" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/navContainer/iscSecondaryNav.html" afterPath="$PROJECT_DIR$/src/modules/navContainer/iscSecondaryNav.html" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/navContainer/iscSideNav.html" afterPath="$PROJECT_DIR$/src/modules/navContainer/iscSideNav.html" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/navContainer/models/iscNavContainerModel.js" afterPath="$PROJECT_DIR$/src/modules/navContainer/models/iscNavContainerModel.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/navContainer/navBar/iscNavbarController.js" afterPath="$PROJECT_DIR$/src/modules/navContainer/navBar/iscNavbarController.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/progressLoader/iscProgressLoader.js" afterPath="$PROJECT_DIR$/src/modules/progressLoader/iscProgressLoader.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/stateManager/iscStateManager.js" afterPath="$PROJECT_DIR$/src/modules/stateManager/iscStateManager.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/svg/isc-archive-icon.html" afterPath="$PROJECT_DIR$/src/modules/svg/isc-archive-icon.html" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/svg/isc-checkbox.html" afterPath="$PROJECT_DIR$/src/modules/svg/isc-checkbox.html" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/svg/isc-chevron-down.html" afterPath="$PROJECT_DIR$/src/modules/svg/isc-chevron-down.html" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/svg/isc-chevron-up.html" afterPath="$PROJECT_DIR$/src/modules/svg/isc-chevron-up.html" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/svg/isc-hamburger-icon.html" afterPath="$PROJECT_DIR$/src/modules/svg/isc-hamburger-icon.html" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/svg/isc-new-message-icon.html" afterPath="$PROJECT_DIR$/src/modules/svg/isc-new-message-icon.html" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/svg/isc-pagination-arrow-l.html" afterPath="$PROJECT_DIR$/src/modules/svg/isc-pagination-arrow-l.html" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/svg/isc-pagination-arrow-r.html" afterPath="$PROJECT_DIR$/src/modules/svg/isc-pagination-arrow-r.html" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/svg/isc-question-icon.html" afterPath="$PROJECT_DIR$/src/modules/svg/isc-question-icon.html" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/svg/isc-radio.html" afterPath="$PROJECT_DIR$/src/modules/svg/isc-radio.html" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/svg/isc-read-message-icon.html" afterPath="$PROJECT_DIR$/src/modules/svg/isc-read-message-icon.html" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/svg/isc-rounded-checkbox.html" afterPath="$PROJECT_DIR$/src/modules/svg/isc-rounded-checkbox.html" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/svg/isc-search-icon.html" afterPath="$PROJECT_DIR$/src/modules/svg/isc-search-icon.html" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/svg/isc-star-icon.html" afterPath="$PROJECT_DIR$/src/modules/svg/isc-star-icon.html" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/svg/isc-task-arrow-left.html" afterPath="$PROJECT_DIR$/src/modules/svg/isc-task-arrow-left.html" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/svg/isc-task-arrow.html" afterPath="$PROJECT_DIR$/src/modules/svg/isc-task-arrow.html" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/svg/logo.html" afterPath="$PROJECT_DIR$/src/modules/svg/logo.html" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/js/common/thirdParty/dirPagination.tpl.html" afterPath="$PROJECT_DIR$/src/modules/thirdParty/dirPagination.tpl.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bower.json" afterPath="$PROJECT_DIR$/bower.json" />
+    </list>
+    <ignored path="hs-ui-angular-core.iws" />
+    <ignored path=".idea/workspace.xml" />
+    <ignored path=".idea/dataSources.local.xml" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
+  <component name="CreatePatchCommitExecutor">
+    <option name="PATCH_PATH" value="" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
+  <component name="FavoritesManager">
+    <favorites_list name="hs-ui-angular-core" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf>
+      <file leaf-file-name="config.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/config.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="78" column="0" selection-start-line="78" selection-start-column="0" selection-end-line="78" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="common.json" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/gulp/common.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.24038461">
+              <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/src/app/common/assets/sass/isc/_isc-app.scss" />
+        <option value="$PROJECT_DIR$/src/templates/common/alerts/iscAlert.html" />
+        <option value="$PROJECT_DIR$/src/config.xml" />
+        <option value="$PROJECT_DIR$/src/js/common/animation/iscAnimationService.js" />
+        <option value="$PROJECT_DIR$/src/js/common/assets/sass/isc/_isc-secondary-nav.scss" />
+        <option value="$PROJECT_DIR$/src/js/common/assets/sass/isc/_isc.scss" />
+        <option value="$PROJECT_DIR$/src/js/common/dropdown/iscDropdownSelectionList.js" />
+        <option value="$PROJECT_DIR$/src/js/common/dropdown/iscDropdown.js" />
+        <option value="$PROJECT_DIR$/gulp/build.js" />
+        <option value="$PROJECT_DIR$/src/js/common/directives/iscRadio.js" />
+        <option value="$PROJECT_DIR$/gulp/add-common.js" />
+        <option value="$PROJECT_DIR$/src/js/common/configuration/iscCustomConfigService.js" />
+        <option value="$PROJECT_DIR$/src/js/common/isc.common.js" />
+        <option value="$PROJECT_DIR$/src/js/common/navContainer/iscNavContainer.js" />
+        <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/bower.json" />
+        <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/gulp/common.json" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+  </component>
+  <component name="NamedScopeManager">
+    <order />
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="-587" />
+    <option name="y" value="65" />
+    <option name="width" value="693" />
+    <option name="height" value="817" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
+    <OptionsSetting value="true" id="Add" />
+    <OptionsSetting value="true" id="Remove" />
+    <OptionsSetting value="true" id="Checkout" />
+    <OptionsSetting value="true" id="Update" />
+    <OptionsSetting value="true" id="Status" />
+    <OptionsSetting value="true" id="Edit" />
+    <OptionsSetting value="true" id="Undo Check Out" />
+    <OptionsSetting value="true" id="Get Latest Version" />
+    <ConfirmationsSetting value="2" id="Add" />
+    <ConfirmationsSetting value="0" id="Remove" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="hs-ui-angular-core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="hs-ui-angular-core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="hs-ui-angular-core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="hs-ui-angular-core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="hs-ui-angular-core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="hs-ui-angular-core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="hs-ui-angular-core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gulp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
+      <pane id="Scratches" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="GoToClass.includeLibraries" value="false" />
+    <property name="GoToClass.toSaveIncludeLibraries" value="false" />
+    <property name="GoToFile.includeJavaFiles" value="false" />
+    <property name="MemberChooser.sorted" value="false" />
+    <property name="MemberChooser.showClasses" value="true" />
+    <property name="MemberChooser.copyJavadoc" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="editorconfig.notification" value="Applied .editorconfig settings" />
+    <property name="FullScreen" value="false" />
+    <property name="settings.editor.selected.configurable" value="preferences.sourceCode" />
+    <property name="settings.editor.splitter.proportion" value="0.2" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/gulp" />
+      <recent name="$PROJECT_DIR$/src" />
+      <recent name="$PROJECT_DIR$/src/js/common/assets/images" />
+      <recent name="$PROJECT_DIR$/test/unit" />
+      <recent name="$PROJECT_DIR$/src/js" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/src" />
+      <recent name="$PROJECT_DIR$/test" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin">
+      <module name="" />
+      <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
+      <option name="PROGRAM_PARAMETERS" />
+      <method />
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="Application" factoryName="Application">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="JUnit" factoryName="JUnit">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <envs />
+      <patterns />
+      <method />
+    </configuration>
+    <configuration default="true" type="JarApplication" factoryName="JAR Application">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
+      <method />
+    </configuration>
+    <configuration default="true" type="NodeJSConfigurationType" factoryName="Node.js" working-dir="">
+      <method />
+    </configuration>
+    <configuration default="true" type="Remote" factoryName="Remote">
+      <option name="USE_SOCKET_TRANSPORT" value="true" />
+      <option name="SERVER_MODE" value="false" />
+      <option name="SHMEM_ADDRESS" value="javadebug" />
+      <option name="HOST" value="localhost" />
+      <option name="PORT" value="5005" />
+      <method />
+    </configuration>
+    <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
+      <node-options />
+      <gulpfile />
+      <tasks />
+      <arguments />
+      <pass-parent-envs>true</pass-parent-envs>
+      <envs />
+      <method />
+    </configuration>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="8d122076-6d9a-462b-b137-d98023d037f2" name="Default" comment="" />
+      <created>1423847114629</created>
+      <option name="number" value="Default" />
+      <updated>1423847114629</updated>
+      <workItem from="1423847115222" duration="15000" />
+      <workItem from="1424292170140" duration="247000" />
+      <workItem from="1426168588938" duration="24000" />
+      <workItem from="1426168664824" duration="1449000" />
+      <workItem from="1429014748083" duration="245000" />
+      <workItem from="1429015006825" duration="347000" />
+      <workItem from="1429018334705" duration="3861000" />
+      <workItem from="1429302077063" duration="238000" />
+      <workItem from="1429302328184" duration="2000" />
+      <workItem from="1429485587928" duration="2297000" />
+      <workItem from="1429800944886" duration="10832000" />
+      <workItem from="1430505399659" duration="75000" />
+      <workItem from="1430505510103" duration="2924000" />
+      <workItem from="1430924417168" duration="1163000" />
+      <workItem from="1431031549046" duration="507000" />
+      <workItem from="1431032346106" duration="206000" />
+      <workItem from="1431032886768" duration="3157000" />
+      <workItem from="1431377803575" duration="15769000" />
+      <workItem from="1432571662773" duration="467000" />
+      <workItem from="1432647291475" duration="15000" />
+      <workItem from="1432651468933" duration="711000" />
+      <workItem from="1432746316817" duration="794000" />
+      <workItem from="1432826384174" duration="119000" />
+      <workItem from="1432840405746" duration="3566000" />
+    </task>
+    <task id="LOCAL-00001" summary="build.js - adding pagination to js&#10;iscNavContainer.js - adding ability to go to requested state after login&#10;isc.common - adding pagination">
+      <created>1429485972370</created>
+      <option name="number" value="00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1429485972371</updated>
+    </task>
+    <task id="LOCAL-00002" summary="isc-buttons - disabled style for links&#10;isc-secondary-nav - updates for secondary nav spacing&#10;thirdParty - adding template for pagination">
+      <created>1429486177134</created>
+      <option name="number" value="00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1429486177134</updated>
+    </task>
+    <task id="LOCAL-00003" summary="fixing unit test conf to include pagination js">
+      <created>1429487059724</created>
+      <option name="number" value="00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1429487059724</updated>
+    </task>
+    <task id="LOCAL-00004" summary="updating to latest core">
+      <created>1430311634518</created>
+      <option name="number" value="00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1430311634518</updated>
+    </task>
+    <task id="LOCAL-00005" summary="updating latest core - logging changes">
+      <created>1430837956058</created>
+      <option name="number" value="00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1430837956058</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="49030000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-587" y="65" width="693" height="817" extended-state="0" />
+    <editor active="true" />
+    <layout>
+      <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.45684522" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+    </layout>
+  </component>
+  <component name="Vcs.Log.UiProperties">
+    <option name="RECENTLY_FILTERED_USER_GROUPS">
+      <collection />
+    </option>
+    <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+      <collection />
+    </option>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="build.js - adding pagination to js&#10;iscNavContainer.js - adding ability to go to requested state after login&#10;isc.common - adding pagination" />
+    <MESSAGE value="isc-buttons - disabled style for links&#10;isc-secondary-nav - updates for secondary nav spacing&#10;thirdParty - adding template for pagination" />
+    <MESSAGE value="fixing unit test conf to include pagination js" />
+    <MESSAGE value="updating to latest core" />
+    <MESSAGE value="updating latest core - logging changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="updating latest core - logging changes" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager />
+    <watches-manager />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="20" column="8" selection-start-line="20" selection-start-column="8" selection-end-line="20" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="MarkdownPreviewEditor">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="MarkdownPreviewEditor">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="MarkdownPreviewEditor">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="21" column="33" selection-start-line="21" selection-start-column="33" selection-end-line="21" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="MarkdownPreviewEditor">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="21" column="33" selection-start-line="21" selection-start-column="33" selection-end-line="21" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="MarkdownPreviewEditor">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="21" column="33" selection-start-line="21" selection-start-column="33" selection-end-line="21" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="MarkdownPreviewEditor">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="13" column="13" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
+        </state>
+      </provider>
+      <provider selected="true" editor-type-id="MarkdownPreviewEditor">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+      <provider editor-type-id="MarkdownPreviewEditor">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gulpfile.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.bowerrc">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bower.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.13867489">
+          <caret line="6" column="32" selection-start-line="6" selection-start-column="32" selection-end-line="6" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.2795031">
+          <caret line="12" column="18" selection-start-line="12" selection-start-column="18" selection-end-line="12" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="MarkdownPreviewEditor">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="78" column="0" selection-start-line="78" selection-start-column="0" selection-end-line="78" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gulp/common.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.24038461">
+          <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
