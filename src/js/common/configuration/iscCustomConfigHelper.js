@@ -69,12 +69,20 @@
     // the interceptor uses this to disallow navigation to that state
     // see iscCustomConfigInterceptor.request()
     function stateIsExcluded( stateName ){
-//      //$log.debug( 'iscCustomConfigHelper.stateIsExcluded' );
+      //$log.debug( 'iscCustomConfigHelper.stateIsExcluded' );
+      //$log.debug( 'Checking if state is excluded' );
       if( !allStates[ stateName ] ){
+        //$log.debug( 'State is not in allStates' );
         return true;
       }
 
-      return allStates[ stateName ].exclude;
+      if( allStates[ stateName ].exclude ) {
+        //$log.debug( JSON.stringify(allStates[ stateName ]) );
+        //$log.debug( 'State is marked as exclude' );
+        return true;
+      }
+
+      return false;
     }
 
     // ----------------------------
