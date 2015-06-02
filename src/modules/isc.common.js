@@ -3,23 +3,26 @@
  */
 
 (function(){
-  'use strict';
+    'use strict';
 
-  angular.module( 'isc.common',
-    [
-      // third party modules
-      'angularUtils.directives.dirPagination',
-      'ui.router',
-      'mobile-angular-ui',
-      'mobile-angular-ui.gestures',
-      'ngSanitize',
-      'ngAnimate',
-      'pascalprecht.translate',
-      'angular.filter',
+    angular.module( 'isc.common',
+        [
+            // third party modules
+            'angularUtils.directives.dirPagination',
+            'ui.router',
+            'mobile-angular-ui',
+            'mobile-angular-ui.gestures',
+            'ngSanitize',
+            'ngAnimate',
+            'pascalprecht.translate',
+            'angular.filter',
+            '720kb.datepicker',
 
-      // isc tabbed navigation module
-      'iscNavContainer'
-    ]);
+            // logging helper
+            'logLineNumber',
+
+            // isc tabbed navigation module
+            'iscNavContainer'
+        ]);
 
 })();
-
