@@ -36,7 +36,7 @@
         refName: '=',
         isShowDrop: '='
       },
-      templateUrl: 'common/dropdown/iscDropdownList.html'
+      templateUrl: 'dropdown/iscDropdownList.html'
     };
 
     return directive;
