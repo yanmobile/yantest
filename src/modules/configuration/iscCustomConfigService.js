@@ -230,6 +230,8 @@
           }
         });
       }
+
+      //$log.debug( 'Finished updating navbar');
     }
 
     // ----------------------------
