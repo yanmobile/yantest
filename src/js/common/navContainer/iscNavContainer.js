@@ -132,7 +132,7 @@
                 devlog.channel('Login','StateNav').debug('Requested state is ' + requestedState.name);
 
                 // dont go back to the login page
-                if( requestedState.name === 'index.login' ){
+                if( requestedState.name === iscDefaultPages.beforeLoginSref ){
                     requestedState = null;
                 }
 
