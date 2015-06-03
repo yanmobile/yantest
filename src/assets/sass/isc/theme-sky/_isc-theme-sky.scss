@@ -2,7 +2,7 @@
 // themed nav bar
 .isc-top-nav-container{
   &.theme{
-    background: url( ../assets/images/sky-header.jpg );
+    background: url( ../assets/images/blue-clouds.jpg );
     background-size: cover;
   }
 }
@@ -10,7 +10,7 @@
 // themed footer bar
 .isc-app-footer{
 
-  background: url(../assets/images/sky-footer.jpg);
+  background: url(../assets/images/blue-clouds-footer.jpg);
   background-size: cover;
 
   @media #{$desktop} {
@@ -32,7 +32,7 @@
 // themed sidebar - see also isc-side-bar
 .isc-side-nav-header-container {
   &.theme{
-    background: url( ../assets/images/sky-header.jpg );
+    background: url( ../assets/images/blue-clouds.jpg );
     background-size: cover;
   }
 }
