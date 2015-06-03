@@ -1,9 +1,1 @@
-node_modules/
-bower_components/
-.sass-cache/
-.tmp/
-dist/
 .idea/
-.editorconfig
-*.swp
-.DS_Store

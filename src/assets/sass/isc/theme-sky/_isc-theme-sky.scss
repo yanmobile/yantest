@@ -1,0 +1,38 @@
+
+// themed nav bar
+.isc-top-nav-container{
+  &.theme{
+    background: url( ../assets/images/blue-clouds.jpg );
+    background-size: cover;
+  }
+}
+
+// themed footer bar
+.isc-app-footer{
+
+  background: url(../assets/images/blue-clouds-footer.jpg);
+  background-size: cover;
+
+  @media #{$desktop} {
+    height: $app-header-height-desktop;
+    max-height: $app-header-height-desktop;
+  }
+
+  @media #{$tablet} {
+    height: $app-header-height-tablet;
+    max-height: $app-header-height-tablet;
+  }
+
+  @media #{$phone}  {
+    height: $app-header-height-phone;
+    max-height: $app-header-height-phone;
+  }
+}
+
+// themed sidebar - see also isc-side-bar
+.isc-side-nav-header-container {
+  &.theme{
+    background: url( ../assets/images/blue-clouds.jpg );
+    background-size: cover;
+  }
+}
