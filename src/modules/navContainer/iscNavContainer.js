@@ -69,8 +69,13 @@
             //$log.debug( 'iscNavContainer.run' );
 
             // wrapped in a timeout to ensure that the dom is loaded
+            // loading the config first
             $timeout( function(){
-                loadDataFromStoredSession();
+                iscCustomConfigService.loadConfig().then( function(){
+                    devlog.channel('StateNav').debug( 'loading data from stored session');
+                    loadDataFromStoredSession();
+                });
+
             },0);
 
             // when you refresh the page, this stores your requested state,
@@ -88,7 +93,9 @@
 
                     requestedState = toState;
 
-                    iscCustomConfigService.loadConfig().then( function( config ){//jshint ignore:line
+                    // loading config since sometimes the event is broadcast
+                    // before the config is loaded
+                    iscCustomConfigService.loadConfig().then( function(){
                         devlog.channel('StateNav').debug( 'State change request received');
                         devlog.channel('StateNav').debug( 'Beginning state change from "%s" to "%s"', fromState.name, toState.name);
 
@@ -109,15 +116,15 @@
 
             $rootScope.$on('$stateChangeError',
                 function( event, toState, toParams, fromState, fromParams, error){
-                  devlog.channel('StateNav').debug( 'State change encountered an error' );
-                  iscProgressLoader.end();
+                    devlog.channel('StateNav').debug( 'State change encountered an error' );
+                    iscProgressLoader.end();
                 }
             );
 
             $rootScope.$on('$stateNotFound',
                 function( event, toState, toParams, fromState, fromParams, error){
-                  devlog.channel('StateNav').debug( 'State not found' );
-                  iscProgressLoader.end();
+                    devlog.channel('StateNav').debug( 'State not found' );
+                    iscProgressLoader.end();
                 }
             );
 
@@ -215,14 +222,14 @@
                         $rootScope.$broadcast( AUTH_EVENTS.notAuthorized );
 
                         if( !fromState || !fromState.name ){
-                          devlog.channel('StateNav').debug( 'User will be sent to "%s"', iscDefaultPages.beforeLoginSref);
+                            devlog.channel('StateNav').debug( 'User will be sent to "%s"', iscDefaultPages.beforeLoginSref);
                             // edge case where your permissions changed underneath you
                             // and you refreshed the page - assumes the Home state is always permitted
                             $state.go( iscDefaultPages.beforeLoginSref );
                             return
                         }
                         else{
-                          devlog.channel('StateNav').debug( 'User will be sent to "%s"', fromState.name);
+                            devlog.channel('StateNav').debug( 'User will be sent to "%s"', fromState.name);
                             $state.go( fromState.name );
                             return
                         }
@@ -239,7 +246,7 @@
             }
 
             function loadDataFromStoredSession(){
-                //$log.debug( 'ischNavContainer.loadDataFromStoredSession');
+                devlog.channel('StateNav').debug( 'iscNavContainer.loadDataFromStoredSession');
 
                 // NOTE - set the login response and create the session BEFORE calling initSessionTimeout
                 // since the warning for sessionTimeout time is predicate on setting the sessionTimeout time first
