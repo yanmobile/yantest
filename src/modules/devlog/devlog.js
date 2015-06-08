@@ -43,6 +43,11 @@
       }
 
       var config = iscCustomConfigService.getConfig();
+      if(!config) {
+        $log.debug("WARNING No config in application, suppressing call to devlog");
+        console.trace();
+        return nullobj;
+      }
       var whitelist = config.devlogWhitelist;
 
       //no whitelist present

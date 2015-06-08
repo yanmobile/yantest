@@ -71,10 +71,10 @@
         // wrapped in a timeout to ensure that the dom is loaded
         // loading the config first
         $timeout( function(){
-          iscCustomConfigService.loadConfig().then( function(){
-            devlog.channel('StateNav').debug( 'loading data from stored session');
+          //iscCustomConfigService.loadConfig().then( function(){
+          //  devlog.channel('StateNav').debug( 'loading data from stored session');
             loadDataFromStoredSession();
-          });
+          //});
 
         },0);
 
