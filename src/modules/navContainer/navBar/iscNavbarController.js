@@ -5,9 +5,9 @@
   // factory function
   // ------------------------------------------
 
-  iscNavbarController.$inject = [ '$log', '$scope', '$state', '$rootScope', 'iscCustomConfigService', 'iscCustomConfigHelper', 'iscUiHelper', 'iscSessionModel', 'iscAuthenticationApi', 'SharedState' ];
+  iscNavbarController.$inject = [ '$log', '$scope', '$state', '$rootScope', 'iscCustomConfigService', 'iscCustomConfigHelper', 'iscUiHelper', 'iscSessionModel', 'AUTH_EVENTS' ];
 
-  function iscNavbarController( $log, $scope, $state, $rootScope, iscCustomConfigService, iscCustomConfigHelper, iscUiHelper, iscSessionModel, iscAuthenticationApi, SharedState ){//jshint ignore:line
+  function iscNavbarController( $log, $scope, $state, $rootScope, iscCustomConfigService, iscCustomConfigHelper, iscUiHelper, iscSessionModel, AUTH_EVENTS ){//jshint ignore:line
 //    //$log.debug( 'iscNavbarController LOADED');
 
     var self = this;
@@ -24,7 +24,7 @@
 
     self.logout = function(){
       //$log.debug( 'iscNavbarController.logout');
-      iscAuthenticationApi.logout();
+      $rootScope.$broadcast( AUTH_EVENTS.logout );
     };
 
     self.showLogin = function(){

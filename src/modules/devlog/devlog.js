@@ -6,11 +6,11 @@
 
   devlog.$inject = [
     '$log',
-    'iscCustomConfigService',
+    'iscCustomConfigService'
   ];
 
   function devlog( $log, iscCustomConfigService ) {
-    var devlog = {}
+    var devlog = {};
 
     // make devlog function as an extension of angular $log
     // bruteforce approach

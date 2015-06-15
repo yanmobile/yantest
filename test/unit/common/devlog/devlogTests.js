@@ -27,8 +27,8 @@
           'should function as a wrapper to $log - string',
           function() {
             //console.log( '$log', $log );
-            devlog.debug("This is a debug message");
-            expect( $log.debug.logs[0][0] ).toBe( "This is a debug message" );
+            devlog.debug('This is a debug message');
+            expect( $log.debug.logs[0][0] ).toBe( 'This is a debug message' );
           }
         );
         it(
@@ -48,7 +48,7 @@
           'should not go through - no whitelist present',
           function() {
             mockConfig.devlogWhitelist = undefined;
-            devlog.channel().debug("This is a debug message");
+            devlog.channel().debug('This is a debug message');
             expect( $log.debug.logs ).toEqual( [] );
           }
         );
@@ -56,8 +56,8 @@
           'should always go through - no whitelist entries',
           function() {
             mockConfig.devlogWhitelist = [];
-            devlog.channel().debug("This is a debug message");
-            expect( $log.debug.logs[0][0] ).toBe( "This is a debug message" );
+            devlog.channel().debug('This is a debug message');
+            expect( $log.debug.logs[0][0] ).toBe( 'This is a debug message' );
           }
         );
         it(
@@ -66,8 +66,8 @@
             mockConfig.devlogWhitelist = [];
             mockConfig.devlogWhitelist.push('apple');
             mockConfig.devlogWhitelist.push('banana');
-            devlog.channel().debug("This is a debug message");
-            expect( $log.debug.logs[0][0] ).toBe( "This is a debug message" );
+            devlog.channel().debug('This is a debug message');
+            expect( $log.debug.logs[0][0] ).toBe( 'This is a debug message' );
           }
         );
       }
@@ -80,7 +80,7 @@
           'should not go through with no whitelist present',
           function() {
             mockConfig.devlogWhitelist = undefined;
-            devlog.channel('banana').debug("This is a debug message");
+            devlog.channel('banana').debug('This is a debug message');
             expect( $log.debug.logs ).toEqual( [] );
           }
         );
@@ -90,8 +90,8 @@
             mockConfig.devlogWhitelist = [];
             mockConfig.devlogWhitelist.push('apple');
             mockConfig.devlogWhitelist.push('banana');
-            devlog.channel('banana').debug("This is a debug message");
-            expect( $log.debug.logs[0][0] ).toBe( "This is a debug message" );
+            devlog.channel('banana').debug('This is a debug message');
+            expect( $log.debug.logs[0][0] ).toBe( 'This is a debug message' );
           }
         );
         it(
@@ -100,7 +100,7 @@
             mockConfig.devlogWhitelist = [];
             mockConfig.devlogWhitelist.push('apple');
             mockConfig.devlogWhitelist.push('banana');
-            devlog.channel('cookie').debug("This is a debug message");
+            devlog.channel('cookie').debug('This is a debug message');
             expect( $log.debug.logs ).toEqual( [] );
           }
         );
@@ -114,7 +114,7 @@
           'should not go through with no whitelist present',
           function() {
             mockConfig.devlogWhitelist = undefined;
-            devlog.channel('cookie', 'banana', 'duck').debug("This is a debug message");
+            devlog.channel('cookie', 'banana', 'duck').debug('This is a debug message');
             expect( $log.debug.logs ).toEqual( [] );
           }
         );
@@ -124,8 +124,8 @@
             //console.log( mockConfig );
             mockConfig.devlogWhitelist.push('apple');
             mockConfig.devlogWhitelist.push('banana');
-            devlog.channel('cookie', 'banana', 'duck').debug("This is a debug message");
-            expect( $log.debug.logs[0][0] ).toBe( "This is a debug message" );
+            devlog.channel('cookie', 'banana', 'duck').debug('This is a debug message');
+            expect( $log.debug.logs[0][0] ).toBe( 'This is a debug message' );
           }
         );
         it(
@@ -133,7 +133,7 @@
           function() {
             mockConfig.devlogWhitelist.push('apple');
             mockConfig.devlogWhitelist.push('banana');
-            devlog.channel('cookie', 'duck', 'eagle').debug("This is a debug message");
+            devlog.channel('cookie', 'duck', 'eagle').debug('This is a debug message');
             expect( $log.debug.logs ).toEqual( [] );
           }
         );
