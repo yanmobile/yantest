@@ -12,11 +12,11 @@
         sessionModel,
         helper;
 
-    beforeEach( module('iscHsCommunityAngular'));
+
     beforeEach( module('isc.common'));
     beforeEach( module('iscNavContainer'));
 
-    beforeEach( module('isc.common', 'iscNavContainer', 'iscHsCommunityAngular'), function( $provide ){
+    beforeEach( module('isc.common', 'iscNavContainer'), function( $provide ){
       $provide.value('$log', console);
     });
 

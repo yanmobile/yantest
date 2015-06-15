@@ -9,10 +9,10 @@
       interceptor;
 
 
-    beforeEach( module('iscHsCommunityAngular', 'isc.common') );
+    beforeEach( module('isc.common') );
 
     // show $log statements
-    beforeEach( module( 'iscHsCommunityAngular', 'isc.common', function( $provide ){
+    beforeEach( module(  'isc.common', function( $provide ){
       $provide.value('$log', console);
     }));
 

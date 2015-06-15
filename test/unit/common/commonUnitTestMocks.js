@@ -3,25 +3,27 @@
  */
 
 var customConfig = {
-  "baseUrl": "http://hscommdev.iscinternal.com/public/api/v1/",
+  "baseUrl": "http://hscommdev.iscinternal.com/public/api/v1",
 
   "noLoginRequired": [
-    "index",
     "index.login",
     "index.home",
-    "index.library.*",
-    "index.calendar.*",
     "index.info.*"
   ],
 
-  "devlogWhitelist": [ "*" ],
-
-  "userRoles": [ "user", "proxy" ],
+  "devlogWhitelist": [],
 
   "userPermittedTabs": {
     "user":[ "index.wellness.*", "index.messages.*", "index.library.*", "index.calendar.*", "index.myAccount.*" ],
     "proxy":["index.myAccount.*", "index.messages",  "index.messages.inbox", "index.messages.outbox", "index.messages.refillPrescription"]
   },
+
+  "userRoles": [ "user", "guest" ],
+
+  "statePermissions": {
+    "index.messages.outbox": ["user"]
+  },
+
 
   "topTabs": {
     "index.home": {
@@ -35,35 +37,35 @@ var customConfig = {
       "state": "index.wellness",
       "translationKey": "ISC_WELLNESS_TAB",
       "displayOrder": 2,
-      "exclude": false
+      "exclude": true
     },
 
     "index.messages": {
       "state": "index.messages",
       "translationKey": "ISC_MESSAGES_TAB",
       "displayOrder": 3,
-      "exclude": false
+      "exclude": true
     },
 
     "index.library":  {
       "state": "index.library",
       "translationKey": "ISC_LIBRARY_TAB",
       "displayOrder": 4,
-      "exclude": false
+      "exclude": true
     },
 
     "index.calendar": {
       "state": "index.calendar",
       "translationKey": "ISC_CALENDAR_TAB",
       "displayOrder": 5,
-      "exclude": false
+      "exclude": true
     },
 
     "index.myAccount":  {
       "state": "index.myAccount",
       "translationKey": "ISC_MY_ACCOUNT_TAB",
       "displayOrder": 6,
-      "exclude": false
+      "exclude": true
     },
 
     "index.customerTab":  {
@@ -83,7 +85,7 @@ var customConfig = {
 
   "logoutButton": {
     "translationKey": "ISC_LOGOUT_BTN",
-    "exclude": false
+    "exclude": true
   },
 
   "home": {
@@ -99,28 +101,28 @@ var customConfig = {
         "state": "index.messages.inbox",
         "translationKey": "ISC_MESSAGES_INBOX_BTN",
         "displayOrder": 1,
-        "exclude": false
+        "exclude": true
       },
 
       "index.messages.outbox": {
         "state": "index.messages.outbox",
         "translationKey": "ISC_MESSAGES_OUTBOX_BTN",
         "displayOrder": 2,
-        "exclude": false
+        "exclude": true
       },
 
       "index.messages.archivedInbox": {
         "state": "index.messages.archivedInbox",
         "translationKey": "ISC_MESSAGES_ARCHIVED_INBOX_BTN",
         "displayOrder": 3,
-        "exclude": false
+        "exclude": true
       },
 
       "index.messages.archivedOutbox": {
         "state": "index.messages.archivedOutbox",
         "translationKey": "ISC_MESSAGES_ARCHIVED_OUTBOX_BTN",
         "displayOrder": 4,
-        "exclude": false
+        "exclude": true
       }
     },
 
@@ -129,42 +131,42 @@ var customConfig = {
         "state": "index.messages.medicalQuestion",
         "translationKey": "ISC_MESSAGES_MEDICAL_QUESTION",
         "displayOrder": 1,
-        "exclude": false
+        "exclude": true
       },
 
       "index.messages.generalQuestion": {
         "state": "index.messages.generalQuestion",
         "translationKey": "ISC_MESSAGES_GENERAL_QUESTION",
         "displayOrder": 2,
-        "exclude": false
+        "exclude": true
       },
 
       "index.messages.requestAppointment": {
         "state": "index.messages.requestAppointment",
         "translationKey": "ISC_MESSAGES_REQUEST_APPOINTMENT",
         "displayOrder": 3,
-        "exclude": false
+        "exclude": true
       },
 
       "index.messages.refillPrescription": {
         "state": "index.messages.refillPrescription",
         "translationKey": "ISC_MESSAGES_REFILL_PRESCRIPTION",
         "displayOrder": 4,
-        "exclude": false
+        "exclude": true
       },
 
       "index.messages.requestReferral": {
         "state": "index.messages.requestReferral",
         "translationKey": "ISC_MESSAGES_REQUEST_REFERRAL",
         "displayOrder": 5,
-        "exclude": false
+        "exclude": true
       },
 
       "index.messages.requestTestResult": {
         "state": "index.messages.requestTestResult",
         "translationKey": "ISC_MESSAGES_REQUEST_TEST_RESULT",
         "displayOrder": 6,
-        "exclude": false
+        "exclude": true
       }
     }
   },
@@ -177,7 +179,7 @@ var customConfig = {
         "translationKey": "ISC_LIBRARY_HEALTH_DICT_BTN",
         "iconClasses": "fa fa-list-alt",
         "displayOrder": 1,
-        "exclude": false
+        "exclude": true
       },
 
       "index.library.news": {
@@ -185,7 +187,7 @@ var customConfig = {
         "translationKey": "ISC_LIBRARY_NEWS_BTN",
         "iconClasses": "fa fa-list-alt",
         "displayOrder": 2,
-        "exclude": false
+        "exclude": true
       },
 
       "index.library.forms": {
@@ -193,7 +195,7 @@ var customConfig = {
         "translationKey": "ISC_LIBRARY_FORMS_BTN",
         "iconClasses": "fa fa-list-alt",
         "displayOrder": 2,
-        "exclude": false
+        "exclude": true
       }
     }
   },
@@ -209,7 +211,7 @@ var customConfig = {
         "translationKey": "ISC_MY_ACCT_SUMMARY_BTN",
         "iconClasses": "fa fa-list-alt",
         "displayOrder": 1,
-        "exclude": false
+        "exclude": true
       },
 
       "index.myAccount.history": {
@@ -217,7 +219,7 @@ var customConfig = {
         "translationKey": "ISC_MY_ACCT_HISTORY_BTN",
         "iconClasses": "fa fa-th",
         "displayOrder": 2,
-        "exclude": false
+        "exclude": true
       },
 
       "index.myAccount.password":{
@@ -225,7 +227,7 @@ var customConfig = {
         "translationKey": "ISC_MY_ACCT_CHANGE_PASSWORD_BTN",
         "iconClasses": "fa fa-asterisk",
         "displayOrder": 3,
-        "exclude": false
+        "exclude": true
       },
 
       "index.myAccount.email": {
@@ -233,7 +235,7 @@ var customConfig = {
         "translationKey": "ISC_MY_ACCT_CHANGE_EMAIL_BTN",
         "iconClasses": "fa fa-envelope",
         "displayOrder": 4,
-        "exclude": false
+        "exclude": true
       },
 
       "index.myAccount.proxies": {
@@ -241,7 +243,7 @@ var customConfig = {
         "translationKey": "ISC_MY_ACCT_PROXIES_BTN",
         "iconClasses": "fa fa-star-empty",
         "displayOrder": 5,
-        "exclude": false
+        "exclude": true
       }
     }
   },
@@ -254,7 +256,7 @@ var customConfig = {
         "translationKey": "ISC_CUSTOMER_TAB_1_BTN",
         "iconClasses": "fa fa-list-alt",
         "displayOrder": 1,
-        "exclude": false
+        "exclude": true
       },
 
       "index.customerTab.tab2": {
@@ -262,7 +264,7 @@ var customConfig = {
         "translationKey": "ISC_CUSTOMER_TAB_2_BTN",
         "iconClasses": "fa fa--list-alt",
         "displayOrder": 2,
-        "exclude": false
+        "exclude": true
       }
     }
   }
@@ -512,3 +514,186 @@ var infoPagesData = {
     }
   ]
 };
+
+var appointmentTimeData = {
+  isComplete: false,
+  step: 0,
+  appointmentOptions: [
+    {label: 'ISC_MESSAGES_REQUEST_APPOINTMENT_NEXT_AVAILABLE', value: 1},
+    {label: 'ISC_MESSAGES_REQUEST_APPOINTMENT_WITHIN_WEEK', value: 2},
+    {label: 'ISC_MESSAGES_REQUEST_APPOINTMENT_WITHIN_TWO_WEEKS', value: 3},
+    {label: 'ISC_MESSAGES_REQUEST_APPOINTMENT_WITHIN_NEXT_MONTH', value: 4},
+    {label: 'ISC_MESSAGES_REQUEST_APPOINTMENT_WITHIN_TWO_MONTHS', value: 5},
+    {label: 'ISC_MESSAGES_REQUEST_APPOINTMENT_WITHIN_THREE_MONTHS', value: 6},
+    {label: 'ISC_MESSAGES_REQUEST_APPOINTMENT_WITHIN_SIX_MONTHS', value: 7},
+    {label: 'ISC_MESSAGES_REQUEST_APPOINTMENT_WITHIN_ONE_YEAR', value: 8}
+  ],
+  days: [
+    {
+      dayOfWeek: 'Sun',
+      timesOfDay: [
+      {label: 'ISC_SUNDAY_MORNING', checked:false},
+      {label: 'ISC_SUNDAY_AFTERNOON', checked:false},
+      {label: 'ISC_SUNDAY_EVENING', checked:false}
+      ]
+    },
+    {
+      dayOfWeek: 'Mon',
+      timesOfDay: [
+      {label: 'ISC_MONDAY_MORNING', checked:false},
+      {label: 'ISC_MONDAY_AFTERNOON', checked:false},
+      {label: 'ISC_MONDAY_EVENING', checked:false}
+      ]
+    },
+    {
+      dayOfWeek: 'Tues',
+      timesOfDay: [
+      {label: 'ISC_TUESDAY_MORNING', checked:false},
+      {label: 'ISC_TUESDAY_AFTERNOON', checked:false},
+      {label: 'ISC_TUESDAY_EVENING', checked:false}
+      ]
+    },
+    {
+      dayOfWeek: 'Wed',
+      timesOfDay: [
+      {label: 'ISC_WEDNESDAY_MORNING', checked:false},
+      {label: 'ISC_WEDNESDAY_AFTERNOON', checked:false},
+      {label: 'ISC_WEDNESDAY_EVENING', checked:false}
+      ]
+    },
+    {
+      dayOfWeek: 'Thurs',
+      timesOfDay: [
+      {label: 'ISC_THURSDAY_MORNING', checked:false},
+      {label: 'ISC_THURSDAY_AFTERNOON', checked:false},
+      {label: 'ISC_THURSDAY_EVENING', checked:false}
+      ]
+    },
+    {
+      dayOfWeek: 'Fri',
+      timesOfDay: [
+      {label: 'ISC_FRIDAY_MORNING', checked:false},
+      {label: 'ISC_FRIDAY_AFTERNOON', checked:false},
+      {label: 'ISC_FRIDAY_EVENING', checked:false}
+      ]
+    },
+    {
+      dayOfWeek: 'Sat',
+      timesOfDay: [
+      {label: 'ISC_SATURDAY_MORNING', checked:false},
+      {label: 'ISC_SATURDAY_AFTERNOON', checked:false},
+      {label: 'ISC_SATURDAY_EVENING', checked:false}
+      ]
+    }
+  ]
+};
+
+var appointmentReasonData = {
+  label: 'ISC_SELECT_APPOINTMENT_TYPE',
+  allTypes: [],
+  selectedType: null,
+  appointmentType: {
+    id: '-1',
+    label: 'ISC_SELECT_APPOINTMENT_TYPE',
+    allTypes: [],
+    selectedType: null
+  },
+  step: 0,
+  isComplete: false
+};
+
+var contactInfoData = {
+  isComplete: false,
+  step: 0,
+  sendMessage: true,
+  phoneNumber: '',
+  addExtension: false,
+  extensionValue: '',
+  timeToCallValue: '',
+  voiceMailOK: false,
+  saveAsDefault: false,
+  timeToCallOptions: [
+    {label: 'ISC_MESSAGES_REQUEST_APPOINTMENT_CALL_MORNING', value: 1},
+    {label: 'ISC_MESSAGES_REQUEST_APPOINTMENT_CALL_AFTERNOON', value: 2},
+    {label: 'ISC_MESSAGES_REQUEST_APPOINTMENT_CALL_EVENING', value: 3}
+  ]
+};
+
+var mailReplyData = {
+  isComplete: false,
+  step: 0,
+  mailReply: {
+    To: '',
+    From: '',
+    Subject: '',
+    Body: ''
+  }
+};
+
+var testResultData = {
+  isComplete: false,
+  step: 0,
+  testDate: '',
+  testResult: ''
+};
+
+var pharmacyData = {
+  isComplete: false,
+  step: 0,
+  currentPage: 1, //pagination page
+  searchTerm: '',
+  selectedPharmacy: null,
+  providersSearchResults: [],
+  providersFavoritesList: []
+};
+
+var providersData = {
+  isComplete: false,
+  step: 0,
+  currentPage: 1, //pagination page
+  searchTerm: '',
+  selectedProvider: null,
+  providersSearchResults: [],
+  providersFavoritesList: []
+};
+
+var referralReasonData = {
+  isComplete: false,
+  step: 0,
+  underWorkmansComp: false,
+  motorVehicleInjury: false,
+  insuranceCompanyName: '',
+  policyNumber: '',
+  reasonForReferral: ''
+};
+
+var providersListData = [
+  {
+    name: 'Prof. Russell Johnson',
+    location: 'InterSys Clinic',
+    address:'1 Memorial Drive, Cambridge, MA 02140',
+    specialty: ['Allergies', 'Chiropracty', 'Crystal Divination', 'Internal Medicine', 'Cardiology'],
+    isFavorite: 1
+  },
+  {
+    name: 'Dr. Gilligan Skipper',
+    location: 'Mayo Clinic',
+    address:'11 Friends St, Watertown, MA 02345',
+    specialty: ['Pediatrics'],
+    isFavorite: 1
+  },
+  {
+    name: 'Dr. Mary Anne Ginger',
+    location: 'InterSys Clinic',
+    address:'1 Memorial Drive, Cambridge, MA 02140',
+    specialty: ['Internal Medicine'],
+    isFavorite: 1
+  },
+  {
+    name: 'Dr. Jessica Greenspan',
+    location: 'InterSys Clinic',
+    address:'15 Memorial Drive, Cambridge, MA 02140',
+    specialty: ['Allergies'],
+    isFavorite: 1
+  }
+]
