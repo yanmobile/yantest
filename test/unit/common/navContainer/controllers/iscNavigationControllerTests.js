@@ -17,7 +17,7 @@
       $state,
       controller;
 
-    beforeEach( module('iscHsCommunityAngular'));
+
     beforeEach( module('isc.common'));
     beforeEach( module('iscNavContainer'));
 
@@ -119,7 +119,7 @@
     });
 
     // -------------------------
-    xdescribe( 'showAlertBox tests ', function(){
+    describe( 'showAlertBox tests ', function(){
 
       it( 'should have a function showAlertBox', function(){
         expect( angular.isFunction( self.showAlertBox )).toBe( true );
@@ -168,7 +168,7 @@
     });
 
     // -------------------------
-    xdescribe( 'showSideNavbar tests ', function(){
+    describe( 'showSideNavbar tests ', function(){
 
       it( 'should have a function showSideNavbar', function(){
         expect( angular.isFunction( self.showSideNavbar )).toBe( true );
@@ -185,7 +185,7 @@
     });
 
     // -------------------------
-    xdescribe( 'hideSideNavbar tests ', function(){
+    describe( 'hideSideNavbar tests ', function(){
 
       it( 'should have a function hideSideNavbar', function(){
         expect( angular.isFunction( self.hideSideNavbar )).toBe( true );
@@ -202,7 +202,7 @@
     });
 
     // -------------------------
-    xdescribe( 'showSecondaryNavbar tests ', function(){
+    describe( 'showSecondaryNavbar tests ', function(){
 
       it( 'should have a function showSecondaryNavbar', function(){
         expect( angular.isFunction( self.showSecondaryNavbar )).toBe( true );
@@ -219,7 +219,7 @@
     });
 
     // -------------------------
-    xdescribe( 'hideSecondaryNavbar tests ', function(){
+    describe( 'hideSecondaryNavbar tests ', function(){
 
       it( 'should have a function hideSecondaryNavbar', function(){
         expect( angular.isFunction( self.hideSecondaryNavbar )).toBe( true );
@@ -236,7 +236,7 @@
     });
 
     // -------------------------
-    xdescribe( 'showSecondaryNavbar event tests ', function(){
+    describe( 'showSecondaryNavbar event tests ', function(){
 
       it( 'should respond correctly to showSecondaryNavbar events', function(){
         spyOn( self, 'showSecondaryNavbar' );
@@ -249,7 +249,7 @@
     });
 
     // -------------------------
-    xdescribe( 'hideSecondaryNav event tests ', function(){
+    describe( 'hideSecondaryNav event tests ', function(){
 
       it( 'should respond correctly to hideSecondaryNav events', function(){
         spyOn( self, 'showSecondaryNavbar' );
@@ -262,7 +262,7 @@
     });
 
     // -------------------------
-    xdescribe( 'onContinueSession tests ', function(){
+    describe( 'onContinueSession tests ', function(){
 
       it( 'should have a function onContinueSession', function(){
         expect( angular.isFunction( self.onContinueSession )).toBe( true );
@@ -276,7 +276,7 @@
     });
 
     // -------------------------
-    xdescribe( 'onCancelSession tests ', function(){
+    describe( 'onCancelSession tests ', function(){
 
       it( 'should have a function onCancelSession', function(){
         expect( angular.isFunction( self.onCancelSession )).toBe( true );

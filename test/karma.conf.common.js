@@ -18,14 +18,11 @@
       browsers : ['PhantomJS'],
 
       preprocessors: {
-        'src/templates/**/*.html': ['ng-html2js'] // use for desktop tests
-        //'src/templates/phonegap/**/*.html': ['ng-html2js'] // use for phonegap tests
+        'src/common/modules/**/*.html': ['ng-html2js']
       },
 
       ngHtml2JsPreprocessor: {
-        stripPrefix: 'src/templates/', // use for desktop tests
-        //stripPrefix: 'src/templates/desktop/', // use for desktop tests
-        //stripPrefix: 'src/templates/phonegap/', // use for phonegap tests
+        stripPrefix: 'src/common/modules/',
         moduleName: 'isc.templates' // include beforeEach( module( 'isc.templates' )) in unit tests
       },
 

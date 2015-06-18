@@ -19,7 +19,7 @@
             '720kb.datepicker',
 
             // logging helper
-            'logLineNumber',
+            //'logLineNumber',
 
             // isc tabbed navigation module
             'iscNavContainer'

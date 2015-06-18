@@ -25,7 +25,7 @@
       { state:'index.account', exclude: false }
     ];
 
-    beforeEach( module('iscHsCommunityAngular'));
+
     beforeEach( module('isc.common'));
     beforeEach( module('iscNavContainer'));
 
@@ -34,7 +34,7 @@
     beforeEach( module('isc.templates') );
 
     // log statements
-    beforeEach( module('isc.common', 'iscNavContainer', 'iscHsCommunityAngular'), function( $provide ){
+    beforeEach( module('isc.common', 'iscNavContainer'), function( $provide ){
       $provide.value('$log', console);
     });
 

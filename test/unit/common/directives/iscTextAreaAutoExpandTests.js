@@ -1,7 +1,7 @@
 
 (function(){
   'use strict';
-  console.log( 'iscTextAreaAutoExpand Tests' );
+  //console.log( 'iscTextAreaAutoExpand Tests' );
 
   describe('iscTextAreaAutoExpand', function(){
     var scope,
@@ -12,14 +12,15 @@
 
     var html = '<textarea isc-text-area-auto-expand ng-model="theText"></textarea>';
 
-    beforeEach( module('iscHsCommunityAngular', 'iscMessages') );
+    beforeEach( module('isc.common'));
+
 
     // this loads all the external templates used in directives etc
     // eg, everything in templates/**/*.html
     beforeEach( module('isc.templates') );
 
     // show $log statements
-    beforeEach( module( 'iscHsCommunityAngular', function( $provide ){
+    beforeEach( module(  function( $provide ){
       $provide.value('$log', console);
     }));
 

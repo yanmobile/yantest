@@ -9,7 +9,7 @@
     var scope,
         service;
 
-    beforeEach( module('iscHsCommunityAngular'));
+
     beforeEach( module('isc.common'));
     beforeEach( module('iscNavContainer'));
 

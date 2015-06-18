@@ -11,20 +11,19 @@
       rootScope,
       $state,
       configHelper,
-      api,
+      AUTH_EVENTS,
       controller;
 
-    beforeEach( module('iscHsCommunityAngular'));
+
     beforeEach( module('isc.common'));
-    beforeEach( module('iscNavContainer'));
 
     // show $log statements
-    beforeEach( module( 'iscHsCommunityAngular', function( $provide ){
+    beforeEach( module(  function( $provide ){
       $provide.value('$log', console);
     }));
 
 
-    beforeEach( inject( function( $rootScope, $controller, _$state_, iscAuthenticationApi, iscCustomConfigService, iscCustomConfigHelper, iscSessionModel  ){
+    beforeEach( inject( function( $rootScope, $controller, _$state_, iscCustomConfigService, iscCustomConfigHelper, iscSessionModel, _AUTH_EVENTS_  ){
 
       mockConfig = angular.copy( customConfig );
       iscCustomConfigService.setConfig( mockConfig );
@@ -40,7 +39,7 @@
 
       scope.navCtrl.sessionModel  = iscSessionModel;
 
-      api = iscAuthenticationApi;
+      AUTH_EVENTS = _AUTH_EVENTS_;
       $state = _$state_;
       configHelper = iscCustomConfigHelper;
 
@@ -65,10 +64,10 @@
       });
 
       it( 'should call the right functions on logout', function(){
-        spyOn( api, 'logout' );
+        spyOn( rootScope, '$broadcast' );
 
         scope.navCtrl.logout();
-        expect( api.logout ).toHaveBeenCalled();
+        expect( rootScope.$broadcast ).toHaveBeenCalledWith( AUTH_EVENTS.logout );
       });
     });
 

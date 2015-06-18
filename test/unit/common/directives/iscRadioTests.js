@@ -1,7 +1,7 @@
 
 (function(){
   'use strict';
-  console.log( 'iscRadio Tests' );
+  //console.log( 'iscRadio Tests' );
 
   describe('iscRadio', function(){
     var scope,
@@ -30,14 +30,15 @@
 
     var html = '<isc-radio radio-item="provider" radio-group="providers"></isc-radio>';
 
-    beforeEach( module('iscHsCommunityAngular', 'iscMessages') );
+    beforeEach( module('isc.common'));
+
 
     // this loads all the external templates used in directives etc
     // eg, everything in templates/**/*.html
     beforeEach( module('isc.templates') );
 
     // show $log statements
-    beforeEach( module( 'iscHsCommunityAngular', function( $provide ){
+    beforeEach( module(  function( $provide ){
       $provide.value('$log', console);
     }));
 

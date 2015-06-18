@@ -8,10 +8,10 @@
     var scope,
         filter;
 
-    beforeEach( module('iscHsCommunityAngular'));
+
     beforeEach( module('isc.common'));
 
-    beforeEach( module('isc.common', 'iscHsCommunityAngular'), function( $provide ){
+    beforeEach( module('isc.common'), function( $provide ){
       $provide.value('$log', console);
     });
 

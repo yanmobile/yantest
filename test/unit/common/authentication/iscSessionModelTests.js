@@ -50,7 +50,7 @@
       "reload": 0
     };
 
-    beforeEach( module('iscHsCommunityAngular', 'isc.common') );
+    beforeEach( module( 'isc.common' ));
 
     // show $log statements
     beforeEach( module( 'isc.common', function( $provide ){
@@ -81,8 +81,8 @@
 
       model.create( loginData );
 
-      $window.sessionStorage.setItem( 'currentUser', '');
-      $window.sessionStorage.setItem( 'statePermissions', '');
+      $window.sessionStorage.setItem( 'currentUser', '' );
+      $window.sessionStorage.setItem( 'statePermissions', '' );
 
     }));
 

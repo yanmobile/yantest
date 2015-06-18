@@ -326,6 +326,6 @@
   // injection
   // ----------------------------
   angular.module( 'isc.common' )
-    .factory( 'iscSessionModel', iscSessionModel );
+      .factory( 'iscSessionModel', iscSessionModel );
 
 })();

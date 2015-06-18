@@ -12,14 +12,15 @@
 
     var html = '<isc-check-box data-ng-model="provider.isFavorite"></isc-check-box>';
 
-    beforeEach( module('iscHsCommunityAngular', 'iscMessages') );
+    beforeEach( module('isc.common'));
+
 
     // this loads all the external templates used in directives etc
     // eg, everything in templates/**/*.html
     beforeEach( module('isc.templates') );
 
     // show $log statements
-    beforeEach( module( 'iscHsCommunityAngular', function( $provide ){
+    beforeEach( module(  function( $provide ){
       $provide.value('$log', console);
     }));
 
