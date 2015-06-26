@@ -67,7 +67,7 @@
     // functions
     // ----------------------------
 
-    function create( sessionData ){
+    function create( sessionData, isSessionNew ){
       //$log.debug( 'iscSessionModel.create');
       //$log.debug( '...sessionData: ' + JSON.stringify( sessionData.UserData  ));
 
@@ -81,7 +81,12 @@
       //sessionTimeoutInSeconds = 10; // DEV ONLY
       sessionTimeoutInSeconds = sessionData.SessionTimeout;
 
-      $rootScope.$broadcast( AUTH_EVENTS.loginSuccess );
+      if (isSessionNew) {
+        $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
+      }
+      else{
+        $rootScope.$broadcast( AUTH_EVENTS.sessionResumedSuccess );
+      }
     }
 
     function destroy(){
@@ -329,3 +334,4 @@
       .factory( 'iscSessionModel', iscSessionModel );
 
 })();
+

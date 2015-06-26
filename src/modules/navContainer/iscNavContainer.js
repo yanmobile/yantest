@@ -8,31 +8,32 @@
   angular.module('iscNavContainer', ['ui.router'])
 
       .constant('AUTH_EVENTS', {
-        loginError: 'iscLoginError',
-        loginSuccess: 'iscLoginSuccess',
-        loginFailed: 'iscLoginFailed',
-        logout: 'iscLogout',
-        logoutSuccess: 'iscLogoutSuccess',
-        notAuthenticated: 'iscNotAuthenticated',
-        notAuthorized: 'iscNotAuthorized',
-        openSortOptions: 'iscOpenSortOptions',
-        responseError: 'iscResponseError',
-        sessionTimeout: 'iscSessionTimeout',
+        loginError:            'iscLoginError',
+        loginSuccess:          'iscLoginSuccess',
+        loginFailed:           'iscLoginFailed',
+        logout:                'iscLogout',
+        logoutSuccess:         'iscLogoutSuccess',
+        notAuthenticated:      'iscNotAuthenticated',
+        notAuthorized:         'iscNotAuthorized',
+        openSortOptions:       'iscOpenSortOptions',
+        responseError:         'iscResponseError',
+        sessionResumedSuccess: 'iscSessionResumedSuccess',
+        sessionTimeout:        'iscSessionTimeout',
         sessionTimeoutConfirm: 'iscSessionTimeoutConfirm',
         sessionTimeoutWarning: 'iscSessionTimeoutWarning',
-        sessionTimeoutReset: 'iscSessionTimeoutReset'
+        sessionTimeoutReset:   'iscSessionTimeoutReset'
       })
 
       .constant('NAV_EVENTS', {
-        showSecondaryNav: 'iscShowSecondaryNav',
-        hideSecondaryNav: 'iscHideSecondaryNav',
-        goToBeforeLoginPage: 'iscGoToBeforeLoginPage'
+        showSecondaryNav:     'iscShowSecondaryNav',
+        hideSecondaryNav:     'iscHideSecondaryNav',
+        goToBeforeLoginPage:  'iscGoToBeforeLoginPage'
       })
 
       .constant('DROPDOWN_EVENTS', {
-        dropdownShow: 'DROPDOWN_SHOW',
-        showDropdownList: 'SHOW_DROPDOWN_LIST',
-        dropdownItemSelected: 'DROPDOWN_ITEM_SELECTED'
+        dropdownShow:          'DROPDOWN_SHOW',
+        showDropdownList:      'SHOW_DROPDOWN_LIST',
+        dropdownItemSelected:  'DROPDOWN_ITEM_SELECTED'
       })
 
       .config( function( $stateProvider ){
@@ -70,10 +71,7 @@
                       iscCustomConfigHelper, iscSessionStorageHelper,  AUTH_EVENTS, NAV_EVENTS ){
         //devlog.channel('StateNav').debug( 'iscNavContainer.run' );
 
-        // wrapped in a timeout to ensure that the dom is loaded
-        $timeout( function(){
-          loadDataFromStoredSession();
-        },0);
+        loadDataFromStoredSession();
 
         // ------------------------
         // stateChange start
@@ -177,7 +175,7 @@
           var storedLoginResponse = iscSessionStorageHelper.getLoginResponse();
           if( !_.isEmpty( storedLoginResponse )){
             //devlog.channel('StateNav').debug( '...got storedLoginResponse: ',storedLoginResponse );
-            iscSessionModel.create( storedLoginResponse );
+            iscSessionModel.create( storedLoginResponse, false );
           }
 
           var timeoutCounter = iscSessionStorageHelper.getSessionTimeoutCounter();

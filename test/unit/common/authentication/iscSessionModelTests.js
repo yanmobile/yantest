@@ -5,14 +5,15 @@
 
   describe('iscSessionModel', function(){
     var scope,
-      rootScope,
-      model,
-      timeout,
-      httpBackend,
-      $window,
-      configService,
-      loginData,
-      loginDataProxy;
+        rootScope,
+        model,
+        timeout,
+        httpBackend,
+        $window,
+        configService,
+        loginData,
+        AUTH_EVENTS,
+        loginDataProxy;
 
     var  userPermittedTabs = {
       "user":[ "index.wellness.*", "index.messages.*", "index.library.*", "index.calendar.*", "index.myAccount.*" ],
@@ -57,7 +58,7 @@
       $provide.value('$log', console);
     }));
 
-    beforeEach( inject( function( $rootScope, $httpBackend, $timeout, _$window_, iscSessionModel, iscCustomConfigService  ){
+    beforeEach( inject( function( $rootScope, $httpBackend, $timeout, _$window_, iscSessionModel, iscCustomConfigService, _AUTH_EVENTS_  ){
       rootScope = $rootScope;
       scope = $rootScope.$new();
       model = iscSessionModel;
@@ -65,6 +66,7 @@
       $window = _$window_;
       timeout = $timeout;
       configService = iscCustomConfigService;
+      AUTH_EVENTS = _AUTH_EVENTS_;
 
       $window.sessionStorage = { // mocking sessionStorage
         getItem: function (key) {
@@ -105,9 +107,21 @@
         expect( angular.isFunction( model.getCurrentUser )).toBe( true );
       });
 
-      it( 'should create the config when calling create', function(){
-        model.create( loginData );
+      it( 'should create the config when calling create, new session', function(){
+        spyOn( rootScope, '$broadcast' );
+        model.create( loginData, true );
         expect( model.getCredentials() ).toEqual( {} );
+        expect( model.getCurrentUser() ).toEqual( loginData.UserData );
+        expect( rootScope.$broadcast ).toHaveBeenCalledWith( AUTH_EVENTS.loginSuccess );
+
+      });
+
+      it( 'should create the config when calling create, page refresh', function(){
+        spyOn( rootScope, '$broadcast' );
+        model.create( loginData, false );
+        expect( model.getCredentials() ).toEqual( {} );
+        expect( model.getCurrentUser() ).toEqual( loginData.UserData );
+        expect( rootScope.$broadcast ).toHaveBeenCalledWith( AUTH_EVENTS.sessionResumedSuccess );
       });
 
       it( 'should destroy the config when calling destroy', function(){
