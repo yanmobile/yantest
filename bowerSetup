@@ -1,0 +1,23 @@
+#!/bin/sh
+
+startdir=`pwd`
+
+if [ ! -d "src/common/bower_components" ]; then
+    cd src/common
+    bower install
+    mv src/common/bower_components ./
+    rm -rf src
+else
+    echo "src/common/bower_components already exists.  skipping..."
+fi
+
+cd $startdir
+
+if [ ! -d "src/custom/bower_components" ]; then
+    cd src/custom
+    bower install
+    mv src/common/bower_components ./
+    rm -rf src
+else
+    echo "src/custom/bower_components already exists. skipping..."
+fi
