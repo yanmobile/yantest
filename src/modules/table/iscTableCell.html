@@ -1,20 +1,22 @@
 <h3 ng-if="!!mobileClass">{{ cellConfig.title | translate }}</h3>
+
 <a ng-if="cellConfig.type === 'date' || cellConfig.type === 'dateWithTime'"
    ui-sref="{{cellConfig.sref || state }}"
-   class="{{ mobileClass }} {{ getTrClass( displayText )}} date">{{ displayText | iscDateFilter : cellConfig.type === 'dateWithTime' : cellConfig.type === 'date' }}
+   class="{{ mobileClass }} {{ getTrClass( displayText )}} date">{{ displayText | iscDateFilter : cellConfig.type ===
+  'dateWithTime'; : cellConfig.type === 'date' }}
 </a>
 
 <button ng-if="cellConfig.type === 'buttonWithSref'"
         ui-sref="{{cellConfig.sref || state }}"
-        class="{{ mobileClass }} {{ getTrClass( displayText )}}">{{ displayText }}</button>
+        class="{{ mobileClass }} {{ getTrClass( displayText )}}">{{ displayText | translate}}</button>
 
 <button ng-if="cellConfig.type === 'buttonWithCallback'"
         ng-click="cellConfig.callback( cellData )"
-        class="{{ mobileClass }} {{ getTrClass( displayText )}}">{{ displayText }}</button>
+        class="{{ mobileClass }} {{ getTrClass( displayText )}}">{{ displayText | translate }}</button>
 
 <span ng-if="cellConfig.type === 'text' || !cellConfig.type"
       ui-sref="{{cellConfig.sref || state }}"
-      class="{{ mobileClass }} {{ getTrClass( displayText )}}">{{ displayText }} {{ displayUnit }}</span>
+      class="{{ mobileClass }} {{ getTrClass( displayText )}}">{{ displayText  | translate }} {{ displayUnit }}</span>
 
 <span ng-if="!!displayText2"
-      class="{{ mobileClass }} {{ getTrClass( displayText2 )}}">{{ displayText2 }}</span>
+      class="{{ mobileClass }} {{ getTrClass( displayText2 )}}">{{ displayText2  | translate }}</span>
