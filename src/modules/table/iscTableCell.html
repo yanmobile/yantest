@@ -3,7 +3,7 @@
 <a ng-if="cellConfig.type === 'date' || cellConfig.type === 'dateWithTime'"
    ui-sref="{{cellConfig.sref || state }}"
    class="{{ mobileClass }} {{ getTrClass( displayText )}} date">{{ displayText | iscDateFilter : cellConfig.type ===
-  'dateWithTime'; : cellConfig.type === 'date' }}
+  'dateWithTime' : cellConfig.type === 'date' }}
 </a>
 
 <button ng-if="cellConfig.type === 'buttonWithSref'"
