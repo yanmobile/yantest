@@ -28,6 +28,7 @@
       getConfig: getConfig,
       setConfig: setConfig,
       loadConfig: loadConfig,
+      initSession: initSession,
       clearConfig: clearConfig,
 
       updateStateByRole: updateStateByRole,
@@ -83,22 +84,26 @@
             function( results ){
               //$log.debug( '...SUCCESS: ', results);
               // load the config here
-              setConfig( results.data );
-              iscSessionModel.setNoLoginRequiredList( results.data.noLoginRequired );
-              iscSessionModel.setPermittedStates( [] );
-              addStates();
-
-              // update the states based on the user's role, if any
-              var currentUser = iscSessionModel.getCurrentUser();
-              var userRole = !!currentUser ? currentUser.userRole : '';
-              updateStateByRole( userRole );
-
-              deferred.resolve( results.data );
+              var config = results.data;
+              initSession( config );
+              deferred.resolve( config );
             }
         );
       }
 
       return deferred.promise;
+    }
+
+    function initSession( config ){
+      setConfig( config );
+      iscSessionModel.setNoLoginRequiredList( config.noLoginRequired );
+      iscSessionModel.setPermittedStates( [] );
+      addStates();
+
+      // update the states based on the user's role, if any
+      var currentUser = iscSessionModel.getCurrentUser();
+      var userRole = !!currentUser ? currentUser.userRole : '';
+      updateStateByRole( userRole );
     }
 
     function getConfig(){
@@ -108,9 +113,9 @@
     }
 
     function setConfig( val ){
-      //$log.debug( 'iscCustomConfigService.setConfig' );
+      $log.debug( 'iscCustomConfigService.setConfig' );
       //$log.debug( '...baseUrl ' + JSON.stringify( val.baseUrl ) );
-      //$log.debug( '...config ' + JSON.stringify( val ) );
+      $log.debug( '...config ', val );
       config = val;
       iscSessionStorageHelper.setConfig( val );
     }
@@ -169,7 +174,7 @@
      * @param role String
      */
     function updateStateByRole( role ){
-      //$log.debug( 'iscCustomConfigService.updateStateByRole', role );
+      $log.debug( 'iscCustomConfigService.updateStateByRole', role );
 
       var allStates = iscCustomConfigHelper.getAllStates();
       //$log.debug( '...allStates', allStates );
@@ -196,8 +201,7 @@
       }
 
       iscSessionModel.setPermittedStates( allPermittedStates );
-
-      //$log.debug( '...allPermittedStates', allPermittedStates );
+      $log.debug( '...allPermittedStates', allPermittedStates );
 
       if( _.contains( allPermittedStates,  '*' )){
         //console.debug( '...adding all' );
