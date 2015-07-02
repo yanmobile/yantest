@@ -34,7 +34,9 @@
         dropId: '=',
         dropIcon: '=',
         refName: '=',
-        isShowDrop: '='
+        isShowDrop: '=',
+        dropListCssClass: '@',
+        dropListItemCssClass: '@'
       },
       templateUrl: 'dropdown/iscDropdownList.html'
     };
@@ -62,7 +64,7 @@
         //console.log('DESTROY THIS LIST not presently used');
       });
 
-      $rootScope.$on(DROPDOWN_EVENTS.showDropdownList, function(event, data, dropID, listField){
+      $rootScope.$on(DROPDOWN_EVENTS.showDropdownList, function(event, data, dropID, listField, dropListCssClass, dropListItemCssClass){
 
           //IF THIS IS A CALL FROM A DIFFERENT DROPDOWN HIDE PREVIOUS DROPDOWN
           if(scope.dropId !== dropID){
@@ -72,6 +74,8 @@
           if(angular.element('#modal-dropdown').css('visibility') === 'hidden'){
             scope.listData = data;
             scope.dropId = dropID;
+            scope.dropListCssClass = dropListCssClass;
+            scope.dropListItemCssClass = dropListItemCssClass;
             scope.listField = listField;
             scope.refName = listField;
             scope.modalVisible = false;

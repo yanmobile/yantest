@@ -1,31 +1,32 @@
 
-	<div class="isc-dropdown isc-dd"
+	<div class="isc-dropdown isc-dd {{dropCssClass}}"
        id="{{dropId}}-main">
 
     <!--captures the click events-->
-		<div class="isc-drop-click isc-dd"
+		<div class="isc-drop-click isc-dd {{dropListCssClass}}"
          ng-click="showHideItems(dropId,event)">&nbsp;</div>
 
     <!--the main dd button-->
-		<div  class="isc-dropdown-btn isc-clickable isc-dd"
+		<div  class="isc-dropdown-btn isc-clickable isc-dd {{dropListCssClass}}"
           id="{{dropId}}-block">
 
-			<div class="isc-dropdown-item {{dropId}}-btn isc-dd"
+			<div class="isc-dropdown-item {{dropId}}-btn isc-dd {{dropListCssClass}}"
            id="{{dropId}}-btn">
-        <span ng-if="dropIcon" class="{{dropIcon}} isc-dd"></span>&nbsp;{{dropTitle | translate}}
+        <span ng-if="dropIcon"
+              class="{{dropIcon}} isc-dd {{dropListCssClass}}"></span>&nbsp;{{dropTitle | translate}}
       </div>
 
 			<div ng-repeat="item in listData"
            id="{{dropId}}-list"
            ng-click="selectItem(item[listField])"
-           class="isc-dropdown-item {{dropId}}-btn isc-dd" >{{item[listField] | translate}}
-        <span class="{{dropIcon}} isc-dd"></span>
+           class="isc-dropdown-item {{dropId}}-btn isc-dd {{dropListCssClass}}" >{{item[listField] | translate}}
+        <span class="{{dropIcon}} isc-dd isc-dd-icon"></span>
       </div>
 
 		</div>
 
     <!-- down chevron icon-->
-    <div class="isc-drop-icon isc-dd"
+    <div class="isc-drop-icon isc-dd {{dropChevronCssClass}}"
          id="{{dropId}}-icon"><span ng-include="'svg/isc-chevron-down.html'"></span>
 
 		</div>
