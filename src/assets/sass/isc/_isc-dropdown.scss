@@ -46,6 +46,7 @@ $color-darkGrey: #8e9294;
 	left:550px;
 	visibility: visible;
 	border:1px solid $app-border-color;
+    z-index: 1000000 !important;
 }
 
 .isc-dropdown-btn{
@@ -81,6 +82,8 @@ $color-darkGrey: #8e9294;
   text-decoration:none;
   text-shadow:none;
   color:darken( $brand-secondary, 60 );
+
+  z-index: 1000000 !important;
 }
 
 .isc-dropdown-hidden{
