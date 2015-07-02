@@ -108,7 +108,15 @@
 
 			scope.showHideItems = function(){
         devlog.channel('iscDropdown').debug( 'iscDropdown.showHideItems');
-				$rootScope.$broadcast( DROPDOWN_EVENTS.showDropdownList ,scope.listData, scope.dropId, scope.listField, scope.dropListCssClass, scope.dropListItemCssClass);
+				$rootScope.$broadcast( DROPDOWN_EVENTS.showDropdownList,
+					{
+						"listData" : scope.listData,
+						"dropId" : scope.dropId,
+						"listField" : scope.listField,
+						"dropListCssClass" : scope.dropListCssClass,
+						"dropListItemCssClass" : scope.dropListItemCssClass
+					}
+				);
 			};
 
 			$rootScope.$on( DROPDOWN_EVENTS.dropdownItemSelected, function(e, selection){

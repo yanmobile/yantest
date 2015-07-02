@@ -64,26 +64,26 @@
         //console.log('DESTROY THIS LIST not presently used');
       });
 
-      $rootScope.$on(DROPDOWN_EVENTS.showDropdownList, function(event, data, dropID, listField, dropListCssClass, dropListItemCssClass){
+      $rootScope.$on(DROPDOWN_EVENTS.showDropdownList, function(event, params) {
 
           //IF THIS IS A CALL FROM A DIFFERENT DROPDOWN HIDE PREVIOUS DROPDOWN
-          if(scope.dropId !== dropID){
+          if(scope.dropId !== params.dropId){
             hideDropdownList();
           }
           //IF HIDDEN THEN SETUP AND SHOW IF NOT THEN HIDE AND REMOVE LISTENERS
           if(angular.element('#modal-dropdown').css('visibility') === 'hidden'){
-            scope.listData = data;
-            scope.dropId = dropID;
-            scope.dropListCssClass = dropListCssClass;
-            scope.dropListItemCssClass = dropListItemCssClass;
-            scope.listField = listField;
-            scope.refName = listField;
+            scope.listData = params.listData;
+            scope.dropId = params.dropId;
+            scope.dropListCssClass = params.dropListCssClass;
+            scope.dropListItemCssClass = params.dropListItemCssClass;
+            scope.listField = params.listField;
+            scope.refName = params.listField;
             scope.modalVisible = false;
             scope.showDropList = true;
             $rootScope.$broadcast( DROPDOWN_EVENTS.dropdownShow );
-            scope.setDropDown(dropID);
+            scope.setDropDown(params.dropId);
             angular.element('#modal-dropdown').css('visibility','visible');
-            scope.setDropScroll(dropID);
+            scope.setDropScroll(params.dropId);
             scope.setClickWatcher();
           }
           else{
@@ -91,7 +91,7 @@
             angular.element(document).unbind('click'); //jshint ignore:line
             angular.element($window).unbind('scroll');
           }
-        scope.dropId = dropID;
+        scope.dropId = params.dropId;
       });
 
       scope.setDropDown = function(dropID){
