@@ -5,9 +5,9 @@
 (function(){
   'use strict';
 
-  iscCustomConfigService.$inject = [ '$log','$q', '$http' ,'iscSessionModel', 'iscCustomConfigHelper' ];
+  iscCustomConfigService.$inject = [ '$log','$q', '$http' ,'iscSessionModel', 'iscSessionStorageHelper', 'iscCustomConfigHelper' ];
 
-  function iscCustomConfigService( $log, $q, $http, iscSessionModel, iscCustomConfigHelper ){
+  function iscCustomConfigService( $log, $q, $http, iscSessionModel, iscSessionStorageHelper, iscCustomConfigHelper ){
 //    //$log.debug( 'iscCustomConfigService LOADED' );
 
     // ----------------------------
@@ -80,21 +80,21 @@
       else{
         //$log.debug( '...loading');
         $http.get( url ).then(
-          function( results ){
-            //$log.debug( '...SUCCESS: ', results);
-            // load the config here
-            setConfig( results.data );
-            iscSessionModel.setNoLoginRequiredList( results.data.noLoginRequired );
-            iscSessionModel.setPermittedStates( [] );
-            addStates();
+            function( results ){
+              //$log.debug( '...SUCCESS: ', results);
+              // load the config here
+              setConfig( results.data );
+              iscSessionModel.setNoLoginRequiredList( results.data.noLoginRequired );
+              iscSessionModel.setPermittedStates( [] );
+              addStates();
 
-            // update the states based on the user's role, if any
-            var currentUser = iscSessionModel.getCurrentUser();
-            var userRole = !!currentUser ? currentUser.userRole : '';
-            updateStateByRole( userRole );
+              // update the states based on the user's role, if any
+              var currentUser = iscSessionModel.getCurrentUser();
+              var userRole = !!currentUser ? currentUser.userRole : '';
+              updateStateByRole( userRole );
 
-            deferred.resolve( results.data );
-          }
+              deferred.resolve( results.data );
+            }
         );
       }
 
@@ -112,6 +112,7 @@
       //$log.debug( '...baseUrl ' + JSON.stringify( val.baseUrl ) );
       //$log.debug( '...config ' + JSON.stringify( val ) );
       config = val;
+      iscSessionStorageHelper.setConfig( val );
     }
 
     // ----------------------------
@@ -156,7 +157,7 @@
     /**
      * adds or removes tabs based on the user's permissions in the configFile.json
      * eg:
-        "userPermittedTabs": {
+     "userPermittedTabs": {
             "user":["*"],
             "guest":["index.home","index.library"]
        }
@@ -287,5 +288,5 @@
   // ----------------------------
 
   angular.module( 'isc.common' )
-    .factory( 'iscCustomConfigService', iscCustomConfigService );
+      .factory( 'iscCustomConfigService', iscCustomConfigService );
 })();

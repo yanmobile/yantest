@@ -82,9 +82,11 @@
       sessionTimeoutInSeconds = sessionData.SessionTimeout;
 
       if (isSessionNew) {
+        //$log.debug( '...new ' );
         $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
       }
       else{
+        //$log.debug( '...resumed ' );
         $rootScope.$broadcast( AUTH_EVENTS.sessionResumedSuccess );
       }
     }

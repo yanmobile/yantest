@@ -24,6 +24,10 @@
         sessionTimeoutReset:   'iscSessionTimeoutReset'
       })
 
+      .constant('APP_EVENTS', {
+        appLoaded:     'iscAppLoaded'
+      })
+
       .constant('NAV_EVENTS', {
         showSecondaryNav:     'iscShowSecondaryNav',
         hideSecondaryNav:     'iscHideSecondaryNav',
@@ -68,10 +72,15 @@
       })
 
       .run( function( devlog, $rootScope, $state, $window, $timeout, iscProgressLoader, iscSessionModel, iscCustomConfigService,
-                      iscCustomConfigHelper, iscSessionStorageHelper,  AUTH_EVENTS, NAV_EVENTS ){
-        //devlog.channel('StateNav').debug( 'iscNavContainer.run' );
+                      iscCustomConfigHelper, iscSessionStorageHelper,  AUTH_EVENTS, APP_EVENTS, NAV_EVENTS ){
+        //console.log( 'iscNavContainer.run' );
 
-        loadDataFromStoredSession();
+        // ------------------------
+        // all the .run() functions have been called
+        // this is dispached from app.run() - so be sure to add it there
+        $rootScope.$on( APP_EVENTS.appLoaded, function(){
+          loadDataFromStoredSession();
+        });
 
         // ------------------------
         // stateChange start
@@ -109,7 +118,7 @@
         }
 
         function handleStateChangeStart( event, toState, toParams, fromState, fromParams ){//jshint ignore:line
-          devlog.channel('StateNav').debug( 'ischNavContainer.handleStateChangeStart');
+          //devlog.channel('StateNav').debug( 'iscNavContainer.handleStateChangeStart');
 
           var stateIsExcluded = iscCustomConfigHelper.stateIsExcluded( toState.name );
 
@@ -168,13 +177,16 @@
         }
 
         function loadDataFromStoredSession(){
-          //devlog.channel('StateNav').debug( 'ischNavContainer.loadDataFromStoredSession');
+          //console.log( 'iscNavContainer.loadDataFromStoredSession');
+
+          var config = iscSessionStorageHelper.getConfig();
+          iscCustomConfigService.setConfig( config );
 
           // NOTE - set the login response and create the session BEFORE calling initSessionTimeout
           // since the warning for sessionTimeout time is predicate on setting the sessionTimeout time first
           var storedLoginResponse = iscSessionStorageHelper.getLoginResponse();
           if( !_.isEmpty( storedLoginResponse )){
-            //devlog.channel('StateNav').debug( '...got storedLoginResponse: ',storedLoginResponse );
+            //console.log( '...got storedLoginResponse: ',storedLoginResponse );
             iscSessionModel.create( storedLoginResponse, false );
           }
 
@@ -185,7 +197,6 @@
             iscSessionModel.initSessionTimeout( timeoutCounter );
           }
         }
-
 
       });
 })();

@@ -25,6 +25,9 @@
       getLoginResponse: getLoginResponse,
       setLoginResponse: setLoginResponse,
 
+      getConfig: getConfig,
+      setConfig: setConfig,
+
       getSessionTimeoutCounter: getSessionTimeoutCounter,
       setSessionTimeoutCounter: setSessionTimeoutCounter,
 
@@ -45,6 +48,7 @@
       $window.sessionStorage.removeItem('loginResponse');
       $window.sessionStorage.removeItem('sessionTimeoutCounter');
       $window.sessionStorage.removeItem('showTimedOutAlert');
+      $window.sessionStorage.removeItem('config');
     }
 
     // ----------------------------
@@ -54,6 +58,15 @@
 
     function setLoginResponse( val ){
       setSessionStorageValue( 'loginResponse', val );
+    }
+
+    // ----------------------------
+    function getConfig(){
+      return getValFromSessionStorage( 'config', {} );
+    }
+
+    function setConfig( val ){
+      setSessionStorageValue( 'config', val );
     }
 
     // ----------------------------
@@ -71,7 +84,6 @@
       //$log.debug( 'iscSessionStorageHelper.setSessionTimeoutCounter:', val );
       setSessionStorageValue( 'sessionTimeoutCounter', val );
     }
-
 
     // ----------------------------
     function getShowTimedOutAlert(){
@@ -125,6 +137,6 @@
   // injection
   // ----------------------------
   angular.module( 'isc.common' )
-    .factory( 'iscSessionStorageHelper', iscSessionStorageHelper );
+      .factory( 'iscSessionStorageHelper', iscSessionStorageHelper );
 
 })();
