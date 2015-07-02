@@ -179,8 +179,11 @@
         function loadDataFromStoredSession(){
           //console.log( 'iscNavContainer.loadDataFromStoredSession');
 
-          var config = iscSessionStorageHelper.getConfig();
-          iscCustomConfigService.setConfig( config );
+          var storedConfig = iscSessionStorageHelper.getConfig();
+          if( storedConfig && !_.isEmpty( storedConfig )){
+            //console.log( '...got storedConfig: ', storedConfig );
+            iscCustomConfigService.initSession( storedConfig );
+          }
 
           // NOTE - set the login response and create the session BEFORE calling initSessionTimeout
           // since the warning for sessionTimeout time is predicate on setting the sessionTimeout time first
