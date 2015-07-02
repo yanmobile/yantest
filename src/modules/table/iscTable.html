@@ -18,51 +18,51 @@
   <table class="only-tab-plus">
     <!--header-->
     <thead>
-        <tr ng-if="tableConfig.summaryTitle">
-          <td>
-            <span class="color-bar {{tableConfig.summaryClass}}"></span>
-            <h2 class="summary-heading">{{tableData[tableConfig.key].length}} {{tableConfig.summaryTitle | translate }}</h2>
-          </td>
-        </tr>
+    <tr ng-if="tableConfig.summaryTitle">
+      <td>
+        <span class="color-bar {{tableConfig.summaryClass}}"></span>
+        <h2 class="summary-heading">{{tableRows.length}} {{tableConfig.summaryTitle | translate }}</h2>
+      </td>
+    </tr>
 
-      <!-- Data column headers-->
-      <tr>
-        <th ng-repeat="column in tableConfig.columns track by $index">
-          <a ng-class="{ 'isc-sortable': column.key === sortField.name, 'reverse': sortField.reverse }"
-             ng-click="sortColumn(column)"
-             class="isc-clickable">{{ column.title | translate }}</a>
-        </th>
+    <!-- Data column headers-->
+    <tr>
+      <th ng-repeat="column in tableConfig.columns track by $index">
+        <a ng-class="{ 'isc-sortable': column.key === sortField.name, 'reverse': sortField.reverse }"
+           ng-click="sortColumn(column)"
+           class="isc-clickable">{{ column.title | translate }}</a>
+      </th>
 
-        <!--button column headers for wellness workflows-->
-        <th ng-repeat="button in tableConfig.buttons track by $index">
-          {{ button.title | translate }}
-        </th>
-      </tr>
+      <!--button column headers for wellness workflows-->
+      <th ng-repeat="button in tableConfig.buttons track by $index">
+        {{ button.title | translate }}
+      </th>
+    </tr>
     </thead>
 
     <tbody>
 
-      <!--rows-->
-      <tr dir-paginate="dataItem in tableData[tableConfig.key] | orderBy: sortField.name : sortField.reverse | itemsPerPage: rowsOnPage"
-          current-page="currentPage"
-          model-data="tableData[ tableConfig.key ]"
-          pagination-id="tableConfig.key">
+    <!--rows-->
+    <tr dir-paginate="dataItem in tableRows | orderBy: sortField.name : sortField.reverse | itemsPerPage: rowsOnPage"
+        current-page="currentPage"
+        model-data="tableRows"
+        pagination-id="tableConfig.key">
 
-        <!--data columns-->
-        <td isc-table-cell
-            ng-repeat="column in tableConfig.columns track by $index"
-            cell-data="dataItem"
-            cell-config="column"></td>
+      <!--data columns-->
+      <td isc-table-cell
+          ng-repeat="column in tableConfig.columns track by $index"
+          cell-data="dataItem"
+          cell-config="column"></td>
 
-        <!--button columns for wellness workflows-->
-        <td ng-repeat="button in tableConfig.buttons track by $index">
-          <button class="isc-table-btn-white"
-                  ng-click="rowButtonCallback( {state: {name: button.key, data: dataItem} } )">
+      <!--button columns for wellness workflows-->
+      <td ng-repeat="button in tableConfig.buttons track by $index">
+        <button class="isc-table-btn-white"
+                ng-click="rowButtonCallback( {state: {name: button.key, data: dataItem} } )">
             <span ng-if="!!button.icon"
                   ng-include="button.icon"></span>
-          </button>
-        </td>
-      </tr>
+        </button>
+      </td>
+    </tr>
     </tbody>
   </table>
 
@@ -70,45 +70,44 @@
   <table class="only-phab-or-below">
     <tbody>
 
-      <!--header for summary-->
-      <tr class="summary-heading" ng-if="tableConfig.summaryTitle">
-        <td>
-          <span class="color-bar {{tableConfig.summaryClass}}"></span>
-          <h2>{{tableData[tableConfig.key].length}} {{tableConfig.summaryTitle | translate }}</h2>
-        </td>
-      </tr>
+    <!--header for summary-->
+    <tr class="summary-heading" ng-if="tableConfig.summaryTitle">
+      <td>
+        <span class="color-bar {{tableConfig.summaryClass}}"></span>
+        <h2>{{tableRows.length}} {{tableConfig.summaryTitle | translate }}</h2>
+      </td>
+    </tr>
 
-      <!-- rows -->
-      <tr dir-paginate="dataItem in tableData[tableConfig.key] | orderBy: sortField.name : sortField.reverse | itemsPerPage: rowsOnPage"
-          current-page="currentPage"
-          model-data="tableData[ tableConfig.key ]"
-          pagination-id="tableConfig.key">
+    <!-- rows -->
+    <tr dir-paginate="dataItem in tableRows | orderBy: sortField.name : sortField.reverse | itemsPerPage: rowsOnPage"
+        current-page="currentPage"
+        model-data="tableRows"
+        pagination-id="tableConfig.key">
 
-        <!--data columns-->
-          
-        <td>
-          <div isc-table-cell
-               ng-repeat="column in tableConfig.columns track by $index"
-               cell-data="dataItem"
-               cell-config="column"
-               mobile-class="text-item">
-            </div>
-        </td>
+      <!--data columns-->
+      <td>
+        <div isc-table-cell
+             ng-repeat="column in tableConfig.columns track by $index"
+             cell-data="dataItem"
+             cell-config="column"
+             mobile-class="text-item">
+        </div>
+      </td>
 
-        <!--button columns for wellness workflows-->
-        <td ng-repeat="button in tableConfig.buttons track by $index">
-          <h3>{{ button.title | translate }}</h3>
-          <button class="isc-table-btn-white"
-                  ng-click="rowButtonCallback( {state: {name: button.key, data: dataItem} } )">
+      <!--button columns for wellness workflows-->
+      <td ng-repeat="button in tableConfig.buttons track by $index">
+        <h3>{{ button.title | translate }}</h3>
+        <button class="isc-table-btn-white"
+                ng-click="rowButtonCallback( {state: {name: button.key, data: dataItem} } )">
             <span ng-if="!!button.icon"
                   ng-include="button.icon"></span>
-          </button>
-        </td>
-      </tr>
+        </button>
+      </td>
+    </tr>
     </tbody>
   </table>
 
-  <dir-pagination-controls ng-if="tableData[ tableConfig.key].length > 0 "
+  <dir-pagination-controls ng-if="tableRows.length > 0 "
                            on-page-change="changePage( newPageNumber )"
                            pagination-id="tableConfig.key"
                            template-url="thirdParty/dirPagination.tpl.html"></dir-pagination-controls>

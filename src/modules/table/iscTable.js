@@ -5,8 +5,8 @@
  * sample config
  * --------------------------------------
  *
-  var labOrdersConfig = {
-    key: 'LabOrders',
+ var labOrdersConfig = {
+    key: 'LabOrders', // if the data is part of a larger set, this is the key, if not, leave blank
     title: '',
     rowsOnPage: 20,
     backButtonText: 'Go Back'
@@ -67,8 +67,8 @@
  * --------------------------------------
  *
  * <isc-table table-config="homeCtrl.model.getDashboardTableConfig()"
-             table-data="homeCtrl.model.getHomePageData()">
-  </isc-table>
+ table-data="homeCtrl.model.getHomePageData()">
+ </isc-table>
  *
  *
  */
@@ -109,10 +109,13 @@
     // ----------------------------
     function link( scope, elem, attr, ctrl ){//jshint ignore:line
       //$log.debug( 'iscTable.link, tableConfig', scope.tableConfig );
-      //$log.debug( 'iscTable.link, tableData', scope.tableData );
+      //$log.debug( '...tableData', scope.tableData );
 
       scope.rowsOnPage = scope.tableConfig.rowsOnPage || 15;
       scope.currentPage = 1;
+
+      // set an array of the table row objects
+      scope.tableRows = scope.tableConfig.key ? scope.tableData[ scope.tableConfig.key ] : scope.tableData;
 
       scope.sortField = { reverse: false };
 
@@ -136,6 +139,6 @@
   // ----------------------------
 
   angular.module( 'isc.common' )
-    .directive( 'iscTable', iscTable );
+      .directive( 'iscTable', iscTable );
 
 })();
