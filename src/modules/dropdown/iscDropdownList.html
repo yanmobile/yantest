@@ -1,9 +1,8 @@
-
 <div id="modal-dropdown"
-     class="isc-dropdown-selection-list isc-dd" >
+     class="isc-dropdown-selection-list isc-dd {{dropListCssClass}}" >
 	<div  ng-repeat="item in listData"
         ng-click="selectItem(item)"
-        class="isc-dropdown-item {{dropId}}-btn isc-dd" >{{item[refName] | translate}} </div>
+        class="isc-dropdown-item {{dropId}}-btn isc-dd {{dropListItemCssClass}}" >{{item[refName] | translate}} </div>
 </div>
 
 

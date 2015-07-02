@@ -10,9 +10,9 @@
 (function(){
 	'use strict';
 
-	iscDropdown.$inject = [ '$log', '$parse', '$timeout', '$rootScope', 'DROPDOWN_EVENTS' ];
+	iscDropdown.$inject = [ '$log', 'devlog', '$timeout', '$rootScope', 'DROPDOWN_EVENTS' ];
 
-	function iscDropdown( $log, $parse , $timeout, $rootScope, DROPDOWN_EVENTS){//jshint ignore:line
+	function iscDropdown( $log, devlog , $timeout, $rootScope, DROPDOWN_EVENTS){//jshint ignore:line
 
 		// ----------------------------
 		// vars
@@ -34,7 +34,11 @@
 				dropMinwidth: '=',
 				dropMaxwidth: '=',
 				dropWidth: '=',
-				dropPlaceholder: '='
+				dropPlaceholder: '=',
+				dropCssClass: '@',
+				dropListCssClass: '@',
+				dropListItemCssClass: '@',
+				dropChevronCssClass: '@'
 			},
 			templateUrl: 'dropdown/iscDropdown.html'
 		};
@@ -103,14 +107,27 @@
 			domReady();
 
 			scope.showHideItems = function(){
-				$rootScope.$broadcast( DROPDOWN_EVENTS.showDropdownList ,scope.listData, scope.dropId, scope.listField);
+        devlog.channel('iscDropdown').debug( 'iscDropdown.showHideItems');
+				$rootScope.$broadcast( DROPDOWN_EVENTS.showDropdownList,
+					{
+						"listData" : scope.listData,
+						"dropId" : scope.dropId,
+						"listField" : scope.listField,
+						"dropListCssClass" : scope.dropListCssClass,
+						"dropListItemCssClass" : scope.dropListItemCssClass
+					}
+				);
 			};
 
 			$rootScope.$on( DROPDOWN_EVENTS.dropdownItemSelected, function(e, selection){
+        devlog.channel('iscDropdown').debug( 'iscDropdown.dropdownItemSelected', selection);
 				//CHECK TO ASSURE THAT CORRECT ITEM
 				if(scope.dropId === selection.dropId ){
 					scope.dropTitle = selection.selectedItem[scope.listField] ;
 					scope.dropSelectedItem = selection.selectedItem;
+
+          //devlog.channel('iscDropdown').debug( '...scope.dropTitle', scope.dropTitle);
+          //devlog.channel('iscDropdown').debug( '...scope.dropSelectedItem', scope.dropSelectedItem);
 				}
 			});
 
