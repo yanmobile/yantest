@@ -99,7 +99,8 @@
         var offsetHeight = angular.element('#'+dropID+'-block').height();
         var clickOffset =angular.element('#'+dropID+'-block').offset();
         var bodyScrollTop = angular.element('body').scrollTop();
-        var elTop = clickOffset.top + offsetHeight - bodyScrollTop;
+        var elPositionTop = clickOffset.top + offsetHeight;
+        var elTop = elPositionTop - bodyScrollTop;
         //THE +3 IS TO ACCOUNT FOR THE TOP MARGIN WHICH IS NOT CALC IN OUTER. THE .5 ADDS HALF A HEIGHT TO GIVE SPACE AT THE BOTTOM OF THE LIST.
         var elHeight = ((angular.element('#'+dropID+'-list').outerHeight()+3) * (scope.listData.length + .5)); //jshint ignore: line
         var elWidth = angular.element('#'+dropID+'-block').outerWidth() + angular.element('#'+dropID+'-icon').outerWidth() -1;
@@ -110,12 +111,12 @@
           if(($window.innerHeight - elTop ) < 50){
             if(elTop > elHeight){
               //DROP UP FULL HEIGHT
-              elTop = elTop - elHeight - offsetHeight;
+              elPositionTop = elPositionTop - elHeight - offsetHeight;
             }
             else{
               //DROP UP TRUNCATED HEIGHT
-              elHeight = elTop -50 - offsetHeight;
-              elTop = elTop  - elHeight -offsetHeight;
+              elHeight = elTop - 50 - offsetHeight;
+              elPositionTop = elPositionTop - elHeight - offsetHeight;
             }
           }
           else{
@@ -124,7 +125,7 @@
         }
         angular.element('#modal-dropdown').css(
           {'left': clickOffset.left,
-            'top':elTop,
+            'top': elPositionTop,
             'visibility': 'visible',
             'height': elHeight,
             'overflow':'auto',
