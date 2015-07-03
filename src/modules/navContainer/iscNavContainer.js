@@ -86,13 +86,13 @@
         // stateChange start
         $rootScope.$on('$stateChangeStart',
             function( event, toState, toParams, fromState, fromParams ){
-              devlog.channel('StateNav').debug( 'ischNavContainer.$stateChangeStart');
-              devlog.channel('StateNav').debug( '...from: ' + fromState.name );
-              devlog.channel('StateNav').debug( '.....to: ', toState.name );
+              //devlog.channel('StateNav').debug( 'ischNavContainer.$stateChangeStart');
+              //devlog.channel('StateNav').debug( '...from: ' + fromState.name );
+              //devlog.channel('StateNav').debug( '.....to: ', toState.name );
 
               iscCustomConfigService.loadConfig().then( function( config ){//jshint ignore:line
-                devlog.channel('StateNav').debug( 'State change request received');
-                devlog.channel('StateNav').debug( 'Beginning state change from "%s" to "%s"', fromState.name, toState.name);
+                //devlog.channel('StateNav').debug( 'State change request received');
+                //devlog.channel('StateNav').debug( 'Beginning state change from "%s" to "%s"', fromState.name, toState.name);
 
                 startLoadingAnimation();
                 handleStateChangeStart( event, toState, toParams, fromState, fromParams  );

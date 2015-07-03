@@ -113,9 +113,9 @@
     }
 
     function setConfig( val ){
-      $log.debug( 'iscCustomConfigService.setConfig' );
+      //$log.debug( 'iscCustomConfigService.setConfig' );
       //$log.debug( '...baseUrl ' + JSON.stringify( val.baseUrl ) );
-      $log.debug( '...config ', val );
+      //$log.debug( '...config ', val );
       config = val;
       iscSessionStorageHelper.setConfig( val );
     }
