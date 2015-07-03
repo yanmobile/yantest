@@ -37,6 +37,7 @@
     // ----------------------------
     function link( scope, elem, attr ){//jshint ignore:line
       scope.displayText = scope.cellData[scope.cellConfig.key] || scope.cellConfig.default;
+      scope.displayText = scope.displayText.toString(); // cast as a string; translate fails on numbers
       scope.displayUnit = scope.cellData[scope.cellConfig.unit];
 
       scope.state = $state.current.name;
