@@ -6,9 +6,9 @@
 
   'use strict';
 
-  iscAlertController.$inject = ['$log', 'iscAlertModel'];
+  iscAlertController.$inject = ['$log', 'iscAlertModel', 'iscSessionModel' ];
 
-  function iscAlertController( $log, iscAlertModel ){
+  function iscAlertController( $log, iscAlertModel, iscSessionModel ){
     //$log.debug( 'iscAlertController LOADED');
 
     // ----------------------------
@@ -43,10 +43,14 @@
     };
 
     // ----------------
-
     self.getOptions = function(){
       return iscAlertModel.getOptions();
     };
+
+    // ----------------
+    self.getRemainingSessionTime = function(){
+      return iscSessionModel.getRemainingTime();
+    }
 
   }// END CLASS
 

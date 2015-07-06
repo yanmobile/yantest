@@ -43,6 +43,7 @@
       initSessionTimeout: initSessionTimeout,
       stopSessionTimeout: stopSessionTimeout,
       resetSessionTimeout: resetSessionTimeout,
+      getRemainingTime: getRemainingTime,
 
       getCredentials: getCredentials,
 
@@ -174,6 +175,11 @@
       iscSessionStorageHelper.setSessionTimeoutCounter( sessionTimeoutCounter );
       //stopSessionTimeout();
       //doSessionTimeout();
+    }
+
+    function getRemainingTime(){
+      var remaining = sessionTimeoutInSeconds - sessionTimeoutCounter;
+      return remaining;
     }
 
     // --------------

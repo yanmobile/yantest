@@ -157,6 +157,22 @@
     });
 
     // -------------------------
+    describe( 'getRemainingTime tests ', function(){
+      it( 'should have a function getRemainingTime', function(){
+        expect( angular.isFunction( model.getRemainingTime )).toBe( true );
+      });
+
+      it( 'should get the remaining time', function(){
+        model.create( loginData ); // RemainingTime = 3600
+
+        model.initSessionTimeout( 3400 );
+
+        var expected  = model.getRemainingTime();
+        expect( expected ).toBe( 200 );
+      });
+    });
+
+    // -------------------------
     describe( 'isAuthenticated tests ', function(){
 
       it( 'should have a function isAuthenticated', function(){
@@ -236,8 +252,6 @@
         var expected  = model.isAuthorized( 'foo' );
         expect( expected ).toBe( false );
       });
-
-
     });
 
     // -------------------------
@@ -297,10 +311,8 @@
         var expected  = model.getFullName();
         expect( expected ).toBe( mockLoginResponse.UserData.FullName );
       });
-
     });
 
   });
-
 })();
 
