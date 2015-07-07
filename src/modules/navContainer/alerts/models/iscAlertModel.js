@@ -17,19 +17,19 @@
     // vars
     // ----------------------------
     var ALERT_TITLES = {
-      iscResponseError: 'Server Error',
-      iscNotAuthenticated: 'Not Logged In',
-      iscNotAuthorized: 'Not Authorized',
-      iscSessionTimeoutWarning: 'Your Session is about to expire',
-      iscSessionTimeout: 'Your Session has expired'
+      iscResponseError: 'ISC_ALERT_RESPONSE_ERROR',
+      iscNotAuthenticated: 'ISC_ALERT_NOT_AUTHENTICATED',
+      iscNotAuthorized: 'ISC_ALERT_NOT_AUTHORIZED',
+      iscSessionTimeoutWarning: 'ISC_ALERT_SESSION_TIMEOUT_WARNING',
+      iscSessionTimeout: 'ISC_ALERT_SESSION_TIMEOUT'
     };
 
     var ALERT_MESSAGES = {
-      iscResponseError: 'Unable to complete your request.',
-      iscNotAuthenticated: 'Please log in to view this page.',
-      iscNotAuthorized: 'You are not authorized to view this page. Please contact your system administrator to check your permissions.',
-      iscSessionTimeoutWarning: 'Your session is about to expire. Click Ok to continue or Cancel to log out.',
-      iscSessionTimeout: 'Your session has expired. Please click Login to continue.'
+      iscResponseError: 'ISC_ALERT_RESPONSE_ERROR_MSG',
+      iscNotAuthenticated: 'ISC_ALERT_NOT_AUTHENTICATED_MSG',
+      iscNotAuthorized: 'ISC_ALERT_NOT_AUTHORIZED_MSG',
+      iscSessionTimeoutWarning: 'ISC_ALERT_SESSION_TIMEOUT_WARNING_MSG',
+      iscSessionTimeout: 'ISC_ALERT_SESSION_TIMEOUT_MSG'
     };
 
     var OK_BTN_KEYS = {
@@ -126,6 +126,7 @@
       }
     }
 
+
   }//END CLASS
 
 
@@ -134,7 +135,7 @@
   // ----------------------------
 
   angular.module('iscNavContainer')
-    .factory('iscAlertModel', iscAlertModel);
+      .factory('iscAlertModel', iscAlertModel);
 
 })();
 

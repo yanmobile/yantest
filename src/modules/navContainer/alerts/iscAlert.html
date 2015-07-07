@@ -27,6 +27,11 @@
            ng-if="alertCtrl.getOptions().serverResponse">
         <span>{{alertCtrl.getOptions().serverResponse  | translate}}</span>
       </div>
+
+      <div class="isc-item-wrapper-2 alert-message"
+           ng-if="alertCtrl.getOptions().title === 'iscSessionTimeoutWarning' ">
+        <span>{{'ISC_REMAINING_TIME' | translate}}: {{alertCtrl.getRemainingSessionTime()}}</span>
+      </div>
     </div>
 
     <!--FOOTER-->
