@@ -1,5 +1,5 @@
 
-	<div class="isc-dropdown isc-dd {{dropCssClass}}"
+	<div class="isc-dropdown isc-dd {{dropCssClass}}"  ng-class="{'invalid': dropRequired && !dropSelectedItem}"
        id="{{dropId}}-main">
 
     <!--captures the click events-->
@@ -31,5 +31,6 @@
 
 		</div>
 
+    <input name="{{dropId || 'dropId'+listField}}" hidden ng-model="dropSelectedItem" ng-required="dropRequired">
 	</div>
 

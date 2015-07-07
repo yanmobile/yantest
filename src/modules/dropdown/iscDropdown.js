@@ -34,6 +34,7 @@
 				dropMinwidth: '=',
 				dropMaxwidth: '=',
 				dropWidth: '=',
+				dropRequired: '=',
 				dropPlaceholder: '=',
 				dropCssClass: '@',
 				dropListCssClass: '@',
