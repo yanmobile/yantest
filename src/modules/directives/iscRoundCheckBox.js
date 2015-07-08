@@ -19,7 +19,7 @@
     // ----------------------------
     var directive = {
       restrict: 'EA',
-      transclude: true,
+      transclude: false,
       require: '?ngModel',
       scope: {
         onToggle: '&'

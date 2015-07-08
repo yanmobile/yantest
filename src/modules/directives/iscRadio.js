@@ -27,7 +27,7 @@
     // ----------------------------
     var directive = {
       restrict: 'EA',
-      transclude: true,
+      transclude: false,
       scope: {
         radioGroup: '=',
         radioItem: '='
