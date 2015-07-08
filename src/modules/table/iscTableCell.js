@@ -1,7 +1,7 @@
 /**
  * Created by Trevor Hudson on 06/02/15.
  */
- (function(){
+(function(){
   'use strict';
 
   iscTableCell.$inject = [ '$log', '$state' ];
@@ -35,9 +35,10 @@
     // ----------------------------
     // functions
     // ----------------------------
+
+
     function link( scope, elem, attr ){//jshint ignore:line
-      scope.displayText = scope.cellData[scope.cellConfig.key] || scope.cellConfig.default;
-      scope.displayText = scope.displayText.toString(); // cast as a string; translate fails on numbers
+
       scope.displayUnit = scope.cellData[scope.cellConfig.unit];
 
       scope.state = $state.current.name;
@@ -52,7 +53,35 @@
         else{
           return '';
         }
-      }
+      };
+
+      scope.getDisplayText = function( cellData, defaultText ){
+
+        var retVal;
+        if( scope.notThere( cellData ) && scope.notThere( defaultText )){
+          retVal = 'ISC_NA'
+        }
+        else if( scope.notThere( cellData )){
+          retVal = String( defaultText );
+        }
+        else{
+          retVal = String( cellData );
+        }
+
+        return retVal;
+      };
+
+      scope.notThere = function( val ){
+        return !val && val !== 0;
+      };
+
+      var cellData = scope.cellData[scope.cellConfig.key];
+      var defaultText = scope.cellConfig.default;
+      scope.displayText = scope.getDisplayText( cellData, defaultText );
+
+      //$log.debug( 'cellData', cellData );
+      //$log.debug( 'scope.cellConfig.default', scope.cellConfig.default );
+      //$log.debug( 'scope.displayText', scope.displayText );
 
     }
   }
@@ -61,7 +90,7 @@
   // inject
   // ----------------------------
 
-   angular.module( 'isc.common' )
-     .directive( 'iscTableCell', iscTableCell );
+  angular.module( 'isc.common' )
+      .directive( 'iscTableCell', iscTableCell );
 
- })();
+})();
