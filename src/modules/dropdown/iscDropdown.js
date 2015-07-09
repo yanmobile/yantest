@@ -98,7 +98,7 @@
 				$timeout(function(){
 					scope.setWidth();
 					if(scope.dropSelectedItem){
-						scope.dropTitle = scope.dropSelectedItem[scope.listField];
+						scope.dropTitle = scope.dropSelectedItem;
 					}else{
 						scope.dropTitle = scope.dropPlaceholder;
 					}
@@ -130,6 +130,10 @@
           //devlog.channel('iscDropdown').debug( '...scope.dropSelectedItem', scope.dropSelectedItem);
 				}
 			});
+
+			scope.$watch('listData',function(){
+				scope.dropTitle = scope.dropPlaceholder;
+			})
 
 
 		}//END LINK
