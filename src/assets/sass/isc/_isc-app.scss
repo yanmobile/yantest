@@ -31,18 +31,18 @@ input{
 }
 
 textarea,
-input:not([type=submit]):not([type=file]):not([type=checkbox]):-webkit-autofill {
+input:not([type=submit]):not([type=file]):not([type=checkbox]):not([type=radio]):-webkit-autofill {
   -webkit-box-shadow:0 0 0 50px rgba($white, 1) inset;
   -webkit-text-fill-color: #333;
 }
 
 textarea,
-input:not([type=submit]):not([type=file]):not([type=checkbox]):-webkit-autofill:focus {
+input:not([type=submit]):not([type=file]):not([type=checkbox]):not([type=radio]):-webkit-autofill:focus {
   -webkit-box-shadow: 0 0 0 50px rgba($white, 1) inset;
   -webkit-text-fill-color: #333;
 }
 
-input:not([type=submit]):not([type=file]):not([type=checkbox]){
+input:not([type=submit]):not([type=file]):not([type=checkbox]):not([type=radio]){
   border: 1px solid $app-border-color;
   background-color: rgba($white, 1);
   padding: 5px 5px;
