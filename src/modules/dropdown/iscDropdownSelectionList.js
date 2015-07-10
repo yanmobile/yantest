@@ -125,7 +125,7 @@
         }
         angular.element('#modal-dropdown').css(
           {'left': clickOffset.left,
-            'top': elPositionTop,
+            'top': elTop,
             'visibility': 'visible',
             'height': elHeight,
             'overflow':'auto',
