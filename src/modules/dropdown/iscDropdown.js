@@ -2,151 +2,189 @@
  * Created by yale marc on 3/17/15.
  SAMPLE HTML USAGE
  <div style="display:inline-block;width:100%">
-	<isc-dropdown list-data="listData" drop-width="'70%'" drop-placeholder="Sort" drop-maxwidth="180" drop-minwidth="75" list-field="value" drop-selected-item="sampleItem" drop-id="UserBtn" drop-icon="fa fa-user">
-	</isc-dropdown>
-</div>
+ <isc-dropdown list-data="listData" drop-width="'70%'" drop-placeholder="Sort" drop-maxwidth="180" drop-minwidth="75" list-field="value" drop-selected-item="sampleItem" drop-id="UserBtn" drop-icon="fa fa-user">
+ </isc-dropdown>
+ </div>
  */
 
 (function(){
-	'use strict';
+  'use strict';
 
-	iscDropdown.$inject = [ '$log', 'devlog', '$timeout', '$rootScope', 'DROPDOWN_EVENTS' ];
+  iscDropdown.$inject = [ '$log', 'devlog', '$timeout', '$rootScope', 'DROPDOWN_EVENTS' ];
 
-	function iscDropdown( $log, devlog , $timeout, $rootScope, DROPDOWN_EVENTS){//jshint ignore:line
+  function iscDropdown( $log, devlog , $timeout, $rootScope, DROPDOWN_EVENTS){//jshint ignore:line
 
-		// ----------------------------
-		// vars
-		// ----------------------------
+    // ----------------------------
+    // vars
+    // ----------------------------
 
-		// ----------------------------
-		// class factory
-		// ----------------------------
-		var directive = {
-			link: link,
+    // ----------------------------
+    // class factory
+    // ----------------------------
+    var directive = {
+      link: link,
       restrict: 'EA',
       replace: true,
-			scope: {
-				listData: '=',
-				listField: '@',
-				dropSelectedItem: '=',
-				dropId: '@',
-				dropIcon: '@',
-				dropMinwidth: '=',
-				dropMaxwidth: '=',
-				dropWidth: '=',
-				dropPlaceholder: '=',
-				dropCssClass: '@',
-				dropListCssClass: '@',
-				dropListItemCssClass: '@',
-				dropChevronCssClass: '@'
-			},
-			templateUrl: 'dropdown/iscDropdown.html'
-		};
+      scope: {
+        listData: '=',
+        listField: '@',
+        dropSelectedItem: '=',
+        dropId: '@',
+        dropIcon: '@',
+        dropMinwidth: '=',
+        dropMaxwidth: '=',
+        dropWidth: '=',
+        dropPlaceholder: '=',
+        dropCssClass: '@',
+        dropListCssClass: '@',
+        dropListItemCssClass: '@',
+        dropChevronCssClass: '@'
+      },
+      templateUrl: 'dropdown/iscDropdown.html'
+    };
 
-		return directive;
+    return directive;
 
-		// ----------------------------
-		// functions
-		// ----------------------------
+    // ----------------------------
+    // functions
+    // ----------------------------
 
-		function link( scope, elem, attr ){//jshint ignore:line
-			//$log.debug( 'iscDropdown' );
+    function link( scope, elem, attr ){//jshint ignore:line
+      //$log.debug( 'iscDropdown' );
 
-			scope.dropOpen = false;
-			scope.iconLeft = 0;
-			scope.itemWidth = 0;
-			scope.isShowDrop = false;
-			scope.listField = 'label';
+      // ---------------------------
+      // vars
+      // ---------------------------
 
-			angular.element(window).resize(function(){//jshint ignore:line
-				scope.setWidth();
-			});
+      scope.dropOpen = false;
+      scope.iconLeft = 0;
+      scope.itemWidth = 0;
+      scope.isShowDrop = false;
+      scope.listField = 'label';
 
-			scope.setWidth = function(){
-				var hiddenList = angular.element('#'+scope.dropId+'-list');
-				var blockTitle = angular.element('#'+scope.dropId+'-block');
-				var blockMain = angular.element('#'+scope.dropId+'-main');
-				var iconWidth = angular.element('#'+scope.dropId+'-icon').outerWidth();
+      // ---------------------------
+      // businsess logic
+      // ---------------------------
 
-				if(scope.dropMinwidth){
-					blockMain.css({'min-width': (scope.dropMinwidth)});
-				}
+      scope.setWidth = function(){
+        var hiddenList = angular.element('#'+scope.dropId+'-list');
+        var blockTitle = angular.element('#'+scope.dropId+'-block');
+        var blockMain = angular.element('#'+scope.dropId+'-main');
+        var iconWidth = angular.element('#'+scope.dropId+'-icon').outerWidth();
 
-				if(scope.dropMaxwidth){
-					blockMain.css({'max-width':scope.dropMaxwidth});
-				}
+        if(scope.dropMinwidth){
+          blockMain.css({'min-width': (scope.dropMinwidth)});
+        }
 
-				if(scope.dropWidth){
-					blockMain.width(scope.dropWidth);
-					blockTitle.width(blockMain.width() - iconWidth - 2);
-				}
+        if(scope.dropMaxwidth){
+          blockMain.css({'max-width':scope.dropMaxwidth});
+        }
+
+        if(scope.dropWidth){
+          blockMain.width(scope.dropWidth);
+          blockTitle.width(blockMain.width() - iconWidth - 2);
+        }
         else{
-					if(angular.element('form').width()-50 < angular.element('#'+scope.dropId).width()){
-						angular.element('#'+scope.dropId).width(angular.element('form').width()-20);
-					}
+          if(angular.element('form').width()-50 < angular.element('#'+scope.dropId).width()){
+            angular.element('#'+scope.dropId).width(angular.element('form').width()-20);
+          }
           else{
-						//SET WIDTH OF TITLE BLOCK BASED ON LARGER OF TITLE OR DROPDOWN CONTENT
-						hiddenList.css({'width':'auto'});
-						if(hiddenList.width() > blockTitle.width()){
-							blockTitle.width(hiddenList.width());
-						}
-					}
-				}
-			};
+            //SET WIDTH OF TITLE BLOCK BASED ON LARGER OF TITLE OR DROPDOWN CONTENT
+            hiddenList.css({'width':'auto'});
+            if(hiddenList.width() > blockTitle.width()){
+              blockTitle.width(hiddenList.width());
+            }
+          }
+        }
+      };
 
-			function domReady(){
-				$timeout(function(){
-					scope.setWidth();
-					if(scope.dropSelectedItem){
-						scope.dropTitle = scope.dropSelectedItem;
-					}else{
-						scope.dropTitle = scope.dropPlaceholder;
-					}
-				});
-			}
-			domReady();
-
-			scope.showHideItems = function(){
+      scope.showHideItems = function(){
         devlog.channel('iscDropdown').debug( 'iscDropdown.showHideItems');
-				$rootScope.$broadcast( DROPDOWN_EVENTS.showDropdownList,
-					{
-						"listData" : scope.listData,
-						"dropId" : scope.dropId,
-						"listField" : scope.listField,
-						"dropListCssClass" : scope.dropListCssClass,
-						"dropListItemCssClass" : scope.dropListItemCssClass
-					}
-				);
-			};
+        $rootScope.$broadcast( DROPDOWN_EVENTS.showDropdownList,
+            {
+              "listData" : scope.listData,
+              "dropId" : scope.dropId,
+              "listField" : scope.listField,
+              "dropListCssClass" : scope.dropListCssClass,
+              "dropListItemCssClass" : scope.dropListItemCssClass
+            }
+        );
+      };
 
-			$rootScope.$on( DROPDOWN_EVENTS.dropdownItemSelected, function(e, selection){
-        devlog.channel('iscDropdown').debug( 'iscDropdown.dropdownItemSelected', selection);
-				//CHECK TO ASSURE THAT CORRECT ITEM
-				if(scope.dropId === selection.dropId ){
-					scope.dropTitle = selection.selectedItem[scope.listField] ;
-					scope.dropSelectedItem = selection.selectedItem;
+      $rootScope.$on( DROPDOWN_EVENTS.dropdownItemSelected, function(e, selection){
+        //devlog.channel('iscDropdown').debug( 'iscDropdown.dropdownItemSelected', selection);
+        //CHECK TO ASSURE THAT CORRECT ITEM
+        if(scope.dropId === selection.dropId ){
+          scope.dropTitle = selection.selectedItem[scope.listField] ;
+          scope.dropSelectedItem = selection.selectedItem;
 
           //devlog.channel('iscDropdown').debug( '...scope.dropTitle', scope.dropTitle);
           //devlog.channel('iscDropdown').debug( '...scope.dropSelectedItem', scope.dropSelectedItem);
-				}
-			});
+        }
+      });
 
-			scope.$watch('listData',function(){
-				scope.dropTitle = scope.dropPlaceholder;
-			})
+      // ---------------------------
+      // watchers
+      // ---------------------------
+
+      // when you reset the list data, reset the display to the placeholder text
+      scope.$watch('listData',function(){
+        scope.dropTitle = scope.dropPlaceholder;
+      });
+
+      // when you manually set the selected item, update the page title
+      scope.$watch('dropSelectedItem',function( newVal ){
+        if( !newVal ) return;
+        scope.updateTitle();
+      });
+
+      scope.updateTitle = function(){
+        var title = scope.dropSelectedItem[ scope.listField ];
+        $log.debug( '...title', title );
+        if( !title ){
+          throw new Error( 'This item does not have a display value' );
+        }
+        else{
+          scope.dropTitle = title;
+        }
+      };
+
+      // ---------------------------
+      // dom
+      // ---------------------------
+
+      angular.element(window).resize(function(){//jshint ignore:line
+        scope.setWidth();
+      });
+
+      function domReady(){
+        $timeout(function(){
+          scope.setWidth();
+          if( scope.dropSelectedItem ){
+            scope.updateTitle();
+          }
+          else{
+            scope.dropTitle = scope.dropPlaceholder;
+          }
+        });
+      };
+
+      // ---------------------------
+      // init
+      // ---------------------------
+      domReady();
+
+    }//END LINK
 
 
-		}//END LINK
+  }//END CLASS
 
 
-	}//END CLASS
+  // ----------------------------
+  // injection
+  // ----------------------------
 
-
-	// ----------------------------
-	// injection
-	// ----------------------------
-
-	angular.module( 'isc.common' )
-			.directive( 'iscDropdown', iscDropdown );
+  angular.module( 'isc.common' )
+      .directive( 'iscDropdown', iscDropdown );
 
 })();
