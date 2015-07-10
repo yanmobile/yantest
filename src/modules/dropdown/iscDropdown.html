@@ -1,5 +1,5 @@
 
-	<div class="isc-dropdown isc-dd {{dropCssClass}}"
+	<div class="isc-dropdown isc-dd {{dropCssClass}}"  ng-class="{'invalid': dropRequired && !dropSelectedItem}"
        id="{{dropId}}-main">
 
     <!--captures the click events-->
@@ -28,8 +28,8 @@
     <!-- down chevron icon-->
     <div class="isc-drop-icon isc-dd {{dropChevronCssClass}}"
          id="{{dropId}}-icon"><span ng-include="'svg/isc-chevron-down.html'"></span>
+    </div>
 
-		</div>
-
+    <input name="{{dropId || 'dropId'+listField}}" hidden ng-model="dropSelectedItem" ng-required="dropRequired">
 	</div>
 
