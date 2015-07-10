@@ -20,3 +20,6 @@
 
 <span ng-if="!!displayText2"
       class="{{ mobileClass }} {{ getTrClass( displayText2 )}}">{{ displayText2  | translate }}</span>
+
+<span ng-if="cellConfig.type === 'template'">
+  <div ng-include="cellConfig.template"></div></span>
