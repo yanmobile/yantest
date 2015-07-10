@@ -1,10 +1,26 @@
 /**
  * Created by yale marc on 3/17/15.
+ *
  SAMPLE HTML USAGE
- <div style="display:inline-block;width:100%">
- <isc-dropdown list-data="listData" drop-width="'70%'" drop-placeholder="Sort" drop-maxwidth="180" drop-minwidth="75" list-field="value" drop-selected-item="sampleItem" drop-id="UserBtn" drop-icon="fa fa-user">
- </isc-dropdown>
- </div>
+
+ <isc-dropdown list-data="someController.dropListItems"
+               list-field="label"
+               drop-selected-item="someController.dropSelectedItem"
+               drop-id="someUniqueId"
+               drop-icon="fa fa-icon"
+               drop-minwidth="200"
+               drop-maxwidth="'100%'"
+               drop-width="'356px'"
+               drop-placeholder="'Select something..'"
+               drop-css-class="some-class"
+               drop-list-css-class="some-class"
+               drop-list-item-css-class="some-class"
+               drop-chevron-css-class="some-class">
+
+ @param listData = array of objects
+ @param listField = string (key in obj)
+ @param dropId = string must be unique in DOM
+ @param dropWidth, dropMinwidth, dropMaxwidth = string ('123%', '123px') or number
  */
 
 (function(){
@@ -130,6 +146,7 @@
       // when you reset the list data, reset the display to the placeholder text
       scope.$watch('listData',function(){
         scope.dropTitle = scope.dropPlaceholder;
+        scope.dropSelectedItem = null;
       });
 
       // when you manually set the selected item, update the page title
@@ -140,7 +157,7 @@
 
       scope.updateTitle = function(){
         var title = scope.dropSelectedItem[ scope.listField ];
-        $log.debug( '...title', title );
+        //$log.debug( '...title', title );
         if( !title ){
           throw new Error( 'This item does not have a display value' );
         }
@@ -175,7 +192,6 @@
       domReady();
 
     }//END LINK
-
 
   }//END CLASS
 
