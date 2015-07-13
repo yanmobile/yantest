@@ -18,6 +18,9 @@
       ui-sref="{{cellConfig.sref || state }}"
       class="{{ mobileClass }} {{ getTrClass( displayText )}}">{{ displayText  | translate }} {{ displayUnit }}</span>
 
+<input type="checkbox" ng-if="cellConfig.type === 'checkbox'" disabled="disabled"
+       class="{{ mobileClass }} {{ getTrClass( displayText )}}" ng-checked="displayText"></input>
+
 <span ng-if="!!displayText2"
       class="{{ mobileClass }} {{ getTrClass( displayText2 )}}">{{ displayText2  | translate }}</span>
 
