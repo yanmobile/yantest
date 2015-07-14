@@ -19,14 +19,20 @@
       className: 'class-name'
     },
     {
-      key: 'Timestamp',
-      title: 'ISC_WELLNESS_LAB_DATE',
-      classGetter: function(){},
-      type: 'date'
+      key: 'TextField',
+      title: 'ISC_KEY',
+      textGetter: getTextClass, // see below
+      type: 'text'
     },
     {
       key: 'Timestamp',
       title: 'ISC_WELLNESS_LAB_DATE',
+      classGetter: getButtonClass, // see below
+      type: 'date'
+    },
+    {
+      key: 'ButtonField',
+      title: 'ISC_TRANSLATION_KEY',
       type: 'buttonWithCallback',
       callback: function(){}
     }],
@@ -61,14 +67,22 @@
           return 'cmc-draft-pill';
       }
     }
+
+ * --------------------------------------
+ * sample getter for text -
+ * use when combining multiple fields, eg
+ * --------------------------------------
+ * function getTextClass( cellData ){
+      return cellData[ 'someKey' ] + ', ' + cellData[ 'someOtherKey' ] ;
+    }
  *
  * --------------------------------------
  * sample html
  * --------------------------------------
  *
- * <isc-table table-config="homeCtrl.model.getDashboardTableConfig()"
- table-data="homeCtrl.model.getHomePageData()">
- </isc-table>
+ * <isc-table table-config="someCtrl.model.getTableConfig()"
+              table-data="someCtrl.model.getTableData()">
+   </isc-table>
  *
  *
  */
@@ -122,7 +136,7 @@
       scope.sortColumn = function( column ) {
         if (scope.sortField.name === column.key) {
           scope.sortField.reverse = !scope.sortField.reverse;
-        };
+        }
 
         scope.sortField.name = column.key;
       };

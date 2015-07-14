@@ -5,13 +5,13 @@
 
   describe('iscTableCell', function(){
     var scope,
-      rootScope,
-      helper,
-      isolateScope,
-      httpBackend,
-      timeout,
-      element,
-      state;
+        rootScope,
+        helper,
+        isolateScope,
+        httpBackend,
+        timeout,
+        element,
+        state;
 
     var cellConfig = [
       {
@@ -39,10 +39,10 @@
     ];
 
     var html =  '<div isc-table-cell ' +
-                  'cell-data="cellData"' +
-                  'cell-config="cellConfig"' +
-                  'mobile-class="isc-text-item">' +
-                '</div>';
+        'cell-data="cellData"' +
+        'cell-config="cellConfig"' +
+        'mobile-class="isc-text-item">' +
+        '</div>';
 
     beforeEach( module('isc.common'));
 
@@ -79,7 +79,7 @@
 
       // dont worry about calls to assets
       httpBackend.when( 'GET', 'assets/i18n/en_US.json' )
-        .respond( 200, {} );
+          .respond( 200, {} );
 
       compile();
     }));
@@ -204,6 +204,24 @@
 
       it("should have a getDisplayText", function() {
         expect( angular.isFunction(isolateScope.getDisplayText) ).toBe( true );
+      });
+
+      it("should get the right displayText, getter function", function() {
+
+        var cellData = 'shazam';
+        var defaultText = 1234;
+
+        scope.cellConfig =  {
+          key: 'OrderedItemDisplay',
+          title: 'ISC_WELLNESS_LAB_NAME',
+          textGetter: function(){
+            return 'foo bar baz';
+          }
+        };
+        compile();
+
+        var expected = isolateScope.getDisplayText( cellData, defaultText );
+        expect( expected ).toBe( 'foo bar baz' );
       });
 
       it("should get the right displayText, neither defined", function() {

@@ -57,6 +57,10 @@
 
       scope.getDisplayText = function( cellData, defaultText ){
 
+        if( scope.cellConfig.textGetter ){
+          return scope.cellConfig.textGetter( scope.cellData );
+        }
+
         var retVal;
         if( scope.notThere( cellData ) && scope.notThere( defaultText )){
           retVal = 'ISC_NA'
