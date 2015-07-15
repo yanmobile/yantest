@@ -167,3 +167,36 @@
   color: $brand-link !important;
   font-weight: 900 !important;
 }
+
+.isc-table-command-icon {
+  max-width: 30px;
+  border: none;
+  background-color: white;
+  padding: 0 10px 4px 10px !important;
+  cursor: pointer;
+
+  svg {
+    display: inline-block;
+    vertical-align: middle;
+    width: 20px;
+    height: 20px;
+    fill: $pencil-button-color;
+  }
+
+  &:hover,
+  &:disabled:focus {
+    svg {
+      fill: darken($white-smoke, 10);
+    }
+  }
+}
+.isc-table-command-edit-icon{
+  @extend .isc-table-command-icon;
+}
+
+.isc-table-command-remove-icon {
+  @extend .isc-table-command-icon;
+  svg{
+    fill: $remove-button-color;
+  }
+}

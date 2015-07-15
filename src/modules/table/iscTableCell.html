@@ -51,20 +51,22 @@
 <!-- commands -->
 <div ng-if="cellConfig.type === 'commands'" class="isc-table-columm-commands">
   <span ng-if="!iscRowCtrl.inEditMode">
-    <button type="button" ng-click="iscRowCtrl.onCommand('edit', $event, cellConfig.commands.edit.callback)">
-      <i class="{{cellConfig.commands.edit.iconClass || 'fa fa-lg fa-pencil'}}"></i>
+
+    <button class="isc-table-command-edit-icon" ng-click="iscRowCtrl.onCommand('edit', $event, cellConfig.commands.edit.callback)">
+      <span ng-include="'svg/isc-table-edit-icon.html'"></span>
     </button>
-    <button type="button" ng-click="iscRowCtrl.onCommand('delete', $event, cellConfig.commands.delete.callback)">
-      <i class="{{cellConfig.commands.remove.iconClass || 'fa fa-lg fa-trash'}}"></i>
+
+    <button class="isc-table-command-remove-icon" ng-click="iscRowCtrl.onCommand('delete', $event, cellConfig.commands.delete.callback)">
+      <span ng-include="'svg/isc-table-remove-icon.html'"></span>
     </button>
-  </span>
+    </span>
 
   <span ng-if="iscRowCtrl.inEditMode">
-    <button type="button" ng-click="iscRowCtrl.onCommand('save', $event, cellConfig.editModeCommands.save.callback)">
-      <i class="{{cellConfig.editModeCommands.save.iconClass || 'fa fa-lg fa-save'}}"></i>
+    <button class="isc-table-command-save-icon" ng-click="iscRowCtrl.onCommand('save', $event, cellConfig.editModeCommands.save.callback)">
+      <span ng-include="'svg/isc-table-save-icon.html'"></span>
     </button>
-    <button type="button" ng-click="iscRowCtrl.onCommand('cancelSave', $event, cellConfig.editModeCommands.cancelSave.callback)">
-      <i class="{{cellConfig.editModeCommands.cancelSave.iconClass || 'fa fa-lg fa-times'}}"></i>
+    <button class="isc-table-command-cancel-icon" ng-click="iscRowCtrl.onCommand('cancelSave', $event, cellConfig.editModeCommands.cancelSave.callback)">
+      <span ng-include="'svg/isc-table-cancel-icon.html'"></span>
     </button>
   </span>
 </div>
