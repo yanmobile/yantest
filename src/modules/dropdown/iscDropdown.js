@@ -145,9 +145,13 @@
       // ---------------------------
 
       // when you reset the list data, reset the display to the placeholder text
-      scope.$watch('listData',function(){
-        scope.dropTitle = scope.dropPlaceholder;
-        scope.dropSelectedItem = null;
+      // Only do this if the list is different, otherwise this is called on init
+      // and the dropdown is always reset to the placeholder.
+      scope.$watch('listData',function(newList, oldList){
+        if (newList !== oldList) {
+          scope.dropTitle        = scope.dropPlaceholder;
+          scope.dropSelectedItem = null;
+        }
       });
 
       // when you manually set the selected item, update the page title
