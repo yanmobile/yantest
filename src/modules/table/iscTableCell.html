@@ -32,7 +32,7 @@
 <!-- end text -->
 
 <!-- checkbox -->
-<span ng-if="cellConfig.type === 'checkbox'"
+<span ng-if="cellConfig.type === 'checkbox'">
 <input ng-if="!iscRowCtrl.inEditMode" type="checkbox" disabled="disabled" ng-checked="cellData[cellConfig.key]"
        class="{{ mobileClass }} {{ getTrClass( displayText )}}" >
 <input ng-if="iscRowCtrl.inEditMode" type="checkbox"
