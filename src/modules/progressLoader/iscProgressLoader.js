@@ -31,25 +31,25 @@
     // ----------------------------
 
     function start () {
-      $(document).skylo('start');//jshint ignore:line
+      //$(document).skylo('start');//jshint ignore:line
     }
 
     function set (position) {
-      $(document).skylo('set', position);//jshint ignore:line
+      //$(document).skylo('set', position);//jshint ignore:line
     }
 
     function end () {
-      $(document).skylo('end');//jshint ignore:line
+      //$(document).skylo('end');//jshint ignore:line
     }
 
     function get () {
-      return $(document).skylo('get');//jshint ignore:line
+      //return $(document).skylo('get');//jshint ignore:line
     }
 
     function inch (amount) {
-      $(document).skylo('show',function(){//jshint ignore:line
-        $(document).skylo('inch', amount);//jshint ignore:line
-      });
+      //$(document).skylo('show',function(){//jshint ignore:line
+      //  $(document).skylo('inch', amount);//jshint ignore:line
+      //});
     }
 
   }// END CLASS
