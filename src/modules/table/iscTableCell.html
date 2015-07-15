@@ -1,28 +1,71 @@
 <h3 ng-if="!!mobileClass">{{ cellConfig.title | translate }}</h3>
 
-<a ng-if="cellConfig.type === 'date' || cellConfig.type === 'dateWithTime'"
-   ui-sref="{{cellConfig.sref || state }}"
-   class="{{ mobileClass }} {{ getTrClass( displayText )}} date">{{ displayText | iscDateFilter : cellConfig.type ===
-  'dateWithTime' : cellConfig.type === 'date' }}
-</a>
 
+<span ng-if="cellConfig.type === 'date' || cellConfig.type === 'dateWithTime'">
+  <a ng-if="!iscRowCtrl.inEditMode"
+     ui-sref="{{cellConfig.sref || state }}"
+     class="{{ mobileClass }} {{ getTrClass( displayText )}} date">{{ cellData[cellConfig.key] | iscDateFilter : cellConfig.type ===
+    'dateWithTime' : cellConfig.type === 'date' }}
+  </a>
+  <datepicker date-format="longDate" ng-if="iscRowCtrl.inEditMode">
+    <input type="text" ng-model="iscRowCtrl.editModeData[cellConfig.key]">
+  </datepicker>
+</span>
 <button ng-if="cellConfig.type === 'buttonWithSref'"
         ui-sref="{{cellConfig.sref || state }}"
-        class="{{ mobileClass }} {{ getTrClass( displayText )}}">{{ displayText | translate}}</button>
+        class="{{ mobileClass }} {{ getTrClass( displayText )}}">{{ displayText | translate}}
+</button>
 
 <button ng-if="cellConfig.type === 'buttonWithCallback'"
         ng-click="cellConfig.callback( cellData )"
-        class="{{ mobileClass }} {{ getTrClass( displayText )}}">{{ displayText | translate }}</button>
+        class="{{ mobileClass }} {{ getTrClass( displayText )}}">{{ displayText | translate }}
+</button>
 
-<span ng-if="cellConfig.type === 'text' || !cellConfig.type"
-      ui-sref="{{cellConfig.sref || state }}"
-      class="{{ mobileClass }} {{ getTrClass( displayText )}}">{{ displayText  | translate }} {{ displayUnit }}</span>
+<!-- text -->
+<span ng-if="cellConfig.type === 'text' || !cellConfig.type">
+  <span ng-if="!iscRowCtrl.inEditMode"
+        ui-sref="{{cellConfig.sref || state }}"
+        class="{{ mobileClass }} {{ getTrClass( displayText )}}">{{ cellData[cellConfig.key]  | translate }} {{ displayUnit }}</span>
 
-<input type="checkbox" ng-if="cellConfig.type === 'checkbox'" disabled="disabled"
-       class="{{ mobileClass }} {{ getTrClass( displayText )}}" ng-checked="displayText"></input>
+  <input ng-if="iscRowCtrl.inEditMode" type="text" ng-model="iscRowCtrl.editModeData[cellConfig.key]">
+</span>
+<!-- end text -->
+
+<!-- checkbox -->
+<span ng-if="cellConfig.type === 'checkbox'"
+<input ng-if="!iscRowCtrl.inEditMode" type="checkbox" disabled="disabled" ng-checked="cellData[cellConfig.key]"
+       class="{{ mobileClass }} {{ getTrClass( displayText )}}" >
+<input ng-if="iscRowCtrl.inEditMode" type="checkbox"
+       class="{{ mobileClass }} {{ getTrClass( displayText )}}" ng-model="iscRowCtrl.editModeData[cellConfig.key]">
+</span>
+<!-- end checkbox -->
 
 <span ng-if="!!displayText2"
       class="{{ mobileClass }} {{ getTrClass( displayText2 )}}">{{ displayText2  | translate }}</span>
 
+<!-- template -->
 <span ng-if="cellConfig.type === 'template'">
   <div ng-include="cellConfig.template"></div></span>
+<!-- end template -->
+
+<!-- commands -->
+<div ng-if="cellConfig.type === 'commands'" class="isc-table-columm-commands">
+  <span ng-if="!iscRowCtrl.inEditMode">
+    <button type="button" ng-click="iscRowCtrl.onCommand('edit', $event, cellConfig.commands.edit.callback)">
+      <i class="{{cellConfig.commands.edit.iconClass || 'fa fa-lg fa-pencil'}}"></i>
+    </button>
+    <button type="button" ng-click="iscRowCtrl.onCommand('delete', $event, cellConfig.commands.delete.callback)">
+      <i class="{{cellConfig.commands.remove.iconClass || 'fa fa-lg fa-trash'}}"></i>
+    </button>
+  </span>
+
+  <span ng-if="iscRowCtrl.inEditMode">
+    <button type="button" ng-click="iscRowCtrl.onCommand('save', $event, cellConfig.editModeCommands.save.callback)">
+      <i class="{{cellConfig.editModeCommands.save.iconClass || 'fa fa-lg fa-save'}}"></i>
+    </button>
+    <button type="button" ng-click="iscRowCtrl.onCommand('cancelSave', $event, cellConfig.editModeCommands.cancelSave.callback)">
+      <i class="{{cellConfig.editModeCommands.cancelSave.iconClass || 'fa fa-lg fa-times'}}"></i>
+    </button>
+  </span>
+</div>
+<!-- end commands -->

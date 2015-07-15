@@ -12,6 +12,7 @@
 
   <!--subtitles-->
   <h2 ng-if="tableConfig.subtitle">{{ tableData[ tableConfig.subtitle ] || tableConfig.subtitle | translate }}</h2>
+
   <h3 ng-if="tableConfig.subsubtitle">{{ tableData[ tableConfig.subsubtitle ] || tableConfig.subsubtitle | translate }}</h3>
 
   <!--desktop and tablet-->
@@ -21,6 +22,7 @@
     <tr ng-if="tableConfig.summaryTitle">
       <td>
         <span class="color-bar {{tableConfig.summaryClass}}"></span>
+
         <h2 class="summary-heading">{{tableRows.length}} {{tableConfig.summaryTitle | translate }}</h2>
       </td>
     </tr>
@@ -46,7 +48,8 @@
     <tr dir-paginate="dataItem in tableRows | orderBy: sortField.name : sortField.reverse | itemsPerPage: rowsOnPage"
         current-page="currentPage"
         model-data="tableRows"
-        pagination-id="tableConfig.key">
+        pagination-id="tableConfig.key"
+        isc-table-row>
 
       <!--data columns-->
       <td isc-table-cell
@@ -63,6 +66,21 @@
         </button>
       </td>
     </tr>
+    <tr ng-if="tableConfig.editable === true" isc-table-row class="isc-table-row-add">
+      <td ng-if="iscRowCtrl.inEditMode" isc-table-cell
+          ng-repeat="column in tableConfig.columns track by $index"
+          cell-data="dataItem"
+          cell-config="column">
+      </td>
+      <td ng-if="!iscRowCtrl.inEditMode" colspan="{{tableConfig.columns.length}}">
+        <div class="add-button-wrapper">
+          <button class="isc-btn-link" ng-click="iscRowCtrl.addRow($event)">
+            <span ng-include="'svg/cmc-plus-box.html'"></span>
+            {{ tableConfig.addTranslationKey | translate }}
+          </button>
+        </div>
+      </td>
+    </tr>
     </tbody>
   </table>
 
@@ -74,6 +92,7 @@
     <tr class="summary-heading" ng-if="tableConfig.summaryTitle">
       <td>
         <span class="color-bar {{tableConfig.summaryClass}}"></span>
+
         <h2>{{tableRows.length}} {{tableConfig.summaryTitle | translate }}</h2>
       </td>
     </tr>

@@ -75,7 +75,7 @@
 (function(){
   'use strict';
 
-  iscTable.$inject = ['$log'];
+  iscTable.$inject = [ '$log' ];
 
   function iscTable( $log ){
     //$log.debug('iscTable.LOADED');
@@ -90,16 +90,17 @@
 
     var directive = {
       scope: {
-        tableConfig: '=',
-        tableData: '=',
-        rowButtonCallback: '&?',
+        tableConfig       : '=',
+        tableData         : '=',
+        rowButtonCallback : '&?',
         backButtonCallback: '&?'
       },
 
-      restrict: 'E',
-      replace: true,
-      templateUrl: 'table/iscTable.html',
-      link: link
+      restrict    : 'E',
+      replace     : true,
+      templateUrl : 'table/iscTable.html',
+      controller  : controller,
+      controllerAs: "iscTblCtrl"
     };
 
     return directive;
@@ -107,29 +108,46 @@
     // ----------------------------
     // functions
     // ----------------------------
-    function link( scope, elem, attr, ctrl ){//jshint ignore:line
+    function controller( $scope ){//jshint ignore:line
       //$log.debug( 'iscTable.link, tableConfig', scope.tableConfig );
       //$log.debug( '...tableData', scope.tableData );
 
-      scope.rowsOnPage = scope.tableConfig.rowsOnPage || 15;
-      scope.currentPage = 1;
+      var self       = this;
+      self.addRow    = addRow;
+      self.deleteRow = deleteRow;
+
+      $scope.rowsOnPage  = $scope.tableConfig.rowsOnPage || 15;
+      $scope.currentPage = 1;
 
       // set an array of the table row objects
-      scope.tableRows = scope.tableConfig.key ? scope.tableData[ scope.tableConfig.key ] : scope.tableData;
+      $scope.tableRows = $scope.tableConfig.key ? $scope.tableData[ $scope.tableConfig.key ] : $scope.tableData;
 
-      scope.sortField = { reverse: false };
+      $scope.sortField = { reverse: false };
 
-      scope.sortColumn = function( column ) {
-        if (scope.sortField.name === column.key) {
-          scope.sortField.reverse = !scope.sortField.reverse;
-        };
+      $scope.sortColumn = function( column ){
+        if( $scope.sortField.name === column.key ){
+          $scope.sortField.reverse = !$scope.sortField.reverse;
+        }
 
-        scope.sortField.name = column.key;
+        $scope.sortField.name = column.key;
       };
 
-      scope.changePage = function(newPageNumber){
-        scope.currentPage = newPageNumber;
+      $scope.changePage = function( newPageNumber ){
+        $scope.currentPage = newPageNumber;
       };
+
+
+      // ----------------------------
+      // functions
+      // ----------------------------
+
+      function deleteRow( row ){
+        _.remove( $scope.tableRows, row );
+      }
+
+      function addRow( row ){
+        $scope.tableRows.push( row );
+      }
 
     }
   }
@@ -139,6 +157,6 @@
   // ----------------------------
 
   angular.module( 'isc.common' )
-      .directive( 'iscTable', iscTable );
+    .directive( 'iscTable', iscTable );
 
 })();

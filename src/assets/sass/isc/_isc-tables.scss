@@ -77,8 +77,11 @@
   }
 
   tbody{
-    tr{
+    tr {
       border-top: 1px solid $app-border-color;
+      &.isc-table-row-add {
+        border-top: none;
+      }
     }
   }
 
@@ -105,6 +108,10 @@
 
     div{
       margin-bottom: 5px;
+    }
+
+    .isc-table-columm-commands {
+      width: 70px;
     }
   }
 
