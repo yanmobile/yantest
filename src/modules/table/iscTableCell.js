@@ -73,6 +73,10 @@
           return scope.column.textGetter( scope.dataItem );
         }
 
+        if( scope.column.textGetter ){
+          return scope.column.textGetter( scope.dataItem );
+        }
+
         var retVal;
         if( scope.notThere( cellData ) && scope.notThere( defaultText ) ){
           retVal = 'ISC_NA'

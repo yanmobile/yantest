@@ -95,7 +95,7 @@
 
       // dont worry about calls to assets
       httpBackend.when( 'GET', 'assets/i18n/en_US.json' )
-        .respond( 200, {} );
+          .respond( 200, {} );
 
       compile();
     } ) );
@@ -224,10 +224,8 @@
 
       it( "should get the right displayText, getter function", function(){
 
-        var dataItem    = 'shazam';
         var defaultText = 1234;
 
-        rowScope.column = {
           key       : 'OrderedItemDisplay',
           title     : 'ISC_WELLNESS_LAB_NAME',
           textGetter: function(){
@@ -236,7 +234,6 @@
         };
         compile();
 
-        var expected = cellScope.getDisplayText( dataItem, defaultText );
         expect( expected ).toBe( 'foo bar baz' );
       } );
 
