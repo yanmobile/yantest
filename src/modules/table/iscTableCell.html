@@ -1,4 +1,4 @@
-<h3 ng-if="!!mobileClass">{{ column.title | translate }}</h3>
+<h3 class="cell-title">{{ column.title | translate }}</h3>
 
 
 <span ng-if="column.type === 'date' || column.type === 'dateWithTime'">
@@ -120,7 +120,7 @@
 <!-- end commands -->
 <!-- required message -->
 <!--<span id="{{column.type + column.key + 'required'}}"-->
-      <!--ng-class="{invisible: !iscRowForm[column.key].$error.required}"-->
-      <!--ng-if="iscRowCtrl.inEditMode && column.type !== 'commands'">-->
-    <!--Required!-->
+<!--ng-class="{invisible: !iscRowForm[column.key].$error.required}"-->
+<!--ng-if="iscRowCtrl.inEditMode && column.type !== 'commands'">-->
+<!--Required!-->
 <!--</span>-->
