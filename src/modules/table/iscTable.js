@@ -10,6 +10,8 @@
     title: '',
     rowsOnPage: 20,
     backButtonText: 'Go Back'
+    editable: true,
+    addBtnTranslationKey: "TRANSLATION_KEY",
 
     columns: [{
       key: 'OrderedItemDisplay',
@@ -19,29 +21,116 @@
       className: 'class-name'
     },
     {
+      key: 'TextField',
+      title: 'ISC_KEY',
+      textGetter: getTextClass, // see below
+      type: 'text'
+    },
+    {
       key: 'Timestamp',
       title: 'ISC_WELLNESS_LAB_DATE',
-      classGetter: function(){},
+      classGetter: getButtonClass, // see below
       type: 'date'
     },
     {
-      key: 'Timestamp',
-      title: 'ISC_WELLNESS_LAB_DATE',
+      key: 'ButtonField',
+      title: 'ISC_TRANSLATION_KEY',
       type: 'buttonWithCallback',
       callback: function(){}
-    }],
-
-    buttons: [{
-      key: 'chart',
-      title: 'ISC_WELLNESS_CHART',
-      icon: 'svg/isc-chart-blue.html'
+    },
+    { //drop down
+      key           : 'anticipatedProblem',
+      title         : 'CMC_ANTICPATED_PROBLEM',
+      type          : 'dropdown',
+      dropdownConfig: {
+        listData    : model.getLookup( "symptoms" ),
+        dropMinwidth: '150px',
+        usePrimative: true
+      }
+    },
+    { // for individual application to create non-core specific columns
+      type         : 'template',
+      key          : 'main',
+      title        : 'CMC_CCP_CT_CONTACT_MAIN',
+      editCellClass: "cmc-team-cell-edit",
+      template     : 'carePlan/careTeam/contact-main.html'
     },
     {
-      key: 'details',
-      title: 'ISC_WELLNESS_DETAILS',
-      icon: 'svg/isc-arrow-right-blue.html'
-    }]
+      type    : 'commands',
+      sortable: false,
+      key     : '',
+      title   : 'Actions',
+      commands: getOptimisticCommands()
+    }],
+    api: {  // if custom command (see: getOptimisticCommands()) override isn't specified,
+            // api actions will be used to communicate with services
+      create: saveCarePlan,
+      update: saveCarePlan,
+      remove: saveCarePlan
+    }
   };
+
+
+ * --------------------------------------
+ * sample api functions -
+ * use to as service api calls
+ * --------------------------------------
+ *
+ * function saveCarePlan(){
+      var plan       = model.data.carePlan;
+      plan.lastSaved = moment().toDate();
+      return cmcCarePlanApi.put( plan.id, plan );
+   }
+
+ * --------------------------------------
+ * sample commands function -
+ * use to override default command behaviors
+ * --------------------------------------
+ *
+ * this is needed because of the current way we are saving data.
+ * we are saving entire careplan object instead of the updated field(s)
+ * which means, data needs to be in care plan object prior to saving.
+ * This approach is the optimistic approach. By default, we are taking the
+ * pessimistic approach where we only update the UI/model when data has been committed sucessfully
+ *
+ * function getOptimisticCommands(){
+      return {
+        save  : { callback: optimisticSave },
+        remove: { callback: optimisticRemove }
+      };
+
+      function optimisticRemove( event, iscRowCtrl ){
+        devlog.log( "deleting", iscRowCtrl.dataItem );
+        var iscTblCtrl = iscRowCtrl.iscTblCtrl;
+        var apicall;
+
+        iscRowCtrl.iscTblCtrl.deleteRow( iscRowCtrl.dataItem );
+        apicall        = _.get( iscTblCtrl, "tableConfig.api.remove", angular.noop );
+        apicall( iscRowCtrl.dataItem );
+      }
+
+      function optimisticSave( event, iscRowCtrl ){
+        var iscTblCtrl = iscRowCtrl.iscTblCtrl;
+        var apicall;
+
+        if( iscRowCtrl.dataItem.isNew ){
+          _.set( iscRowCtrl, "editModeData.isNew", false );
+          iscRowCtrl.iscTblCtrl.addRow( iscRowCtrl.editModeData );
+
+          apicall = _.get( iscTblCtrl, "tableConfig.api.create", angular.noop );
+          apicall( iscRowCtrl.editModeData );
+        } else {
+          iscRowCtrl.iscTblCtrl.updateRow( iscRowCtrl.editModeData, iscRowCtrl.dataItem );
+
+          apicall = _.get( iscTblCtrl, "tableConfig.api.update", angular.noop );
+          apicall( iscRowCtrl.editModeData, iscRowCtrl.dataItem );
+        }
+
+        iscRowCtrl.editModeData = {};
+        iscRowCtrl.inEditMode   = false;
+      }
+    }
+
 
  * --------------------------------------
  * sample getter for classes -
@@ -61,14 +150,22 @@
           return 'cmc-draft-pill';
       }
     }
+
+ * --------------------------------------
+ * sample getter for text -
+ * use when combining multiple fields, eg
+ * --------------------------------------
+ * function getTextClass( cellData ){
+      return dataItem[ 'someKey' ] + ', ' + dataItem[ 'someOtherKey' ] ;
+    }
  *
  * --------------------------------------
  * sample html
  * --------------------------------------
  *
- * <isc-table table-config="homeCtrl.model.getDashboardTableConfig()"
- table-data="homeCtrl.model.getHomePageData()">
- </isc-table>
+ * <isc-table table-config="someCtrl.model.getTableConfig()"
+              table-data="someCtrl.model.getTableData()">
+   </isc-table>
  *
  *
  */
@@ -99,6 +196,7 @@
       restrict    : 'E',
       replace     : true,
       templateUrl : 'table/iscTable.html',
+      bindToController: true,
       controller  : controller,
       controllerAs: "iscTblCtrl"
     };
@@ -108,32 +206,33 @@
     // ----------------------------
     // functions
     // ----------------------------
-    function controller( $scope ){//jshint ignore:line
+    function controller( ){//jshint ignore:line
       //$log.debug( 'iscTable.link, tableConfig', scope.tableConfig );
       //$log.debug( '...tableData', scope.tableData );
 
       var self       = this;
       self.addRow    = addRow;
       self.deleteRow = deleteRow;
+      self.updateRow = updateRow;
 
-      $scope.rowsOnPage  = $scope.tableConfig.rowsOnPage || 15;
-      $scope.currentPage = 1;
+      self.rowsOnPage  = self.tableConfig.rowsOnPage || 15;
+      self.currentPage = 1;
 
       // set an array of the table row objects
-      $scope.tableRows = $scope.tableConfig.key ? $scope.tableData[ $scope.tableConfig.key ] : $scope.tableData;
+      self.tableRows = self.tableConfig.key ? self.tableData[ self.tableConfig.key ] : self.tableData;
 
-      $scope.sortField = { reverse: false };
+      self.sortField = { reverse: false };
 
-      $scope.sortColumn = function( column ){
-        if( $scope.sortField.name === column.key ){
-          $scope.sortField.reverse = !$scope.sortField.reverse;
+      self.sortColumn = function( column ){
+        if(column.sortable !== false && self.sortField.name === column.key ){
+          self.sortField.reverse = !self.sortField.reverse;
         }
 
-        $scope.sortField.name = column.key;
+        self.sortField.name = column.key;
       };
 
-      $scope.changePage = function( newPageNumber ){
-        $scope.currentPage = newPageNumber;
+      self.changePage = function( newPageNumber ){
+        self.currentPage = newPageNumber;
       };
 
 
@@ -142,11 +241,15 @@
       // ----------------------------
 
       function deleteRow( row ){
-        _.remove( $scope.tableRows, row );
+        _.remove( self.tableRows, row );
       }
 
       function addRow( row ){
-        $scope.tableRows.push( row );
+        self.tableRows.push( row );
+      }
+
+      function updateRow( row, oldRow ){
+        angular.extend(oldRow, row);
       }
 
     }
@@ -157,6 +260,6 @@
   // ----------------------------
 
   angular.module( 'isc.common' )
-    .directive( 'iscTable', iscTable );
+      .directive( 'iscTable', iscTable );
 
 })();
