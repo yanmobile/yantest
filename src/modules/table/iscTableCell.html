@@ -12,10 +12,10 @@
     'dateWithTime' : column.type === 'date' }}
   </span>
 
-  <cmc-date-components form-model="iscRowCtrl.editModeData[column.key]"
-                       required="column.required"
-                       input-name="{{column.key}}">
-  </cmc-date-components>
+  <datepicker date-format="longDate" ng-if="iscRowCtrl.inEditMode">
+    <input ng-required="cellConfig.required" type="text"
+           name="{{column.key}}" class="{{ column.inputCssClass }}" ng-model="iscRowCtrl.editModeData[column.key]">
+  </datepicker>
 </span>
 
 <button ng-if="column.type === 'buttonWithSref'"

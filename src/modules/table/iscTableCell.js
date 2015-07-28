@@ -50,6 +50,7 @@
       var cellData      = scope.dataItem[ scope.column.key ];
       var defaultText   = scope.column.default;
       scope.displayText = getDisplayText( cellData, defaultText );
+      scope.displayUnit = scope.dataItem[scope.column.unit];
 
       // ----------------------------
       // functions
@@ -68,10 +69,6 @@
       }
 
       function getDisplayText( cellData, defaultText ){
-
-        if( scope.column.textGetter ){
-          return scope.column.textGetter( scope.dataItem );
-        }
 
         if( scope.column.textGetter ){
           return scope.column.textGetter( scope.dataItem );
