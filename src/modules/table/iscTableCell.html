@@ -77,7 +77,7 @@
 <span ng-if="column.type === 'dropdown'">
   <span ng-if="!iscRowCtrl.inEditMode"
         ui-sref="{{column.sref || state }}"
-        class="{{ mobileClass }} {{ getTrClass( displayText )}}">{{ dataItem[column.key]  | translate }} {{ displayUnit }}</span>
+        class="{{ mobileClass }} {{ getTrClass( displayText )}}">{{ dataItem[column.key][column.dropdownConfig.value || 'value']  | translate }} {{ displayUnit }}</span>
 
   <isc-dropdown ng-if="iscRowCtrl.inEditMode"
                 drop-required="column.required"

@@ -44,8 +44,7 @@
       type          : 'dropdown',
       dropdownConfig: {
         listData    : model.getLookup( "symptoms" ),
-        dropMinwidth: '150px',
-        usePrimative: true
+        dropMinwidth: '150px'
       }
     },
     { // for individual application to create non-core specific columns
