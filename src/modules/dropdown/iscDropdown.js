@@ -128,6 +128,8 @@
         );
       };
 
+      scope.showHideItems = _.debounce(scope.showHideItems, 150, {trailing: false, leading: true});
+
       $rootScope.$on( DROPDOWN_EVENTS.dropdownItemSelected, function(e, selection){
         //devlog.channel('iscDropdown').debug( 'iscDropdown.dropdownItemSelected', selection);
         //CHECK TO ASSURE THAT CORRECT ITEM

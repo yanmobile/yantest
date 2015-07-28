@@ -1,5 +1,5 @@
 
-	<div class="isc-dropdown isc-dd {{dropCssClass}}"  ng-class="{'invalid': dropRequired && !dropSelectedItem}"
+	<div ng-focus="showHideItems(dropId,event)" ng-blur="showHideItems(dropId,event)" tabindex="0" class="isc-dropdown isc-dd {{dropCssClass}}"  ng-class="{'invalid': dropRequired && !dropSelectedItem}"
        id="{{dropId}}-main">
 
     <!--captures the click events-->
