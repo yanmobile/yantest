@@ -56,13 +56,14 @@
       <!--data columns-->
       <td isc-table-cell
           ng-repeat="column in iscTblCtrl.tableConfig.columns track by $index"
-          class="{{iscRowCtrl.inEditMode ? column.editCellClass : column.cellClass}}"></td>
+          class="{{iscRowCtrl.inEditMode ? column.editCellClass : column.cellClass}}"
+          ng-class="{'isc-table-td-commands' : column.type === 'commands'}"></td>
     </tr>
 
     <!--empty row -->
     <tr ng-if="!iscTblCtrl.tableRows.length">
       <td colspan="{{iscTblCtrl.tableConfig.columns.length}}">
-          {{(iscTblCtrl.tableConfig.emptyRowMessage || 'There are currently no items.') | translate}}
+        {{(iscTblCtrl.tableConfig.emptyRowMessage || 'There are currently no items.') | translate}}
       </td>
     </tr>
 

@@ -142,8 +142,24 @@
       }
     }
 
-    tbody tr .cell-title {
-      display: block;
+    tbody tr:not(.isc-table-row-add) {
+      position: relative;
+
+      .cell-title {
+        display: block;
+      }
+
+      td.isc-table-td-commands {
+        width: $table-command-icon-width * 2;
+        position: absolute;
+        top: 10px;
+        right: 0px;
+        padding: 0 12.5px;
+
+        min-width: $table-command-icon-width * 2 + 25;
+        max-width: $table-command-icon-width * 2 + 25;
+
+      }
     }
 
     td {
@@ -168,12 +184,13 @@
   }
 
   @media #{$phablet} {
-    tr {
+    tr:not(.isc-table-row-add) {
       // to display multiple items per row (as space allows)
       @include flex();
       @include flex-wrap(wrap);
       @include flex-direction(row);
       @include flex-justify-content(flex-start);
+      position: relative;
 
       td {
         width: auto;
@@ -184,6 +201,7 @@
           display: block;
         }
       }
+      padding-right: $table-command-icon-width * 2 + 25;
     }
   }
 }
