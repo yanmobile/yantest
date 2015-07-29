@@ -182,8 +182,8 @@
           //for some reason the template doesn't like spaces nor comments
           var template = removeTemplateSpaces( $templateCache.get( rowTemplate ) );
 
-          var newContent = $compile( template )( scope );
-          trElem.html( '' ).append( newContent );
+          trElem.html( template );
+          $compile( trElem.contents() )( scope );
         }
       }
 
