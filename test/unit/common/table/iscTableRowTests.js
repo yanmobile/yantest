@@ -86,7 +86,9 @@
 
       scope = $rootScope.$new();
 
-      scope.iscTblCtrl = { tableConfig: getTableConfig(), deleteRow: angular.noop, addRow: angular.noop, updateRow: angular.noop  };
+      scope.iscTblCtrl = { tableConfig: getTableConfig(), deleteRow: angular.noop,
+        addRow: angular.noop, updateRow: angular.noop, editRow: angular.noop,
+        createRow: angular.noop  };
 
       scope.dataItem = getDataItems()[ 0 ];   //mimicking ng-repeat
 
@@ -123,7 +125,7 @@
 
       it ("should have iscRowCtrl point to iscTblCtrl", function(){
         expect( angular.isObject( iscRowCtrl.iscTblCtrl ) ).toBe( true );
-      })
+      });
 
       it( "should have iscTblCtrl", function(){
         expect( angular.isObject( rowScope.iscTblCtrl ) ).toBe( true );
@@ -152,6 +154,8 @@
 
       it( "should have called tableConfig.api.update", function(){
         iscRowCtrl.editModeData = angular.copy( rowScope.dataItem );
+        iscRowCtrl.editModeData.modified = true;
+
         spyOn( scope.iscTblCtrl.tableConfig.api, 'update' ).andCallThrough();
         iscRowCtrl.onCommand( 'save' );
 
@@ -161,6 +165,7 @@
       it( "should have called tableConfig.api.create", function(){
         rowScope.dataItem.isNew = true;
         iscRowCtrl.editModeData = angular.copy( rowScope.dataItem );
+        iscRowCtrl.editModeData.modified = true;
         spyOn( scope.iscTblCtrl.tableConfig.api, 'create' ).andCallThrough();
         iscRowCtrl.onCommand( 'save' );
 
@@ -175,7 +180,6 @@
 
         expect( scope.iscTblCtrl.tableConfig.api.remove ).toHaveBeenCalled();
       } );
-
 
     } );
 
@@ -212,30 +216,5 @@
         iscRowCtrl.iscTblCtrl.tableRows.length
       } );
     } );
-
-    // -------------------------
-    describe( 'iscRowCtrl addRow tests ', function(){
-
-      it( "should have an addRow function", function(){
-        expect( angular.isFunction( iscRowCtrl.addRow ) ).toBe( true );
-      } );
-
-      it( "should have created new object", function(){
-        iscRowCtrl.addRow();
-        rowScope.$digest();
-        expect( rowScope.dataItem ).toEqual( { isNew: true } );
-        expect( rowScope.dataItem ).toBe( iscRowCtrl.dataItem );
-      } );
-
-      it( "should have called onCommand with 'edit'", function(){
-
-        spyOn( iscRowCtrl, 'onCommand' ).andCallThrough();
-        iscRowCtrl.addRow();
-        rowScope.$digest();
-        expect( iscRowCtrl.onCommand ).toHaveBeenCalled();
-      } );
-
-    } );
   } );
 })();
-
