@@ -233,6 +233,10 @@
       fill: darken($white-smoke, 10);
     }
   }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
 }
 
 .isc-table-command-edit-icon {

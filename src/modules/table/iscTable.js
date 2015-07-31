@@ -210,9 +210,14 @@
       //$log.debug( '...tableData', scope.tableData );
 
       var self       = this;
+
       self.addRow    = addRow;
-      self.deleteRow = deleteRow;
       self.updateRow = updateRow;
+
+      self.deleteRow = deleteRow;
+      self.createRow = createRow;
+      self.editRow = editRow;
+      self.cancelEdit = cancelEdit;
 
       self.rowsOnPage  = self.tableConfig.rowsOnPage || 15;
       self.currentPage = 1;
@@ -234,7 +239,6 @@
         self.currentPage = newPageNumber;
       };
 
-
       // ----------------------------
       // functions
       // ----------------------------
@@ -245,12 +249,25 @@
 
       function addRow( row ){
         self.tableRows.push( row );
+        self.dataItem = null;
       }
 
       function updateRow( row, oldRow ){
-        angular.extend(oldRow, row);
+        angular.extend( oldRow, row );
+        self.dataItem = null;
       }
 
+      function createRow(){
+        self.dataItem = { isNew: true };
+      }
+
+      function editRow( row ){
+        self.dataItem = row;
+      }
+
+      function cancelEdit(){
+        self.dataItem = null;
+      }
     }
   }
 

@@ -37,7 +37,8 @@
       priority    : -1,
       controllerAs: 'iscRowCtrl',
       controller  : controller,
-      compile     : compile
+      compile     : compile,
+      templateUrl : 'table/iscTableRow.html'
     };
 
     return directive;
@@ -52,15 +53,13 @@
       // vars
       // ----------------------------
 
-      var self          = this;
-      self.inEditMode   = false;
+      var self        = this;
+      self.inEditMode = false;
       self.editModeData = angular.copy( self.dataItem );
 
       self.editModeCommands = {};
 
       self.onCommand = onCommand;
-
-      self.addRow = addRow;
 
       // ----------------------------
       // functions
@@ -92,11 +91,11 @@
             }
             break;
 
-          case 'cancelSave':
+          case 'cancelEdit':
             if( angular.isFunction( callback ) ){
               callback( event, self );
             } else {
-              defaultCancelSaveCallback( event, self );
+              defaultCancelEditCallback( event, self );
             }
             break;
 
@@ -119,20 +118,29 @@
         } );
       }
 
-      function defaultCancelSaveCallback( event ){
+      function defaultCancelEditCallback( event ){
         self.editModeData = {};
         self.inEditMode   = false;
+        self.iscTblCtrl.cancelEdit();
       }
 
       function defaultEditCallback( event ){
-        self.editModeData = angular.copy( self.dataItem );
-        self.inEditMode   = true;
+        if(self.iscTblCtrl.dataItem == null){
+          self.editModeData = angular.copy( self.dataItem );
+          self.inEditMode   = true;
+          self.iscTblCtrl.editRow( self.dataItem );
+        }
       }
 
       function defaultSaveCallback( event ){
         var apicall;
 
-        if( self.dataItem.isNew ){
+        if( angular.equals( self.editModeData, self.dataItem ) ){
+          self.editModeData = {};
+          self.inEditMode   = false;
+          self.iscTblCtrl.cancelEdit();
+        }
+        else if( self.dataItem.isNew ){
           _.set( self, 'editModeData.isNew', false );
 
           apicall = _.get( self, 'iscTblCtrl.tableConfig.api.create', angular.noop );
@@ -143,7 +151,8 @@
             self.inEditMode   = false;
           } )
 
-        } else {
+        }
+        else {
           apicall = _.get( self, 'iscTblCtrl.tableConfig.api.update', angular.noop );
           apicall( self.editModeData, self.dataItem ).then( function(){
             self.iscTblCtrl.updateRow( self.editModeData, self.dataItem );
@@ -152,13 +161,6 @@
             self.inEditMode   = false;
           } )
         }
-      }
-
-      function addRow( event ){
-        $scope.dataItem = {
-          isNew: true
-        };
-        self.onCommand( 'edit' );
       }
     }
 
@@ -169,13 +171,13 @@
         post: post
       };
 
-      function pre( scope, trElem, attrs ){
-        var rowTemplate;
-        if( attrs.rowType === 'data' ){
-          rowTemplate = _.get( scope, 'iscTblCtrl.tableConfig.rowTemplate' );
+      function pre( scope, trElem, attrs, iscRowCtrl ){
+        var rowTemplate = _.get( scope, 'iscTblCtrl.tableConfig.rowTemplate' );
 
-        } else if( attrs.rowType === 'add' ){
-          rowTemplate = _.get( scope, 'iscTblCtrl.tableConfig.rowAddTemplate' );
+        //in the case of creating a new item, fetch dataItem from iscTblCtrl
+        if( scope.dataItem == null && _.get( scope, "iscTblCtrl.dataItem.isNew" ) ){
+          iscRowCtrl.dataItem = scope.dataItem = _.get( scope, "iscTblCtrl.dataItem" );
+          iscRowCtrl.inEditMode = true;
         }
 
         if( rowTemplate ){
@@ -187,10 +189,10 @@
         }
       }
 
-      function post( scope, elem, attr ){
-        scope.iscRowCtrl.iscTblCtrl = scope.iscTblCtrl;
+      function post( scope, elem, attr , iscRowCtrl){
+        iscRowCtrl.iscTblCtrl = scope.iscTblCtrl;
         scope.$watch( 'dataItem', function( value ){
-          scope.iscRowCtrl.dataItem = value;
+          iscRowCtrl.dataItem = value;
         } )
       }
 

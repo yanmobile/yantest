@@ -98,21 +98,21 @@
 <div ng-if="column.type === 'commands'" class="isc-table-columm-commands">
   <span ng-if="!iscRowCtrl.inEditMode">
 
-    <button class="isc-table-command-edit-icon" ng-click="iscRowCtrl.onCommand('edit', $event, column.commands.edit.callback)">
+    <button class="isc-table-command-edit-icon" ng-disabled="iscTblCtrl.dataItem" ng-click="iscRowCtrl.onCommand('edit', $event, column.commands.edit.callback)">
       <span ng-include="'svg/isc-table-edit-icon.html'"></span>
     </button>
 
-    <button class="isc-table-command-remove-icon" ng-click="iscRowCtrl.onCommand('remove', $event, column.commands.remove.callback)">
+    <button class="isc-table-command-remove-icon" ng-disabled="iscTblCtrl.dataItem" ng-click="iscRowCtrl.onCommand('remove', $event, column.commands.remove.callback)">
       <span ng-include="'svg/isc-table-remove-icon.html'"></span>
     </button>
-    </span>
+  </span>
 
   <span ng-if="iscRowCtrl.inEditMode">
     <button ng-disabled="iscRowForm.$invalid" class="isc-table-command-save-icon"
             ng-click="iscRowCtrl.onCommand('save', $event, column.commands.save.callback)">
       <span ng-include="'svg/isc-table-save-icon.html'"></span>
     </button>
-    <button class="isc-table-command-cancel-icon" ng-click="iscRowCtrl.onCommand('cancelSave', $event, column.commands.cancelSave.callback)">
+    <button class="isc-table-command-cancel-icon" ng-click="iscRowCtrl.onCommand('cancelEdit', $event, column.commands.cancelEdit.callback)">
       <span ng-include="'svg/isc-table-cancel-icon.html'"></span>
     </button>
   </span>
@@ -120,7 +120,7 @@
 <!-- end commands -->
 <!-- required message -->
 <!--<span id="{{column.type + column.key + 'required'}}"-->
-<!--ng-class="{invisible: !iscRowForm[column.key].$error.required}"-->
-<!--ng-if="iscRowCtrl.inEditMode && column.type !== 'commands'">-->
-<!--Required!-->
+      <!--ng-class="{invisible: !iscRowForm[column.key].$error.required}"-->
+      <!--ng-if="iscRowCtrl.inEditMode && column.type !== 'commands'">-->
+    <!--Required!-->
 <!--</span>-->
