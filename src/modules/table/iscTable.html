@@ -69,7 +69,7 @@
     <!-- footer -->
     <tr isc-table-footer-row>
     </tr>
-    <tr class="isc-table-row-add" >
+    <tr class="isc-table-row-add" ng-if="iscTblCtrl.tableConfig.editable" >
       <td colspan="{{iscTblCtrl.tableConfig.columns.length}}">
         <div class="add-button-wrapper">
           <button ng-disabled="iscTblCtrl.dataItem" class="isc-btn-link" ng-click="iscTblCtrl.createRow()">
