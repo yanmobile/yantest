@@ -86,6 +86,14 @@ $color-darkGrey: #8e9294;
   z-index: $modal-z-index !important;
 }
 
+.isc-dropdown-item-inner {
+  display       : inline-block;
+  white-space   : nowrap;
+
+  //account for scrollbar
+  padding-right : 20px;
+}
+
 .isc-dropdown-hidden{
 	@extend .isc-dropdown-item;
 	visibility: hidden;
