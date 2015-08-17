@@ -177,6 +177,7 @@
         //in the case of creating a new item, fetch dataItem from iscTblCtrl
         if( scope.dataItem == null && _.get( scope, "iscTblCtrl.dataItem.isNew" ) ){
           iscRowCtrl.dataItem = scope.dataItem = _.get( scope, "iscTblCtrl.dataItem" );
+          iscRowCtrl.editModeData = angular.copy(scope.dataItem);
           iscRowCtrl.inEditMode = true;
         }
 

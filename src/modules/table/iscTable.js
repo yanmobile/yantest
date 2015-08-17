@@ -58,7 +58,7 @@
       type    : 'commands',
       sortable: false,
       key     : '',
-      title   : 'Actions',
+      title   : '',
       commands: getOptimisticCommands()
     }],
     api: {  // if custom command (see: getOptimisticCommands()) override isn't specified,
@@ -258,7 +258,13 @@
       }
 
       function createRow(){
-        self.dataItem = { isNew: true };
+        var dataItem = { isNew: true };
+        self.tableConfig.columns.forEach( function( column ){
+          if( column.defaultValue != null ){
+            dataItem[ column.key ] = column.defaultValue;
+          }
+        } );
+        self.dataItem = dataItem;
       }
 
       function editRow( row ){
