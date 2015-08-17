@@ -24,6 +24,7 @@
     var service  = {
       getBaseUrl: getBaseUrl,
       getBaseUrlSecondary: getBaseUrlSecondary,
+      getApiUrl: getApiUrl,
 
       getConfig: getConfig,
       setConfig: setConfig,
@@ -63,6 +64,16 @@
 
     function getBaseUrlSecondary(){
       return config.baseUrlSecondary;
+    }
+
+    function getApiUrl(apiUrl){
+      if(config.api == null){
+        return apiUrl;
+      }
+
+      var url = (config.api.protocol || "http") + "://" + config.api.hostname + ":" + (config.api.port || 80);
+      url += (apiUrl || "");
+      return url;
     }
 
     // ----------------------------
