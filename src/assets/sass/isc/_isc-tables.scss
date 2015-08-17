@@ -2,13 +2,13 @@
 // responsive table
 // ----------------------------------------
 
-.isc-summary-content{
-  flex-wrap: wrap;
+.isc-summary-content {
+  @include flex-wrap(wrap);
 }
 
 .isc-table {
   border: none;
-  width:100%;
+  width: 100%;
 
   .back-button {
     margin-bottom: 20px;
@@ -27,15 +27,16 @@
     padding: 0 7px 0 2px;
   }
 
-  table{
+  table {
     width: 100%;
     border-collapse: collapse;
     left: 0;
     right: 0;
 
-    h3{
+    h3 {
       font-weight: 700;
       margin-bottom: 5px;
+
     }
 
     .isc-sortable {
@@ -63,38 +64,45 @@
       margin-right: 10px;
     }
 
-    .orange{
+    .orange {
       background-color: orange;
     }
 
-    .purple{
+    .purple {
       background-color: purple;
     }
 
-    .green{
+    .green {
       background-color: green;
     }
   }
 
-  tbody{
-    tr{
+  tbody {
+    tr {
       border-top: 1px solid $app-border-color;
+      &.isc-table-row-add {
+        border-top: none;
+      }
+
+      .cell-title {
+        display: none;
+      }
     }
   }
 
-  td, th{
+  td, th {
     padding: 6px;
     text-align: left;
     text-overflow: ellipsis;
   }
 
-  th{
+  th {
     color: $gray-light;
     font-size: $table-th-size;
     font-weight: 900;
   }
 
-  td{
+  td {
     color: $gray;
     font-size: $table-td-size;
     font-weight: 400;
@@ -103,12 +111,16 @@
       text-transform: capitalize;
     }
 
-    div{
+    div {
       margin-bottom: 5px;
+    }
+
+    .isc-table-columm-commands {
+      width: $table-command-icon-width * 2;
     }
   }
 
-  @media #{$phone} {
+  @media #{$phab-or-less} {
 
     /* Force table to not be like tables anymore */
     table, thead, tbody, th, td, tr {
@@ -130,15 +142,33 @@
       }
     }
 
+    tbody tr:not(.isc-table-row-add) {
+      position: relative;
+
+      .cell-title {
+        display: block;
+      }
+
+      td.isc-table-td-commands {
+        width: $table-command-icon-width * 2;
+        position: absolute;
+        top: 10px;
+        right: 0px;
+        padding: 0 12.5px;
+
+        min-width: $table-command-icon-width * 2 + 25;
+        max-width: $table-command-icon-width * 2 + 25;
+
+      }
+    }
+
     td {
       /* Behave  like a "row" */
       border: none;
       border-bottom: 1px solid $tr-bkgrnd-dark;
       position: relative;
-      padding-left: 50%;
-      width:100%;
-      display: table-cell;
-      padding-left: 0%;
+      padding-left: 15px;
+      width: 100%;
     }
 
     td:before {
@@ -153,10 +183,83 @@
     }
   }
 
+  @media #{$phablet} {
+    tr:not(.isc-table-row-add) {
+      // to display multiple items per row (as space allows)
+      @include flex();
+      @include flex-wrap(wrap);
+      @include flex-direction(row);
+      @include flex-justify-content(flex-start);
+      position: relative;
+
+      td {
+        width: auto;
+        min-width: 200px;
+        max-width: 200px;
+
+        > * {
+          display: block;
+        }
+      }
+      padding-right: $table-command-icon-width * 2 + 25;
+    }
+  }
 }
 
-.isc-table-cell-main{
+.isc-table-cell-main {
   font-size: $table-td-size !important;
   color: $brand-link !important;
   font-weight: 900 !important;
+}
+
+.isc-table-command-icon {
+  max-width: 30px;
+  border: none;
+  background-color: white;
+  padding: 0 10px 4px 10px !important;
+  cursor: pointer;
+
+  svg {
+    display: inline-block;
+    vertical-align: middle;
+    width: 20px;
+    height: 20px;
+    fill: $pencil-button-color;
+  }
+
+  &:hover,
+  &:disabled {
+    svg {
+      fill: darken($white-smoke, 10);
+    }
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
+.isc-table-command-edit-icon {
+  @extend .isc-table-command-icon;
+}
+
+.isc-table-command-remove-icon {
+  @extend .isc-table-command-icon;
+  svg {
+    fill: $remove-button-color;
+  }
+}
+
+.isc-table-command-save-icon {
+  @extend .isc-table-command-icon;
+  svg {
+    fill: $button-primary;
+  }
+}
+
+.isc-table-command-cancel-icon {
+  @extend .isc-table-command-icon;
+  svg {
+    fill: $remove-button-color;
+  }
 }

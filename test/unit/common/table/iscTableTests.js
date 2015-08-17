@@ -120,11 +120,11 @@
     describe( 'setup tests ', function(){
 
       it("should have a table config", function() {
-        expect( angular.isObject(isolateScope.tableConfig) ).toBe( true );
+        expect( angular.isObject(isolateScope.iscTblCtrl.tableConfig) ).toBe( true );
       });
 
       it("should have table data", function() {
-        expect( angular.isObject(isolateScope.tableData) ).toBe( true );
+        expect( angular.isObject(isolateScope.iscTblCtrl.tableData) ).toBe( true );
       });
 
     });
@@ -133,27 +133,27 @@
     describe( 'table pagination tests ', function(){
 
       it("should have a default of 15 rowsOnPage", function() {
-        expect( isolateScope.rowsOnPage ).toBe( 15 );
+        expect( isolateScope.iscTblCtrl.rowsOnPage ).toBe( 15 );
       });
 
       it("should chage rowsOnPage if you add number to config", function() {
         scope.tableConfig.rowsOnPage = 20;
         compile();
 
-        expect( isolateScope.rowsOnPage ).toBe( 20 );
+        expect( isolateScope.iscTblCtrl.rowsOnPage ).toBe( 20 );
       });
 
       it("should start on page one", function() {
-        expect( isolateScope.currentPage ).toBe( 1 );
+        expect( isolateScope.iscTblCtrl.currentPage ).toBe( 1 );
       });
 
       it("should have a function changePage", function() {
-        expect( angular.isFunction(isolateScope.changePage) ).toBe( true );
+        expect( angular.isFunction(isolateScope.iscTblCtrl.changePage) ).toBe( true );
       });
 
       it("should change the page when you pass in a new page number", function() {
-        isolateScope.changePage( 2 );
-        expect( isolateScope.currentPage ).toBe( 2 );
+        isolateScope.iscTblCtrl.changePage( 2 );
+        expect( isolateScope.iscTblCtrl.currentPage ).toBe( 2 );
       });
 
     });
@@ -161,22 +161,22 @@
     describe( 'table sorting tests ', function(){
 
       it("should start with unreversed sort order", function() {
-        expect( isolateScope.sortField ).toEqual( { reverse: false } );
+        expect( isolateScope.iscTblCtrl.sortField ).toEqual( { reverse: false } );
       });
 
       it("should have a function sortColumn", function() {
-        expect( angular.isFunction(isolateScope.sortColumn) ).toBe( true );
+        expect( angular.isFunction(isolateScope.iscTblCtrl.sortColumn) ).toBe( true );
       });
 
       it("should change the sort field to the column you pass in without reversing", function() {
-        isolateScope.sortColumn( tableConfig.columns[0] );
-        expect( isolateScope.sortField ).toEqual( { reverse: false, name: 'OrderedItemDisplay' } );
+        isolateScope.iscTblCtrl.sortColumn( tableConfig.columns[0] );
+        expect( isolateScope.iscTblCtrl.sortField ).toEqual( { reverse: false, name: 'OrderedItemDisplay' } );
       });
 
       it("should reverse the next time called", function() {
-        isolateScope.sortColumn( tableConfig.columns[1] );
-        isolateScope.sortColumn( tableConfig.columns[1] );
-        expect( isolateScope.sortField ).toEqual( { reverse: true, name: 'Timestamp' } );
+        isolateScope.iscTblCtrl.sortColumn( tableConfig.columns[1] );
+        isolateScope.iscTblCtrl.sortColumn( tableConfig.columns[1] );
+        expect( isolateScope.iscTblCtrl.sortField ).toEqual( { reverse: true, name: 'Timestamp' } );
       });
 
     });
@@ -184,23 +184,23 @@
     describe( 'callback function tests ', function(){
 
       it("should have a function rowButtonCallback", function() {
-        expect( angular.isFunction(isolateScope.rowButtonCallback) ).toBe( true );
+        expect( angular.isFunction(isolateScope.iscTblCtrl.rowButtonCallback) ).toBe( true );
       });
 
       it("should call rowButtonCallback", function() {
         spyOn( scope, 'rowButtonCallback' );
-        isolateScope.rowButtonCallback( {state: 'test' } );
+        isolateScope.iscTblCtrl.rowButtonCallback( {state: 'test' } );
 
         expect( scope.rowButtonCallback ).toHaveBeenCalledWith( 'test' );
       });
 
       it("should have a function backButtonCallback", function() {
-        expect( angular.isFunction(isolateScope.backButtonCallback) ).toBe( true );
+        expect( angular.isFunction(isolateScope.iscTblCtrl.backButtonCallback) ).toBe( true );
       });
 
       it("should call backButtonCallback", function() {
         spyOn( scope, 'backButtonCallback' );
-        isolateScope.backButtonCallback();
+        isolateScope.iscTblCtrl.backButtonCallback();
 
         expect( scope.backButtonCallback ).toHaveBeenCalled();
       });
@@ -209,4 +209,3 @@
 
   });
 })();
-

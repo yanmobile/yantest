@@ -18,74 +18,79 @@
     // ----------------------------
 
     var directive = {
-      scope: {
-        cellData: '=',
-        cellConfig: '=',
-        mobileClass: '@?'
-      },
-
-      restrict: 'A',
-      transclude: false,
-      templateUrl: 'table/iscTableCell.html',
-      link: link
+      scope       : true, //prototypal inheritance
+      restrict    : 'EA',
+      templateUrl : 'table/iscTableCell.html',
+      link        : link,
+      controller  : controller,
+      controllerAs: "iscCellCtrl"
     };
-
     return directive;
 
     // ----------------------------
     // functions
     // ----------------------------
 
+    function controller(){ //needed to use with controllerAs
+    }
 
-    function link( scope, elem, attr ){//jshint ignore:line
 
-      scope.displayUnit = scope.cellData[scope.cellConfig.unit];
+    function link( scope, elem, attrs ){//jshint ignore:line
 
-      scope.state = $state.current.name;
+      // ----------------------------
+      // vars
+      // ----------------------------
+      scope.notThere       = notThere;
+      scope.getTrClass     = getTrClass;
+      scope.getDisplayText = getDisplayText;
 
-      scope.getTrClass = function( item ){
-        if( scope.cellConfig.className ){
-          return scope.cellConfig.className;
+      scope.mobileClass = scope.$eval( attrs.mobileClass );
+
+      scope.state       = $state.current.name;
+      var cellData      = scope.dataItem[ scope.column.key ];
+      var defaultText   = scope.column.default;
+      scope.displayText = getDisplayText( cellData, defaultText );
+      scope.displayUnit = scope.dataItem[scope.column.unit];
+
+      // ----------------------------
+      // functions
+      // ----------------------------
+
+      function getTrClass( item ){
+        if( scope.column.className ){
+          return scope.column.className;
         }
-        else if( scope.cellConfig.classGetter ){
-          return scope.cellConfig.classGetter( item );
+        else if( scope.column.classGetter ){
+          return scope.column.classGetter( item );
         }
-        else{
+        else {
           return '';
         }
-      };
+      }
 
-      scope.getDisplayText = function( cellData, defaultText ){
+      function getDisplayText( cellData, defaultText ){
 
-        if( scope.cellConfig.textGetter ){
-          return scope.cellConfig.textGetter( scope.cellData );
+        if( scope.column.textGetter ){
+          return scope.column.textGetter( scope.dataItem );
         }
 
         var retVal;
-        if( scope.notThere( cellData ) && scope.notThere( defaultText )){
+        if( scope.notThere( cellData ) && scope.notThere( defaultText ) ){
           retVal = 'ISC_NA'
         }
-        else if( scope.notThere( cellData )){
+        else if( scope.notThere( cellData ) ){
           retVal = String( defaultText );
         }
-        else{
+        else {
           retVal = String( cellData );
         }
 
         return retVal;
-      };
+      }
 
-      scope.notThere = function( val ){
+      function notThere( val ){
         return !val && val !== 0;
-      };
-
-      var cellData = scope.cellData[scope.cellConfig.key];
-      var defaultText = scope.cellConfig.default;
-      scope.displayText = scope.getDisplayText( cellData, defaultText );
-
-      //$log.debug( 'cellData', cellData );
-      //$log.debug( 'scope.cellConfig.default', scope.cellConfig.default );
-      //$log.debug( 'scope.displayText', scope.displayText );
+      }
 
     }
   }
@@ -95,6 +100,6 @@
   // ----------------------------
 
   angular.module( 'isc.common' )
-      .directive( 'iscTableCell', iscTableCell );
+    .directive( 'iscTableCell', iscTableCell );
 
 })();

@@ -1,115 +1,90 @@
 <div class="isc-table">
   <!--title-->
-  <h1 class="{{tableConfig.titleClass}}">{{ tableData[ tableConfig.title ] || tableConfig.title | translate }}</h1>
+  <h1 class="{{iscTblCtrl.tableConfig.titleClass}}">{{ iscTblCtrl.tableData[ iscTblCtrl.tableConfig.title ] || iscTblCtrl.tableConfig.title | translate }}</h1>
 
   <!--back button for wellness workflows -->
-  <button ng-if="!!tableConfig.backButtonText"
-          ng-click="backButtonCallback()"
+  <button ng-if="!!iscTblCtrl.tableConfig.backButtonText"
+          ng-click="iscTblCtrl.backButtonCallback()"
           class="isc-table-btn-white back-button">
     <span ng-include="'svg/isc-arrow-back.html'"></span>
-    <span>{{ tableConfig.backButtonText | translate }}</span>
+    <span>{{ iscTblCtrl.tableConfig.backButtonText | translate }}</span>
   </button>
 
   <!--subtitles-->
-  <h2 ng-if="tableConfig.subtitle">{{ tableData[ tableConfig.subtitle ] || tableConfig.subtitle | translate }}</h2>
-  <h3 ng-if="tableConfig.subsubtitle">{{ tableData[ tableConfig.subsubtitle ] || tableConfig.subsubtitle | translate }}</h3>
+  <h2 ng-if="iscTblCtrl.tableConfig.subtitle">{{ iscTblCtrl.tableData[ iscTblCtrl.tableConfig.subtitle ] || iscTblCtrl.tableConfig.subtitle | translate }}</h2>
 
+  <h3 ng-if="iscTblCtrl.tableConfig.subsubtitle">{{ iscTblCtrl.tableData[ iscTblCtrl.tableConfig.subsubtitle ] || iscTblCtrl.tableConfig.subsubtitle | translate }}</h3>
   <!--desktop and tablet-->
-  <table class="only-tab-plus">
+  <table class="{{iscTblCtrl.tableConfig.tableClass}}">
     <!--header-->
     <thead>
-    <tr ng-if="tableConfig.summaryTitle">
+    <tr ng-if="iscTblCtrl.tableConfig.summaryTitle">
       <td>
-        <span class="color-bar {{tableConfig.summaryClass}}"></span>
-        <h2 class="summary-heading">{{tableRows.length}} {{tableConfig.summaryTitle | translate }}</h2>
+        <span class="color-bar {{iscTblCtrl.tableConfig.summaryClass}}"></span>
+
+        <h2 class="summary-heading">{{iscTblCtrl.tableRows.length}} {{iscTblCtrl.tableConfig.summaryTitle | translate }}</h2>
       </td>
     </tr>
 
     <!-- Data column headers-->
-    <tr>
-      <th ng-repeat="column in tableConfig.columns track by $index">
-        <a ng-class="{ 'isc-sortable': column.key === sortField.name, 'reverse': sortField.reverse }"
-           ng-click="sortColumn(column)"
+    <tr >
+      <th ng-repeat="column in iscTblCtrl.tableConfig.columns track by $index">
+        <span ng-if="column.sortable === false">  {{column.title | translate}} </span>
+        <a ng-if="column.sortable !== false" ng-class="{ 'isc-sortable': column.key === iscTblCtrl.sortField.name, 'reverse': iscTblCtrl.sortField.reverse }"
+           ng-click="iscTblCtrl.sortColumn(column)"
            class="isc-clickable">{{ column.title | translate }}</a>
       </th>
 
       <!--button column headers for wellness workflows-->
-      <th ng-repeat="button in tableConfig.buttons track by $index">
+      <th ng-repeat="button in iscTblCtrl.tableConfig.buttons track by $index">
         {{ button.title | translate }}
       </th>
     </tr>
     </thead>
-
     <tbody>
 
     <!--rows-->
-    <tr dir-paginate="dataItem in tableRows | orderBy: sortField.name : sortField.reverse | itemsPerPage: rowsOnPage"
-        current-page="currentPage"
-        model-data="tableRows"
-        pagination-id="tableConfig.key">
-
-      <!--data columns-->
-      <td isc-table-cell
-          ng-repeat="column in tableConfig.columns track by $index"
-          cell-data="dataItem"
-          cell-config="column"></td>
-
-      <!--button columns for wellness workflows-->
-      <td ng-repeat="button in tableConfig.buttons track by $index">
-        <button class="isc-table-btn-white"
-                ng-click="rowButtonCallback( {state: {name: button.key, data: dataItem} } )">
-            <span ng-if="!!button.icon"
-                  ng-include="button.icon"></span>
-        </button>
-      </td>
+    <tr dir-paginate="dataItem in iscTblCtrl.tableRows | orderBy: iscTblCtrl.sortField.name : iscTblCtrl.sortField.reverse | itemsPerPage: iscTblCtrl.rowsOnPage"
+        current-page="iscTblCtrl.currentPage"
+        model-data="iscTblCtrl.tableRows"
+        pagination-id="iscTblCtrl.tableConfig.key"
+        ng-form
+        name="iscRowForm"
+        isc-table-row>
     </tr>
-    </tbody>
-  </table>
 
-  <!--phone and phab-->
-  <table class="only-phab-or-below">
-    <tbody>
-
-    <!--header for summary-->
-    <tr class="summary-heading" ng-if="tableConfig.summaryTitle">
-      <td>
-        <span class="color-bar {{tableConfig.summaryClass}}"></span>
-        <h2>{{tableRows.length}} {{tableConfig.summaryTitle | translate }}</h2>
+    <!--empty row -->
+    <tr ng-if="!iscTblCtrl.tableRows.length">
+      <td colspan="{{iscTblCtrl.tableConfig.columns.length}}">
+          {{(iscTblCtrl.tableConfig.emptyRowMessage || 'There are currently no items.') | translate}}
       </td>
     </tr>
 
-    <!-- rows -->
-    <tr dir-paginate="dataItem in tableRows | orderBy: sortField.name : sortField.reverse | itemsPerPage: rowsOnPage"
-        current-page="currentPage"
-        model-data="tableRows"
-        pagination-id="tableConfig.key">
-
-      <!--data columns-->
-      <td>
-        <div isc-table-cell
-             ng-repeat="column in tableConfig.columns track by $index"
-             cell-data="dataItem"
-             cell-config="column"
-             mobile-class="text-item">
+    <!--add row -->
+    <tr ng-if="iscTblCtrl.dataItem.isNew"
+        isc-table-row
+        ng-form
+        name="iscRowForm">
+    </tr>
+    <!-- footer -->
+    <tr isc-table-footer-row>
+    </tr>
+    <tr class="isc-table-row-add" ng-if="iscTblCtrl.tableConfig.editable" >
+      <td colspan="{{iscTblCtrl.tableConfig.columns.length}}">
+        <div class="add-button-wrapper">
+          <button ng-disabled="iscTblCtrl.dataItem" class="isc-btn-link" ng-click="iscTblCtrl.createRow()">
+            <span ng-include="'svg/isc-plus-box.html'"></span>
+            {{ iscTblCtrl.tableConfig.addBtnTranslationKey | translate }}
+          </button>
         </div>
       </td>
-
-      <!--button columns for wellness workflows-->
-      <td ng-repeat="button in tableConfig.buttons track by $index">
-        <h3>{{ button.title | translate }}</h3>
-        <button class="isc-table-btn-white"
-                ng-click="rowButtonCallback( {state: {name: button.key, data: dataItem} } )">
-            <span ng-if="!!button.icon"
-                  ng-include="button.icon"></span>
-        </button>
-      </td>
     </tr>
     </tbody>
   </table>
 
-  <dir-pagination-controls ng-if="tableRows.length > 0 "
-                           on-page-change="changePage( newPageNumber )"
-                           pagination-id="tableConfig.key"
+  <dir-pagination-controls ng-if="iscTblCtrl.tableRows.length > 0 "
+                           on-page-change="iscTblCtrl.changePage( newPageNumber )"
+                           pagination-id="iscTblCtrl.tableConfig.key"
                            template-url="thirdParty/dirPagination.tpl.html"></dir-pagination-controls>
 
 </div>
