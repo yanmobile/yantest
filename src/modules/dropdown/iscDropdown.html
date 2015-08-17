@@ -30,6 +30,6 @@
          id="{{dropId}}-icon"><span ng-include="'svg/isc-chevron-down.html'"></span>
     </div>
 
-    <input name="{{dropId || 'dropId'+listField}}" hidden ng-model="dropSelectedItem" ng-required="dropRequired">
+    <input name="{{dropId || 'dropId'+listField}}" id="{{dropId || 'dropId'+listField}}" hidden ng-model="dropSelectedItem" ng-required="dropRequired">
 	</div>
 
