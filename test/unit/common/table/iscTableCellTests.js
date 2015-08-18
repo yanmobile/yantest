@@ -52,10 +52,10 @@
     ];
 
     var html = '<div isc-table-cell ' +
-      'cell-data="dataItem"' +
-      'cell-config="column"' +
-      'mobile-class="isc-text-item">' +
-      '</div>';
+        'cell-data="dataItem"' +
+        'cell-config="column"' +
+        'mobile-class="isc-text-item">' +
+        '</div>';
 
     beforeEach( module( 'isc.common' ) );
 
@@ -224,16 +224,16 @@
 
       it( "should get the right displayText, getter function", function(){
 
-        var defaultText = 1234;
-
-          key       : 'OrderedItemDisplay',
-          title     : 'ISC_WELLNESS_LAB_NAME',
+        rowScope.column =  {
+          key: 'OrderedItemDisplay',
+          title: 'ISC_WELLNESS_LAB_NAME',
           textGetter: function(){
             return 'foo bar baz';
           }
         };
         compile();
 
+        var expected = cellScope.getDisplayText();
         expect( expected ).toBe( 'foo bar baz' );
       } );
 
@@ -248,46 +248,45 @@
 
       it( "should get the right displayText, dataItem defined, string", function(){
 
-        var dataItem    = 'shazam';
-        var defaultText = '';
+        rowScope.column.default = '';
+        rowScope.dataItem[ rowScope.column.key ] = 'shazam';
 
-        var expected = cellScope.getDisplayText( dataItem, defaultText );
-        expect( expected ).toBe( dataItem );
+        var expected = cellScope.getDisplayText();
+        expect( expected ).toBe( 'shazam' );
       } );
 
       it( "should get the right displayText, dataItem defined, number", function(){
 
-        var dataItem    = 0;
-        var defaultText = '';
+        rowScope.column.default = ''
+        rowScope.dataItem[ rowScope.column.key ] = 0;
 
-        var expected = cellScope.getDisplayText( dataItem, defaultText );
+        var expected = cellScope.getDisplayText();
         expect( expected ).toBe( '0' );
       } );
 
       it( "should get the right displayText, defaultText defined, string", function(){
 
-        var dataItem    = '';
-        var defaultText = 'shazam';
+        rowScope.column.default = 'shazam';
+        rowScope.dataItem[ rowScope.column.key ] = '';
 
-        var expected = cellScope.getDisplayText( dataItem, defaultText );
+        var expected = cellScope.getDisplayText();
         expect( expected ).toBe( 'shazam' );
       } );
 
       it( "should get the right displayText, defaultText defined, number", function(){
 
-        var dataItem    = '';
-        var defaultText = 1234;
+        rowScope.column.default = 1234;
+        rowScope.dataItem[ rowScope.column.key ] = '';
 
-        var expected = cellScope.getDisplayText( dataItem, defaultText );
+        var expected = cellScope.getDisplayText();
         expect( expected ).toBe( '1234' );
       } );
 
       it( "should get the right displayText, BOTH defined", function(){
+        rowScope.column.default = 1234;
+        rowScope.dataItem[ rowScope.column.key ] = 'shazam';
 
-        var dataItem = 'shazam'; // dataItem should take presidence
-        var defaultText = 1234;
-
-        var expected = cellScope.getDisplayText( dataItem, defaultText );
+        var expected = cellScope.getDisplayText();
         expect( expected ).toBe( 'shazam' );
       } );
     } );

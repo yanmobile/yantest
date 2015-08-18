@@ -9,28 +9,28 @@
 
   function iscNavContainerSecondaryNavAnimation( $log, iscAnimationService, TweenMax, EASE_DUR ){
 
-  // --------------------
-  // vars
-  // --------------------
+    // --------------------
+    // vars
+    // --------------------
 
-  // --------------------
-  // init
-  // --------------------
+    // --------------------
+    // init
+    // --------------------
 
-  // --------------------
-  // class factory
-  // --------------------
+    // --------------------
+    // class factory
+    // --------------------
 
-  var animations = {
-    beforeAddClass: beforeAddClass,
-    beforeRemoveClass: beforeRemoveClass
-  };
+    var animations = {
+      beforeAddClass: beforeAddClass,
+      beforeRemoveClass: beforeRemoveClass
+    };
 
-  return animations;
+    return animations;
 
-  // --------------------
-  // functions
-  // --------------------
+    // --------------------
+    // functions
+    // --------------------
 
     function beforeAddClass( element, className, done ){
       //$log.debug( 'iscNavContainerSecondaryNavAnimation.beforeAddClass' );
@@ -43,20 +43,21 @@
         var offsetX = element[0].offsetLeft;
         var offsetY = element[0].offsetTop;
 
-        // set the w and h now, since the other calcs are dependent on that
-        TweenMax.set( element, {autoAlpha:1, width: width, height: height});
-
         // when its inside the page
         var xPos = iscAnimationService.isPhone() ? -offsetX : iscAnimationService.getElementXPos( width, offsetX );
         var yPos = -height - 50; // -50 ensures its offstage
         var yPosEnd = iscAnimationService.isPhone() ? -offsetY + 20 : iscAnimationService.getElementYPos( height, offsetY );
 
-        //$log.debug( '...element.height()',element.height() );
-        //$log.debug( '...height',height );
-        //$log.debug( '...offsetTop',element[0].offsetTop );
+        //$log.debug( '\n...element',element );
+        //$log.debug( '.....width',width );
+        //$log.debug( '....height',height );
+        //$log.debug( '...offsetX', offsetX );
+        //$log.debug( '...offsetY', offsetY );
+        //$log.debug( '......xPos',xPos );
+        //$log.debug( '......yPos',yPos );
         //$log.debug( '...yPosEnd',yPosEnd );
 
-        TweenMax.set( element, {x:xPos, y: yPos, display: 'block'});
+        TweenMax.set( element, {x:xPos, y: yPos, display: 'block', autoAlpha:1, width: width, height: height});
         TweenMax.to( element, EASE_DUR, { ease: Power2.easeOut, y: yPosEnd, onComplete: done });//jshint ignore:line
       }
       else {
@@ -76,7 +77,7 @@
     }
 
     function onRemoveComplete( elem, done ){
-      TweenMax.set( elem, {autoAlpha:0, display: 'none'});
+      TweenMax.set( elem, {autoAlpha:0, top: -1000, left: -1000, display: 'block'});
       done();
     }
 
@@ -87,7 +88,7 @@
   // --------------------
 
   angular.module( 'iscNavContainer' )
-    .animation( '.secondary-nav', iscNavContainerSecondaryNavAnimation );
+      .animation( '.secondary-nav', iscNavContainerSecondaryNavAnimation );
 
 })();
 

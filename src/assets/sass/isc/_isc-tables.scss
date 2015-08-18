@@ -36,10 +36,10 @@
     h3 {
       font-weight: 700;
       margin-bottom: 5px;
-
     }
 
     .isc-sortable {
+      white-space: nowrap;
       &:after {
         font-family: FontAwesome;
         font-size: $table-th-size;
@@ -50,6 +50,17 @@
         content: " \F077";
       }
     }
+
+    .isc-filterable {
+      white-space: nowrap;
+      &:after {
+        font-family: FontAwesome;
+        font-size: $table-th-size;
+        font-weight: 400;
+        content: " \f0b0";
+      }
+    }
+
     .date {
       text-decoration: none;
     }
@@ -209,6 +220,11 @@
   font-size: $table-td-size !important;
   color: $brand-link !important;
   font-weight: 900 !important;
+}
+
+.isc-table-cell-multiline{
+  white-space: pre;
+  max-width: 200px;
 }
 
 .isc-table-command-icon {
