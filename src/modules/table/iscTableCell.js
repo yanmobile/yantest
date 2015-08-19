@@ -49,7 +49,7 @@
       scope.state       = $state.current.name;
       var cellData      = scope.dataItem[ scope.column.key ];
       var defaultText   = scope.column.default;
-      scope.displayText = getDisplayText( cellData, defaultText );
+      scope.displayText = getDisplayText( cellData, defaultText ); //getDisplayText( scope.dataItem[ column.key ], column.default );
       scope.displayUnit = scope.dataItem[scope.column.unit];
 
       // ----------------------------
@@ -68,7 +68,10 @@
         }
       }
 
-      function getDisplayText( cellData, defaultText ){
+      function getDisplayText(){
+
+        var cellData = scope.dataItem[ scope.column.key ];
+        var defaultText = scope.column.default;
 
         if( scope.column.textGetter ){
           return scope.column.textGetter( scope.dataItem );
@@ -76,7 +79,7 @@
 
         var retVal;
         if( scope.notThere( cellData ) && scope.notThere( defaultText ) ){
-          retVal = 'ISC_NA'
+          retVal = ''
         }
         else if( scope.notThere( cellData ) ){
           retVal = String( defaultText );
@@ -100,6 +103,6 @@
   // ----------------------------
 
   angular.module( 'isc.common' )
-    .directive( 'iscTableCell', iscTableCell );
+      .directive( 'iscTableCell', iscTableCell );
 
 })();

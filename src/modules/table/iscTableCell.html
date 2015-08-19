@@ -1,14 +1,32 @@
+<!-- cell title -->
 <h3 class="cell-title">{{ column.title | translate }}</h3>
 
+<!-- text -->
+<span ng-if="column.type === 'text' || !column.type">
+  <span ng-if="!iscRowCtrl.inEditMode"
+        ui-sref="{{column.sref || state }}"
+        class="{{ mobileClass }} {{ getTrClass( displayText )}}">{{ getDisplayText() | translate }} {{ displayUnit }}</span>
 
+  <span ng-if="iscRowCtrl.inEditMode">
+    <input ng-required="column.required"
+           name="{{column.key}}" type="text" class="{{ column.inputCssClass }}" ng-model="iscRowCtrl.editModeData[column.key]">
+  </span>
+</span>
+
+<!-- ? subtext ? -->
+<span ng-if="!!displayText2"
+      class="{{ mobileClass }} {{ getTrClass( displayText2 )}}">{{ displayText2  | translate }}</span>
+
+
+<!-- date display -->
 <span ng-if="column.type === 'date' || column.type === 'dateWithTime'">
   <a ng-if="!iscRowCtrl.inEditMode && column.sref"
      ui-sref="{{column.sref || state }}"
-     class="{{ mobileClass }} {{ getTrClass( displayText )}} date">{{ dataItem[column.key] | iscDateFilter : column.type ===
+     class="{{ mobileClass }} {{ getTrClass( displayText )}} date">{{ getDisplayText() | iscDateFilter : column.type ===
     'dateWithTime' : column.type === 'date' }}
   </a>
   <span ng-if="!iscRowCtrl.inEditMode && !column.sref"
-        class="{{ mobileClass }} {{ getTrClass( displayText )}}">{{ dataItem[column.key] | iscDateFilter : column.type ===
+        class="{{ mobileClass }} {{ getTrClass( displayText )}}">{{ getDisplayText() | iscDateFilter : column.type ===
     'dateWithTime' : column.type === 'date' }}
   </span>
 
@@ -18,30 +36,19 @@
   </datepicker>
 </span>
 
+<!-- button with an sref -->
 <button ng-if="column.type === 'buttonWithSref'"
         ui-sref="{{column.sref || state }}"
-        class="{{ mobileClass }} {{ getTrClass( displayText )}}">{{ displayText | translate}}
+        class="{{ mobileClass }} {{ getTrClass( displayText )}}">{{ getDisplayText() | translate}}
 </button>
 
+<!-- button with a callback -->
 <button ng-if="column.type === 'buttonWithCallback'"
         ng-click="column.callback( dataItem )"
-        class="{{ mobileClass }} {{ getTrClass( displayText )}}">{{ displayText | translate }}
+        class="{{ mobileClass }} {{ getTrClass( displayText )}}">{{ getDisplayText() | translate }}
 </button>
 
-<!-- text -->
-<span ng-if="column.type === 'text' || !column.type">
-  <span ng-if="!iscRowCtrl.inEditMode"
-        ui-sref="{{column.sref || state }}"
-        class="{{ mobileClass }} {{ getTrClass( displayText )}}">{{ dataItem[column.key]  | translate }} {{ displayUnit }}</span>
-
-  <span ng-if="iscRowCtrl.inEditMode">
-    <input ng-required="column.required"
-           name="{{column.key}}" type="text" class="{{ column.inputCssClass }}" ng-model="iscRowCtrl.editModeData[column.key]">
-  </span>
-</span>
-<!-- end text -->
-
-<!-- text -->
+<!-- text area -->
 <span ng-if="column.type === 'textarea'">
   <span ng-if="!iscRowCtrl.inEditMode"
         ui-sref="{{column.sref || state }}"
@@ -53,7 +60,6 @@
               ng-model="iscRowCtrl.editModeData[column.key]"/>
   </span>
 </span>
-<!-- end text -->
 
 <!-- checkbox -->
 <span ng-if="column.type === 'checkbox'">
@@ -63,15 +69,10 @@
          name="{{column.key}}"
          class="{{ mobileClass }} {{ column.inputCssClass }}" ng-model="iscRowCtrl.editModeData[column.key]">
 </span>
-<!-- end checkbox -->
-
-<span ng-if="!!displayText2"
-      class="{{ mobileClass }} {{ getTrClass( displayText2 )}}">{{ displayText2  | translate }}</span>
 
 <!-- template -->
 <span ng-if="column.type === 'template'">
   <div ng-include="column.template"></div></span>
-<!-- end template -->
 
 <!-- dropdown -->
 <span ng-if="column.type === 'dropdown'">
@@ -91,8 +92,6 @@
                 drop-id="{{column.dropId ||('ddl' + $id + column.key)}}">
   </isc-dropdown>
 </span>
-<!-- end dropdown -->
-
 
 <!-- commands -->
 <div ng-if="column.type === 'commands'" class="isc-table-columm-commands">
@@ -117,10 +116,3 @@
     </button>
   </span>
 </div>
-<!-- end commands -->
-<!-- required message -->
-<!--<span id="{{column.type + column.key + 'required'}}"-->
-      <!--ng-class="{invisible: !iscRowForm[column.key].$error.required}"-->
-      <!--ng-if="iscRowCtrl.inEditMode && column.type !== 'commands'">-->
-    <!--Required!-->
-<!--</span>-->
