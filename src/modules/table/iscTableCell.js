@@ -70,7 +70,7 @@
 
       function getDisplayText(){
 
-        var cellData = scope.dataItem[ scope.column.key ];
+        var cellData = _.get( scope.dataItem, scope.column.key ) || '';
         var defaultText = scope.column.default;
 
         if( scope.column.textGetter ){
