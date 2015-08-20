@@ -6,47 +6,51 @@ $isc-btn-color: #FFFFFF;
 $color-darkGrey: #8e9294;
 
 #modal-dropdown{
-	visibility: hidden;
+  visibility: hidden;
 }
 
 .isc-dropdown{
   @include box-sizing(border-box);
-  position:relative;
-  display:inline-block;
+  position: relative;
+  display: inline-block;
   white-space: nowrap;
   overflow: hidden;
 
-	height: $isc-dropdown-height;
-	background-color:$isc-btn-color;
-  -moz-border-radius:4px;
-  -webkit-border-radius:4px;
-  border-radius:3px;
+  height: $isc-dropdown-height;
+  background-color: $isc-btn-color;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 3px;
 
-	font-size: ($isc-height-number/3) + px;
-	font-weight: normal;
-	border: 1px solid $app-border-color;
-	//min-width:75px;
+  font-size: ($isc-height-number/3) + px;
+  font-weight: normal;
+  border: 1px solid $app-border-color;
+  //min-width:75px;
   width: 100%;
+
+  &:focus {
+    outline: -webkit-focus-ring-color auto 1px;
+  }
 
 }
 
 .isc-dropdown-list{
-	background-color: $isc-btn-color;
-	top:$isc-height-number + 1 + px;
-	position:absolute;
-	left:0;
-	visibility: hidden;
-	border:1px solid $app-border-color;
+  background-color: $isc-btn-color;
+  top:$isc-height-number + 1 + px;
+  position:absolute;
+  left:0;
+  visibility: hidden;
+  border:1px solid $app-border-color;
 }
 
 .isc-dropdown-selection-list{
-	background-color: $isc-btn-color;
-	top:50px;
-	position:absolute;
-	left:550px;
-	visibility: visible;
-	border:1px solid $app-border-color;
-    z-index: $modal-z-index !important;
+  background-color: $isc-btn-color;
+  top:50px;
+  position:absolute;
+  left:550px;
+  visibility: visible;
+  border:1px solid $app-border-color;
+  z-index: $modal-z-index !important;
 }
 
 .isc-dropdown-btn{
@@ -69,7 +73,6 @@ $color-darkGrey: #8e9294;
   @include box-sizing(border-box);
   overflow: hidden;
 
-  margin-top: 3px;
   padding:($isc-height-number/4) +px 10px;
   background-color: $isc-btn-color;
   height: $isc-dropdown-item-height;
@@ -87,22 +90,23 @@ $color-darkGrey: #8e9294;
 }
 
 .isc-dropdown-hidden{
-	@extend .isc-dropdown-item;
-	visibility: hidden;
+  @extend .isc-dropdown-item;
+  visibility: hidden;
 }
 
 .isc-dropdown-select-item{
-	@extend .isc-dropdown-item;
-	padding-right:30px;
+  @extend .isc-dropdown-item;
+  padding-right:30px;
 }
 
-.isc-dropdown-item:hover{
-	background-color: $brand-secondary;
+.isc-dropdown-item:hover, .isc-dropdown-item:focus{
+  background-color: $brand-secondary;
+  outline:none;
 }
 
 .isc-dropdown-active{
-	overflow:visible;
-	position:absolute;
+  overflow:visible;
+  position:absolute;
 }
 
 .isc-drop-icon{
@@ -124,13 +128,13 @@ $color-darkGrey: #8e9294;
 }
 
 .isc-icon{
-	padding-top:($isc-height-number/4)+px;
-	padding-left:2px;
-	user-select: none;
+  padding-top:($isc-height-number/4)+px;
+  padding-left:2px;
+  user-select: none;
 }
 
 .isc-drop-icon-active{
-	position:absolute;
+  position:absolute;
 }
 
 // captures the click events
@@ -140,9 +144,9 @@ $color-darkGrey: #8e9294;
   z-index:100000;
   width:100%;
   height:100%;
-	background-color:$isc-btn-color;
-	opacity:0;
-	cursor: pointer;
+  background-color:$isc-btn-color;
+  opacity:0;
+  cursor: pointer;
 }
 
 //END DROPDOWN

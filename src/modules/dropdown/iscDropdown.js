@@ -69,9 +69,13 @@
     function link( scope, elem, attr ){//jshint ignore:line
       //$log.debug( 'iscDropdown' );
 
-      // ---------------------------
+      // ----------------------------
       // vars
-      // ---------------------------
+      // ----------------------------
+      var UP_ARROW_KEY_CODE   = 38;
+      var DOWN_ARROW_KEY_CODE = 40;
+      var SPACE_KEY_CODE = 32;
+      var ENTER_KEY_CODE   = 13;
 
       scope.dropOpen = false;
       scope.iconLeft = 0;
@@ -82,6 +86,24 @@
       // ---------------------------
       // businsess logic
       // ---------------------------
+
+      elem.on( "keydown", function focusFirstListItem( event ){
+        if( event.which === DOWN_ARROW_KEY_CODE || event.which === SPACE_KEY_CODE || event.which === ENTER_KEY_CODE ){
+          var offEvnt = $rootScope.$on( DROPDOWN_EVENTS.dropdownShow, function(){
+            $timeout( function(){
+              angular
+                .element( "#modal-dropdown" )
+                .find( ".isc-dropdown-item:first" )
+                .focus();
+            }, 0 );
+            offEvnt();
+          } );
+          showHideItems();
+
+          event.preventDefault();
+          event.stopPropagation();
+        }
+      } );
 
       scope.setWidth = function(){
         var hiddenList = angular.element('#'+scope.dropId+'-list');
@@ -102,8 +124,10 @@
           blockTitle.width(blockMain.width() - iconWidth - 2);
         }
         else{
-          if(angular.element('form').width()-50 < angular.element('#'+scope.dropId).width()){
-            angular.element('#'+scope.dropId).width(angular.element('form').width()-20);
+          var formWidth = angular.element( 'form' ).width();
+          var dropElem  = angular.element( '#' + scope.dropId );
+          if( formWidth - 50 < dropElem.width() ){
+            dropElem.width( formWidth - 20 );
           }
           else{
             //SET WIDTH OF TITLE BLOCK BASED ON LARGER OF TITLE OR DROPDOWN CONTENT
@@ -112,23 +136,13 @@
               blockTitle.width(hiddenList.width());
             }
           }
+          // Set width on main dropdown component to auto
+          blockMain.css( {"width": "auto"} );
         }
       };
 
-      scope.showHideItems = function(){
-        devlog.channel('iscDropdown').debug( 'iscDropdown.showHideItems');
-        $rootScope.$broadcast( DROPDOWN_EVENTS.showDropdownList,
-            {
-              "listData" : scope.listData,
-              "dropId" : scope.dropId,
-              "listField" : scope.listField,
-              "dropListCssClass" : scope.dropListCssClass,
-              "dropListItemCssClass" : scope.dropListItemCssClass
-            }
-        );
-      };
 
-      scope.showHideItems = _.debounce(scope.showHideItems, 150, {trailing: false, leading: true});
+      scope.showHideItems = showHideItems;
 
       $rootScope.$on( DROPDOWN_EVENTS.dropdownItemSelected, function(e, selection){
         //devlog.channel('iscDropdown').debug( 'iscDropdown.dropdownItemSelected', selection);
@@ -136,17 +150,31 @@
         if(scope.dropId === selection.dropId ){
           scope.dropTitle = selection.selectedItem[scope.listField] ;
           scope.dropSelectedItem = selection.selectedItem;
-
+          elem.focus();
           //devlog.channel('iscDropdown').debug( '...scope.dropTitle', scope.dropTitle);
           //devlog.channel('iscDropdown').debug( '...scope.dropSelectedItem', scope.dropSelectedItem);
         }
       });
 
+
+      function showHideItems(){
+        devlog.channel('iscDropdown').debug( 'iscDropdown.showHideItems');
+        $rootScope.$emit( DROPDOWN_EVENTS.showDropdownList,
+          {
+            "listData" : scope.listData,
+            "dropId" : scope.dropId,
+            "listField" : scope.listField,
+            "dropListCssClass" : scope.dropListCssClass,
+            "dropListItemCssClass" : scope.dropListItemCssClass,
+            "dropElem": elem
+          }
+        );
+      }
+
       // ---------------------------
       // watchers
       // ---------------------------
 
-      // when you reset the list data, reset the display to the placeholder text
       // Only do this if the list is different, otherwise this is called on init
       // and the dropdown is always reset to the placeholder.
       scope.$watch('listData',function(newList, oldList){
