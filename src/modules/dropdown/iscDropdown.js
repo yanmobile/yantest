@@ -112,6 +112,8 @@
               blockTitle.width(hiddenList.width());
             }
           }
+          // Set width on main dropdown component to auto
+          angular.element( "#" + scope.dropId + "-main" ).css( {"width": "auto"} );
         }
       };
 

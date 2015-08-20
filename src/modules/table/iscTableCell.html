@@ -85,9 +85,9 @@
                 list-data="column.dropdownConfig.listData"
                 list-field="{{column.dropdownConfig.value || 'value'}}"
                 drop-use-primative="column.dropdownConfig.usePrimative"
-                drop-width="column.dropdownConfig.dropWidth || '70%'"
-                drop-maxwidth="column.dropdownConfig.dropMaxwidth || 180"
-                drop-minwidth="column.dropdownConfig.dropMinwidth || 75"
+                drop-width="column.dropdownConfig.dropWidth"
+                drop-maxwidth="column.dropdownConfig.dropMaxwidth"
+                drop-minwidth="column.dropdownConfig.dropMinwidth"
                 drop-selected-item="iscRowCtrl.editModeData[column.key]"
                 drop-id="{{column.dropId ||('ddl' + $id + column.key)}}">
   </isc-dropdown>
