@@ -14,29 +14,32 @@
     addBtnTranslationKey: "TRANSLATION_KEY",
 
     columns: [{
-      key: 'OrderedItemDisplay',
-      title: 'ISC_WELLNESS_LAB_NAME',
-      type: 'buttonWithSref',
-      sref: 'route.index',
-      className: 'class-name'
+      key           : 'OrderedItemDisplay',
+      title         : 'ISC_WELLNESS_LAB_NAME',
+      type          : 'buttonWithSref',
+      sref          : 'route.index',
+      className     : 'class-name'
+      columnClick   : 'none', - 'none' (no click behavior), 'sort' (click to sort), 'filter' (click to call a function, requires a filterFunction)
     },
     {
-      key: 'TextField',
-      title: 'ISC_KEY',
-      textGetter: getTextClass, // see below
-      type: 'text'
+      key            : 'TextField',
+      title          : 'ISC_KEY',
+      textGetter     : getTextClass, // see below
+      type           : 'text'
+      columnClick    : 'filter'
+      filterFunction : someFunction
     },
     {
-      key: 'Timestamp',
-      title: 'ISC_WELLNESS_LAB_DATE',
-      classGetter: getButtonClass, // see below
-      type: 'date'
+      key         : 'Timestamp',
+      title       : 'ISC_WELLNESS_LAB_DATE',
+      classGetter : getButtonClass, // see below
+      type        : 'date'
     },
     {
-      key: 'ButtonField',
-      title: 'ISC_TRANSLATION_KEY',
-      type: 'buttonWithCallback',
-      callback: function(){}
+      key      : 'ButtonField',
+      title    : 'ISC_TRANSLATION_KEY',
+      type     : 'buttonWithCallback',
+      callback : function(){}
     },
     { //drop down
       key           : 'anticipatedProblem',
@@ -163,8 +166,8 @@
  * --------------------------------------
  *
  * <isc-table table-config="someCtrl.model.getTableConfig()"
-              table-data="someCtrl.model.getTableData()">
-   </isc-table>
+ table-data="someCtrl.model.getTableData()">
+ </isc-table>
  *
  *
  */
@@ -188,6 +191,7 @@
       scope: {
         tableConfig       : '=',
         tableData         : '=',
+        filterFunction    : '&?',
         rowButtonCallback : '&?',
         backButtonCallback: '&?'
       },
@@ -205,13 +209,13 @@
     // ----------------------------
     // functions
     // ----------------------------
-    function controller( ){//jshint ignore:line
+    function controller( ) {//jshint ignore:line
       //$log.debug( 'iscTable.link, tableConfig', scope.tableConfig );
       //$log.debug( '...tableData', scope.tableData );
 
-      var self       = this;
+      var self = this;
 
-      self.addRow    = addRow;
+      self.addRow = addRow;
       self.updateRow = updateRow;
 
       self.deleteRow = deleteRow;
@@ -219,63 +223,75 @@
       self.editRow = editRow;
       self.cancelEdit = cancelEdit;
 
-      self.rowsOnPage  = self.tableConfig.rowsOnPage || 15;
+      self.rowsOnPage = self.tableConfig.rowsOnPage || 15;
       self.currentPage = 1;
 
       // set an array of the table row objects
-      self.tableRows = self.tableConfig.key ? self.tableData[ self.tableConfig.key ] : self.tableData;
+      self.tableRows = self.tableConfig.key ? self.tableData[self.tableConfig.key] : self.tableData;
 
-      self.sortField = { reverse: false };
+      self.sortField = {reverse: false};
 
-      self.sortColumn = function( column ){
-        if(column.sortable !== false && self.sortField.name === column.key ){
+      self.sortColumn = function (column) {
+        if (column.sortable !== false && self.sortField.name === column.key) {
           self.sortField.reverse = !self.sortField.reverse;
         }
 
         self.sortField.name = column.key;
       };
 
-      self.changePage = function( newPageNumber ){
+      self.changePage = function (newPageNumber) {
         self.currentPage = newPageNumber;
+      };
+
+      self.doFilter = function (item) {
+        //$log.debug( 'iscTable.doFilter', item );
+        if (angular.isDefined( self.filterFunction )){
+          return self.filterFunction({item: item});
+        }
+        else {
+          return true;
+        }
       };
 
       // ----------------------------
       // functions
       // ----------------------------
 
-      function deleteRow( row ){
-        _.remove( self.tableRows, row );
+      function deleteRow(row) {
+        _.remove(self.tableRows, row);
       }
 
-      function addRow( row ){
-        self.tableRows.push( row );
+      function addRow(row) {
+        self.tableRows.push(row);
         self.dataItem = null;
       }
 
-      function updateRow( row, oldRow ){
-        angular.extend( oldRow, row );
+      function updateRow(row, oldRow) {
+        angular.extend(oldRow, row);
         self.dataItem = null;
       }
 
-      function createRow(){
-        var dataItem = { isNew: true };
-        self.tableConfig.columns.forEach( function( column ){
-          if( column.defaultValue != null ){
-            dataItem[ column.key ] = column.defaultValue;
+      function createRow() {
+        var dataItem = {isNew: true};
+        self.tableConfig.columns.forEach(function (column) {
+          if (column.defaultValue != null) {
+            dataItem[column.key] = column.defaultValue;
           }
-        } );
+        });
         self.dataItem = dataItem;
       }
 
-      function editRow( row ){
+      function editRow(row) {
         self.dataItem = row;
       }
 
-      function cancelEdit(){
+      function cancelEdit() {
         self.dataItem = null;
       }
-    }
-  }
+
+    }// END CTRL
+
+  }// END CLASS
 
   // ----------------------------
   // inject
