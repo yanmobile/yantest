@@ -36,7 +36,8 @@
         refName: '=',
         isShowDrop: '=',
         dropListCssClass: '@',
-        dropListItemCssClass: '@'
+        dropListItemCssClass: '@',
+        useFormPositioning: '@'
       },
       templateUrl: 'dropdown/iscDropdownList.html'
     };
@@ -78,6 +79,7 @@
             scope.dropListItemCssClass = params.dropListItemCssClass;
             scope.listField = params.listField;
             scope.refName = params.listField;
+            scope.useFormPositioning = params.useFormPositioning;
             scope.modalVisible = false;
             scope.showDropList = true;
             $rootScope.$broadcast( DROPDOWN_EVENTS.dropdownShow );
@@ -125,7 +127,7 @@
         }
         angular.element('#modal-dropdown').css(
           {'left': clickOffset.left,
-            'top': elTop,
+            'top': !!scope.useFormPositioning ? elPositionTop : elTop,
             'visibility': 'visible',
             'height': elHeight,
             'overflow':'auto',

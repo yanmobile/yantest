@@ -55,7 +55,8 @@
         dropCssClass: '@',
         dropListCssClass: '@',
         dropListItemCssClass: '@',
-        dropChevronCssClass: '@'
+        dropChevronCssClass: '@',
+        useFormPositioning: '@'
       },
       templateUrl: 'dropdown/iscDropdown.html'
     };
@@ -125,7 +126,8 @@
               "dropId" : scope.dropId,
               "listField" : scope.listField,
               "dropListCssClass" : scope.dropListCssClass,
-              "dropListItemCssClass" : scope.dropListItemCssClass
+              "dropListItemCssClass" : scope.dropListItemCssClass,
+              "useFormPositioning" : scope.useFormPositioning
             }
         );
       };
