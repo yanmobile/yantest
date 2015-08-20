@@ -81,7 +81,7 @@
     }
 
     function onRemoveComplete( elem, done ){
-      TweenMax.set( elem, {autoAlpha:0, display:'none'});
+      TweenMax.set( elem, {autoAlpha:0, top: -1000, left: -1000, display:'block'});
       done();
     }
 

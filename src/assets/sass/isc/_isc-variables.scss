@@ -18,7 +18,7 @@ $screen-sm-min:              480px !default;
 // Medium screen / phablet
 $screen-ph-min:              640px !default;
 
-  // Medium screen / tablet
+// Medium screen / tablet
 $screen-md-min:              960px !default;
 
 // Large screen / desktop
@@ -272,6 +272,12 @@ $app-footer-height-sm:   30px;
 $isc-button-font-size: $body-font-size;
 $isc-button-font-weight: 700;
 $isc-button-height: 45px;
+
+// -------------------------
+// isc-table
+$pencil-button-color: #61ab45;
+$remove-button-color: #e81d25;
+$table-command-icon-width: 35px;
 
 // -------------------------
 // general
