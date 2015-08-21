@@ -39,7 +39,7 @@
       transclude      : true,
       link            : link,
       controller      : controller,
-      controllerAs    : "cmcTaCtrl",
+      controllerAs    : "iscTaCtrl",
       bindToController: true,
       templateUrl     : 'typeahead/iscTypeahead.html'
     };
@@ -64,7 +64,7 @@
       }
     }
 
-    function link( scope, elem, attrs, cmcTaCtrl ){
+    function link( scope, elem, attrs, iscTaCtrl ){
 
       var input = elem.find( "input" );
       var list  = elem.find( '.isc-typeahead-list' );
@@ -75,7 +75,7 @@
 
       list.on( 'keydown', "li", handleArrowUpDown );
 
-      cmcTaCtrl.focusInput = function(){
+      iscTaCtrl.focusInput = function(){
         input.focus();
       };
 
@@ -94,15 +94,15 @@
 
       function updateList( evt ){
         scope.$apply( function(){
-          cmcTaCtrl.selectedItem = null;
-          cmcTaCtrl.isDirty      = true;
-          cmcTaCtrl.inputVal     = input.val();
+          iscTaCtrl.selectedItem = null;
+          iscTaCtrl.isDirty      = true;
+          iscTaCtrl.inputVal     = input.val();
         } )
       }
 
       function handleArrowUpDown( event ){
         var index = $( event.target ).scope().$index;
-        if( event.which === DOWN_ARROW_KEY_CODE && (index + 1) < cmcTaCtrl.getFilteredList().length ){
+        if( event.which === DOWN_ARROW_KEY_CODE && (index + 1) < iscTaCtrl.getFilteredList().length ){
           $( list.find( "li" )[ index + 1 ] ).focus();
           event.preventDefault();
         } else if( event.which === UP_ARROW_KEY_CODE ){
