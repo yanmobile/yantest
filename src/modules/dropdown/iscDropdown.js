@@ -26,9 +26,9 @@
 (function(){
   'use strict';
 
-  iscDropdown.$inject = [ '$log', 'devlog', '$timeout', '$rootScope', 'DROPDOWN_EVENTS' ];
+  iscDropdown.$inject = [ '$log', 'devlog', '$timeout', '$rootScope', 'DROPDOWN_EVENTS', '$global' ];
 
-  function iscDropdown( $log, devlog , $timeout, $rootScope, DROPDOWN_EVENTS){//jshint ignore:line
+  function iscDropdown( $log, devlog , $timeout, $rootScope, DROPDOWN_EVENTS, $global){//jshint ignore:line
 
     // ----------------------------
     // vars
@@ -72,23 +72,19 @@
       // ----------------------------
       // vars
       // ----------------------------
-      var UP_ARROW_KEY_CODE   = 38;
-      var DOWN_ARROW_KEY_CODE = 40;
-      var SPACE_KEY_CODE = 32;
-      var ENTER_KEY_CODE   = 13;
-
       scope.dropOpen = false;
       scope.iconLeft = 0;
       scope.itemWidth = 0;
       scope.isShowDrop = false;
       scope.listField = 'label';
+      var keyCode = $global.keyCode;
 
       // ---------------------------
       // businsess logic
       // ---------------------------
 
       elem.on( "keydown", function focusFirstListItem( event ){
-        if( event.which === DOWN_ARROW_KEY_CODE || event.which === SPACE_KEY_CODE || event.which === ENTER_KEY_CODE ){
+        if( event.which === keyCode.DOWN || event.which === keyCode.SPACE || event.which === keyCode.ENTER ){
           var offEvnt = $rootScope.$on( DROPDOWN_EVENTS.dropdownShow, function(){
             $timeout( function(){
               angular

@@ -14,9 +14,9 @@
 (function(){
   'use strict';
 
-  iscDropdownSelectionListDirective.$inject = [ '$log', '$parse', '$timeout', '$rootScope', '$window', 'DROPDOWN_EVENTS' ];
+  iscDropdownSelectionListDirective.$inject = [ '$log', '$parse', '$timeout', '$rootScope', '$window', 'DROPDOWN_EVENTS', '$global' ];
 
-  function iscDropdownSelectionListDirective( $log, $parse , $timeout, $rootScope, $window, DROPDOWN_EVENTS){
+  function iscDropdownSelectionListDirective( $log, $parse , $timeout, $rootScope, $window, DROPDOWN_EVENTS, $global){
 
 		// ----------------------------
 		// vars
@@ -48,11 +48,7 @@
     // ----------------------------
 
     function link( scope, elem, attr ){//jshint ignore:line
-
-      var UP_ARROW_KEY_CODE   = 38;
-      var ENTER_KEY_CODE   = 13;
-      var DOWN_ARROW_KEY_CODE = 40;
-      var ESCAPE_KEY_CODE = 27;
+      var keyCode = $global.keyCode;
       var dropElem;
 
       scope.selectItem = function( selectedObj ){
@@ -182,16 +178,16 @@
       function handleArrowUpDown( event ){
         event.preventDefault();
         var index = $( event.target ).scope().$index;
-        if( event.which === DOWN_ARROW_KEY_CODE && (index + 1) < scope.listData.length ){
+        if( event.which === keyCode.DOWN && (index + 1) < scope.listData.length ){
           $( elem.find( ".isc-dropdown-item" )[ index + 1 ] ).focus();
           event.preventDefault();
-        } else if( event.which === UP_ARROW_KEY_CODE ){
+        } else if( event.which === keyCode.UP ){
           if( index > 0 ){
             $( elem.find( ".isc-dropdown-item" )[ index - 1 ] ).focus();
           }
-        } else if( event.which === ENTER_KEY_CODE ){
+        } else if( event.which === keyCode.ENTER ){
           $( event.target ).click();
-        } else if(event.which === ESCAPE_KEY_CODE && dropElem){
+        } else if(event.which === keyCode.ESCAPE && dropElem){
           hideDropdownList();
           dropElem.focus();
         }
