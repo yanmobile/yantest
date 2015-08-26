@@ -55,7 +55,8 @@
         dropCssClass: '@',
         dropListCssClass: '@',
         dropListItemCssClass: '@',
-        dropChevronCssClass: '@'
+        dropChevronCssClass: '@',
+        useFormPositioning: '@'
       },
       templateUrl: 'dropdown/iscDropdown.html'
     };
@@ -162,7 +163,8 @@
             "listField" : scope.listField,
             "dropListCssClass" : scope.dropListCssClass,
             "dropListItemCssClass" : scope.dropListItemCssClass,
-            "dropElem": elem
+            "dropElem": elem,,
+            "useFormPositioning" : scope.useFormPositioning
           }
         );
       }
@@ -171,6 +173,7 @@
       // watchers
       // ---------------------------
 
+      // when you reset the list data, reset the display to the placeholder text
       // Only do this if the list is different, otherwise this is called on init
       // and the dropdown is always reset to the placeholder.
       scope.$watch('listData',function(newList, oldList){
