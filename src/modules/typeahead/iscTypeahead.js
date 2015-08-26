@@ -16,7 +16,7 @@
   iscTypeahead.$inject = [ '$log', '$state', '$filter' ];
 
   function iscTypeahead( $log, $state, $filter ){//jshint ignore:line
-    $log.debug( 'iscTypeahead LOADED');
+    //$log.debug( 'iscTypeahead LOADED');
 
     // ----------------------------
     // vars
@@ -48,7 +48,7 @@
     // functions
     // ----------------------------
     function controller( $filter ){
-      $log.debug( 'iscTypeahead Controller LOADED');
+      //$log.debug( 'iscTypeahead Controller LOADED');
       var self  = this;
       self.list = [];
 
