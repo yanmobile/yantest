@@ -226,8 +226,12 @@
       self.rowsOnPage = self.tableConfig.rowsOnPage || 15;
       self.currentPage = 1;
 
-      // set an array of the table row objects
-      self.tableRows = self.tableConfig.key ? self.tableData[self.tableConfig.key] : self.tableData;
+      $scope.$watch( function(){ return self.tableData }, function( newVal, oldVal ){
+        //$log.debug( 'iscTable.WATCH tableData');
+        // set an array of the table row objects
+        self.tableRows = self.tableConfig.key ? self.tableData[self.tableConfig.key] : self.tableData;
+        //$log.debug( '...tableRows',self.tableRows);
+      });
 
       self.sortField = {reverse: false};
 
