@@ -5,13 +5,13 @@
 
   describe('iscTable', function(){
     var scope,
-      rootScope,
-      helper,
-      isolateScope,
-      httpBackend,
-      timeout,
-      element,
-      state;
+        rootScope,
+        helper,
+        isolateScope,
+        httpBackend,
+        timeout,
+        element,
+        state;
 
     var tableConfig = {
       key: 'LabOrders',
@@ -22,48 +22,103 @@
         key: 'OrderedItemDisplay',
         title: 'ISC_WELLNESS_LAB_NAME'
       },
-      {
-        key: 'Timestamp',
-        title: 'ISC_WELLNESS_LAB_DATE',
-        type: 'date'
-      }],
+        {
+          key: 'Timestamp',
+          title: 'ISC_WELLNESS_LAB_DATE',
+          type: 'date'
+        }],
 
       buttons: [{
         key: 'chart',
         title: 'ISC_WELLNESS_CHART',
         icon: 'svg/isc-chart-blue.html'
       },
-      {
-        key: 'details',
-        title: 'ISC_WELLNESS_DETAILS',
-        icon: 'svg/isc-arrow-right-blue.html'
-      }]
+        {
+          key: 'details',
+          title: 'ISC_WELLNESS_DETAILS',
+          icon: 'svg/isc-arrow-right-blue.html'
+        }]
     };
 
     var tableData = {
-      "LabOrders": [{
-        "OrderedItemDisplay": "BASIC METABOLIC PANEL",
-        "ResultItems": [
-          {
-            "ResultValue": 141,
-            "ResultValueUnits": "MEQ/L",
-            "Test": "SODIUM"
-          },
-          {
-            "ResultValue": 3.9,
-            "ResultValueUnits": "MEQ/L",
-            "Test": "POTASSIUM"
-          }
-        ],
-        "Timestamp": "2012-11-09 05:06:00",
-      }]
-    }
+      "LabOrders": [
+        {
+          "OrderedItemDisplay": "BASIC METABOLIC PANEL",
+          "ResultItems": [
+            {
+              "ResultValue": 141,
+              "ResultValueUnits": "MEQ/L",
+              "Test": "SODIUM"
+            },
+            {
+              "ResultValue": 3.9,
+              "ResultValueUnits": "MEQ/L",
+              "Test": "POTASSIUM"
+            }
+          ],
+          "Timestamp": "2012-11-09 05:06:00",
+        }
+      ]
+    };
+
+    var tableData2 = {
+      "LabOrders": [
+        {
+          "OrderedItemDisplay": "BASIC METABOLIC PANEL",
+          "ResultItems": [
+            {
+              "ResultValue": 141,
+              "ResultValueUnits": "MEQ/L",
+              "Test": "SODIUM"
+            },
+            {
+              "ResultValue": 3.9,
+              "ResultValueUnits": "MEQ/L",
+              "Test": "POTASSIUM"
+            }
+          ],
+          "Timestamp": "2012-11-09 05:06:00"
+        },
+        {
+          "OrderedItemDisplay": "BASIC FOOBAR PANEL",
+          "ResultItems": [
+            {
+              "ResultValue": 141,
+              "ResultValueUnits": "MEQ/L",
+              "Test": "SODIUM"
+            },
+            {
+              "ResultValue": 3.9,
+              "ResultValueUnits": "MEQ/L",
+              "Test": "POTASSIUM"
+            }
+          ],
+          "Timestamp": "2012-11-09 05:06:00"
+        },
+        {
+          "OrderedItemDisplay": "BASIC WHATEVER",
+          "ResultItems": [
+            {
+              "ResultValue": 141,
+              "ResultValueUnits": "MEQ/L",
+              "Test": "SODIUM"
+            },
+            {
+              "ResultValue": 3.9,
+              "ResultValueUnits": "MEQ/L",
+              "Test": "POTASSIUM"
+            }
+          ],
+          "Timestamp": "2012-11-09 05:06:00"
+        }
+      ]
+    };
 
     var html =  '<isc-table table-config="tableConfig"' +
-                  'table-data="tableData"' +
-                  'back-button-callback="backButtonCallback()"' +
-                  'row-button-callback="rowButtonCallback( state )">' +
-                '</isc-table>';
+        'table-data="tableData"' +
+        'back-button-callback="backButtonCallback()"' +
+        'row-button-callback="rowButtonCallback( state )">' +
+        '</isc-table>';
 
     beforeEach( module('isc.common'));
 
@@ -100,7 +155,7 @@
 
       // dont worry about calls to assets
       httpBackend.when( 'GET', 'assets/i18n/en_US.json' )
-        .respond( 200, {} );
+          .respond( 200, {} );
 
       element = $compile( html )( scope );
       scope.$digest();
@@ -125,6 +180,22 @@
 
       it("should have table data", function() {
         expect( angular.isObject(isolateScope.iscTblCtrl.tableData) ).toBe( true );
+      });
+
+    });
+
+    // -------------------------
+    describe( 'tableData change tests ', function(){
+
+      it("should updated table data", function() {
+
+        scope.tableData = tableData;
+        scope.$digest();
+        expect( isolateScope.iscTblCtrl.tableRows.length ).toBe( 1 );
+
+        scope.tableData = tableData2;
+        scope.$digest();
+        expect( isolateScope.iscTblCtrl.tableRows.length ).toBe( 3 );
       });
 
     });
