@@ -37,8 +37,7 @@
       priority    : -1,
       controllerAs: 'iscRowCtrl',
       controller  : controller,
-      compile     : compile,
-      templateUrl : 'table/iscTableRow.html'
+      compile     : compile
     };
 
     return directive;
@@ -172,7 +171,7 @@
       };
 
       function pre( scope, trElem, attrs, iscRowCtrl ){
-        var rowTemplate = _.get( scope, 'iscTblCtrl.tableConfig.rowTemplate' );
+        var rowTemplate = _.get( scope, 'iscTblCtrl.tableConfig.rowTemplate', 'table/iscTableRow.html');
 
         //in the case of creating a new item, fetch dataItem from iscTblCtrl
         if( scope.dataItem == null && _.get( scope, "iscTblCtrl.dataItem.isNew" ) ){
