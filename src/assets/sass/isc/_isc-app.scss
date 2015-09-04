@@ -403,6 +403,9 @@ textarea{
 //    border: 2px solid green;
 }
 
+.isc-alert-button{
+  @include flex-basis(auto);
+}
 
 .secondary-nav-wrapper{
   position: absolute !important;

@@ -38,13 +38,13 @@
     <div class="isc-alert-buttons-container"
          ng-click="navCtrl.hideAlertBox()">
 
-      <div class="isc-item-wrapper-1"
+      <div class="isc-item-wrapper-1 isc-alert-button"
            ng-if="alertCtrl.getOptions().showOk">
         <button class="isc-btn-secondary isc-alert-btn-footer"
            ng-click="alertCtrl.ok()">{{alertCtrl.getOptions().okTextKey | translate}}</span> </button>
       </div>
 
-      <div class="isc-item-wrapper-1"
+      <div class="isc-item-wrapper-1 isc-alert-button"
            ng-if="alertCtrl.getOptions().showCancel">
         <button class="isc-btn-secondary isc-alert-btn-footer"
            ng-click="alertCtrl.cancel()"

@@ -64,6 +64,11 @@
 
 }
 
+@mixin flex-basis( $val ) {
+  -webkit-flex-basis: $val;
+  flex-basis: $val;
+}
+
 @mixin flex-item-order( $val ){
   -webkit-box-ordinal-group: $val;   /* OLD - iOS 6-, Safari 3.1-6 */
   -moz-box-ordinal-group: $val;      /* OLD - Firefox 19- */
