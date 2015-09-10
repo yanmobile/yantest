@@ -66,6 +66,8 @@ $color-darkGrey: #8e9294;
   text-overflow: ellipsis;
   cursor: pointer;
 
+  padding-right: 30px; //for the chevron icon
+
   //border: 1px solid red;
 }
 
@@ -121,11 +123,13 @@ $color-darkGrey: #8e9294;
   @include box-sizing(border-box);
   //display: block;
   //display:inline-block;
-  float: right;
   white-space: nowrap;
   overflow:hidden;
   width: 36px;
   height: 36px;
+  position: absolute;
+  top: 0px;
+  right: 0px;
 
   svg{
     margin-top: 5px;
