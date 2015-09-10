@@ -14,9 +14,9 @@
 (function(){
   'use strict';
 
-  iscDropdownSelectionListDirective.$inject = [ '$log', '$parse', '$timeout', '$rootScope', '$window', 'DROPDOWN_EVENTS' ];
+  iscDropdownSelectionListDirective.$inject = [ '$log', '$parse', '$timeout', '$rootScope', '$window', 'DROPDOWN_EVENTS', '$global' ];
 
-  function iscDropdownSelectionListDirective( $log, $parse , $timeout, $rootScope, $window, DROPDOWN_EVENTS){
+  function iscDropdownSelectionListDirective( $log, $parse , $timeout, $rootScope, $window, DROPDOWN_EVENTS, $global){
 
 		// ----------------------------
 		// vars
@@ -49,6 +49,8 @@
     // ----------------------------
 
     function link( scope, elem, attr ){//jshint ignore:line
+      var keyCode = $global.keyCode;
+      var dropElem;
 
       scope.selectItem = function( selectedObj ){
         $log.debug('iscDropdownSelectionList.selectItem', selectedObj );
@@ -57,7 +59,7 @@
           dropId: scope.dropId,
           selectedItem: selectedObj
         };
-        $rootScope.$broadcast( DROPDOWN_EVENTS.dropdownItemSelected, selectCriteria );
+        $rootScope.$emit( DROPDOWN_EVENTS.dropdownItemSelected, selectCriteria );
         hideDropdownList();
       };
 
@@ -70,6 +72,7 @@
           //IF THIS IS A CALL FROM A DIFFERENT DROPDOWN HIDE PREVIOUS DROPDOWN
           if(scope.dropId !== params.dropId){
             hideDropdownList();
+            dropElem = params.dropElem;
           }
           //IF HIDDEN THEN SETUP AND SHOW IF NOT THEN HIDE AND REMOVE LISTENERS
           if(angular.element('#modal-dropdown').css('visibility') === 'hidden'){
@@ -82,7 +85,9 @@
             scope.useFormPositioning = params.useFormPositioning;
             scope.modalVisible = false;
             scope.showDropList = true;
-            $rootScope.$broadcast( DROPDOWN_EVENTS.dropdownShow );
+            $timeout(function(){
+              $rootScope.$emit( DROPDOWN_EVENTS.dropdownShow );
+            }, 0);
             scope.setDropDown(params.dropId);
             angular.element('#modal-dropdown').css('visibility','visible');
             scope.setDropScroll(params.dropId);
@@ -104,7 +109,7 @@
         var elPositionTop = clickOffset.top + offsetHeight;
         var elTop = elPositionTop - bodyScrollTop;
         //THE +3 IS TO ACCOUNT FOR THE TOP MARGIN WHICH IS NOT CALC IN OUTER. THE .5 ADDS HALF A HEIGHT TO GIVE SPACE AT THE BOTTOM OF THE LIST.
-        var elHeight = ((angular.element('#'+dropID+'-list').outerHeight()+3) * (scope.listData.length + .5)); //jshint ignore: line
+        var elHeight = angular.element('#'+dropID+'-list').outerHeight() * (scope.listData.length) + 3; //jshint ignore: line
         var elWidth = angular.element('#'+dropID+'-block').outerWidth() + angular.element('#'+dropID+'-icon').outerWidth() -1;
 
         //DETERMINE IF HEIGHT NEEDS TO BE TRUNCATED OR DROPDOWN NEEDS TO BE DROP UP
@@ -133,6 +138,7 @@
             'overflow':'auto',
             'width': elWidth
           });
+
       };
 
       scope.setDropScroll = function(dropID){
@@ -169,6 +175,25 @@
       });
 
 
+      elem.on( 'keydown', ".isc-dropdown-item", handleArrowUpDown );
+
+      function handleArrowUpDown( event ){
+        event.preventDefault();
+        var index = $( event.target ).scope().$index;
+        if( event.which === keyCode.DOWN && (index + 1) < scope.listData.length ){
+          $( elem.find( ".isc-dropdown-item" )[ index + 1 ] ).focus();
+          event.preventDefault();
+        } else if( event.which === keyCode.UP ){
+          if( index > 0 ){
+            $( elem.find( ".isc-dropdown-item" )[ index - 1 ] ).focus();
+          }
+        } else if( event.which === keyCode.ENTER ){
+          $( event.target ).click();
+        } else if(event.which === keyCode.ESCAPE && dropElem){
+          hideDropdownList();
+          dropElem.focus();
+        }
+      }
     }//END LINK
 
   }//END CLASS

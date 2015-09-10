@@ -26,9 +26,9 @@
 (function(){
   'use strict';
 
-  iscDropdown.$inject = [ '$log', 'devlog', '$timeout', '$rootScope', 'DROPDOWN_EVENTS' ];
+  iscDropdown.$inject = [ '$log', 'devlog', '$timeout', '$rootScope', 'DROPDOWN_EVENTS', '$global' ];
 
-  function iscDropdown( $log, devlog , $timeout, $rootScope, DROPDOWN_EVENTS){//jshint ignore:line
+  function iscDropdown( $log, devlog , $timeout, $rootScope, DROPDOWN_EVENTS, $global){//jshint ignore:line
 
     // ----------------------------
     // vars
@@ -70,19 +70,37 @@
     function link( scope, elem, attr ){//jshint ignore:line
       //$log.debug( 'iscDropdown' );
 
-      // ---------------------------
+      // ----------------------------
       // vars
-      // ---------------------------
-
+      // ----------------------------
       scope.dropOpen = false;
       scope.iconLeft = 0;
       scope.itemWidth = 0;
       scope.isShowDrop = false;
       scope.listField = 'label';
+      var keyCode = $global.keyCode;
 
       // ---------------------------
       // businsess logic
       // ---------------------------
+
+      elem.on( "keydown", function focusFirstListItem( event ){
+        if( event.which === keyCode.DOWN || event.which === keyCode.SPACE || event.which === keyCode.ENTER ){
+          var offEvnt = $rootScope.$on( DROPDOWN_EVENTS.dropdownShow, function(){
+            $timeout( function(){
+              angular
+                .element( "#modal-dropdown" )
+                .find( ".isc-dropdown-item:first" )
+                .focus();
+            }, 0 );
+            offEvnt();
+          } );
+          showHideItems();
+
+          event.preventDefault();
+          event.stopPropagation();
+        }
+      } );
 
       scope.setWidth = function(){
         var hiddenList = angular.element('#'+scope.dropId+'-list');
@@ -103,8 +121,10 @@
           blockTitle.width(blockMain.width() - iconWidth - 2);
         }
         else{
-          if(angular.element('form').width()-50 < angular.element('#'+scope.dropId).width()){
-            angular.element('#'+scope.dropId).width(angular.element('form').width()-20);
+          var formWidth = angular.element( 'form' ).width();
+          var dropElem  = angular.element( '#' + scope.dropId );
+          if( formWidth - 50 < dropElem.width() ){
+            dropElem.width( formWidth - 20 );
           }
           else{
             //SET WIDTH OF TITLE BLOCK BASED ON LARGER OF TITLE OR DROPDOWN CONTENT
@@ -114,23 +134,12 @@
             }
           }
           // Set width on main dropdown component to auto
-          angular.element( "#" + scope.dropId + "-main" ).css( {"width": "auto"} );
+          blockMain.css( {"width": "auto"} );
         }
       };
 
-      scope.showHideItems = function(){
-        devlog.channel('iscDropdown').debug( 'iscDropdown.showHideItems');
-        $rootScope.$broadcast( DROPDOWN_EVENTS.showDropdownList,
-            {
-              "listData" : scope.listData,
-              "dropId" : scope.dropId,
-              "listField" : scope.listField,
-              "dropListCssClass" : scope.dropListCssClass,
-              "dropListItemCssClass" : scope.dropListItemCssClass,
-              "useFormPositioning" : scope.useFormPositioning
-            }
-        );
-      };
+
+      scope.showHideItems = showHideItems;
 
       $rootScope.$on( DROPDOWN_EVENTS.dropdownItemSelected, function(e, selection){
         //devlog.channel('iscDropdown').debug( 'iscDropdown.dropdownItemSelected', selection);
@@ -138,11 +147,27 @@
         if(scope.dropId === selection.dropId ){
           scope.dropTitle = selection.selectedItem[scope.listField] ;
           scope.dropSelectedItem = selection.selectedItem;
-
+          elem.focus();
           //devlog.channel('iscDropdown').debug( '...scope.dropTitle', scope.dropTitle);
           //devlog.channel('iscDropdown').debug( '...scope.dropSelectedItem', scope.dropSelectedItem);
         }
       });
+
+
+      function showHideItems(){
+        devlog.channel('iscDropdown').debug( 'iscDropdown.showHideItems');
+        $rootScope.$emit( DROPDOWN_EVENTS.showDropdownList,
+          {
+            "listData" : scope.listData,
+            "dropId" : scope.dropId,
+            "listField" : scope.listField,
+            "dropListCssClass" : scope.dropListCssClass,
+            "dropListItemCssClass" : scope.dropListItemCssClass,
+            "dropElem": elem,,
+            "useFormPositioning" : scope.useFormPositioning
+          }
+        );
+      }
 
       // ---------------------------
       // watchers
