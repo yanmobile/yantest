@@ -1,0 +1,14 @@
+.isc-typeahead-list {
+  @extend .isc-dropdown-selection-list;
+
+  top: initial !important;
+  left: initial !important;
+  margin-top: 0;
+
+  li {
+    outline: none;
+    &:hover, &:focus {
+      background-color: $brand-secondary;
+    }
+  }
+}

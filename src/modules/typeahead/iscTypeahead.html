@@ -1,0 +1,14 @@
+<div>
+  <div ng-transclude></div>
+  <ul class="isc-typeahead-list isc-dd"
+      ng-show="iscTaCtrl.getFilteredList().length && !iscTaCtrl.selectedItem && iscTaCtrl.isDirty">
+    <li tabindex="1" ng-hide="result[iscTaCtrl.listField || 'value'] === iscTaCtrl.model[iscTaCtrl.listField || 'value']"
+        ng-click="iscTaCtrl.select(result)"
+        cmc-keypress="iscTaCtrl.select(result)"
+        cmc-keypress-code="13"
+        class="isc-dropdown-item isc-dd"
+        ng-repeat="result in iscTaCtrl.getFilteredList()">
+      {{ result[iscTaCtrl.listField || 'value']}}
+    </li>
+  </ul>
+</div>
