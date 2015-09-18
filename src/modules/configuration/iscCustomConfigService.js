@@ -67,7 +67,7 @@
     }
 
     function getApiUrl(apiUrl){
-      if(config.api == null){
+      if( !config.api ){
         return apiUrl;
       }
 
@@ -185,7 +185,7 @@
      * @param role String
      */
     function updateStateByRole( role ){
-      $log.debug( 'iscCustomConfigService.updateStateByRole', role );
+      //$log.debug( 'iscCustomConfigService.updateStateByRole', role );
 
       var allStates = iscCustomConfigHelper.getAllStates();
       //$log.debug( '...allStates', allStates );
@@ -212,7 +212,7 @@
       }
 
       iscSessionModel.setPermittedStates( allPermittedStates );
-      $log.debug( '...allPermittedStates', allPermittedStates );
+      //$log.debug( '...allPermittedStates', allPermittedStates );
 
       if( _.contains( allPermittedStates,  '*' )){
         //console.debug( '...adding all' );
