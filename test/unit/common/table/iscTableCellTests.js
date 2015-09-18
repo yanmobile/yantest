@@ -243,7 +243,7 @@
         var defaultText = '';
 
         var expected = cellScope.getDisplayText( dataItem, defaultText );
-        expect( expected ).toBe( 'ISC_NA' );
+        expect( expected ).toBe( '' );
       } );
 
       it( "should get the right displayText, dataItem defined, string", function(){
@@ -257,7 +257,7 @@
 
       it( "should get the right displayText, dataItem defined, number", function(){
 
-        rowScope.column.default = ''
+        rowScope.column.default = '';
         rowScope.dataItem[ rowScope.column.key ] = 0;
 
         var expected = cellScope.getDisplayText();
