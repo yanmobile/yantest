@@ -36,7 +36,7 @@
         pre: pre
       };
 
-      function pre( scope, trElem, attrs, iscRowCtrl ){
+      function pre( scope, trElem, attrs, iscRowCtrl ){ //jshint ignore:line
         var footerRowTemplate = _.get( scope, 'iscTblCtrl.tableConfig.footerRowTemplate' );
 
         if( footerRowTemplate ){
@@ -55,6 +55,6 @@
   // ----------------------------
 
   angular.module( 'isc.common' )
-    .directive( 'iscTableFooterRow', iscTableFooterRow );
+      .directive( 'iscTableFooterRow', iscTableFooterRow );
 
 })();

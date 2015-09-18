@@ -35,7 +35,9 @@
       //console.debug('isc.common.iscDateFilter.getDateStr');
       //console.debug('............itemDate: ' + itemDate );
 
-      if (!itemDate) return '';
+      if (!itemDate){
+        return '';
+      }
 
       var seconds = moment().month(0).date(0).hours(0).minutes(0).seconds(itemDate);//jshint ignore:line
       var SECONDS_EXPR = 'H:mm:ss';

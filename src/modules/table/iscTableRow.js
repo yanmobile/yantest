@@ -46,7 +46,7 @@
     // functions
     // ----------------------------
 
-    function controller( $scope ){
+    function controller( $scope ){ //jshint ignore:line
 
       // ----------------------------
       // vars
@@ -64,7 +64,7 @@
       // functions
       // ----------------------------
 
-      function onCommand( commandName, event, callback ){
+      function onCommand( commandName, event, callback ){ //jshint ignore:line
         switch( commandName ){
           case 'edit':
             if( angular.isFunction( callback ) ){
@@ -110,28 +110,28 @@
 
       // This approach is the pessimistic approach, UI/model is only updated/refreshed
       // when api calls are successful. The changes are wrapped in the 'then' blocks.
-      function defaultRemoveCallback( event ){
+      function defaultRemoveCallback( event ){ //jshint ignore:line
         var apicall = _.get( self, 'iscTblCtrl.tableConfig.api.remove', angular.noop );
         apicall( self.dataItem ).then( function(){
           self.iscTblCtrl.deleteRow( self.dataItem );
         } );
       }
 
-      function defaultCancelEditCallback( event ){
+      function defaultCancelEditCallback( event ){ //jshint ignore:line
         self.editModeData = {};
         self.inEditMode   = false;
         self.iscTblCtrl.cancelEdit();
       }
 
-      function defaultEditCallback( event ){
-        if(self.iscTblCtrl.dataItem == null){
+      function defaultEditCallback( event ){ //jshint ignore:line
+        if(self.iscTblCtrl.dataItem === null){
           self.editModeData = angular.copy( self.dataItem );
           self.inEditMode   = true;
           self.iscTblCtrl.editRow( self.dataItem );
         }
       }
 
-      function defaultSaveCallback( event ){
+      function defaultSaveCallback( event ){ //jshint ignore:line
         var apicall;
 
         if( angular.equals( self.editModeData, self.dataItem ) ){
@@ -148,7 +148,7 @@
 
             self.editModeData = {};
             self.inEditMode   = false;
-          } )
+          } );
 
         }
         else {
@@ -158,7 +158,7 @@
 
             self.editModeData = {};
             self.inEditMode   = false;
-          } )
+          } );
         }
       }
     }
@@ -170,12 +170,12 @@
         post: post
       };
 
-      function pre( scope, trElem, attrs, iscRowCtrl ){
+      function pre( scope, trElem, attrs, iscRowCtrl ){ //jshint ignore:line
         var rowTemplate = _.get( scope, 'iscTblCtrl.tableConfig.rowTemplate', 'table/iscTableRow.html');
 
         //in the case of creating a new item, fetch dataItem from iscTblCtrl
-        if( scope.dataItem == null && _.get( scope, "iscTblCtrl.dataItem.isNew" ) ){
-          iscRowCtrl.dataItem = scope.dataItem = _.get( scope, "iscTblCtrl.dataItem" );
+        if( scope.dataItem === null && _.get( scope, 'iscTblCtrl.dataItem.isNew' ) ){
+          iscRowCtrl.dataItem = scope.dataItem = _.get( scope, 'iscTblCtrl.dataItem' );
           iscRowCtrl.editModeData = angular.copy(scope.dataItem);
           iscRowCtrl.inEditMode = true;
         }
@@ -189,19 +189,22 @@
         }
       }
 
-      function post( scope, elem, attr , iscRowCtrl){
+      function post( scope, elem, attr , iscRowCtrl){ //jshint ignore:line
         iscRowCtrl.iscTblCtrl = scope.iscTblCtrl;
         scope.$watch( 'dataItem', function( value ){
           iscRowCtrl.dataItem = value;
-        } )
+        } );
       }
 
-      function removeTemplateSpaces( templateStr ){
+      function removeTemplateSpaces(templateStr) {
         return templateStr
-          .replace( /\r?\n|\r/g, ' ' )  //replace newline with space
-          .replace( /\>[ \t]+\</g, '\>\<' ) // remove space between elements/tags
-          .replace( /\s{2,}/g, ' ' ); //replace 2+ spaces with 1 space
+            .replace(/\r?\n|\r/g, ' ')  //replace newline with space
+          //jshint ignore:start
+            .replace(/\>[ \t]+\</g, '\>\<')// remove space between elements/tags
+          //jshint ignore:end
+            .replace(/\s{2,}/g, ' '); //replace 2+ spaces with 1 space
       }
+
     }
   }
 
@@ -210,6 +213,6 @@
   // ----------------------------
 
   angular.module( 'isc.common' )
-    .directive( 'iscTableRow', iscTableRow );
+      .directive( 'iscTableRow', iscTableRow );
 
 })();

@@ -71,8 +71,8 @@
         return apiUrl;
       }
 
-      var url = (config.api.protocol || "http") + "://" + config.api.hostname + ":" + (config.api.port || 80);
-      url += (apiUrl || "");
+      var url = (config.api.protocol || 'http') + '://' + config.api.hostname + ':' + (config.api.port || 80);
+      url += (apiUrl || '');
       return url;
     }
 
