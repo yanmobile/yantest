@@ -124,7 +124,7 @@
       }
 
       function defaultEditCallback( event ){ //jshint ignore:line
-        if(self.iscTblCtrl.dataItem === null){
+        if( !self.iscTblCtrl.dataItem ){
           self.editModeData = angular.copy( self.dataItem );
           self.inEditMode   = true;
           self.iscTblCtrl.editRow( self.dataItem );
