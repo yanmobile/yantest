@@ -35,9 +35,9 @@
   @include  flex-direction( column );
   justify-content: center;
   order: 1;
-  background-color: $brand-primary;
 
-//  border: 3px solid #9effc6;
+  background: $side-nav-background;
+  background-size: cover;
 }
 
 .isc-side-bar-nav-item-container{
