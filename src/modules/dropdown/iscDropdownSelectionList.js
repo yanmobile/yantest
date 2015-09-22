@@ -18,9 +18,9 @@
 
   function iscDropdownSelectionListDirective( $log, $parse , $timeout, $rootScope, $window, DROPDOWN_EVENTS, $global){
 
-		// ----------------------------
-		// vars
-		// ----------------------------
+    // ----------------------------
+    // vars
+    // ----------------------------
 
     // ----------------------------
     // class factory
@@ -69,35 +69,35 @@
 
       $rootScope.$on(DROPDOWN_EVENTS.showDropdownList, function(event, params) {
 
-          //IF THIS IS A CALL FROM A DIFFERENT DROPDOWN HIDE PREVIOUS DROPDOWN
-          if(scope.dropId !== params.dropId){
-            hideDropdownList();
-            dropElem = params.dropElem;
-          }
-          //IF HIDDEN THEN SETUP AND SHOW IF NOT THEN HIDE AND REMOVE LISTENERS
-          if(angular.element('#modal-dropdown').css('visibility') === 'hidden'){
-            scope.listData = params.listData;
-            scope.dropId = params.dropId;
-            scope.dropListCssClass = params.dropListCssClass;
-            scope.dropListItemCssClass = params.dropListItemCssClass;
-            scope.listField = params.listField;
-            scope.refName = params.listField;
-            scope.useFormPositioning = params.useFormPositioning;
-            scope.modalVisible = false;
-            scope.showDropList = true;
-            $timeout(function(){
-              $rootScope.$emit( DROPDOWN_EVENTS.dropdownShow );
-            }, 0);
-            scope.setDropDown(params.dropId);
-            angular.element('#modal-dropdown').css('visibility','visible');
-            scope.setDropScroll(params.dropId);
-            scope.setClickWatcher();
-          }
-          else{
-            hideDropdownList();
-            angular.element(document).unbind('click'); //jshint ignore:line
-            angular.element($window).unbind('scroll');
-          }
+        //IF THIS IS A CALL FROM A DIFFERENT DROPDOWN HIDE PREVIOUS DROPDOWN
+        if(scope.dropId !== params.dropId){
+          hideDropdownList();
+          dropElem = params.dropElem;
+        }
+        //IF HIDDEN THEN SETUP AND SHOW IF NOT THEN HIDE AND REMOVE LISTENERS
+        if(angular.element('#modal-dropdown').css('visibility') === 'hidden'){
+          scope.listData = params.listData;
+          scope.dropId = params.dropId;
+          scope.dropListCssClass = params.dropListCssClass;
+          scope.dropListItemCssClass = params.dropListItemCssClass;
+          scope.listField = params.listField;
+          scope.refName = params.listField;
+          scope.useFormPositioning = params.useFormPositioning;
+          scope.modalVisible = false;
+          scope.showDropList = true;
+          $timeout(function(){
+            $rootScope.$emit( DROPDOWN_EVENTS.dropdownShow );
+          }, 0);
+          scope.setDropDown(params.dropId);
+          angular.element('#modal-dropdown').css('visibility','visible');
+          scope.setDropScroll(params.dropId);
+          scope.setClickWatcher();
+        }
+        else{
+          hideDropdownList();
+          angular.element(document).unbind('click'); //jshint ignore:line
+          angular.element($window).unbind('scroll');
+        }
         scope.dropId = params.dropId;
       });
 
@@ -131,13 +131,13 @@
           }
         }
         angular.element('#modal-dropdown').css(
-          {'left': clickOffset.left,
-            'top': !!scope.useFormPositioning ? elPositionTop : elTop,
-            'visibility': 'visible',
-            'height': elHeight,
-            'overflow':'auto',
-            'width': elWidth
-          });
+            {'left': clickOffset.left,
+              'top': !!scope.useFormPositioning ? elPositionTop : elTop,
+              'visibility': 'visible',
+              'height': elHeight,
+              'overflow':'auto',
+              'width': elWidth
+            });
 
       };
 
@@ -175,17 +175,17 @@
       });
 
 
-      elem.on( 'keydown', ".isc-dropdown-item", handleArrowUpDown );
+      elem.on( 'keydown', '.isc-dropdown-item', handleArrowUpDown );
 
       function handleArrowUpDown( event ){
         event.preventDefault();
         var index = $( event.target ).scope().$index;
         if( event.which === keyCode.DOWN && (index + 1) < scope.listData.length ){
-          $( elem.find( ".isc-dropdown-item" )[ index + 1 ] ).focus();
+          $( elem.find( '.isc-dropdown-item' )[ index + 1 ] ).focus();
           event.preventDefault();
         } else if( event.which === keyCode.UP ){
           if( index > 0 ){
-            $( elem.find( ".isc-dropdown-item" )[ index - 1 ] ).focus();
+            $( elem.find( '.isc-dropdown-item' )[ index - 1 ] ).focus();
           }
         } else if( event.which === keyCode.ENTER ){
           $( event.target ).click();
@@ -204,6 +204,6 @@
   // ----------------------------
 
   angular.module( 'isc.common' )
-    .directive( 'iscDropdownSelectionListDirective', iscDropdownSelectionListDirective );
+      .directive( 'iscDropdownSelectionListDirective', iscDropdownSelectionListDirective );
 
 })();

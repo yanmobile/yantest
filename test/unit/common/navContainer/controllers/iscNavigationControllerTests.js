@@ -80,7 +80,7 @@
       });
 
       xit( 'should know what to do onLoad, dont show warning', function(){
-        spyOn( sessionStorageHelper, 'getShowTimedOutAlert' ).andReturn( false );
+        spyOn( sessionStorageHelper, 'getShowTimedOutAlert' ).and.returnValue( false );
         spyOn( sessionStorageHelper, 'setShowTimedOutAlert' );
         spyOn( alertModel, 'setOptionsByType' );
         spyOn( self, 'showAlertBox' );
@@ -98,7 +98,7 @@
       });
 
       xit( 'should know what to do onLoad, show warning', function(){
-        spyOn( sessionStorageHelper, 'getShowTimedOutAlert' ).andReturn( true );
+        spyOn( sessionStorageHelper, 'getShowTimedOutAlert' ).and.returnValue( true );
         spyOn( sessionStorageHelper, 'setShowTimedOutAlert' );
         spyOn( alertModel, 'setOptionsByType' );
         spyOn( self, 'showAlertBox' );

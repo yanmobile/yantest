@@ -3,19 +3,19 @@
  *
  SAMPLE HTML USAGE
 
- <isc-dropdown list-data="someController.dropListItems"
-               list-field="label"
-               drop-selected-item="someController.dropSelectedItem"
-               drop-id="someUniqueId"
-               drop-icon="fa fa-icon"
-               drop-minwidth="200"
-               drop-maxwidth="'100%'"
-               drop-width="'356px'"
-               drop-placeholder="'Select something..'"
-               drop-css-class="some-class"
-               drop-list-css-class="some-class"
-               drop-list-item-css-class="some-class"
-               drop-chevron-css-class="some-class">
+ <isc-dropdown list-data='someController.dropListItems'
+ list-field='label'
+ drop-selected-item='someController.dropSelectedItem'
+ drop-id='someUniqueId'
+ drop-icon='fa fa-icon'
+ drop-minwidth='200'
+ drop-maxwidth=''100%''
+ drop-width=''356px''
+ drop-placeholder=''Select something..''
+ drop-css-class='some-class'
+ drop-list-css-class='some-class'
+ drop-list-item-css-class='some-class'
+ drop-chevron-css-class='some-class'>
 
  @param listData = array of objects
  @param listField = string (key in obj)
@@ -50,7 +50,7 @@
         dropMinwidth: '=',
         dropMaxwidth: '=',
         dropWidth: '=',
-				dropRequired: '=',
+        dropRequired: '=',
         dropPlaceholder: '=',
         dropCssClass: '@',
         dropListCssClass: '@',
@@ -84,14 +84,14 @@
       // businsess logic
       // ---------------------------
 
-      elem.on( "keydown", function focusFirstListItem( event ){
+      elem.on( 'keydown', function focusFirstListItem( event ){
         if( event.which === keyCode.DOWN || event.which === keyCode.SPACE || event.which === keyCode.ENTER ){
           var offEvnt = $rootScope.$on( DROPDOWN_EVENTS.dropdownShow, function(){
             $timeout( function(){
               angular
-                .element( "#modal-dropdown" )
-                .find( ".isc-dropdown-item:first" )
-                .focus();
+                  .element( '#modal-dropdown' )
+                  .find( '.isc-dropdown-item:first' )
+                  .focus();
             }, 0 );
             offEvnt();
           } );
@@ -134,7 +134,7 @@
             }
           }
           // Set width on main dropdown component to auto
-          blockMain.css( {"width": "auto"} );
+          blockMain.css( {'width': 'auto'} );
         }
       };
 
@@ -157,15 +157,15 @@
       function showHideItems(){
         devlog.channel('iscDropdown').debug( 'iscDropdown.showHideItems');
         $rootScope.$emit( DROPDOWN_EVENTS.showDropdownList,
-          {
-            "listData" : scope.listData,
-            "dropId" : scope.dropId,
-            "listField" : scope.listField,
-            "dropListCssClass" : scope.dropListCssClass,
-            "dropListItemCssClass" : scope.dropListItemCssClass,
-            "dropElem": elem,
-            "useFormPositioning" : scope.useFormPositioning
-          }
+            {
+              'listData' : scope.listData,
+              'dropId' : scope.dropId,
+              'listField' : scope.listField,
+              'dropListCssClass' : scope.dropListCssClass,
+              'dropListItemCssClass' : scope.dropListItemCssClass,
+              'dropElem': elem,
+              'useFormPositioning' : scope.useFormPositioning
+            }
         );
       }
 
@@ -185,7 +185,9 @@
 
       // when you manually set the selected item, update the page title
       scope.$watch('dropSelectedItem',function( newVal ){
-        if( !newVal ) return;
+        if( !newVal ){
+          return;
+        }
         scope.updateTitle();
       });
 
@@ -218,7 +220,7 @@
             scope.dropTitle = scope.dropPlaceholder;
           }
         });
-      };
+      }
 
       // ---------------------------
       // init

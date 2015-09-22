@@ -176,7 +176,7 @@
 
   iscTable.$inject = [ '$log' ];
 
-  function iscTable( $log ){
+  function iscTable( $log ){ //jshint ignore:line
     //$log.debug('iscTable.LOADED');
 
     // ----------------------------
@@ -201,7 +201,7 @@
       templateUrl : 'table/iscTable.html',
       bindToController: true,
       controller  : controller,
-      controllerAs: "iscTblCtrl"
+      controllerAs: 'iscTblCtrl'
     };
 
     return directive;
@@ -209,7 +209,7 @@
     // ----------------------------
     // functions
     // ----------------------------
-    function controller( ) {//jshint ignore:line
+    function controller( $scope ) {//jshint ignore:line
       //$log.debug( 'iscTable.link, tableConfig', scope.tableConfig );
       //$log.debug( '...tableData', scope.tableData );
 
@@ -226,7 +226,7 @@
       self.rowsOnPage = self.tableConfig.rowsOnPage || 15;
       self.currentPage = 1;
 
-      $scope.$watch( function(){ return self.tableData }, function( newVal, oldVal ){
+      $scope.$watch( function(){ return self.tableData; }, function(){
         //$log.debug( 'iscTable.WATCH tableData');
         // set an array of the table row objects
         self.tableRows = self.tableConfig.key ? self.tableData[self.tableConfig.key] : self.tableData;
@@ -236,7 +236,7 @@
       self.sortField = {reverse: false};
 
       self.sortColumn = function (column) {
-        if (column.sortable !== false && self.sortField.name === column.key) {
+        if ( (column.columnClick === 'sort' || !column.columnClick) && self.sortField.name === column.key) {
           self.sortField.reverse = !self.sortField.reverse;
         }
 
@@ -249,7 +249,12 @@
 
       self.doFilter = function (item) {
         //$log.debug( 'iscTable.doFilter', item );
-        if (angular.isDefined( self.filterFunction )){
+        var fitlerable = _.some( self.tableConfig.columns, function( column ){
+          return _.isFunction( column.filterFunction );
+        });
+
+        //$log.debug( '...fitlerable', fitlerable );
+        if( fitlerable ){
           return self.filterFunction({item: item});
         }
         else {
@@ -278,7 +283,7 @@
       function createRow() {
         var dataItem = {isNew: true};
         self.tableConfig.columns.forEach(function (column) {
-          if (column.defaultValue != null) {
+          if (column.defaultValue !== null) {
             dataItem[column.key] = column.defaultValue;
           }
         });

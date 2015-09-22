@@ -23,7 +23,7 @@
       templateUrl : 'table/iscTableCell.html',
       link        : link,
       controller  : controller,
-      controllerAs: "iscCellCtrl"
+      controllerAs: 'iscCellCtrl'
     };
     return directive;
 
@@ -79,7 +79,7 @@
 
         var retVal;
         if( scope.notThere( cellData ) && scope.notThere( defaultText ) ){
-          retVal = ''
+          retVal = '';
         }
         else if( scope.notThere( cellData ) ){
           retVal = String( defaultText );
