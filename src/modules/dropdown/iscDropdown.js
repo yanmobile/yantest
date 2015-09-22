@@ -163,7 +163,7 @@
             "listField" : scope.listField,
             "dropListCssClass" : scope.dropListCssClass,
             "dropListItemCssClass" : scope.dropListItemCssClass,
-            "dropElem": elem,,
+            "dropElem": elem,
             "useFormPositioning" : scope.useFormPositioning
           }
         );

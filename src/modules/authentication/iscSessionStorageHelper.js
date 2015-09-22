@@ -19,7 +19,7 @@
     // class factory
     // ----------------------------
 
-    var service = {
+    var helper = {
       destroy: destroy,
 
       getLoginResponse: getLoginResponse,
@@ -32,10 +32,14 @@
       setSessionTimeoutCounter: setSessionTimeoutCounter,
 
       getShowTimedOutAlert: getShowTimedOutAlert,
-      setShowTimedOutAlert: setShowTimedOutAlert
+      setShowTimedOutAlert: setShowTimedOutAlert,
+
+      canParse: canParse,
+      getValFromSessionStorage: getValFromSessionStorage,
+      setSessionStorageValue: setSessionStorageValue
     };
 
-    return service;
+    return helper;
 
     // ----------------------------
     // functions
@@ -98,32 +102,23 @@
     }
 
     // ----------------------------
-    /**
-     * private
-     */
     function canParse( val ){
       var canParse =  (!_.isEmpty(val) && val !== 'null' && val !== 'undefined');//jshint ignore:line
       //$log.debug( '...canParse: ' +  canParse );
       return canParse;
     }
 
-    /**
-     * private
-     */
     function getValFromSessionStorage( key, defaultVal ){
       var valStr = $window.sessionStorage.getItem( key );
       //$log.debug( '...valStr: ' +  valStr );
 
-      if( canParse( valStr ) ){
+      if( helper.canParse( valStr ) ){
         //$log.debug( '...TRYING TO PARSE: ' +  valStr );
         return angular.fromJson( valStr );
       }
       return defaultVal;
     }
 
-    /**
-     * private
-     */
     function setSessionStorageValue( key, val ){
       var jsonStr = angular.toJson( val );
       $window.sessionStorage.setItem( key, jsonStr );
