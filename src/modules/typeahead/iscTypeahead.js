@@ -157,10 +157,13 @@
     return {
       restrict        : "E",
       scope           : {
-        onSelect : "&",
-        listData : "=",
-        listField: "@",
-        limitTo  : "="
+        onSelect         : "&",
+        listData         : "=",
+        listField        : "@",
+        limitTo          : "=",
+        bypassInputFilter: "=" // if truthy, result typeahead list filter is bypassed;
+                               // useful for dynamic typeahead lists that are produced
+                               // from an API call
       },
       replace         : true,
       transclude      : true,
@@ -187,7 +190,9 @@
       };
 
       self.getFilteredList = function(){
-        return $filter( 'filter' )( self.listData, self.inputVal );
+        return self.bypassInputFilter
+          ? self.listData
+          : $filter( 'filter' )( self.listData, self.inputVal );
       }
     }
 
