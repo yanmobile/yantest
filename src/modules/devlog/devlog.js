@@ -10,7 +10,7 @@
   ];
 
   function devlog( $log, iscCustomConfigService ) {
-    var devlog = {};
+    var devlog = {};//jshint ignore:line
 
     // make devlog function as an extension of angular $log
     // bruteforce approach
@@ -21,7 +21,7 @@
     devlog.debug = function() { $log.debug.apply(this, arguments); };
 
     // null interface for channels that fail 
-    var nullobj = {}
+    var nullobj = {};
     nullobj.log = function() {};
     nullobj.info = function() {};
     nullobj.warn = function() {};
@@ -44,7 +44,7 @@
 
       var config = iscCustomConfigService.getConfig();
       if(!config) {
-        $log.debug("WARNING No config in application, suppressing call to devlog");
+        $log.debug('WARNING No config in application, suppressing call to devlog');
         console.trace();
         return nullobj;
       }
@@ -59,16 +59,13 @@
       //no channel specified
       //or wildcard in whitelist
       //means send it directly through
-      if (
-        !args.length
-        || (whitelist.indexOf("*") >= 0)
-      ) {
+      if (!args.length || (whitelist.indexOf('*') >= 0)) {
         return devlog;
       }
 
       //if any channel specified appears in whitelist, send it through
-      for(var i = 0; i < args.length; i++) {
-        if( whitelist.indexOf( args[i] ) >= 0 ) {
+      for(var ii = 0; i < args.length; ii++) {
+        if( whitelist.indexOf( args[ii] ) >= 0 ) {
           return devlog;
         }
       }
