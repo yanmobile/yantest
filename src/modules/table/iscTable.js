@@ -226,11 +226,7 @@
       self.rowsOnPage = self.tableConfig.rowsOnPage || 15;
       self.currentPage = 1;
 
-<<<<<<< Updated upstream
       $scope.$watch( function(){ return self.tableData; }, function(){
-=======
-      $scope.$watch( function(){ return self.tableData }, function( newVal, oldVal ){
->>>>>>> Stashed changes
         //$log.debug( 'iscTable.WATCH tableData');
         // set an array of the table row objects
         self.tableRows = self.tableConfig.key ? self.tableData[self.tableConfig.key] : self.tableData;
