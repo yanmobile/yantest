@@ -153,11 +153,11 @@ textarea{
     font-size: $body-font-size;
   }
 
-  @media #{$desktop}{
+  @media #{$tab-plus}{
     @include flex-flow( row,nowrap );
   }
 
-  @media #{$mobile}{
+  @media #{$phab-or-less}{
     @include flex-flow( column, wrap );
   }
 }
@@ -291,12 +291,14 @@ textarea{
   //  border: 2px solid #ff41f9;
 
   @media #{$desktop}{
+    width:100%;
     margin:$isc-gutter;
     flex-grow: 1;
   }
 
   @media #{$tablet}{
-    margin: $isc-gutter/2 $isc-gutter $isc-gutter $isc-gutter;
+    width:100%;
+    margin: $isc-gutter $isc-gutter $isc-gutter 0;
     flex-grow: 1;
   }
 
