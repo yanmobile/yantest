@@ -34,7 +34,7 @@
       //$(document).skylo('start');//jshint ignore:line
     }
 
-    function set (position) {
+    function set (position) {//jshint ignore:line
       //$(document).skylo('set', position);//jshint ignore:line
     }
 
@@ -46,7 +46,7 @@
       //return $(document).skylo('get');//jshint ignore:line
     }
 
-    function inch (amount) {
+    function inch (amount) {//jshint ignore:line
       //$(document).skylo('show',function(){//jshint ignore:line
       //  $(document).skylo('inch', amount);//jshint ignore:line
       //});
