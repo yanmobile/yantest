@@ -41,6 +41,9 @@
   @include flex-wrap( nowrap );
   order: 1;
 
+  background: $top-nav-background;
+  background-size: cover;
+
   width: 100%;
 
   @media #{$desktop} {
@@ -322,9 +325,3 @@
   @extend .isc-image-button;
   max-width: 20px;
 }
-
-
-
-
-
-
