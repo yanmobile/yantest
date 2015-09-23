@@ -5,8 +5,8 @@
 
   describe('iscSessionStorageHelper', function(){
     var rootScope,
-      window,
-      helper;
+        window,
+        helper;
 
     beforeEach( module( 'isc.common') );
 
@@ -170,6 +170,91 @@
         helper.setShowTimedOutAlert(); // should return the default val
         var expected = helper.getShowTimedOutAlert();
         expect( expected ).toEqual( defaultVal );
+      });
+    });
+
+    // -------------------------
+    describe( 'canParse tests ', function(){
+
+      it( 'should have a function canParse', function(){
+        expect( angular.isFunction( helper.canParse )).toBe( true );
+      });
+
+      it( 'should know if you can parse something, blank', function(){
+        var expected = helper.canParse();
+        expect( expected).toBe( false );
+
+        var expected = helper.canParse('');
+        expect( expected).toBe( false );
+      });
+
+      it( 'should know if you can parse something, empty', function(){
+        var expected = helper.canParse( {} );
+        expect( expected).toBe( false );
+      });
+
+      it( 'should know if you can parse something, undefined', function(){
+        var expected = helper.canParse( 'undefined' );
+        expect( expected).toBe( false );
+
+        var expected = helper.canParse( undefined );
+        expect( expected).toBe( false );
+      });
+
+      it( 'should know if you can parse something, null', function(){
+        var expected = helper.canParse( 'null' );
+        expect( expected).toBe( false );
+
+        var expected = helper.canParse( null );
+        expect( expected).toBe( false );
+      });
+
+      it( 'should know if you can parse something, valid', function(){
+        var expected = helper.canParse( {foo: 'bar'} );
+        expect( expected).toBe( true );
+      });
+    });
+
+    // -------------------------
+    describe( 'getValFromSessionStorage tests ', function(){
+
+      it( 'should have a function getValFromSessionStorage', function(){
+        expect( angular.isFunction( helper.getValFromSessionStorage )).toBe( true );
+      });
+
+      it( 'should return a default value if you cant parse', function(){
+        spyOn( window.sessionStorage, 'getItem').and.returnValue( '' );
+        spyOn( helper, 'canParse' ).and.callThrough();
+
+        var expected = helper.getValFromSessionStorage( 'key', 'default value' );
+        expect( window.sessionStorage.getItem ).toHaveBeenCalledWith( 'key' );
+        expect( helper.canParse ).toHaveBeenCalledWith( '' );
+        expect( expected ).toBe( 'default value' );
+      });
+
+      it( 'should return a value if you can parse', function(){
+        spyOn( window.sessionStorage, 'getItem').and.returnValue( '{ "foo":"bar"}' );
+        spyOn( helper, 'canParse' ).and.callThrough();
+
+        var expected = helper.getValFromSessionStorage( 'key', 'default value' );
+        expect( window.sessionStorage.getItem ).toHaveBeenCalledWith( 'key' );
+        expect( helper.canParse ).toHaveBeenCalledWith( '{ "foo":"bar"}' );
+        expect( expected ).toEqual( {foo: 'bar'} );
+      });
+    });
+
+    // -------------------------
+    describe( 'setSessionStorageValue tests ', function(){
+
+      it( 'should have a function setSessionStorageValue', function(){
+        expect( angular.isFunction( helper.setSessionStorageValue )).toBe( true );
+      });
+
+      it( 'should return a value if you can parse', function(){
+        spyOn( window.sessionStorage, 'setItem');
+
+        helper.setSessionStorageValue( 'key', {"foo":"bar"} );
+        expect( window.sessionStorage.setItem ).toHaveBeenCalledWith( 'key', '{"foo":"bar"}' );
       });
     });
 

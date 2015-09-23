@@ -16,7 +16,7 @@
       iscCustomConfigService = _iscCustomConfigService_;
 
       mockConfig = angular.copy( customConfig );
-      spyOn( iscCustomConfigService, 'getConfig').andReturn( mockConfig );
+      spyOn( iscCustomConfigService, 'getConfig').and.returnValue( mockConfig );
 
     }));
 

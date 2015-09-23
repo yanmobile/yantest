@@ -48,8 +48,8 @@
     // -------------------------
     //describe( '$stateChangeSuccess tests ', function(){
     //  it( 'should call the right functions on logout', function(){
-    //    spyOn( configHelper, 'getSectionTranslationKeyFromName').andReturn( 'foobar' );
-    //    spyOn( rootScope, '$on' ).andReturn( [{}, {name:'theName'}, {}, {}, {} ] );
+    //    spyOn( configHelper, 'getSectionTranslationKeyFromName').and.returnValue( 'foobar' );
+    //    spyOn( rootScope, '$on' ).and.returnValue( [{}, {name:'theName'}, {}, {}, {} ] );
     //
     //    rootScope.$broadcast('$stateChangeSuccess');
     //    expect( self.sectionTranslationKey ).toBe( 'foobar');
@@ -79,31 +79,31 @@
       });
 
       it( 'should know when to show the login button, authenticated and logged in', function(){
-        spyOn( scope.navCtrl.sessionModel, 'isAuthenticated').andReturn( true );
-        spyOn( $state, 'is').andReturn( true );
+        spyOn( scope.navCtrl.sessionModel, 'isAuthenticated').and.returnValue( true );
+        spyOn( $state, 'is').and.returnValue( true );
         var expected = scope.navCtrl.showLogin();
         expect( expected ).toBe( false );
       });
 
       it( 'should know when to show the login button, NOT authenticated but logged in', function(){
-        spyOn( scope.navCtrl.sessionModel, 'isAuthenticated').andReturn( false );
-        spyOn( $state, 'is').andReturn( true );
+        spyOn( scope.navCtrl.sessionModel, 'isAuthenticated').and.returnValue( false );
+        spyOn( $state, 'is').and.returnValue( true );
         var expected = scope.navCtrl.showLogin();
         expect( expected ).toBe( false );
 
       });
 
       it( 'should know when to show the login button, authenticated but NOT logged in', function(){
-        spyOn( scope.navCtrl.sessionModel, 'isAuthenticated').andReturn( true );
-        spyOn( $state, 'is').andReturn( false );
+        spyOn( scope.navCtrl.sessionModel, 'isAuthenticated').and.returnValue( true );
+        spyOn( $state, 'is').and.returnValue( false );
         var expected = scope.navCtrl.showLogin();
         expect( expected ).toBe( false );
 
       });
 
       it( 'should know when to show the login button, NOT authenticated and NOT logged in', function(){
-        spyOn( scope.navCtrl.sessionModel, 'isAuthenticated').andReturn( false );
-        spyOn( $state, 'is').andReturn( false );
+        spyOn( scope.navCtrl.sessionModel, 'isAuthenticated').and.returnValue( false );
+        spyOn( $state, 'is').and.returnValue( false );
         var expected = scope.navCtrl.showLogin();
         expect( expected ).toBe( true );
       });

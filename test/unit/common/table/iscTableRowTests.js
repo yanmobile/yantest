@@ -156,7 +156,7 @@
         iscRowCtrl.editModeData = angular.copy( rowScope.dataItem );
         iscRowCtrl.editModeData.modified = true;
 
-        spyOn( scope.iscTblCtrl.tableConfig.api, 'update' ).andCallThrough();
+        spyOn( scope.iscTblCtrl.tableConfig.api, 'update' ).and.callThrough();
         iscRowCtrl.onCommand( 'save' );
 
         expect( scope.iscTblCtrl.tableConfig.api.update ).toHaveBeenCalled();
@@ -166,7 +166,7 @@
         rowScope.dataItem.isNew = true;
         iscRowCtrl.editModeData = angular.copy( rowScope.dataItem );
         iscRowCtrl.editModeData.modified = true;
-        spyOn( scope.iscTblCtrl.tableConfig.api, 'create' ).andCallThrough();
+        spyOn( scope.iscTblCtrl.tableConfig.api, 'create' ).and.callThrough();
         iscRowCtrl.onCommand( 'save' );
 
         expect( scope.iscTblCtrl.tableConfig.api.create ).toHaveBeenCalled();
@@ -175,7 +175,7 @@
       it( "should have called tableConfig.api.remove", function(){
         rowScope.dataItem.isNew = true;
         iscRowCtrl.editModeData = angular.copy( rowScope.dataItem );
-        spyOn( scope.iscTblCtrl.tableConfig.api, 'remove' ).andCallThrough();
+        spyOn( scope.iscTblCtrl.tableConfig.api, 'remove' ).and.callThrough();
         iscRowCtrl.onCommand( 'remove' );
 
         expect( scope.iscTblCtrl.tableConfig.api.remove ).toHaveBeenCalled();
