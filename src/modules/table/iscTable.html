@@ -43,13 +43,9 @@
            ng-click="column.filterFunction(column)"
            class="isc-clickable">{{ column.title | translate }}</a>
       </th>
-
-      <!--button column headers for wellness workflows-->
-      <th ng-repeat="button in iscTblCtrl.tableConfig.buttons track by $index">
-        {{ button.title | translate }}
-      </th>
     </tr>
     </thead>
+    
     <tbody>
 
     <!--rows-->
