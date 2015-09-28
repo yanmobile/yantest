@@ -1,6 +1,6 @@
 html,
-body{
-  @include box-sizing( border-box );
+body {
+  @include box-sizing(border-box);
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
   width: 100%;
   height: 100%;
@@ -8,31 +8,32 @@ body{
   margin: 0;
   padding: 0;
 
-  div{
+  div {
     @include box-sizing(border-box);
   }
 }
 
-textarea{
-  display:block;
+textarea {
+  display: block;
   box-sizing: padding-box;
   max-width: 100%;
-  overflow:hidden;
-  padding:10px;
-  font-size:13px;
-  border-radius:3px;
-  @include isc-placeholder(.5, 13, 300 );
+  min-height: 100px;
+  overflow: hidden;
+  padding: 10px;
+  font-size: 13px;
+  border-radius: 3px;
+  @include isc-placeholder(.5, 13, 300);
 }
 
 textarea,
-input{
-  @include box-sizing( border-box );
+input {
+  @include box-sizing(border-box);
   outline: none;
 }
 
 textarea,
 input:not([type=submit]):not([type=file]):not([type=checkbox]):not([type=radio]):-webkit-autofill {
-  -webkit-box-shadow:0 0 0 50px rgba($white, 1) inset;
+  -webkit-box-shadow: 0 0 0 50px rgba($white, 1) inset;
   -webkit-text-fill-color: #333;
 }
 
@@ -42,7 +43,7 @@ input:not([type=submit]):not([type=file]):not([type=checkbox]):not([type=radio])
   -webkit-text-fill-color: #333;
 }
 
-input:not([type=submit]):not([type=file]):not([type=checkbox]):not([type=radio]){
+input:not([type=submit]):not([type=file]):not([type=checkbox]):not([type=radio]) {
   border: 1px solid $app-border-color;
   background-color: rgba($white, 1);
   padding: 5px 5px;
@@ -50,24 +51,24 @@ input:not([type=submit]):not([type=file]):not([type=checkbox]):not([type=radio])
   max-height: $form-input-height;
 }
 
-textarea{
+textarea {
   border: 1px solid $app-border-color;
   background-color: rgba($white, 0.25);
   padding: 2px 4px;
 }
 
-.isc-highlighted{
+.isc-highlighted {
   background-color: $isc-highlight-color;
 }
 
-.isc-clickable{
+.isc-clickable {
   cursor: hand;
   cursor: pointer;
 }
 
-.isc-app-content{
-  @include  flex();
-  @include  flex-direction( column );
+.isc-app-content {
+  @include flex();
+  @include flex-direction(column);
   top: 0;
   right: 0;
   left: 0;
@@ -79,8 +80,8 @@ textarea{
 }
 
 // nav bar
-.isc-nav-bar{
-  @include  flex();
+.isc-nav-bar {
+  @include flex();
   flex-shrink: 0;
 
   margin-left: 0;
@@ -110,55 +111,55 @@ textarea{
 }
 
 // page content
-.isc-page-content{
-  @include  flex();
-  @include  flex-type( 1 );
+.isc-page-content {
+  @include flex();
+  @include flex-type(1);
 
   //border: 5px solid blue;
 
   /**
   styles for page headers
   **/
-  h1, h2, h3, h4, p{
+  h1, h2, h3, h4, p {
     margin-top: 0;
     padding-top: 0;
   }
 
-  h1{
+  h1 {
     color: $brand-page-title-color;
     font-size: 24px;
     font-weight: 400;
   }
 
-  h2{
+  h2 {
     color: $brand-page-subtitle-color;
     font-size: 16px;
     font-weight: 900;
   }
 
-  h3{
+  h3 {
     color: $gray;
     font-size: 14px;
     font-weight: 400;
   }
 
-  h4{
+  h4 {
     color: $brand-link;
     font-size: 18px;
     font-weight: 400;
   }
 
-  p{
+  p {
     color: $text-color;
     font-size: $body-font-size;
   }
 
   @media #{$tab-plus}{
-    @include flex-flow( row,nowrap );
+    @include flex-flow(row, nowrap);
   }
 
   @media #{$phab-or-less}{
-    @include flex-flow( column, wrap );
+    @include flex-flow(column, wrap);
   }
 }
 
@@ -166,43 +167,43 @@ textarea{
 .isc-content.ng-enter,
 .isc-content.ng-leave,
 .isc-page-content.ng-enter,
-.isc-page-content.ng-leave{
+.isc-page-content.ng-leave {
   -webkit-transition: all .5s ease-out;
   transition: all .5s ease-out;
 }
 
 .isc-content.ng-enter,
-.isc-page-content.ng-enter{
+.isc-page-content.ng-enter {
   opacity: 0;
 }
 
 .isc-content.ng-enter-active,
-.isc-page-content.ng-enter-active{
+.isc-page-content.ng-enter-active {
   opacity: 1;
 }
 
 .isc-content.ng-leave,
-.isc-page-content.ng-leave{
+.isc-page-content.ng-leave {
   opacity: 0;
   display: none;
 }
 
 .isc-content.ng-leave-active,
-.isc-page-content.ng-leave-active{
+.isc-page-content.ng-leave-active {
   opacity: 0;
   display: none;
 }
 
 //footer bar
-.isc-app-footer{
-  @include  flex();
-  @include  flex-box-align( baseline );
-  @include  flex-justify-content( center );
-  @include  flex-box-align( center );
+.isc-app-footer {
+  @include flex();
+  @include flex-box-align(baseline);
+  @include flex-justify-content(center);
+  @include flex-box-align(center);
   flex-shrink: 0;
   align-self: flex-end;
 
-  background:  $footer-background;
+  background: $footer-background;
   background-size: cover;
 
   margin: 0;
@@ -273,7 +274,7 @@ textarea{
   }
 }
 
-.isc-page{
+.isc-page {
   padding: 0;
   margin: 0;
   width: 100%;
@@ -291,13 +292,13 @@ textarea{
   //  border: 2px solid #ff41f9;
 
   @media #{$desktop}{
-    width:100%;
-    margin:$isc-gutter;
+    width: 100%;
+    margin: $isc-gutter;
     flex-grow: 1;
   }
 
   @media #{$tablet}{
-    width:100%;
+    width: 100%;
     margin: $isc-gutter $isc-gutter $isc-gutter 0;
     flex-grow: 1;
   }
@@ -312,7 +313,7 @@ textarea{
   }
 }
 
-.isc-two-column, .isc-three-column{
+.isc-two-column, .isc-three-column {
   float: left;
 }
 
@@ -330,7 +331,8 @@ textarea{
     width: 100%;
   }
 }
-.isc-three-column > div{
+
+.isc-three-column > div {
 
   @media #{$desktop} {
     width: 29%;
@@ -351,18 +353,18 @@ textarea{
 // --------------------------------------
 
 // labels on pages
-.isc-page-label{
+.isc-page-label {
   color: $text-color;
   font-weight: 600;
   font-size: $body-font-size;
 
-  &.left{
+  &.left {
     padding-left: 0;
     padding-right: 10px;
     text-align: right;
   };
 
-  &.right{
+  &.right {
     padding-left: 10px;
     padding-right: 0;
     text-align: left;
@@ -371,52 +373,51 @@ textarea{
   //  border: 1px solid green;
 }
 
-
 // --------------------------------------
 // item containers
 // --------------------------------------
 
-@mixin item-wrapper( $flexType, $order ){
-  @include  flex();
-  @include  flex-type( $flexType );
+@mixin item-wrapper( $flexType, $order ) {
+  @include flex();
+  @include flex-type($flexType);
   justify-content: center;
   order: $order;
 }
 
-.isc-item-wrapper-1{
-  @include  item-wrapper( 1, 1 );
+.isc-item-wrapper-1 {
+  @include item-wrapper(1, 1);
   //    border: 2px solid green;
 }
 
-.isc-item-wrapper-2{
-  @include  item-wrapper( 2, 1 );
+.isc-item-wrapper-2 {
+  @include item-wrapper(2, 1);
   //  border: 2px solid green;
 }
 
-.isc-item-wrapper-3{
-  @include  item-wrapper( 3, 1 );
+.isc-item-wrapper-3 {
+  @include item-wrapper(3, 1);
   //  border: 2px solid green;
 }
 
-.isc-item-wrapper-4{
-  @include  item-wrapper( 4, 1 );
+.isc-item-wrapper-4 {
+  @include item-wrapper(4, 1);
   //    border: 2px solid green;
 }
 
-.isc-item-wrapper-5{
-  @include  item-wrapper( 5, 1 );
+.isc-item-wrapper-5 {
+  @include item-wrapper(5, 1);
   //    border: 2px solid green;
 }
 
-.isc-alert-button{
+.isc-alert-button {
   @include flex-basis(auto);
 }
 
-.secondary-nav-wrapper{
+.secondary-nav-wrapper {
   position: absolute !important;
-  top: -1000 ;
+  top: -1000;
   z-index: $modal-z-index;
-  opacity:0;
+  opacity: 0;
   visibility: hidden;
 }
 

@@ -32,7 +32,10 @@
     // ----------------------------
 
     function radioSelect( selectedItem, radioGroup ){
-      //$log.debug( 'iscRadioGroupHelper.radioSelect', selectedItem, radioGroup );
+      //$log.debug( 'iscRadioGroupHelper.radioSelect');
+      //$log.debug( '...selectedItem', selectedItem );
+      //$log.debug( '...radioGroup', radioGroup );
+
       var currentState = !!selectedItem.$$selected;
       radioGroup.forEach( function( item ){
         item.$$selected = false;
