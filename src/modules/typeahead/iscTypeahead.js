@@ -5,8 +5,8 @@
 
 /**
  * USAGE:
- <isc-typeahead list-data="column.listData" on-select="cmcHrCtrl.selectContact(item)">
-  <input type="text" placeholder="Look up a contact" ng-model="iscRowCtrl.editModeData[column.key].value" class="form-control">
+ <isc-typeahead list-data='column.listData' on-select='cmcHrCtrl.selectContact(item)'>
+  <input type='text' placeholder='Look up a contact' ng-model='iscRowCtrl.editModeData[column.key].value' class='form-control'>
  </isc-typeahead>
  */
 
@@ -28,13 +28,13 @@
     // class factory
     // ----------------------------
     return {
-      restrict        : "E",
+      restrict        : 'E',
       scope           : {
-        onSelect         : "&",
-        listData         : "=",
-        listField        : "@",
-        limitTo          : "=",
-        bypassInputFilter: "=" // if truthy, result typeahead list filter is bypassed;
+        onSelect         : '&',
+        listData         : '=',
+        listField        : '@',
+        limitTo          : '=',
+        bypassInputFilter: '=' // if truthy, result typeahead list filter is bypassed;
                                // useful for dynamic typeahead lists that are produced
                                // from an API call
       },
@@ -42,7 +42,7 @@
       transclude      : true,
       link            : link,
       controller      : controller,
-      controllerAs    : "iscTaCtrl",
+      controllerAs    : 'iscTaCtrl',
       bindToController: true,
       templateUrl     : 'typeahead/iscTypeahead.html'
     };
@@ -71,14 +71,14 @@
 
     function link( scope, elem, attrs, iscTaCtrl ){
 
-      var input = elem.find( "input" );
+      var input = elem.find( 'input' );
       var list  = elem.find( '.isc-typeahead-list' );
 
-      input.on( "input", updateList );
+      input.on( 'input', updateList );
 
       input.on( 'keydown', focusFirstListItem );
 
-      list.on( 'keydown', "li", handleArrowUpDown );
+      list.on( 'keydown', 'li', handleArrowUpDown );
 
       iscTaCtrl.focusInput = function(){
         input.focus();
@@ -91,7 +91,7 @@
       // ----------------------------
       function focusFirstListItem( event ){
         if( event.which === DOWN_ARROW_KEY_CODE ){
-          list.find( "li:first" ).focus();
+          list.find( 'li:first' ).focus();
           event.preventDefault();
           event.stopPropagation();
         }
@@ -108,13 +108,13 @@
       function handleArrowUpDown( event ){
         var index = $( event.target ).scope().$index;
         if( event.which === DOWN_ARROW_KEY_CODE && (index + 1) < iscTaCtrl.getFilteredList().length ){
-          $( list.find( "li" )[ index + 1 ] ).focus();
+          $( list.find( 'li' )[ index + 1 ] ).focus();
           event.preventDefault();
         } else if( event.which === UP_ARROW_KEY_CODE ){
           if( index === 0 ){
             input.focus();
           } else {
-            $( list.find( "li" )[ index - 1 ] ).focus();
+            $( list.find( 'li' )[ index - 1 ] ).focus();
             event.preventDefault();
           }
         }
