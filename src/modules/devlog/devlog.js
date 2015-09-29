@@ -64,7 +64,7 @@
       }
 
       //if any channel specified appears in whitelist, send it through
-      for(var ii = 0; i < args.length; ii++) {
+      for(var ii = 0; ii < args.length; ii++) {
         if( whitelist.indexOf( args[ii] ) >= 0 ) {
           return devlog;
         }

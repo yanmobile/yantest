@@ -75,7 +75,7 @@ textarea{
 
   min-height: 100vh;
 
-//  border: 2px solid green;
+  //  border: 2px solid green;
 }
 
 // nav bar
@@ -153,11 +153,11 @@ textarea{
     font-size: $body-font-size;
   }
 
-  @media #{$desktop}{
+  @media #{$tab-plus}{
     @include flex-flow( row,nowrap );
   }
 
-  @media #{$mobile}{
+  @media #{$phab-or-less}{
     @include flex-flow( column, wrap );
   }
 }
@@ -202,13 +202,16 @@ textarea{
   flex-shrink: 0;
   align-self: flex-end;
 
+  background:  $footer-background;
+  background-size: cover;
+
   margin: 0;
   padding-left: 0;
   padding-right: 0;
 
   width: 100%;
 
-//  border: 5px solid #804f00;
+  //  border: 5px solid #804f00;
 
   @media #{$desktop} {
     min-height: $app-footer-height;
@@ -230,7 +233,7 @@ textarea{
 .isc-side-nav {
   padding: 0;
 
-//  background: #806c2f !important;
+  //  background: #806c2f !important;
 
   @media #{$desktop}{
     background: $white;
@@ -285,15 +288,17 @@ textarea{
 
   padding: 0;
   background: none;
-//  border: 2px solid #ff41f9;
+  //  border: 2px solid #ff41f9;
 
   @media #{$desktop}{
+    width:100%;
     margin:$isc-gutter;
     flex-grow: 1;
   }
 
   @media #{$tablet}{
-    margin: $isc-gutter/2 $isc-gutter $isc-gutter $isc-gutter;
+    width:100%;
+    margin: $isc-gutter $isc-gutter $isc-gutter 0;
     flex-grow: 1;
   }
 
@@ -325,19 +330,19 @@ textarea{
     width: 100%;
   }
 }
-  .isc-three-column > div{
+.isc-three-column > div{
 
-    @media #{$desktop} {
-      width: 29%;
-    }
+  @media #{$desktop} {
+    width: 29%;
+  }
 
-    @media #{$tablet} {
-      width: 29%;
-    }
+  @media #{$tablet} {
+    width: 29%;
+  }
 
-    @media #{$mobile} {
-      width: 100%;
-    }
+  @media #{$mobile} {
+    width: 100%;
+  }
 
 }
 
@@ -363,7 +368,7 @@ textarea{
     text-align: left;
   };
 
-//  border: 1px solid green;
+  //  border: 1px solid green;
 }
 
 
@@ -380,7 +385,7 @@ textarea{
 
 .isc-item-wrapper-1{
   @include  item-wrapper( 1, 1 );
-//    border: 2px solid green;
+  //    border: 2px solid green;
 }
 
 .isc-item-wrapper-2{
@@ -395,12 +400,12 @@ textarea{
 
 .isc-item-wrapper-4{
   @include  item-wrapper( 4, 1 );
-//    border: 2px solid green;
+  //    border: 2px solid green;
 }
 
 .isc-item-wrapper-5{
   @include  item-wrapper( 5, 1 );
-//    border: 2px solid green;
+  //    border: 2px solid green;
 }
 
 .isc-alert-button{

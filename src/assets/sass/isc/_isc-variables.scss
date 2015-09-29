@@ -129,28 +129,33 @@ $gray-90:          darken( $white, 90 );
 //--------------------------------------------
 //SOLID DARK
 //--------------------------------------------
-//$brand-primary:         #5e4db7 !default;
-//$brand-primary-dark:    $brand-primary !default;
-//$brand-success:         #5cb85c !default;
-//$brand-info:            #58656a !default;
-//$brand-warning:         #f7f7c5 !default;
-//$brand-danger:          #d9534f !default;
-//$brand-link: #4aafca !default;
-//$logo-color: $white;
-//
-//$brand-page-title-color: $brand-primary;
-//$brand-page-subtitle-color: $gray-dark;
-//
-//$nav-link:        #628080 !default;
-//$nav-text:        #fdfbff !default;
-//$button-primary:        $brand-primary !default;
-//$button-primary-disabled: #bfddd7 !default;
-//
-//$brand-secondary: #f5f5f5;
-//$app-border-color: darken( $brand-secondary, 30 );
-//
-//$tr-bkgrnd-light: $brand-secondary;
-//$tr-bkgrnd-dark: $white;
+$brand-primary:         #5e4db7 !default;
+$brand-primary-dark:    $brand-primary !default;
+$brand-secondary:       #f5f5f5;
+$brand-success:         #5cb85c !default;
+$brand-info:            #58656a !default;
+$brand-warning:         #f7f7c5 !default;
+$brand-danger:          #d9534f !default;
+$brand-link: #4aafca !default;
+$logo-color: $white;
+
+$brand-page-title-color: $brand-primary;
+$brand-page-subtitle-color: $gray-dark;
+
+$nav-link:        #628080 !default;
+$nav-text:        #fdfbff !default;
+$button-primary:        $brand-primary !default;
+$button-primary-disabled: #bfddd7 !default;
+
+$app-border-color: darken( $brand-secondary, 30 );
+$app-border-drop-shadow: 0px 3px 8px 0px rgba(0,0,0,0.65);
+
+$tr-bkgrnd-light: $brand-secondary;
+$tr-bkgrnd-dark: $white;
+
+$top-nav-background: $brand-primary;
+$footer-background: $brand-primary;
+$side-nav-background: $brand-primary;
 
 
 // --------------------------------------------
@@ -158,6 +163,7 @@ $gray-90:          darken( $white, 90 );
 // --------------------------------------------
 //$brand-primary:         #b2e5dc !default;
 //$brand-primary-dark:    #25a992 !default;
+//$brand-secondary:       #f5f5f5;
 //$brand-success:         #5cb85c !default;
 //$brand-info:            #58656a !default;
 //$brand-warning:         #f7f7c5 !default;
@@ -173,41 +179,47 @@ $gray-90:          darken( $white, 90 );
 //$brand-page-title-color: $brand-primary-dark;
 //$brand-page-subtitle-color: $gray-dark;
 //
-//$brand-secondary: #f5f5f5;
 //$app-border-color: darken( $brand-secondary, 30 );
+//$app-border-drop-shadow: 0px 3px 8px 0px rgba(0,0,0,0.65);
 //
 //$tr-bkgrnd-light: $brand-secondary;
 //$tr-bkgrnd-dark: $white;
+//
+//$top-nav-background: $brand-primary;
+//$footer-background: $brand-primary;
+//$side-nav-background: $brand-primary;
 
 
 // --------------------------------------------
 // THEME SKY
 // --------------------------------------------
-$brand-primary:         #019aba !default;
-$brand-primary-dark:    #017fa0 !default;
-$brand-secondary:       #f5f1e6;
-$brand-success:         #5cb85c !default;
-$brand-info:            #58656a !default;
-$brand-warning:         #f7f7c5 !default;
-$brand-danger:          #d9534f !default;
-$brand-link:            #de750c !default;
-$logo-color: $white;
-
-$nav-link:                   #5c7b7d !default;
-$nav-text:                   #000400 !default;
-$button-primary:             $brand-primary !default;
-$button-primary-disabled:    #bfddd7 !default;
-
-$brand-page-title-color: $brand-primary;
-$brand-page-subtitle-color: $gray-dark;
-
-$app-border-color: #dfe0db;
-$app-border-drop-shadow: 0px 3px 8px 0px rgba(0,0,0,0.65);
-
-
-$tr-bkgrnd-dark: lighten( $brand-secondary, 5 );
-$tr-bkgrnd-light: $white;
-
+//$brand-primary:         #019aba !default;
+//$brand-primary-dark:    #017fa0 !default;
+//$brand-secondary:       #f5f1e6;
+//$brand-success:         #5cb85c !default;
+//$brand-info:            #58656a !default;
+//$brand-warning:         #f7f7c5 !default;
+//$brand-danger:          #d9534f !default;
+//$brand-link:            #de750c !default;
+//$logo-color: $white;
+//
+//$nav-link:                   #5c7b7d !default;
+//$nav-text:                   #000400 !default;
+//$button-primary:             $brand-primary !default;
+//$button-primary-disabled:    #bfddd7 !default;
+//
+//$brand-page-title-color: $brand-primary;
+//$brand-page-subtitle-color: $gray-dark;
+//
+//$app-border-color: #dfe0db;
+//$app-border-drop-shadow: 0px 3px 8px 0px rgba(0,0,0,0.65);
+//
+//$tr-bkgrnd-dark: lighten( $brand-secondary, 5 );
+//$tr-bkgrnd-light: $white;
+//
+//$top-nav-background: url( ../assets/images/blue-clouds.jpg );
+//$footer-background: url( ../assets/images/blue-clouds-footer.jpg );
+//$side-nav-background: url( ../assets/images/blue-clouds.jpg );
 
 // --------------------------------------------------
 // application
@@ -253,7 +265,6 @@ $app-top-nav-height-phone: 55px;
 $app-header-height-desktop: 105px;
 $app-header-height-tablet: $app-top-nav-height-tablet;
 $app-header-height-phone: $app-top-nav-height-phone;
-
 
 $app-top-nav-logo-height: 100px;
 $app-top-nav-logo-height-sm: 45px;
