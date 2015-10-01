@@ -31,7 +31,9 @@
       .constant('NAV_EVENTS', {
         showSecondaryNav:     'iscShowSecondaryNav',
         hideSecondaryNav:     'iscHideSecondaryNav',
-        goToBeforeLoginPage:  'iscGoToBeforeLoginPage'
+        goToBeforeLoginPage:  'iscGoToBeforeLoginPage',
+        modalBackgroundClicked : 'iscModalBackgroundClicked'
+
       })
 
       .constant('DROPDOWN_EVENTS', {
