@@ -64,7 +64,7 @@
 
       self.getFilteredList = function () {
         return self.bypassInputFilter ? self.listData : $filter ('filter') (self.listData, self.inputVal);
-      }
+      };
     }
 
     function link (scope, elem, attrs, iscTaCtrl) {
