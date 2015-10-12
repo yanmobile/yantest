@@ -38,6 +38,7 @@
       self.showSideNav = false;
       self.showSecondaryNav = false;
       self.showModalBkgrnd = false;
+      $rootScope.$broadcast( NAV_EVENTS.modalBackgroundClicked );
     };
 
     // --------------
