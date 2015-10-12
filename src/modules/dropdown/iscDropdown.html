@@ -18,7 +18,7 @@
 			<div ng-repeat="item in listData"
            id="{{dropId}}-list"
            ng-click="selectItem(item[listField])"
-           class="isc-dropdown-item {{dropId}}-btn isc-dd {{dropListCssClass}}" >{{item[listField] | translate}}
+           class="isc-dropdown-item {{dropId}}-btn isc-dd {{dropListCssClass}} hide" >{{item[listField] | translate}}
         <span class="{{dropIcon}} isc-dd isc-dd-icon"></span>
       </div>
 
