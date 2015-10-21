@@ -26,7 +26,7 @@
     beforeEach( module('isc.templates') );
 
     // show $log statements
-    beforeEach( module( 'iscHsCommunityAngular', function( $provide ){
+    beforeEach( module( 'isc.common', function( $provide ){
       $provide.value('$log', console);
     }));
 
