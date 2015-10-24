@@ -1,18 +1,15 @@
 $warning-x : #aeb160;
 
-.isc-warning-box {
+.isc-failed-box {
   @include flex;
-  @include flex-justify-content( space-between );
-//  @include flex-box-align( center );
+  @include flex-direction( column );
+  @include flex-justify-content( left );
   border: 1px solid $app-border-color;
   background-color: $brand-warning;
   padding: 15px;
   left: 0;
   right: 0;
   margin-bottom: $isc-gutter-sm;
-
-  cursor: hand;
-  cursor: pointer;
 
   span,
   a,
@@ -40,9 +37,17 @@ $warning-x : #aeb160;
       span{
         color: darken($warning-x, 10);
       }
-
     }
   }
+}
+
+.isc-warning-box {
+  @extend .isc-failed-box;
+  @include flex-direction( row );
+  @include flex-justify-content( space-between );
+
+  cursor: hand;
+  cursor: pointer;
 }
 
 

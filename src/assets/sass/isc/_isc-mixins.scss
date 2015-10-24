@@ -214,3 +214,49 @@
   $remSize: $size / 16px;
   @return $remSize * 1rem;
 }
+
+// --------------------------------------------------
+// animation
+// --------------------------------------------------
+
+@mixin fade-in-blink-out() {
+  &.ng-enter {
+    -webkit-transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
+    transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
+    opacity: 0;
+
+    &.ng-enter-active {
+      opacity: 1;
+    }
+  }
+
+  &.ng-leave {
+    opacity: 1;
+
+    &.ng-leave-active {
+      opacity: 0;
+    }
+  }
+}
+
+@mixin fade-in-out() {
+  &.ng-enter {
+    -webkit-transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.35s;
+    transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.35s;
+    opacity: 0;
+
+    &.ng-enter-active {
+      opacity: 1;
+    }
+  }
+
+  &.ng-leave {
+    -webkit-transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.35s;
+    transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.35s;
+    opacity: 1;
+
+    &.ng-leave-active {
+      opacity: 0;
+    }
+  }
+}

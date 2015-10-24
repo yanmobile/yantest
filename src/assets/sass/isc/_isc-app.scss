@@ -65,6 +65,10 @@ textarea {
   width:1px;
   height:1px;
   overflow:hidden;
+  padding: 0;
+  border: 0;
+  clip: rect(1px 1px 1px 1px); /* For IE6, IE7 */
+  clip: rect(1px, 1px, 1px, 1px);
 }
 
 .isc-highlighted {
