@@ -57,16 +57,6 @@ textarea {
   padding: 2px 4px;
 }
 
-// only visible to screen readers
-.sr-only{
-  position:absolute;
-  left:-10000px;
-  top:auto;
-  width:1px;
-  height:1px;
-  overflow:hidden;
-}
-
 .isc-highlighted {
   background-color: $isc-highlight-color;
 }
@@ -221,6 +211,7 @@ textarea {
   padding-right: 0;
 
   width: 100%;
+  z-index: 1;
 
   //  border: 5px solid #804f00;
 

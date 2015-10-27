@@ -50,7 +50,7 @@
     // ----------------
     self.getRemainingSessionTime = function(){
       return iscSessionModel.getRemainingTime();
-    }
+    };
 
   }// END CLASS
 

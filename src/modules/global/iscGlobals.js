@@ -79,7 +79,6 @@
         DOWN     : 40,
         END      : 35,
         ENTER    : 13,
-        SHIFT    : 16,
         ESCAPE   : 27,
         HOME     : 36,
         LEFT     : 37,

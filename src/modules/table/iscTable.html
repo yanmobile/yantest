@@ -3,11 +3,11 @@
   <h1 class="{{iscTblCtrl.tableConfig.titleClass}}">{{ iscTblCtrl.tableData[ iscTblCtrl.tableConfig.title ] || iscTblCtrl.tableConfig.title | translate }}</h1>
 
   <!--back button for wellness workflows -->
-  <button ng-if="!!iscTblCtrl.tableConfig.backButtonText"
+  <button ng-if="hasBackButton"
           ng-click="iscTblCtrl.backButtonCallback()"
           class="isc-table-btn-white back-button">
     <span ng-include="'svg/isc-arrow-back.html'"></span>
-    <span>{{ iscTblCtrl.tableConfig.backButtonText | translate }}</span>
+    <span>{{ iscTblCtrl.tableConfig.backButtonText || 'ISC_BACK' | translate }}</span>
   </button>
 
   <!--subtitles-->

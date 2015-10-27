@@ -24,6 +24,12 @@ $screen-md-min:              960px !default;
 // Large screen / desktop
 $screen-lg-min:              1200px !default;
 
+// Extra large screen / desktop
+$screen-xl-min:              1440px !default;
+
+// Extra large screen / desktop
+$screen-xxl-min:              1660px !default;
+
 // now deprecated
 $screen-xs-max:              ($screen-sm-min - 1) !default;
 $screen-sm-max:              ($screen-md-min - 1) !default;
@@ -38,6 +44,7 @@ $screen-desktop-min: 1200px !default;
 $screen-phone-max:   ($screen-phablet-min - 1) !default;
 $screen-phablet-max: ($screen-tablet-min - 1) !default;
 $screen-tablet-max:  ($screen-desktop-min - 1) !default;
+$screen-desktop-max:  ($screen-xl-min - 1) !default;
 
 
 //
@@ -69,31 +76,34 @@ $screen-tablet-max:  ($screen-desktop-min - 1) !default;
 //$media-below-phab:   "only screen and (max-width: #{$screen-phone-max})";
 
 
-$phone:     "only screen and (max-width: #{$screen-phone-max})";
-$phablet:   "only screen and (min-width: #{$screen-phablet-min}) and (max-width: #{$screen-phablet-max})";
-$tablet:    "only screen and (min-width: #{$screen-tablet-min}) and (max-width: #{$screen-tablet-max})";
-$desktop:   "only screen and (min-width: #{$screen-desktop-min})";
+$phone:         "only screen and (max-width: #{$screen-phone-max})";
+$phablet:       "only screen and (min-width: #{$screen-phablet-min}) and (max-width: #{$screen-phablet-max})";
+$tablet:        "only screen and (min-width: #{$screen-tablet-min}) and (max-width: #{$screen-tablet-max})";
+$desktop:       "only screen and (min-width: #{$screen-desktop-min})";//1200
+$just-desktop:  "only screen and (min-width: #{$screen-desktop-min}) and (max-width: #{$screen-desktop-max})";//1200
+$xl-plus:       "only screen and (min-width: #{$screen-xl-min})";//1440
+$xxl-plus:      "only screen and (min-width: #{$screen-xxl-min})";//1660
 
 // tablet or bigger
-$tab-plus:  "only screen and (min-width: #{$screen-tablet-min})";
+$tab-plus:      "only screen and (min-width: #{$screen-tablet-min})";
 
 // tablet or phablet
-$tab-phab:   "only screen and (min-width: #{$screen-phablet-min}) and (max-width: #{$screen-tablet-max})";
+$tab-phab:      "only screen and (min-width: #{$screen-phablet-min}) and (max-width: #{$screen-tablet-max})";
 
 // tablet or less
-$tab-or-less:  "only screen and (max-width: #{$screen-tablet-max})";
+$tab-or-less:   "only screen and (max-width: #{$screen-tablet-max})";
 
 // everything but desktop
-$mobile:    "only screen and (max-width: #{$screen-tablet-max})";
+$mobile:        "only screen and (max-width: #{$screen-tablet-max})";
 
 // phablet or larger
-$phab-plus: "only screen and (min-width: #{$screen-phablet-min})";
+$phab-plus:     "only screen and (min-width: #{$screen-phablet-min})";
 
 // below phab size
-$below-phab: "only screen and (max-width: #{$screen-phone-max})";
+$below-phab:    "only screen and (max-width: #{$screen-phone-max})";
 
 // phab size or below
-$phab-or-less: "only screen and (max-width: #{$screen-phablet-max})";
+$phab-or-less:  "only screen and (max-width: #{$screen-phablet-max})";
 
 
 // --------------------------------------------------
@@ -130,7 +140,7 @@ $gray-90:          darken( $white, 90 );
 //SOLID DARK
 //--------------------------------------------
 $brand-primary:         #5e4db7 !default;
-$brand-primary-dark:    $brand-primary !default;
+$brand-primary-dark:    darken( $brand-primary, 20% ) !default;
 $brand-secondary:       #f5f5f5;
 $brand-success:         #5cb85c !default;
 $brand-info:            #58656a !default;
@@ -147,7 +157,8 @@ $nav-text:        #fdfbff !default;
 $button-primary:        $brand-primary !default;
 $button-primary-disabled: #bfddd7 !default;
 
-$app-border-color: darken( $brand-secondary, 30 );
+$app-border-color: darken( $brand-secondary, 10 );
+
 $app-border-drop-shadow: 0px 3px 8px 0px rgba(0,0,0,0.65);
 
 $tr-bkgrnd-light: $brand-secondary;
@@ -236,9 +247,9 @@ $cursor-disabled: not-allowed !default;
 
 //** Global text color on `<body>`.
 $text-color:            $gray-dark !default;
-$body-font-size: 12px;
-$header-font-size: 16px;
-$subheader-font-size: 14px;
+$body-font-size: 14px;
+$header-font-size: 18px;
+$subheader-font-size: 16px;
 
 $table-th-size: 14px;
 $table-td-size: 14px;
