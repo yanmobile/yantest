@@ -200,6 +200,7 @@
       replace     : true,
       templateUrl : 'table/iscTable.html',
       bindToController: true,
+      link        : link,
       controller  : controller,
       controllerAs: 'iscTblCtrl'
     };
@@ -299,6 +300,11 @@
       }
 
     }// END CTRL
+
+    function link ( scope, elem, attr ) {
+      scope.hasBackButton = !_.isUndefined( attr.backButtonCallback );
+      // $log.debug('hasBackButton', scope.hasBackButton);
+    }
 
   }// END CLASS
 

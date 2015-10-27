@@ -22,12 +22,10 @@
 <span ng-if="column.type === 'date' || column.type === 'dateWithTime'">
   <a ng-if="!iscRowCtrl.inEditMode && column.sref"
      ui-sref="{{column.sref || state }}"
-     class="{{ mobileClass }} {{ getTrClass( displayText )}} date">{{ getDisplayText() | iscDateFilter : column.type ===
-    'dateWithTime' : column.type === 'date' }}
+     class="{{ mobileClass }} {{ getTrClass( displayText )}} date">{{ getDisplayText() | iscDate : column.type }}
   </a>
   <span ng-if="!iscRowCtrl.inEditMode && !column.sref"
-        class="{{ mobileClass }} {{ getTrClass( displayText )}}">{{ getDisplayText() | iscDateFilter : column.type ===
-    'dateWithTime' : column.type === 'date' }}
+        class="{{ mobileClass }} {{ getTrClass( displayText )}}">{{ getDisplayText() | iscDate : column.type }}
   </span>
 
   <datepicker date-format="longDate" ng-if="iscRowCtrl.inEditMode">
