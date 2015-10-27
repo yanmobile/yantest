@@ -76,34 +76,34 @@ $screen-desktop-max:  ($screen-xl-min - 1) !default;
 //$media-below-phab:   "only screen and (max-width: #{$screen-phone-max})";
 
 
-$phone:    		  "only screen and (max-width: #{$screen-phone-max})";
-$phablet:  			"only screen and (min-width: #{$screen-phablet-min}) and (max-width: #{$screen-phablet-max})";
+$phone:         "only screen and (max-width: #{$screen-phone-max})";
+$phablet:       "only screen and (min-width: #{$screen-phablet-min}) and (max-width: #{$screen-phablet-max})";
 $tablet:        "only screen and (min-width: #{$screen-tablet-min}) and (max-width: #{$screen-tablet-max})";
 $desktop:       "only screen and (min-width: #{$screen-desktop-min})";//1200
 $just-desktop:  "only screen and (min-width: #{$screen-desktop-min}) and (max-width: #{$screen-desktop-max})";//1200
-$xl-plus: 		  "only screen and (min-width: #{$screen-xl-min})";//1440
-$xxl-plus: 		  "only screen and (min-width: #{$screen-xxl-min})";//1660
+$xl-plus:       "only screen and (min-width: #{$screen-xl-min})";//1440
+$xxl-plus:      "only screen and (min-width: #{$screen-xxl-min})";//1660
 
 // tablet or bigger
-$tab-plus:  "only screen and (min-width: #{$screen-tablet-min})";
+$tab-plus:      "only screen and (min-width: #{$screen-tablet-min})";
 
 // tablet or phablet
-$tab-phab:   "only screen and (min-width: #{$screen-phablet-min}) and (max-width: #{$screen-tablet-max})";
+$tab-phab:      "only screen and (min-width: #{$screen-phablet-min}) and (max-width: #{$screen-tablet-max})";
 
 // tablet or less
-$tab-or-less:  "only screen and (max-width: #{$screen-tablet-max})";
+$tab-or-less:   "only screen and (max-width: #{$screen-tablet-max})";
 
 // everything but desktop
-$mobile:    "only screen and (max-width: #{$screen-tablet-max})";
+$mobile:        "only screen and (max-width: #{$screen-tablet-max})";
 
 // phablet or larger
-$phab-plus: "only screen and (min-width: #{$screen-phablet-min})";
+$phab-plus:     "only screen and (min-width: #{$screen-phablet-min})";
 
 // below phab size
-$below-phab: "only screen and (max-width: #{$screen-phone-max})";
+$below-phab:    "only screen and (max-width: #{$screen-phone-max})";
 
 // phab size or below
-$phab-or-less: "only screen and (max-width: #{$screen-phablet-max})";
+$phab-or-less:  "only screen and (max-width: #{$screen-phablet-max})";
 
 
 // --------------------------------------------------
