@@ -32,7 +32,7 @@
       else { // refer to moment website
         return moment(date).format(format);
       }
-    }
+    };
 
   }//END CLASS
   // ----------------------------

@@ -28,7 +28,64 @@
   @media #{$phone} {
     height: $app-top-nav-height-phone;
     max-height: $app-top-nav-height-phone;
+
+    &.has-proxy {
+      height: $app-top-nav-height-phone*2;
+      max-height: $app-top-nav-height-phone*2;
+    }
   }
+  &.fix-to-top {
+    .isc-top-nav-container {
+      position: fixed;
+      top: 0;
+      transition: all .5s ease-out;
+    }
+    .isc-proxy-container {
+      position: fixed;
+      top: 0;
+      transition: all .5s ease-out;
+    }
+    &.up-scroll {
+      .isc-top-nav-container {
+        position: fixed;
+        top: $app-top-nav-height-phone;
+        transition: all .5s ease-out;
+      }
+      &:not(.fix-to-top) {
+        .isc-proxy-container {
+          position: absolute;
+          transition: all .5s ease-out;
+        }
+      }
+    }
+  }
+
+}
+
+.isc-proxy-container {
+  @include  flex();
+  @include  flex-box-align( space-between );
+  @include  flex-direction( row );
+  @include  box-sizing( border-box );
+  @include  flex-wrap( nowrap );
+  @include flexbox-align-items( stretch );
+  order: 1;
+
+  background: black;
+  background-size: cover;
+  height: $app-top-nav-height-phone;
+  width: 100%;
+
+  .isc-nav-label {
+    margin: 20px 40px 0 40px;
+  }
+
+  .isc-styled-select-navbar {
+    border: none;
+    width: auto;
+    padding-top: 5px;
+  }
+
 }
 
 // container for header and tabs
@@ -39,7 +96,7 @@
   @include  flex-direction( row );
   @include  box-sizing( border-box );
   @include flex-wrap( nowrap );
-  order: 1;
+  order: 2;
 
   background: $top-nav-background;
   background-size: cover;
@@ -51,6 +108,7 @@
   }
 
   @media #{$tab-phab} {
+    position: fixed;
     height: $app-top-nav-height-tablet;
   }
 
@@ -233,13 +291,9 @@
   }
 }
 
-.isc-hamburger-wrapper{
-  @include box-sizing( border-box );
-}
-
 .isc-help-button-wrapper{
   @include box-sizing( border-box );
-  border-left: 2px solid white;
+  border-left: 1px solid white;
   padding-top: 6px;
   padding-left: 3px;
 
@@ -257,7 +311,8 @@
 
   @media #{$phone} {
     min-height: $app-header-height-phone;
-    margin-right: -$isc-gutter-sm;
+    margin-right: -10px;
+    padding-left: 12px;
   }
 }
 

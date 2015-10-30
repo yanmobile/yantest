@@ -57,6 +57,12 @@ textarea {
   padding: 2px 4px;
 }
 
+@media not speech {
+  :focus {
+    outline: 0;
+  }
+}
+
 .isc-highlighted {
   background-color: $isc-highlight-color;
 }
@@ -88,6 +94,7 @@ textarea {
   padding-left: 0;
   padding-right: 0;
   width: 100%;
+  z-index: 500;
 
   @media #{$mobile} {
     margin-top: 20px;
@@ -110,10 +117,11 @@ textarea {
   }
 }
 
-// page content
+// wrapper for whole page
 .isc-page-content {
   @include flex();
   @include flex-type(1);
+  @include flexbox-align-items(stretch);
 
   //border: 5px solid blue;
 
@@ -160,6 +168,40 @@ textarea {
 
   @media #{$phab-or-less}{
     @include flex-flow(column, wrap);
+  }
+}
+
+// wrapper for the main content of the page
+// exluding the side nav
+.isc-content {
+  @include flex();
+  @include flex-type(1);
+
+  align-self: stretch;
+
+  padding: 0;
+  background: none;
+  //border: 4px solid #ff41f9;
+
+  @media #{$desktop}{
+    width: 100%;
+    margin: $isc-gutter;
+    flex-grow: 1;
+  }
+
+  @media #{$tablet}{
+    width: 100%;
+    margin: $isc-gutter $isc-gutter $isc-gutter 0;
+    flex-grow: 1;
+  }
+
+  @media #{$phablet}{
+    margin: $isc-gutter-sm;
+    flex-grow: 1;
+  }
+
+  @media #{$phone}{
+    margin: $isc-gutter-sm;
   }
 }
 
@@ -284,35 +326,6 @@ textarea {
   //border: 5px solid #2fff64;
 }
 
-//page content
-.isc-content {
-  @include flex();
-
-  padding: 0;
-  background: none;
-  //  border: 2px solid #ff41f9;
-
-  @media #{$desktop}{
-    width: 100%;
-    margin: $isc-gutter;
-    flex-grow: 1;
-  }
-
-  @media #{$tablet}{
-    width: 100%;
-    margin: $isc-gutter $isc-gutter $isc-gutter 0;
-    flex-grow: 1;
-  }
-
-  @media #{$phablet}{
-    margin: $isc-gutter-sm;
-    flex-grow: 1;
-  }
-
-  @media #{$phone}{
-    margin: $isc-gutter-sm;
-  }
-}
 
 .isc-two-column, .isc-three-column {
   float: left;

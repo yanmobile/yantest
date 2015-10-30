@@ -29,7 +29,7 @@
 
     function response (response) {//jshint ignore:line
       //$log.debug( 'iscAuthenticationInterceptor.response ', response );
-      if (response.config.url.indexOf ('http') !== -1) {
+      if (!response.config.cache) {
         //$log.debug('...http call');
         iscSessionModel.resetSessionTimeout ();
       }

@@ -74,16 +74,6 @@
       }
     }
   }
-
-  &:disabled{
-    background: $button-primary-disabled;
-    color: darken( $button-primary-disabled, 25 );
-    svg{
-      fill: darken( $button-primary-disabled, 25 );
-    }
-  }
-
-
 }
 
 .isc-btn-danger{
@@ -217,13 +207,12 @@
 
 .isc-hamburger-icon{
   @extend .isc-navbar-icon;
-  padding: 6px 0 0 0;
-  margin-right: 15px;
+  padding: 6px 15px 0 0;
+  margin-left: 25px;
 
   svg{
     width: 35px;
     height: 35px;
-    margin-left: -10px;
   }
 }
 
@@ -399,7 +388,7 @@ a.isc-image-button {
   width: 100%;
   background-color: rgba(255,255,255, 0);
   border: 1px solid transparent;
-  z-index: $modal-z-index - 100;
+  z-index: 1;
 
   .section{
     padding: 5px 0 5px 0;
