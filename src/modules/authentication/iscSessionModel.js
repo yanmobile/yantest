@@ -175,6 +175,7 @@
       //$log.debug( 'iscSessionModel.resetSessionTimeout');
       sessionTimeoutCounter = 0;
       iscSessionStorageHelper.setSessionTimeoutCounter( sessionTimeoutCounter );
+      //$log.debug("Reset session timeout to %d seconds", sessionTimeoutInSeconds);
       //stopSessionTimeout();
       //doSessionTimeout();
     }

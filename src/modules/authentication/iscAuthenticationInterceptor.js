@@ -4,7 +4,9 @@
 (function () {
   'use strict';
 
-  iscAuthenticationInterceptor.$inject = [ '$log', '$rootScope', '$q', 'iscSessionModel', 'AUTH_EVENTS', '$templateCache' ];
+  iscAuthenticationInterceptor.$inject = [
+    '$log', '$rootScope', '$q', 'iscSessionModel', 'AUTH_EVENTS', '$templateCache'
+  ];
 
   function iscAuthenticationInterceptor ($log, $rootScope, $q, iscSessionModel, AUTH_EVENTS, $templateCache) {//jshint ignore:line
 
@@ -28,10 +30,12 @@
     // ----------------------------
 
     function response (response) {//jshint ignore:line
-      //$log.debug( 'iscAuthenticationInterceptor.response ', response );
+      //$log.debug( 'Intercepting response for %s', response.config.url, response );
       if (!response.config.cache) {
-        //$log.debug('...http call');
+        //$log.debug('Resetting timeout');
         iscSessionModel.resetSessionTimeout ();
+      } else {
+        //$log.debug('No session timeout reset');
       }
 
       var deferred = $q.defer ();
@@ -43,15 +47,17 @@
 
       switch (response.status) {
         case 401:
+          //$log.debug('...401');
           // this will happen if you just leave your computer on for a long time
-
           $rootScope.$broadcast (AUTH_EVENTS.sessionTimeout, response);
-
           break;
 
+        case 500: // these must be handled individually per app
+          //$log.debug('...500');
+          break;
 
         default:
-            console.log('NOT AUTHERIZED');
+          //$log.debug('...default');
           $rootScope.$broadcast (AUTH_EVENTS.notAuthorized, response);
           break;
       }
