@@ -42,7 +42,6 @@
     }
 
     function responseError (response) {
-      //$log.debug( 'iscAuthenticationInterceptor.responseError ', response);
 
       switch (response.status) {
         case 401:

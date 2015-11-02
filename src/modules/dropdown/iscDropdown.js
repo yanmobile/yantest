@@ -39,8 +39,7 @@
     // ----------------------------
     var directive = {
       link: link,
-      restrict: 'EA',
-      replace: true,
+      restrict: 'E',
       scope: {
         listData: '=',
         listField: '@',

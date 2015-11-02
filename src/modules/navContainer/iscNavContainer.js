@@ -33,7 +33,6 @@
         hideSecondaryNav:     'iscHideSecondaryNav',
         goToBeforeLoginPage:  'iscGoToBeforeLoginPage',
         modalBackgroundClicked : 'iscModalBackgroundClicked'
-
       })
 
       .constant('DROPDOWN_EVENTS', {
@@ -121,7 +120,6 @@
 
         function handleStateChangeStart( event, toState, toParams, fromState, fromParams ){//jshint ignore:line
           //devlog.channel('StateNav').debug( 'iscNavContainer.handleStateChangeStart');
-
           var stateIsExcluded = iscCustomConfigHelper.stateIsExcluded( toState.name );
 
           if( stateIsExcluded ){
