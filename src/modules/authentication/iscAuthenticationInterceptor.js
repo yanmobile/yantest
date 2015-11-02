@@ -4,7 +4,9 @@
 (function () {
   'use strict';
 
-  iscAuthenticationInterceptor.$inject = [ '$log', '$rootScope', '$q', 'iscSessionModel', 'AUTH_EVENTS', '$templateCache' ];
+  iscAuthenticationInterceptor.$inject = [
+    '$log', '$rootScope', '$q', 'iscSessionModel', 'AUTH_EVENTS', '$templateCache'
+  ];
 
   function iscAuthenticationInterceptor ($log, $rootScope, $q, iscSessionModel, AUTH_EVENTS, $templateCache) {//jshint ignore:line
 
@@ -43,15 +45,17 @@
 
       switch (response.status) {
         case 401:
+          //$log.debug('...401');
           // this will happen if you just leave your computer on for a long time
-
           $rootScope.$broadcast (AUTH_EVENTS.sessionTimeout, response);
-
           break;
 
+        case 500: // these must be handled individually per app
+          //$log.debug('...500');
+          break;
 
         default:
-            console.log('NOT AUTHERIZED');
+          //$log.debug('...default');
           $rootScope.$broadcast (AUTH_EVENTS.notAuthorized, response);
           break;
       }
