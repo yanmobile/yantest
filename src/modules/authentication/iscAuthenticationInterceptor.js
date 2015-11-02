@@ -30,10 +30,12 @@
     // ----------------------------
 
     function response (response) {//jshint ignore:line
-      //$log.debug( 'iscAuthenticationInterceptor.response ', response );
-      if (response.config.url.indexOf ('http') !== -1) {
-        //$log.debug('...http call');
+      //$log.debug( 'Intercepting response for %s', response.config.url, response );
+      if (!response.config.cache) {
+        //$log.debug('Resetting timeout');
         iscSessionModel.resetSessionTimeout ();
+      } else {
+        //$log.debug('No session timeout reset');
       }
 
       var deferred = $q.defer ();
