@@ -38,7 +38,7 @@
          ng-click="navCtrl.showSecondaryNavbar()">
         <a class="isc-secondary-nav-link">
       <span ng-if="navCtrl.sessionModel.isAuthenticated()"
-            class="name">{{mainCtrl.effectiveUser.DisplayName}}'s</span>
+            class="name">{{mainCtrl.effectiveUser.DisplayName || ::navCtrl.sessionModel.getFullName()}}'s</span>
             <span class="name">{{navCtrl.stateManager.getCurrentStateTranslationKey() | translate }}</span>
         </a>
     </div>
