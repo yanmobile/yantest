@@ -2,7 +2,6 @@ $warning-x : #aeb160;
 
 .isc-failed-box {
   @include flex;
-  @include flex-direction( column );
   @include flex-justify-content( left );
   border: 1px solid $app-border-color;
   background-color: $brand-warning;
@@ -43,7 +42,6 @@ $warning-x : #aeb160;
 
 .isc-warning-box {
   @extend .isc-failed-box;
-  @include flex-direction( row );
   @include flex-justify-content( space-between );
 
   cursor: hand;

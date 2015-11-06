@@ -216,14 +216,21 @@ a.isc-secondary-nav-item {
 // secondary nav mobile styles
 // --------------------------------------
 
-
 .isc-secondary-nav-close{
-  @extend .isc-side-nav-close;
-  position: relative;
-  display: inline-block;
-  margin: 0 0 10px 0;
-  padding: 0px;
+  color: $gray-40;
+  font-size: 20px;
+  text-align: right;
+  width: 100%;
+  padding: 10px 15px 0 0;
+
+  // Hover state
+  &:hover,
+  &:focus {
+    text-decoration: none;
+    color: $gray-70;
+  }
 }
+
 
 
 .secondary-nav-mobile-container {

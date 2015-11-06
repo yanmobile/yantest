@@ -5,9 +5,9 @@
 (function(){
   'use strict';
 
-  iscNavContainerSecondaryNavAnimation.$inject = ['$log', 'iscAnimationService', 'TweenMax', 'EASE_DUR'];
+  iscNavContainerSecondaryNavAnimation.$inject = ['$log', 'iscAnimationService', 'TweenMax', 'EASE_DUR','iscCustomConfigService'];
 
-  function iscNavContainerSecondaryNavAnimation( $log, iscAnimationService, TweenMax, EASE_DUR ){
+  function iscNavContainerSecondaryNavAnimation( $log, iscAnimationService, TweenMax, EASE_DUR ,iscCustomConfigService){
 
     // --------------------
     // vars
