@@ -5,12 +5,31 @@
 
   'use strict';
 
-  iscNavigationController.$inject = [ '$log', '$rootScope', '$timeout', '$scope', 'iscSessionModel', 'iscSessionStorageHelper', 'iscNavContainerModel', 'iscAlertModel', 'iscCustomConfigHelper', 'iscUiHelper', 'iscStateManager', 'AUTH_EVENTS', 'NAV_EVENTS' ];
+  iscNavigationController.$inject = [ '$log', '$rootScope', '$timeout', '$scope','$translate',
+                                      'iscSessionModel', 'iscSessionStorageHelper', 'iscNavContainerModel',
+                                      'iscCustomConfigService','iscAlertModel', 'iscCustomConfigHelper', 'iscUiHelper', 'iscStateManager',
+                                      'AUTH_EVENTS', 'NAV_EVENTS' ];
 
-  function iscNavigationController( $log, $rootScope, $timeout, $scope, iscSessionModel, iscSessionStorageHelper, iscNavContainerModel, iscAlertModel, iscCustomConfigHelper, iscUiHelper, iscStateManager, AUTH_EVENTS, NAV_EVENTS ){
+  function iscNavigationController( $log, $rootScope, $timeout, $scope, $translate,
+                                    iscSessionModel, iscSessionStorageHelper, iscNavContainerModel, iscAlertModel,
+                                    iscCustomConfigService, iscCustomConfigHelper, iscUiHelper, iscStateManager,
+                                    AUTH_EVENTS, NAV_EVENTS ){
     //$log.debug( 'iscNavigationController LOADED');
 
     var self = this;
+
+    self.languages =iscCustomConfigService.getLanguageConfig();
+
+    
+    if (self.languages){
+      self.selectedLanguage = self.languages[0];
+
+      if (self.languages.length>1){
+        self.showLanguageDropDown = true;
+        // self.selectedLanguage=self.languages[0];
+      }
+
+    }
 
     // --------------
     // models
@@ -81,6 +100,10 @@
       self.showAlert = false;
       self.showModalBkgrnd = false;
       self.alertShowing = false;
+    };
+
+    self.onSelectLanguage = function( val ){
+      $translate.use(val.fileName);
     };
 
     // --------------
