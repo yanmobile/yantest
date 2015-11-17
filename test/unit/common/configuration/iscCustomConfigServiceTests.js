@@ -91,10 +91,13 @@
         expect( angular.isFunction( service.loadConfig )).toBe( true );
       });
 
-      xit( 'should return the config when calling loadConfig, no config present', function(){
+      it( 'should return the config when calling loadConfig, no config present', function(){
         service.setConfig( null );
 
-        httpBackend.when('GET', '/assets/configuration/configFile.json' )
+        httpBackend.when('GET', 'assets/configuration/localConfig.json' )
+          .respond( 500 );
+
+        httpBackend.when('GET', 'assets/configuration/configFile.json' )
           .respond( 200, mockConfig );
 
         service.loadConfig();
@@ -108,12 +111,31 @@
         expect( result ).toEqual( mockConfig );
       });
 
+      it( 'should return the config when calling loadConfig, no config present, overriding values is localConfig is present', function(){
+        service.setConfig( null );
+
+        httpBackend.when('GET', 'assets/configuration/localConfig.json' )
+          .respond( 200, { "baseUrl": "newBaseUrl", "userRoles": [ "sorcerer", "warrior" ] } );
+
+        httpBackend.when('GET', 'assets/configuration/configFile.json' )
+          .respond( 200, mockConfig );
+
+        service.loadConfig();
+
+        httpBackend.flush();
+
+        var result = service.getConfig();
+        mockConfig.baseUrl = "newBaseUrl";
+        mockConfig.userRoles = [ "sorcerer", "warrior" ];
+        expect( result ).toEqual( mockConfig );
+      });
+
       it( 'should return the config when calling loadConfig, with config present', function(){
         service.setConfig( mockConfig );
 
         // NOTE this will throw an error if it DOES get called, which it shouldn't
         // since there is a config in place
-        httpBackend.when('GET', '/assets/configuration/configFile.json' )
+        httpBackend.when('GET', 'assets/configuration/configFile.json' )
           .respond( 'foobar' );
 
         service.loadConfig();
@@ -125,8 +147,11 @@
       it( 'should update the helper with all the states', function(){
         service.setConfig( null );
 
-        httpBackend.when('GET', '/assets/configuration/configFile.json' )
+        httpBackend.when('GET', 'assets/configuration/configFile.json' )
           .respond( 200, mockConfig );
+
+        httpBackend.when('GET', 'assets/configuration/localConfig.json' )
+          .respond( 500 );
 
         // load the config
         service.loadConfig();
@@ -219,45 +244,6 @@
         expect( result ).toBe( mockConfig.loginButton );
       });
 
-      // --------------
-      it( 'should have a function getLibrarySecondaryNav', function(){
-        expect( angular.isFunction( service.getLibrarySecondaryNav )).toBe( true );
-      });
-
-      it( 'should get a config when calling getLibrarySecondaryNav', function(){
-        var result = service.getLibrarySecondaryNav();
-        expect( result ).toBe( mockConfig.library.secondaryNav );
-      });
-
-      // --------------
-      it( 'should have a function getMessagesSecondaryNav', function(){
-        expect( angular.isFunction( service.getMessagesSecondaryNav )).toBe( true );
-      });
-
-      it( 'should get the home config when calling getMessagesSecondaryNav', function(){
-        var result = service.getMessagesSecondaryNav();
-        expect( result ).toBe( mockConfig.messages.secondaryNav );
-      });
-
-      // --------------
-      it( 'should have a function getMyAccountSecondaryNav', function(){
-        expect( angular.isFunction( service.getMyAccountSecondaryNav )).toBe( true );
-      });
-
-      it( 'should get a config when calling getMyAccountSecondaryNav', function(){
-        var result = service.getMyAccountSecondaryNav();
-        expect( result ).toBe( mockConfig.myAccount.secondaryNav );
-      });
-
-      // --------------
-      it( 'should have a function getCustomerTabSecondaryNav', function(){
-        expect( angular.isFunction( service.getCustomerTabSecondaryNav )).toBe( true );
-      });
-
-      it( 'should get a config when calling getCustomerTabSecondaryNav', function(){
-        var result = service.getCustomerTabSecondaryNav();
-        expect( result ).toBe( mockConfig.customerTab.secondaryNav );
-      });
     });
 
     // -------------------------

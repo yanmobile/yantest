@@ -5,44 +5,44 @@
  * Created by douglas goodman on 2/12/15.
  */
 
-(function(){
+(function () {
   'use strict';
 
-  iscAnimationService.$inject = [ '$log', '$window'];
+  iscAnimationService.$inject = [ '$log', '$window' ];
 
-  function iscAnimationService( $log, $window ){
-//    $log.debug( 'iscAnimationService.LOADED');
+  function iscAnimationService ($log, $window) {
+    //    $log.debug( 'iscAnimationService.LOADED');
 
     // ----------------------------
     // vars
     // ----------------------------
 
-    var PHONE_MAX = 640;
+    var PHONE_MAX  = 640;
     var TABLET_MAX = 960;
 
-    var SIDE_NAV_MIN_H = 450;
+    var SIDE_NAV_MIN_H      = 450;
     var SECONDARY_NAV_MIN_H = 600;
-    var NAV_MAX_W = 370;
+    var NAV_MAX_W           = 370;
 
     // ----------------------------
     // class factory
     // ----------------------------
     var service = {
-      getAppWidth: getAppWidth,
+      getAppWidth : getAppWidth,
       getAppHeight: getAppHeight,
 
-      isPhone: isPhone,
+      isPhone : isPhone,
       isTablet: isTablet,
 
       getElementXPos: getElementXPos,
       getElementYPos: getElementYPos,
 
-      getNavWidth: getNavWidth,
-      getSideNavHeight: getSideNavHeight,
+      getNavWidth          : getNavWidth,
+      getSideNavHeight     : getSideNavHeight,
       getSecondaryNavHeight: getSecondaryNavHeight,
 
       getFullHeight: getFullHeight,
-      getFullWidth: getFullWidth
+      getFullWidth : getFullWidth
     };
 
     return service;
@@ -51,109 +51,114 @@
     // functions
     // ----------------------------
 
-    function getAppWidth(){
+    function getAppWidth () {
       return $window.innerWidth;
     }
 
-    function getAppHeight(){
+    function getAppHeight () {
       return $window.innerHeight;
     }
 
-    function isPhone(){
-      return getAppWidth() <= PHONE_MAX;
+    function isPhone () {
+      return getAppWidth () <= PHONE_MAX;
     }
 
-    function isTablet(){
-      var appW = getAppWidth();
+    function isTablet () {
+      var appW = getAppWidth ();
       return appW <= TABLET_MAX && appW > PHONE_MAX;
     }
 
-    function getElementXPos( elemW, offset ){
+    function getElementXPos (elemW, offset) {
       //$log.debug( 'iscAnimationService.getElementCenterXpos, elemW', elemW );
       //$log.debug( '...elemW',elemW );
       //$log.debug( '...getAppWidth()',getAppWidth() );
 
-      return doPositionCalc( elemW, getAppWidth(), offset );
+      return doPositionCalc (elemW, getAppWidth (), offset);
     }
 
-    function getElementYPos( elemH, offset ){
+    function getElementYPos (elemH, offset) {
       //$log.debug( 'iscAnimationService.getElementYPos' );
       //$log.debug( '............elemH',elemH );
       //$log.debug( '...offset', offset );
       //$log.debug( '...getAppHeight()',getAppHeight() );
 
-      return doPositionCalc( elemH, getAppHeight(), offset );
+      return doPositionCalc (elemH, getAppHeight (), offset);
     }
 
-    function doPositionCalc( elemSize, appSize, offset ){
-      if( !offset ){
+    function doPositionCalc (elemSize, appSize, offset) {
+      if (!offset) {
         offset = 0;
       }
 
-      if( elemSize >= appSize ){
+      if (elemSize >= appSize) {
         return -offset;
       }
 
       var center = (appSize - elemSize) / 2;
       center -= offset;
 
-      return Math.max( 0, center );
+      return Math.max (0, center);
     }
 
-    function getNavWidth(){
-      var appW = getAppWidth();
+    function getNavWidth () {
+      var appW = getAppWidth ();
 
-      if( isPhone() ){
+      if (isPhone ()) {
         //$log.debug( '..returning appW', appW);
         return appW;
       }
-      else{
+      else {
         //$log.debug( '..returning NAV_MAX_W', NAV_MAX_W);
         return NAV_MAX_W;
       }
     }
 
-    function getSideNavHeight( elemH ){
-      return getNavHeight( elemH, SIDE_NAV_MIN_H );
+    function getSideNavHeight (elemH) {
+      return getNavHeight (elemH, SIDE_NAV_MIN_H);
     }
 
-    function getSecondaryNavHeight( elemH ){
-      return getNavHeight( elemH, SECONDARY_NAV_MIN_H );
+    function getSecondaryNavHeight (elemH) {
+      return getNavHeight (elemH, SECONDARY_NAV_MIN_H);
     }
 
-    function getFullHeight(){
+    function getFullHeight () {
       var body = document.body,//jshint ignore:line
           html = document.documentElement;//jshint ignore:line
 
-      return Math.max( body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight );
+      return Math.max (body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
     }
 
-    function getFullWidth(){
+    function getFullWidth () {
       var body = document.body,//jshint ignore:line
           html = document.documentElement;//jshint ignore:line
 
-      return Math.max( body.scrollWidth, body.offsetWidth, html.clientWidth, html.scrollWidth, html.offsetWidth );
+      return Math.max (body.scrollWidth, body.offsetWidth, html.clientWidth, html.scrollWidth, html.offsetWidth);
     }
 
 
     /*
      private
      */
-    function getNavHeight( elemH, MIN ){
-      var appH = getAppHeight();
+    function getNavHeight (elemH, MIN) {
+      //$log.debug ('...elemH', elemH);
+      //$log.debug ('...MIN', MIN);
 
-      //$log.debug( '...elemH',elemH );
-      //$log.debug( '...MIN',MIN );
+      var height;
 
-      if( isPhone() ){
-        //$log.debug( '...returning appH',appH );
-        return appH; // fill the screen for phones
+      if (isPhone ()) {
+        //$log.debug ('...phone');
+        //$log.debug ('...fullHeight', service.getFullHeight());
+
+        height = Math.max (elemH, service.getFullHeight ());
       }
-      else{
-        var h = Math.max( elemH , MIN );
-        //$log.debug( '...returning h', h );
-        return h; // or set it to this
+      else {
+        //$log.debug ('...bigger');
+        height = Math.max (elemH, MIN);
       }
+
+      //$log.debug ('...returning h', h);
+      return height;
+
     }
 
   }//END CLASS
@@ -163,7 +168,7 @@
   // injection
   // ----------------------------
 
-  angular.module( 'isc.common' )
-      .factory( 'iscAnimationService', iscAnimationService );
+  angular.module ('isc.common')
+      .factory ('iscAnimationService', iscAnimationService);
 
-})();
+}) ();

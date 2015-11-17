@@ -2,6 +2,8 @@
  * Created by douglas goodman on 2/26/15.
  */
 
+ // ******* NOTE: The ng-model you put on this element has to reference a property of a property on scope, not a property on scope **********
+
 (function(){
   'use strict';
 

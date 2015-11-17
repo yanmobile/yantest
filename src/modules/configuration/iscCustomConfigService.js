@@ -16,6 +16,8 @@
 
     var config;
     var topTabsArray;
+    var configUrl = 'assets/configuration/configFile.json';
+    var localConfigUrl = 'assets/configuration/localConfig.json';
 
     // ----------------------------
     // class factory
@@ -38,13 +40,8 @@
       getTopTabsArray: getTopTabsArray,
       getHomePageConfig: getHomePageConfig,
       getLogoutButtonConfig: getLogoutButtonConfig,
-      getLoginButtonConfig: getLoginButtonConfig,
+      getLoginButtonConfig: getLoginButtonConfig
 
-      getLibrarySecondaryNav: getLibrarySecondaryNav,
-      getMessagesSecondaryNav: getMessagesSecondaryNav,
-      getMessagesSecondaryNavTasks: getMessagesSecondaryNavTasks,
-      getMyAccountSecondaryNav: getMyAccountSecondaryNav,
-      getCustomerTabSecondaryNav: getCustomerTabSecondaryNav
     };
 
     return service;
@@ -80,29 +77,35 @@
     // config
 
     function loadConfig(){
-      //$log.debug( 'iscCustomConfigService.loadConfig' );
-
+      // $log.debug( 'iscCustomConfigService.loadConfig' );
       var deferred = $q.defer();
-      var url = 'assets/configuration/configFile.json';
 
-      if( config ){
-        //$log.debug( '...exists', config );
+      if( config ) {
+        // $log.debug( '...exists', config );
         deferred.resolve( config );
       }
-      else{
-        //$log.debug( '...loading');
-        $http.get( url ).then(
-            function( results ){
-              //$log.debug( '...SUCCESS: ', results);
-              // load the config here
-              var config = results.data;
-              initSession( config );
-              deferred.resolve( config );
-            }
-        );
+      else {
+        $http.get( localConfigUrl ).then(function( results) {
+          // $log.debug('local config present', results);
+          doConfigLoading(configUrl, deferred, results.data);
+        }, function() {
+          // $log.debug('local config not present');
+          doConfigLoading(configUrl, deferred);
+        });
       }
 
       return deferred.promise;
+    }
+
+    function doConfigLoading(url, deferred, localConfig) {
+      $http.get( url ).then(function( results ){
+        // load the config here
+        config = results.data;
+        if (localConfig) { _.assign(config, localConfig); }
+        initSession( config );
+        deferred.resolve( config );
+        // $log.debug('final config', config);
+      });
     }
 
     function initSession( config ){
@@ -124,9 +127,9 @@
     }
 
     function setConfig( val ){
-      //$log.debug( 'iscCustomConfigService.setConfig' );
-      //$log.debug( '...baseUrl ' + JSON.stringify( val.baseUrl ) );
-      //$log.debug( '...config ', val );
+      // $log.debug( 'iscCustomConfigService.setConfig' );
+      // $log.debug( '...baseUrl ' + JSON.stringify( val.baseUrl ) );
+      // $log.debug( '...config ', val );
       config = val;
       iscSessionStorageHelper.setConfig( val );
     }
@@ -274,26 +277,6 @@
 
     function getHomePageConfig(){
       return config.homePage;
-    }
-
-    function getMyAccountSecondaryNav(){
-      return config.myAccount.secondaryNav;
-    }
-
-    function getMessagesSecondaryNav(){
-      return config.messages.secondaryNav;
-    }
-
-    function getMessagesSecondaryNavTasks(){
-      return config.messages.tasks;
-    }
-
-    function getLibrarySecondaryNav(){
-      return config.library.secondaryNav;
-    }
-
-    function getCustomerTabSecondaryNav(){
-      return config.customerTab.secondaryNav;
     }
 
   }// END CLASS
