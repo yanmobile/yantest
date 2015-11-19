@@ -193,6 +193,8 @@
       scope.updateTitle = function(){
         var title = scope.dropSelectedItem[ scope.listField ];
         //$log.debug( '...title', title );
+        // $log.debug( scope.listField,  scope.dropSelectedItem);
+
         if( !title ){
           throw new Error( 'This item does not have a display value' );
         }

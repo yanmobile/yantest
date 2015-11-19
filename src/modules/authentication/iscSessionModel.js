@@ -5,7 +5,7 @@
 (function(){
   'use strict';
 
-  iscSessionModel.$inject = [ '$log', '$rootScope', '$interval',  'iscSessionStorageHelper', 'AUTH_EVENTS' ];
+  iscSessionModel.$inject = [ '$log', '$rootScope', '$interval', 'iscSessionStorageHelper', 'AUTH_EVENTS' ];
 
   function iscSessionModel( $log, $rootScope, $interval, iscSessionStorageHelper, AUTH_EVENTS ){
 //    //$log.debug( 'iscSessionModel LOADED');
@@ -70,7 +70,7 @@
 
     function create( sessionData, isSessionNew ){
       //$log.debug( 'iscSessionModel.create');
-      //$log.debug( '...sessionData: ' + JSON.stringify( sessionData.UserData  ));
+      // $log.debug( '...sessionData: ' + JSON.stringify( sessionData  ));
 
       // store the login response for page refreshes
       iscSessionStorageHelper.setLoginResponse( sessionData );
@@ -87,7 +87,7 @@
         $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
       }
       else{
-        //$log.debug( '...resumed ' );
+        // $log.debug( '...resumed ' );
         $rootScope.$broadcast( AUTH_EVENTS.sessionResumedSuccess );
       }
     }
@@ -175,7 +175,6 @@
       //$log.debug( 'iscSessionModel.resetSessionTimeout');
       sessionTimeoutCounter = 0;
       iscSessionStorageHelper.setSessionTimeoutCounter( sessionTimeoutCounter );
-      //$log.debug("Reset session timeout to %d seconds", sessionTimeoutInSeconds);
       //stopSessionTimeout();
       //doSessionTimeout();
     }

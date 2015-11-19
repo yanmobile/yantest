@@ -1,17 +1,16 @@
-
 // --------------------------------------------------
 // style
 // --------------------------------------------------
 
-@mixin box-shadow( $type, $h, $v, $blur, $spread, $color ){
-  -moz-box-shadow:$type $h $v $blur $spread $color;
-  -webkit-box-shadow:$type $h $v $blur $spread $color;
-  box-shadow:$type $h $v $blur $spread $color;
+@mixin box-shadow( $type, $h, $v, $blur, $spread, $color ) {
+  -moz-box-shadow: $type $h $v $blur $spread $color;
+  -webkit-box-shadow: $type $h $v $blur $spread $color;
+  box-shadow: $type $h $v $blur $spread $color;
 }
 
-@mixin background-gradient( $from, $to ){
+@mixin background-gradient( $from, $to ) {
   background: $from;
-  background-image: -webkit-linear-gradient(top,$from, $to);
+  background-image: -webkit-linear-gradient(top, $from, $to);
   background-image: -moz-linear-gradient(top, $from, $to);
   background-image: -ms-linear-gradient(top, $from, $to);
   background-image: -o-linear-gradient(top, $from, $to);
@@ -30,24 +29,23 @@
   -moz-transform: translateY(-50%);
 }
 
-@mixin navbar-vertical-align( $element-height ){
+@mixin navbar-vertical-align( $element-height ) {
   display: block;
   margin-top: (($navbar-height - $element-height) / 2);
   margin-bottom: (($navbar-height - $element-height) / 2);
 }
 
-@mixin horizontal-align(){
+@mixin horizontal-align() {
   display: block;
   margin-left: auto;
   margin-bottom: auto;
 }
 
-
 // --------------------------------------------------
 // flex boxes
 // --------------------------------------------------
 
-@mixin flex(){
+@mixin flex() {
   display: -webkit-box;
   display: -moz-box;
   display: -ms-flexbox;
@@ -55,12 +53,22 @@
   display: flex;
 }
 
-@mixin flex-type( $val ){
-  -webkit-box-flex:  $val;
-  -moz-box-flex:  $val;
-  -webkit-flex:  $val;
-  -ms-flex:  $val;
-  flex:  $val;
+@mixin flex-grow( $val ) {
+  _webkit-flex-grow: $val;
+  flex-grow: $val;
+}
+
+@mixin flex-shrink( $val ) {
+  _webkit-flex-shrink: $val;
+  flex-shrink: $val;
+}
+
+@mixin flex-type( $val ) {
+  -webkit-box-flex: $val;
+  -moz-box-flex: $val;
+  -webkit-flex: $val;
+  -ms-flex: $val;
+  flex: $val;
 
 }
 
@@ -69,16 +77,16 @@
   flex-basis: $val;
 }
 
-@mixin flex-item-order( $val ){
-  -webkit-box-ordinal-group: $val;   /* OLD - iOS 6-, Safari 3.1-6 */
-  -moz-box-ordinal-group: $val;      /* OLD - Firefox 19- */
-  -ms-flex-order: $val;              /* TWEENER - IE 10 */
-  -webkit-order: $val;               /* NEW - Chrome */
-  order: $val;                       /* NEW, Spec - Opera 12.1, Firefox 20+ */
+@mixin flex-item-order( $val ) {
+  -webkit-box-ordinal-group: $val; /* OLD - iOS 6-, Safari 3.1-6 */
+  -moz-box-ordinal-group: $val; /* OLD - Firefox 19- */
+  -ms-flex-order: $val; /* TWEENER - IE 10 */
+  -webkit-order: $val; /* NEW - Chrome */
+  order: $val; /* NEW, Spec - Opera 12.1, Firefox 20+ */
 }
 
 //  align-items: flex-start | flex-end | center | baseline | stretch;
-@mixin flexbox-align-items( $val ){
+@mixin flexbox-align-items( $val ) {
   -webkit-box-align: $val;
   -webkit-flex-align: $val;
   -ms-flex-align: $val;
@@ -87,7 +95,7 @@
 }
 
 // flex-start, flex-end, stretch, center, baseline
-@mixin flex-box-align( $val ){
+@mixin flex-box-align( $val ) {
   -webkit-box-align: $val;
   -moz-box-align: $val;
   -webkit-flex-align: $val;
@@ -96,14 +104,14 @@
   align-items: $val;
 }
 
-@mixin flex-direction( $val ){
+@mixin flex-direction( $val ) {
   flex-direction: $val;
   -webkit-flex-direction: $val;
   -moz-flex-direction: $val;
   -ms-flex-direction: $val;
 }
 
-@mixin flex-wrap( $val ){
+@mixin flex-wrap( $val ) {
   -webkit-flex-wrap: $val;
   -ms-flex-wrap: $val;
   flex-wrap: $val;
@@ -115,14 +123,14 @@
 
 // $dir row | column
 // $val nowrap | wrap | wrap-reverse
-@mixin flex-flow( $dir, $val ){
+@mixin flex-flow( $dir, $val ) {
   -webkit-flex-flow: $dir $val;
   -moz-flex-flow: $dir $val;
   -ms-flex-flow: $dir $val;
   flex-flow: $dir $val;
 }
 
-@mixin flex-justify-content( $val ){
+@mixin flex-justify-content( $val ) {
   -webkit-box-pack: $val;
   -moz-box-pack: $val;
   -webkit-justify-content: $val;
@@ -130,7 +138,7 @@
   justify-content: $val;
 }
 
-@mixin box-sizing( $val ){
+@mixin box-sizing( $val ) {
   -webkit-box-sizing: $val;
   -moz-box-sizing: $val;
   box-sizing: $val;
@@ -140,38 +148,39 @@
 // sizing
 // --------------------------------------------------
 
-@mixin max-width-content(){
+@mixin max-width-content() {
   max-width: min-content;
   max-width: -moz-min-content;
   max-width: -webkit-min-content;
 }
 
-@mixin max-height-content(){
+@mixin max-height-content() {
   max-height: min-content;
   max-height: -moz-min-content;
   max-height: -webkit-min-content;
 }
 
-@mixin min-width-content(){
+@mixin min-width-content() {
   min-width: min-content;
   min-width: -moz-min-content;
   min-width: -webkit-min-content;
 }
 
-@mixin min-height-content(){
+@mixin min-height-content() {
   min-height: min-content;
   min-height: -moz-min-content;
   min-height: -webkit-min-content;
 }
+
 // --------------------------------------------------
 // isc-top-nav-container.left and .right
 // --------------------------------------------------
 
-@mixin isc-nav-section-flex( $order, $grow-shrink ){
-  @include  flex();
-  @include  flex-box-align( center );
-  @include  flex-direction( row );
-  @include  flex-type( 1 );
+@mixin isc-nav-section-flex( $order, $grow-shrink ) {
+  @include flex();
+  @include flex-box-align(center);
+  @include flex-direction(row);
+  @include flex-type(1);
   flex-basis: main-size;
   flex-grow: $grow-shrink;
   flex-shrink: $grow-shrink;
@@ -182,29 +191,32 @@
 // placeholder
 // --------------------------------------------------
 
-@mixin isc-placeholder( $opacity, $size, $weight ){
-  &::-webkit-input-placeholder { /* WebKit browsers */
-    opacity:     $opacity;
-    font-size:   $size;
+@mixin isc-placeholder( $opacity, $size, $weight ) {
+  &::-webkit-input-placeholder {
+    /* WebKit browsers */
+    opacity: $opacity;
+    font-size: $size;
     font-weight: $weight;
   }
-  &:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-    opacity:     $opacity;
-    font-size:   $size;
+  &:-moz-placeholder {
+    /* Mozilla Firefox 4 to 18 */
+    opacity: $opacity;
+    font-size: $size;
     font-weight: $weight;
   }
-  &::-moz-placeholder { /* Mozilla Firefox 19+ */
-    opacity:     $opacity;
-    font-size:   $size;
+  &::-moz-placeholder {
+    /* Mozilla Firefox 19+ */
+    opacity: $opacity;
+    font-size: $size;
     font-weight: $weight;
   }
-  &:-ms-input-placeholder { /* Internet Explorer 10+ */
-    opacity:     $opacity;
-    font-size:   $size;
+  &:-ms-input-placeholder {
+    /* Internet Explorer 10+ */
+    opacity: $opacity;
+    font-size: $size;
     font-weight: $weight;
   }
 }
-
 
 // --------------------------------------------------
 // functions
@@ -215,15 +227,20 @@
   @return $remSize * 1rem;
 }
 
-
 // --------------------------------------------------
 // animation
 // --------------------------------------------------
 
+@mixin cubic-ease() {
+  -webkit-transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
+  transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
+}
+
 @mixin fade-in-blink-out() {
-  &.ng-enter {
-    -webkit-transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
-    transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
+  @include cubic-ease();
+
+  &.ng-enter, &.ng-hide {
+    @include cubic-ease();
     opacity: 0;
 
     &.ng-enter-active {
@@ -241,9 +258,10 @@
 }
 
 @mixin fade-in-out() {
-  &.ng-enter {
-    -webkit-transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.35s;
-    transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.35s;
+  @include cubic-ease();
+
+  &.ng-enter, &.ng-hide {
+    @include cubic-ease();
     opacity: 0;
 
     &.ng-enter-active {
@@ -252,8 +270,7 @@
   }
 
   &.ng-leave {
-    -webkit-transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.35s;
-    transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.35s;
+    @include cubic-ease();
     opacity: 1;
 
     &.ng-leave-active {

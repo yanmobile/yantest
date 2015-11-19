@@ -185,7 +185,7 @@
         expect (iscSessionStorageHelper.setSessionStorageValue).toHaveBeenCalled ();
       });
     });
-    
+
       // -------------------------
     describe( 'showSideNavbar tests ', function(){
 

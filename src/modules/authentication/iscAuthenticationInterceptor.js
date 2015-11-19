@@ -53,7 +53,7 @@
           break;
 
         case 500: // these must be handled individually per app
-          //$log.debug('...500');
+                  //$log.debug('...500');
           break;
 
         default:
