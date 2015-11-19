@@ -18,15 +18,23 @@
 
     var self = this;
 
-    self.languages =iscCustomConfigService.getLanguageConfig();
+    self.languages = iscCustomConfigService.getLanguageConfig ();
 
-    
-    if (self.languages){
-      self.selectedLanguage = self.languages[0];
+    if (self.languages) {
 
-      if (self.languages.length>1){
+      if (self.languages.length > 1) {
         self.showLanguageDropDown = true;
-        // self.selectedLanguage=self.languages[0];
+
+        var currentLanguage = iscSessionStorageHelper.getValFromSessionStorage ('currentLanguage');
+
+        if (!!currentLanguage) {
+          self.selectedLanguage = currentLanguage;
+        }
+        else {
+          self.selectedLanguage = self.languages[ 0 ];
+        }
+
+        $translate.use (self.selectedLanguage.fileName);
       }
 
     }
@@ -102,8 +110,9 @@
       self.alertShowing = false;
     };
 
-    self.onSelectLanguage = function( val ){
-      $translate.use(val.fileName);
+    self.onSelectLanguage = function (val) {
+      iscSessionStorageHelper.setSessionStorageValue ('currentLanguage', val);
+      $translate.use (val.fileName);
     };
 
     // --------------

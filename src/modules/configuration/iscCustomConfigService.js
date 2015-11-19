@@ -39,6 +39,7 @@
       getHomePageConfig: getHomePageConfig,
       getLogoutButtonConfig: getLogoutButtonConfig,
       getLoginButtonConfig: getLoginButtonConfig,
+      getLanguageConfig: getLanguageConfig,
 
       getLibrarySecondaryNav: getLibrarySecondaryNav,
       getMessagesSecondaryNav: getMessagesSecondaryNav,
@@ -78,6 +79,10 @@
 
     // ----------------------------
     // config
+
+    function getLanguageConfig(){
+            return config.languageList;
+     }
 
     function loadConfig(){
       //$log.debug( 'iscCustomConfigService.loadConfig' );
