@@ -40,8 +40,8 @@
       getTopTabsArray: getTopTabsArray,
       getHomePageConfig: getHomePageConfig,
       getLogoutButtonConfig: getLogoutButtonConfig,
-      getLoginButtonConfig: getLoginButtonConfig
-
+      getLoginButtonConfig: getLoginButtonConfig,
+      getLanguageConfig: getLanguageConfig
     };
 
     return service;
@@ -75,6 +75,10 @@
 
     // ----------------------------
     // config
+
+    function getLanguageConfig(){
+            return config.languageList;
+     }
 
     function loadConfig(){
       // $log.debug( 'iscCustomConfigService.loadConfig' );

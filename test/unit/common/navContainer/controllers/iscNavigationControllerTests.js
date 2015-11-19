@@ -10,6 +10,7 @@
       rootScope,
       httpBackend,
       timeout,
+      translate,
       sessionStorageHelper,
       alertModel,
       AUTH_EVENTS,
@@ -31,11 +32,14 @@
     beforeEach( module('isc.templates') );
 
 
-    beforeEach( inject( function( $rootScope, $controller, _$state_, $httpBackend, $timeout, _AUTH_EVENTS_, _NAV_EVENTS_, iscAlertModel, iscCustomConfigService, iscSessionModel, iscSessionStorageHelper  ){
+    beforeEach( inject( function( $rootScope, $controller, _$state_, $httpBackend, $timeout, $translate,
+                                  _AUTH_EVENTS_, _NAV_EVENTS_, 
+                                  iscAlertModel, iscCustomConfigService, iscSessionModel, iscSessionStorageHelper  ){
 
       mockConfig = angular.copy( customConfig );
       iscCustomConfigService.setConfig( mockConfig );
 
+      translate = $translate;
       rootScope = $rootScope;
       sessionStorageHelper = iscSessionStorageHelper;
       timeout = $timeout;
@@ -75,7 +79,7 @@
     // -------------------------
     describe( 'onLoad tests ', function(){
 
-      it( 'should have a function showSideNavbar', function(){
+      it( 'should have a function onLoad', function(){
         expect( angular.isFunction( self.onLoad )).toBe( true );
       });
 
@@ -167,7 +171,22 @@
       });
     });
 
-    // -------------------------
+    describe ('onSelectLanguage tests ', function () {
+      it ('should have a function onSelectLanguage', function () {
+        expect (angular.isFunction (self.onSelectLanguage)).toBe (true);
+      });
+
+      it ('should know what to do onSelectLanguage', function () {
+        spyOn (translate, 'use');
+        spyOn (iscSessionStorageHelper, 'setSessionStorageValue');
+
+        self.onSelectLanguage ({ filename: 'es_ES' });
+        expect (translate.use).toHaveBeenCalled ();
+        expect (iscSessionStorageHelper.setSessionStorageValue).toHaveBeenCalled ();
+      });
+    });
+
+      // -------------------------
     describe( 'showSideNavbar tests ', function(){
 
       it( 'should have a function showSideNavbar', function(){
