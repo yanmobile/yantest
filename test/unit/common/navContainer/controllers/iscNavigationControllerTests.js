@@ -178,15 +178,14 @@
 
       it ('should know what to do onSelectLanguage', function () {
         spyOn (translate, 'use');
-        spyOn (iscSessionStorageHelper, 'setSessionStorageValue');
+        spyOn (sessionStorageHelper, 'setSessionStorageValue');
 
         self.onSelectLanguage ({ filename: 'es_ES' });
         expect (translate.use).toHaveBeenCalled ();
-        expect (iscSessionStorageHelper.setSessionStorageValue).toHaveBeenCalled ();
+        expect (sessionStorageHelper.setSessionStorageValue).toHaveBeenCalled ();
       });
     });
-
-      // -------------------------
+    
     describe( 'showSideNavbar tests ', function(){
 
       it( 'should have a function showSideNavbar', function(){
