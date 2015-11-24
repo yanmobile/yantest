@@ -43,6 +43,10 @@
     cursor: not-allowed;
   }
 
+  &.small {
+    font-size:8pt;
+  }
+
   &:focus {
     outline:0;
   }
