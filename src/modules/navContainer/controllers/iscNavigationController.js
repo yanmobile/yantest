@@ -212,6 +212,9 @@
       self.hideSecondaryNavbar();
     });
 
+    $rootScope.$on (NAV_EVENTS.hideSideNavBar, function () {
+      self.hideSideNavbar ();
+    });
 
   }// END CLASS
 
