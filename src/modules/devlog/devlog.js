@@ -22,7 +22,7 @@
     devlog.trace = function() { console.trace(); };
 
     // null interface for channels that fail 
-    var nullobj = {}
+    var nullobj = {};
     nullobj.log = function() {};
     nullobj.info = function() {};
     nullobj.warn = function() {};
@@ -85,8 +85,13 @@
       
     };
 
+    //internal use
     devlog._channel_prefix = "";
 
+    //internal use
+    //generates a substring indicating the channels the messages belong to
+    //  surrounded by pipes (i.e. '|CHANNEL|')
+    //used to prefix the logger's output so a user can see the channel in the console
     devlog._set_channel_prefix = function(chans) {
       devlog._channel_prefix = "|" + chans.join('|') + "| ";
       devlog._channel_prefix = devlog._channel_prefix.toUpperCase();
