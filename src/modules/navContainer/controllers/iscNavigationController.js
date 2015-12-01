@@ -6,38 +6,17 @@
   'use strict';
 
   iscNavigationController.$inject = [ '$log', '$rootScope', '$timeout', '$scope','$translate',
-                                      'iscSessionModel', 'iscSessionStorageHelper', 'iscNavContainerModel',
-                                      'iscCustomConfigService','iscAlertModel', 'iscCustomConfigHelper', 'iscUiHelper', 'iscStateManager',
+                                      'iscSessionModel', 'iscSessionStorageHelper', 'iscNavContainerModel','iscAlertModel',
+                                      'iscCustomConfigHelper', 'iscUiHelper', 'iscStateManager','iscLanguageService',
                                       'AUTH_EVENTS', 'NAV_EVENTS' ];
 
   function iscNavigationController( $log, $rootScope, $timeout, $scope, $translate,
                                     iscSessionModel, iscSessionStorageHelper, iscNavContainerModel, iscAlertModel,
-                                    iscCustomConfigService, iscCustomConfigHelper, iscUiHelper, iscStateManager,
+                                    iscCustomConfigHelper, iscUiHelper, iscStateManager, iscLanguageService,
                                     AUTH_EVENTS, NAV_EVENTS ){
     //$log.debug( 'iscNavigationController LOADED');
 
     var self = this;
-
-    self.languages = iscCustomConfigService.getLanguageConfig ();
-
-    if (self.languages) {
-
-      if (self.languages.length > 1) {
-        self.showLanguageDropDown = true;
-
-        var currentLanguage = iscSessionStorageHelper.getValFromSessionStorage ('currentLanguage');
-
-        if (!!currentLanguage) {
-          self.selectedLanguage = currentLanguage;
-        }
-        else {
-          self.selectedLanguage = self.languages[ 0 ];
-        }
-
-        $translate.use (self.selectedLanguage.fileName);
-      }
-
-    }
 
     // --------------
     // models
@@ -46,6 +25,10 @@
     self.customConfigHelper = iscCustomConfigHelper;
     self.stateManager = iscStateManager;
     self.iscUiHelper = iscUiHelper;
+
+    self.showLanguageDropDown = iscLanguageService.showDropDown();
+    self.languages = iscLanguageService.getLanguages();
+    self.selectedLanguage = iscLanguageService.getSelectedLanguage();
 
     // --------------
     // nav bars and alerts

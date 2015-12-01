@@ -2,8 +2,33 @@
  * Created by douglasgoodman on 11/25/14.
  */
 
+var respondToAssetCalls = function (backEnd, customConfigService) {
+
+  if (customConfigService) {
+    spyOn (customConfigService, 'getBaseUrl').and.returnValue ('');
+  }
+
+  // mock calls to the config
+  backEnd.when ('GET', 'assets/configuration/configFile.json')
+      .respond (200, customConfig);
+
+  backEnd.when ('GET', 'assets/configuration/localConfig.json')
+      .respond (200);
+};
+
 var customConfig = {
   "baseUrl": "http://hscommdev.iscinternal.com/public/api/v1",
+
+  "languageList": [
+    {
+      "displayName": "English",
+      "fileName": "en-us"
+    },
+    {
+      "displayName": "Spanish",
+      "fileName": "es-es"
+    }
+  ],
 
   "noLoginRequired": [
     "index.login",
