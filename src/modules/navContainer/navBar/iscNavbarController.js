@@ -1,86 +1,95 @@
-(function(){
+(function () {
   'use strict';
 
   // ------------------------------------------
   // factory function
   // ------------------------------------------
 
-  iscNavbarController.$inject = [ '$log', '$scope', '$state', '$rootScope', 'iscCustomConfigService', 'iscCustomConfigHelper', 'iscUiHelper', 'iscSessionModel', 'AUTH_EVENTS' ];
+  iscNavbarController.$inject = [
+    '$log', '$scope', '$state', '$rootScope',
+    'iscCustomConfigService', 'iscCustomConfigHelper', 'iscUiHelper', 'iscSessionModel',
+    'AUTH_EVENTS'
+  ];
 
-  function iscNavbarController( $log, $scope, $state, $rootScope, iscCustomConfigService, iscCustomConfigHelper, iscUiHelper, iscSessionModel, AUTH_EVENTS ){//jshint ignore:line
-//    //$log.debug( 'iscNavbarController LOADED');
+  function iscNavbarController ($log, $scope, $state, $rootScope,
+                                iscCustomConfigService, iscCustomConfigHelper, iscUiHelper, iscSessionModel,
+                                AUTH_EVENTS) {
+
+    //    //$log.debug( 'iscNavbarController LOADED');
 
     var self = this;
 
-    self.iscUiHelper = iscUiHelper;
-    self.configService = iscCustomConfigService;
-    self.sessionModel = iscSessionModel;
+    angular.extend (self, {
+      iscUiHelper  : iscUiHelper,
+      configService: iscCustomConfigService,
+      sessionModel : iscSessionModel,
 
-    self.tabs = self.configService.getTopTabsArray();
-    self.logoutButton = self.configService.getLogoutButtonConfig();
-    self.loginButton = self.configService.getLoginButtonConfig();
+      sectionTranslationKey: '',
+      showLogin            : false,
+      showLogout           : false,
 
-    self.sectionTranslationKey = '';
+      tabs        : iscCustomConfigService.getTopTabsArray (),
+      logoutButton: iscCustomConfigService.getLogoutButtonConfig (),
+      loginButton : iscCustomConfigService.getLoginButtonConfig (),
 
-    self.logout = function(){
+      logout           : logout,
+      setShowLogin     : setShowLogin,
+      setShowLogout    : setShowLogout,
+      setPageState     : setPageState,
+      setTabActiveState: setTabActiveState
+    });
+
+    function logout () {
       //$log.debug( 'iscNavbarController.logout');
-      $rootScope.$broadcast( AUTH_EVENTS.logout );
-    };
+      $rootScope.$broadcast (AUTH_EVENTS.logout);
+    }
 
-    self.showLogin = function(){
+    function setShowLogin () {
       //$log.debug( 'iscNavbarController.showLogin');
 
-      var loggedIn = self.sessionModel.isAuthenticated();
-      var isLoginPage = $state.is( 'index.login' );
+      var loggedIn    = iscSessionModel.isAuthenticated ();
+      var isLoginPage = $state.is ('index.login');
+      var isHomePage  = $state.is ('index.home');
 
-      return !loggedIn && !isLoginPage;
-    };
+      self.showLogin = !loggedIn && !isLoginPage && !isHomePage;
+    }
 
-    self.showLogout= function(){
+    function setShowLogout () {
       //$log.debug( 'iscNavbarController.showLoout');
 
-      var loggedIn = self.sessionModel.isAuthenticated();
-      var isLoginPage = $state.is( 'index.login' );
-      return loggedIn && !isLoginPage;
-    };
+      var loggedIn    = self.sessionModel.isAuthenticated ();
+      var isLoginPage = $state.is ('index.login');
+      self.showLogout = loggedIn && !isLoginPage;
+    }
 
-    self.setTabActiveState = function ( state ) {
+    function setPageState (name) {
+      self.setTabActiveState (name);
+      self.sectionTranslationKey = iscCustomConfigHelper.getSectionTranslationKeyFromName (name);
+    }
+
+    function setTabActiveState (state) {
       //$log.debug( 'iscNavbarController.setTabActiveState');
-      self.iscUiHelper.setTabActiveState( state, self.tabs );
-    };
-
-    // -----------------------------
-    // watchers
-    // -----------------------------
-    $scope.$watch(
-      function(){
-        return self.sessionModel.getCurrentUser();
-      },
-      function( newVal, oldVal ){//jshint ignore:line
-        self.translationParams = {
-          userName: self.sessionModel.getFullName()
-        };
-      });
+      self.iscUiHelper.setTabActiveState (state, self.tabs);
+    }
 
     // -----------------------------
     // listeners
     // -----------------------------
 
-    $rootScope.$on('$stateChangeSuccess',
-      function( event, toState, toParams, fromState, fromParams ){//jshint ignore:line
-        //$log.debug( 'iscNavbarController.$stateChangeSuccess', arguments);
-        setPageState( toState.name );
-      });
+    $rootScope.$on ('$stateChangeSuccess',
+                    function (event, toState, toParams, fromState, fromParams) {
+
+                      //$log.debug( 'iscNavbarController.$stateChangeSuccess', arguments);
+                      self.setPageState (toState.name);
+                      self.setShowLogout ();
+                      self.setShowLogin ()
+                    });
 
     // when you refresh the page, this will reset the active state of the selected tab
-    angular.element(document).ready(function () {//jshint ignore:line
-      setPageState( $state.$current.name );
+    $scope.$evalAsync( function(){
+      //$log.debug('iscNavbarController setting page name to', $state.$current.name);
+      self.setPageState ($state.$current.name);
     });
-
-    function setPageState( name ){
-      self.setTabActiveState( name );
-      self.sectionTranslationKey = iscCustomConfigHelper.getSectionTranslationKeyFromName( name );
-    }
 
 
   } // END CLASS
@@ -88,9 +97,9 @@
   // ------------------------------------------
   // module injection
   // ------------------------------------------
-  angular.module('iscNavContainer')
-    .controller( 'iscNavbarController', iscNavbarController );
+  angular.module ('iscNavContainer')
+      .controller ('iscNavbarController', iscNavbarController);
 
-})();
+}) ();
 
 
