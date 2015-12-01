@@ -86,7 +86,8 @@
                     });
 
     // when you refresh the page, this will reset the active state of the selected tab
-    angular.element (document).ready (function () {//jshint ignore:line
+    $scope.$evalAsync( function(){
+      //$log.debug('iscNavbarController setting page name to', $state.$current.name);
       self.setPageState ($state.$current.name);
     });
 
