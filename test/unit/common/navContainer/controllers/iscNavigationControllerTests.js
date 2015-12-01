@@ -59,7 +59,7 @@
       NAV_EVENTS = _NAV_EVENTS_;
 
       // dont worry about calls to assets
-      httpBackend.when( 'GET', 'assets/i18n/en_US.json' )
+      httpBackend.when( 'GET', 'assets/i18n/en-us.json' )
         .respond( 200, {} );
 
       // mock calls to the config
@@ -180,7 +180,7 @@
         spyOn (translate, 'use');
         spyOn (sessionStorageHelper, 'setSessionStorageValue');
 
-        self.onSelectLanguage ({ filename: 'es_ES' });
+        self.onSelectLanguage ({ filename: 'es-es' });
         expect (translate.use).toHaveBeenCalled ();
         expect (sessionStorageHelper.setSessionStorageValue).toHaveBeenCalled ();
       });

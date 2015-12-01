@@ -50,7 +50,7 @@
       httpBackend = $httpBackend;
 
       // dont worry about calls to assets
-      httpBackend.when( 'GET', 'assets/i18n/en_US.json' )
+      httpBackend.when( 'GET', 'assets/i18n/en-us.json' )
           .respond( 200, {} );
 
       // mock calls to the config

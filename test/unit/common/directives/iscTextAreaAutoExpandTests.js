@@ -32,7 +32,7 @@
       httpBackend = $httpBackend;
 
       // dont worry about calls to assets
-      httpBackend.when( 'GET', 'assets/i18n/en_US.json' )
+      httpBackend.when( 'GET', 'assets/i18n/en-us.json' )
         .respond( 200, {} );
 
       httpBackend.when( 'GET', 'assets/configuration/configFile.json' )

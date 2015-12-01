@@ -33,7 +33,7 @@
       timeout     = $timeout;
 
       // dont worry about calls to assets
-      httpBackend.when ('GET', 'assets/i18n/en_US.json')
+      httpBackend.when ('GET', 'assets/i18n/en-us.json')
           .respond (200, {});
 
       elem = angular.element( html );
