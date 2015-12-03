@@ -17,7 +17,7 @@
     var config;
     var topTabsArray;
     var configUrl = 'assets/configuration/configFile.json';
-    var localConfigUrl = 'assets/configuration/localConfig.json';
+    var configPromise;
 
     // ----------------------------
     // class factory
@@ -80,36 +80,33 @@
             return config.languageList;
      }
 
-    function loadConfig(){
-      // $log.debug( 'iscCustomConfigService.loadConfig' );
-      var deferred = $q.defer();
+    function loadConfig() {
 
-      if( config ) {
-        // $log.debug( '...exists', config );
-        deferred.resolve( config );
+      if (configPromise) {
+        return configPromise;
       }
-      else {
-        $http.get( localConfigUrl ).then(function( results) {
-          // $log.debug('local config present', results);
-          doConfigLoading(configUrl, deferred, results.data);
-        }, function() {
-          // $log.debug('local config not present');
-          doConfigLoading(configUrl, deferred);
+
+      configPromise = $http
+        .get(configUrl)
+        .then(function (configFileResponse) {
+          config = configFileResponse.data;
+          if (config.localConfigUrl) {
+            return $http.get(config.localConfigUrl)
+              .then(function (localConfigResponse) {
+                _.extend(config, localConfigResponse.data);
+                return config;
+              }, function () {
+                return config;
+              });
+          } else {
+            return config;
+          }
+        }).then(function(config){
+          initSession( config );
+          return config;
         });
-      }
 
-      return deferred.promise;
-    }
-
-    function doConfigLoading(url, deferred, localConfig) {
-      $http.get( url ).then(function( results ){
-        // load the config here
-        config = results.data;
-        if (localConfig) { _.assign(config, localConfig); }
-        initSession( config );
-        deferred.resolve( config );
-        // $log.debug('final config', config);
-      });
+      return configPromise;
     }
 
     function initSession( config ){
