@@ -50,12 +50,12 @@
       httpBackend = $httpBackend;
 
       // dont worry about calls to assets
-      httpBackend.when( 'GET', 'assets/i18n/en-us.json' )
+      httpBackend.when( 'GET', 'assets/i18n/en_US.json' )
           .respond( 200, {} );
-
-      // mock calls to the config
-      httpBackend.when( 'GET', 'assets/configuration/configFile.json' )
-          .respond( 200, customConfig );
+      //
+      //// mock calls to the config
+      //httpBackend.when( 'GET', 'assets/configuration/configFile.json' )
+      //    .respond( 200, customConfig );
 
       // dont worry about calls to home page mocks
       httpBackend.when( 'GET', 'assets/mockData/home/mockPatientData.json' )
@@ -113,6 +113,7 @@
 
       it( 'should return the config when calling loadConfig, no config present, overriding values is localConfig is present', function(){
         service.setConfig( null );
+        mockConfig.localConfigUrl = 'assets/configuration/localConfig.json';
 
         httpBackend.when('GET', 'assets/configuration/localConfig.json' )
           .respond( 200, { "baseUrl": "newBaseUrl", "userRoles": [ "sorcerer", "warrior" ] } );

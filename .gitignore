@@ -4,6 +4,8 @@ hs-ui-angular-core.iml
 .idea/misc.xml
 .yo-rc.json
 .idea/modules.xml
+bower_components
+node_modules
 
 #local config for each developer
 src/custom/assets/configuration/localConfig.json
