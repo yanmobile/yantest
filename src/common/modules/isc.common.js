@@ -20,10 +20,9 @@
       'foundation',
       'angucomplete-alt',
       'isc.core',
-      'isc.directive',
+      'isc.directives',
       'isc.filters',
       'isc.table',
-      'isc.transclude',
       'isc.stateManager',
       'isc.progressLoader',
 

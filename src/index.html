@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <title>HsSampleApp</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+  <!-- injected minified css -->
+  <link rel="stylesheet" href="css/main.min.css" />
+  <link rel="icon" href="cmc.ico" />
+
+  <!-- fixes foundation bug occurs when foudantion when css is not included -->
+  <style>meta.foundation-mq { font-family: "small=&medium=&large=&xlarge=&xxlarge="; }</style>
+</head>
+
+<body ng-app="hsSampleApp">
+
+    <!-- confirmation -->
+    <cmc-confirmation></cmc-confirmation>
+
+    <!-- Spinner -->
+    <div ng-if="mainCtrl.isLoading()" class="cmc-spinner">Loading...</div>
+
+    I am a sample app.
+
+    <div class="isc-app" ui-view></div>
+
+    <!-- inject:js -->
+    <script src="js/app.min.js"></script>
+    <!-- end inject -->
+
+</body>
+</html>

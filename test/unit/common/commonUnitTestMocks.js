@@ -2,6 +2,18 @@
  * Created by douglasgoodman on 11/25/14.
  */
 
+(function fixFoundationBug() {
+  // error happens when foundation.css is not included (which is the case for unit tests)
+  // TypeError: 'null' is not an object (evaluating 'mediaQueries[key].replace')
+  var styleEl = document.createElement('style'),
+      styleSheet;
+
+  // Append style element to head
+  document.head.appendChild(styleEl);
+  styleSheet = styleEl.sheet;
+  styleSheet.insertRule('meta.foundation-mq { font-family: "small=&medium=&large=&xlarge=&xxlarge="; }', 0);
+}());
+
 var customConfig = {
   "baseUrl": "http://hscommdev.iscinternal.com/public/api/v1",
 

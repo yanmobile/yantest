@@ -22,7 +22,7 @@
     gulp.watch('src/custom/modules/**/*.js',              ['js']);
     gulp.watch('src/custom/modules/**/*.html',            ['html', 'js']);
 
-    gulp.watch('src/common/index.html',                   ['html', 'js']);
+    gulp.watch('src/index.html',                          ['html', 'js']);
   });
 
 })();
