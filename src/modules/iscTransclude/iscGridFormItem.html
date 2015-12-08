@@ -1,0 +1,10 @@
+<div class="{{iscTranscludeCtrl.config.formClass || 'grid-block'}}">
+  <div class=" {{iscTranscludeCtrl.config.labelWrapperClass || 'grid-block medium-3 large-3'}}"
+       ng-transclude isc-transclude="label-template">
+    <label class="{{labelClass || 'inline'}}">{{iscTranscludeCtrl.config.translationKey | translate}}</label>
+  </div>
+  <div class="{{iscTranscludeCtrl.config.inputWrapperClass || 'grid-block medium-9 large-9'}}">
+    <div class="{{iscTranscludeCtrl.config.inputClass || 'expand'}}" ng-transclude isc-transclude="control-template">
+    </div>
+  </div>
+</div>

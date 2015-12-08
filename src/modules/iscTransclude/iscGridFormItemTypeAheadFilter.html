@@ -1,0 +1,26 @@
+<div class="{{iscTranscludeCtrl.config.formClass || 'grid-block'}}">
+  <!--Label-->
+  <div class=" {{iscTranscludeCtrl.config.labelWrapperClass || 'grid-content collapse medium-4 large-4'}}" ng-transclude
+       isc-transclude="label-template">
+    <label class="{{labelClass || 'inline expand'}}">{{iscTranscludeCtrl.config.translationKey | translate}}</label>
+  </div>
+
+  <!--Field-->
+  <div class="{{iscTranscludeCtrl.config.fieldWrapperClass || 'grid-block medium-8 large-8'}}">
+
+    <div class="grid-block">
+      <!--Input-->
+      <div class="{{iscTranscludeCtrl.config.inputClass || 'expand grid-content medium-11 large-11'}}" ng-transclude
+           isc-transclude="control-template"></div>
+      <!--Icon-->
+      <div class="{{iscTranscludeCtrl.config.iconWrapperClass || 'grid-block medium-1 large-1'}}">
+        <icon-template ng-transclude isc-transclude="icon-template">
+          <button class="icon clear" class="{{buttonClass || 'icon clear'}}"
+                  ng-click="$broadcast('angucomplete-alt:clearInput')">
+            <i class="{{iconClass || 'fa fa-times-circle'}}"></i>
+          </button>
+        </icon-template>
+      </div>
+    </div>
+  </div>
+</div>
