@@ -10,20 +10,24 @@ To use:
     clone the github repository in a sibling directory
     The folder structure should be similar to this:
         gulp (contains all the build tasks, including common.json)
-        bower.json
         gulpfile.js
         package.json
         src
           common
             assets
             modules
+            bower.json
           custom
             assets
+            bower.json
             modules
               app
               (other app-specific modules...)
             favicon.ico
             index.html
-            
+        test
+          unit
+            common
+            custom
         
         
