@@ -2,10 +2,12 @@
   "name": "iscHsCommunityAngular",
   "version": "0.5.0",
   "devDependencies": {
-    "browser-sync": "2.7.12",
     "bower": "1.4.1",
+    "browser-sync": "2.7.12",
     "chalk": "0.4.0",
+    "dateformat": "1.0.11",
     "del": "1.1.1",
+    "event-stream": "3.3.1",
     "gulp": "3.8.1",
     "gulp-angular-filesort": "1.1.1",
     "gulp-angular-templatecache": "1.2.1",
@@ -38,10 +40,12 @@
     "karma-jasmine": "0.3.6",
     "karma-ng-html2js-preprocessor": "0.1.2",
     "karma-phantomjs-launcher": "0.1.4",
+    "lodash": "3.8.0",
     "protractor": "1.4.0",
     "require-dir": "0.1.0",
     "run-sequence": "0.3.6",
     "streamqueue": "0.1.1",
+    "wallaby-ng-html2js-preprocessor": "^0.1.0",
     "wiredep": "1.8.5"
   },
   "engines": {
