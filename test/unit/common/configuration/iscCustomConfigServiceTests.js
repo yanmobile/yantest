@@ -26,17 +26,15 @@
     ];
 
 
-    beforeEach( module('isc.common'));
-    beforeEach( module('iscNavContainer'));
-
     // this loads all the external templates used in directives etc
     // eg, everything in **/*.html
     beforeEach( module('isc.templates') );
 
     // log statements
-    beforeEach( module('isc.common', 'iscNavContainer'), function( $provide ){
+    beforeEach( module('isc.configuration'), function( $provide ){
       $provide.value('$log', console);
     });
+
 
     beforeEach( inject( function( $rootScope, $httpBackend, iscCustomConfigService, iscCustomConfigHelper, iscSessionModel ){
       scope = $rootScope.$new();

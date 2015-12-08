@@ -2,10 +2,7 @@
  * Created by douglasgoodman on 11/21/14.
  */
 (function(){
-  'use strict';
-
-  iscProgressLoader.$inject = [ '$log' ];
-
+  'use strict';iscProgressLoader
   function iscProgressLoader( $log ){//jshint ignore:line
 
     // ----------------------------
@@ -60,7 +57,7 @@
   // inject
   // ----------------------------
 
-  angular.module( 'isc.common' )
+  angular.module( 'isc.progressLoader', [] )
       .factory( 'iscProgressLoader', iscProgressLoader );
 
 })();

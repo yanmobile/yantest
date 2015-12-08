@@ -1,14 +1,13 @@
 /**
  * Created by Trevor Hudson on 10/27/15.
  */
-// This filter contains standards for Date display for consistancy
-// for custom formating, please refer to http://momentjs.com/docs/#/displaying/format/
+// This filter contains standards for Date display for consistency
+// for custom formatting, please refer to http://momentjs.com/docs/#/displaying/format/
 
 (function(){
   'use strict';
 
-  iscDate.$inject = [ '$log', '$filter' ];
-
+  /* @ngInject */
   function iscDate( $log, $filter ){
     //$log.debug( 'iscDate LOADED');
 
@@ -38,7 +37,7 @@
   // ----------------------------
   // injection
   // ----------------------------
-  angular.module( 'isc.common' )
+  angular.module( 'isc.filters' )
       .filter( 'iscDate', iscDate );
 
 })();

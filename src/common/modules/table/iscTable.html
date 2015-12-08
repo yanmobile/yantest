@@ -50,7 +50,7 @@
     <tbody>
 
     <!--rows-->
-    <tr dir-paginate="dataItem in iscTblCtrl.tableRows | orderBy: iscTblCtrl.sortField.name : iscTblCtrl.sortField.reverse | filter: iscTblCtrl.doFilter | itemsPerPage: iscTblCtrl.rowsOnPage"
+    <tr dir-paginate="dataItem in iscTblCtrl.tableRows "
         current-page="iscTblCtrl.currentPage"
         model-data="iscTblCtrl.tableRows"
         pagination-id="iscTblCtrl.tableConfig.key"
@@ -66,26 +66,16 @@
       </td>
     </tr>
 
-    <!--add row -->
-    <tr ng-if="iscTblCtrl.dataItem.isNew"
-        isc-table-row
-        ng-form
-        name="iscRowForm">
+    <!-- footer -->
+    <tr ng-if="!!iscTblCtrl.tableConfig.footerRowTemplate" isc-table-footer-row>
     </tr>
 
-    <!-- footer -->
-    <tr isc-table-footer-row>
-    </tr>
+    <!--add row -->
     <tr class="isc-table-row-add"
-        ng-if="iscTblCtrl.tableConfig.editable" >
-      <td colspan="{{iscTblCtrl.tableConfig.columns.length}}">
-        <div class="add-button-wrapper">
-          <button ng-disabled="iscTblCtrl.dataItem" class="isc-btn-link" ng-click="iscTblCtrl.createRow()">
-            <span ng-include="'svg/isc-plus-box.html'"></span>
-            {{ iscTblCtrl.tableConfig.addBtnTranslationKey | translate }}
-          </button>
-        </div>
-      </td>
+        ng-if="iscTblCtrl.tableConfig.editable"
+        isc-table-add-row
+        ng-form
+        name="iscRowForm">
     </tr>
     </tbody>
   </table>

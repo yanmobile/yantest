@@ -13,7 +13,7 @@
 
     var html = '<input isc-autofocus>';
 
-    beforeEach (module ('isc.common'));
+    beforeEach (module ('isc.directives'));
 
 
     // this loads all the external templates used in directives etc

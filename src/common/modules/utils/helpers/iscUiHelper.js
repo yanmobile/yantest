@@ -5,8 +5,7 @@
 (function(){
   'use strict';
 
-  iscUiHelper.$inject = [ '$log' ];
-
+  /* @ngInject */
   function iscUiHelper( $log ){//jshint ignore:line
 //    //$log.debug( 'iscUiHelper LOADED' );
 
@@ -58,6 +57,6 @@
   // inject
   // ----------------------------
 
-  angular.module( 'isc.common' )
+  angular.module( 'isc.core' )
       .factory( 'iscUiHelper', iscUiHelper );
 })();

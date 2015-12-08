@@ -10,7 +10,6 @@
         timeout,
         httpBackend,
         $window,
-        configService,
         loginData,
         AUTH_EVENTS,
         loginDataProxy;
@@ -51,21 +50,18 @@
       "reload": 0
     };
 
-    beforeEach( module( 'isc.common' ));
-
-    // show $log statements
-    beforeEach( module( 'isc.common', function( $provide ){
+      // show $log statements
+    beforeEach( module( 'isc.authentication', function( $provide ){
       $provide.value('$log', console);
     }));
 
-    beforeEach( inject( function( $rootScope, $httpBackend, $timeout, _$window_, iscSessionModel, iscCustomConfigService, _AUTH_EVENTS_  ){
+    beforeEach( inject( function( $rootScope, $httpBackend, $timeout, _$window_, iscSessionModel, _AUTH_EVENTS_  ){
       rootScope = $rootScope;
       scope = $rootScope.$new();
       model = iscSessionModel;
       httpBackend = $httpBackend;
       $window = _$window_;
       timeout = $timeout;
-      configService = iscCustomConfigService;
       AUTH_EVENTS = _AUTH_EVENTS_;
 
       $window.sessionStorage = { // mocking sessionStorage

@@ -5,8 +5,7 @@
 (function(){
   'use strict';
 
-  iscArrayStringFilter.$inject = [ '$log', '$filter' ];
-
+  /* @ngInject */
   function iscArrayStringFilter( $log, $filter ){//jshint ignore:line
 //    //$log.debug( 'iscArrayStringFilter LOADED');
 
@@ -55,7 +54,7 @@
   // ----------------------------
   // injection
   // ----------------------------
-  angular.module( 'isc.common' )
+  angular.module( 'isc.filters' )
       .filter( 'arrayString', iscArrayStringFilter );
 
 })();

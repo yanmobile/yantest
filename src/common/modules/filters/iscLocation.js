@@ -7,8 +7,7 @@
 (function(){
   'use strict';
 
-  iscLocation.$inject = [ '$filter', '$log' ];
-
+  /* @ngInject */
   function iscLocation($filter, $log){
 
     return function( locationString, showMessage ){
@@ -27,7 +26,7 @@
   // ----------------------------
   // injection
   // ----------------------------
-  angular.module( 'isc.common' )
+  angular.module( 'isc.filters' )
       .filter( 'iscLocation', iscLocation );
 
 })();

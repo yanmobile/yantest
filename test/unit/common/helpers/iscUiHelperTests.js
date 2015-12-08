@@ -10,8 +10,7 @@
         service;
 
 
-    beforeEach( module('isc.common'));
-    beforeEach( module('iscNavContainer'));
+    beforeEach( module('isc.core'));
 
     beforeEach( inject( function( $rootScope, iscUiHelper ){
       scope = $rootScope.$new();

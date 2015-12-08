@@ -4,8 +4,7 @@
 (function(){
   'use strict';
 
-  iscGlobals.$inject = [ '$log', '$rootScope', '$document' ];
-
+  /* @ngInject */
   function iscGlobals( $log, $rootScope, $document ){//jshint ignore:line
 
     // --------------------
@@ -133,7 +132,7 @@
   // inject
   // ----------------------------
 
-  angular.module( 'isc.common' )
+  angular.module( 'isc.core' )
       .factory( '$global', iscGlobals );
 
 })();

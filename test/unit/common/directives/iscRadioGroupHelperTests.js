@@ -17,10 +17,9 @@
 
     var item = group[1];
 
-    beforeEach( module( 'isc.common') );
-
+    beforeEach (module ('isc.directives'));
     // show $log statements
-    beforeEach( module(  'isc.common', function( $provide ){
+    beforeEach( module( function( $provide ){
       $provide.value('$log', console);
     }));
 

@@ -3,50 +3,47 @@
   //console.log( 'iscTable Tests' );
 
   describe('iscTable', function () {
-    var scope,
-        rootScope,
-        helper,
+    var $rootScope,
         isolateScope,
         httpBackend,
         timeout,
         element,
-        state;
+        state, $rootScope, $compile;
 
     var tableConfig = {
-      key: 'LabOrders',
-      title: '',
+      key           : 'LabOrders',
+      title         : '',
       backButtonText: 'back',
+      editable      : false,
 
-      columns: [
+      columns: [{
+        key  : 'OrderedItemDisplay',
+        title: 'ISC_WELLNESS_LAB_NAME'
+      },
         {
-          key: 'OrderedItemDisplay',
-          title: 'ISC_WELLNESS_LAB_NAME'
-        },
-        {
-          key: 'Timestamp',
+          key  : 'Timestamp',
           title: 'ISC_WELLNESS_LAB_DATE',
-          type: 'date'
+          type : 'date'
         }]
     };
 
     var tableData = {
-      "LabOrders": [
-        {
-          "OrderedItemDisplay": "BASIC METABOLIC PANEL",
-          "ResultItems": [
-            {
-              "ResultValue": 141,
-              "ResultValueUnits": "MEQ/L",
-              "Test": "SODIUM"
-            },
-            {
-              "ResultValue": 3.9,
-              "ResultValueUnits": "MEQ/L",
-              "Test": "POTASSIUM"
-            }
-          ],
-          "Timestamp": "2012-11-09 05:06:00",
-        }
+      "LabOrders": [{
+        "OrderedItemDisplay": "BASIC METABOLIC PANEL",
+        "ResultItems"       : [
+          {
+            "ResultValue"     : 141,
+            "ResultValueUnits": "MEQ/L",
+            "Test"            : "SODIUM"
+          },
+          {
+            "ResultValue"     : 3.9,
+            "ResultValueUnits": "MEQ/L",
+            "Test"            : "POTASSIUM"
+          }
+        ],
+        "Timestamp"         : "2012-11-09 05:06:00"
+      }
       ]
     };
 
@@ -54,62 +51,62 @@
       "LabOrders": [
         {
           "OrderedItemDisplay": "BASIC METABOLIC PANEL",
-          "ResultItems": [
+          "ResultItems"       : [
             {
-              "ResultValue": 141,
+              "ResultValue"     : 141,
               "ResultValueUnits": "MEQ/L",
-              "Test": "SODIUM"
+              "Test"            : "SODIUM"
             },
             {
-              "ResultValue": 3.9,
+              "ResultValue"     : 3.9,
               "ResultValueUnits": "MEQ/L",
-              "Test": "POTASSIUM"
+              "Test"            : "POTASSIUM"
             }
           ],
-          "Timestamp": "2012-11-09 05:06:00"
+          "Timestamp"         : "2012-11-09 05:06:00"
         },
         {
           "OrderedItemDisplay": "BASIC FOOBAR PANEL",
-          "ResultItems": [
+          "ResultItems"       : [
             {
-              "ResultValue": 141,
+              "ResultValue"     : 141,
               "ResultValueUnits": "MEQ/L",
-              "Test": "SODIUM"
+              "Test"            : "SODIUM"
             },
             {
-              "ResultValue": 3.9,
+              "ResultValue"     : 3.9,
               "ResultValueUnits": "MEQ/L",
-              "Test": "POTASSIUM"
+              "Test"            : "POTASSIUM"
             }
           ],
-          "Timestamp": "2012-11-09 05:06:00"
+          "Timestamp"         : "2012-11-09 05:06:00"
         },
         {
           "OrderedItemDisplay": "BASIC WHATEVER",
-          "ResultItems": [
+          "ResultItems"       : [
             {
-              "ResultValue": 141,
+              "ResultValue"     : 141,
               "ResultValueUnits": "MEQ/L",
-              "Test": "SODIUM"
+              "Test"            : "SODIUM"
             },
             {
-              "ResultValue": 3.9,
+              "ResultValue"     : 3.9,
               "ResultValueUnits": "MEQ/L",
-              "Test": "POTASSIUM"
+              "Test"            : "POTASSIUM"
             }
           ],
-          "Timestamp": "2012-11-09 05:06:00"
+          "Timestamp"         : "2012-11-09 05:06:00"
         }
       ]
     };
 
-    var html = '<isc-table table-config="tableConfig"' +
-        'table-data="tableData"' +
-        'back-button-callback="backButtonCallback()"' +
-        'row-button-callback="rowButtonCallback( state )">' +
-        '</isc-table>';
+    var html = '<isc-table template-url="fakeTable.html" table-config="tableConfig"' +
+      'table-data="tableData"' +
+      'back-button-callback="backButtonCallback()"' +
+      'row-button-callback="rowButtonCallback( state )">' +
+      '</isc-table>';
 
-    beforeEach(module('isc.common'));
+    beforeEach(module('isc.table'));
 
     // this loads all the external templates used in directives etc
     // eg, everything in templates/**/*.html
@@ -120,44 +117,37 @@
       $provide.value('$log', console);
     }));
 
-    beforeEach(inject(function ($rootScope, $compile, $httpBackend, $state, $timeout) {
-      rootScope = $rootScope;
+    beforeEach(inject(function (_$rootScope_, _$compile_, $httpBackend, $state, $timeout, _$templateCache_) {
+      $rootScope = _$rootScope_;
+      $compile   = _$compile_;
 
-      scope = $rootScope.$new();
+      $rootScope.tableConfig = tableConfig;
+      $rootScope.tableData   = tableData;
 
-      scope.tableConfig = tableConfig;
-      scope.tableData = tableData;
-
-      state = $state;
+      state         = $state;
       state.current = {
         name: 'tableTests'
       };
 
-      scope.backButtonCallback = function () {
+      $rootScope.backButtonCallback = function () {
       };
 
-      scope.rowButtonCallback = function () {
+      $rootScope.rowButtonCallback = function () {
       };
 
       httpBackend = $httpBackend;
-      timeout = $timeout;
+      timeout     = $timeout;
 
-      // dont worry about calls to assets
-      httpBackend.when('GET', 'assets/i18n/en_US.json')
-          .respond(200, {});
+      _$templateCache_.put('fakeTable.html', '<div ng-repeat"dataItem in iscTblCtrl.tableRows" class="row"> </div>');
 
-      element = $compile(html)(scope);
-      scope.$digest();
-
-      isolateScope = element.isolateScope();
+      compile();
     }));
 
     function compile() {
-      inject(function ($rootScope, $compile) {
-        element = $compile(html)(scope);
-        scope.$digest();
-        isolateScope = element.isolateScope();
-      })
+      element      = $compile(html)($rootScope);
+
+      $rootScope.$digest();
+      isolateScope = element.isolateScope();
     };
 
     // -------------------------
@@ -178,12 +168,12 @@
 
       it("should updated table data", function () {
 
-        scope.tableData = tableData;
-        scope.$digest();
+        $rootScope.tableData = tableData;
+        $rootScope.$digest();
         expect(isolateScope.iscTblCtrl.tableRows.length).toBe(1);
 
-        scope.tableData = tableData2;
-        scope.$digest();
+        $rootScope.tableData = tableData2;
+        $rootScope.$digest();
         expect(isolateScope.iscTblCtrl.tableRows.length).toBe(3);
       });
 
@@ -197,7 +187,7 @@
       });
 
       it("should chage rowsOnPage if you add number to config", function () {
-        scope.tableConfig.rowsOnPage = 20;
+        $rootScope.tableConfig.rowsOnPage = 20;
         compile();
 
         expect(isolateScope.iscTblCtrl.rowsOnPage).toBe(20);
@@ -221,7 +211,7 @@
     describe('table sorting tests ', function () {
 
       it("should start with unreversed sort order", function () {
-        expect(isolateScope.iscTblCtrl.sortField).toEqual({reverse: false});
+        expect(isolateScope.iscTblCtrl.sortField).toEqual({ reverse: false });
       });
 
       it("should have a function sortColumn", function () {
@@ -230,13 +220,13 @@
 
       it("should change the sort field to the column you pass in without reversing", function () {
         isolateScope.iscTblCtrl.sortColumn(tableConfig.columns[0]);
-        expect(isolateScope.iscTblCtrl.sortField).toEqual({reverse: false, name: 'OrderedItemDisplay'});
+        expect(isolateScope.iscTblCtrl.sortField).toEqual({ reverse: false, name: 'OrderedItemDisplay' });
       });
 
       it("should reverse the next time called", function () {
         isolateScope.iscTblCtrl.sortColumn(tableConfig.columns[1]);
         isolateScope.iscTblCtrl.sortColumn(tableConfig.columns[1]);
-        expect(isolateScope.iscTblCtrl.sortField).toEqual({reverse: true, name: 'Timestamp'});
+        expect(isolateScope.iscTblCtrl.sortField).toEqual({ reverse: true, name: 'Timestamp' });
       });
 
     });
@@ -248,10 +238,10 @@
       });
 
       it("should call rowButtonCallback", function () {
-        spyOn(scope, 'rowButtonCallback');
-        isolateScope.iscTblCtrl.rowButtonCallback({state: 'test'});
+        spyOn($rootScope, 'rowButtonCallback');
+        isolateScope.iscTblCtrl.rowButtonCallback({ state: 'test' });
 
-        expect(scope.rowButtonCallback).toHaveBeenCalledWith('test');
+        expect($rootScope.rowButtonCallback).toHaveBeenCalledWith('test');
       });
 
       it("should have a function backButtonCallback", function () {
@@ -259,10 +249,10 @@
       });
 
       it("should call backButtonCallback", function () {
-        spyOn(scope, 'backButtonCallback');
+        spyOn($rootScope, 'backButtonCallback');
         isolateScope.iscTblCtrl.backButtonCallback();
 
-        expect(scope.backButtonCallback).toHaveBeenCalled();
+        expect($rootScope.backButtonCallback).toHaveBeenCalled();
       });
 
     });

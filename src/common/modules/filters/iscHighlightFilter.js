@@ -5,8 +5,7 @@
 (function(){
   'use strict';
 
-  iscHighlightFilter.$inject = [ '$log', '$sce' ];
-
+  /* @ngInject */
   function iscHighlightFilter( $log, $sce ){
 //    //$log.debug( 'iscHighlightFilter LOADED');
 
@@ -44,7 +43,7 @@
   // ----------------------------
   // injection
   // ----------------------------
-  angular.module( 'isc.common' )
+  angular.module( 'isc.filters' )
       .filter( 'iscHighlight', iscHighlightFilter );
 
 })();

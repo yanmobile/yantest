@@ -18,6 +18,7 @@
         key           : 'LabOrders',
         title         : '',
         backButtonText: 'back',
+        editable      : "inline",
 
         columns: [
           {
@@ -57,7 +58,7 @@
         'mobile-class="isc-text-item">' +
         '</div>';
 
-    beforeEach( module( 'isc.common' ) );
+    beforeEach( module( 'isc.table' ) );
 
     // this loads all the external templates used in directives etc
     // eg, everything in templates/**/*.html
@@ -224,6 +225,9 @@
 
       it( "should get the right displayText, getter function", function(){
 
+        var dataItem    = 'shazam';
+        var defaultText = 1234;
+
         rowScope.column =  {
           key: 'OrderedItemDisplay',
           title: 'ISC_WELLNESS_LAB_NAME',
@@ -233,7 +237,7 @@
         };
         compile();
 
-        var expected = cellScope.getDisplayText();
+        var expected = cellScope.getDisplayText( dataItem, defaultText );
         expect( expected ).toBe( 'foo bar baz' );
       } );
 
@@ -293,7 +297,34 @@
 
     // -------------------------
     describe( ' dom inspection tests', function(){
-      describe( 'with command column', function(){
+
+      it('it should not have command buttons when table is not editable', function () {
+
+        rowScope.iscTblCtrl.tableConfig.editable = false;
+
+        rowScope.column = commandColumn;
+        compile();
+
+        var editButton   = element.find(".isc-table-command-edit-icon");
+        var removeButton = element.find(".isc-table-command-remove-icon");
+        var saveButton   = element.find(".isc-table-command-save-icon");
+        var cancelButton = element.find(".isc-table-command-cancel-icon");
+
+        expect(editButton.length).toBe(0);
+        expect(removeButton.length).toBe(0);
+        expect(saveButton.length).toBe(0);
+        expect(cancelButton.length).toBe(0);
+      });
+
+      describe( 'commands when table is using inline editable mode"', function(){
+
+        it ('editable "true" is treated as "inline"', function(){
+          rowScope.iscTblCtrl.editable = true;
+          compile();
+
+          expect(rowScope.iscTblCtrl.tableConfig.editable).not.toBe(true);
+          expect(rowScope.iscTblCtrl.tableConfig.editable).toBe('inline');
+        });
 
         it( 'should have edit/remove buttons', function(){
           rowScope.column = commandColumn;
@@ -335,7 +366,7 @@
         expect( angular.isFunction( cellScope.notThere ) ).toBe( true );
       } );
 
-      it( "should know if something isnt there", function(){
+      it( "should know if something isn't there", function(){
         var expected = cellScope.notThere( 0 );
         expect( expected ).toBe( false );
 

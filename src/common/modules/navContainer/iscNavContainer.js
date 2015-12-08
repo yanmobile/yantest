@@ -5,24 +5,10 @@
 (function(){
   'use strict';
 
-  angular.module('iscNavContainer', ['ui.router'])
+  angular.module('iscNavContainer', ['ui.router', 'isc.core', 'isc.animation', 'isc.progressLoader',
+    'pascalprecht.translate','isc.core', 'isc.authentication', 'isc.stateManager'])
 
-      .constant('AUTH_EVENTS', {
-        loginError:            'iscLoginError',
-        loginSuccess:          'iscLoginSuccess',
-        loginFailed:           'iscLoginFailed',
-        logout:                'iscLogout',
-        logoutSuccess:         'iscLogoutSuccess',
-        notAuthenticated:      'iscNotAuthenticated',
-        notAuthorized:         'iscNotAuthorized',
-        openSortOptions:       'iscOpenSortOptions',
-        responseError:         'iscResponseError',
-        sessionResumedSuccess: 'iscSessionResumedSuccess',
-        sessionTimeout:        'iscSessionTimeout',
-        sessionTimeoutConfirm: 'iscSessionTimeoutConfirm',
-        sessionTimeoutWarning: 'iscSessionTimeoutWarning',
-        sessionTimeoutReset:   'iscSessionTimeoutReset'
-      })
+
 
       .constant('APP_EVENTS', {
         appLoaded:     'iscAppLoaded'
@@ -36,11 +22,6 @@
         hideSideNavBar:       'iscHideSideNavBar'
       })
 
-      .constant('DROPDOWN_EVENTS', {
-        dropdownShow:          'DROPDOWN_SHOW',
-        showDropdownList:      'SHOW_DROPDOWN_LIST',
-        dropdownItemSelected:  'DROPDOWN_ITEM_SELECTED'
-      })
 
       .config( function( $stateProvider ){
         //console.log('iscNavContainer.config');

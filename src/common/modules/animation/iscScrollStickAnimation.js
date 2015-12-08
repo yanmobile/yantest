@@ -5,8 +5,7 @@
 (function(){
   'use strict';
 
-  iscScrollStickAnimation.$inject = ['$log', '$window', 'TweenMax', 'EASE_DUR'];
-
+  /* @ngInject */
   function iscScrollStickAnimation( $log, $window,  TweenMax, EASE_DUR ){
 
   // --------------------
@@ -120,7 +119,7 @@
   // inject
   // --------------------
 
-  angular.module( 'isc.common' )
+  angular.module( 'isc.animation' )
     .animation( '.scroll-stick', iscScrollStickAnimation );
 
 })();

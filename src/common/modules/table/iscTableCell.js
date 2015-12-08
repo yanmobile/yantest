@@ -4,9 +4,9 @@
 (function(){
   'use strict';
 
-  iscTableCell.$inject = [ '$log', '$state' ];
+  iscTableCell.$inject = [ '$log', '$state', '$templateCache', '$compile' ];
 
-  function iscTableCell( $log, $state ){
+  function iscTableCell( $log, $state, $templateCache, $compile ){
     //$log.debug('iscTableCell.LOADED');
 
     // ----------------------------
@@ -18,24 +18,35 @@
     // ----------------------------
 
     var directive = {
-      scope       : true, //prototypal inheritance
-      restrict    : 'EA',
-      templateUrl : 'table/iscTableCell.html',
-      link        : link,
-      controller  : controller,
-      controllerAs: 'iscCellCtrl'
+      restrict   : 'A',
+      compile    : compile
     };
     return directive;
 
     // ----------------------------
     // functions
-    // ----------------------------
-
-    function controller(){ //needed to use with controllerAs
+    // -----------
+    function compile(){
+      return {
+        pre : pre,
+        post: post
+      }
     }
 
+    function pre(scope, elem, attrs, iscRowCtrl){
+      var defaultTemplate = attrs.templateUrl;
+      defaultTemplate     = defaultTemplate || (scope.iscTblCtrl.tableConfig.editable === 'popup' ? "table/popup/iscTableReadOnlyCell.html" : 'table/iscTableCell.html');
 
-    function link( scope, elem, attrs ){//jshint ignore:line
+      var rowTemplate = _.get(scope, 'iscTblCtrl.tableConfig.rowTemplate', defaultTemplate);
+
+      if( rowTemplate ){
+        //for some reason the template doesn't like spaces nor comments
+        var template = $templateCache.get(rowTemplate);
+        var output = $compile(template)(scope);
+        elem.html(output);
+      }
+    }
+    function post( scope, elem, attrs ){//jshint ignore:line
 
       // ----------------------------
       // vars
@@ -74,7 +85,7 @@
         var defaultText = scope.column.default;
 
         if( scope.column.textGetter ){
-          return scope.column.textGetter( scope.dataItem );
+          return scope.column.textGetter( scope.iscRowCtrl.dataItem );
         }
 
         var retVal;
@@ -102,7 +113,7 @@
   // inject
   // ----------------------------
 
-  angular.module( 'isc.common' )
+  angular.module( 'isc.table' )
       .directive( 'iscTableCell', iscTableCell );
 
 })();

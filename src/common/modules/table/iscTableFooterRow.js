@@ -54,7 +54,7 @@
   // inject
   // ----------------------------
 
-  angular.module( 'isc.common' )
+  angular.module( 'isc.table' )
       .directive( 'iscTableFooterRow', iscTableFooterRow );
 
 })();

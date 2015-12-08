@@ -5,8 +5,7 @@
 (function(){
   'use strict';
 
-  iscBlinkOutFadeInAnimation.$inject = ['$log', '$window', 'TweenMax', 'EASE_DUR'];
-
+  /* @ngInject */
   function iscBlinkOutFadeInAnimation( $log, $window, TweenMax, EASE_DUR ){
 
   // --------------------
@@ -60,7 +59,7 @@
   // inject
   // --------------------
 
-  angular.module( 'isc.common' )
+  angular.module( 'isc.animation' )
     .animation( '.blink-out-fade-in', iscBlinkOutFadeInAnimation );
 
 })();

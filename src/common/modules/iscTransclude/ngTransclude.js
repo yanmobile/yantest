@@ -40,6 +40,6 @@
   // injection
   // ----------------------------
 
-  angular.module('isc.common')
+  angular.module('isc.directives')
     .directive('ngTransclude', ngTransclude);
 })();

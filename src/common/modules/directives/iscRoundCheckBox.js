@@ -62,7 +62,7 @@
   // injection
   // ----------------------------
 
-  angular.module( 'isc.common' )
+  angular.module( 'isc.directives' )
       .directive( 'iscRoundCheckBox', iscRoundCheckBox );
 
 })();

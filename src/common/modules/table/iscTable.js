@@ -10,7 +10,7 @@
     title: '',
     rowsOnPage: 20,
     backButtonText: 'Go Back'
-    editable: true,
+    editable: "popup",
     addBtnTranslationKey: "TRANSLATION_KEY",
 
     columns: [{
@@ -43,17 +43,18 @@
     },
     { //drop down
       key           : 'anticipatedProblem',
-      title         : 'CMC_ANTICPATED_PROBLEM',
+      title         : 'EmergencyTreatmentPlan_ProblemSymptom',
       type          : 'dropdown',
       dropdownConfig: {
         listData    : model.getLookup( "symptoms" ),
-        dropMinwidth: '150px'
+        dropMinwidth: '150px',
+        usePrimative: true
       }
     },
     { // for individual application to create non-core specific columns
       type         : 'template',
       key          : 'main',
-      title        : 'CMC_CCP_CT_CONTACT_MAIN',
+      title        : 'Contacts_Personal_MainCarer',
       editCellClass: "cmc-team-cell-edit",
       template     : 'carePlan/careTeam/contact-main.html'
     },
@@ -193,12 +194,16 @@
         tableData         : '=',
         filterFunction    : '&?',
         rowButtonCallback : '&?',
-        backButtonCallback: '&?'
+        backButtonCallback: '&?',
+        tableName         : "@"
       },
 
       restrict    : 'E',
       replace     : true,
-      templateUrl : 'table/iscTable.html',
+
+      templateUrl: function(elem, attrs){
+        return attrs.templateUrl || 'table/iscTable.html';
+      },
       bindToController: true,
       link        : link,
       controller  : controller,
@@ -215,7 +220,11 @@
       //$log.debug( '...tableData', scope.tableData );
 
       var self = this;
+      if ( _.isString( self.tableName ) && self.tableName.length > 0 ) {
+        $scope.$parent[ self.tableName ] = self;
+      }
 
+      self.refresh   = init;
       self.addRow = addRow;
       self.updateRow = updateRow;
 
@@ -223,18 +232,32 @@
       self.createRow = createRow;
       self.editRow = editRow;
       self.cancelEdit = cancelEdit;
+      self.getColumnByKey = getColumnByKey;
 
+      init();
+
+      function init() {
       self.rowsOnPage = self.tableConfig.rowsOnPage || 15;
       self.currentPage = 1;
 
       $scope.$watch( function(){ return self.tableData; }, function(){
         //$log.debug( 'iscTable.WATCH tableData');
         // set an array of the table row objects
-        self.tableRows = self.tableConfig.key ? self.tableData[self.tableConfig.key] : self.tableData;
+        self.filteredRows = self.tableRows = self.tableConfig.key ? self.tableData[ self.tableConfig.key ] : self.tableData;
         //$log.debug( '...tableRows',self.tableRows);
       });
 
+        applyFilter();
       self.sortField = {reverse: false};
+      }
+
+      function applyFilter() {
+        var rows = self.tableRows;
+        if (self.tableConfig.sortable) {
+          rows = $filter('orderBy')(rows, self.sortField.name, self.sortField.reverse);
+        }
+        self.filteredRows = rows;
+      }
 
       self.sortColumn = function (column) {
         if ( (column.columnClick === 'sort' || !column.columnClick) && self.sortField.name === column.key) {
@@ -242,6 +265,7 @@
         }
 
         self.sortField.name = column.key;
+        applyFilter();
       };
 
       self.changePage = function (newPageNumber) {
@@ -266,6 +290,9 @@
       // ----------------------------
       // functions
       // ----------------------------
+      function getColumnByKey(key){
+        return _.find(self.tableConfig.columns, {key: key});
+      }
 
       function deleteRow(row) {
         _.remove(self.tableRows, row);
@@ -289,6 +316,7 @@
           }
         });
         self.dataItem = dataItem;
+        return self.dataItem;
       }
 
       function editRow(row) {
@@ -312,7 +340,7 @@
   // inject
   // ----------------------------
 
-  angular.module( 'isc.common' )
+  angular.module( 'isc.table' )
       .directive( 'iscTable', iscTable );
 
 })();

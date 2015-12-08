@@ -237,7 +237,12 @@
   // injection
   // ----------------------------
 
-  angular.module( 'isc.common' )
-      .directive( 'iscDropdown', iscDropdown );
+  angular.module('isc.directives')
+    .directive('iscDropdown', iscDropdown)
+    .constant('DROPDOWN_EVENTS', {
+      dropdownShow        : 'DROPDOWN_SHOW',
+      showDropdownList    : 'SHOW_DROPDOWN_LIST',
+      dropdownItemSelected: 'DROPDOWN_ITEM_SELECTED'
+    });
 
 })();

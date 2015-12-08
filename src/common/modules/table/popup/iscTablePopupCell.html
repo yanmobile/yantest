@@ -1,0 +1,45 @@
+<div class="grid-block">
+  <div class="grid-block medium-3 large-3">
+    <div class="grid-content">
+      <label class="inline">{{column.title | translate}}</label>
+    </div>
+  </div>
+  <div class="grid-block medium-9 large-9">
+    <div class="grid-content">
+      <span ng-if="column.type === 'dropdown'">
+        <isc-dropdown drop-required="column.required"
+                      list-data="column.dropdownConfig.listData"
+                      list-field="{{column.dropdownConfig.value || 'value'}}"
+                      drop-width="column.dropdownConfig.dropWidth"
+                      drop-maxwidth="column.dropdownConfig.dropMaxwidth"
+                      drop-minwidth="column.dropdownConfig.dropMinwidth"
+                      drop-selected-item="iscRowCtrl.editModeData[column.key]"
+                      drop-id="{{column.dropId ||('ddl' + $id + column.key)}}">
+        </isc-dropdown>
+      </span>
+      <span ng-if="column.type === 'textarea'">
+      <textarea ng-required="column.required"
+                name="{{column.key}}" type="text" class="{{ column.inputCssClass }}"
+                ng-model="iscRowCtrl.editModeData[column.key]"/>
+      </span>
+      <span ng-if="column.type === 'text' || !column.type">
+      <input ng-required="column.required"
+             name="{{column.key}}" type="text" class="{{ column.inputCssClass }}" ng-model="iscRowCtrl.editModeData[column.key]">
+      </span>
+      <span ng-if="column.type === 'date' || column.type === 'dateWithTime'">
+        <datepicker date-format="longDate">
+          <input ng-required="cellConfig.required" type="text"
+                 name="{{column.key}}" class="{{ column.inputCssClass }}" ng-model="iscRowCtrl.editModeData[column.key]">
+        </datepicker>
+      </span>
+      <span ng-if="column.type === 'checkbox'">
+      <input type="checkbox"
+             name="{{column.key}}"
+             ng-model="iscRowCtrl.editModeData[column.key]">
+      </span>
+      <span ng-if="column.type === 'template'">
+        <div ng-include="column.template"></div>
+      </span>
+    </div>
+  </div>
+</div>

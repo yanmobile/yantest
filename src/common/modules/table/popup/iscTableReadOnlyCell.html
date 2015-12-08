@@ -1,0 +1,14 @@
+<h3 class="cell-title">{{ column.title | translate }}</h3>
+<span ng-if="column.type === 'text' || column.type === 'textarea' || !column.type">
+<span class="{{ mobileClass }} {{ getTrClass( displayText )}}">{{ iscRowCtrl.dataItem[column.key]  | translate }} {{ displayUnit }}</span>
+</span>
+<span ng-if="column.type === 'checkbox'">
+<input type="checkbox" disabled="disabled" ng-checked="iscRowCtrl.dataItem[column.key]"
+       class="{{ mobileClass }} {{ getTrClass( displayText )}}">
+</span>
+<span ng-if="column.type === 'template'">
+  <div ng-include="column.template"></div>
+</span>
+<span ng-if="column.type === 'dropdown'">
+<span class="{{ mobileClass }} {{ getTrClass( displayText )}}">{{ iscRowCtrl.dataItem[column.key][column.dropdownConfig.value || 'value']  | translate }} {{ displayUnit }}</span>
+</span>

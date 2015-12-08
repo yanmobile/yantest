@@ -19,7 +19,7 @@
     var defaultConfig            = {};
     var defaultTemplate          = '<isc-transclude config="config"></isc-transclude>';
 
-    beforeEach(module('isc.common'));
+    beforeEach(module('isc.directives'));
 
     // this loads all the external templates used in directives etc
     // eg, everything in templates/**/*.html

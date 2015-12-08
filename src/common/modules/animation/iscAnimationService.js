@@ -8,8 +8,7 @@
 (function () {
   'use strict';
 
-  iscAnimationService.$inject = [ '$log', '$window' ];
-
+  /* @ngInject */
   function iscAnimationService ($log, $window) {
     //    $log.debug( 'iscAnimationService.LOADED');
 
@@ -168,7 +167,7 @@
   // injection
   // ----------------------------
 
-  angular.module ('isc.common')
+  angular.module ('isc.animation')
       .factory ('iscAnimationService', iscAnimationService);
 
 }) ();

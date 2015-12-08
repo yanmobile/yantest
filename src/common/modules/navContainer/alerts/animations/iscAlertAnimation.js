@@ -5,8 +5,7 @@
 (function(){
   'use strict';
 
-  iscAlertAnimation.$inject = ['$log', '$window', 'TweenMax', 'iscAnimationService', 'EASE_DUR'];
-
+  /* @ngInject */
   function iscAlertAnimation( $log, $window, TweenMax, iscAnimationService, EASE_DUR ){
     //$log.debug( 'iscAlertAnimation.loaded' );
   // --------------------

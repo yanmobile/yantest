@@ -49,7 +49,7 @@
   // ----------------------------
   // injection
   // ----------------------------
-  angular.module( 'isc.common' )
+  angular.module( 'isc.directives' )
     .factory( 'iscRadioGroupHelper', iscRadioGroupHelper );
 
 })();

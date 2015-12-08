@@ -22,7 +22,10 @@
 
       "./src/common/bower_components/mobile-angular-ui/dist/js/mobile-angular-ui.gestures.js",
       "./src/common/bower_components/mobile-angular-ui/dist/js/mobile-angular-ui.migrate.js",
-      "./src/common/bower_components/mobile-angular-ui/dist/js/mobile-angular-ui.js"
+      "./src/common/bower_components/mobile-angular-ui/dist/js/mobile-angular-ui.js",
+      "./src/common/bower_components/foundation-apps/dist/js/foundation-apps.js",
+      "./src/common/bower_components/foundation-apps/dist/js/foundation-apps-templates.js",
+      "./src/common/bower_components/angucomplete-alt/angucomplete-alt.js"
     ],
 
     "fonts" : [

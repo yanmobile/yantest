@@ -12,9 +12,7 @@
         filter;
 
 
-    beforeEach( module('isc.common'));
-
-    beforeEach( module('isc.common'), function( $provide ){
+    beforeEach( module('isc.filters'), function( $provide ){
       $provide.value('$log', console);
     });
 

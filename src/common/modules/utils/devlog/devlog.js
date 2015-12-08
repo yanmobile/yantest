@@ -4,12 +4,13 @@
 ( function() {
   'use strict';
 
-  devlog.$inject = [
-    '$log',
-    'iscCustomConfigService'
-  ];
+  angular
+    .module('isc.core')
+    .factory('devlog', devlogService);
 
-  function devlog( $log, iscCustomConfigService ) {
+
+  /* @ngInject */
+  function devlogService( $log, iscCustomConfigService ) {
     var devlog = {};
 
     // make devlog function as an extension of angular $log
@@ -82,7 +83,7 @@
       }
 
       return nullobj;
-      
+
     };
 
     //internal use
@@ -103,7 +104,7 @@
       //msg_params is of type Arguments from function
       var args = Array.prototype.slice.call(msg_params);
       if (args[0] && (typeof args[0] === 'string' || args[0] instanceof String)) {
-        args[0] = devlog._channel_prefix + args[0]; 
+        args[0] = devlog._channel_prefix + args[0];
       } else {
         args.unshift(devlog._channel_prefix);
       }
@@ -113,9 +114,6 @@
     return devlog;
 
   }
-
-  var module = angular.module( 'isc.common' );
-  module.factory('devlog', devlog);
 
 })();
 

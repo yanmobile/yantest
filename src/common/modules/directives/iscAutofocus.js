@@ -53,7 +53,7 @@
   // injection
   // ----------------------------
 
-  angular.module ('isc.common')
+  angular.module ('isc.directives')
       .directive ('iscAutofocus', iscAutofocus);
 
 }) ();

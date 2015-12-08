@@ -4,10 +4,7 @@
 (function () {
   'use strict';
 
-  iscAuthenticationInterceptor.$inject = [
-    '$log', '$rootScope', '$q', 'iscSessionModel', 'AUTH_EVENTS', '$templateCache'
-  ];
-
+  /* @ngInject */
   function iscAuthenticationInterceptor ($log, $rootScope, $q, iscSessionModel, AUTH_EVENTS, $templateCache) {//jshint ignore:line
 
     // ----------------------------
@@ -71,6 +68,6 @@
   // ----------------------------
   // injection
   // ----------------------------
-  angular.module ('isc.common')
+  angular.module ('isc.authentication')
       .factory ('iscAuthenticationInterceptor', iscAuthenticationInterceptor);
 }) ();

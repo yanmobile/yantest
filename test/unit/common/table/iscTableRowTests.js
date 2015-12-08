@@ -27,6 +27,7 @@
         key           : 'LabOrders',
         title         : '',
         backButtonText: 'back',
+        editable: true,
 
         columns: [
           {
@@ -68,7 +69,7 @@
 
     var html = '<div isc-table-row ng-form name="iscRowForm"> </div>';
 
-    beforeEach( module( 'isc.common' ) );
+    beforeEach( module( 'isc.table' ) );
 
     // this loads all the external templates used in directives etc
     // eg, everything in templates/**/*.html
@@ -199,22 +200,9 @@
       it( "should have put the row inEditMode", function(){
         iscRowCtrl.onCommand( 'edit' );
 
-        expect( iscRowCtrl.inEditMode ).toEqual( true );
+        expect( iscRowCtrl.inEditMode ).toEqual( 'inline' );
       } );
     } );
 
-    // -------------------------
-    xdescribe( 'iscRowCtrl remove command', function(){
-      it( "should have called iscTblCtrl.deleteRow", function(){
-        spyOn( iscRowCtrl.iscTblCtrl, "deleteRow" );
-        iscRowCtrl.onCommand( 'remove' );
-        expect( iscRowCtrl.iscTblCtrl.deleteRow ).toHaveBeenCalled();
-      } );
-
-      it( "should have created a clone when editing", function(){
-        iscRowCtrl.onCommand( 'remove' );
-        iscRowCtrl.iscTblCtrl.tableRows.length
-      } );
-    } );
   } );
 })();

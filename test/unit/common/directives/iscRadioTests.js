@@ -30,7 +30,7 @@
 
     var html = '<isc-radio radio-item="provider" radio-group="providers"></isc-radio>';
 
-    beforeEach( module('isc.common'));
+    beforeEach (module ('isc.directives'));
 
 
     // this loads all the external templates used in directives etc

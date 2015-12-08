@@ -13,10 +13,7 @@
         helper;
 
 
-    beforeEach( module('isc.common'));
-    beforeEach( module('iscNavContainer'));
-
-    beforeEach( module('isc.common', 'iscNavContainer'), function( $provide ){
+    beforeEach( module('isc.configuration'), function( $provide ){
       $provide.value('$log', console);
     });
 

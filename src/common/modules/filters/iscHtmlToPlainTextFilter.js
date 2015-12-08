@@ -5,8 +5,7 @@
 (function(){
   'use strict';
 
-  iscHtmlToPlainText.$inject = [ '$log' ];
-
+  /* @ngInject */
   function iscHtmlToPlainText( $log ){//jshint ignore:line
 //    //$log.debug( 'iscHtmlToPlainText LOADED');
 
@@ -34,7 +33,7 @@
   // ----------------------------
   // injection
   // ----------------------------
-  angular.module( 'isc.common' )
+  angular.module( 'isc.filters' )
       .filter( 'iscHtmlToPlainText', iscHtmlToPlainText );
 
 })();

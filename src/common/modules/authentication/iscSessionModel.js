@@ -5,8 +5,7 @@
 (function(){
   'use strict';
 
-  iscSessionModel.$inject = [ '$log', '$rootScope', '$interval', 'iscSessionStorageHelper', 'AUTH_EVENTS' ];
-
+  /* @ngInject */
   function iscSessionModel( $log, $rootScope, $interval, iscSessionStorageHelper, AUTH_EVENTS ){
 //    //$log.debug( 'iscSessionModel LOADED');
 
@@ -338,7 +337,7 @@
   // ----------------------------
   // injection
   // ----------------------------
-  angular.module( 'isc.common' )
+  angular.module( 'isc.authentication' )
       .factory( 'iscSessionModel', iscSessionModel );
 
 })();

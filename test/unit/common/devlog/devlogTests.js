@@ -3,7 +3,8 @@
   'use strict';
 
   describe('devlog', function() {
-    beforeEach( module('isc.common'));
+    // show $log statements
+    beforeEach(module('isc.core'));
 
     var $log;
     var devlog;
@@ -26,7 +27,7 @@
         it(
           'should function as a wrapper to $log - string',
           function() {
-            //console.log( '$log', $log );
+            console.log( '$log', $log.debug.logs );
             devlog.debug('This is a debug message');
             expect( $log.debug.logs[0][0] ).toBe( 'This is a debug message' );
           }

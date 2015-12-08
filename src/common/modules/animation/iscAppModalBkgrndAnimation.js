@@ -5,8 +5,7 @@
 (function(){
   'use strict';
 
-  iscAppModalBkgrndAnimation.$inject = ['$log', '$window', 'iscAnimationService', 'TweenMax', 'EASE_DUR' ];
-
+  /* @ngInject */
   function iscAppModalBkgrndAnimation( $log, $window, iscAnimationService, TweenMax, EASE_DUR ){
 
   // --------------------
@@ -64,7 +63,7 @@
   // inject
   // --------------------
 
-  angular.module( 'isc.common' )
+  angular.module( 'isc.animation' )
     .animation( '.modal-bg-anime', iscAppModalBkgrndAnimation );
 
 })();

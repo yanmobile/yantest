@@ -5,9 +5,8 @@
 (function(){
   'use strict';
 
-  iscCustomConfigService.$inject = [ '$log','$q', '$http' ,'iscSessionModel', 'iscSessionStorageHelper', 'iscCustomConfigHelper' ];
-
-  function iscCustomConfigService( $log, $q, $http, iscSessionModel, iscSessionStorageHelper, iscCustomConfigHelper ){
+  /* @ngInject */
+  function iscCustomConfigService($http, iscSessionModel, iscSessionStorageHelper, iscCustomConfigHelper ){
 //    //$log.debug( 'iscCustomConfigService LOADED' );
 
     // ----------------------------
@@ -286,6 +285,6 @@
   // inject
   // ----------------------------
 
-  angular.module( 'isc.common' )
+  angular.module( 'isc.configuration' )
       .factory( 'iscCustomConfigService', iscCustomConfigService );
 })();

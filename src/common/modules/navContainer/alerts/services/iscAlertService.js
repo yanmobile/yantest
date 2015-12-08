@@ -5,8 +5,7 @@
 (function(){
   'use strict';
 
-  iscAlertService.$inject = [ '$log', 'iscAlertModel' ];
-
+  /* @ngInject */
   function iscAlertService( $log, iscAlertModel ){
     //$log.debug( 'iscAlertService LOADED' );
 

@@ -98,7 +98,7 @@
   // injection
   // ----------------------------
 
-  angular.module( 'isc.common' )
+  angular.module( 'isc.stateManager', [] )
       .factory( 'iscStateManager', iscStateManager );
 
 })();

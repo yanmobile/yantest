@@ -2,33 +2,8 @@
  * Created by douglasgoodman on 11/25/14.
  */
 
-var respondToAssetCalls = function (backEnd, customConfigService) {
-
-  if (customConfigService) {
-    spyOn (customConfigService, 'getBaseUrl').and.returnValue ('');
-  }
-
-  // mock calls to the config
-  backEnd.when ('GET', 'assets/configuration/configFile.json')
-      .respond (200, customConfig);
-
-  backEnd.when ('GET', 'assets/configuration/localConfig.json')
-      .respond (200);
-};
-
 var customConfig = {
   "baseUrl": "http://hscommdev.iscinternal.com/public/api/v1",
-
-  "languageList": [
-    {
-      "displayName": "English",
-      "fileName": "en-us"
-    },
-    {
-      "displayName": "Spanish",
-      "fileName": "es-es"
-    }
-  ],
 
   "noLoginRequired": [
     "index.login",
@@ -557,57 +532,57 @@ var appointmentTimeData = {
     {
       dayOfWeek: 'Sun',
       timesOfDay: [
-      {label: 'ISC_SUNDAY_MORNING', checked:false},
-      {label: 'ISC_SUNDAY_AFTERNOON', checked:false},
-      {label: 'ISC_SUNDAY_EVENING', checked:false}
+        {label: 'ISC_SUNDAY_MORNING', checked:false},
+        {label: 'ISC_SUNDAY_AFTERNOON', checked:false},
+        {label: 'ISC_SUNDAY_EVENING', checked:false}
       ]
     },
     {
       dayOfWeek: 'Mon',
       timesOfDay: [
-      {label: 'ISC_MONDAY_MORNING', checked:false},
-      {label: 'ISC_MONDAY_AFTERNOON', checked:false},
-      {label: 'ISC_MONDAY_EVENING', checked:false}
+        {label: 'ISC_MONDAY_MORNING', checked:false},
+        {label: 'ISC_MONDAY_AFTERNOON', checked:false},
+        {label: 'ISC_MONDAY_EVENING', checked:false}
       ]
     },
     {
       dayOfWeek: 'Tues',
       timesOfDay: [
-      {label: 'ISC_TUESDAY_MORNING', checked:false},
-      {label: 'ISC_TUESDAY_AFTERNOON', checked:false},
-      {label: 'ISC_TUESDAY_EVENING', checked:false}
+        {label: 'ISC_TUESDAY_MORNING', checked:false},
+        {label: 'ISC_TUESDAY_AFTERNOON', checked:false},
+        {label: 'ISC_TUESDAY_EVENING', checked:false}
       ]
     },
     {
       dayOfWeek: 'Wed',
       timesOfDay: [
-      {label: 'ISC_WEDNESDAY_MORNING', checked:false},
-      {label: 'ISC_WEDNESDAY_AFTERNOON', checked:false},
-      {label: 'ISC_WEDNESDAY_EVENING', checked:false}
+        {label: 'ISC_WEDNESDAY_MORNING', checked:false},
+        {label: 'ISC_WEDNESDAY_AFTERNOON', checked:false},
+        {label: 'ISC_WEDNESDAY_EVENING', checked:false}
       ]
     },
     {
       dayOfWeek: 'Thurs',
       timesOfDay: [
-      {label: 'ISC_THURSDAY_MORNING', checked:false},
-      {label: 'ISC_THURSDAY_AFTERNOON', checked:false},
-      {label: 'ISC_THURSDAY_EVENING', checked:false}
+        {label: 'ISC_THURSDAY_MORNING', checked:false},
+        {label: 'ISC_THURSDAY_AFTERNOON', checked:false},
+        {label: 'ISC_THURSDAY_EVENING', checked:false}
       ]
     },
     {
       dayOfWeek: 'Fri',
       timesOfDay: [
-      {label: 'ISC_FRIDAY_MORNING', checked:false},
-      {label: 'ISC_FRIDAY_AFTERNOON', checked:false},
-      {label: 'ISC_FRIDAY_EVENING', checked:false}
+        {label: 'ISC_FRIDAY_MORNING', checked:false},
+        {label: 'ISC_FRIDAY_AFTERNOON', checked:false},
+        {label: 'ISC_FRIDAY_EVENING', checked:false}
       ]
     },
     {
       dayOfWeek: 'Sat',
       timesOfDay: [
-      {label: 'ISC_SATURDAY_MORNING', checked:false},
-      {label: 'ISC_SATURDAY_AFTERNOON', checked:false},
-      {label: 'ISC_SATURDAY_EVENING', checked:false}
+        {label: 'ISC_SATURDAY_MORNING', checked:false},
+        {label: 'ISC_SATURDAY_AFTERNOON', checked:false},
+        {label: 'ISC_SATURDAY_EVENING', checked:false}
       ]
     }
   ]
@@ -721,4 +696,4 @@ var providersListData = [
     specialty: ['Allergies'],
     isFavorite: 1
   }
-]
+];

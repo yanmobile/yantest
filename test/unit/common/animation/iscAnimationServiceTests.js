@@ -8,14 +8,12 @@
         $window;
 
 
-    beforeEach (module ('isc.common'));
-
     // this loads all the external templates used in directives etc
     // eg, everything in templates/**/*.html
     beforeEach (module ('isc.templates'));
 
     // show $log statements
-    beforeEach (module ('isc.common', function ($provide) {
+    beforeEach (module ('isc.animation', function ($provide) {
       $provide.value ('$log', console);
     }));
 

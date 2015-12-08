@@ -18,12 +18,8 @@
       $state,
       controller;
 
-
-    beforeEach( module('isc.common'));
-    beforeEach( module('iscNavContainer'));
-
     // show $log statements
-    beforeEach( module( 'isc.common', function( $provide ){
+    beforeEach( module( 'iscNavContainer', function( $provide ){
       $provide.value('$log', console);
     }));
 

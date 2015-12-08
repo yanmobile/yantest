@@ -8,12 +8,10 @@
     var scope,
         filter;
 
-
-    beforeEach( module('isc.common'));
-
-    beforeEach( module('isc.common'), function( $provide ){
-      $provide.value('$log', console);
-    });
+    // show $log statements
+    beforeEach (module ('isc.filters', function ($provide) {
+      $provide.value ('$log', console);
+    }));
 
 
     beforeEach( inject( function( $rootScope, $injector ){

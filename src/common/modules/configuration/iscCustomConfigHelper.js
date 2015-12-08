@@ -5,9 +5,8 @@
 (function(){
   'use strict';
 
-  iscCustomConfigHelper.$inject = [ '$log', '$state' ];
-
-  function iscCustomConfigHelper( $log, $state ){
+  /* @ngInject */
+  function iscCustomConfigHelper( $state ){
 //    //$log.debug( 'iscCustomConfigHelper LOADED' );
 
     // ----------------------------
@@ -129,6 +128,6 @@
   // inject
   // ----------------------------
 
-  angular.module( 'isc.common' )
+  angular.module( 'isc.configuration' )
       .factory( 'iscCustomConfigHelper', iscCustomConfigHelper );
 })();

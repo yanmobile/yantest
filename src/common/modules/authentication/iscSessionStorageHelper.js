@@ -5,8 +5,7 @@
 (function(){
   'use strict';
 
-  iscSessionStorageHelper.$inject = [ '$log', '$window' ];
-
+  /* @ngInject */
   function iscSessionStorageHelper( $log, $window ){
 //    //$log.debug( 'iscSessionStorageHelper LOADED');
 
@@ -131,7 +130,7 @@
   // ----------------------------
   // injection
   // ----------------------------
-  angular.module( 'isc.common' )
+  angular.module( 'isc.authentication' )
       .factory( 'iscSessionStorageHelper', iscSessionStorageHelper );
 
 })();

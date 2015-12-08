@@ -19,6 +19,13 @@
       '720kb.datepicker',
       'foundation',
       'angucomplete-alt',
+      'isc.core',
+      'isc.directive',
+      'isc.filters',
+      'isc.table',
+      'isc.transclude',
+      'isc.stateManager',
+      'isc.progressLoader',
 
       // logging helper
       //'logLineNumber',

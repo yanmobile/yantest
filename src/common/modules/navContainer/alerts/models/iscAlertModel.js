@@ -8,8 +8,7 @@
 (function () {
   'use strict';
 
-  iscAlertModel.$inject = ['$log'];
-
+  /* @ngInject */
   function iscAlertModel( $log ){//jshint ignore:line
 //    $log.debug( 'iscAlertModel LOADED');
 

@@ -5,8 +5,7 @@
 (function(){
   'use strict';
 
-  iscOptionsPopupAnimation.$inject = ['$log', 'iscAnimationService', 'TweenMax', 'EASE_DUR'];
-
+  /* @ngInject */
   function iscOptionsPopupAnimation( $log, iscAnimationService, TweenMax, EASE_DUR ){
 
   // --------------------
@@ -91,7 +90,7 @@
   // inject
   // --------------------
 
-  angular.module( 'isc.common' )
+  angular.module( 'isc.animation' )
     .animation( '.popup-anime', iscOptionsPopupAnimation );
 
 })();
