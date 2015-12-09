@@ -2,6 +2,7 @@
   "name": "iscDataDrivenApp",
   "version": "0.0.0",
   "devDependencies": {
+    "body-parser": "1.13.3",
     "bower": "1.4.1",
     "browser-sync": "2.7.12",
     "chalk": "0.4.0",
@@ -36,6 +37,7 @@
     "http-proxy": "1.11.1",
     "imagemin-pngcrush": "0.1.0",
     "jshint-stylish": "0.4.0",
+    "json-server": "0.7.25",
     "karma": "0.12.37",
     "karma-jasmine": "0.3.6",
     "karma-ng-html2js-preprocessor": "0.1.2",
