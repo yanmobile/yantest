@@ -227,38 +227,42 @@
 // - Orders ng deps automatically
 // - Precompile templates to ng templateCache
 
-    gulp.task('js', function() {
+  gulp.task('js', function () {
 
-        var commonOpts = {
-            module: 'isc.common',
-            strip: 'common/modules/'
-        };
+    var commonOpts = {
+      module: 'isc.common',
+      strip : 'common/modules/'
+    };
 
-        var customOpts = {
-            module: 'hsCoordinateMyCare',
-            strip: 'custom/modules/'
-        };
+    var customOpts = {
+      module: 'custom',
+      strip : 'custom/modules/'
+    };
 
-        streamqueue({ objectMode: true },
-            gulp.src(config.vendor.js ),
-            gulp.src(config.custom.js ),
+    streamqueue({ objectMode: true },
+      gulp.src(config.vendor.js),
+      gulp.src(config.custom.js),
 
-            gulp.src('./src/custom/modules/**/*.js').pipe( ngFilesort() ),
-            gulp.src('./src/custom/assets/plugins/**/*.js').pipe( ngFilesort() ),
-            gulp.src(['src/custom/modules/**/*.html']).pipe( templateCache( customOpts )),
+      gulp.src([
+        'src/custom/modules/**/*.module.js',
+        'src/custom/modules/**/*.js',
+        'src/custom/assets/plugins/**/*.js']).pipe(ngFilesort()),
+      gulp.src('src/custom/modules/**/*.html').pipe(templateCache(customOpts)),
 
-            gulp.src('./src/common/modules/**/*.js').pipe( ngFilesort() ),
-            gulp.src('./src/common/assets/plugins/**/*.js').pipe( ngFilesort() ),
-            gulp.src(['src/common/modules/**/*.html']).pipe( templateCache( commonOpts ))
-        )
-            .pipe(ngAnnotate())
-            .pipe(sourcemaps.init())
-            .pipe(concat('app.js'))
-            //.pipe(uglify())
-            .pipe(rename({suffix: '.min'}))
-            .pipe(sourcemaps.write('.'))
-            .pipe(gulp.dest(path.join(config.dest, 'js')));
-    });
+      gulp.src([
+        'src/common/modules/**/*.module.js',
+        'src/common/modules/**/*.js',
+        'src/common/assets/plugins/**/*.js']).pipe(ngFilesort()),
+      gulp.src('src/common/modules/**/*.html').pipe(templateCache(commonOpts))
+    )
+      .pipe(ngAnnotate())
+      //.pipe(uglify())
+      .pipe(sourcemaps.init())
+      .pipe(concat('app.js'))
+      .pipe(rename({ suffix: '.min' }))
+      .pipe(sourcemaps.write('.'))
+      .pipe(gulp.dest(path.join(config.dest, 'js')));
+  });
 
 
     /*=================================================
@@ -269,7 +273,6 @@
         return gulp.src( ['src/favicon.ico', 'src/favicon-16x16.png', 'src/cmc.ico'] )
             .pipe(gulp.dest( config.dest ));
     });
-
 
     /*=================================================
      =            Copy html files to dest              =
@@ -289,7 +292,6 @@
         gulp.src(['src/config.xml'])
             .pipe(gulp.dest(config.dest));
     });
-
 
     /*=================================================
      =   Ensure simpleAPI.prefix uses relative path   =

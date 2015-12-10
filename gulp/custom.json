@@ -10,13 +10,13 @@
   },
   "module" : {
     "js" : [
-      "./src/custom/modules/**/*.module.js",
-      "./src/custom/modules/**/*"
+      "src/custom/modules/**/*.module.js",
+      "src/custom/modules/**/*"
     ],
     "mocks": [
     ],
     "tests" : [
-      "./test/unit/custom/**/*Tests.js"
+      "test/unit/custom/**/*Tests.js"
     ]
   }
 }

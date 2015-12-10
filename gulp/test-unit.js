@@ -41,7 +41,6 @@
       .concat(customModuleMocks)
       .concat(customModuleTests);
 
-    console.log(customTestFiles);
     return gulp.src(customTestFiles)
       .pipe($.karma({
         configFile: 'test/karma.conf.custom.js',
