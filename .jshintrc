@@ -21,6 +21,7 @@
   "globals": {
     "angular": false,
     "_": false,
+    "require": false,
     // Angular Mocks
     "inject": false,
     // JASMINE

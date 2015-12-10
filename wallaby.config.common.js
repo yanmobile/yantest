@@ -1,24 +1,19 @@
 var angularTemplatePreprocessor = require("wallaby-ng-html2js-preprocessor");
 module.exports                  = function () {
+  var common = require('./gulp/common.json');
 
-  var common   = require('./gulp/common.json');
-  var vendorJs = common.vendor.js.map(function (js) {
-    // converts "./src/..." to "src/..."
-    return { pattern: js.substr(2), instrument: false };
-  });
-  console.log(vendorJs);
+  var vendorJs   = common.vendor.js.map(noInstrument);
+  var vendorMock = common.vendor.mocks.map(noInstrument);
+  var customMock = common.module.mocks.map(noInstrument);
+
   return {
     basePath       : '..', // Ignored through gulp-karmaa
-    "files"        : vendorJs.concat([
-      "src/common/modules/**/*.module.js",
-      "src/common/modules/**/*.js",
-      "src/common/modules/**/*.html",
-      { pattern: "src/common/bower_components/angular-mocks/angular-mocks.js", instrument: false },
-      { pattern: "test/unit/common/commonUnitTestMocks.js", instrument: false }
-    ]),
-    "tests"        : [
-      "test/unit/common/**/*Tests.js"
-    ],
+    "files"        : []
+      .concat(vendorJs)
+      .concat(vendorMock)
+      .concat(customMock)
+      .concat(common.module.js),
+    "tests"        : common.module.tests,
     "preprocessors": {
       "src/common/modules/**/*.html": function (file) {
         return angularTemplatePreprocessor.transform(file, {
@@ -29,4 +24,8 @@ module.exports                  = function () {
     },
     "testFramework": "jasmine"
   };
+
+  function noInstrument(file) {
+    return { pattern: file, instrument: false };
+  }
 };

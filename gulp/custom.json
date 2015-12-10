@@ -1,0 +1,22 @@
+{
+  "vendor" : {
+    "js" : [
+    ],
+    "mocks": [
+
+    ],
+    "fonts" : [
+    ]
+  },
+  "module" : {
+    "js" : [
+      "./src/custom/modules/**/*.module.js",
+      "./src/custom/modules/**/*"
+    ],
+    "mocks": [
+    ],
+    "tests" : [
+      "./test/unit/custom/**/*Tests.js"
+    ]
+  }
+}
