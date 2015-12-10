@@ -82,7 +82,7 @@
                       //$log.debug( 'iscNavbarController.$stateChangeSuccess', arguments);
                       self.setPageState (toState.name);
                       self.setShowLogout ();
-                      self.setShowLogin ()
+                      self.setShowLogin ();
                     });
 
     // when you refresh the page, this will reset the active state of the selected tab

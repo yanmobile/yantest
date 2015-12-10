@@ -215,7 +215,8 @@
     // ----------------------------
     // functions
     // ----------------------------
-    function controller( $scope ) {//jshint ignore:line
+    /* @ngInject */
+    function controller( $scope, $filter ) {//jshint ignore:line
       //$log.debug( 'iscTable.link, tableConfig', scope.tableConfig );
       //$log.debug( '...tableData', scope.tableData );
 

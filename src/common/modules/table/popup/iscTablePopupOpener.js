@@ -8,8 +8,7 @@
 (function(){
   'use strict';
 
-  iscTablePopupOpener.$inject = [ '$log', '$state', '$templateCache', '$compile' ];
-
+  /* @ngInject */
   function iscTablePopupOpener($log, $state, $templateCache, $compile){//jshint ignore:line
     //$log.debug( 'iscTablePopupOpener LOADED');
 

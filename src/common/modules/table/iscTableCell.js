@@ -30,7 +30,7 @@
       return {
         pre : pre,
         post: post
-      }
+      };
     }
 
     function pre(scope, elem, attrs, iscRowCtrl){

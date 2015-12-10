@@ -144,7 +144,7 @@
 
           self.editModeData = {};
           self.inEditMode   = false;
-        })
+        });
       }
       else {
         apicall = _.get(self, 'iscTblCtrl.tableConfig.api.update', angular.noop);
@@ -153,7 +153,7 @@
 
           self.editModeData = {};
           self.inEditMode   = false;
-        })
+        });
       }
     }
   }

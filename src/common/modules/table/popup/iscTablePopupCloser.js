@@ -8,8 +8,7 @@
 (function () {
   'use strict';
 
-  iscTablePopupCloser.$inject = [ '$global' ];
-
+  /* @ngInject */
   function iscTablePopupCloser( $global ) {
     //$log.debug( 'iscTablePopupCloser LOADED');
 
@@ -30,7 +29,7 @@
     // ----------------------------
 
     function link( scope, trElem, attrs ) {
-      trElem.on( 'keydown', function () {
+      trElem.on( 'keydown', function (event) {
         if ( event.keyCode === $global.keyCode.ESCAPE ) {
           var $target = $( event.target );
           if ( $target.is( ':input' ) ) {
