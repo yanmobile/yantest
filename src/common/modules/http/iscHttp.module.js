@@ -6,6 +6,6 @@
   'use strict';
 
   angular
-    .module('isc.http', []);
+    .module('isc.http', ['isc.configuration', 'isc.core']);
 
 })();

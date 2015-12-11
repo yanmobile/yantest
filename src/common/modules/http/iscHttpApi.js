@@ -6,7 +6,7 @@
 
 
   angular.module('isc.http')
-    .factory('httpapi', httpapi);
+    .factory('iscHttpapi', iscHttpapi);
 
   /**
    * This is a wrapper for angular's $http service
@@ -21,7 +21,7 @@
    */
 
   /* @ngInject */
-  function httpapi($http) {
+  function iscHttpapi($http) {
 
     return {
       get : get,
