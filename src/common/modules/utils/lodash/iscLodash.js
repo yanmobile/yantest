@@ -22,7 +22,6 @@
     getAge      : getAge,
     areSameDate : areSameDate,
     nullifyObj  : nullifyObj,
-    mapToCodes  : mapToCodes,
     isTypeOf    : isTypeOf,
     get         : advancedGet
   });
@@ -90,16 +89,6 @@
         obj[key] = null;
       });
     }
-  }
-
-  // takes ['approved', 'draft', 'review' and converts to: [{'Code': 'approved', Description: 'Approved'} ...)
-  function mapToCodes(codes) {
-    return _.map(codes, function (code) {
-      return {
-        Code       : code,
-        Description: _.startCase(code)
-      };
-    });
   }
 
   /**
