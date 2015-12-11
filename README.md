@@ -41,7 +41,7 @@ Run application:
     bower install
     gulp serve
     
-Run application:
+Run tests:
 
     gulp test
     gulp test:common
