@@ -1,0 +1,5 @@
+{
+  "releaseno": "internal",
+  "buildno"  : "{{buildno}}",
+  "codeno"   : "{{codeno}}"
+}
