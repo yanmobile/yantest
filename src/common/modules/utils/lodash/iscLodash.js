@@ -99,7 +99,6 @@
 
    ---- ORIG DOC ----
    _.get(object, path, [defaultValue])
-   # Ⓢ Ⓝ
 
    Gets the property value at path of object. If the resolved value is undefined the defaultValue is used in its place.
 
