@@ -35,13 +35,14 @@ To use:
                 custom
         
 Run application:
-        <sudo> npm install -g bower gulp
-        cd src/common
-        bower install
-        gulp serve
-        
-Unit Tests:
-        gulp test
-        gulp test:common
-        gulp test:custom
-        
+
+    <sudo> npm install -g bower gulp
+    cd src/common
+    bower install
+    gulp serve
+    
+Run application:
+
+    gulp test
+    gulp test:common
+    gulp test:custom
