@@ -8,14 +8,14 @@
     .factory('iscStatusCodesInterceptor', iscStatusCodesInterceptor);
 
   /* @ngInject */
-  function iscStatusCodesInterceptor($q, $log, $rootScope, AUTH_EVENTS, statusCode, cmcConfirmationService) {//jshint ignore:line
+  function iscStatusCodesInterceptor($q, $rootScope, AUTH_EVENTS, statusCode, iscConfirmationService) {//jshint ignore:line
     // ----------------------------
     // factory class
     // ----------------------------
 
     var factory = {
       responseError         : responseError,
-      cmcConfirmationService: cmcConfirmationService
+      iscConfirmationService: iscConfirmationService
     };
 
     return factory;
@@ -56,7 +56,7 @@
       }
 
       function getDialogPromise(code) {
-        return cmcConfirmationService.show({
+        return iscConfirmationService.show({
           title        : "StatusCode_" + code + "_title",
           message      : "StatusCode_" + code + "_message",
           btnCancelText: false, //hides the cancel (reject) button

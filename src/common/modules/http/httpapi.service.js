@@ -19,6 +19,7 @@
    *
    * see Angular's $http doc: https://docs.angularjs.org/api/ng/service/$http#usage
    */
+
   /* @ngInject */
   function httpapi($http) {
 
@@ -32,7 +33,6 @@
      * Methods: get(url, [config]);
      */
     function get(url, config) {
-      processConfig(config);
       var partialReturnedResponseData = _.partial(returnResponseData, config);
       return $http.get(url, config).then(partialReturnedResponseData);
     }
@@ -41,7 +41,6 @@
      * Methods: put(url, data, [config]);
      */
     function put(url, data, config) {
-      processConfig(config);
       var partialReturnedResponseData = _.partial(returnResponseData, config);
       return $http.put(url, data, config).then(partialReturnedResponseData);
     }
@@ -50,7 +49,6 @@
      * Methods: post(url, data, [config]);
      */
     function post(url, data, config) {
-      processConfig(config);
       var partialReturnedResponseData = _.partial(returnResponseData, config);
       return $http.post(url, data, config).then(partialReturnedResponseData);
     }
@@ -64,11 +62,6 @@
       }
     }
 
-    function processConfig(config) {
-      //if(config.preventDefault){
-      //
-      //}
-    }
   }
 })();
 

@@ -142,7 +142,6 @@
   **/
   function advancedGet(obj, path, defaultValue) {
     var val = obj;
-    console.log(obj, path);
 
     if (isTypeOf(path, "string") && _.contains(path, ":")) {
       toPath(path).forEach(function (part) {
