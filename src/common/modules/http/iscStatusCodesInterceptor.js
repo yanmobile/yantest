@@ -51,16 +51,16 @@
             response.dialogPromise = getDialogPromise(response.status);
             break;
           default:
-            response.dialogPromise = getDialogPromise("generic");
+            response.dialogPromise = getDialogPromise('generic');
         }
       }
 
       function getDialogPromise(code) {
         return iscConfirmationService.show({
-          title        : "StatusCode_" + code + "_title",
-          message      : "StatusCode_" + code + "_message",
+          title        : 'StatusCode_' + code + '_title',
+          message      : 'StatusCode_' + code + '_message',
           btnCancelText: false, //hides the cancel (reject) button
-          btnOkText    : "StatusCode_ok_btn"
+          btnOkText    : 'StatusCode_ok_btn'
         });
       }
 

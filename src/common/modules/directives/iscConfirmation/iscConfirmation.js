@@ -20,7 +20,7 @@
       templateUrl : 'directives/iscConfirmation/iscConfirmation.html',
       link        : link,
       controller  : controller,
-      controllerAs: "iscConfirmCtrl"
+      controllerAs: 'iscConfirmCtrl'
     };
 
     return directive;
@@ -29,8 +29,8 @@
     // functions
     // ----------------------------
     function link($scope, elem, attrs, iscConfirmCtrl){
-      var modalScope = elem.find("[zf-modal]").scope();
-      $scope.$watch("iscConfirmCtrl.service.isOpen", function(newVal, oldVal){
+      var modalScope = elem.find('[zf-modal]').scope();
+      $scope.$watch('iscConfirmCtrl.service.isOpen', function(newVal, oldVal){
         if( newVal !== oldVal ){
           if(newVal === true){
             modalScope.show();

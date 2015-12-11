@@ -38,7 +38,7 @@
   }
 
   function getAge(dob, format) {
-    return moment().diff(moment(dob, format), "year");
+    return moment().diff(moment(dob, format), 'year');
   }
 
   var MS_IN_DAY = 86400000;
@@ -52,26 +52,26 @@
    *
    * Object.prototype.toString.call(obj) produces the following:
    * string:
-   * ==> "[object String]"
+   * ==> '[object String]'
    * number:
-   * ==> "[object Number]"
+   * ==> '[object Number]'
    * object:
-   * ==> "[object Object]"
+   * ==> '[object Object]'
    * null:
-   * ==> "[object Null]"
+   * ==> '[object Null]'
    * undefined:
-   * ==> "[object Undefined]"
+   * ==> '[object Undefined]'
    * date:
-   * ==> "[object Date]"
+   * ==> '[object Date]'
    * function:
-   * ==> "[object Function]"
+   * ==> '[object Function]'
    * Array:
-   * ==> "[object Array]"
+   * ==> '[object Array]'
    * RegExp:
-   * ==> "[object RegExp]"
+   * ==> '[object RegExp]'
    */
   function isTypeOf(obj, type) {
-    if (typeof type !== "string") {
+    if (typeof type !== 'string') {
       return false;
     }
 
@@ -85,14 +85,14 @@
   //set object's own internal properties to null
   function nullifyObj(obj) {
     //Confirm it's a real  object literal and not a 'fake' one like (array/function/date/etc)
-    if (isTypeOf(obj, "Object")) {
+    if (isTypeOf(obj, 'Object')) {
       _.forOwn(obj, function (value, key) {
         obj[key] = null;
       });
     }
   }
 
-  // takes ["approved", "draft", "review" and converts to: [{"Code": "approved", Description: "Approved"} ...)
+  // takes ['approved', 'draft', 'review' and converts to: [{'Code': 'approved', Description: 'Approved'} ...)
   function mapToCodes(codes) {
     return _.map(codes, function (code) {
       return {
@@ -143,9 +143,9 @@
   function advancedGet(obj, path, defaultValue) {
     var val = obj;
 
-    if (isTypeOf(path, "string") && _.contains(path, ":")) {
+    if (isTypeOf(path, 'string') && _.contains(path, ':')) {
       toPath(path).forEach(function (part) {
-        if (_.contains(part, ":")) {
+        if (_.contains(part, ':')) {
           part     = part.replace(reFixJson, '"$2": ');
           var json = JSON.parse(part);
           val      = _.findWhere(val, json);

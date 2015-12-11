@@ -126,7 +126,7 @@
       compile     : compile,
       controller  : function () {
       },
-      controllerAs: "iscTranscludeCtrl",
+      controllerAs: 'iscTranscludeCtrl',
       templateUrl : function (element, attrs) {
         return attrs.templateUrl || 'iscTransclude/iscGridFormItem.html';
       }
@@ -145,7 +145,7 @@
     }
 
     function pre(scope, element, attrs, iscTranscludeCtrl) {
-      var configItemKey = "configItem";
+      var configItemKey = 'configItem';
       scope.$watchCollection(attrs.config, updateConfig);
 
       function updateConfig(config, oldConfig) {
@@ -180,15 +180,15 @@
             }
 
             // function
-            if (firstChar === "&") {
+            if (firstChar === '&') {
               propValue = $parse(propValue);
             }
             // expression
-            else if (firstChar === "=") {
+            else if (firstChar === '=') {
               propValue = scope.$parent.$eval(propValue);
           }
 
-            // treat else the same as "@", just without the need to remove "@" char
+            // treat else the same as '@', just without the need to remove '@' char
             retOverrides[propKey] = propValue;
           }
         });

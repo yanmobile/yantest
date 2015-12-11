@@ -9,14 +9,14 @@
   function iscConfirmationService(){//jshint ignore:line
 
     // to configure app-wide options in app.config block
-    // cmcConfirmationServiceProvider.setOptions({title: "from app.js"});
+    // cmcConfirmationServiceProvider.setOptions({title: 'from app.js'});
 
     var defaultOptions = getDefaultOptions();
     this.setOptions    = function setOptions(options){
       return _.extend(defaultOptions, options);
     };
 
-    this.$get = [ "$q", iscConfirmationServiceFactory ];
+    this.$get = [ '$q', iscConfirmationServiceFactory ];
 
     function iscConfirmationServiceFactory($q){
 
@@ -65,10 +65,10 @@
 
     function getDefaultOptions(){
       return {
-        title        : "CMC_CONFIRM_DEFAULT_TITLE",
-        message      : "CMC_CONFIRM_DEFAULT_MESSAGE",
-        btnOkText    : "CMC_CONFIRM_BTN_CONFIRM",
-        btnCancelText: "CMC_CONFIRM_BTN_CANCEL"
+        title        : 'CMC_CONFIRM_DEFAULT_TITLE',
+        message      : 'CMC_CONFIRM_DEFAULT_MESSAGE',
+        btnOkText    : 'CMC_CONFIRM_BTN_CONFIRM',
+        btnCancelText: 'CMC_CONFIRM_BTN_CANCEL'
       };
     }
   }//END CLASS

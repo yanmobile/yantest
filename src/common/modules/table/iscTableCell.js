@@ -35,7 +35,7 @@
 
     function pre(scope, elem, attrs, iscRowCtrl){
       var defaultTemplate = attrs.templateUrl;
-      defaultTemplate     = defaultTemplate || (scope.iscTblCtrl.tableConfig.editable === 'popup' ? "table/popup/iscTableReadOnlyCell.html" : 'table/iscTableCell.html');
+      defaultTemplate     = defaultTemplate || (scope.iscTblCtrl.tableConfig.editable === 'popup' ? 'table/popup/iscTableReadOnlyCell.html' : 'table/iscTableCell.html');
 
       var rowTemplate = _.get(scope, 'iscTblCtrl.tableConfig.rowTemplate', defaultTemplate);
 

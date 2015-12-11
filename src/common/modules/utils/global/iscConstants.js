@@ -6,7 +6,7 @@
   'use strict';
 
   angular.module('isc.core')
-    .constant("statusCode", {
+    .constant('statusCode', {
       OK                : 200,
       Created           : 201,
       NoContent         : 204,
@@ -25,7 +25,7 @@
       ServiceUnavailable: 504,
       GatewayTimeout    : 505
     })
-    .constant("keyCode", {
+    .constant('keyCode', {
       BACKSPACE: 8,
       COMMA    : 188,
       DELETE   : 46,
