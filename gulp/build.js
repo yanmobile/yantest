@@ -238,16 +238,16 @@
       gulp.src(config.custom.js),
 
       gulp.src([
-        'src/custom/modules/**/*.module.js',
-        'src/custom/modules/**/*.js',
-        'src/custom/assets/plugins/**/*.js']).pipe(ngFilesort()),
-      gulp.src('src/custom/modules/**/*.html').pipe(templateCache(customOpts)),
-
-      gulp.src([
         'src/common/modules/**/*.module.js',
         'src/common/modules/**/*.js',
         'src/common/assets/plugins/**/*.js']).pipe(ngFilesort()),
-      gulp.src('src/common/modules/**/*.html').pipe(templateCache(commonOpts))
+      gulp.src('src/common/modules/**/*.html').pipe(templateCache(commonOpts)),
+
+      gulp.src([
+        'src/custom/modules/**/*.module.js',
+        'src/custom/modules/**/*.js',
+        'src/custom/assets/plugins/**/*.js']).pipe(ngFilesort()),
+      gulp.src('src/custom/modules/**/*.html').pipe(templateCache(customOpts))
     )
       .pipe(ngAnnotate())
       //.pipe(uglify())
