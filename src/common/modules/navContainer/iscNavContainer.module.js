@@ -41,7 +41,7 @@
 
               resolve: {
                 loadConfig: function(  $log, iscCustomConfigService ){
-                  //devlog.channel('StateNav').debug( 'iscNavContainer.loadConfig');
+                  devlog.channel('StateNav').debug( 'iscNavContainer.loadConfig');
                   return iscCustomConfigService.loadConfig();
                 }
               }
@@ -52,6 +52,7 @@
 
       })
 
+      /* @ngInject */
       .run( function( devlog, $rootScope, $state, $window, $timeout, iscProgressLoader, iscSessionModel, iscCustomConfigService,
                       iscCustomConfigHelper, iscSessionStorageHelper,  AUTH_EVENTS, APP_EVENTS, NAV_EVENTS ){
         //console.log( 'iscNavContainer.run' );
@@ -67,13 +68,13 @@
         // stateChange start
         $rootScope.$on('$stateChangeStart',
             function( event, toState, toParams, fromState, fromParams ){
-              //devlog.channel('StateNav').debug( 'ischNavContainer.$stateChangeStart');
-              //devlog.channel('StateNav').debug( '...from: ' + fromState.name );
-              //devlog.channel('StateNav').debug( '.....to: ', toState.name );
+              devlog.channel('StateNav').debug( 'ischNavContainer.$stateChangeStart');
+              devlog.channel('StateNav').debug( '...from: ' + fromState.name );
+              devlog.channel('StateNav').debug( '.....to: ', toState.name );
 
               iscCustomConfigService.loadConfig().then( function( config ){//jshint ignore:line
-                //devlog.channel('StateNav').debug( 'State change request received');
-                //devlog.channel('StateNav').debug( 'Beginning state change from "%s" to "%s"', fromState.name, toState.name);
+                devlog.channel('StateNav').debug( 'State change request received');
+                devlog.channel('StateNav').debug( 'Beginning state change from "%s" to "%s"', fromState.name, toState.name);
 
                 startLoadingAnimation();
                 handleStateChangeStart( event, toState, toParams, fromState, fromParams  );
@@ -84,7 +85,7 @@
         // stateChange success
         $rootScope.$on('$stateChangeSuccess',
             function( event, toState, toParams, fromState, fromParams ){//jshint ignore:line
-              //devlog.channel('StateNav').debug( 'ischNavContainer.$stateChangeSuccess');
+              devlog.channel('StateNav').debug( 'ischNavContainer.$stateChangeSuccess');
 
               // end loading animation
               iscProgressLoader.end();
@@ -99,17 +100,17 @@
         }
 
         function handleStateChangeStart( event, toState, toParams, fromState, fromParams ){//jshint ignore:line
-          //devlog.channel('StateNav').debug( 'iscNavContainer.handleStateChangeStart');
+          devlog.channel('StateNav').debug( 'iscNavContainer.handleStateChangeStart');
           var stateIsExcluded = iscCustomConfigHelper.stateIsExcluded( toState.name );
 
           if( stateIsExcluded ){
-            //devlog.channel('StateNav').debug( '...excluded state');
+            devlog.channel('StateNav').debug( '...excluded state');
             // even if you are authorized and logged in, don't navigate to excluded states
             // this prevents navigation to excluded pages via entering the uri directly in the browser
             preventDefault( event );
           }
           else if( toState.name === fromState.name ){
-            //devlog.channel('StateNav').debug( '...double tap');
+            devlog.channel('StateNav').debug( '...double tap');
             // no double taps
             preventDefault( event );
           }
@@ -118,32 +119,32 @@
           var isAuthorized = iscSessionModel.isAuthorized( toState.name ); // either your role is permitted or the state is whitelisted
           var isAuthenticated = iscSessionModel.isAuthenticated(); // you are logged i
 
-          //devlog.channel('StateNav').debug( '...isAuthorized',isAuthorized);
-          //devlog.channel('StateNav').debug( '...isAuthenticated',isAuthenticated);
+          devlog.channel('StateNav').debug( '...isAuthorized',isAuthorized);
+          devlog.channel('StateNav').debug( '...isAuthenticated',isAuthenticated);
 
           if( !isAuthorized ){
-            //devlog.channel('StateNav').debug( '...not authorized');
+            devlog.channel('StateNav').debug( '...not authorized');
 
             if( !isAuthenticated ){
-              //devlog.channel('StateNav').debug( '...not authenticated');
+              devlog.channel('StateNav').debug( '...not authenticated');
 
               //$state.go( DEFAULT_PAGES.beforeLogin );
               $rootScope.$broadcast( NAV_EVENTS.goToBeforeLoginPage );
               $rootScope.$broadcast( AUTH_EVENTS.notAuthenticated );
             }
             else{
-              //devlog.channel('StateNav').debug( '... logged in, but not authorized');
+              devlog.channel('StateNav').debug( '... logged in, but not authorized');
               $rootScope.$broadcast( AUTH_EVENTS.notAuthorized );
 
               if( !fromState || !fromState.name ){
-                //devlog.channel('StateNav').debug( '... going home');
+                devlog.channel('StateNav').debug( '... going home');
                 // edge case where your permissions changed underneath you
                 // and you refreshed the page
                 //$state.go( DEFAULT_PAGES.beforeLogin );
                 $rootScope.$broadcast( NAV_EVENTS.goToBeforeLoginPage );
               }
               else{
-                //devlog.channel('StateNav').debug( '... going to ',fromState.name );
+                devlog.channel('StateNav').debug( '... going to ',fromState.name );
                 $state.go( fromState.name );
               }
             }
@@ -151,7 +152,7 @@
         }
 
         function preventDefault( event ){
-          //devlog.channel('StateNav').debug( '...preventDefault');
+          devlog.channel('StateNav').debug( '...preventDefault');
           iscProgressLoader.end();
           event.preventDefault();
         }
@@ -174,9 +175,9 @@
           }
 
           var timeoutCounter = iscSessionStorageHelper.getSessionTimeoutCounter();
-          //devlog.channel('StateNav').debug( '...got a counter: ', timeoutCounter );
+          devlog.channel('StateNav').debug( '...got a counter: ', timeoutCounter );
           if( timeoutCounter > 0 ){
-            //devlog.channel('StateNav').debug( '...got a counter: ' + timeoutCounter );
+            devlog.channel('StateNav').debug( '...got a counter: ' + timeoutCounter );
             iscSessionModel.initSessionTimeout( timeoutCounter );
           }
         }

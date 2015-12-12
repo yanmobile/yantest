@@ -1,11 +1,11 @@
 /**
  * Created by douglasgoodman on 11/21/14.
  */
-(function(){
+(function () {
   'use strict';
 
   /* @ngInject */
-  function iscProgressLoader( $log ){//jshint ignore:line
+  function iscProgressLoader() {//jshint ignore:line
 
     // ----------------------------
     // vars
@@ -15,12 +15,12 @@
     // class factory
     // ----------------------------
 
-    var service  = {
+    var service = {
       start: start,
-      set: set,
-      end: end,
-      get: get,
-      inch: inch
+      set  : set,
+      end  : end,
+      get  : get,
+      inch : inch
     };
 
     return service;
@@ -29,23 +29,23 @@
     // functions
     // ----------------------------
 
-    function start () {
+    function start() {
       //$(document).skylo('start');//jshint ignore:line
     }
 
-    function set (position) {//jshint ignore:line
+    function set(position) {//jshint ignore:line
       //$(document).skylo('set', position);//jshint ignore:line
     }
 
-    function end () {
+    function end() {
       //$(document).skylo('end');//jshint ignore:line
     }
 
-    function get () {
+    function get() {
       //return $(document).skylo('get');//jshint ignore:line
     }
 
-    function inch (amount) {//jshint ignore:line
+    function inch(amount) {//jshint ignore:line
       //$(document).skylo('show',function(){//jshint ignore:line
       //  $(document).skylo('inch', amount);//jshint ignore:line
       //});
@@ -54,12 +54,11 @@
   }// END CLASS
 
 
-
   // ----------------------------
   // inject
   // ----------------------------
 
-  angular.module( 'isc.progressLoader', [] )
-      .factory( 'iscProgressLoader', iscProgressLoader );
+  angular.module('isc.progressLoader', [])
+    .factory('iscProgressLoader', iscProgressLoader);
 
 })();

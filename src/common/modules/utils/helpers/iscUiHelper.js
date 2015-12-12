@@ -2,12 +2,12 @@
  * Created by douglasgoodman on 11/19/14.
  */
 
-(function(){
+(function () {
   'use strict';
 
   /* @ngInject */
-  function iscUiHelper( $log ){//jshint ignore:line
-//    //$log.debug( 'iscUiHelper LOADED' );
+  function iscUiHelper(devlog) {//jshint ignore:line
+    devlog.channel('iscUiHelper').debug('iscUiHelper LOADED');
 
     // ----------------------------
     // vars
@@ -17,8 +17,8 @@
     // class factory
     // ----------------------------
 
-    var service  = {
-      displayOrder: displayOrder,
+    var service = {
+      displayOrder     : displayOrder,
       setTabActiveState: setTabActiveState
     };
 
@@ -32,19 +32,19 @@
     // all configurations
 
     // each tab is assumed to have a displayOrder property
-    function displayOrder ( tab ){
+    function displayOrder(tab) {
       return tab.displayOrder;
     }
 
-    function setTabActiveState( state, allTabs ) {
-      //$log.debug( 'iscShared.setTabActiveState');
-      //$log.debug( '...allTabs',allTabs);
+    function setTabActiveState(state, allTabs) {
+      devlog.channel('iscUiHelper').debug('iscShared.setTabActiveState');
+      devlog.channel('iscUiHelper').debug('...allTabs', allTabs);
 
-      _.forEach( allTabs, function( tab ){
-        if( _.contains( state, tab.state )){
+      _.forEach(allTabs, function (tab) {
+        if (_.contains(state, tab.state)) {
           tab.$$active = true;
         }
-        else{
+        else {
           tab.$$active = false;
         }
       });
@@ -57,6 +57,6 @@
   // inject
   // ----------------------------
 
-  angular.module( 'isc.core' )
-      .factory( 'iscUiHelper', iscUiHelper );
+  angular.module('isc.core')
+    .factory('iscUiHelper', iscUiHelper);
 })();

@@ -12,31 +12,34 @@
         loadConfig: function loadConfig(configObj) {
           config = configObj;
         },
-        $get      : devlog
+        $get      : devlogService
       };
 
 
       /* @ngInject */
-      function devlog($log) {
+      function devlogService($log) {
         var devlog = {};
 
         // make devlog function as an extension of angular $log
         // bruteforce approach
-        devlog.log = function() { var args = devlog._prefix_args(arguments); $log.log.apply(this, args); devlog._clear_channel_prefix(); };
-        devlog.info = function() { var args = devlog._prefix_args(arguments); $log.info.apply(this, args); devlog._clear_channel_prefix(); };
-        devlog.warn = function() { var args = devlog._prefix_args(arguments); $log.warn.apply(this, args); devlog._clear_channel_prefix(); };
-        devlog.error = function() { var args = devlog._prefix_args(arguments); $log.error.apply(this, args); devlog._clear_channel_prefix(); };
-        devlog.debug = function() { var args = devlog._prefix_args(arguments); $log.debug.apply(this, args); devlog._clear_channel_prefix(); };
-        devlog.trace = function() { console.trace(); };
+        devlog.log   = devlogMethod('log');
+        devlog.info  = devlogMethod('info');
+        devlog.warn  = devlogMethod('warn');
+        devlog.error = devlogMethod('error');
+        devlog.debug = devlogMethod('debug');
+        devlog.trace = function () { console.trace(); };
 
-            // null interface for channels that fail
-            var nullobj   = {};
-        nullobj.log = function() {};
-        nullobj.info = function() {};
-        nullobj.warn = function() {};
-        nullobj.error = function() {};
-        nullobj.debug = function() {};
-        nullobj.trace = function() {};
+        function devlogMethod(name) {
+          return function () {
+            var args = devlog.prefixArgs(arguments);
+            $log[name].apply(this, args);
+            devlog.clearChannelPrefix();
+          };
+        }
+
+        // null interface for channels that fail
+        var nullobj = {};
+        nullobj.log = nullobj.info = nullobj.warn = nullobj.error = nullobj.debug = nullobj.trace = _.noop;
 
         //channel acts as a filter for log messages by
         //either passing them directly to $log interface if whitelisted
@@ -53,7 +56,7 @@
           }
 
           if (!config) {
-            $log.debug("WARNING No config in application, suppressing call to devlog");
+            $log.debug('WARNING No config in application, suppressing call to devlog');
             console.trace();
             return nullobj;
           }
@@ -79,12 +82,12 @@
           for ( var i = 0; i < args.length; i++ ) {
             if (whitelist.indexOf(args[i]) >= 0) {
               approved.push(args[i]);
-            } else if (whitelist.indexOf("*") >= 0 && whitelist.indexOf("!" + args[i]) < 0) {
+            } else if (whitelist.indexOf('*') >= 0 && whitelist.indexOf('!' + args[i]) < 0) {
               approved.push(args[i]);
             }
           }
           if (approved.length > 0) {
-            devlog._set_channel_prefix(approved);
+            devlog.setChannelPrefix(approved);
             return devlog;
           }
 
@@ -93,26 +96,26 @@
         };
 
         //internal use
-        devlog._channel_prefix = "";
+        devlog.channelPrefix = '';
 
         //internal use
         //generates a substring indicating the channels the messages belong to
         //  surrounded by pipes (i.e. '|CHANNEL|')
         //used to prefix the logger's output so a user can see the channel in the console
-        devlog._set_channel_prefix   = function (chans) {
-          devlog._channel_prefix = "|" + chans.join('|') + "| ";
-          devlog._channel_prefix = devlog._channel_prefix.toUpperCase();
+        devlog.setChannelPrefix   = function (chans) {
+          devlog.channelPrefix = '|' + chans.join('|') + '| ';
+          devlog.channelPrefix = devlog.channelPrefix.toUpperCase();
         };
-        devlog._clear_channel_prefix = function () {
-          devlog._channel_prefix = "";
+        devlog.clearChannelPrefix = function () {
+          devlog.channelPrefix = '';
         };
-        devlog._prefix_args          = function (msg_params) {
+        devlog.prefixArgs          = function (msgParams) {
           //msg_params is of type Arguments from function
-          var args = Array.prototype.slice.call(msg_params);
+          var args = Array.prototype.slice.call(msgParams);
           if (args[0] && (typeof args[0] === 'string' || args[0] instanceof String)) {
-            args[0] = devlog._channel_prefix + args[0];
+            args[0] = devlog.channelPrefix + args[0];
           } else {
-            args.unshift(devlog._channel_prefix);
+            args.unshift(devlog.channelPrefix);
           }
           return args;
         };

@@ -5,7 +5,7 @@
   'use strict';
 
   /* @ngInject */
-  function iscAuthenticationInterceptor ($log, $rootScope, $q, iscSessionModel, AUTH_EVENTS, $templateCache) {//jshint ignore:line
+  function iscAuthenticationInterceptor(devlog, $rootScope, $q, iscSessionModel, AUTH_EVENTS) {//jshint ignore:line
 
     // ----------------------------
     // vars
@@ -16,7 +16,7 @@
     // ----------------------------
 
     var factory = {
-      response: response,
+      response     : response,
       responseError: responseError
     };
 
@@ -26,41 +26,41 @@
     // functions
     // ----------------------------
 
-    function response (response) {//jshint ignore:line
-      //$log.debug( 'Intercepting response for %s', response.config.url, response );
+    function response(response) {//jshint ignore:line
+      devlog.channel('iscAuthenticationInterceptor').debug('Intercepting response for %s', response.config.url, response);
       if (!response.config.cache) {
-        //$log.debug('Resetting timeout');
-        iscSessionModel.resetSessionTimeout ();
+        devlog.channel('iscAuthenticationInterceptor').debug('Resetting timeout');
+        iscSessionModel.resetSessionTimeout();
       } else {
-        //$log.debug('No session timeout reset');
+        devlog.channel('iscAuthenticationInterceptor').debug('No session timeout reset');
       }
 
-      var deferred = $q.defer ();
-      deferred.resolve (response);
+      var deferred = $q.defer();
+      deferred.resolve(response);
       return deferred.promise;
     }
 
-    function responseError (response) {
+    function responseError(response) {
 
-      switch (response.status) {
+      switch ( response.status ) {
         case 401:
-          //$log.debug('...401');
+          devlog.channel('iscAuthenticationInterceptor').debug('...401');
           // this will happen if you just leave your computer on for a long time
-          $rootScope.$broadcast (AUTH_EVENTS.sessionTimeout, response);
+          $rootScope.$broadcast(AUTH_EVENTS.sessionTimeout, response);
           break;
 
         case 500: // these must be handled individually per app
-                  //$log.debug('...500');
+          devlog.channel('iscAuthenticationInterceptor').debug('...500');
           break;
 
         default:
-          //$log.debug('...default');
-          $rootScope.$broadcast (AUTH_EVENTS.notAuthorized, response);
+          devlog.channel('iscAuthenticationInterceptor').debug('...default');
+          $rootScope.$broadcast(AUTH_EVENTS.notAuthorized, response);
           break;
       }
 
 
-      return $q.reject (response);
+      return $q.reject(response);
     }
 
   }// END CLASS
@@ -68,6 +68,6 @@
   // ----------------------------
   // injection
   // ----------------------------
-  angular.module ('isc.authentication')
-      .factory ('iscAuthenticationInterceptor', iscAuthenticationInterceptor);
-}) ();
+  angular.module('isc.authentication')
+    .factory('iscAuthenticationInterceptor', iscAuthenticationInterceptor);
+})();
