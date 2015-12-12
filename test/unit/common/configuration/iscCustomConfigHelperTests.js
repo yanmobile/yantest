@@ -3,7 +3,6 @@
   'use strict';
   //console.log( 'iscCustomConfigHelper Tests' );
 
-
   describe('iscCustomConfigHelper', function(){
     var scope,
         mockConfig,
@@ -26,9 +25,6 @@
       helper = iscCustomConfigHelper;
 
       httpBackend = $httpBackend;
-      // mock calls to the config
-      httpBackend.when( 'GET', 'assets/configuration/configFile.json' )
-        .respond( 200, mockConfig );
     }));
 
     // -------------------------

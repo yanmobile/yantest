@@ -29,7 +29,7 @@
 
 
     beforeEach( inject( function( $rootScope, $controller, _$state_, $httpBackend, $timeout, $translate,
-                                  _AUTH_EVENTS_, _NAV_EVENTS_, 
+                                  _AUTH_EVENTS_, _NAV_EVENTS_,
                                   iscAlertModel, iscCustomConfigService, iscSessionModel, iscSessionStorageHelper  ){
 
       mockConfig = angular.copy( customConfig );
@@ -181,7 +181,7 @@
         expect (sessionStorageHelper.setSessionStorageValue).toHaveBeenCalled ();
       });
     });
-    
+
     describe( 'showSideNavbar tests ', function(){
 
       it( 'should have a function showSideNavbar', function(){

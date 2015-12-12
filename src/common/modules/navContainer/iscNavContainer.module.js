@@ -5,10 +5,8 @@
 (function(){
   'use strict';
 
-  angular.module('iscNavContainer', ['ui.router', 'isc.core', 'isc.animation', 'isc.progressLoader',
-    'pascalprecht.translate','isc.core', 'isc.authentication', 'isc.stateManager'])
-
-
+  angular.module('iscNavContainer', ['ui.router', 'isc.configuration', 'isc.core', 'isc.animation', 'isc.progressLoader',
+    'pascalprecht.translate', 'isc.authentication', 'isc.stateManager'])
 
       .constant('APP_EVENTS', {
         appLoaded:     'iscAppLoaded'

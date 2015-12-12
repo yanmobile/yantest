@@ -6,6 +6,6 @@
   'use strict';
 
   angular
-    .module('isc.core', ['isc.configuration', 'isc.animation']);
+    .module('isc.core', ['isc.animation']);
 
 })();

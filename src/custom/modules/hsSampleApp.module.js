@@ -4,6 +4,11 @@
 
 (function () {
   'use strict';
-  angular.module('hsSampleApp', ['isc.common']);
+  angular
+    .module('hsSampleApp', ['isc.common'])
+    .config(function (iscCustomConfigServiceProvider, devlogProvider, iscCustomConfig) {
+      iscCustomConfigServiceProvider.loadConfig(iscCustomConfig);
+      devlogProvider.loadConfig(iscCustomConfig);
+    });
 
 })();

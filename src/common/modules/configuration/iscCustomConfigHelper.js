@@ -2,12 +2,12 @@
  * Created by douglasgoodman on 11/19/14.
  */
 
-(function(){
+(function () {
   'use strict';
 
   /* @ngInject */
-  function iscCustomConfigHelper( $state ){
-//    //$log.debug( 'iscCustomConfigHelper LOADED' );
+  function iscCustomConfigHelper(devlog, $state) {
+    devlog.channel().debug('iscCustomConfigHelper LOADED');
 
     // ----------------------------
     // vars
@@ -19,18 +19,18 @@
     // class factory
     // ----------------------------
 
-    var factory  = {
-      addStates: addStates,
-      resetStates: resetStates,
-      getStateObj: getStateObj,
+    var factory = {
+      addStates   : addStates,
+      resetStates : resetStates,
+      getStateObj : getStateObj,
       getAllStates: getAllStates,
 
       stateIsExcluded: stateIsExcluded,
 
-      getCurrentStateTranslationKey: getCurrentStateTranslationKey,
+      getCurrentStateTranslationKey   : getCurrentStateTranslationKey,
       getSectionTranslationKeyFromName: getSectionTranslationKeyFromName,
-      getTranslationKeyFromName: getTranslationKeyFromName,
-      isCurrentState: isCurrentState
+      getTranslationKeyFromName       : getTranslationKeyFromName,
+      isCurrentState                  : isCurrentState
     };
 
     return factory;
@@ -39,27 +39,27 @@
     // functions
     // ----------------------------
 
-    function addStates( states ){
-      //$log.debug( 'iscCustomConfigHelper.addStates' );
-      //$log.debug( '...states: ' + JSON.stringify( states ));
+    function addStates(states) {
+      devlog.channel().debug('iscCustomConfigHelper.addStates');
+      devlog.channel().debug('...states: ' + JSON.stringify(states));
 
-      _.forEach( states, function( state ){
-        allStates[ state.state ] = state;
+      _.forEach(states, function (state) {
+        allStates[state.state] = state;
       });
     }
 
-    function resetStates(){
+    function resetStates() {
       allStates = {};
     }
 
-    function getAllStates(){
-     return allStates;
+    function getAllStates() {
+      return allStates;
     }
 
-    function getStateObj( state ){
-//      //$log.debug( 'iscCustomConfigHelper.getStateObj: ' + state );
-      var s =  allStates[state];
-//      //$log.debug( '...s: ' + JSON.stringify( s ));
+    function getStateObj(state) {
+//      devlog.channel().debug( 'iscCustomConfigHelper.getStateObj: ' + state );
+      var s = allStates[state];
+//      devlog.channel().debug( '...s: ' + JSON.stringify( s ));
       return s;
     }
 
@@ -67,17 +67,17 @@
     // used to check if a top nav element is excluded
     // the interceptor uses this to disallow navigation to that state
     // see iscCustomConfigInterceptor.request()
-    function stateIsExcluded( stateName ){
-      //$log.debug( 'iscCustomConfigHelper.stateIsExcluded' );
-      //$log.debug( 'Checking if state is excluded' );
-      if( !allStates[ stateName ] ){
-        //$log.debug( 'State is not in allStates' );
+    function stateIsExcluded(stateName) {
+      devlog.channel().debug('iscCustomConfigHelper.stateIsExcluded');
+      devlog.channel().debug('Checking if state is excluded');
+      if (!allStates[stateName]) {
+        devlog.channel().debug('State is not in allStates');
         return true;
       }
 
-      if( allStates[ stateName ].exclude ) {
-        //$log.debug( JSON.stringify(allStates[ stateName ]) );
-        //$log.debug( 'State is marked as exclude' );
+      if (allStates[stateName].exclude) {
+        devlog.channel().debug(JSON.stringify(allStates[stateName]));
+        devlog.channel().debug('State is marked as exclude');
         return true;
       }
 
@@ -85,40 +85,40 @@
     }
 
     // ----------------------------
-    function getCurrentStateTranslationKey(){
+    function getCurrentStateTranslationKey() {
       var stateName = $state.$current.name;
-      //$log.debug( 'iscCustomConfigHelper.getCurrentStateTranslationKey: ' + stateName );
+      devlog.channel().debug('iscCustomConfigHelper.getCurrentStateTranslationKey: ' + stateName);
 
-      return getTranslationKeyFromName( stateName );
+      return getTranslationKeyFromName(stateName);
     }
 
 
     // get the translation key from the state name
-    function getTranslationKeyFromName( stateName ){
-      //$log.debug( 'iscCustomConfigHelper.getTranslationKeyFromName: ' + stateName );
-      var state = allStates[ stateName ];
-      return state? state.translationKey : 'ISC_NOT_FOUND';
+    function getTranslationKeyFromName(stateName) {
+      devlog.channel().debug('iscCustomConfigHelper.getTranslationKeyFromName: ' + stateName);
+      var state = allStates[stateName];
+      return state ? state.translationKey : 'ISC_NOT_FOUND';
     }
 
     // get the top level section's translation key from the state name
-    function getSectionTranslationKeyFromName( stateName ){
-      //$log.debug( 'iscCustomConfigHelper.getSectionTranslationKeyFromName: ' + stateName );
-      var arr = stateName.split('.');
-      var sectArr = arr.splice(0,2); // the first two values are the section
-      var sectionName = sectArr.join( '.' );
+    function getSectionTranslationKeyFromName(stateName) {
+      devlog.channel().debug('iscCustomConfigHelper.getSectionTranslationKeyFromName: ' + stateName);
+      var arr     = stateName.split('.');
+      var sectArr = arr.splice(0, 2); // the first two values are the section
+      var sectionName = sectArr.join('.');
 
-      //$log.debug( '...sectArr: ' + sectArr );
-      //$log.debug( '...sectionName: ' + sectionName );
+      devlog.channel().debug('...sectArr: ' + sectArr);
+      devlog.channel().debug('...sectionName: ' + sectionName);
 
-      var state = allStates[ sectionName ];
+      var state = allStates[sectionName];
 
-      return state? state.translationKey : '';
+      return state ? state.translationKey : '';
     }
 
     // is the state currently active
-    function isCurrentState( stateName ){
-      //$log.debug( 'iscCustomConfigHelper.isCurrentState: ', stateName );
-      return $state.is( stateName );
+    function isCurrentState(stateName) {
+      devlog.channel().debug('iscCustomConfigHelper.isCurrentState: ', stateName);
+      return $state.is(stateName);
     }
 
 
@@ -128,6 +128,6 @@
   // inject
   // ----------------------------
 
-  angular.module( 'isc.configuration' )
-      .factory( 'iscCustomConfigHelper', iscCustomConfigHelper );
+  angular.module('isc.configuration')
+    .factory('iscCustomConfigHelper', iscCustomConfigHelper);
 })();
