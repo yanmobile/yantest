@@ -23,6 +23,7 @@
       'isc.directives',
       'isc.filters',
       'isc.table',
+      'isc.http',
       'isc.stateManager',
       'isc.progressLoader',
 

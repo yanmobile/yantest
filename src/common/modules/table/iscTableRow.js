@@ -17,8 +17,7 @@
 (function(){
   'use strict';
 
-  iscTableRow.$inject = [ '$log', 'devlog', '$state', '$templateCache', '$compile' ];
-
+  /* @ngInject */
   function iscTableRow( $log, devlog, $state, $templateCache, $compile ){
     //$log.debug('iscTableRow.LOADED');
 
@@ -36,7 +35,7 @@
       //needs to be -1 in order to have access to dataItem, which is populated by the dir-pagination directive
       priority    : -1,
       controllerAs: 'iscRowCtrl',
-      controller  : "iscTableRowController",
+      controller  : 'iscTableRowController',
       compile     : compile
     };
 
@@ -50,7 +49,7 @@
       };
 
       function pre(scope, trElem, attrs, iscRowCtrl){
-        var defaultTemplate = scope.iscTblCtrl.tableConfig.editable === 'popup' ? "table/popup/iscTablePopupRow.html" : 'table/iscTableRow.html';
+        var defaultTemplate = scope.iscTblCtrl.tableConfig.editable === 'popup' ? 'table/popup/iscTablePopupRow.html' : 'table/iscTableRow.html';
 
         var rowTemplate = _.get(scope, 'iscTblCtrl.tableConfig.rowTemplate', defaultTemplate);
         if( rowTemplate ){

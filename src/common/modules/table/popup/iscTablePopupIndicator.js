@@ -8,9 +8,8 @@
 (function(){
   'use strict';
 
-  iscTablePopupIndicator.$inject = [ '$log', '$state', '$templateCache', '$compile' ];
-
-  function iscTablePopupIndicator($log, $state, $templateCache, $compile){//jshint ignore:line
+  /* @ngInject */
+  function iscTablePopupIndicator(){
     //$log.debug( 'iscTablePopupIndicator LOADED');
 
     // ----------------------------
@@ -21,9 +20,9 @@
     // class factory
     // ----------------------------
     return {
-      restrict    : "A",
+      restrict    : 'A',
       controller  : controller,
-      controllerAs: "iscTblIndic"
+      controllerAs: 'iscTblIndic'
     };
 
     // ----------------------------
@@ -32,7 +31,7 @@
     function controller($scope){
       var self      = this;
       self.inPopup  = true;
-      self.commands = (_.find($scope.iscTblCtrl.tableConfig.columns, { type: "commands" }) || {}).commands;
+      self.commands = (_.find($scope.iscTblCtrl.tableConfig.columns, { type: 'commands' }) || {}).commands;
     }
   }// END CLASS
 

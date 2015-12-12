@@ -55,22 +55,22 @@
         if (wrapperName) {
           // get the offset of that wrapper from the top,
           var offset = attrs.wrapperOffset;
-          var top    = $( "[name='" + wrapperName + "']" ).offset().top + (+offset);
+          var top    = $( '[name="' + wrapperName + '"]' ).offset().top + (+offset);
           // and set it on the zf-modal.
-          element.find( "[zf-modal]" ).css( {"top": top} );
+          element.find( '[zf-modal]' ).css( {'top': top} );
         }
 
         // If the modal should be scrollable, adjust the modal's aside element to scroll.
         if (attrs.scrollableModal) {
-          var aside = element.find( "aside" ).first();
+          var aside = element.find( 'aside' ).first();
 
-          var currentOverflow = aside.css( "overflow-y" );
-          aside.css( {"overflow-y": "auto"} );
+          var currentOverflow = aside.css( 'overflow-y' );
+          aside.css( {'overflow-y': 'auto'} );
 
           // Some classes, including .grid-block, inherit overflow-y.
           // So set the inner wrapper (if it exists) back to the way
           // the aside was set to overflow, before we changed it.
-          element.find( "[name='" + attrs.innerWrapperName + "']" ).css( {"overflow-y": currentOverflow} );
+          element.find( '[name="' + attrs.innerWrapperName + '"]' ).css( {'overflow-y': currentOverflow} );
 
           aside.focus();
         }

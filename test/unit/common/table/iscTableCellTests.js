@@ -106,7 +106,7 @@
         element   = $compile( html )( rowScope );
         rowScope.$digest();
         cellScope = element.scope();
-      } )
+      } );
     }
 
     // -------------------------

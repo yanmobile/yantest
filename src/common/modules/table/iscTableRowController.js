@@ -86,9 +86,9 @@
       }
       function getCommandCallback(command, domCallback){
         var callback       = domCallback;
-        var commandsColumn = _.find(self.iscTblCtrl.tableConfig.columns, { type: "commands" });
+        var commandsColumn = _.find(self.iscTblCtrl.tableConfig.columns, { type: 'commands' });
         if( callback == null && commandsColumn ){
-          callback = _.get(commandsColumn, "commands." + command + ".callback");
+          callback = _.get(commandsColumn, 'commands.' + command + '.callback');
 
         }
         return callback;
