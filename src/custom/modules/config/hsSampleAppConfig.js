@@ -6,7 +6,7 @@
 
   'use strict';
 
-  var iscCustomConfig = {
+  var hsSampleAppConfig = {
     "devlogWhitelist"                   : ["*"],
     "baseUrl"                           : "hello",
     "api"                               : {
@@ -471,6 +471,6 @@
   // injection
   // ----------------------------
   angular.module('hsSampleApp')
-    .constant('iscCustomConfig', iscCustomConfig);
+    .constant('hsSampleAppConfig', hsSampleAppConfig);
 
 })();

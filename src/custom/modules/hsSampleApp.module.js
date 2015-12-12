@@ -6,9 +6,9 @@
   'use strict';
   angular
     .module('hsSampleApp', ['isc.common'])
-    .config(function (iscCustomConfigServiceProvider, devlogProvider, iscCustomConfig) {
-      iscCustomConfigServiceProvider.loadConfig(iscCustomConfig);
-      devlogProvider.loadConfig(iscCustomConfig);
+    .config(function (iscCustomConfigServiceProvider, devlogProvider, hsSampleAppConfig) {
+      iscCustomConfigServiceProvider.loadConfig(hsSampleAppConfig);
+      devlogProvider.loadConfig(hsSampleAppConfig);
     });
 
 })();
