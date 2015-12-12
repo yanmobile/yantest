@@ -5,8 +5,7 @@
 (function(){
   'use strict';
 
-  iscTableAddRow.$inject = [ '$log', 'devlog', '$state', '$templateCache', '$compile' ];
-
+  /* @ngInject */
   function iscTableAddRow( $log, devlog, $state, $templateCache, $compile ){
     //$log.debug('iscTableAddRow.LOADED');
 
@@ -22,7 +21,7 @@
       scope       : true, //prototypal inheritance
       restrict    : 'A',
       controllerAs: 'iscRowCtrl',
-      controller  : "iscTableRowController",
+      controller  : 'iscTableRowController',
       compile     : compile
     };
 
@@ -41,7 +40,7 @@
         iscRowCtrl.iscTblCtrl = scope.iscTblCtrl;
         iscRowCtrl.dataItem = scope.dataItem = {};
         iscRowCtrl.isAddRow = true;
-        var defaultTemplate = scope.iscTblCtrl.tableConfig.editable === 'popup' ? "table/popup/iscTablePopupRow.html" : 'table/iscTableAddRow.html';
+        var defaultTemplate = scope.iscTblCtrl.tableConfig.editable === 'popup' ? 'table/popup/iscTablePopupRow.html' : 'table/iscTableAddRow.html';
         var addRowTemplate = _.get(scope, 'iscTblCtrl.tableConfig.addRowTemplate', defaultTemplate);
 
         if( addRowTemplate ){

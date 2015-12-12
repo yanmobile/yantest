@@ -195,7 +195,7 @@
         filterFunction    : '&?',
         rowButtonCallback : '&?',
         backButtonCallback: '&?',
-        tableName         : "@"
+        tableName         : '@'
       },
 
       restrict    : 'E',

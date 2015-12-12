@@ -3,7 +3,7 @@
  *
  */
 
-// opens zf-modal when inEditMode changes to "popup"
+// opens zf-modal when inEditMode changes to 'popup'
 
 (function(){
   'use strict';
@@ -20,7 +20,7 @@
     // class factory
     // ----------------------------
     return {
-      restrict    : "A",
+      restrict    : 'A',
       link        : link
     };
 
@@ -29,12 +29,12 @@
     // ----------------------------
 
     function link(scope, trElem, attrs, iscRowCtrl){
-      scope.$watch("iscRowCtrl.inEditMode", function(newVal, oldVal){
+      scope.$watch('iscRowCtrl.inEditMode', function(newVal, oldVal){
         if(newVal !== oldVal){
-          if( newVal === "popup" ){
-            trElem.parent().find("[zf-modal]").scope().show();
+          if( newVal === 'popup' ){
+            trElem.parent().find('[zf-modal]').scope().show();
           } else {
-            trElem.parent().find("[zf-modal]").scope().hide();
+            trElem.parent().find('[zf-modal]').scope().hide();
           }
         }
       });

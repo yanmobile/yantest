@@ -12,6 +12,7 @@
   "noarg": true,
   "regexp": true,
   "undef": true,
+  "quotmark": "single",
   "unused": false,
   "strict": true,
   "trailing": true,
