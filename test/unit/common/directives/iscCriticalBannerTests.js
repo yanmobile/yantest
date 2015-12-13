@@ -34,7 +34,7 @@
 
 
     // -------------------------
-    fdescribe('iscCriticalBanner tests ', function () {
+    describe('iscCriticalBanner tests ', function () {
       it('sanity check', function () {
         compileDirective();
         expect(element.length).toBe(1);
