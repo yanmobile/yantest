@@ -177,13 +177,11 @@
 
       it('should able to filter arrays', function () {
         var address = _.get(patient, "addresses[{code:0}].address");
-        console.log(address);
         expect(address).toBe("111");
       });
 
       it('should able to filter arrays by string', function () {
         var address = _.get(patient, "addresses[{code:\"1\"}].address");
-        console.log(address);
         expect(address).toBe("222");
       });
 

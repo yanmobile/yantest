@@ -54,22 +54,6 @@
       AUTH_EVENTS = _AUTH_EVENTS_;
       NAV_EVENTS = _NAV_EVENTS_;
 
-      // dont worry about calls to assets
-      httpBackend.when( 'GET', 'assets/i18n/en-us.json' )
-        .respond( 200, {} );
-
-      // mock calls to the config
-      httpBackend.when( 'GET', 'assets/configuration/configFile.json' )
-        .respond( 200, customConfig );
-
-      // dont worry about calls to home page mocks
-      httpBackend.when( 'GET', 'assets/mockData/home/mockPatientData.json' )
-        .respond( 200, {} );
-
-      // dont worry about calls to home page mocks
-      httpBackend.when( 'GET', 'assets/mockData/home/mockPanelData.json' )
-        .respond( 200, {} );
-
     }));
 
     // -------------------------
