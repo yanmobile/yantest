@@ -15,31 +15,28 @@
         $get      : devlogService
       };
 
-
       /* @ngInject */
       function devlogService($log) {
         var devlog = {};
 
         // make devlog function as an extension of angular $log
-        // bruteforce approach
-        devlog.log   = devlogMethod('log');
-        devlog.info  = devlogMethod('info');
-        devlog.warn  = devlogMethod('warn');
-        devlog.error = devlogMethod('error');
-        devlog.debug = devlogMethod('debug');
-        devlog.trace = function () { console.trace(); };
-
-        function devlogMethod(name) {
-          return function () {
+        ['log', 'info', 'warn', 'error', 'debug'].forEach(function (method) {
+          devlog[method] = function () {
             var args = devlog.prefixArgs(arguments);
-            $log[name].apply(this, args);
+            $log[method].apply(this, args);
             devlog.clearChannelPrefix();
           };
-        }
+        });
+        devlog.trace = function () { console.trace(); };
 
         // null interface for channels that fail
-        var nullobj = {};
-        nullobj.log = nullobj.info = nullobj.warn = nullobj.error = nullobj.debug = nullobj.trace = _.noop;
+        var nullobj  = {};
+        nullobj.log  = _.noop;
+        nullobj.info = _.noop;
+        nullobj.warn = _.noop;
+        nullobj.error = _.noop;
+        nullobj.debug = _.noop;
+        nullobj.trace = _.noop;
 
         //channel acts as a filter for log messages by
         //either passing them directly to $log interface if whitelisted
@@ -51,8 +48,8 @@
           //not recommended to slice on arguments directly
           //prevents optimizations in JS engines
           var args = [];
-          for ( var i = 0; i < arguments.length; i++ ) {
-            args.push(arguments[i]);
+          for ( var argIndex = 0; argIndex < arguments.length; argIndex++ ) {
+            args.push(arguments[argIndex]);
           }
 
           if (!config) {
