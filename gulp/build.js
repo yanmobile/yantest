@@ -231,7 +231,7 @@
     };
 
     var customOpts = {
-      module: 'custom',
+      module: 'isc.common',
       strip : 'custom/modules/'
     };
 

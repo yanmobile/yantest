@@ -43,6 +43,7 @@
           setConfig  : setConfig,
           initSession: initSession,
           clearConfig: clearConfig,
+          addStates: addStates,
 
           updateStateByRole: updateStateByRole,
 

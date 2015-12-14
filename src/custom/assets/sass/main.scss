@@ -1,5 +1,7 @@
 // import css variables
+@import "../../../common/bower_components/foundation-apps/scss/settings";
 @import "../../../common/assets/sass/isc/isc-variables";
 
 // then the common css
 @import "../../../common/assets/sass/main";
+@import "../../../common/bower_components/foundation-apps/scss/foundation";
