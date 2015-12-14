@@ -6,10 +6,11 @@
   'use strict';
   angular
     .module('hsSampleApp', ['isc.common'])
-    .config(function (iscCustomConfigServiceProvider, devlogProvider, hsSampleAppConfig) {
     /* @ngInject */
+    .config(function (iscCustomConfigServiceProvider, devlogProvider, hsSampleAppConfig) {
       iscCustomConfigServiceProvider.loadConfig(hsSampleAppConfig);
       devlogProvider.loadConfig(hsSampleAppConfig);
+    })
     /* @ngInject */
     .run(function (iscCustomConfigService) {
       iscCustomConfigService.addStates();
