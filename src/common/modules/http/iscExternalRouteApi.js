@@ -47,7 +47,7 @@
       if (stateName) {
         $window.sessionStorage.setItem('initialState',
           JSON.stringify({
-            'nextState'  : state.name,
+            'nextState'  : stateName,
             'stateParams': stateParams || {},
             // Set an expiration if provided
             'expiresOn'  : externalRequestExpirationInMinutes

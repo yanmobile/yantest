@@ -47,8 +47,11 @@
    */
 
   /* @ngInject */
-  function iscExternalRouteProvider() {
+  function iscExternalRouteProvider($windowProvider) {
     this.configure = function (mappingFunction, externalRequestExpirationInMinutes) {
+      // Local window wrapper -- $window for tests
+      var window = $windowProvider.$get();
+
       // Get raw location hash
       var hash = window.location.hash.replace(/#/, ''),
           nextStateObject;
