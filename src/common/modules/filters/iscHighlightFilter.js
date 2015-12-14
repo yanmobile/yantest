@@ -6,8 +6,8 @@
   'use strict';
 
   /* @ngInject */
-  function iscHighlightFilter( $log, $sce ){
-//    //$log.debug( 'iscHighlightFilter LOADED');
+  function iscHighlightFilter( devlog, $sce ){
+//    devlog.channel('').debug( 'iscHighlightFilter LOADED');
 
     // ----------------------------
     // vars
@@ -26,10 +26,10 @@
 
 
     function setHighlight( text, phrase ) {
-      //$log.debug('iscHighlight.setHighlight');
+      devlog.channel('').debug('iscHighlight.setHighlight');
 
       if( phrase && text ){
-        //$log.debug('...text', text);
+        devlog.channel('').debug('...text', text);
 
         text = text.replace(new RegExp('(' + phrase + ')', 'gi'),
           '<span class="isc-highlighted">$1</span>');

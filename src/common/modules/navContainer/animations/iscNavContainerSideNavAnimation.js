@@ -5,9 +5,8 @@
 (function(){
   'use strict';
 
-  iscNavContainerSideNavAnimation.$inject = ['$log', '$rootScope', '$window', 'iscAnimationService', 'TweenMax', 'EASE_DUR'];
-
-  function iscNavContainerSideNavAnimation( $log, $rootScope, $window, iscAnimationService, TweenMax, EASE_DUR ){
+  /* @ngInject */
+  function iscNavContainerSideNavAnimation( devlog, $rootScope, $window, iscAnimationService, TweenMax, EASE_DUR ){
 
   // --------------------
   // vars
@@ -40,7 +39,7 @@
   // --------------------
 
     function beforeAddClass( element, className, done ){
-      //$log.debug( 'iscNavContainerSideNavAnimation.beforeAddClass' );
+      devlog.channel('iscNavContainerSideNavAnimation').debug( 'iscNavContainerSideNavAnimation.beforeAddClass' );
 
       if( className === 'side-nav' ){
 
@@ -58,8 +57,8 @@
         xPosEnd = iscAnimationService.isPhone() ? -offsetX : iscAnimationService.getElementXPos( width, offsetX );
         yPos = iscAnimationService.isPhone()  ? -offsetY + 20 : iscAnimationService.getElementYPos( height, offsetY );
 
-        //$log.debug( '...height',height );
-        //$log.debug( '...yPos',yPos );
+        devlog.channel('iscNavContainerSideNavAnimation').debug( '...height',height );
+        devlog.channel('iscNavContainerSideNavAnimation').debug( '...yPos',yPos );
 
         // now set the x and y pos, based on the new sizes
         TweenMax.set( element, {x:xPos, y: yPos});
@@ -71,7 +70,7 @@
     }
 
     function beforeRemoveClass( element, className, done ){
-      //$log.debug( 'iscNavContainerSideNavAnimation.beforeRemoveClass' );
+      devlog.channel('iscNavContainerSideNavAnimation').debug( 'iscNavContainerSideNavAnimation.beforeRemoveClass' );
       if( className === 'side-nav' ){
         xPos = - element.width() - 50 -element[0].offsetLeft;
         TweenMax.to( element, EASE_DUR, { ease: Power2.easeOut, x: xPos, onComplete: onRemoveComplete, onCompleteParams:[element, done] });//jshint ignore:line

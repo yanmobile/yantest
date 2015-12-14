@@ -6,8 +6,8 @@
   'use strict';
 
   /* @ngInject */
-  function iscAlertService( $log, iscAlertModel ){
-    //$log.debug( 'iscAlertService LOADED' );
+  function iscAlertService( devlog, iscAlertModel ){
+    devlog.channel('iscAlertService').debug( 'iscAlertService LOADED' );
 
     // ----------------------------
     // vars
@@ -66,10 +66,10 @@
     // ----------------------------
 
     function open( type ){
-      //$log.debug( 'iscAlertService open' );
+      devlog.channel('iscAlertService').debug( 'iscAlertService open' );
 
     //  var options =
-      //$log.debug( 'iscAlertService open' );
+      devlog.channel('iscAlertService').debug( 'iscAlertService open' );
       iscAlertModel.options = getOptions( type );
     }
 

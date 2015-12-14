@@ -26,9 +26,8 @@
 (function(){
   'use strict';
 
-  iscDropdown.$inject = [ '$log', 'devlog', '$timeout', '$rootScope', 'DROPDOWN_EVENTS', '$global' ];
-
-  function iscDropdown( $log, devlog , $timeout, $rootScope, DROPDOWN_EVENTS, $global){//jshint ignore:line
+  /* @ngInject */
+  function iscDropdown( devlog,  $timeout, $rootScope, DROPDOWN_EVENTS, $global){//jshint ignore:line
 
     // ----------------------------
     // vars
@@ -57,7 +56,9 @@
         dropChevronCssClass: '@',
         useFormPositioning: '@'
       },
-      templateUrl: 'dropdown/iscDropdown.html'
+      templateUrl: function (elem, attrs) {
+        return attrs.templateUrl || 'dropdown/iscDropdown.html';
+      }
     };
 
     return directive;
@@ -67,7 +68,7 @@
     // ----------------------------
 
     function link( scope, elem, attr ){//jshint ignore:line
-      //$log.debug( 'iscDropdown' );
+      devlog.channel('iscDropdown').debug( 'iscDropdown' );
 
       // ----------------------------
       // vars
@@ -192,7 +193,7 @@
 
       scope.updateTitle = function(){
         var title = scope.dropSelectedItem[ scope.listField ];
-        //$log.debug( '...title', title );
+        devlog.channel('iscDropdown').debug( '...title', title );
         // $log.debug( scope.listField,  scope.dropSelectedItem);
 
         if( !title ){

@@ -6,6 +6,6 @@
   'use strict';
 
   angular
-    .module('isc.filters', []);
+    .module('isc.filters', ['isc.core']);
 
 })();

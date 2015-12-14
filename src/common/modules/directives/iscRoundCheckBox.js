@@ -5,10 +5,9 @@
 (function(){
   'use strict';
 
-  iscRoundCheckBox.$inject = [ '$log'];
-
-  function iscRoundCheckBox( $log ){//jshint ignore:line
-//    //$log.debug( 'iscRoundCheckBox LOADED');
+  /* @ngInject */
+  function iscRoundCheckBox( devlog ){//jshint ignore:line
+    devlog.channel('iscRoundCheckBox').debug( 'iscRoundCheckBox LOADED');
 
     // ----------------------------
     // vars
@@ -25,7 +24,9 @@
         onToggle: '&'
       },
       link: link,
-      templateUrl: 'svg/isc-rounded-checkbox.html'
+      templateUrl: function (elem, attrs) {
+        return attrs.templateUrl || 'svg/isc-rounded-checkbox.html';
+      }
     };
 
     return directive;
@@ -49,7 +50,7 @@
         scope.onToggle( {selected: scope.selected} );
 
         if( ngModelCtrl ){
-          //$log.debug( 'iscRoundCheckBox.$setViewValue');
+          devlog.channel('iscRoundCheckBox').debug( 'iscRoundCheckBox.$setViewValue');
           ngModelCtrl.$setViewValue( !ngModelCtrl.$viewValue );
         }
       };

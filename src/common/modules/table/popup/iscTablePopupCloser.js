@@ -10,7 +10,7 @@
 
   /* @ngInject */
   function iscTablePopupCloser( $global ) {
-    //$log.debug( 'iscTablePopupCloser LOADED');
+    devlog.channel('').debug( 'iscTablePopupCloser LOADED');
 
     // ----------------------------
     // vars

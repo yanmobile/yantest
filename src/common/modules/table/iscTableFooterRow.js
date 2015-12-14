@@ -5,10 +5,9 @@
 (function(){
   'use strict';
 
-  iscTableFooterRow.$inject = [ '$log', 'devlog', '$state', '$templateCache', '$compile' ];
-
-  function iscTableFooterRow( $log, devlog, $state, $templateCache, $compile ){
-    //$log.debug('iscTableFooterRow.LOADED');
+  /* @ngInject */
+  function iscTableFooterRow( devlog, $state, $templateCache, $compile ){
+    devlog.channel('').debug('iscTableFooterRow.LOADED');
 
     // ----------------------------
     // vars

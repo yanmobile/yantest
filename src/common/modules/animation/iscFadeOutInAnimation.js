@@ -6,7 +6,7 @@
   'use strict';
 
   /* @ngInject */
-  function iscFadeOutInAnimation( $log, $window, TweenMax, EASE_DUR ){
+  function iscFadeOutInAnimation( devlog, $window, TweenMax, EASE_DUR ){
 
   // --------------------
   // vars
@@ -32,7 +32,7 @@
   // --------------------
 
     function beforeAddClass( element, className, done ){
-      //$log.debug( 'iscFadeOutInAnimation.beforeAddClass' );
+      devlog.channel('').debug( 'iscFadeOutInAnimation.beforeAddClass' );
 
       if( className === 'fade-out-in' ){
         TweenMax.set( element, {autoAlpha: 1, display: 'block'});
@@ -44,7 +44,7 @@
     }
 
     function beforeRemoveClass( element, className, done ){
-      //$log.debug( 'iscFadeOutInAnimation.beforeRemoveClass' );
+      devlog.channel('').debug( 'iscFadeOutInAnimation.beforeRemoveClass' );
       if( className === 'fade-out-in' ){
         TweenMax.to( element, EASE_DUR, {autoAlpha: 1, onComplete: done});
       }

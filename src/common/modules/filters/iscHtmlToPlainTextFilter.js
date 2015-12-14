@@ -7,7 +7,7 @@
 
   /* @ngInject */
   function iscHtmlToPlainText( $log ){//jshint ignore:line
-//    //$log.debug( 'iscHtmlToPlainText LOADED');
+//    devlog.channel('').debug( 'iscHtmlToPlainText LOADED');
 
 
     // ----------------------------

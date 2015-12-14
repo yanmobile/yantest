@@ -5,6 +5,6 @@
 (function () {
   'use strict';
 
-  angular.module('isc.animation', []);
+  angular.module('isc.animation', ['isc.core']);
 
 })();

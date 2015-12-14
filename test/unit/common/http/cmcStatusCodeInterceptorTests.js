@@ -8,6 +8,11 @@
     var fakeConfirmationService;
     var interceptor;
 
+    // setup devlog
+    beforeEach(module('isc.core', function (devlogProvider) {
+      devlogProvider.loadConfig(customConfig);
+    }));
+
     beforeEach(module('isc.http', function ($provide) {
       fakeConfirmationService = {
         show: function () {

@@ -5,10 +5,9 @@
 (function () {
   'use strict';
 
-  iscLanguageService.$inject = [ '$log', '$window', '$translate', 'iscCustomConfigService', 'iscSessionStorageHelper' ];
-
-  function iscLanguageService ($log, $window, $translate, iscCustomConfigService, iscSessionStorageHelper) {
-    //$log.debug( 'iscLanguageService LOADED');
+  /* @ngInject */
+  function iscLanguageService (devlog, $window, $translate, iscCustomConfigService, iscSessionStorageHelper) {
+    devlog.channel('').debug( 'iscLanguageService LOADED');
 
     // ----------------------------
     // vars

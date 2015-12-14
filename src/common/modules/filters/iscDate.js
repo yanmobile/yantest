@@ -8,12 +8,12 @@
   'use strict';
 
   /* @ngInject */
-  function iscDate( $log, $filter ){
-    //$log.debug( 'iscDate LOADED');
+  function iscDate( devlog, $filter ){
+    devlog.channel('iscDate').debug( 'iscDate LOADED');
 
     return function(date, format) {
       if(!moment) {
-        console.log('Error: momentJS is not loaded as a global');
+        devlog.channel('iscDate').error('Error: momentJS is not loaded as a global');
         return '!momentJS';
       }
       if (!format) { // September 26, 1986 9:00 AM

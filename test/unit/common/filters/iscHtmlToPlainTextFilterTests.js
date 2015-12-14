@@ -3,13 +3,14 @@
   'use strict';
   //console.log( 'iscHtmlToPlainText Tests' );
 
-  var mockConfig = angular.copy( customConfig );
-
-
-
   describe('iscHtmlToPlainText', function(){
     var scope,
         filter;
+
+    // setup devlog
+    beforeEach(module('isc.core', function (devlogProvider) {
+      devlogProvider.loadConfig(customConfig);
+    }));
 
 
     beforeEach( module('isc.filters'), function( $provide ){

@@ -7,10 +7,9 @@
 (function(){
   'use strict';
 
-  iscCheckBox.$inject = [ '$log'];
-
-  function iscCheckBox( $log ){//jshint ignore:line
-//    //$log.debug( 'iscCheckBox LOADED');
+  /* @ngInject */
+  function iscCheckBox( devlog ){//jshint ignore:line
+//    devlog.channel('iscCheckBox').debug( 'iscCheckBox LOADED');
 
     // ----------------------------
     // vars
@@ -27,7 +26,9 @@
         onToggle: '&'
       },
       link: link,
-      templateUrl: 'svg/isc-checkbox.html'
+      templateUrl: function (elem, attrs) {
+        return attrs.templateUrl || 'svg/isc-checkbox.html';
+      }
     };
 
     return directive;
@@ -51,7 +52,7 @@
         scope.onToggle( {selected: scope.selected} );
 
         if( ngModelCtrl ){
-          //$log.debug( 'iscCheckBox.$setViewValue');
+          devlog.channel('iscCheckBox').debug( 'iscCheckBox.$setViewValue');
           ngModelCtrl.$setViewValue( !ngModelCtrl.$viewValue );
         }
       };

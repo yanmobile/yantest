@@ -4,10 +4,9 @@
 (function(){
   'use strict';
 
-  iscTableCell.$inject = [ '$log', '$state', '$templateCache', '$compile' ];
-
-  function iscTableCell( $log, $state, $templateCache, $compile ){
-    //$log.debug('iscTableCell.LOADED');
+  /* @ngInject */
+  function iscTableCell( devlog, $state, $templateCache, $compile ){
+    devlog.channel('').debug('iscTableCell.LOADED');
 
     // ----------------------------
     // vars

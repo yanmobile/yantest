@@ -10,7 +10,7 @@
 
   /* @ngInject */
   function iscTablePopupIndicator(){
-    //$log.debug( 'iscTablePopupIndicator LOADED');
+    devlog.channel('').debug( 'iscTablePopupIndicator LOADED');
 
     // ----------------------------
     // vars

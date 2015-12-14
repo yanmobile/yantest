@@ -14,9 +14,8 @@
 (function(){
   'use strict';
 
-  iscDropdownSelectionListDirective.$inject = [ '$log', '$parse', '$timeout', '$rootScope', '$window', 'DROPDOWN_EVENTS', '$global' ];
-
-  function iscDropdownSelectionListDirective( $log, $parse , $timeout, $rootScope, $window, DROPDOWN_EVENTS, $global){
+  /* @ngInject */
+  function iscDropdownSelectionListDirective( devlog, $parse , $timeout, $rootScope, $window, DROPDOWN_EVENTS, $global){
 
     // ----------------------------
     // vars
@@ -39,7 +38,9 @@
         dropListItemCssClass: '@',
         useFormPositioning: '@'
       },
-      templateUrl: 'dropdown/iscDropdownList.html'
+      templateUrl: function (elem, attrs) {
+        return attrs.templateUrl || 'dropdown/iscDropdownList.html';
+      }
     };
 
     return directive;
@@ -53,7 +54,7 @@
       var dropElem;
 
       scope.selectItem = function( selectedObj ){
-        $log.debug('iscDropdownSelectionList.selectItem', selectedObj );
+        devlog.channel('iscDropdownSelectionListDirective').debug('iscDropdownSelectionList.selectItem', selectedObj );
 
         var selectCriteria = {
           dropId: scope.dropId,

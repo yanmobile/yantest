@@ -2,17 +2,20 @@
 (function(){
   'use strict';
 
-  var mockConfig = angular.copy( customConfig );
-
   describe('iscDateFilter', function(){
     var scope,
         filter;
 
-    // show $log statements
-    beforeEach (module ('isc.filters', function ($provide) {
-      $provide.value ('$log', console);
+
+    // setup devlog
+    beforeEach(module('isc.core', function (devlogProvider) {
+      devlogProvider.loadConfig(customConfig);
     }));
 
+    // show $log statements
+    beforeEach(module('isc.filters', function ($provide) {
+      $provide.value('$log', console);
+    }));
 
     beforeEach( inject( function( $rootScope, $injector ){
       scope = $rootScope.$new();

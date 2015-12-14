@@ -29,6 +29,11 @@
     beforeEach(module('isc.templates'));
 
 
+    // setup devlog
+    beforeEach(module('isc.core', function (devlogProvider) {
+      devlogProvider.loadConfig(customConfig);
+    }));
+
     // log statements
     beforeEach(module('isc.configuration', function ($provide, iscCustomConfigServiceProvider) {
       $provide.value('$log', console);

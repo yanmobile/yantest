@@ -8,6 +8,11 @@
         window,
         helper;
 
+    // setup devlog
+    beforeEach(module('isc.core', function (devlogProvider) {
+      devlogProvider.loadConfig(customConfig);
+    }));
+
     // show $log statements
     beforeEach( module(  'isc.authentication', function( $provide ){
       $provide.value('$log', console);
