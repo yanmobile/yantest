@@ -13,24 +13,50 @@
    *
    * Initial states can be configured during app.config with iscExternalRouteProvider.
    * This API retrieves that state and returns it as an object with nextState and stateParams properties.
+   *
+   * The persistCurrentState function can be called to remember the current state during a session timeout.
    */
 
   /* @ngInject */
   function iscExternalRouteApi($window) {
     return {
-      getInitialState : getInitialState
+      persistCurrentState: persistCurrentState,
+      getInitialState    : getInitialState
     };
 
     function getInitialState() {
       var initialState = $window.sessionStorage.getItem('initialState');
+      // If an initial route was set, process it now
       if (initialState) {
         $window.sessionStorage.removeItem('initialState');
-        return JSON.parse(initialState);
+        var parsedState = JSON.parse(initialState);
+
+        var expiresOn = parsedState.expiresOn ? moment(parsedState.expiresOn) : undefined,
+            now       = moment();
+
+        // If an expiration was not provided, or the requested route has not expired yet, return it as the new route
+        if (!expiresOn || expiresOn.isAfter(now)) {
+          return parsedState;
+        }
       }
-      else {
-        return undefined;
-      }
+      return undefined;
     }
+
+    function persistCurrentState(state, stateParams, externalRequestExpirationInMinutes) {
+      var stateName = _.get(state, 'name');
+      if (stateName) {
+        $window.sessionStorage.setItem('initialState',
+          JSON.stringify({
+            'nextState'  : state.name,
+            'stateParams': stateParams || {},
+            // Set an expiration if provided
+            'expiresOn'  : externalRequestExpirationInMinutes
+              ? moment().add(externalRequestExpirationInMinutes, 'minute').toISOString()
+              : undefined
+          })
+        );
+      }
+    };
   }
 })();
 
