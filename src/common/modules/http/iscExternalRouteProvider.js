@@ -87,7 +87,9 @@
             'nextState'  : nextState,
             'stateParams': stateParams,
             // Set an expiration -- if this state is later retrieved after it has expired, this state will be ignored
-            'expiresOn'  : moment().add(externalRequestExpirationInMinutes, 'minute').toISOString()
+            'expiresOn'  : externalRequestExpirationInMinutes
+              ? moment().add(externalRequestExpirationInMinutes, 'minute').toISOString()
+              : undefined
           })
         );
       }
