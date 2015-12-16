@@ -12,6 +12,11 @@
         helper;
 
 
+    // setup devlog
+    beforeEach(module('isc.core', function (devlogProvider) {
+      devlogProvider.loadConfig(customConfig);
+    }));
+
     beforeEach( module('isc.configuration'), function( $provide ){
       $provide.value('$log', console);
     });

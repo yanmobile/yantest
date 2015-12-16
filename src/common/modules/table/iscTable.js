@@ -175,10 +175,9 @@
 (function(){
   'use strict';
 
-  iscTable.$inject = [ '$log' ];
-
-  function iscTable( $log ){ //jshint ignore:line
-    //$log.debug('iscTable.LOADED');
+  /* @ngInject */
+  function iscTable( devlog ){ //jshint ignore:line
+    devlog.channel('iscTable').debug('iscTable.LOADED');
 
     // ----------------------------
     // vars
@@ -217,8 +216,8 @@
     // ----------------------------
     /* @ngInject */
     function controller( $scope, $filter ) {//jshint ignore:line
-      //$log.debug( 'iscTable.link, tableConfig', scope.tableConfig );
-      //$log.debug( '...tableData', scope.tableData );
+      devlog.channel('iscTable').debug( 'iscTable.link, tableConfig', $scope.tableConfig );
+      devlog.channel('iscTable').debug( '...tableData', $scope.tableData );
 
       var self = this;
       if ( _.isString( self.tableName ) && self.tableName.length > 0 ) {
@@ -242,10 +241,10 @@
       self.currentPage = 1;
 
       $scope.$watch( function(){ return self.tableData; }, function(){
-        //$log.debug( 'iscTable.WATCH tableData');
+        devlog.channel('iscTable').debug( 'iscTable.WATCH tableData');
         // set an array of the table row objects
         self.filteredRows = self.tableRows = self.tableConfig.key ? self.tableData[ self.tableConfig.key ] : self.tableData;
-        //$log.debug( '...tableRows',self.tableRows);
+        devlog.channel('iscTable').debug( '...tableRows',self.tableRows);
       });
 
         applyFilter();
@@ -274,12 +273,12 @@
       };
 
       self.doFilter = function (item) {
-        //$log.debug( 'iscTable.doFilter', item );
+        devlog.channel('iscTable').debug( 'iscTable.doFilter', item );
         var fitlerable = _.some( self.tableConfig.columns, function( column ){
           return _.isFunction( column.filterFunction );
         });
 
-        //$log.debug( '...fitlerable', fitlerable );
+        devlog.channel('iscTable').debug( '...fitlerable', fitlerable );
         if( fitlerable ){
           return self.filterFunction({item: item});
         }

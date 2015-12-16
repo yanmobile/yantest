@@ -60,6 +60,11 @@
 
     beforeEach( module( 'isc.table' ) );
 
+    // setup devlog
+    beforeEach(module('isc.core', function (devlogProvider) {
+      devlogProvider.loadConfig(customConfig);
+    }));
+
     // this loads all the external templates used in directives etc
     // eg, everything in templates/**/*.html
     beforeEach( module( 'isc.templates' ) );

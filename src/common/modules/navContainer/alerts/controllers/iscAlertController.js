@@ -7,8 +7,8 @@
   'use strict';
 
   /* @ngInject */
-  function iscAlertController( $log, iscAlertModel, iscSessionModel ){
-    //$log.debug( 'iscAlertController LOADED');
+  function iscAlertController( devlog, iscAlertModel, iscSessionModel ){
+    devlog.channel('iscAlertController').debug( 'iscAlertController LOADED');
 
     // ----------------------------
     // vars
@@ -22,17 +22,17 @@
     // ----------------------------
 
     self.ok = function () {
-      //$log.debug( 'iscAlertController.ok');
+      devlog.channel('iscAlertController').debug( 'iscAlertController.ok');
       if( self.getOptions().okCallback ){
-        //$log.debug( '...shazam');
+        devlog.channel('iscAlertController').debug( '...shazam');
         self.getOptions().okCallback();
       }
     };
 
     self.cancel = function () {
-      //$log.debug( 'iscAlertController.cancel');
+      devlog.channel('iscAlertController').debug( 'iscAlertController.cancel');
       if( self.getOptions().cancelCallback ){
-        //$log.debug( '...shazam');
+        devlog.channel('iscAlertController').debug( '...shazam');
         self.getOptions().cancelCallback();
       }
     };

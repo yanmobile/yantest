@@ -9,6 +9,11 @@
 
     beforeEach(module('isc.http'));
 
+    // setup devlog
+    beforeEach(module('isc.core', function (devlogProvider) {
+      devlogProvider.loadConfig(customConfig);
+    }));
+
     // use custom config mocks
     beforeEach(inject(function (_iscCustomConfigService_) {
       var mockConfig = angular.copy(customConfig);

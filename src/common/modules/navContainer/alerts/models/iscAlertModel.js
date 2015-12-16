@@ -9,7 +9,7 @@
   'use strict';
 
   /* @ngInject */
-  function iscAlertModel( $log ){//jshint ignore:line
+  function iscAlertModel( devlog ){//jshint ignore:line
 //    $log.debug( 'iscAlertModel LOADED');
 
     // ----------------------------
@@ -84,7 +84,7 @@
     }
 
     function setOptionsByType( type, response, okCallback, cancelCallback  ){
-      //$log.debug( 'iscAlertModel.setOptions');
+      devlog.channel('iscAlertModel').debug( 'iscAlertModel.setOptions');
       options = {
         title: ALERT_TITLES[ type ],
         message: ALERT_MESSAGES[ type ],
@@ -104,12 +104,12 @@
         options.showCancel = true;
       }
 
-      //$log.debug( '...options',options);
+      devlog.channel('iscAlertModel').debug( '...options',options);
       return options;
     }
 
     function getServerResponse( response ) {
-      //$log.debug( '...response',response);
+      devlog.channel('iscAlertModel').debug( '...response',response);
       var naMessage = '\n No further information is available.';
 
       if( response ){

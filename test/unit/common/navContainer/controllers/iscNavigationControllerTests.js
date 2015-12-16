@@ -18,6 +18,11 @@
       $state,
       controller;
 
+    // setup devlog
+    beforeEach(module('isc.core', function (devlogProvider) {
+      devlogProvider.loadConfig(customConfig);
+    }));
+
     // show $log statements
     beforeEach( module( 'iscNavContainer', function( $provide ){
       $provide.value('$log', console);

@@ -10,7 +10,11 @@
         service;
 
 
-    beforeEach( module('isc.core'));
+    // setup devlog
+    beforeEach(module('isc.core', function (devlogProvider) {
+      devlogProvider.loadConfig(customConfig);
+    }));
+
 
     beforeEach( inject( function( $rootScope, iscUiHelper ){
       scope = $rootScope.$new();

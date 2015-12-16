@@ -116,6 +116,11 @@
     beforeEach(module(function ($provide) {
       $provide.value('$log', console);
     }));
+    // setup devlog
+    beforeEach(module('isc.core', function (devlogProvider) {
+      devlogProvider.loadConfig(customConfig);
+    }));
+
 
     beforeEach(inject(function (_$rootScope_, _$compile_, $httpBackend, $state, $timeout, _$templateCache_) {
       $rootScope = _$rootScope_;

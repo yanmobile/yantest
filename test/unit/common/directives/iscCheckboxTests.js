@@ -18,6 +18,11 @@
     // eg, everything in templates/**/*.html
     beforeEach( module('isc.templates') );
 
+    // setup devlog
+    beforeEach(module('isc.core', function (devlogProvider) {
+      devlogProvider.loadConfig(customConfig);
+    }));
+
     // show $log statements
     beforeEach( module(  function( $provide ){
       $provide.value('$log', console);

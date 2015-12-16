@@ -17,6 +17,11 @@
 
     var item = group[1];
 
+    // setup devlog
+    beforeEach(module('isc.core', function (devlogProvider) {
+      devlogProvider.loadConfig(customConfig);
+    }));
+
     beforeEach (module ('isc.directives'));
     // show $log statements
     beforeEach( module( function( $provide ){

@@ -5,9 +5,8 @@
 (function(){
   'use strict';
 
-  iscNavContainerSecondaryNavAnimation.$inject = ['$log', 'iscAnimationService', 'TweenMax', 'EASE_DUR','iscCustomConfigService'];
-
-  function iscNavContainerSecondaryNavAnimation( $log, iscAnimationService, TweenMax, EASE_DUR ,iscCustomConfigService){
+  /* @ngInject */
+  function iscNavContainerSecondaryNavAnimation( devlog, iscAnimationService, TweenMax, EASE_DUR ,iscCustomConfigService){
 
     // --------------------
     // vars
@@ -33,7 +32,7 @@
     // --------------------
 
     function beforeAddClass( element, className, done ){
-      //$log.debug( 'iscNavContainerSecondaryNavAnimation.beforeAddClass' );
+      devlog.channel('iscNavContainerSecondaryNavAnimation').debug( 'iscNavContainerSecondaryNavAnimation.beforeAddClass' );
 
       if( className === 'secondary-nav' ){
 
@@ -48,14 +47,14 @@
         var yPos = -height - 50; // -50 ensures its offstage
         var yPosEnd = iscAnimationService.isPhone() ? -offsetY + 20 : iscAnimationService.getElementYPos( height, offsetY );
 
-        //$log.debug( '\n...element',element );
-        //$log.debug( '.....width',width );
-        //$log.debug( '....height',height );
-        //$log.debug( '...offsetX', offsetX );
-        //$log.debug( '...offsetY', offsetY );
-        //$log.debug( '......xPos',xPos );
-        //$log.debug( '......yPos',yPos );
-        //$log.debug( '...yPosEnd',yPosEnd );
+        devlog.channel('iscNavContainerSecondaryNavAnimation').debug( '\n...element',element );
+        devlog.channel('iscNavContainerSecondaryNavAnimation').debug( '.....width',width );
+        devlog.channel('iscNavContainerSecondaryNavAnimation').debug( '....height',height );
+        devlog.channel('iscNavContainerSecondaryNavAnimation').debug( '...offsetX', offsetX );
+        devlog.channel('iscNavContainerSecondaryNavAnimation').debug( '...offsetY', offsetY );
+        devlog.channel('iscNavContainerSecondaryNavAnimation').debug( '......xPos',xPos );
+        devlog.channel('iscNavContainerSecondaryNavAnimation').debug( '......yPos',yPos );
+        devlog.channel('iscNavContainerSecondaryNavAnimation').debug( '...yPosEnd',yPosEnd );
 
         TweenMax.set( element, {x:xPos, y: yPos, display: 'block', autoAlpha:1, width: width, height: height});
         TweenMax.to( element, EASE_DUR, { ease: Power2.easeOut, y: yPosEnd, onComplete: done });//jshint ignore:line
@@ -66,7 +65,7 @@
     }
 
     function beforeRemoveClass( element, className, done ){
-      //$log.debug( 'iscNavContainerSecondaryNavAnimation.beforeRemoveClass' );
+      devlog.channel('iscNavContainerSecondaryNavAnimation').debug( 'iscNavContainerSecondaryNavAnimation.beforeRemoveClass' );
       if( className === 'secondary-nav' ){
         var yPos = -element.height() - element[0].offsetTop;
         TweenMax.to( element, EASE_DUR, { ease: Power2.easeOut, y: yPos, onComplete: onRemoveComplete, onCompleteParams:[element, done] });//jshint ignore:line

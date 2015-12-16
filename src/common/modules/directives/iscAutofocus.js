@@ -16,10 +16,9 @@
 (function () {
   'use strict';
 
-  iscAutofocus.$inject = [ '$log', '$timeout' ];
-
-  function iscAutofocus ($log, $timeout) {
-    //$log.debug( 'iscAutofocus LOADED');
+  /* @ngInject */
+  function iscAutofocus (devlog, $timeout) {
+    devlog.channel('iscAutofocus').debug( 'iscAutofocus LOADED');
 
     // ----------------------------
     // vars

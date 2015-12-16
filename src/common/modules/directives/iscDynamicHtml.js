@@ -5,10 +5,9 @@
 (function(){
   'use strict';
 
-  iscDynamicHtml.$inject = [ '$log', '$compile', '$templateCache' ];
-
-  function iscDynamicHtml( $log, $compile, $templateCache ){//jshint ignore:line
-//    //$log.debug( 'iscDynamicHtml LOADED');
+  /* @ngInject */
+  function iscDynamicHtml( devlog, $compile, $templateCache ){//jshint ignore:line
+//    devlog.channel('iscDynamicHtml').debug( 'iscDynamicHtml LOADED');
 
     // ----------------------------
     // vars
@@ -33,7 +32,7 @@
 
     function link( scope, elem, attr ){
       scope.$watch( attr.iscDynamicHtml, function( html ){
-        //$log.debug( 'iscDynamicHtml', html );
+        devlog.channel('iscDynamicHtml').debug( 'iscDynamicHtml', html );
         elem.html( html );
         $compile( elem.contents() )( scope );
       });

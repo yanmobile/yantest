@@ -10,6 +10,11 @@
 
     var html = '<isc-critical-banner message="{{message}}"></isc-critical-banner>';
 
+    // setup devlog
+    beforeEach(module('isc.core', function (devlogProvider) {
+      devlogProvider.loadConfig(customConfig);
+    }));
+
     beforeEach(module('isc.directives'));
 
     // this loads all the external templates used in directives etc

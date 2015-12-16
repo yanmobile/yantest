@@ -6,7 +6,7 @@
   'use strict';
 
   /* @ngInject */
-  function iscFadeInBlinkOutAnimation( $log, $window, TweenMax, EASE_DUR ){
+  function iscFadeInBlinkOutAnimation( devlog, $window, TweenMax, EASE_DUR ){
 
   // --------------------
   // vars
@@ -32,7 +32,7 @@
   // --------------------
 
     function beforeAddClass( element, className, done ){
-      //$log.debug( 'iscFadeInBlinkOutAnimation.beforeRemoveClass' );
+      devlog.channel('iscFadeInBlinkOutAnimation').debug( 'iscFadeInBlinkOutAnimation.beforeRemoveClass' );
       if( className === 'fade-in-blink-out' ){
         TweenMax.set( element, {autoAlpha: 0, display: 'block'});//jshint ignore:line
         TweenMax.to( element, EASE_DUR, {autoAlpha: 1, onComplete: done})//jshint ignore:line
@@ -43,7 +43,7 @@
     }
 
     function beforeRemoveClass( element, className, done ){
-      //$log.debug( 'iscFadeInBlinkOutAnimation.beforeAddClass' );
+      devlog.channel('iscFadeInBlinkOutAnimation').debug( 'iscFadeInBlinkOutAnimation.beforeAddClass' );
       if( className === 'fade-in-blink-out' ){
         TweenMax.set( element, {autoAlpha: 0, display: 'none'});
         done();

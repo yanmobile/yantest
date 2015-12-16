@@ -10,7 +10,7 @@
 
   /* @ngInject */
   function iscTablePopupOpener($log, $state, $templateCache, $compile){//jshint ignore:line
-    //$log.debug( 'iscTablePopupOpener LOADED');
+    devlog.channel('').debug( 'iscTablePopupOpener LOADED');
 
     // ----------------------------
     // vars

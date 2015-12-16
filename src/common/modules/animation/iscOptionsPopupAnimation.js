@@ -6,7 +6,7 @@
   'use strict';
 
   /* @ngInject */
-  function iscOptionsPopupAnimation( $log, iscAnimationService, TweenMax, EASE_DUR ){
+  function iscOptionsPopupAnimation( devlog, iscAnimationService, TweenMax, EASE_DUR ){
 
   // --------------------
   // vars
@@ -32,7 +32,7 @@
   // --------------------
 
     function beforeAddClass( element, className, done ){
-      //$log.debug( 'iscOptionsPopupAnimation.beforeAddClass' );
+      devlog.channel('iscOptionsPopupAnimation').debug( 'iscOptionsPopupAnimation.beforeAddClass' );
       //
       if( className === 'popup-anime' ){
 
@@ -49,12 +49,12 @@
         var yPos = -height - 50; // -50 ensures its offstage
         var yPosEnd = iscAnimationService.getElementYPos( height, offsetY );
 
-        //$log.debug( '...iscAnimationService.getAppWidth()',iscAnimationService.getAppWidth() );
-        //$log.debug( '...width',width );
-        //$log.debug( '...offsetX',offsetX );
-        //$log.debug( '...xPos',xPos );
-        //$log.debug( '...yPos',yPos );
-        //$log.debug( '...yPosEnd',yPosEnd );
+        devlog.channel('iscOptionsPopupAnimation').debug( '...iscAnimationService.getAppWidth()',iscAnimationService.getAppWidth() );
+        devlog.channel('iscOptionsPopupAnimation').debug( '...width',width );
+        devlog.channel('iscOptionsPopupAnimation').debug( '...offsetX',offsetX );
+        devlog.channel('iscOptionsPopupAnimation').debug( '...xPos',xPos );
+        devlog.channel('iscOptionsPopupAnimation').debug( '...yPos',yPos );
+        devlog.channel('iscOptionsPopupAnimation').debug( '...yPosEnd',yPosEnd );
 
         TweenMax.set( element, { x:xPos, y: yPos, autoAlpha: 1 });
         TweenMax.to( element, EASE_DUR, { ease: Power2.easeOut, y: yPosEnd, onComplete: done });//jshint ignore:line
@@ -65,7 +65,7 @@
     }
 
     function beforeRemoveClass( element, className, done ){
-      //$log.debug( 'iscOptionsPopupAnimation.beforeRemoveClass' );
+      devlog.channel('iscOptionsPopupAnimation').debug( 'iscOptionsPopupAnimation.beforeRemoveClass' );
       if( className === 'popup-anime' ){
 
         var offsetY = element[0].offsetTop;

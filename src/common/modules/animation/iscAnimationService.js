@@ -9,7 +9,7 @@
   'use strict';
 
   /* @ngInject */
-  function iscAnimationService ($log, $window) {
+  function iscAnimationService (devlog, $window) {
     //    $log.debug( 'iscAnimationService.LOADED');
 
     // ----------------------------
@@ -68,18 +68,18 @@
     }
 
     function getElementXPos (elemW, offset) {
-      //$log.debug( 'iscAnimationService.getElementCenterXpos, elemW', elemW );
-      //$log.debug( '...elemW',elemW );
-      //$log.debug( '...getAppWidth()',getAppWidth() );
+      devlog.channel('iscAnimationService').debug( 'iscAnimationService.getElementCenterXpos, elemW', elemW );
+      devlog.channel('iscAnimationService').debug( '...elemW',elemW );
+      devlog.channel('iscAnimationService').debug( '...getAppWidth()',getAppWidth() );
 
       return doPositionCalc (elemW, getAppWidth (), offset);
     }
 
     function getElementYPos (elemH, offset) {
-      //$log.debug( 'iscAnimationService.getElementYPos' );
-      //$log.debug( '............elemH',elemH );
-      //$log.debug( '...offset', offset );
-      //$log.debug( '...getAppHeight()',getAppHeight() );
+      devlog.channel('iscAnimationService').debug( 'iscAnimationService.getElementYPos' );
+      devlog.channel('iscAnimationService').debug( '............elemH',elemH );
+      devlog.channel('iscAnimationService').debug( '...offset', offset );
+      devlog.channel('iscAnimationService').debug( '...getAppHeight()',getAppHeight() );
 
       return doPositionCalc (elemH, getAppHeight (), offset);
     }
@@ -103,11 +103,11 @@
       var appW = getAppWidth ();
 
       if (isPhone ()) {
-        //$log.debug( '..returning appW', appW);
+        devlog.channel('iscAnimationService').debug( '..returning appW', appW);
         return appW;
       }
       else {
-        //$log.debug( '..returning NAV_MAX_W', NAV_MAX_W);
+        devlog.channel('iscAnimationService').debug( '..returning NAV_MAX_W', NAV_MAX_W);
         return NAV_MAX_W;
       }
     }
@@ -139,23 +139,23 @@
      private
      */
     function getNavHeight (elemH, MIN) {
-      //$log.debug ('...elemH', elemH);
-      //$log.debug ('...MIN', MIN);
+      devlog.channel('iscAnimationService').debug ('...elemH', elemH);
+      devlog.channel('iscAnimationService').debug ('...MIN', MIN);
 
       var height;
 
       if (isPhone ()) {
-        //$log.debug ('...phone');
-        //$log.debug ('...fullHeight', service.getFullHeight());
+        devlog.channel('iscAnimationService').debug ('...phone');
+        devlog.channel('iscAnimationService').debug ('...fullHeight', service.getFullHeight());
 
         height = Math.max (elemH, service.getFullHeight ());
       }
       else {
-        //$log.debug ('...bigger');
+        devlog.channel('iscAnimationService').debug ('...bigger');
         height = Math.max (elemH, MIN);
       }
 
-      //$log.debug ('...returning h', h);
+      devlog.channel('iscAnimationService').debug ('...returning height', height);
       return height;
 
     }

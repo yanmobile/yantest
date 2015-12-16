@@ -5,8 +5,7 @@
 (function(){
   'use strict';
 
-  iscTableRowController.$inject = [ '$log', 'devlog', '$state', '$templateCache', '$compile' ];
-
+  /* @ngInject */
   // ----------------------------
   // functions
   // ----------------------------

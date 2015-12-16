@@ -18,8 +18,8 @@
   'use strict';
 
   /* @ngInject */
-  function iscTableRow( $log, devlog, $state, $templateCache, $compile ){
-    //$log.debug('iscTableRow.LOADED');
+  function iscTableRow( devlog, $state, $templateCache, $compile ){
+    devlog.channel('').debug('iscTableRow.LOADED');
 
     // ----------------------------
     // vars

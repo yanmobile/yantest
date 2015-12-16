@@ -6,8 +6,8 @@
   'use strict';
 
   /* @ngInject */
-  function iscAlertAnimation( $log, $window, TweenMax, iscAnimationService, EASE_DUR ){
-    //$log.debug( 'iscAlertAnimation.loaded' );
+  function iscAlertAnimation( devlog, $window, TweenMax, iscAnimationService, EASE_DUR ){
+    devlog.channel('iscAlertAnimation').debug( 'iscAlertAnimation.loaded' );
   // --------------------
   // vars
   // --------------------
@@ -32,7 +32,7 @@
   // --------------------
 
     function beforeAddClass( element, className, done ){
-      //$log.debug( 'iscAlertAnimation.beforeAddClass' );
+      devlog.channel('iscAlertAnimation').debug( 'iscAlertAnimation.beforeAddClass' );
 
       if( className === 'alert-anime' ){
 
@@ -52,7 +52,7 @@
     }
 
     function beforeRemoveClass( element, className, done ){
-      //$log.debug( 'iscAlertAnimation.beforeRemoveClass' );
+      devlog.channel('iscAlertAnimation').debug( 'iscAlertAnimation.beforeRemoveClass' );
 
       if( className === 'alert-anime' ){
         //var xPos = - element.width() - 50;

@@ -6,8 +6,8 @@
   'use strict';
 
   /* @ngInject */
-  function iscArrayStringFilter( $log, $filter ){//jshint ignore:line
-//    //$log.debug( 'iscArrayStringFilter LOADED');
+  function iscArrayStringFilter( devlog, $filter ){//jshint ignore:line
+//    devlog.channel('').debug( 'iscArrayStringFilter LOADED');
 
     // ----------------------------
     // vars
@@ -26,9 +26,9 @@
 
 
     function getArrayString( array ){
-      //$log.debug('iscArrayStringFilter.getArrayString');
-      //$log.debug('...array', array);
-      //$log.debug('...array', typeof array);
+      devlog.channel('').debug('iscArrayStringFilter.getArrayString');
+      devlog.channel('').debug('...array', array);
+      devlog.channel('').debug('...array', typeof array);
 
       if( Object.prototype.toString.call( array ) !== '[object Array]' ){
         return '';

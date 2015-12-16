@@ -13,10 +13,9 @@
 (function(){
   'use strict';
 
-  iscRadio.$inject = [ '$log', 'iscRadioGroupHelper'];
-
-  function iscRadio( $log, iscRadioGroupHelper ){
-//    //$log.debug( 'iscRadio LOADED');
+  /* @ngInject */
+  function iscRadio( devlog, iscRadioGroupHelper ){
+    devlog.channel('iscRadio').debug( 'iscRadio LOADED');
 
     // ----------------------------
     // vars
@@ -33,7 +32,9 @@
         radioItem: '='
       },
       link: link,
-      templateUrl: 'svg/isc-radio.html'
+      templateUrl: function (elem, attrs) {
+        return attrs.templateUrl || 'svg/isc-radio.html';
+      }
     };
 
     return directive;

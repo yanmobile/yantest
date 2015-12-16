@@ -6,7 +6,7 @@
   'use strict';
 
   /* @ngInject */
-  function iscScrollStickAnimation( $log, $window,  TweenMax, EASE_DUR ){
+  function iscScrollStickAnimation( devlog, $window,  TweenMax, EASE_DUR ){
 
   // --------------------
   // vars
@@ -32,7 +32,7 @@
   // --------------------
 
     function beforeAddClass( element, className, done ){
-      //$log.debug( 'iscScrollStickAnimation.beforeAddClass' );
+      devlog.channel('iscScrollStickAnimation').debug( 'iscScrollStickAnimation.beforeAddClass' );
 
       if( className === 'scroll-stick' ){
 
@@ -63,7 +63,7 @@
     }
 
     function beforeRemoveClass( element, className, done ){
-      //$log.debug( 'iscScrollStickAnimation.beforeRemoveClass' );
+      devlog.channel('iscScrollStickAnimation').debug( 'iscScrollStickAnimation.beforeRemoveClass' );
 
       if( className === 'scroll-stick' ){
 
