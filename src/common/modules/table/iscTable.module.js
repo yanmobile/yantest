@@ -6,6 +6,6 @@
   'use strict';
 
   angular
-    .module('isc.table', ['ui.router', 'pascalprecht.translate', 'isc.filters', 'isc.directives']);
+    .module('isc.table', ['isc.configuration', 'ui.router', 'pascalprecht.translate', 'isc.filters', 'isc.directives']);
 
 })();

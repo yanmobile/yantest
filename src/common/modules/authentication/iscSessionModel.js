@@ -2,12 +2,12 @@
  * Created by douglasgoodman on 11/18/14.
  */
 
-(function(){
+(function () {
   'use strict';
 
   /* @ngInject */
-  function iscSessionModel( $log, $rootScope, $interval, iscSessionStorageHelper, AUTH_EVENTS ){
-//    //$log.debug( 'iscSessionModel LOADED');
+  function iscSessionModel(devlog, $rootScope, $interval, iscSessionStorageHelper, AUTH_EVENTS) {
+    devlog.channel('iscSessionModel').debug('iscSessionModel LOADED');
 
     // ----------------------------
     // vars
@@ -23,12 +23,12 @@
     var permittedStates;
 
     var sessionTimeoutInSeconds = 0;
-    var sessionTimeoutCounter = 0;
-    var sessionTimeoutWarning = 0;
+    var sessionTimeoutCounter   = 0;
+    var sessionTimeoutWarning   = 0;
     var intervalPromise;
 
     // dont require login for these views
-    var noLoginRequiredList = [ 'index', 'index.login' ];
+    var noLoginRequiredList         = ['index', 'index.login'];
     var noLoginRequiredWildcardList = [];
 
     // ----------------------------
@@ -36,13 +36,13 @@
     // ----------------------------
 
     var model = {
-      create: create,
+      create : create,
       destroy: destroy,
 
-      initSessionTimeout: initSessionTimeout,
-      stopSessionTimeout: stopSessionTimeout,
+      initSessionTimeout : initSessionTimeout,
+      stopSessionTimeout : stopSessionTimeout,
       resetSessionTimeout: resetSessionTimeout,
-      getRemainingTime: getRemainingTime,
+      getRemainingTime   : getRemainingTime,
 
       getCredentials: getCredentials,
 
@@ -52,9 +52,9 @@
       getPermittedStates: getPermittedStates,
       setPermittedStates: setPermittedStates,
 
-      isAuthorized: isAuthorized,
+      isAuthorized   : isAuthorized,
       isAuthenticated: isAuthenticated,
-      isWhiteListed: isWhiteListed,
+      isWhiteListed  : isWhiteListed,
 
       setNoLoginRequiredList: setNoLoginRequiredList,
 
@@ -67,32 +67,32 @@
     // functions
     // ----------------------------
 
-    function create( sessionData, isSessionNew ){
-      //$log.debug( 'iscSessionModel.create');
+    function create(sessionData, isSessionNew) {
+      devlog.channel('iscSessionModel').debug('iscSessionModel.create');
       // $log.debug( '...sessionData: ' + JSON.stringify( sessionData  ));
 
       // store the login response for page refreshes
-      iscSessionStorageHelper.setLoginResponse( sessionData );
+      iscSessionStorageHelper.setLoginResponse(sessionData);
 
       credentials = {}; // for now we arent using credentials
-      setCurrentUser( sessionData.UserData );
+      setCurrentUser(sessionData.UserData);
 
       // set the timeout
       //sessionTimeoutInSeconds = 10; // DEV ONLY
       sessionTimeoutInSeconds = sessionData.SessionTimeout;
 
       if (isSessionNew) {
-        //$log.debug( '...new ' );
+        devlog.channel('iscSessionModel').debug('...new ');
         $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
       }
-      else{
+      else {
         // $log.debug( '...resumed ' );
-        $rootScope.$broadcast( AUTH_EVENTS.sessionResumedSuccess );
+        $rootScope.$broadcast(AUTH_EVENTS.sessionResumedSuccess);
       }
     }
 
-    function destroy(){
-      //$log.debug( 'iscSessionModel.destroy');
+    function destroy() {
+      devlog.channel('iscSessionModel').debug('iscSessionModel.destroy');
 
       // create a session with null data
       currentUser = null;
@@ -103,22 +103,22 @@
       iscSessionStorageHelper.destroy();
       stopSessionTimeout();
 
-      $rootScope.$broadcast( AUTH_EVENTS.logoutSuccess );
+      $rootScope.$broadcast(AUTH_EVENTS.logoutSuccess);
     }
 
     // --------------
-    function initSessionTimeout( timeoutCounter ){
-      //$log.debug( 'iscSessionModel.initSessionTimeout');
-      //$log.debug( '...timeoutCounter: ' + timeoutCounter );
+    function initSessionTimeout(timeoutCounter) {
+      devlog.channel('iscSessionModel').debug('iscSessionModel.initSessionTimeout');
+      devlog.channel('iscSessionModel').debug('...timeoutCounter: ' + timeoutCounter);
 
       // on page refresh we get this from sessionStorage and pass it in
       // otherwise assume it to be 0
       sessionTimeoutCounter = (timeoutCounter > 0) ? timeoutCounter : 0;
-      //$log.debug( '...sessionTimeoutCounter: ' + sessionTimeoutCounter );
-      //$log.debug( '...sessionTimeoutInSeconds: ' + sessionTimeoutInSeconds );
+      devlog.channel('iscSessionModel').debug('...sessionTimeoutCounter: ' + sessionTimeoutCounter);
+      devlog.channel('iscSessionModel').debug('...sessionTimeoutInSeconds: ' + sessionTimeoutInSeconds);
 
-      sessionTimeoutWarning = parseInt( sessionTimeoutInSeconds *0.75 );
-      //$log.debug( '...sessionTimeoutWarning: ' + sessionTimeoutWarning );
+      sessionTimeoutWarning = parseInt(sessionTimeoutInSeconds * 0.75);
+      devlog.channel('iscSessionModel').debug('...sessionTimeoutWarning: ' + sessionTimeoutWarning);
 
       doSessionTimeout();
     }
@@ -126,115 +126,115 @@
     /**
      * private
      */
-    function doSessionTimeout(){
-      //$log.debug( 'iscSessionModel.doSessionTimeout');
+    function doSessionTimeout() {
+      devlog.channel('iscSessionModel').debug('iscSessionModel.doSessionTimeout');
 
-      if( intervalPromise ){
-        //$log.debug( '...already there' );
+      if (intervalPromise) {
+        devlog.channel('iscSessionModel').debug('...already there');
         return;
       }
 
-      intervalPromise = $interval( function(){
+      intervalPromise = $interval(function () {
         sessionTimeoutCounter++;
 
-        iscSessionStorageHelper.setSessionTimeoutCounter( sessionTimeoutCounter );
-        //$log.debug( '...TICK ' );
-        //$log.debug( '...sessionTimeoutInSeconds ' + sessionTimeoutInSeconds );
-        //$log.debug( '...sessionTimeoutCounter ' + sessionTimeoutCounter );
-        //$log.debug( '...sessionTimeoutWarning ' + sessionTimeoutWarning );
-        //$log.debug( '...remainingTime ' + remainingTime );
+        iscSessionStorageHelper.setSessionTimeoutCounter(sessionTimeoutCounter);
+        devlog.channel('iscSessionModel').debug('...TICK ');
+        devlog.channel('iscSessionModel').debug('...sessionTimeoutInSeconds ' + sessionTimeoutInSeconds);
+        devlog.channel('iscSessionModel').debug('...sessionTimeoutCounter ' + sessionTimeoutCounter);
+        devlog.channel('iscSessionModel').debug('...sessionTimeoutWarning ' + sessionTimeoutWarning);
+        devlog.channel('iscSessionModel').debug('...remainingTime ' + remainingTime);
 
-        if( sessionTimeoutCounter >= sessionTimeoutWarning && sessionTimeoutCounter < sessionTimeoutInSeconds ){
+        if (sessionTimeoutCounter >= sessionTimeoutWarning && sessionTimeoutCounter < sessionTimeoutInSeconds) {
           // warn
-          //$log.debug( '...WARN ' + sessionTimeoutCounter );
-          $rootScope.$broadcast( AUTH_EVENTS.sessionTimeoutWarning );
+          devlog.channel('iscSessionModel').debug('...WARN ' + sessionTimeoutCounter);
+          $rootScope.$broadcast(AUTH_EVENTS.sessionTimeoutWarning);
         }
-        else if( sessionTimeoutCounter >= sessionTimeoutInSeconds ){
-          //$log.debug( '...TIMEOUT ' + sessionTimeoutCounter );
+        else if (sessionTimeoutCounter >= sessionTimeoutInSeconds) {
+          devlog.channel('iscSessionModel').debug('...TIMEOUT ' + sessionTimeoutCounter);
           // logout
-          $rootScope.$broadcast( AUTH_EVENTS.sessionTimeout );
-          iscSessionStorageHelper.setShowTimedOutAlert( true );
+          $rootScope.$broadcast(AUTH_EVENTS.sessionTimeout);
+          iscSessionStorageHelper.setShowTimedOutAlert(true);
           stopSessionTimeout();
         }
       }, 1000);
     }
 
     function stopSessionTimeout() {
-      //$log.debug( 'iscSessionModel.stopSessionTimeout');
-      if( angular.isDefined( intervalPromise )){
-        //$log.debug( '...cancelling');
-        $interval.cancel( intervalPromise );
+      devlog.channel('iscSessionModel').debug('iscSessionModel.stopSessionTimeout');
+      if (angular.isDefined(intervalPromise)) {
+        devlog.channel('iscSessionModel').debug('...cancelling');
+        $interval.cancel(intervalPromise);
         intervalPromise = null;
       }
 
-      //$log.debug( '...intervalPromise',intervalPromise);
+      devlog.channel('iscSessionModel').debug('...intervalPromise', intervalPromise);
     }
 
-    function resetSessionTimeout(){
-      //$log.debug( 'iscSessionModel.resetSessionTimeout');
+    function resetSessionTimeout() {
+      devlog.channel('iscSessionModel').debug('iscSessionModel.resetSessionTimeout');
       sessionTimeoutCounter = 0;
-      iscSessionStorageHelper.setSessionTimeoutCounter( sessionTimeoutCounter );
+      iscSessionStorageHelper.setSessionTimeoutCounter(sessionTimeoutCounter);
       //stopSessionTimeout();
       //doSessionTimeout();
     }
 
-    function getRemainingTime(){
+    function getRemainingTime() {
       var remaining = sessionTimeoutInSeconds - sessionTimeoutCounter;
       return remaining;
     }
 
     // --------------
-    function getCredentials(){
+    function getCredentials() {
       return credentials;
     }
 
     // --------------
-    function getCurrentUser(){
+    function getCurrentUser() {
       return currentUser;
     }
 
-    function setCurrentUser( user ){
-      //$log.debug( 'iscSessionModel.setCurrentUser');
-      //$log.debug( '...user: ' + angular.toJson( user ));
+    function setCurrentUser(user) {
+      devlog.channel('iscSessionModel').debug('iscSessionModel.setCurrentUser');
+      devlog.channel('iscSessionModel').debug('...user: ' + angular.toJson(user));
       currentUser = user;
     }
 
 
     // --------------
-    function getPermittedStates(){
+    function getPermittedStates() {
       return permittedStates;
     }
 
-    function setPermittedStates( val ){
+    function setPermittedStates(val) {
       permittedStates = val;
     }
 
     // --------------
-    function isAuthenticated(){
-      //$log.debug( 'iscSessionModel.isAuthenticated', currentUser );
-      return !_.isEmpty( currentUser );
+    function isAuthenticated() {
+      devlog.channel('iscSessionModel').debug('iscSessionModel.isAuthenticated', currentUser);
+      return !_.isEmpty(currentUser);
     }
 
-    function isAuthorized( stateName ){
-      //$log.debug( 'iscSessionModel.isAuthorized' );
-      //$log.debug( '...stateName: ' + stateName  );
+    function isAuthorized(stateName) {
+      devlog.channel('iscSessionModel').debug('iscSessionModel.isAuthorized');
+      devlog.channel('iscSessionModel').debug('...stateName: ' + stateName);
 
       // everything permitted
-      if (_.contains( permittedStates, '*')) {
-        //$log.debug('...allowing everything');
+      if (_.contains(permittedStates, '*')) {
+        devlog.channel('iscSessionModel').debug('...allowing everything');
         //turn everything on
         return true;
       }
 
       // otherwise check for wild cards or existence
-      var wildCardSuperState = getWildCardStateForState( stateName );
-      //$log.debug('...wildCardSuperState: ' + wildCardSuperState);
+      var wildCardSuperState = getWildCardStateForState(stateName);
+      devlog.channel('iscSessionModel').debug('...wildCardSuperState: ' + wildCardSuperState);
 
       if (wildCardSuperState) {
-        //$log.debug('...stateName.indexOf( wildCardSuperState ): ' + stateName.indexOf( wildCardSuperState ));
+        devlog.channel('iscSessionModel').debug('...stateName.indexOf( wildCardSuperState ): ' + stateName.indexOf(wildCardSuperState));
         // weird bug in lodash where if the stateName === wildCardSuperState, _.indexOf returns -1
         // so using this other form for checking
-        return stateName.indexOf( wildCardSuperState ) > -1;
+        return stateName.indexOf(wildCardSuperState) > -1;
       }
       else {
         return _.indexOf(permittedStates, stateName) > -1;
@@ -246,20 +246,20 @@
      * @param stateName String
      * @returns String wildCardSuperState || undefined
      */
-    function getWildCardStateForState( stateName ){
-      //$log.debug('...getWildCardStateForState, stateName', stateName);
+    function getWildCardStateForState(stateName) {
+      devlog.channel('iscSessionModel').debug('...getWildCardStateForState, stateName', stateName);
 
       var wildCardSuperState;
       var stateToCheck;
 
-      _.forEach( permittedStates, function (permittedState) {
+      _.forEach(permittedStates, function (permittedState) {
         var starIdx = permittedState.indexOf('.*');
         if (starIdx > -1) {
           // got a wildcard
           stateToCheck = permittedState.substr(0, starIdx);
-          //$log.debug('...stateToCheck: ' + stateToCheck);
-          if( stateName.indexOf( stateToCheck ) >-1 || stateName === stateToCheck ){
-            //$log.debug('...gotcha');
+          devlog.channel('iscSessionModel').debug('...stateToCheck: ' + stateToCheck);
+          if (stateName.indexOf(stateToCheck) > -1 || stateName === stateToCheck) {
+            devlog.channel('iscSessionModel').debug('...gotcha');
             wildCardSuperState = stateToCheck;
           }
         }
@@ -277,56 +277,56 @@
      * @param stateName {string}
      * @returns {boolean}
      */
-    function isWhiteListed( stateName ){
-      //$log.debug( 'iscSessionModel.isWhiteListed' );
-      //$log.debug( '...noLoginRequiredList: ' + JSON.stringify(noLoginRequiredList) );
-      //$log.debug( '...stateName: ' + stateName );
+    function isWhiteListed(stateName) {
+      devlog.channel('iscSessionModel').debug('iscSessionModel.isWhiteListed');
+      devlog.channel('iscSessionModel').debug('...noLoginRequiredList: ' + JSON.stringify(noLoginRequiredList));
+      devlog.channel('iscSessionModel').debug('...stateName: ' + stateName);
 
       var whitelisted = false;
 
-      if( _.indexOf( noLoginRequiredList, stateName ) !== -1 ){
+      if (_.indexOf(noLoginRequiredList, stateName) !== -1) {
         whitelisted = true;
       }
-      else{
+      else {
         // create a map of values that shows
         // whether the stateName matches anything in the wildcard list
-        var map =_.map( noLoginRequiredWildcardList, function( state ){
-          return _.contains( stateName, state );
+        var map = _.map(noLoginRequiredWildcardList, function (state) {
+          return _.contains(stateName, state);
         });
 
         // is anything in the map true?
-        whitelisted = _.some( map );
+        whitelisted = _.some(map);
       }
 
-      //$log.debug( '...whitelisted: ' + whitelisted );
+      devlog.channel('iscSessionModel').debug('...whitelisted: ' + whitelisted);
       return whitelisted;
     }
 
     // --------------
-    function setNoLoginRequiredList( val ){
-      //$log.debug( 'iscSessionModel.setNoLoginRequiredList: ' + JSON.stringify( val ));
+    function setNoLoginRequiredList(val) {
+      devlog.channel('iscSessionModel').debug('iscSessionModel.setNoLoginRequiredList: ' + JSON.stringify(val));
 
       // reset the lists
-      noLoginRequiredList = [];
+      noLoginRequiredList         = [];
       noLoginRequiredWildcardList = [];
 
       // then populate wildcard states and non-wildcard states
-      _.forEach( val, function( state ){
-        if( state.indexOf( '.*' ) !== -1 ){
-          noLoginRequiredWildcardList.push( state.slice( 0, -2 ));
+      _.forEach(val, function (state) {
+        if (state.indexOf('.*') !== -1) {
+          noLoginRequiredWildcardList.push(state.slice(0, -2));
         }
-        else{
-          noLoginRequiredList.push( state );
+        else {
+          noLoginRequiredList.push(state);
         }
       });
 
-      //$log.debug( '...noLoginRequiredList: ' + JSON.stringify( noLoginRequiredList ));
-      //$log.debug( '...noLoginRequiredWildcardList: ' + JSON.stringify( noLoginRequiredWildcardList ));
+      devlog.channel('iscSessionModel').debug('...noLoginRequiredList: ' + JSON.stringify(noLoginRequiredList));
+      devlog.channel('iscSessionModel').debug('...noLoginRequiredWildcardList: ' + JSON.stringify(noLoginRequiredWildcardList));
     }
 
     // --------------
-    function getFullName(){
-      //$log.debug( 'iscSessionModel.getFullName');
+    function getFullName() {
+      devlog.channel('iscSessionModel').debug('iscSessionModel.getFullName');
       return !!currentUser ? currentUser.FullName : '';
     }
 
@@ -337,8 +337,8 @@
   // ----------------------------
   // injection
   // ----------------------------
-  angular.module( 'isc.authentication' )
-      .factory( 'iscSessionModel', iscSessionModel );
+  angular.module('isc.authentication')
+    .factory('iscSessionModel', iscSessionModel);
 
 })();
 

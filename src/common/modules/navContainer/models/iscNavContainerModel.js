@@ -1,17 +1,13 @@
 /**
  * Created by dgoodman on 2/3/15.
  */
-/**
- * Created by douglasgoodman on 2/3/15.
- */
 
 (function () {
   'use strict';
 
-  iscNavContainerModel.$inject = ['$log', 'iscCustomConfigHelper'];
-
-  function iscNavContainerModel( $log, iscCustomConfigHelper ){
-//    //$log.debug( 'iscNavContainerModel LOADED');
+  /* @ngInject */
+  function iscNavContainerModel(devlog, iscCustomConfigHelper) {
+//   devlog('iscNavContainerModel').debug( 'iscNavContainerModel LOADED');
 
     // ----------------------------
     // vars
@@ -38,31 +34,31 @@
     // ----------------------------
     // functions
     // ----------------------------
-    function getSecondaryNav(){
-      //$log.debug( 'iscNavContainerModel.getSecondaryNav');
+    function getSecondaryNav() {
+      devlog('iscNavContainerModel').debug('getSecondaryNav');
       return secondaryNav;
     }
 
-    function setSecondaryNav( val ){
-      //$log.debug( 'iscNavContainerModel.setSecondaryNav');
+    function setSecondaryNav(val) {
+      devlog('iscNavContainerModel').debug('setSecondaryNav');
       secondaryNav = val;
     }
 
-    function getSecondaryNavTasks(){
-      //$log.debug( 'iscNavContainerModel.getSecondaryNavTasks');
+    function getSecondaryNavTasks() {
+      devlog('iscNavContainerModel').debug('getSecondaryNavTasks');
       return secondaryNavTasks;
     }
 
-    function setSecondaryNavTasks( val ){
-      //$log.debug( 'iscNavContainerModel.setSecondaryNavTasks');
+    function setSecondaryNavTasks(val) {
+      devlog('iscNavContainerModel').debug('setSecondaryNavTasks');
       secondaryNavTasks = val;
     }
 
-    function hasSecondaryNavTasks(){
+    function hasSecondaryNavTasks() {
       return !!secondaryNavTasks && secondaryNavTasks.length > 0;
     }
 
-    function getCurrentStateTranslationKey(){
+    function getCurrentStateTranslationKey() {
       return iscCustomConfigHelper.getCurrentStateTranslationKey();
     }
 
