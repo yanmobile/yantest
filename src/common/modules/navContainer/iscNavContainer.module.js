@@ -20,7 +20,6 @@
         hideSideNavBar:       'iscHideSideNavBar'
       })
 
-
       .config( function( $stateProvider ){
         //console.log('iscNavContainer.config');
 
@@ -34,15 +33,8 @@
 
               views: {
                 '@': {
-                  templateUrl: 'app/navContainer/iscNavContainer.html',
+                  templateUrl: 'navContainer/iscNavContainer.html',
                   controller: 'iscNavigationController as navCtrl'
-                }
-              },
-
-              resolve: {
-                loadConfig: function(  $log, iscCustomConfigService ){
-                  devlog.channel('StateNav').debug( 'iscNavContainer.loadConfig');
-                  return iscCustomConfigService.loadConfig();
                 }
               }
             });
@@ -72,13 +64,11 @@
               devlog.channel('StateNav').debug( '...from: ' + fromState.name );
               devlog.channel('StateNav').debug( '.....to: ', toState.name );
 
-              iscCustomConfigService.loadConfig().then( function( config ){//jshint ignore:line
-                devlog.channel('StateNav').debug( 'State change request received');
-                devlog.channel('StateNav').debug( 'Beginning state change from "%s" to "%s"', fromState.name, toState.name);
+              devlog.channel('StateNav').debug('State change request received');
+              devlog.channel('StateNav').debug('Beginning state change from "%s" to "%s"', fromState.name, toState.name);
 
-                startLoadingAnimation();
-                handleStateChangeStart( event, toState, toParams, fromState, fromParams  );
-              });
+              startLoadingAnimation();
+              handleStateChangeStart(event, toState, toParams, fromState, fromParams);
             });
 
         // ------------------------
@@ -104,7 +94,7 @@
           var stateIsExcluded = iscCustomConfigHelper.stateIsExcluded( toState.name );
 
           if( stateIsExcluded ){
-            devlog.channel('StateNav').debug( '...excluded state');
+            devlog.channel('StateNav').warn( '...excluded state');
             // even if you are authorized and logged in, don't navigate to excluded states
             // this prevents navigation to excluded pages via entering the uri directly in the browser
             preventDefault( event );
@@ -123,7 +113,7 @@
           devlog.channel('StateNav').debug( '...isAuthenticated',isAuthenticated);
 
           if( !isAuthorized ){
-            devlog.channel('StateNav').debug( '...not authorized');
+            devlog.channel('StateNav').debug( toState.name + ' is not authorized');
 
             if( !isAuthenticated ){
               devlog.channel('StateNav').debug( '...not authenticated');

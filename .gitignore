@@ -1,6 +1,7 @@
 .idea/
 .yo-rc.json
 .idea/modules.xml
+.tmp-css
 bower_components
 node_modules
 www
