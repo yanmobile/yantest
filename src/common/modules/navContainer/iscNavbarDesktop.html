@@ -76,14 +76,14 @@
 
       <!-- login -->
       <div class="isc-tab-container pull-right"
-           ng-if="navbarCtrl.showLogin()">
+           ng-if="navbarCtrl.showLogin">
         <a class="isc-main-tab"
            ui-sref="index.login">{{'ISC_LOGIN' | translate}}</a>
       </div>
 
       <!-- logout -->
       <div class="isc-tab-container pull-right"
-           ng-if="navbarCtrl.showLogout()">
+           ng-if="navbarCtrl.showLogout">
         <a class="isc-main-tab"
            ng-click="navbarCtrl.logout()">{{'ISC_LOGOUT' | translate}}</a>
       </div>
