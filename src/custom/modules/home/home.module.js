@@ -7,7 +7,7 @@
   'use strict';
 
   angular
-    .module('hsHome', ['ui.router'])
+    .module('home', ['ui.router'])
     /* @ngInject */
     .config(function ($stateProvider, $urlRouterProvider) {
 
@@ -20,8 +20,8 @@
       $stateProvider
         .state('index.home', {
           url        : 'home',
-          templateUrl: 'home/hsHome.html',
-          controller : 'hsHomeController'
+          templateUrl: 'home/home.html',
+          controller : 'homeController'
         });
     });
 })();

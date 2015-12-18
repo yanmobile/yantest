@@ -5,11 +5,11 @@
 (function () {
   'use strict';
   angular
-    .module('hsSampleApp', ['isc.common', 'hsHome'])
+    .module('app', ['isc.common', 'home'])
     /* @ngInject */
-    .config(function (iscCustomConfigServiceProvider, devlogProvider, hsSampleAppConfig, $translateProvider) {
-      iscCustomConfigServiceProvider.loadConfig(hsSampleAppConfig);
-      devlogProvider.loadConfig(hsSampleAppConfig);
+    .config(function (iscCustomConfigServiceProvider, devlogProvider, appConfig, $translateProvider) {
+      iscCustomConfigServiceProvider.loadConfig(appConfig);
+      devlogProvider.loadConfig(appConfig);
 
       $translateProvider.useStaticFilesLoader({
         prefix: 'assets/i18n/locale-',
