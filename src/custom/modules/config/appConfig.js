@@ -6,7 +6,7 @@
 
   'use strict';
 
-  var hsSampleAppConfig = {
+  var appConfig = {
     'devlogWhitelist'  : ['*'],
     'api'              : {
       'protocol' : 'http',
@@ -50,7 +50,7 @@
   // ----------------------------
   // injection
   // ----------------------------
-  angular.module('hsSampleApp')
-    .constant('hsSampleAppConfig', hsSampleAppConfig);
+  angular.module('app')
+    .constant('appConfig', appConfig);
 
 })();

@@ -7,8 +7,8 @@
   'use strict';
 
   /* @ngInject */
-  function hsHomeController( devlog) {
-    devlog.channel('hsHomeController').debug('hsHomeController LOADED');
+  function homeController(devlog) {
+    devlog.channel('homeController').debug('homeController LOADED');
 
     // ----------------------------
     // vars
@@ -21,7 +21,7 @@
   // ----------------------------
   // injection
   // ----------------------------
-  angular.module('hsHome')
-    .controller('hsHomeController', hsHomeController);
+  angular.module('home')
+    .controller('homeController', homeController);
 
 })();
