@@ -1,4 +1,4 @@
-hs-ui-angular-core
+hs-core-ui-ddp
 ==================
 
 HealthShare UI infrastructure that is intended for use across projects
@@ -11,7 +11,7 @@ To use:
     The folder structure should be similar to this:
         gulp (contains all the build tasks, including common.json)
             common.json
-            custom.json
+            app.json    //application specific
             build.js
             test-unit.js
         gulpfile.js
@@ -21,7 +21,7 @@ To use:
                 assets
                 modules
                     bower.json
-            custom
+            app    //application specific
                 assets
                 bower.json
                 modules
@@ -32,7 +32,7 @@ To use:
         test
             unit
                 common
-                custom
+                app    //application specific
         
 Run application:
 
@@ -45,4 +45,4 @@ Run tests:
 
     gulp test
     gulp test:common
-    gulp test:custom
+    gulp test:app    //application specific
