@@ -21,7 +21,7 @@
       js: [],
 
       fonts: [
-        "./src/custom/assets/fonts/opensans*.*"
+        "./src/app/assets/fonts/opensans*.*"
       ]
     }
   };
@@ -63,6 +63,7 @@
       templateCache = require('gulp-angular-templatecache'),
       uglify        = require('gulp-uglify'),
       wiredep       = require('wiredep'),
+      jscs          = require('gulp-jscs'),
       _             = require('lodash');
 
 
@@ -115,6 +116,18 @@
       .pipe(size());
   });
 
+
+  /*=========================================
+   =            jscs            =
+   =========================================*/
+
+  gulp.task('jscs', function () {
+    return gulp.src('src/*/modules/**/*.js')
+      .pipe(jscs({ fix: true }))
+      .pipe(jscs.reporter());
+  });
+
+
   /*==================================
    =            Copy fonts            =
    ==================================*/
@@ -141,17 +154,17 @@
    ==================================*/
 
   gulp.task('i18n', function () {
-    return gulp.src(['./src/custom/assets/i18n/**'])
+    return gulp.src(['./src/app/assets/i18n/**'])
       .pipe(gulp.dest(path.join(config.dest, 'assets/i18n')));
   });
 
   gulp.task('configuration', function () {
-    return gulp.src(['./src/custom/assets/configuration/**'])
+    return gulp.src(['./src/app/assets/configuration/**'])
       .pipe(gulp.dest(path.join(config.dest, 'assets/configuration')));
   });
 
   gulp.task('mocks', function () {
-    return gulp.src(['./src/custom/assets/mockData/**'])
+    return gulp.src(['./src/app/assets/mockData/**'])
       .pipe(gulp.dest(path.join(config.dest, 'assets/mockData')));
   });
 
@@ -170,7 +183,7 @@
   gulp.task('images', function () {
     var stream = gulp.src(
       [
-        './src/custom/assets/images/**/*',
+        './src/app/assets/images/**/*',
         './src/common/assets/images/**/*'
       ]);
 
@@ -193,7 +206,7 @@
 
   gulp.task('sass', [], function () {
     return gulp.src(
-      ['./src/custom/assets/sass/main.scss'])
+      ['./src/app/assets/sass/main.scss'])
       .pipe(sass({ errLogToConsole: true }))
       .on('error', handleError)
       .pipe(mobilizer('app.css', {
@@ -229,7 +242,7 @@
 
     var customOpts = {
       module: 'isc.common',
-      strip : 'custom/modules/'
+      strip : 'app/modules/'
     };
 
     streamqueue({ objectMode: true },
@@ -243,10 +256,10 @@
       gulp.src('src/common/modules/**/*.html').pipe(templateCache(commonOpts)),
 
       gulp.src([
-        'src/custom/modules/**/*.module.js',
-        'src/custom/modules/**/*.js',
-        'src/custom/assets/plugins/**/*.js']).pipe(ngFilesort()),
-      gulp.src('src/custom/modules/**/*.html').pipe(templateCache(customOpts))
+        'src/app/modules/**/*.module.js',
+        'src/app/modules/**/*.js',
+        'src/app/assets/plugins/**/*.js']).pipe(ngFilesort()),
+      gulp.src('src/app/modules/**/*.html').pipe(templateCache(customOpts))
     )
       .pipe(ngAnnotate())
       //.pipe(uglify())
@@ -295,7 +308,7 @@
   });
 
   gulp.task('useRelativePath', function () {
-    return gulp.src(['./src/custom/assets/configuration/configFile.json'])
+    return gulp.src(['./src/app/assets/configuration/configFile.json'])
       // replace simpleAPI with "api/v1"
       .pipe(replace('"/csp/healthshare/cmc/cc/api/v1"', '"api/v1"'))
       // set API mode to real

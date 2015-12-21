@@ -13,11 +13,11 @@ fi
 
 cd $startdir
 
-if [ ! -d "src/custom/bower_components" ]; then
-    cd src/custom
+if [ ! -d "src/app/bower_components" ]; then
+    cd src/app
     bower install
     mv src/common/bower_components ./
     rm -rf src
 else
-    echo "src/custom/bower_components already exists. skipping..."
+    echo "src/app/bower_components already exists. skipping..."
 fi
