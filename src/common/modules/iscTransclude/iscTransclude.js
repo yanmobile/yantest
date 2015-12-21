@@ -42,7 +42,7 @@
 
  * CALLBACK FUNCTION
  * Any attribute prefixed with 'config-item-fn' will be treated as a function parameter
- * SEE: src/custom/modules/iscTransclude/iscGridFormItemFilter.html
+ * SEE: src/app/modules/iscTransclude/iscGridFormItemFilter.html
  <isc-transclude config-item-fn-clearfn='iscRowCtrl.editModeData.DoseAndUnits = null'">
  <control-template>
  <input type='text' ng-model='iscRowCtrl.editModeData['DoseAndUnits']'>

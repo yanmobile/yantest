@@ -7,4 +7,4 @@ node_modules
 www
 
 #local config for each developer
-src/custom/assets/configuration/localConfig.json
+src/app/assets/configuration/localConfig.json
