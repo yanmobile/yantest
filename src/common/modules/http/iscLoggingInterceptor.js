@@ -5,6 +5,12 @@
 (function () {
   'use strict';
 
+  // ----------------------------
+  // injection
+  // ----------------------------
+  angular.module('isc.http')
+    .factory('iscLoggingInterceptor', iscLoggingInterceptor);
+
   /* @ngInject */
   function iscLoggingInterceptor($q, devlog) {//jshint ignore:line
     // ----------------------------
@@ -46,9 +52,4 @@
     }
   }// END CLASS
 
-  // ----------------------------
-  // injection
-  // ----------------------------
-  angular.module('isc.http')
-    .factory('iscLoggingInterceptor', iscLoggingInterceptor);
 })();

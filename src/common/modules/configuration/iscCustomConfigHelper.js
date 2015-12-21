@@ -5,6 +5,13 @@
 (function () {
   'use strict';
 
+  // ----------------------------
+  // inject
+  // ----------------------------
+
+  angular.module('isc.configuration')
+    .factory('iscCustomConfigHelper', iscCustomConfigHelper);
+
   /* @ngInject */
   function iscCustomConfigHelper(devlog, $state) {
     devlog.channel("iscCustomConfigHelper").debug('iscCustomConfigHelper LOADED');
@@ -124,10 +131,4 @@
 
   }// END CLASS
 
-  // ----------------------------
-  // inject
-  // ----------------------------
-
-  angular.module('isc.configuration')
-    .factory('iscCustomConfigHelper', iscCustomConfigHelper);
 })();

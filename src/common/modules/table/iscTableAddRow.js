@@ -5,9 +5,12 @@
 (function(){
   'use strict';
 
+  angular.module( 'isc.table' )
+    .directive( 'iscTableAddRow', iscTableAddRow );
+
   /* @ngInject */
   function iscTableAddRow( devlog, $state, $templateCache, $compile ){
-    devlog.channel('').debug('iscTableAddRow.LOADED');
+    devlog.channel('iscTableAddRow').debug('iscTableAddRow.LOADED');
 
     // ----------------------------
     // vars
@@ -53,12 +56,5 @@
       }
     }
   }
-
-  // ----------------------------
-  // inject
-  // ----------------------------
-
-  angular.module( 'isc.table' )
-    .directive( 'iscTableAddRow', iscTableAddRow );
 
 })();

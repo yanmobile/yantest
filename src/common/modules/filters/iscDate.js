@@ -6,6 +6,11 @@
 
 (function(){
   'use strict';
+  // ----------------------------
+  // injection
+  // ----------------------------
+  angular.module( 'isc.filters' )
+    .filter( 'iscDate', iscDate );
 
   /* @ngInject */
   function iscDate( devlog, $filter ){
@@ -34,10 +39,5 @@
     };
 
   }//END CLASS
-  // ----------------------------
-  // injection
-  // ----------------------------
-  angular.module( 'isc.filters' )
-      .filter( 'iscDate', iscDate );
 
 })();

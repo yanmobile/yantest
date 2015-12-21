@@ -17,9 +17,12 @@
 (function(){
   'use strict';
 
+  angular.module( 'isc.table' )
+    .directive( 'iscTableRow', iscTableRow );
+
   /* @ngInject */
   function iscTableRow( devlog, $state, $templateCache, $compile ){
-    devlog.channel('').debug('iscTableRow.LOADED');
+    devlog.channel('iscTableRow').debug('iscTableRow.LOADED');
 
     // ----------------------------
     // vars
@@ -78,12 +81,5 @@
 
     }
   }
-
-  // ----------------------------
-  // inject
-  // ----------------------------
-
-  angular.module( 'isc.table' )
-      .directive( 'iscTableRow', iscTableRow );
 
 })();

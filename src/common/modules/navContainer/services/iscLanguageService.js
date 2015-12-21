@@ -5,9 +5,12 @@
 (function () {
   'use strict';
 
+  // --------------------
+  // INPLEMENTATION DETAILS
+  // --------------------
   /* @ngInject */
   function iscLanguageService (devlog, $window, $translate, iscCustomConfigService, iscSessionStorageHelper) {
-    devlog.channel('').debug( 'iscLanguageService LOADED');
+    devlog.channel('iscLanguageService').debug( 'iscLanguageService LOADED');
 
     // ----------------------------
     // vars

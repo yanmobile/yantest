@@ -7,6 +7,12 @@
 
 (function () {
   'use strict';
+  // ----------------------------
+  // injection
+  // ----------------------------
+
+  angular.module('iscNavContainer')
+    .factory('iscAlertModel', iscAlertModel);
 
   /* @ngInject */
   function iscAlertModel( devlog ){//jshint ignore:line
@@ -129,12 +135,6 @@
   }//END CLASS
 
 
-  // ----------------------------
-  // injection
-  // ----------------------------
-
-  angular.module('iscNavContainer')
-      .factory('iscAlertModel', iscAlertModel);
 
 })();
 

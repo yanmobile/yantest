@@ -4,6 +4,14 @@
 
 (function () {
   'use strict';
+
+  // ----------------------------
+  // injection
+  // ----------------------------
+
+  angular.module('isc.stateManager', [])
+    .factory('iscStateManager', iscStateManager);
+
   /* @ngInject */
   function iscStateManager(devlog, $state, iscCustomConfigHelper) {
     devlog.channel('iscStateManager').debug('iscStateManager.LOADED');
@@ -41,7 +49,7 @@
      * for example, when one clicks on a message from the inbox, one goes
      * to a url/page for that message, but in the secondary nav, 'inbox' is still highlighted
      *
-     * @param stateName String
+     * @param {String} stateName
      * @returns {boolean}
      */
     function isCurrentState(stateName) {
@@ -91,13 +99,6 @@
 
   }//END CLASS
 
-
-  // ----------------------------
-  // injection
-  // ----------------------------
-
-  angular.module('isc.stateManager', [])
-    .factory('iscStateManager', iscStateManager);
 
 })();
 

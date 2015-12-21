@@ -4,6 +4,12 @@
 
 (function(){
   'use strict';
+  // ----------------------------
+  // injection
+  // ----------------------------
+
+  angular.module('isc.directives')
+    .provider('iscConfirmationService', iscConfirmationService);
 
 
   function iscConfirmationService(){//jshint ignore:line
@@ -74,10 +80,4 @@
   }//END CLASS
 
 
-  // ----------------------------
-  // injection
-  // ----------------------------
-
-  angular.module('isc.directives')
-    .provider('iscConfirmationService', iscConfirmationService);
 })();

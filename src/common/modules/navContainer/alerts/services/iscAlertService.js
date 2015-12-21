@@ -4,6 +4,12 @@
 
 (function(){
   'use strict';
+  // ----------------------------
+  // inject
+  // ----------------------------
+
+  angular.module( 'iscNavContainer' )
+    .factory( 'iscAlertService', iscAlertService );
 
   /* @ngInject */
   function iscAlertService( devlog, iscAlertModel ){
@@ -92,10 +98,4 @@
 
   } // END CLASS
 
-  // ----------------------------
-  // inject
-  // ----------------------------
-
-  angular.module( 'iscNavContainer' )
-      .factory( 'iscAlertService', iscAlertService );
 })();

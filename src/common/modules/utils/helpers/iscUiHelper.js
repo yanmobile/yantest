@@ -5,13 +5,16 @@
 (function () {
   'use strict';
 
+  // ----------------------------
+  // inject
+  // ----------------------------
+
+  angular.module('isc.core')
+    .factory('iscUiHelper', iscUiHelper);
+
   /* @ngInject */
   function iscUiHelper(devlog) {//jshint ignore:line
     devlog.channel('iscUiHelper').debug('iscUiHelper LOADED');
-
-    // ----------------------------
-    // vars
-    // ----------------------------
 
     // ----------------------------
     // class factory
@@ -30,6 +33,7 @@
 
     // ----------------------------
     // all configurations
+
 
     // each tab is assumed to have a displayOrder property
     function displayOrder(tab) {
@@ -53,10 +57,4 @@
 
   }// END CLASS
 
-  // ----------------------------
-  // inject
-  // ----------------------------
-
-  angular.module('isc.core')
-    .factory('iscUiHelper', iscUiHelper);
 })();

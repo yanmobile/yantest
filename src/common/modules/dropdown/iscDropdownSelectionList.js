@@ -13,6 +13,13 @@
 
 (function(){
   'use strict';
+  // ----------------------------
+  // injection
+  // ----------------------------
+
+  angular.module( 'isc.directives' )
+    .directive( 'iscDropdownSelectionListDirective', iscDropdownSelectionListDirective );
+
 
   /* @ngInject */
   function iscDropdownSelectionListDirective( devlog, $parse , $timeout, $rootScope, $window, DROPDOWN_EVENTS, $global){
@@ -199,12 +206,5 @@
 
   }//END CLASS
 
-
-  // ----------------------------
-  // injection
-  // ----------------------------
-
-  angular.module( 'isc.directives' )
-      .directive( 'iscDropdownSelectionListDirective', iscDropdownSelectionListDirective );
 
 })();

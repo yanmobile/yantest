@@ -6,6 +6,11 @@
 
 (function(){
   'use strict';
+  // ----------------------------
+  // injection
+  // ----------------------------
+  angular.module( 'isc.filters' )
+    .filter( 'iscLocation', iscLocation );
 
   /* @ngInject */
   function iscLocation($filter, $log){
@@ -23,10 +28,5 @@
     };
 
   }//END CLASS
-  // ----------------------------
-  // injection
-  // ----------------------------
-  angular.module( 'isc.filters' )
-      .filter( 'iscLocation', iscLocation );
 
 })();

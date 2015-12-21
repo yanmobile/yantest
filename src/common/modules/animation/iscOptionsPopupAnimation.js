@@ -5,6 +5,9 @@
 (function(){
   'use strict';
 
+  angular.module( 'isc.animation' )
+    .animation( '.popup-anime', iscOptionsPopupAnimation );
+
   /* @ngInject */
   function iscOptionsPopupAnimation( devlog, iscAnimationService, TweenMax, EASE_DUR ){
 
@@ -85,13 +88,6 @@
     }
 
   }// END CLASS
-
-  // --------------------
-  // inject
-  // --------------------
-
-  angular.module( 'isc.animation' )
-    .animation( '.popup-anime', iscOptionsPopupAnimation );
 
 })();
 

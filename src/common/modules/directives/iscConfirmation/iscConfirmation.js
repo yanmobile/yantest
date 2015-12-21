@@ -4,6 +4,12 @@
 
 (function(){
   'use strict';
+  // ----------------------------
+  // injection
+  // ----------------------------
+
+  angular.module('isc.directives')
+    .directive('iscConfirmation', iscConfirmation);
 
   /* @ngInject */
   function iscConfirmation(){//jshint ignore:line
@@ -49,11 +55,5 @@
   }//END CLASS
 
 
-  // ----------------------------
-  // injection
-  // ----------------------------
-
-  angular.module('isc.directives')
-    .directive('iscConfirmation', iscConfirmation);
 
 })();

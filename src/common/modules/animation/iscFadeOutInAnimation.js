@@ -5,6 +5,9 @@
 (function(){
   'use strict';
 
+  angular.module( 'isc.animation' )
+    .animation( '.fade-out-in', iscFadeOutInAnimation );
+
   /* @ngInject */
   function iscFadeOutInAnimation( devlog, $window, TweenMax, EASE_DUR ){
 
@@ -60,13 +63,6 @@
     }
 
   }// END CLASS
-
-  // --------------------
-  // inject
-  // --------------------
-
-  angular.module( 'isc.animation' )
-    .animation( '.fade-out-in', iscFadeOutInAnimation );
 
 })();
 

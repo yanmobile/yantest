@@ -5,6 +5,14 @@
 (function () {
   'use strict';
 
+  // ----------------------------
+  // injection
+  // ----------------------------
+
+  angular.module('iscNavContainer')
+    .factory('iscNavContainerModel', iscNavContainerModel);
+
+
   /* @ngInject */
   function iscNavContainerModel(devlog, iscCustomConfigHelper) {
 //   devlog('iscNavContainerModel').debug( 'iscNavContainerModel LOADED');
@@ -66,12 +74,6 @@
   }//END CLASS
 
 
-  // ----------------------------
-  // injection
-  // ----------------------------
-
-  angular.module('iscNavContainer')
-    .factory('iscNavContainerModel', iscNavContainerModel);
 
 })();
 

@@ -5,6 +5,11 @@
 (function(){
 
   'use strict';
+  // ----------------------------
+  // injection
+  // ----------------------------
+  angular.module('iscNavContainer')
+    .controller('iscAlertController', iscAlertController);
 
   /* @ngInject */
   function iscAlertController( devlog, iscAlertModel, iscSessionModel ){
@@ -54,10 +59,5 @@
   }// END CLASS
 
 
-  // ----------------------------
-  // injection
-  // ----------------------------
-  angular.module('iscNavContainer')
-    .controller('iscAlertController', iscAlertController);
 
 })();

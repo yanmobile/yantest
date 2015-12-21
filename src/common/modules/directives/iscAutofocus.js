@@ -15,6 +15,12 @@
 
 (function () {
   'use strict';
+  // ----------------------------
+  // injection
+  // ----------------------------
+
+  angular.module ('isc.directives')
+    .directive ('iscAutofocus', iscAutofocus);
 
   /* @ngInject */
   function iscAutofocus (devlog, $timeout) {
@@ -48,11 +54,5 @@
   }//END CLASS
 
 
-  // ----------------------------
-  // injection
-  // ----------------------------
-
-  angular.module ('isc.directives')
-      .directive ('iscAutofocus', iscAutofocus);
 
 }) ();

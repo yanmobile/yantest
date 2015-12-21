@@ -8,6 +8,13 @@
 
 (function () {
   'use strict';
+
+  // ----------------------------
+  // injection
+  // ----------------------------
+  angular.module('isc.directives')
+    .factory('iscRadioGroupHelper', iscRadioGroupHelper);
+
   /* @ngInject */
   function iscRadioGroupHelper(devlog) {//jshint ignore:line
     devlog.channel('iscRadioGroupHelper').debug('iscRadioGroupHelper LOADED');
@@ -44,10 +51,5 @@
 
   }// END CLASS
 
-  // ----------------------------
-  // injection
-  // ----------------------------
-  angular.module('isc.directives')
-    .factory('iscRadioGroupHelper', iscRadioGroupHelper);
 
 })();

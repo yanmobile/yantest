@@ -4,6 +4,12 @@
 
 (function(){
   'use strict';
+  // ----------------------------
+  // injection
+  // ----------------------------
+
+  angular.module( 'isc.directives' )
+    .directive( 'iscDynamicHtml', iscDynamicHtml );
 
   /* @ngInject */
   function iscDynamicHtml( devlog, $compile, $templateCache ){//jshint ignore:line
@@ -42,11 +48,5 @@
   }//END CLASS
 
 
-  // ----------------------------
-  // injection
-  // ----------------------------
-
-  angular.module( 'isc.directives' )
-      .directive( 'iscDynamicHtml', iscDynamicHtml );
 
 })();

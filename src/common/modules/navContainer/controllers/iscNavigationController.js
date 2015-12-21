@@ -3,6 +3,11 @@
  */
 (function () {
   'use strict';
+  // --------------
+  // inject
+  // --------------
+  angular.module('iscNavContainer')
+    .controller('iscNavigationController', iscNavigationController);
 
   /* @ngInject */
   function iscNavigationController(
@@ -198,11 +203,6 @@
 
   }// END CLASS
 
-  // --------------
-  // inject
-  // --------------
-  angular.module('iscNavContainer')
-    .controller('iscNavigationController', iscNavigationController);
 
 })();
 

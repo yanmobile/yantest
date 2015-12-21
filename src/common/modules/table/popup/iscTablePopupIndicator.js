@@ -8,9 +8,15 @@
 (function(){
   'use strict';
 
+  // ----------------------------
+  // injection
+  // ----------------------------
+  angular.module('isc.table')
+    .directive('iscTablePopupIndicator', iscTablePopupIndicator);
+
   /* @ngInject */
   function iscTablePopupIndicator(){
-    devlog.channel('').debug( 'iscTablePopupIndicator LOADED');
+    devlog.channel('iscTablePopupIndicator').debug( 'iscTablePopupIndicator LOADED');
 
     // ----------------------------
     // vars
@@ -34,11 +40,5 @@
       self.commands = (_.find($scope.iscTblCtrl.tableConfig.columns, { type: 'commands' }) || {}).commands;
     }
   }// END CLASS
-
-  // ----------------------------
-  // injection
-  // ----------------------------
-  angular.module('isc.table')
-    .directive('iscTablePopupIndicator', iscTablePopupIndicator);
 
 })();

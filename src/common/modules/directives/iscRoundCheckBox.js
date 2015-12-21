@@ -4,6 +4,12 @@
 
 (function(){
   'use strict';
+  // ----------------------------
+  // injection
+  // ----------------------------
+
+  angular.module( 'isc.directives' )
+    .directive( 'iscRoundCheckBox', iscRoundCheckBox );
 
   /* @ngInject */
   function iscRoundCheckBox( devlog ){//jshint ignore:line
@@ -59,11 +65,5 @@
   }//END CLASS
 
 
-  // ----------------------------
-  // injection
-  // ----------------------------
-
-  angular.module( 'isc.directives' )
-      .directive( 'iscRoundCheckBox', iscRoundCheckBox );
 
 })();

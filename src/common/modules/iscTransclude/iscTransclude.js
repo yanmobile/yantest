@@ -108,6 +108,12 @@
 
 (function () {
   'use strict';
+  // ----------------------------
+  // injection
+  // ----------------------------
+
+  angular.module('isc.directives')
+    .directive('iscTransclude', iscTransclude);
 
   /* @ngInject */
   function iscTransclude($parse) {
@@ -200,10 +206,4 @@
 
   }//END CLASS
 
-  // ----------------------------
-  // injection
-  // ----------------------------
-
-  angular.module('isc.directives')
-    .directive('iscTransclude', iscTransclude);
 })();

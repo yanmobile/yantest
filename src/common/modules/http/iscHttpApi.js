@@ -1,24 +1,23 @@
 /**
  * Created by ryan jarvis on 6/3/15
  */
+
+/**
+ * This is a wrapper for angular's $http service
+ * @param $http
+ * @returns {{get: get, put: put, post: post}}
+ *
+ * Since any additional properties that's not part of the built-in Angular's config
+ * will not be passed as part of the ajax request.
+ * We are leveraging fact to pass in any custom attributes we want. E.g. responseAsObject
+ *
+ * see Angular's $http doc: https://docs.angularjs.org/api/ng/service/$http#usage
+ */
 (function () {
   'use strict';
 
-
   angular.module('isc.http')
     .factory('iscHttpapi', iscHttpapi);
-
-  /**
-   * This is a wrapper for angular's $http service
-   * @param $http
-   * @returns {{get: get, put: put, post: post}}
-   *
-   * Since any additional properties that's not part of the built-in Angular's config
-   * will not be passed as part of the ajax request.
-   * We are leveraging fact to pass in any custom attributes we want. E.g. responseAsObject
-   *
-   * see Angular's $http doc: https://docs.angularjs.org/api/ng/service/$http#usage
-   */
 
   /* @ngInject */
   function iscHttpapi($http) {

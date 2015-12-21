@@ -8,6 +8,9 @@
 (function () {
   'use strict';
 
+  angular.module ('isc.animation')
+    .factory ('iscAnimationService', iscAnimationService);
+
   /* @ngInject */
   function iscAnimationService (devlog, $window) {
     //    $log.debug( 'iscAnimationService.LOADED');
@@ -161,13 +164,5 @@
     }
 
   }//END CLASS
-
-
-  // ----------------------------
-  // injection
-  // ----------------------------
-
-  angular.module ('isc.animation')
-      .factory ('iscAnimationService', iscAnimationService);
 
 }) ();

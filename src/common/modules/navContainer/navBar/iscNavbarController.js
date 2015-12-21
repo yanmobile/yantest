@@ -2,8 +2,10 @@
   'use strict';
 
   // ------------------------------------------
-  // factory function
+  // module injection
   // ------------------------------------------
+  angular.module('iscNavContainer')
+    .controller('iscNavbarController', iscNavbarController);
 
   /* @ngInject */
   function iscNavbarController(
@@ -91,11 +93,6 @@
 
   } // END CLASS
 
-  // ------------------------------------------
-  // module injection
-  // ------------------------------------------
-  angular.module('iscNavContainer')
-    .controller('iscNavbarController', iscNavbarController);
 
 })();
 

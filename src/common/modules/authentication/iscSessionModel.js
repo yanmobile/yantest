@@ -5,6 +5,13 @@
 (function () {
   'use strict';
 
+  // ----------------------------
+  // injection
+  // ----------------------------
+  angular.module('isc.authentication')
+    .factory('iscSessionModel', iscSessionModel);
+
+  ////////////////////////////////
   /* @ngInject */
   function iscSessionModel(devlog, $rootScope, $interval, iscSessionStorageHelper, AUTH_EVENTS) {
     devlog.channel('iscSessionModel').debug('iscSessionModel LOADED');
@@ -243,8 +250,8 @@
 
     /**
      * private
-     * @param stateName String
-     * @returns String wildCardSuperState || undefined
+     * @param {String} stateName
+     * @returns {String} wildCardSuperState || undefined
      */
     function getWildCardStateForState(stateName) {
       devlog.channel('iscSessionModel').debug('...getWildCardStateForState, stateName', stateName);
@@ -274,7 +281,7 @@
      * NOTE: for wildcards, the wildcard is assumed to be the last state and 'index' the first state
      * ie 'index.*.stateName' will fail
      *
-     * @param stateName {string}
+     * @param {string} stateName
      * @returns {boolean}
      */
     function isWhiteListed(stateName) {
@@ -334,11 +341,6 @@
   }// END CLASS
 
 
-  // ----------------------------
-  // injection
-  // ----------------------------
-  angular.module('isc.authentication')
-    .factory('iscSessionModel', iscSessionModel);
 
 })();
 
