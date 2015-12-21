@@ -42,6 +42,12 @@
 
 (function(){
   'use strict';
+  // ----------------------------
+  // injection
+  // ----------------------------
+
+  angular.module( 'isc.directives' )
+    .directive( 'iscTextAreaAutoExpand', iscTextAreaAutoExpand );
 
   /* @ngInject */
   function iscTextAreaAutoExpand( devlog ){ //jshint ignore: line
@@ -136,11 +142,5 @@
   }//END CLASS
 
 
-  // ----------------------------
-  // injection
-  // ----------------------------
-
-  angular.module( 'isc.directives' )
-      .directive( 'iscTextAreaAutoExpand', iscTextAreaAutoExpand );
 
 })();

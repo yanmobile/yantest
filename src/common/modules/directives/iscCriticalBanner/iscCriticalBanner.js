@@ -4,6 +4,12 @@
 
 (function () {
   'use strict';
+  // ----------------------------
+  // injection
+  // ----------------------------
+
+  angular.module('isc.directives')
+    .directive('iscCriticalBanner', iscCriticalBanner);
 
   /* @ngInject */
   function iscCriticalBanner() {//jshint ignore:line
@@ -41,11 +47,5 @@
   }//END CLASS
 
 
-  // ----------------------------
-  // injection
-  // ----------------------------
-
-  angular.module('isc.directives')
-    .directive('iscCriticalBanner', iscCriticalBanner);
 
 })();

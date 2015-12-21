@@ -5,11 +5,6 @@
 (function () {
   'use strict';
 
-
-  // ----------------------------
-  // inject
-  // ----------------------------
-
   angular.module('isc.configuration')
     .provider('iscCustomConfigService', function () {
       var config;

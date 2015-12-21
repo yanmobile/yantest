@@ -4,6 +4,12 @@
 
 (function(){
   'use strict';
+  // --------------------
+  // inject
+  // --------------------
+
+  angular.module( 'iscNavContainer' )
+    .animation( '.side-nav', iscNavContainerSideNavAnimation );
 
   /* @ngInject */
   function iscNavContainerSideNavAnimation( devlog, $rootScope, $window, iscAnimationService, TweenMax, EASE_DUR ){
@@ -88,12 +94,6 @@
 
   }// END CLASS
 
-  // --------------------
-  // inject
-  // --------------------
-
-  angular.module( 'iscNavContainer' )
-    .animation( '.side-nav', iscNavContainerSideNavAnimation );
 
 })();
 

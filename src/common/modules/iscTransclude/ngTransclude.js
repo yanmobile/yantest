@@ -1,11 +1,17 @@
 /**
  * Created by Henry Zou on 10/27/15.
  *
- * To be used with iscGridFormItem
+ * To be used with iscTransclude
  */
 
 (function (){
   'use strict';
+  // ----------------------------
+  // injection
+  // ----------------------------
+
+  angular.module('isc.directives')
+    .directive('ngTransclude', ngTransclude);
 
   /* @ngInject */
   function ngTransclude($compile){
@@ -36,10 +42,4 @@
   }//END CLASS
 
 
-  // ----------------------------
-  // injection
-  // ----------------------------
-
-  angular.module('isc.directives')
-    .directive('ngTransclude', ngTransclude);
 })();

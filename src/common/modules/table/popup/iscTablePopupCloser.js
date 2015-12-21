@@ -8,9 +8,15 @@
 (function () {
   'use strict';
 
+  // ----------------------------
+  // injection
+  // ----------------------------
+  angular.module( 'isc.table' )
+    .directive( 'iscTablePopupCloser', iscTablePopupCloser );
+
   /* @ngInject */
-  function iscTablePopupCloser( $global ) {
-    devlog.channel('').debug( 'iscTablePopupCloser LOADED');
+  function iscTablePopupCloser(devlog, $global ) {
+    devlog.channel('iscTablePopupCloser').debug( 'iscTablePopupCloser LOADED');
 
     // ----------------------------
     // vars
@@ -41,11 +47,5 @@
       } );
     }
   }// END CLASS
-
-  // ----------------------------
-  // injection
-  // ----------------------------
-  angular.module( 'isc.table' )
-    .directive( 'iscTablePopupCloser', iscTablePopupCloser );
 
 })();

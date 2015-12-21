@@ -5,6 +5,10 @@
 (function(){
   'use strict';
 
+  angular.module( 'isc.animation' )
+    .animation( '.fade-in-blink-out', iscFadeInBlinkOutAnimation );
+
+
   /* @ngInject */
   function iscFadeInBlinkOutAnimation( devlog, $window, TweenMax, EASE_DUR ){
 
@@ -56,13 +60,6 @@
 
 
   }// END CLASS
-
-  // --------------------
-  // inject
-  // --------------------
-
-  angular.module( 'isc.animation' )
-    .animation( '.fade-in-blink-out', iscFadeInBlinkOutAnimation );
 
 })();
 

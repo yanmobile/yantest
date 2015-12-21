@@ -5,9 +5,13 @@
 (function(){
   'use strict';
 
+  angular.module( 'isc.table' )
+    .directive( 'iscTableFooterRow', iscTableFooterRow );
+
+
   /* @ngInject */
   function iscTableFooterRow( devlog, $state, $templateCache, $compile ){
-    devlog.channel('').debug('iscTableFooterRow.LOADED');
+    devlog.channel('iscTableFooterRow').debug('iscTableFooterRow.LOADED');
 
     // ----------------------------
     // vars
@@ -48,12 +52,5 @@
       }
     }
   }
-
-  // ----------------------------
-  // inject
-  // ----------------------------
-
-  angular.module( 'isc.table' )
-      .directive( 'iscTableFooterRow', iscTableFooterRow );
 
 })();

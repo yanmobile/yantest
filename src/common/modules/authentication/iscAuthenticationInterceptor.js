@@ -4,6 +4,12 @@
 (function () {
   'use strict';
 
+  // ----------------------------
+  // injection
+  // ----------------------------
+  angular.module('isc.authentication')
+    .factory('iscAuthenticationInterceptor', iscAuthenticationInterceptor);
+
   /* @ngInject */
   function iscAuthenticationInterceptor(devlog, $rootScope, $q, iscSessionModel, AUTH_EVENTS) {//jshint ignore:line
 
@@ -64,10 +70,4 @@
     }
 
   }// END CLASS
-
-  // ----------------------------
-  // injection
-  // ----------------------------
-  angular.module('isc.authentication')
-    .factory('iscAuthenticationInterceptor', iscAuthenticationInterceptor);
 })();

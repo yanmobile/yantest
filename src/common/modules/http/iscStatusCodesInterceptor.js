@@ -27,7 +27,7 @@
      * Usage:  prevents defaults for all status codes
      *    $http(getUrl, { preventDefault: true })
      *
-     * @param response
+     * @param {any} response
      *  Can contain preventDefault with value of true or [ codes ]
      * @returns {Promise}
      *  Promises is the callback for dialog dismissal

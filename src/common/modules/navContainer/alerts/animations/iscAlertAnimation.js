@@ -5,6 +5,14 @@
 (function(){
   'use strict';
 
+  // --------------------
+  // inject
+  // --------------------
+
+  angular.module( 'iscNavContainer' )
+    .animation( '.alert-anime', iscAlertAnimation );
+
+
   /* @ngInject */
   function iscAlertAnimation( devlog, $window, TweenMax, iscAnimationService, EASE_DUR ){
     devlog.channel('iscAlertAnimation').debug( 'iscAlertAnimation.loaded' );
@@ -73,12 +81,6 @@
 
   }// END CLASS
 
-  // --------------------
-  // inject
-  // --------------------
-
-  angular.module( 'iscNavContainer' )
-    .animation( '.alert-anime', iscAlertAnimation );
 
 })();
 

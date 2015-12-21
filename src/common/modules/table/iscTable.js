@@ -175,6 +175,9 @@
 (function(){
   'use strict';
 
+  angular.module( 'isc.table' )
+    .directive( 'iscTable', iscTable );
+
   /* @ngInject */
   function iscTable( devlog ){ //jshint ignore:line
     devlog.channel('iscTable').debug('iscTable.LOADED');
@@ -336,11 +339,5 @@
 
   }// END CLASS
 
-  // ----------------------------
-  // inject
-  // ----------------------------
-
-  angular.module( 'isc.table' )
-      .directive( 'iscTable', iscTable );
 
 })();

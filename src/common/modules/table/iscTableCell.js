@@ -4,9 +4,13 @@
 (function(){
   'use strict';
 
+
+  angular.module( 'isc.table' )
+    .directive( 'iscTableCell', iscTableCell );
+
   /* @ngInject */
   function iscTableCell( devlog, $state, $templateCache, $compile ){
-    devlog.channel('').debug('iscTableCell.LOADED');
+    devlog.channel('iscTableCell').debug('iscTableCell.LOADED');
 
     // ----------------------------
     // vars
@@ -34,7 +38,9 @@
 
     function pre(scope, elem, attrs, iscRowCtrl){
       var defaultTemplate = attrs.templateUrl;
-      defaultTemplate     = defaultTemplate || (scope.iscTblCtrl.tableConfig.editable === 'popup' ? 'table/popup/iscTableReadOnlyCell.html' : 'table/iscTableCell.html');
+      if(!defaultTemplate) {
+       defaultTemplate = scope.iscTblCtrl.tableConfig.editable === 'popup' ? 'table/popup/iscTableReadOnlyCell.html' : 'table/iscTableCell.html';
+      }
 
       var rowTemplate = _.get(scope, 'iscTblCtrl.tableConfig.rowTemplate', defaultTemplate);
 
@@ -107,12 +113,5 @@
 
     }
   }
-
-  // ----------------------------
-  // inject
-  // ----------------------------
-
-  angular.module( 'isc.table' )
-      .directive( 'iscTableCell', iscTableCell );
 
 })();

@@ -5,11 +5,10 @@
 (function(){
   'use strict';
 
-  /* @ngInject */
-  // ----------------------------
-  // functions
-  // ----------------------------
+  angular.module('isc.table')
+    .controller('iscTableRowController', iscTableRowController);
 
+  /* @ngInject */
   function iscTableRowController($scope){
 
     // ----------------------------
@@ -79,9 +78,7 @@
         default:
           if( angular.isFunction(callback) ){
             callback.apply(self, rest);
-          } else {
-            //do nothing
-          }
+          } //else do nothing
       }
       function getCommandCallback(command, domCallback){
         var callback       = domCallback;
@@ -156,12 +153,5 @@
       }
     }
   }
-
-  // ----------------------------
-  // inject
-  // ----------------------------
-
-  angular.module('isc.table')
-    .controller('iscTableRowController', iscTableRowController);
 
 })();

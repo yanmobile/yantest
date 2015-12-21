@@ -5,6 +5,13 @@
 (function(){
   'use strict';
 
+  // --------------------
+  // inject
+  // --------------------
+
+  angular.module( 'iscNavContainer' )
+    .animation( '.modal-bkgrnd-anime', iscNavContainerModalBkgrndAnimation );
+  
   /* @ngInject */
   function iscNavContainerModalBkgrndAnimation( devlog, $window, iscAnimationService, TweenMax, EASE_DUR ){
 
@@ -33,9 +40,16 @@
 
     function beforeAddClass( element, className, done ){
       devlog.channel('iscNavContainerModalBkgrndAnimation').debug( 'iscNavContainerModalBkgrndAnimation.beforeAddClass' );
-      if( className === 'modal-bkgrnd-anime' ){
-        TweenMax.set( element, {autoAlpha:0, display: 'block', width: iscAnimationService.getFullWidth() + 50, height: iscAnimationService.getFullHeight() + 50, x: -25, y:-25});
-        TweenMax.to( element, EASE_DUR, { ease: Power2.easeOut, autoAlpha:.75, onComplete: done });//jshint ignore:line
+      if (className === 'modal-bkgrnd-anime') {
+        TweenMax.set(element, {
+          autoAlpha: 0,
+          display  : 'block',
+          width    : iscAnimationService.getFullWidth() + 50,
+          height   : iscAnimationService.getFullHeight() + 50,
+          x        : -25,
+          y        : -25
+        });
+        TweenMax.to(element, EASE_DUR, { ease: Power2.easeOut, autoAlpha: .75, onComplete: done });//jshint ignore:line
       }
       else {
         done();
@@ -58,12 +72,5 @@
     }
 
   }// END CLASS
-
-  // --------------------
-  // inject
-  // --------------------
-
-  angular.module( 'iscNavContainer' )
-    .animation( '.modal-bkgrnd-anime', iscNavContainerModalBkgrndAnimation );
 
 })();

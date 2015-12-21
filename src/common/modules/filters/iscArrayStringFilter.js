@@ -4,10 +4,15 @@
 
 (function(){
   'use strict';
+  // ----------------------------
+  // injection
+  // ----------------------------
+  angular.module( 'isc.filters' )
+    .filter( 'arrayString', iscArrayStringFilter );
 
   /* @ngInject */
   function iscArrayStringFilter( devlog, $filter ){//jshint ignore:line
-//    devlog.channel('').debug( 'iscArrayStringFilter LOADED');
+    devlog.channel('iscArrayStringFilter').debug( 'iscArrayStringFilter LOADED');
 
     // ----------------------------
     // vars
@@ -26,9 +31,9 @@
 
 
     function getArrayString( array ){
-      devlog.channel('').debug('iscArrayStringFilter.getArrayString');
-      devlog.channel('').debug('...array', array);
-      devlog.channel('').debug('...array', typeof array);
+      devlog.channel('iscArrayStringFilter').debug('iscArrayStringFilter.getArrayString');
+      devlog.channel('iscArrayStringFilter').debug('...array', array);
+      devlog.channel('iscArrayStringFilter').debug('...array', typeof array);
 
       if( Object.prototype.toString.call( array ) !== '[object Array]' ){
         return '';
@@ -51,10 +56,5 @@
 
 
   }//END CLASS
-  // ----------------------------
-  // injection
-  // ----------------------------
-  angular.module( 'isc.filters' )
-      .filter( 'arrayString', iscArrayStringFilter );
 
 })();

@@ -6,6 +6,12 @@
 
 (function(){
   'use strict';
+  // ----------------------------
+  // injection
+  // ----------------------------
+
+  angular.module( 'isc.directives' )
+    .directive( 'iscCheckBox', iscCheckBox );
 
   /* @ngInject */
   function iscCheckBox( devlog ){//jshint ignore:line
@@ -61,11 +67,5 @@
   }//END CLASS
 
 
-  // ----------------------------
-  // injection
-  // ----------------------------
-
-  angular.module( 'isc.directives' )
-      .directive( 'iscCheckBox', iscCheckBox );
 
 })();

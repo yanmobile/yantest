@@ -4,10 +4,15 @@
 
 (function () {
   'use strict';
+  // ----------------------------
+  // injection
+  // ----------------------------
+  angular.module('isc.authentication')
+    .factory('iscSessionStorageHelper', iscSessionStorageHelper);
 
   /* @ngInject */
   function iscSessionStorageHelper(devlog, $window) {
-//    devlog.channel('iscSessionStorageHelper').debug( 'iscSessionStorageHelper LOADED');
+    devlog.channel('iscSessionStorageHelper').debug( 'iscSessionStorageHelper LOADED');
 
     // ----------------------------
     // vars
@@ -127,10 +132,5 @@
   }// END CLASS
 
 
-  // ----------------------------
-  // injection
-  // ----------------------------
-  angular.module('isc.authentication')
-    .factory('iscSessionStorageHelper', iscSessionStorageHelper);
 
 })();

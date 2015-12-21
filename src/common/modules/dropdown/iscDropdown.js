@@ -25,6 +25,17 @@
 
 (function(){
   'use strict';
+  // ----------------------------
+  // injection
+  // ----------------------------
+
+  angular.module('isc.directives')
+    .directive('iscDropdown', iscDropdown)
+    .constant('DROPDOWN_EVENTS', {
+      dropdownShow        : 'DROPDOWN_SHOW',
+      showDropdownList    : 'SHOW_DROPDOWN_LIST',
+      dropdownItemSelected: 'DROPDOWN_ITEM_SELECTED'
+    });
 
   /* @ngInject */
   function iscDropdown( devlog,  $timeout, $rootScope, DROPDOWN_EVENTS, $global){//jshint ignore:line
@@ -234,16 +245,5 @@
   }//END CLASS
 
 
-  // ----------------------------
-  // injection
-  // ----------------------------
-
-  angular.module('isc.directives')
-    .directive('iscDropdown', iscDropdown)
-    .constant('DROPDOWN_EVENTS', {
-      dropdownShow        : 'DROPDOWN_SHOW',
-      showDropdownList    : 'SHOW_DROPDOWN_LIST',
-      dropdownItemSelected: 'DROPDOWN_ITEM_SELECTED'
-    });
 
 })();

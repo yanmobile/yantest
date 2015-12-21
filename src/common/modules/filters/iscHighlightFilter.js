@@ -4,10 +4,15 @@
 
 (function(){
   'use strict';
+  // ----------------------------
+  // injection
+  // ----------------------------
+  angular.module( 'isc.filters' )
+    .filter( 'iscHighlight', iscHighlightFilter );
 
   /* @ngInject */
   function iscHighlightFilter( devlog, $sce ){
-//    devlog.channel('').debug( 'iscHighlightFilter LOADED');
+    devlog.channel('iscHighlightFilter').debug( 'iscHighlightFilter LOADED');
 
     // ----------------------------
     // vars
@@ -26,10 +31,10 @@
 
 
     function setHighlight( text, phrase ) {
-      devlog.channel('').debug('iscHighlight.setHighlight');
+      devlog.channel('iscHighlightFilter').debug('iscHighlight.setHighlight');
 
       if( phrase && text ){
-        devlog.channel('').debug('...text', text);
+        devlog.channel('iscHighlightFilter').debug('...text', text);
 
         text = text.replace(new RegExp('(' + phrase + ')', 'gi'),
           '<span class="isc-highlighted">$1</span>');
@@ -40,10 +45,5 @@
 
 
   }//END CLASS
-  // ----------------------------
-  // injection
-  // ----------------------------
-  angular.module( 'isc.filters' )
-      .filter( 'iscHighlight', iscHighlightFilter );
 
 })();

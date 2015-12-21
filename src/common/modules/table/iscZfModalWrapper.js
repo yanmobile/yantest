@@ -27,7 +27,8 @@
 (function () {
   'use strict';
 
-  iscZfModalWrapper.$inject = [];
+  angular.module( 'isc.table' )
+    .directive( 'iscZfModalWrapper', iscZfModalWrapper );
 
   function iscZfModalWrapper() {//jshint ignore:line
 
@@ -78,13 +79,5 @@
     }
 
   }//END CLASS
-
-
-  // ----------------------------
-  // injection
-  // ----------------------------
-
-  angular.module( 'isc.table' )
-    .directive( 'iscZfModalWrapper', iscZfModalWrapper );
 
 })();

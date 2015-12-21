@@ -5,6 +5,9 @@
 (function(){
   'use strict';
 
+  angular.module( 'isc.animation' )
+    .animation( '.scroll-stick', iscScrollStickAnimation );
+
   /* @ngInject */
   function iscScrollStickAnimation( devlog, $window,  TweenMax, EASE_DUR ){
 
@@ -115,11 +118,5 @@
 
   }// END CLASS
 
-  // --------------------
-  // inject
-  // --------------------
-
-  angular.module( 'isc.animation' )
-    .animation( '.scroll-stick', iscScrollStickAnimation );
 
 })();
