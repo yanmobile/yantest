@@ -8,7 +8,7 @@
     var sessionModel,
         helper,
         customConfigService,
-        httpBackend;
+        provider;
 
     var mockStates = [
       { state: 'index.home', exclude: true },
@@ -37,6 +37,7 @@
     // log statements
     beforeEach(module('isc.configuration', function ($provide, iscCustomConfigServiceProvider) {
       $provide.value('$log', console);
+      provider = iscCustomConfigServiceProvider;
       iscCustomConfigServiceProvider.loadConfig(mockConfig);
     }));
 
@@ -46,8 +47,36 @@
       helper       = iscCustomConfigHelper;
 
       customConfigService = iscCustomConfigService;
-
     }));
+
+
+    describe('iscCustomConfigServiceProvider addUserPermittedTabs', function () {
+
+      it('should should have permissions added via .addUserPermittedTabs()', function () {
+        var permittedStates;
+        provider.addUserPermittedTabs({
+          'myRoute.*': [
+            'user',
+            '%HSCC_CMC_CarePlanCreator'
+          ]
+        });
+
+        customConfigService.clearConfig();
+        permittedStates     = customConfigService.getConfig().userPermittedTabs;
+
+        provider.loadConfig(mockConfig);
+        permittedStates     = customConfigService.getConfig().userPermittedTabs;
+
+        var statesEvaluated = 0;
+        ['user',
+          '%HSCC_CMC_CarePlanCreator'
+        ].forEach(function (role) {
+            expect(_.contains(permittedStates[role], 'myRoute.*')).toBe(true);
+            statesEvaluated++;
+          });
+        expect(statesEvaluated).toBe(2);
+      });
+    });
 
     // -------------------------
     describe('getConfig/setConfig tests ', function () {

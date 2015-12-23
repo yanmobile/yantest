@@ -7,12 +7,46 @@
 
   angular.module('isc.configuration')
     .provider('iscCustomConfigService', function () {
-      var config;
+      var routeSpecificUserPermittedTabs = {};
+      var config                         = {};
+
+      function hydrateUserPermittedTabs(tabs, states) {
+        /**
+         * CONVERTS FORMAT FROM:
+         {'index.home.*': ['%HSCC_CMC_CarePlanApprover',
+           '%HSCC_CMC_CarePlanCreator',
+           '%HSCC_CMC_CarePlanViewer',
+           '%HSCC_CMC_Administrator'
+           ]}
+
+         TO:
+         [{'%HSCC_CMC_CarePlanApprover': ["index.home.*"]},
+         {'%HSCC_CMC_CarePlanCreator': ["index.home.*"]},
+         {'%HSCC_CMC_CarePlanViewer': ["index.home.*"]},
+         {'%HSCC_CMC_Administrator': ["index.home.*"]}]
+         */
+        _.forEach(states, function (roles, state) {
+          _.forEach(roles, function (role) {
+            tabs[role] = tabs[role] || [];
+            tabs[role].push(state);
+          });
+        });
+      }
+
       return {
-        loadConfig: function loadConfig(configObj) {
-          config = configObj;
+        loadConfig          : function loadConfig(configObj) {
+
+          config                   = configObj;
+          config.userPermittedTabs = config.userPermittedTabs || [];
+          _.forEach(routeSpecificUserPermittedTabs, function (value, key) {
+            config.userPermittedTabs[key] = config.userPermittedTabs[key] || [];
+            Array.prototype.push.apply(config.userPermittedTabs[key], value);
+          });
         },
-        $get      : iscCustomConfigService
+        addUserPermittedTabs: function addUserPermittedTabs(states) {
+          hydrateUserPermittedTabs(routeSpecificUserPermittedTabs, states);
+        },
+        $get                : iscCustomConfigService
       };
 
       /* @ngInject */
@@ -38,7 +72,7 @@
           setConfig  : setConfig,
           initSession: initSession,
           clearConfig: clearConfig,
-          addStates: addStates,
+          addStates  : addStates,
 
           updateStateByRole: updateStateByRole,
 
@@ -147,16 +181,16 @@
 
         function clearConfig() {
           devlog.channel('iscCustomConfigService').debug('iscCustomConfigService.clearConfig');
-          config = null;
+          config = {};
         }
 
         // ----------------------------
         /**
          * adds or removes tabs based on the user's permissions in the configFile.json
          * eg:
-         "userPermittedTabs": {
-            "user":["*"],
-            "guest":["index.home","index.library"]
+         'userPermittedTabs': {
+            'user':['*'],
+            'guest':['index.home','index.library']
        }
          * supports wildcards (eg 'index.home.*')
          * where '*' will allow all tabs
@@ -184,12 +218,9 @@
 
           var noLoginRequired     = angular.copy(config.noLoginRequired);
           var userPermittedStates = angular.copy(config.userPermittedTabs[role]);
-          var allPermittedStates  = [];
+          var allPermittedStates  = noLoginRequired;
           if (!!userPermittedStates) {
             allPermittedStates = noLoginRequired.concat(userPermittedStates);
-          }
-          else {
-            allPermittedStates = noLoginRequired;
           }
 
           iscSessionModel.setPermittedStates(allPermittedStates);

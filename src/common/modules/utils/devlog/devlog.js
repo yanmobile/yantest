@@ -23,7 +23,7 @@
         ['log', 'info', 'warn', 'error', 'debug'].forEach(function (method) {
           devlog[method] = function () {
             var args = devlog.prefixArgs(arguments);
-            $log[method].apply(this, args);
+            $log[method].apply($log, args);
             devlog.clearChannelPrefix();
           };
         });
