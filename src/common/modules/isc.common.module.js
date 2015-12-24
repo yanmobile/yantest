@@ -24,7 +24,7 @@
       'isc.filters',
       'isc.table',
       'isc.http',
-      'isc.stateManager',
+      'isc.states',
       'isc.progressLoader',
 
       // logging helper

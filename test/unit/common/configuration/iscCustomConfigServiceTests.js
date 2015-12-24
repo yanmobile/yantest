@@ -5,8 +5,7 @@
   var mockConfig = angular.copy(customConfig);
 
   describe('iscCustomConfigService', function () {
-    var sessionModel,
-        helper,
+    var helper,
         customConfigService,
         provider;
 
@@ -42,8 +41,7 @@
     }));
 
 
-    beforeEach(inject(function ($rootScope, $httpBackend, iscCustomConfigService, iscCustomConfigHelper, iscSessionModel) {
-      sessionModel = iscSessionModel;
+    beforeEach(inject(function ($rootScope, $httpBackend, iscCustomConfigService, iscCustomConfigHelper) {
       helper       = iscCustomConfigHelper;
 
       customConfigService = iscCustomConfigService;
@@ -137,186 +135,6 @@
         expect(result).toBe(mockConfig.loginButton);
       });
 
-    });
-
-    // -------------------------
-    describe('updateStateByRole tests ', function () {
-
-      it('should have a function updateStateByRole', function () {
-        expect(angular.isFunction(customConfigService.updateStateByRole)).toBe(true);
-      });
-
-      it('should updateStateByRole, bogus role', function () {
-        mockConfig.noLoginRequired   = ['index.home.*'];
-        mockConfig.userPermittedTabs = {
-          user: ['*']
-        };
-
-        helper.resetStates();
-        helper.addStates(angular.copy(mockStates));
-
-        customConfigService.updateStateByRole('FOOBAR');
-        var allStates                = helper.getAllStates();
-
-        _.forEach(allStates, function (state) {
-          if (_.contains(state.state, 'index.home')) {
-            expect(state.exclude).toBe(false); // if its whitelisted, dont exclude
-          }
-          else {
-            expect(state.exclude).toBe(true);
-          }
-
-        });
-      });
-
-      it('should updateStateByRole, no role', function () {
-        mockConfig.noLoginRequired   = ['index.home.*'];
-        mockConfig.userPermittedTabs = {
-          user: ['*']
-        };
-
-        helper.resetStates();
-        helper.addStates(angular.copy(mockStates));
-
-        customConfigService.updateStateByRole();
-        var allStates                = helper.getAllStates();
-
-        _.forEach(allStates, function (state) {
-          if (_.contains(state.state, 'index.home')) {
-            expect(state.exclude).toBe(false); // if its whitelisted, dont exclude
-          }
-          else {
-            expect(state.exclude).toBe(true);
-          }
-
-        });
-      });
-
-      it('should updateStateByRole, all permitted by wildcard', function () {
-        mockConfig.noLoginRequired   = ['index.home.*'];
-        mockConfig.userPermittedTabs = {
-          user: ['*']
-        };
-
-        helper.resetStates();
-        helper.addStates(angular.copy(mockStates));
-
-        customConfigService.updateStateByRole('user');
-        var allStates                = helper.getAllStates();
-
-        _.forEach(allStates, function (state) {
-          expect(state.exclude).toBe(false);
-        });
-      });
-
-      it('should updateStateByRole, some permitted by wildcard, some not, some excluded', function () {
-        mockConfig.noLoginRequired   = ['index.home.*'];
-        mockConfig.userPermittedTabs = {
-          user: ['index.library', 'index.messages', 'index.messages.sub1']
-        };
-
-        helper.resetStates();
-        helper.addStates(angular.copy(mockStates));
-
-        customConfigService.updateStateByRole('user');
-        var allStates                = helper.getAllStates();
-
-        var permittedStates = mockConfig.userPermittedTabs.user;
-
-        _.forEach(allStates, function (state) {
-          if (_.contains(permittedStates, state.state)) {
-            expect(state.exclude).toBe(false); // if its in the permitted states, dont exclude
-          }
-          else if (_.contains(state.state, 'index.home')) {
-            expect(state.exclude).toBe(false); // or if its whitelisted, dont exclude
-          }
-          else {
-            expect(state.exclude).toBe(true); // otherwise disappear it
-          }
-        });
-
-        expect(allStates['index.messages.sub2'].exclude).toBe(true); //just to be sure
-      });
-
-      it('should updateStateByRole, some permitted by wildcard, some excluded', function () {
-        mockConfig.noLoginRequired   = ['index.home.*'];
-        mockConfig.userPermittedTabs = {
-          user: ['index.messages.*']
-        };
-
-        helper.resetStates();
-        helper.addStates(angular.copy(mockStates));
-
-        customConfigService.updateStateByRole('user');
-        var allStates                = helper.getAllStates();
-
-        _.forEach(allStates, function (state) {
-
-          if (_.contains(state.state, 'index.home')) {
-            expect(state.exclude).toBe(false); // its whitelisted, dont exclude
-          }
-          else if (_.contains(state.state, 'index.messages')) {
-            expect(state.exclude).toBe(false); // or if its wild carded, dont exclude
-          }
-          else {
-            expect(state.exclude).toBe(true); // otherwise disappear it
-          }
-        });
-
-        expect(allStates['index.library'].exclude).toBe(true); //just to be sure
-      });
-
-      it('should updateStateByRole, no wildcard, some excluded', function () {
-        mockConfig.noLoginRequired = []; // log in for everything
-        mockConfig.userPermittedTabs = {
-          user: ['index.library', 'index.account']
-        };
-
-        helper.resetStates();
-        helper.addStates(angular.copy(mockStates));
-
-        customConfigService.updateStateByRole('user');
-        var allStates                = helper.getAllStates();
-
-        _.forEach(allStates, function (state) {
-          if (state.state === 'index.library') {
-            expect(state.exclude).toBe(false); // explicitly permitted
-          }
-          else if (state.state === 'index.account') {
-            expect(state.exclude).toBe(false); // explicitly permitted
-          }
-          else {
-            expect(state.exclude).toBe(true); // otherwise disappear it
-          }
-        });
-      });
-
-      it('should updateStateByRole, no wildcard, some bogus states', function () {
-        mockConfig.noLoginRequired = []; // log in for everything
-        mockConfig.userPermittedTabs = {
-          user: ['index.library', 'index.account', 'foobar']
-        };
-
-        helper.resetStates();
-        helper.addStates(angular.copy(mockStates));
-
-        customConfigService.updateStateByRole('user');
-        var allStates                = helper.getAllStates();
-
-        expect(allStates['foobar']).not.toBeDefined(); // bogus state
-
-        _.forEach(allStates, function (state) {
-          if (state.state === 'index.library') {
-            expect(state.exclude).toBe(false); // explicitly permitted
-          }
-          else if (state.state === 'index.account') {
-            expect(state.exclude).toBe(false); // explicitly permitted
-          }
-          else {
-            expect(state.exclude).toBe(true); // otherwise disappear it
-          }
-        });
-      });
     });
 
   });

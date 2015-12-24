@@ -6,7 +6,7 @@
   'use strict';
 
   angular
-    .module('isc.authentication', ['isc.core'])
+    .module('isc.authentication', ['isc.core', 'isc.configuration'])
     .constant('AUTH_EVENTS', {
       loginError           : 'iscLoginError',
       loginSuccess         : 'iscLoginSuccess',

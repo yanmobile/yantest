@@ -12,7 +12,7 @@
     'isc.animation',
     'isc.progressLoader',
     'isc.authentication',
-    'isc.stateManager'])
+    'isc.states'])
     .config(function ($stateProvider, iscCustomConfigServiceProvider) {
 
       iscCustomConfigServiceProvider.addUserPermittedTabs({
