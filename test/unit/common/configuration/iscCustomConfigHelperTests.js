@@ -8,7 +8,6 @@
         mockConfig,
         log,
         httpBackend,
-        sessionModel,
         helper;
 
 
@@ -21,12 +20,11 @@
       $provide.value('$log', console);
     });
 
-    beforeEach( inject( function( $log, $rootScope, $httpBackend, iscCustomConfigHelper, iscSessionModel ){
+    beforeEach( inject( function( $log, $rootScope, $httpBackend, iscCustomConfigHelper ){
       scope = $rootScope.$new();
       log = $log;
 
       mockConfig = angular.copy( customConfig );
-      sessionModel = iscSessionModel;
       helper = iscCustomConfigHelper;
 
       httpBackend = $httpBackend;

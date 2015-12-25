@@ -9,7 +9,7 @@
   // injection
   // ----------------------------
 
-  angular.module('isc.stateManager', [])
+  angular.module('isc.states')
     .factory('iscStateManager', iscStateManager);
 
   /* @ngInject */

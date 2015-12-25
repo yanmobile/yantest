@@ -13,7 +13,7 @@
 
   ////////////////////////////////
   /* @ngInject */
-  function iscSessionModel(devlog, $rootScope, $interval, iscSessionStorageHelper, AUTH_EVENTS) {
+  function iscSessionModel(devlog, $rootScope, $interval, iscCustomConfigService, iscCustomConfigHelper, iscSessionStorageHelper, AUTH_EVENTS) {
     devlog.channel('iscSessionModel').debug('iscSessionModel LOADED');
 
     // ----------------------------
@@ -46,6 +46,9 @@
       create : create,
       destroy: destroy,
 
+      initSession      : initSession,
+      updateStateByRole: updateStateByRole,
+
       initSessionTimeout : initSessionTimeout,
       stopSessionTimeout : stopSessionTimeout,
       resetSessionTimeout: resetSessionTimeout,
@@ -73,6 +76,96 @@
     // ----------------------------
     // functions
     // ----------------------------
+
+    function initSession(config) {
+      model.setNoLoginRequiredList(config.noLoginRequired);
+      model.setPermittedStates([]);
+      iscCustomConfigService.addStates();
+      iscSessionStorageHelper.setConfig(config);
+
+      // update the states based on the user's role, if any
+      var currentUser = iscSessionModel.getCurrentUser();
+      var userRole    = !!currentUser ? currentUser.userRole : '';
+      iscCustomConfigService.updateStateByRole(userRole, config);
+    }
+
+
+    // ----------------------------
+    /**
+     * adds or removes tabs based on the user's permissions in the configFile.json
+     * eg:
+     'userPermittedTabs': {
+            'user':['*'],
+            'guest':['index.home','index.library']
+       }
+     * supports wildcards (eg 'index.home.*')
+     * where '*' will allow all tabs
+     * NOTE - if you want to include some but not all subtabs,
+     *        be sure to also include the parent tab (eg ['index.messages', 'index.messages.subtab1' ])
+     *
+     * @param role String
+     */
+    function updateStateByRole(role, config) {
+      devlog.channel('iscCustomConfigService').debug('iscCustomConfigService.updateStateByRole', role);
+
+      var allStates = iscCustomConfigHelper.getAllStates();
+      devlog.channel('iscCustomConfigService').debug('...allStates', allStates);
+
+      // start by excluding everything
+      _.forEach(allStates, function (tab) {
+        if (tab) {
+          tab.exclude = true;
+        }
+      });
+
+      if (!config) {
+        return;
+      }
+
+      var noLoginRequired     = angular.copy(config.noLoginRequired);
+      var userPermittedStates = angular.copy(config.userPermittedTabs[role]);
+      var allPermittedStates  = noLoginRequired;
+      if (!!userPermittedStates) {
+        allPermittedStates = noLoginRequired.concat(userPermittedStates);
+      }
+      model.setPermittedStates(allPermittedStates);
+      devlog.channel('iscCustomConfigService').debug('...allPermittedStates', allPermittedStates);
+
+      if (_.contains(allPermittedStates, '*')) {
+        //console.debug( '...adding all' );
+        //turn everything on
+        _.forEach(allStates, function (state) {
+          state.exclude = false;
+        });
+      }
+      else {
+
+        _.forEach(allPermittedStates, function (permittedTab) {
+          devlog.channel('iscCustomConfigService').debug('...permittedTab', permittedTab);
+
+          // handle wildcards
+          var starIdx = permittedTab.indexOf('.*');
+          if (starIdx > -1) {
+            var superState = permittedTab.substr(0, starIdx);
+            devlog.channel('iscCustomConfigService').debug('...superState', superState);
+
+            _.forEach(allStates, function (state) {
+              if (state.state.indexOf(superState) > -1) {
+                state.exclude = false;
+              }
+            });
+          }
+          else {
+            devlog.channel('iscCustomConfigService').debug('...allStates[permittedTab]', allStates[permittedTab]);
+            if (allStates[permittedTab]) {
+              allStates[permittedTab].exclude = false;
+            }
+          }
+        });
+      }
+
+      devlog.channel('iscCustomConfigService').debug('Finished updating navbar');
+    }
 
     function create(sessionData, isSessionNew) {
       devlog.channel('iscSessionModel').debug('iscSessionModel.create');
@@ -149,7 +242,7 @@
         devlog.channel('iscSessionModel').debug('...sessionTimeoutInSeconds ' + sessionTimeoutInSeconds);
         devlog.channel('iscSessionModel').debug('...sessionTimeoutCounter ' + sessionTimeoutCounter);
         devlog.channel('iscSessionModel').debug('...sessionTimeoutWarning ' + sessionTimeoutWarning);
-        devlog.channel('iscSessionModel').debug('...remainingTime ' + remainingTime);
+        devlog.channel('iscSessionModel').debug('...remainingTime ' + getRemainingTime());
 
         if (sessionTimeoutCounter >= sessionTimeoutWarning && sessionTimeoutCounter < sessionTimeoutInSeconds) {
           // warn
@@ -339,7 +432,6 @@
 
 
   }// END CLASS
-
 
 
 })();

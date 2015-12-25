@@ -40,6 +40,8 @@
       mockConfig = angular.copy( customConfig );
       iscCustomConfigService.setConfig( mockConfig );
 
+      iscSessionStorageHelper.setConfig(mockConfig);
+
       translate = $translate;
       rootScope = $rootScope;
       sessionStorageHelper = iscSessionStorageHelper;
