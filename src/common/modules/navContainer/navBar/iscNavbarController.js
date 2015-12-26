@@ -28,8 +28,8 @@
       showLogout           : false,
 
       tabs        : iscCustomConfigService.getTopTabsArray(),
-      logoutButton: iscCustomConfigService.getLogoutButtonConfig(),
-      loginButton : iscCustomConfigService.getLoginButtonConfig(),
+      logoutButton: iscCustomConfigService.getConfigSection('logoutButton'),
+      loginButton : iscCustomConfigService.getConfigSection('loginButton'),
 
       logout           : logout,
       setShowLogin     : setShowLogin,

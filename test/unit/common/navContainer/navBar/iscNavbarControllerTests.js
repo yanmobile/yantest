@@ -84,15 +84,6 @@
             expect (self.tabs).toBe (customConfigService.getTopTabsArray ());
           });
 
-          it ('should have a value logoutButton', function () {
-            expect (angular.isDefined (self.logoutButton)).toBe (true);
-            expect (self.logoutButton).toBe (customConfigService.getLogoutButtonConfig ());
-          });
-
-          it ('should have a value loginButton', function () {
-            expect (angular.isDefined (self.loginButton)).toBe (true);
-            expect (self.loginButton).toBe (customConfigService.getLoginButtonConfig ());
-          });
         });
 
     // -------------------------

@@ -26,11 +26,6 @@ var customConfig = {
 
   "userRoles": [ "user", "guest" ],
 
-  "statePermissions": {
-    "index.messages.outbox": ["user"]
-  },
-
-
   "topTabs": {
     "index.home": {
       "state": "index.home",

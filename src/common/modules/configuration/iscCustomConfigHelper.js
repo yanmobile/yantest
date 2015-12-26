@@ -9,7 +9,7 @@
   // inject
   // ----------------------------
 
-  angular.module('isc.configuration')
+  angular.module('isc.states')
     .factory('iscCustomConfigHelper', iscCustomConfigHelper);
 
   /* @ngInject */
