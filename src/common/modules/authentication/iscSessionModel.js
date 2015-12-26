@@ -93,6 +93,7 @@
      * adds or removes tabs based on the user's permissions in the configFile.json
      * eg:
      'rolePermissions': {
+            '*': ['index'],
             'user':['*'],
             'guest':['index.home','index.library']
        }
