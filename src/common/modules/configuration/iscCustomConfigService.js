@@ -68,9 +68,7 @@
           getConfigSection: getConfigSection,
           getConfig       : getConfig,
           setConfig       : setConfig,
-          addStates       : addStates,
-
-          getTopTabsArray      : getTopTabsArray
+          addStates       : addStates
         };
 
         return service;
@@ -127,17 +125,6 @@
             iscCustomConfigHelper.addStates(obj.tasks);
           });
         }
-
-        // ----------------------------
-        // specific config getters
-
-        function getTopTabsArray() {
-          if (!topTabsArray) {
-            topTabsArray = _.toArray(config.topTabs);
-          }
-          return topTabsArray;
-        }
-
       }// END CLASS
 
     });
