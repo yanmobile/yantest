@@ -62,7 +62,7 @@
 
     function doInit () {
 
-      languages = iscCustomConfigService.getLanguageConfig ();
+      languages = iscCustomConfigService.getConfigSection ('languageList');
 
       if (languages) {
 

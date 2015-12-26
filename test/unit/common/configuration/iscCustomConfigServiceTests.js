@@ -59,11 +59,10 @@
           ]
         });
 
-        customConfigService.clearConfig();
-        permittedStates     = customConfigService.getConfig().rolePermissions;
+        permittedStates     = customConfigService.getConfigSection('rolePermissions');
 
         provider.loadConfig(mockConfig);
-        permittedStates     = customConfigService.getConfig().rolePermissions;
+        permittedStates     = customConfigService.getConfigSection('rolePermissions');
 
         var statesEvaluated = 0;
         ['user',
@@ -91,50 +90,6 @@
         var result = customConfigService.getConfig();
         expect(result).toBe(mockConfig);
       });
-    });
-
-    // -------------------------
-    describe('get specific config tests ', function () {
-
-      it('should have a function getTopTabsConfig', function () {
-        expect(angular.isFunction(customConfigService.getTopTabsConfig)).toBe(true);
-      });
-
-      it('should get the tab config when calling getTopTabsConfig', function () {
-        var result = customConfigService.getTopTabsConfig();
-        expect(result).toBe(mockConfig.topTabs);
-      });
-
-      // --------------
-      it('should have a function getHomePageConfig', function () {
-        expect(angular.isFunction(customConfigService.getHomePageConfig)).toBe(true);
-      });
-
-      it('should get the home config when calling getHomePageConfig', function () {
-        var result = customConfigService.getHomePageConfig();
-        expect(result).toBe(mockConfig.homePage);
-      });
-
-      // --------------
-      it('should have a function getLogoutButtonConfig', function () {
-        expect(angular.isFunction(customConfigService.getLogoutButtonConfig)).toBe(true);
-      });
-
-      it('should get a config when calling getLogoutButtonConfig', function () {
-        var result = customConfigService.getLogoutButtonConfig();
-        expect(result).toBe(mockConfig.logoutButton);
-      });
-
-      // --------------
-      it('should have a function getLoginButtonConfig', function () {
-        expect(angular.isFunction(customConfigService.getLoginButtonConfig)).toBe(true);
-      });
-
-      it('should get a config when calling getLoginButtonConfig', function () {
-        var result = customConfigService.getLoginButtonConfig();
-        expect(result).toBe(mockConfig.loginButton);
-      });
-
     });
 
   });

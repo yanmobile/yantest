@@ -66,10 +66,6 @@
     // -------------------------
     describe( 'onLoad tests ', function(){
 
-      it( 'should have a function onLoad', function(){
-        expect( angular.isFunction( self.onLoad )).toBe( true );
-      });
-
       xit( 'should know what to do onLoad, dont show warning', function(){
         spyOn( sessionStorageHelper, 'getShowTimedOutAlert' ).and.returnValue( false );
         spyOn( sessionStorageHelper, 'setShowTimedOutAlert' );
@@ -111,10 +107,6 @@
 
     // -------------------------
     describe( 'showAlertBox tests ', function(){
-
-      it( 'should have a function showAlertBox', function(){
-        expect( angular.isFunction( self.showAlertBox )).toBe( true );
-      });
 
       it( 'should open the alert with the right args', function(){
         spyOn( self, 'showAlertBox' );

@@ -81,18 +81,10 @@
 
           it ('should have a value tabs', function () {
             expect (angular.isDefined (self.tabs)).toBe (true);
-            expect (self.tabs).toBe (customConfigService.getTopTabsArray ());
+            var topTabsList =  _.toArray(customConfigService.getConfigSection('topTabs'));
+            expect (self.tabs).toEqual ( topTabsList);
           });
 
-          it ('should have a value logoutButton', function () {
-            expect (angular.isDefined (self.logoutButton)).toBe (true);
-            expect (self.logoutButton).toBe (customConfigService.getLogoutButtonConfig ());
-          });
-
-          it ('should have a value loginButton', function () {
-            expect (angular.isDefined (self.loginButton)).toBe (true);
-            expect (self.loginButton).toBe (customConfigService.getLoginButtonConfig ());
-          });
         });
 
     // -------------------------

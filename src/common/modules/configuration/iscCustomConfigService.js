@@ -65,17 +65,10 @@
 
         var service = {
 
-          getConfig  : getConfig,
-          setConfig  : setConfig,
-          clearConfig: clearConfig,
-          addStates  : addStates,
-
-          getTopTabsConfig     : getTopTabsConfig,
-          getTopTabsArray      : getTopTabsArray,
-          getHomePageConfig    : getHomePageConfig,
-          getLogoutButtonConfig: getLogoutButtonConfig,
-          getLoginButtonConfig : getLoginButtonConfig,
-          getLanguageConfig    : getLanguageConfig
+          getConfigSection: getConfigSection,
+          getConfig       : getConfig,
+          setConfig       : setConfig,
+          addStates       : addStates
         };
 
         return service;
@@ -83,14 +76,16 @@
         // ----------------------------
         // functions
         // ----------------------------
-        function getLanguageConfig() {
-          return config.languageList;
-        }
-
         function getConfig() {
           devlog.channel('iscCustomConfigService').debug('iscCustomConfigService.getConfig');
           devlog.channel('iscCustomConfigService').debug('...config ' + JSON.stringify(config));
           return config;
+        }
+
+        function getConfigSection(section) {
+          devlog.channel('iscCustomConfigService').debug('iscCustomConfigService.getConfigSection');
+          devlog.channel('iscCustomConfigService').debug('...section' + section);
+          return _.get(config, section);
         }
 
         function setConfig(val) {
@@ -129,41 +124,7 @@
           _.forEach(tasks, function (obj) {
             iscCustomConfigHelper.addStates(obj.tasks);
           });
-
         }
-
-        function clearConfig() {
-          devlog.channel('iscCustomConfigService').debug('iscCustomConfigService.clearConfig');
-          config = {};
-        }
-
-
-        // ----------------------------
-        // specific config getters
-
-        function getTopTabsConfig() {
-          return config.topTabs;
-        }
-
-        function getTopTabsArray() {
-          if (!topTabsArray) {
-            topTabsArray = _.toArray(config.topTabs);
-          }
-          return topTabsArray;
-        }
-
-        function getLogoutButtonConfig() {
-          return config.logoutButton;
-        }
-
-        function getLoginButtonConfig() {
-          return config.loginButton;
-        }
-
-        function getHomePageConfig() {
-          return config.homePage;
-        }
-
       }// END CLASS
 
     });
