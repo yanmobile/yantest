@@ -72,7 +72,7 @@
     }
 
     function getCurrentStateTranslationKey() {
-      devlog.channel("iscStateManager").debug('iscStateManager.getCurrentStateTranslationKey: ' + stateName);
+      devlog.channel('iscStateManager').debug('iscStateManager.getCurrentStateTranslationKey: ' + stateName);
       if (parentSref) {
         return iscCustomConfigHelper.getTranslationKeyFromName(parentSref);
       } else {

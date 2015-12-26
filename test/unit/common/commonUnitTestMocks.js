@@ -16,16 +16,10 @@
 
 var customConfig = {
   "baseUrl": "http://hscommdev.iscinternal.com/public/api/v1",
-
-  "noLoginRequired": [
-    "index.login",
-    "index.home",
-    "index.info.*"
-  ],
-
   "devlogWhitelist": [],
 
-  "userPermittedTabs": {
+  "routePermissions": {
+    "*" : ['index', 'index.login'],
     "user":[ "index.wellness.*", "index.messages.*", "index.library.*", "index.calendar.*", "index.myAccount.*" ],
     "proxy":["index.myAccount.*", "index.messages",  "index.messages.inbox", "index.messages.outbox", "index.messages.refillPrescription"]
   },

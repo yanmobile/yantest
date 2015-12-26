@@ -48,11 +48,11 @@
     }));
 
 
-    describe('iscCustomConfigServiceProvider addUserPermittedTabs', function () {
+    describe('iscCustomConfigServiceProvider addRoutePermissions', function () {
 
-      it('should should have permissions added via .addUserPermittedTabs()', function () {
+      it('should should have permissions added via .addRoutePermissions()', function () {
         var permittedStates;
-        provider.addUserPermittedTabs({
+        provider.addRoutePermissions({
           'myRoute.*': [
             'user',
             '%HSCC_CMC_CarePlanCreator'
@@ -60,10 +60,10 @@
         });
 
         customConfigService.clearConfig();
-        permittedStates     = customConfigService.getConfig().userPermittedTabs;
+        permittedStates     = customConfigService.getConfig().rolePermissions;
 
         provider.loadConfig(mockConfig);
-        permittedStates     = customConfigService.getConfig().userPermittedTabs;
+        permittedStates     = customConfigService.getConfig().rolePermissions;
 
         var statesEvaluated = 0;
         ['user',

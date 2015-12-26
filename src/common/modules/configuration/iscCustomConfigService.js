@@ -7,10 +7,10 @@
 
   angular.module('isc.configuration')
     .provider('iscCustomConfigService', function () {
-      var routeSpecificUserPermittedTabs = {};
-      var config                         = {};
+      var routeSpecificRoutePermissions = {};
+      var config                        = {};
 
-      function hydrateUserPermittedTabs(tabs, states) {
+      function hydrateRoutePermissions(masterRoutes, routes) {
         /**
          * CONVERTS FORMAT FROM:
          {'index.home.*': ['%HSCC_CMC_CarePlanApprover',
@@ -25,28 +25,28 @@
          {'%HSCC_CMC_CarePlanViewer': ["index.home.*"]},
          {'%HSCC_CMC_Administrator': ["index.home.*"]}]
          */
-        _.forEach(states, function (roles, state) {
+        _.forEach(routes, function (roles, routes) {
           _.forEach(roles, function (role) {
-            tabs[role] = tabs[role] || [];
-            tabs[role].push(state);
+            masterRoutes[role] = masterRoutes[role] || [];
+            masterRoutes[role].push(routes);
           });
         });
       }
 
       return {
-        loadConfig          : function loadConfig(configObj) {
+        loadConfig         : function loadConfig(configObj) {
 
-          config                   = configObj;
-          config.userPermittedTabs = config.userPermittedTabs || [];
-          _.forEach(routeSpecificUserPermittedTabs, function (value, key) {
-            config.userPermittedTabs[key] = config.userPermittedTabs[key] || [];
-            Array.prototype.push.apply(config.userPermittedTabs[key], value);
+          config                 = configObj;
+          config.rolePermissions = config.rolePermissions || [];
+          _.forEach(routeSpecificRoutePermissions, function (value, key) {
+            config.rolePermissions[key] = config.rolePermissions[key] || [];
+            Array.prototype.push.apply(config.rolePermissions[key], value);
           });
         },
-        addUserPermittedTabs: function addUserPermittedTabs(states) {
-          hydrateUserPermittedTabs(routeSpecificUserPermittedTabs, states);
+        addRoutePermissions: function addRoutePermissions(states) {
+          hydrateRoutePermissions(routeSpecificRoutePermissions, states);
         },
-        $get                : iscCustomConfigService
+        $get               : iscCustomConfigService
       };
 
       /* @ngInject */
@@ -83,7 +83,6 @@
         // ----------------------------
         // functions
         // ----------------------------
-
         function getLanguageConfig() {
           return config.languageList;
         }
