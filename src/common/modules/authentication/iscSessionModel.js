@@ -86,7 +86,7 @@
       // update the states based on the user's role, if any
       var currentUser = iscSessionModel.getCurrentUser();
       var userRole    = !!currentUser ? currentUser.userRole : '';
-      iscCustomConfigService.updateStateByRole(userRole, config);
+      model.updateStateByRole(userRole, config);
     }
 
 
@@ -106,10 +106,10 @@
      * @param role String
      */
     function updateStateByRole(role, config) {
-      devlog.channel('iscCustomConfigService').debug('iscCustomConfigService.updateStateByRole', role);
+      devlog.channel('iscSessionModel').debug('iscSessionModel.updateStateByRole', role);
 
       var allStates = iscCustomConfigHelper.getAllStates();
-      devlog.channel('iscCustomConfigService').debug('...allStates', allStates);
+      devlog.channel('iscSessionModel').debug('...allStates', allStates);
 
       // start by excluding everything
       _.forEach(allStates, function (tab) {
@@ -129,7 +129,7 @@
         allPermittedStates = noLoginRequired.concat(userPermittedStates);
       }
       model.setPermittedStates(allPermittedStates);
-      devlog.channel('iscCustomConfigService').debug('...allPermittedStates', allPermittedStates);
+      devlog.channel('iscSessionModel').debug('...allPermittedStates', allPermittedStates);
 
       if (_.contains(allPermittedStates, '*')) {
         //console.debug( '...adding all' );
@@ -141,13 +141,13 @@
       else {
 
         _.forEach(allPermittedStates, function (permittedTab) {
-          devlog.channel('iscCustomConfigService').debug('...permittedTab', permittedTab);
+          devlog.channel('iscSessionModel').debug('...permittedTab', permittedTab);
 
           // handle wildcards
           var starIdx = permittedTab.indexOf('.*');
           if (starIdx > -1) {
             var superState = permittedTab.substr(0, starIdx);
-            devlog.channel('iscCustomConfigService').debug('...superState', superState);
+            devlog.channel('iscSessionModel').debug('...superState', superState);
 
             _.forEach(allStates, function (state) {
               if (state.state.indexOf(superState) > -1) {
@@ -156,7 +156,7 @@
             });
           }
           else {
-            devlog.channel('iscCustomConfigService').debug('...allStates[permittedTab]', allStates[permittedTab]);
+            devlog.channel('iscSessionModel').debug('...allStates[permittedTab]', allStates[permittedTab]);
             if (allStates[permittedTab]) {
               allStates[permittedTab].exclude = false;
             }
@@ -164,7 +164,7 @@
         });
       }
 
-      devlog.channel('iscCustomConfigService').debug('Finished updating navbar');
+      devlog.channel('iscSessionModel').debug('Finished updating navbar');
     }
 
     function create(sessionData, isSessionNew) {

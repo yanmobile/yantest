@@ -64,15 +64,11 @@
         // ----------------------------
 
         var service = {
-          getBaseUrl         : getBaseUrl,
-          getBaseUrlSecondary: getBaseUrlSecondary,
-          getApiUrl          : getApiUrl,
 
           getConfig  : getConfig,
           setConfig  : setConfig,
           clearConfig: clearConfig,
           addStates  : addStates,
-
 
           getTopTabsConfig     : getTopTabsConfig,
           getTopTabsArray      : getTopTabsArray,
@@ -88,32 +84,6 @@
         // functions
         // ----------------------------
 
-        // ----------------------------
-        // base url
-
-        function getBaseUrl() {
-          devlog.channel('iscCustomConfigService').debug('iscCustomConfigService.getBaseUrl');
-          devlog.channel('iscCustomConfigService').debug('...baseUrl', config ? config.baseUrl : '');
-          return config ? config.baseUrl : null;
-        }
-
-        function getBaseUrlSecondary() {
-          return config.baseUrlSecondary;
-        }
-
-        function getApiUrl(apiUrl) {
-          if (!config.api) {
-            return apiUrl;
-          }
-
-          var url = (config.api.protocol || 'http') + '://' + config.api.hostname + ':' + (config.api.port || 80);
-          url += (apiUrl || '');
-          return url;
-        }
-
-        // ----------------------------
-        // config
-
         function getLanguageConfig() {
           return config.languageList;
         }
@@ -126,7 +96,6 @@
 
         function setConfig(val) {
           devlog.channel('iscCustomConfigService').debug('iscCustomConfigService.setConfig');
-          devlog.channel('iscCustomConfigService').debug('...baseUrl ' + JSON.stringify(val.baseUrl));
           devlog.channel('iscCustomConfigService').debug('...config ', val);
           config = val;
         }

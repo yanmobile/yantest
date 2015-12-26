@@ -6,6 +6,6 @@
   'use strict';
 
   angular
-    .module('isc.configuration', ['isc.core', 'ui.router']);
+    .module('isc.configuration', ['isc.core']);
 
 })();
