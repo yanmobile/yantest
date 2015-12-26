@@ -14,7 +14,7 @@
 
 
   /* @ngInject */
-  function iscNavContainerModel(devlog, iscCustomConfigHelper) {
+  function iscNavContainerModel(devlog, iscStateManager) {
 //   devlog('iscNavContainerModel').debug( 'iscNavContainerModel LOADED');
 
     // ----------------------------
@@ -67,7 +67,7 @@
     }
 
     function getCurrentStateTranslationKey() {
-      return iscCustomConfigHelper.getCurrentStateTranslationKey();
+      return iscStateManager.getCurrentStateTranslationKey();
     }
 
 

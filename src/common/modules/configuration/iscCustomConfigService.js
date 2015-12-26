@@ -7,10 +7,10 @@
 
   angular.module('isc.configuration')
     .provider('iscCustomConfigService', function () {
-      var routeSpecificUserPermittedTabs = {};
-      var config                         = {};
+      var routeSpecificRolePermissions = {};
+      var config                       = {};
 
-      function hydrateUserPermittedTabs(tabs, states) {
+      function hydrateRolePermissions(masterRoutes, routes) {
         /**
          * CONVERTS FORMAT FROM:
          {'index.home.*': ['%HSCC_CMC_CarePlanApprover',
@@ -25,28 +25,28 @@
          {'%HSCC_CMC_CarePlanViewer': ["index.home.*"]},
          {'%HSCC_CMC_Administrator': ["index.home.*"]}]
          */
-        _.forEach(states, function (roles, state) {
+        _.forEach(routes, function (roles, routes) {
           _.forEach(roles, function (role) {
-            tabs[role] = tabs[role] || [];
-            tabs[role].push(state);
+            masterRoutes[role] = masterRoutes[role] || [];
+            masterRoutes[role].push(routes);
           });
         });
       }
 
       return {
-        loadConfig          : function loadConfig(configObj) {
+        loadConfig        : function loadConfig(configObj) {
 
-          config                   = configObj;
-          config.userPermittedTabs = config.userPermittedTabs || [];
-          _.forEach(routeSpecificUserPermittedTabs, function (value, key) {
-            config.userPermittedTabs[key] = config.userPermittedTabs[key] || [];
-            Array.prototype.push.apply(config.userPermittedTabs[key], value);
+          config                 = configObj;
+          config.rolePermissions = config.rolePermissions || [];
+          _.forEach(routeSpecificRolePermissions, function (value, key) {
+            config.rolePermissions[key] = config.rolePermissions[key] || [];
+            Array.prototype.push.apply(config.rolePermissions[key], value);
           });
         },
-        addUserPermittedTabs: function addUserPermittedTabs(states) {
-          hydrateUserPermittedTabs(routeSpecificUserPermittedTabs, states);
+        addRolePermissions: function addRolePermissions(states) {
+          hydrateRolePermissions(routeSpecificRolePermissions, states);
         },
-        $get                : iscCustomConfigService
+        $get              : iscCustomConfigService
       };
 
       /* @ngInject */
@@ -64,15 +64,11 @@
         // ----------------------------
 
         var service = {
-          getBaseUrl         : getBaseUrl,
-          getBaseUrlSecondary: getBaseUrlSecondary,
-          getApiUrl          : getApiUrl,
 
           getConfig  : getConfig,
           setConfig  : setConfig,
           clearConfig: clearConfig,
           addStates  : addStates,
-
 
           getTopTabsConfig     : getTopTabsConfig,
           getTopTabsArray      : getTopTabsArray,
@@ -87,33 +83,6 @@
         // ----------------------------
         // functions
         // ----------------------------
-
-        // ----------------------------
-        // base url
-
-        function getBaseUrl() {
-          devlog.channel('iscCustomConfigService').debug('iscCustomConfigService.getBaseUrl');
-          devlog.channel('iscCustomConfigService').debug('...baseUrl', config ? config.baseUrl : '');
-          return config ? config.baseUrl : null;
-        }
-
-        function getBaseUrlSecondary() {
-          return config.baseUrlSecondary;
-        }
-
-        function getApiUrl(apiUrl) {
-          if (!config.api) {
-            return apiUrl;
-          }
-
-          var url = (config.api.protocol || 'http') + '://' + config.api.hostname + ':' + (config.api.port || 80);
-          url += (apiUrl || '');
-          return url;
-        }
-
-        // ----------------------------
-        // config
-
         function getLanguageConfig() {
           return config.languageList;
         }
@@ -126,7 +95,6 @@
 
         function setConfig(val) {
           devlog.channel('iscCustomConfigService').debug('iscCustomConfigService.setConfig');
-          devlog.channel('iscCustomConfigService').debug('...baseUrl ' + JSON.stringify(val.baseUrl));
           devlog.channel('iscCustomConfigService').debug('...config ', val);
           config = val;
         }

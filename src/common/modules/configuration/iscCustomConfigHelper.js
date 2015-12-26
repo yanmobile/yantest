@@ -13,7 +13,7 @@
     .factory('iscCustomConfigHelper', iscCustomConfigHelper);
 
   /* @ngInject */
-  function iscCustomConfigHelper(devlog, $state) {
+  function iscCustomConfigHelper(devlog) {
     devlog.channel("iscCustomConfigHelper").debug('iscCustomConfigHelper LOADED');
 
     // ----------------------------
@@ -34,10 +34,8 @@
 
       stateIsExcluded: stateIsExcluded,
 
-      getCurrentStateTranslationKey   : getCurrentStateTranslationKey,
       getSectionTranslationKeyFromName: getSectionTranslationKeyFromName,
-      getTranslationKeyFromName       : getTranslationKeyFromName,
-      isCurrentState                  : isCurrentState
+      getTranslationKeyFromName       : getTranslationKeyFromName
     };
 
     return factory;
@@ -92,13 +90,6 @@
     }
 
     // ----------------------------
-    function getCurrentStateTranslationKey() {
-      var stateName = $state.$current.name;
-      devlog.channel("iscCustomConfigHelper").debug('iscCustomConfigHelper.getCurrentStateTranslationKey: ' + stateName);
-
-      return getTranslationKeyFromName(stateName);
-    }
-
 
     // get the translation key from the state name
     function getTranslationKeyFromName(stateName) {
@@ -121,13 +112,6 @@
 
       return state ? state.translationKey : '';
     }
-
-    // is the state currently active
-    function isCurrentState(stateName) {
-      devlog.channel("iscCustomConfigHelper").debug('iscCustomConfigHelper.isCurrentState: ', stateName);
-      return $state.is(stateName);
-    }
-
 
   }// END CLASS
 

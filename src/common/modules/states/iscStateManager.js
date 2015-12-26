@@ -42,16 +42,6 @@
     // functions
     // ----------------------------
 
-    /**
-     * Used instead of the iscCustomConfigHelper.isCurrentState() for those
-     * cases where the user has navigated to a sub-url
-     * but what is highlighted in the secondary nav should still be the parent state
-     * for example, when one clicks on a message from the inbox, one goes
-     * to a url/page for that message, but in the secondary nav, 'inbox' is still highlighted
-     *
-     * @param {String} stateName
-     * @returns {boolean}
-     */
     function isCurrentState(stateName) {
       var retVal = $state.is(stateName) || stateName === parentSref;
 
@@ -81,21 +71,16 @@
       return stateName.toLowerCase().indexOf('outbox') > -1;
     }
 
-    /**
-     * Used instead of the iscCustomConfigHelper.getCurrentStateTranslationKey()
-     * for those cases where the user has navigated to a sub-url
-     * but what is highlighted in the secondary nav should still be the parent state
-     * for example, when one clicks on a message from the inbox, one goes
-     * @returns translationKey (String)
-     */
     function getCurrentStateTranslationKey() {
+      devlog.channel('iscStateManager').debug('iscStateManager.getCurrentStateTranslationKey: ' + stateName);
       if (parentSref) {
         return iscCustomConfigHelper.getTranslationKeyFromName(parentSref);
+      } else {
+        var stateName = $state.$current.name;
+
+        return iscCustomConfigHelper.getTranslationKeyFromName(stateName);
       }
-
-      return iscCustomConfigHelper.getCurrentStateTranslationKey();
     }
-
 
   }//END CLASS
 

@@ -11,12 +11,13 @@
         $window,
         loginData,
         iscCustomConfigHelper,
+        iscCustomConfigServiceProvider,
         AUTH_EVENTS,
         loginDataProxy;
 
 
-    var mockConfig        = angular.copy(customConfig);
-    var mockStates        = [
+    var mockConfig = angular.copy(customConfig);
+    var mockStates = [
       { state: 'index.home', exclude: true },
       { state: 'index.home.sub1', exclude: false },
       { state: 'index.home.sub2', exclude: true },
@@ -27,16 +28,6 @@
       { state: 'index.messages.sub3', exclude: false },
       { state: 'index.library', exclude: true },
       { state: 'index.account', exclude: false }
-    ];
-    var userPermittedTabs = {
-      "user" : ["index.wellness.*", "index.messages.*", "index.library.*", "index.calendar.*", "index.myAccount.*"],
-      "proxy": ["index.myAccount.*", "index.messages", "index.messages.inbox", "index.messages.outbox", "index.messages.refillPrescription"]
-    };
-
-    var noLoginRequired = [
-      "index",
-      "index.login",
-      "index.home"
     ];
 
     var mockLoginResponse = {
@@ -67,6 +58,10 @@
     // setup devlog
     beforeEach(module('isc.core', function (devlogProvider) {
       devlogProvider.loadConfig(customConfig);
+    }));
+
+    beforeEach(module('isc.configuration', function (_iscCustomConfigServiceProvider_) {
+      iscCustomConfigServiceProvider = _iscCustomConfigServiceProvider_;
     }));
 
     // show $log statements
@@ -214,17 +209,17 @@
         expect(angular.isFunction(sessionModel.isAuthorized)).toBe(true);
       });
 
-      it('should have a function getPermittedStates', function () {
-        expect(angular.isFunction(sessionModel.getPermittedStates)).toBe(true);
+      it('should have a function getAuthorizedRoutes', function () {
+        expect(angular.isFunction(sessionModel.getAuthorizedRoutes)).toBe(true);
       });
 
-      it('should have a function setPermittedStates', function () {
-        expect(angular.isFunction(sessionModel.setPermittedStates)).toBe(true);
+      it('should have a function setAuthorizedRoutes', function () {
+        expect(angular.isFunction(sessionModel.setAuthorizedRoutes)).toBe(true);
       });
 
       it('should know if someone is authorized, all permitted', function () {
         sessionModel.create(loginData);
-        sessionModel.setPermittedStates(['*']);
+        sessionModel.setAuthorizedRoutes(['*']);
 
         var expected = sessionModel.isAuthorized('index.messages.outbox');
         expect(expected).toBe(true);
@@ -238,7 +233,7 @@
 
       it('should know if someone is authorized, some permitted', function () {
         sessionModel.create(loginData);
-        sessionModel.setPermittedStates(['index.messages.outbox', 'foo']);
+        sessionModel.setAuthorizedRoutes(['index.messages.outbox', 'foo']);
 
         var expected = sessionModel.isAuthorized('index.messages.outbox');
         expect(expected).toBe(true);
@@ -252,7 +247,7 @@
 
       it('should know if someone is authorized, some permitted by wildcard', function () {
         sessionModel.create(loginData);
-        sessionModel.setPermittedStates(['index.messages.*']);
+        sessionModel.setAuthorizedRoutes(['index.messages.*']);
 
         var expected = sessionModel.isAuthorized('index.messages');
         expect(expected).toBe(true);
@@ -272,18 +267,14 @@
     });
 
     // -------------------------
-    describe('whitelist, setNoLoginRequiredList tests ', function () {
+    describe('whitelist, setAnonymousRoutes tests ', function () {
       it('should have a function isWhiteListed', function () {
         expect(angular.isFunction(sessionModel.isWhiteListed)).toBe(true);
       });
 
-      it('should have a function setNoLoginRequiredList', function () {
-        expect(angular.isFunction(sessionModel.setNoLoginRequiredList)).toBe(true);
-      });
-
-
       it('should know when a page is whitelisted', function () {
-        sessionModel.setNoLoginRequiredList(['ix.foo', 'ix.fee', 'ix.baz.*', 'ix.buz.*']);
+
+        sessionModel.setAnonymousRoutes(['ix.foo', 'ix.fee', 'ix.baz.*', 'ix.buz.*']);
 
         var expected = sessionModel.isWhiteListed('ix.foo');
         expect(expected).toBe(true);
@@ -339,8 +330,9 @@
       });
 
       it('should updateStateByRole, bogus role', function () {
-        mockConfig.noLoginRequired   = ['index.home.*'];
-        mockConfig.userPermittedTabs = {
+
+        mockConfig.rolePermissions = {
+          "*": ['index.home.*'],
           user: ['*']
         };
 
@@ -361,8 +353,8 @@
       });
 
       it('should updateStateByRole, no role', function () {
-        mockConfig.noLoginRequired   = ['index.home.*'];
-        mockConfig.userPermittedTabs = {
+        mockConfig.rolePermissions = {
+          "*": ['index.home.*'],
           user: ['*']
         };
 
@@ -385,7 +377,7 @@
 
       it('should updateStateByRole, all permitted by wildcard', function () {
         mockConfig.noLoginRequired   = ['index.home.*'];
-        mockConfig.userPermittedTabs = {
+        mockConfig.rolePermissions = {
           user: ['*']
         };
 
@@ -401,8 +393,8 @@
       });
 
       it('should updateStateByRole, some permitted by wildcard, some not, some excluded', function () {
-        mockConfig.noLoginRequired   = ['index.home.*'];
-        mockConfig.userPermittedTabs = {
+        mockConfig.rolePermissions = {
+          "*": ['index.home.*'],
           user: ['index.library', 'index.messages', 'index.messages.sub1']
         };
 
@@ -412,7 +404,7 @@
         sessionModel.updateStateByRole('user', mockConfig);
         var allStates                = iscCustomConfigHelper.getAllStates();
 
-        var permittedStates = mockConfig.userPermittedTabs.user;
+        var permittedStates = mockConfig.rolePermissions.user;
 
         _.forEach(allStates, function (state) {
           if (_.contains(permittedStates, state.state)) {
@@ -430,8 +422,8 @@
       });
 
       it('should updateStateByRole, some permitted by wildcard, some excluded', function () {
-        mockConfig.noLoginRequired   = ['index.home.*'];
-        mockConfig.userPermittedTabs = {
+        mockConfig.rolePermissions = {
+          "*": ['index.home.*'],
           user: ['index.messages.*']
         };
 
@@ -458,8 +450,8 @@
       });
 
       it('should updateStateByRole, no wildcard, some excluded', function () {
-        mockConfig.noLoginRequired = []; // log in for everything
-        mockConfig.userPermittedTabs = {
+        // no anonymous routes
+        mockConfig.rolePermissions = {
           user: ['index.library', 'index.account']
         };
 
@@ -483,8 +475,9 @@
       });
 
       it('should updateStateByRole, no wildcard, some bogus states', function () {
-        mockConfig.noLoginRequired = []; // log in for everything
-        mockConfig.userPermittedTabs = {
+
+        // no anonymous routes
+        mockConfig.rolePermissions = {
           user: ['index.library', 'index.account', 'foobar']
         };
 

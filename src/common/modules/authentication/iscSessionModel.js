@@ -35,8 +35,8 @@
     var intervalPromise;
 
     // dont require login for these views
-    var noLoginRequiredList         = ['index', 'index.login'];
-    var noLoginRequiredWildcardList = [];
+    var anonymousRoutes         = [];
+    var anonymousRouteWildcards = [];
 
     // ----------------------------
     // class factory
@@ -59,14 +59,13 @@
       getCurrentUser: getCurrentUser,
       setCurrentUser: setCurrentUser,
 
-      getPermittedStates: getPermittedStates,
-      setPermittedStates: setPermittedStates,
+      getAuthorizedRoutes: getAuthorizedRoutes,
+      setAuthorizedRoutes: setAuthorizedRoutes,
+      setAnonymousRoutes : setAnonymousRoutes,
 
       isAuthorized   : isAuthorized,
       isAuthenticated: isAuthenticated,
       isWhiteListed  : isWhiteListed,
-
-      setNoLoginRequiredList: setNoLoginRequiredList,
 
       getFullName: getFullName
     };
@@ -78,23 +77,22 @@
     // ----------------------------
 
     function initSession(config) {
-      model.setNoLoginRequiredList(config.noLoginRequired);
-      model.setPermittedStates([]);
+      setAnonymousRoutes(config.rolePermissions['*']);
+      model.setAuthorizedRoutes([]);
       iscCustomConfigService.addStates();
       iscSessionStorageHelper.setConfig(config);
 
       // update the states based on the user's role, if any
       var currentUser = iscSessionModel.getCurrentUser();
       var userRole    = !!currentUser ? currentUser.userRole : '';
-      iscCustomConfigService.updateStateByRole(userRole, config);
+      model.updateStateByRole(userRole, config);
     }
-
 
     // ----------------------------
     /**
      * adds or removes tabs based on the user's permissions in the configFile.json
      * eg:
-     'userPermittedTabs': {
+     'rolePermissions': {
             'user':['*'],
             'guest':['index.home','index.library']
        }
@@ -106,10 +104,10 @@
      * @param role String
      */
     function updateStateByRole(role, config) {
-      devlog.channel('iscCustomConfigService').debug('iscCustomConfigService.updateStateByRole', role);
+      devlog.channel('iscSessionModel').debug('iscSessionModel.updateStateByRole', role);
 
       var allStates = iscCustomConfigHelper.getAllStates();
-      devlog.channel('iscCustomConfigService').debug('...allStates', allStates);
+      devlog.channel('iscSessionModel').debug('...allStates', allStates);
 
       // start by excluding everything
       _.forEach(allStates, function (tab) {
@@ -122,14 +120,14 @@
         return;
       }
 
-      var noLoginRequired     = angular.copy(config.noLoginRequired);
-      var userPermittedStates = angular.copy(config.userPermittedTabs[role]);
-      var allPermittedStates  = noLoginRequired;
+      var anonymousStates     = angular.copy(config.rolePermissions['*'], []);
+      var userPermittedStates = angular.copy(config.rolePermissions[role]);
+      var allPermittedStates  = anonymousStates;
       if (!!userPermittedStates) {
-        allPermittedStates = noLoginRequired.concat(userPermittedStates);
+        allPermittedStates = anonymousStates.concat(userPermittedStates);
       }
-      model.setPermittedStates(allPermittedStates);
-      devlog.channel('iscCustomConfigService').debug('...allPermittedStates', allPermittedStates);
+      model.setAuthorizedRoutes(allPermittedStates);
+      devlog.channel('iscSessionModel').debug('...allPermittedStates', allPermittedStates);
 
       if (_.contains(allPermittedStates, '*')) {
         //console.debug( '...adding all' );
@@ -141,13 +139,13 @@
       else {
 
         _.forEach(allPermittedStates, function (permittedTab) {
-          devlog.channel('iscCustomConfigService').debug('...permittedTab', permittedTab);
+          devlog.channel('iscSessionModel').debug('...permittedTab', permittedTab);
 
           // handle wildcards
           var starIdx = permittedTab.indexOf('.*');
           if (starIdx > -1) {
             var superState = permittedTab.substr(0, starIdx);
-            devlog.channel('iscCustomConfigService').debug('...superState', superState);
+            devlog.channel('iscSessionModel').debug('...superState', superState);
 
             _.forEach(allStates, function (state) {
               if (state.state.indexOf(superState) > -1) {
@@ -156,7 +154,7 @@
             });
           }
           else {
-            devlog.channel('iscCustomConfigService').debug('...allStates[permittedTab]', allStates[permittedTab]);
+            devlog.channel('iscSessionModel').debug('...allStates[permittedTab]', allStates[permittedTab]);
             if (allStates[permittedTab]) {
               allStates[permittedTab].exclude = false;
             }
@@ -164,7 +162,7 @@
         });
       }
 
-      devlog.channel('iscCustomConfigService').debug('Finished updating navbar');
+      devlog.channel('iscSessionModel').debug('Finished updating navbar');
     }
 
     function create(sessionData, isSessionNew) {
@@ -301,11 +299,11 @@
 
 
     // --------------
-    function getPermittedStates() {
+    function getAuthorizedRoutes() {
       return permittedStates;
     }
 
-    function setPermittedStates(val) {
+    function setAuthorizedRoutes(val) {
       permittedStates = val;
     }
 
@@ -353,10 +351,9 @@
       var stateToCheck;
 
       _.forEach(permittedStates, function (permittedState) {
-        var starIdx = permittedState.indexOf('.*');
-        if (starIdx > -1) {
+        if (_.contains(permittedState, '.*')) {
           // got a wildcard
-          stateToCheck = permittedState.substr(0, starIdx);
+          stateToCheck = permittedState.substr(0, permittedState.length - 2);
           devlog.channel('iscSessionModel').debug('...stateToCheck: ' + stateToCheck);
           if (stateName.indexOf(stateToCheck) > -1 || stateName === stateToCheck) {
             devlog.channel('iscSessionModel').debug('...gotcha');
@@ -379,23 +376,16 @@
      */
     function isWhiteListed(stateName) {
       devlog.channel('iscSessionModel').debug('iscSessionModel.isWhiteListed');
-      devlog.channel('iscSessionModel').debug('...noLoginRequiredList: ' + JSON.stringify(noLoginRequiredList));
+      devlog.channel('iscSessionModel').debug('...anonymousRoutes: ' + JSON.stringify(anonymousRoutes));
       devlog.channel('iscSessionModel').debug('...stateName: ' + stateName);
 
-      var whitelisted = false;
+      var whitelisted = _.contains(anonymousRoutes, stateName);
 
-      if (_.indexOf(noLoginRequiredList, stateName) !== -1) {
-        whitelisted = true;
-      }
-      else {
-        // create a map of values that shows
+      if (!whitelisted) {        // create a map of values that shows
         // whether the stateName matches anything in the wildcard list
-        var map = _.map(noLoginRequiredWildcardList, function (state) {
+        whitelisted = _.any(anonymousRouteWildcards, function (state) {
           return _.contains(stateName, state);
         });
-
-        // is anything in the map true?
-        whitelisted = _.some(map);
       }
 
       devlog.channel('iscSessionModel').debug('...whitelisted: ' + whitelisted);
@@ -403,25 +393,25 @@
     }
 
     // --------------
-    function setNoLoginRequiredList(val) {
-      devlog.channel('iscSessionModel').debug('iscSessionModel.setNoLoginRequiredList: ' + JSON.stringify(val));
+    function setAnonymousRoutes(val) {
+      devlog.channel('iscSessionModel').debug('iscSessionModel.setAnonymousRoutes: ' + JSON.stringify(val));
 
       // reset the lists
-      noLoginRequiredList         = [];
-      noLoginRequiredWildcardList = [];
+      anonymousRoutes         = [];
+      anonymousRouteWildcards = [];
 
       // then populate wildcard states and non-wildcard states
       _.forEach(val, function (state) {
         if (state.indexOf('.*') !== -1) {
-          noLoginRequiredWildcardList.push(state.slice(0, -2));
+          anonymousRouteWildcards.push(state.slice(0, -2));
         }
         else {
-          noLoginRequiredList.push(state);
+          anonymousRoutes.push(state);
         }
       });
 
-      devlog.channel('iscSessionModel').debug('...noLoginRequiredList: ' + JSON.stringify(noLoginRequiredList));
-      devlog.channel('iscSessionModel').debug('...noLoginRequiredWildcardList: ' + JSON.stringify(noLoginRequiredWildcardList));
+      devlog.channel('iscSessionModel').debug('...anonymousRoutes: ' + JSON.stringify(anonymousRoutes));
+      devlog.channel('iscSessionModel').debug('...anonymousRouteWildcards: ' + JSON.stringify(anonymousRouteWildcards));
     }
 
     // --------------
@@ -429,7 +419,6 @@
       devlog.channel('iscSessionModel').debug('iscSessionModel.getFullName');
       return !!currentUser ? currentUser.FullName : '';
     }
-
 
   }// END CLASS
 

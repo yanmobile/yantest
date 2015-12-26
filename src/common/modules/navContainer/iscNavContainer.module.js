@@ -15,7 +15,7 @@
     'isc.states'])
     .config(function ($stateProvider, iscCustomConfigServiceProvider) {
 
-      iscCustomConfigServiceProvider.addUserPermittedTabs({
+      iscCustomConfigServiceProvider.addRolePermissions({
         'index': ['*']
       });
       
