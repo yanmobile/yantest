@@ -48,11 +48,11 @@
     }));
 
 
-    describe('iscCustomConfigServiceProvider addRoutePermissions', function () {
+    describe('iscCustomConfigServiceProvider addRolePermissions', function () {
 
-      it('should should have permissions added via .addRoutePermissions()', function () {
+      it('should should have permissions added via .addRolePermissions()', function () {
         var permittedStates;
-        provider.addRoutePermissions({
+        provider.addRolePermissions({
           'myRoute.*': [
             'user',
             '%HSCC_CMC_CarePlanCreator'

@@ -15,7 +15,7 @@
     'isc.states'])
     .config(function ($stateProvider, iscCustomConfigServiceProvider) {
 
-      iscCustomConfigServiceProvider.addRoutePermissions({
+      iscCustomConfigServiceProvider.addRolePermissions({
         'index': ['*']
       });
       

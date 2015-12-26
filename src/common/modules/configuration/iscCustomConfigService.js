@@ -7,10 +7,10 @@
 
   angular.module('isc.configuration')
     .provider('iscCustomConfigService', function () {
-      var routeSpecificRoutePermissions = {};
-      var config                        = {};
+      var routeSpecificRolePermissions = {};
+      var config                       = {};
 
-      function hydrateRoutePermissions(masterRoutes, routes) {
+      function hydrateRolePermissions(masterRoutes, routes) {
         /**
          * CONVERTS FORMAT FROM:
          {'index.home.*': ['%HSCC_CMC_CarePlanApprover',
@@ -34,19 +34,19 @@
       }
 
       return {
-        loadConfig         : function loadConfig(configObj) {
+        loadConfig        : function loadConfig(configObj) {
 
           config                 = configObj;
           config.rolePermissions = config.rolePermissions || [];
-          _.forEach(routeSpecificRoutePermissions, function (value, key) {
+          _.forEach(routeSpecificRolePermissions, function (value, key) {
             config.rolePermissions[key] = config.rolePermissions[key] || [];
             Array.prototype.push.apply(config.rolePermissions[key], value);
           });
         },
-        addRoutePermissions: function addRoutePermissions(states) {
-          hydrateRoutePermissions(routeSpecificRoutePermissions, states);
+        addRolePermissions: function addRolePermissions(states) {
+          hydrateRolePermissions(routeSpecificRolePermissions, states);
         },
-        $get               : iscCustomConfigService
+        $get              : iscCustomConfigService
       };
 
       /* @ngInject */
