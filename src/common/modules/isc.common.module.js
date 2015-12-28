@@ -25,7 +25,6 @@
       'isc.table',
       'isc.http',
       'isc.states',
-      'isc.progressLoader',
 
       // logging helper
       //'logLineNumber',

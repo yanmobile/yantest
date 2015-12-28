@@ -6,12 +6,12 @@
   'use strict';
 
   angular
-    .module('iscNavContainer')
+    .module('isc.states')
     .factory('iscRouterDefaultEventService', iscRouterDefaultEventService);
 
 
   function iscRouterDefaultEventService(
-    devlog, $rootScope, $state, iscProgressLoader, iscSessionModel, iscCustomConfigService,
+    devlog, $rootScope, $state, iscSessionModel, iscCustomConfigService,
     iscCustomConfigHelper, iscSessionStorageHelper, AUTH_EVENTS, APP_EVENTS, NAV_EVENTS
   ) {
     var service = {
@@ -51,7 +51,6 @@
           devlog.channel('StateNav').debug('State change request received');
           devlog.channel('StateNav').debug('Beginning state change from \'%s\' to \'%s\'', fromState.name, toState.name);
 
-          startLoadingAnimation();
           handleStateChangeStart(event, toState, toParams, fromState, fromParams);
         });
     }
@@ -64,26 +63,17 @@
       $rootScope.$on('$stateChangeSuccess',
         function (event, toState, toParams, fromState, fromParams) {//jshint ignore:line
           devlog.channel('StateNav').debug('ischNavContainer.$stateChangeSuccess');
-
-          // end loading animation
-          iscProgressLoader.end();
         });
     }
 
     // ------------------------
     // functions
     // ------------------------
-    function startLoadingAnimation() {
-      iscProgressLoader.start();
-      iscProgressLoader.set(50);
-    }
 
     function handleStateChangeStart(event, toState, toParams, fromState, fromParams) {//jshint ignore:line
       devlog.channel('StateNav').debug('iscNavContainer.handleStateChangeStart');
       var stateIsExcluded = iscCustomConfigHelper.stateIsExcluded(toState.name);
 
-      console.log(toState);
-      console.log(fromState);
       if (stateIsExcluded) {
         devlog.channel('StateNav').warn('...excluded state');
         // even if you are authorized and logged in, don't navigate to excluded states
@@ -98,7 +88,7 @@
 
       // get the permissions for this state
       var isAuthorized = iscSessionModel.isAuthorized(toState.name); // either your role is permitted or the state is whitelisted
-      var isAuthenticated = iscSessionModel.isAuthenticated(); // you are logged i
+      var isAuthenticated = iscSessionModel.isAuthenticated(); // you are logged in
 
       devlog.channel('StateNav').debug('...isAuthorized', isAuthorized);
       devlog.channel('StateNav').debug('...isAuthenticated', isAuthenticated);
@@ -121,7 +111,6 @@
             devlog.channel('StateNav').debug('... going home');
             // edge case where your permissions changed underneath you
             // and you refreshed the page
-            //$state.go( DEFAULT_PAGES.beforeLogin );
             $rootScope.$broadcast(NAV_EVENTS.goToBeforeLoginPage);
           }
           else {
@@ -134,16 +123,15 @@
 
     function preventDefault(event) {
       devlog.channel('StateNav').debug('...preventDefault');
-      iscProgressLoader.end();
       event.preventDefault();
     }
 
     function loadDataFromStoredSession() {
-      //console.log( 'iscNavContainer.loadDataFromStoredSession');
+      devlog.channel('StateNav').debug( 'iscNavContainer.loadDataFromStoredSession');
 
       var storedConfig = iscSessionStorageHelper.getConfig();
       if (storedConfig && !_.isEmpty(storedConfig)) {
-        //console.log( '...got storedConfig: ', storedConfig );
+        devlog.channel('StateNav').debug( '...got storedConfig: ', storedConfig );
         iscCustomConfigService.initSession(storedConfig);
       }
 
@@ -151,7 +139,7 @@
       // since the warning for sessionTimeout time is predicate on setting the sessionTimeout time first
       var storedLoginResponse = iscSessionStorageHelper.getLoginResponse();
       if (!_.isEmpty(storedLoginResponse)) {
-        //console.log( '...got storedLoginResponse: ',storedLoginResponse );
+        devlog.channel('StateNav').debug( '...got storedLoginResponse: ',storedLoginResponse );
         iscSessionModel.create(storedLoginResponse, false);
       }
 
