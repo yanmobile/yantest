@@ -10,7 +10,6 @@
     'isc.configuration',
     'isc.core',
     'isc.animation',
-    'isc.progressLoader',
     'isc.authentication',
     'isc.states'])
     .config(function ($stateProvider, iscCustomConfigServiceProvider) {
