@@ -8,3 +8,4 @@ www
 
 #local config for each developer
 src/app/assets/configuration/localConfig.json
+platforms/
