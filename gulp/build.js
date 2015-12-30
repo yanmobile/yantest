@@ -277,39 +277,6 @@
   });
 
 
-  /*======================================================
-   =   Process CLI args if copying to local HS install   =
-   ======================================================*/
-
-  var pathArg = getArg('path');
-  var nsArg   = getArg('ns');
-
-  gulp.task('processArgs', function (done) {
-      if (pathArg && nsArg) {
-        if (!pathArg.match(/\/$/)) {
-          pathArg += '/';
-        }
-        pathArg += 'CSP/healthshare/' + nsArg + '/cc';
-
-        seq('cleanHS', 'copyToHS', done);
-      }
-      else {
-        done();
-      }
-    }
-  );
-
-  gulp.task('cleanHS', function (done) {
-    // Need force option to delete outside the cwd
-    del([pathArg + '/**'], { force: true }, done);
-  });
-
-  gulp.task('copyToHS', function () {
-    return gulp.src(config.dest + '/**')
-      .pipe(gulp.dest(pathArg));
-  });
-
-
   /*======================================
    =   Determine version info from git   =
    =======================================*/
