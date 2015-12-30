@@ -229,6 +229,7 @@
 
     streamqueue({ objectMode: true },
       gulp.src(common.vendor.js),
+      gulp.src(app.vendor.js),
       gulp.src(_.get(common, 'module.assets.vendor.js', [])),
       gulp.src(_.get(app, 'module.assets.vendor.js', [])),
       gulp.src(app.module.js),
