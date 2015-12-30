@@ -79,7 +79,7 @@
       }
 
       // If a next state was returned (a nextState string is minimally required), store desired state in session
-      // This will be returned during app.run with iscExternalRouteApi.getInitialState()
+      // This will be returned during app.run with iscExternalRouteApi.getNextState()
       if (_.isObject(nextStateObject) && nextStateObject.nextState) {
         var nextState   = nextStateObject.nextState,
             stateParams = nextStateObject.stateParams;
