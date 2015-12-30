@@ -4,7 +4,7 @@
 (function () {
   'use strict';
 
-  angular.module('isc.http')
+  angular.module('isc.router')
     .factory('iscExternalRouteApi', iscExternalRouteApi);
 
   /**
@@ -18,25 +18,23 @@
    */
 
   /* @ngInject */
-  function iscExternalRouteApi($window) {
+  function iscExternalRouteApi(iscExternalRoute) {
     return {
       persistCurrentState: persistCurrentState,
-      getInitialState    : getInitialState
+      getNextState       : getNextState
     };
 
-    function getInitialState() {
-      var initialState = $window.sessionStorage.getItem('initialState');
-      // If an initial route was set, process it now
-      if (initialState) {
-        $window.sessionStorage.removeItem('initialState');
-        var parsedState = JSON.parse(initialState);
+    function getNextState() {
+      var nextState = iscExternalRoute.getNext();
 
-        var expiresOn = parsedState.expiresOn ? moment(parsedState.expiresOn) : undefined,
+      // If an initial route was set, process it now
+      if (nextState) {
+        var expiresOn = nextState.expiresOn ? moment(nextState.expiresOn) : undefined,
             now       = moment();
 
         // If an expiration was not provided, or the requested route has not expired yet, return it as the new route
         if (!expiresOn || expiresOn.isAfter(now)) {
-          return parsedState;
+          return nextState;
         }
       }
       return undefined;
@@ -45,15 +43,15 @@
     function persistCurrentState(state, stateParams, externalRequestExpirationInMinutes) {
       var stateName = _.get(state, 'name');
       if (stateName) {
-        $window.sessionStorage.setItem('initialState',
-          JSON.stringify({
+        iscExternalRoute.addRoute(
+          {
             'nextState'  : stateName,
             'stateParams': stateParams || {},
             // Set an expiration if provided
             'expiresOn'  : externalRequestExpirationInMinutes
               ? moment().add(externalRequestExpirationInMinutes, 'minute').toISOString()
               : undefined
-          })
+          }
         );
       }
     }

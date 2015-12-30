@@ -24,6 +24,7 @@
       'isc.filters',
       'isc.table',
       'isc.http',
+      'isc.router',
       'isc.states',
 
       // logging helper
