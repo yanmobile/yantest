@@ -33,8 +33,21 @@
   "module" : {
     "js" : [
       "src/common/modules/**/*.module.js",
-      "src/common/modules/**/*"
+      "src/common/modules/**/*.js"
     ],
+    "html" : [
+      "src/common/modules/**/*.html"
+    ],
+    "assets" : {
+      "images" : [
+        "src/common/assets/images/**/*"
+      ],
+      "vendor" : {
+        "js" : [
+          "src/common/assets/plugins/**/*.js"
+        ]
+      }
+    },
     "mocks" : [
       "test/unit/common/commonUnitTestMocks.js"
     ],

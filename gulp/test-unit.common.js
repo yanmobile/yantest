@@ -14,6 +14,7 @@
   var commonVendorMocks = commonConfig.vendor.mocks || [];
   var commonModuleJs    = commonConfig.module.js || [];
   var commonModuleMocks = commonConfig.module.mocks || [];
+  var commonModuleHtml  = commonConfig.module.html || [];
   var commonModuleTests = commonConfig.module.tests || [];
 
   /*================================================
@@ -30,6 +31,7 @@
       .concat(commonModuleJs)
       .concat(commonVendorMocks)
       .concat(commonModuleMocks)
+      .concat(commonModuleHtml)
       .concat(commonModuleTests);
 
     return gulp.src(commonTestFiles)

@@ -1,3 +1,0 @@
-/**
- add plugin js here
- **/
