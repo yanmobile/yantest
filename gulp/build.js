@@ -9,21 +9,17 @@
    ------    Configuration      ------- */
 
   var common = require('./common.json');
+  var app    = require('./app.json');
+
+  var srcFiles = []
+    .concat(common.module.js)
+    .concat(app.module.js);
+
+
   var config = {
-    dest         : 'www',
-    cordova      : false,
-    minify_images: true,
-
-    unit_test_dir: 'test/karma.conf.js',
-
-    vendor: common.vendor,
-    custom: {
-      js: [],
-
-      fonts: [
-        "./src/app/assets/fonts/opensans*.*"
-      ]
-    }
+    dest        : app.dest.folder,
+    minifyImages: true,
+    unitTestDir : 'test/karma.conf.js'
   };
 
   /*-------  End of Configuration  --------
@@ -86,11 +82,11 @@
 
   function getArg(name) {
     var argValue;
-    var argName = "--" + name;
+    var argName = '--' + name;
     _.forEach(process.argv, function (arg) {
-      var re = new RegExp("^" + argName);
+      var re = new RegExp('^' + argName);
       if (re.test(arg)) {
-        argValue = arg.replace(argName + "=", "").replace("\"", "");
+        argValue = arg.replace(argName + '=', '').replace('"', '');
       }
     });
     return argValue;
@@ -110,30 +106,22 @@
    =========================================*/
 
   gulp.task('jshint', function () {
-    return gulp.src('src/*/modules/**/*.js')
+    return gulp.src(srcFiles)
       .pipe(jshint())
       .pipe(jshint.reporter('jshint-stylish'))
+      .pipe(jscs({ fix: true }))
+      .pipe(jscs.reporter())
       .pipe(size());
   });
-
-
-  /*=========================================
-   =            jscs            =
-   =========================================*/
-
-  gulp.task('jscs', function () {
-    return gulp.src('src/*/modules/**/*.js')
-      .pipe(jscs({ fix: true }))
-      .pipe(jscs.reporter());
-  });
-
 
   /*==================================
    =            Copy fonts            =
    ==================================*/
 
   gulp.task('fonts', function () {
-    var typography = config.vendor.fonts.concat(config.custom.fonts);
+    var typography = []
+      .concat(common.vendor.fonts)
+      .concat(app.vendor.fonts);
 
     return gulp.src(typography)
       .pipe(gulp.dest(path.join(config.dest, 'fonts')));
@@ -145,7 +133,7 @@
    ==================================*/
 
   gulp.task('vendor:css', function () {
-    return gulp.src(config.vendor.css)
+    return gulp.src(common.vendor.css)
       .pipe(gulp.dest(path.join(config.dest, 'css')));
   });
 
@@ -154,22 +142,17 @@
    ==================================*/
 
   gulp.task('i18n', function () {
-    return gulp.src(['./src/app/assets/i18n/**'])
+    return gulp.src(app.module.assets.i18n)
       .pipe(gulp.dest(path.join(config.dest, 'assets/i18n')));
   });
 
-  gulp.task('configuration', function () {
-    return gulp.src(['./src/app/assets/configuration/**'])
-      .pipe(gulp.dest(path.join(config.dest, 'assets/configuration')));
-  });
-
   gulp.task('mocks', function () {
-    return gulp.src(['./src/app/assets/mockData/**'])
+    return gulp.src(app.module.assets.mocks)
       .pipe(gulp.dest(path.join(config.dest, 'assets/mockData')));
   });
 
   gulp.task('assets', function (done) {
-    var tasks = ['i18n', 'configuration', 'mocks'];
+    var tasks = ['i18n', 'mocks'];
     seq(tasks, done);
   });
 
@@ -181,13 +164,12 @@
    =====================================*/
 
   gulp.task('images', function () {
-    var stream = gulp.src(
-      [
-        './src/app/assets/images/**/*',
-        './src/common/assets/images/**/*'
-      ]);
+    var srcImages = []
+      .concat(common.module.assets.images)
+      .concat(app.module.assets.images);
+    var stream    = gulp.src(srcImages);
 
-    if (config.minify_images) {
+    if (config.minifyImages) {
       // note that we must ensure the files are writable before minifying
       stream = stream.pipe(chmod(755))
         .pipe(imagemin({
@@ -205,8 +187,8 @@
    =========================================*/
 
   gulp.task('sass', [], function () {
-    return gulp.src(
-      ['./src/app/assets/sass/main.scss'])
+    return gulp
+      .src(app.module.scss)
       .pipe(sass({ errLogToConsole: true }))
       .on('error', handleError)
       .pipe(mobilizer('app.css', {
@@ -222,7 +204,7 @@
       //.pipe(cssmin())
       .pipe(gulp.dest('.tmp-css'))
       .pipe(concat('app.css'))
-      .pipe(rename({ basename: "main", suffix: '.min' }))
+      .pipe(rename({ basename: 'main', suffix: '.min' }))
       .pipe(gulp.dest(path.join(config.dest, 'css')))
       .pipe(size());
   });
@@ -246,20 +228,16 @@
     };
 
     streamqueue({ objectMode: true },
-      gulp.src(config.vendor.js),
-      gulp.src(config.custom.js),
+      gulp.src(common.vendor.js),
+      gulp.src(_.get(common, 'module.assets.vendor.js', [])),
+      gulp.src(_.get(app, 'module.assets.vendor.js', [])),
+      gulp.src(app.module.js),
 
-      gulp.src([
-        'src/common/modules/**/*.module.js',
-        'src/common/modules/**/*.js',
-        'src/common/assets/plugins/**/*.js']).pipe(ngFilesort()),
-      gulp.src('src/common/modules/**/*.html').pipe(templateCache(commonOpts)),
+      gulp.src(common.module.js).pipe(ngFilesort()),
+      gulp.src(common.module.html).pipe(templateCache(commonOpts)),
 
-      gulp.src([
-        'src/app/modules/**/*.module.js',
-        'src/app/modules/**/*.js',
-        'src/app/assets/plugins/**/*.js']).pipe(ngFilesort()),
-      gulp.src('src/app/modules/**/*.html').pipe(templateCache(customOpts))
+      gulp.src(app.module.js).pipe(ngFilesort()),
+      gulp.src(app.module.html).pipe(templateCache(customOpts))
     )
       .pipe(ngAnnotate())
       //.pipe(uglify())
@@ -269,7 +247,6 @@
       .pipe(sourcemaps.write('.'))
       .pipe(gulp.dest(path.join(config.dest, 'js')));
   });
-
 
   /*=================================================
    =                  Copy favicon                  =
@@ -287,7 +264,7 @@
   gulp.task('html', function () {
     var inject = [];
 
-    if (config.cordova) {
+    if (app.cordova) {
       inject.push('<script src="cordova.js"></script>');
     }
 
@@ -299,68 +276,13 @@
       .pipe(gulp.dest(config.dest));
   });
 
-  /*=================================================
-   =   Ensure simpleAPI.prefix uses relative path   =
-   =================================================*/
-
-  gulp.task('fixRelativePath', function (done) {
-    seq('removeConfigFile', 'useRelativePath', done);
-  });
-
-  gulp.task('useRelativePath', function () {
-    return gulp.src(['./src/app/assets/configuration/configFile.json'])
-      // replace simpleAPI with "api/v1"
-      .pipe(replace('"/csp/healthshare/cmc/cc/api/v1"', '"api/v1"'))
-      // set API mode to real
-      .pipe(replace(/"mode"\s*:\s"mock"/g, "\"mode\" : \"real\""))
-      .pipe(gulp.dest(path.join(config.dest, 'assets/configuration/')));
-  });
-
-  gulp.task('removeConfigFile', function (done) {
-    del([path.join(config.dest, 'assets/configuration/configFile.json')]);
-    done();
-  });
-
-
-  /*======================================================
-   =   Process CLI args if copying to local HS install   =
-   ======================================================*/
-
-  var pathArg = getArg("path");
-  var nsArg   = getArg("ns");
-
-  gulp.task('processArgs', function (done) {
-      if (pathArg && nsArg) {
-        if (!pathArg.match(/\/$/)) {
-          pathArg += "/";
-        }
-        pathArg += "CSP/healthshare/" + nsArg + "/cc";
-
-        seq('cleanHS', 'copyToHS', done);
-      }
-      else {
-        done();
-      }
-    }
-  );
-
-  gulp.task('cleanHS', function (done) {
-    // Need force option to delete outside the cwd
-    del([pathArg + "/**"], { force: true }, done);
-  });
-
-  gulp.task('copyToHS', function () {
-    return gulp.src(config.dest + "/**")
-      .pipe(gulp.dest(pathArg));
-  });
-
 
   /*======================================
    =   Determine version info from git   =
    =======================================*/
 
   var today    = new Date();
-  var todayISO = dateFormat(today, "yyyy-mm-dd") + "T00:00:00.000";
+  var todayISO = dateFormat(today, 'yyyy-mm-dd') + 'T00:00:00.000';
   var suffix   = '';
   var branchName, buildno, codeno;
 
@@ -372,9 +294,9 @@
         _.forEach(lines, function (line) {
           if (line.match(/^\*/)) {
             var split  = _.compact(line.split(/[ \t]/g));
-            branchName = split[_.indexOf(split, "*") + 1];
+            branchName = split[_.indexOf(split, '*') + 1];
 
-            if (branchName != 'master') {
+            if (branchName !== 'master') {
               suffix = '|' + branchName.substr(0, 10);
             }
           }
@@ -385,7 +307,7 @@
 
   // Get SHA hash for most recent commit
   gulp.task('gitCommitSHA', function (callback) {
-    exec('git log -n 1 --pretty=format:"%H" --branches=' + branchName + "*",
+    exec('git log -n 1 --pretty=format:"%H" --branches=' + branchName + '*',
       function (err, stdout) {
         var sha = stdout;
         codeno  = sha.substr(0, 6);
@@ -397,13 +319,14 @@
   // Get commit count for the current branch for today
   gulp.task('gitCommitCount', function (callback) {
     // git rev-list for the commit count today
-    exec('git rev-list HEAD --count --since=\'' + todayISO + '\'' + ' --branches=' + branchName + "*",
+    var gitCommand = ['git rev-list HEAD --count --since=\'', todayISO, '\'', ' --branches=', branchName, '*'].join('');
+    exec(gitCommand,
       function (err, stdout) {
         var count = parseInt(stdout) + 1;
-        buildno   = dateFormat(today, "yyyymmdd") + "." + count;
+        buildno   = dateFormat(today, 'yyyymmdd') + '.' + count;
         callback();
       }
-    )
+    );
   });
 
   // Merge the results into the version.json template
