@@ -30,7 +30,7 @@
 
         var routes = iscAuthorization.setAuthorizedRoutes(null);
         expect(routes).toBeDefined();
-        expect(typeof routes).toBe('object');
+        expect(routes).toEqual({});
 
       });
 
@@ -41,7 +41,6 @@
         var routes = iscAuthorization.setAuthorizedRoutes(permittedRoutes);
 
         expect(routes).toBeDefined();
-        expect(_.isEmpty(routes)).toBe(false);
         expect(routes).toEqual(expectedRoutes);
 
       });
@@ -96,19 +95,6 @@
 
         var isAuthorized = iscAuthorization.isAuthorized(stateToCheck, permittedStates);
         expect(isAuthorized).toBe(false);
-      });
-
-      it('should return true if the route is permitted', function () {
-        var permittedStates = iscAuthorization.setAuthorizedRoutes(['index', 'index.home']);
-        var stateToCheck    = 'index';
-
-        var isAuthorized = iscAuthorization.isAuthorized(stateToCheck, permittedStates);
-        expect(isAuthorized).toBe(true);
-
-
-        stateToCheck = 'index.home';
-        isAuthorized = iscAuthorization.isAuthorized(stateToCheck, permittedStates);
-        expect(isAuthorized).toBe(true);
       });
 
       it('should return true if the route is permitted', function () {

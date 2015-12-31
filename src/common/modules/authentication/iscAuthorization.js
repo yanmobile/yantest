@@ -12,7 +12,7 @@
 
   function iscAuthorization() {
 
-    var authorizedStates = {};
+    var authorizedRoutes = {};
 
     var service = {
       getAuthorizedRoutes: getAuthorizedRoutes,
@@ -23,14 +23,14 @@
 
 
     function isAuthorized(stateToCheck) {
-      authorizedStates = authorizedStates || [];
+      authorizedRoutes = authorizedRoutes || [];
       stateToCheck     = stateToCheck || '';
 
       var isPermitted;
-      if (isBlackListed(stateToCheck, authorizedStates)) {
+      if (isBlackListed(stateToCheck, authorizedRoutes)) {
         isPermitted = false;
       } else {
-        isPermitted = isWhiteListed(stateToCheck, authorizedStates);
+        isPermitted = isWhiteListed(stateToCheck, authorizedRoutes);
       }
 
       return !!isPermitted;
@@ -52,26 +52,26 @@
       permittedStates = permittedStates || [];
 
       permittedStates.forEach(function (state) {
-        if (!_.get(authorizedStates, state)) {
-          _.set(authorizedStates, state, {});
+        if (!_.get(authorizedRoutes, state)) {
+          _.set(authorizedRoutes, state, {});
         }
       });
 
-      return authorizedStates;
+      return authorizedRoutes;
     }
 
     function getAuthorizedRoutes() {
-      return authorizedStates;
+      return authorizedRoutes;
     }
 
     //** private functions **//
     function isBlackListed(stateToCheck) {
-      var blacklisted = authorizedStates['!*'] || _.get(authorizedStates, '!' + stateToCheck, false);
+      var blacklisted = authorizedRoutes['!*'] || _.get(authorizedRoutes, '!' + stateToCheck, false);
       return blacklisted || hasWildCardMatch(stateToCheck, true);
     }
 
     function isWhiteListed(stateToCheck) {
-      var blacklisted = authorizedStates['*'] || _.get(authorizedStates, stateToCheck, false);
+      var blacklisted = authorizedRoutes['*'] || _.get(authorizedRoutes, stateToCheck, false);
       return blacklisted || hasWildCardMatch(stateToCheck, false);
     }
 
@@ -106,7 +106,7 @@
 
       return _.any(tokens, function (token) {
         path += token + '.';
-        return _.get(authorizedStates, path + '*', false);
+        return _.get(authorizedRoutes, path + '*', false);
       });
     }
 
