@@ -131,11 +131,19 @@
       });
 
       it('should return false if state is in black list', function () {
-        var permittedStates = iscAuthorization.setAuthorizedRoutes(['index.*', '!index.home']);
+        var permittedStates = iscAuthorization.setAuthorizedRoutes(['index.*', '!index.home.*']);
 
         var stateToCheck = 'index.home';
         var isAuthorized = iscAuthorization.isAuthorized(stateToCheck, permittedStates);
         expect(isAuthorized).toBe(false);
+
+        var stateToCheck = 'index.home.child';
+        var isAuthorized = iscAuthorization.isAuthorized(stateToCheck, permittedStates);
+        expect(isAuthorized).toBe(false);
+
+        var stateToCheck = 'index.foo';
+        var isAuthorized = iscAuthorization.isAuthorized(stateToCheck, permittedStates);
+        expect(isAuthorized).toBe(true);
       });
 
       it('should return false if state is in black list wild card pattern', function () {
