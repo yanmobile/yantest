@@ -11,8 +11,15 @@
 
 
   function iscRouterDefaultEventService(
-    devlog, $rootScope, $state, iscSessionModel, iscCustomConfigService,
-    iscCustomConfigHelper, iscSessionStorageHelper, AUTH_EVENTS, APP_EVENTS, NAV_EVENTS
+    devlog,
+    $rootScope,
+    $state,
+    iscSessionModel,
+    iscCustomConfigService,
+    iscSessionStorageHelper,
+    AUTH_EVENTS,
+    APP_EVENTS,
+    NAV_EVENTS
   ) {
     var service = {
       registerDefaultEvents     : registerDefaultEvents,
@@ -26,6 +33,8 @@
     function registerDefaultEvents() {
       registerAppLoadEvent();
       registerStateChangeStart();
+      registerStateChangeError();
+      registerStateChangeRejected();
       registerStateChangeSuccess();
     }
 
@@ -66,25 +75,47 @@
         });
     }
 
+    function registerStateChangeError() {
+
+      devlog.channel('StateNav').debug('registering $stateChangeError');
+      // ------------------------
+      // stateChange error
+      $rootScope.$on('$stateChangeError',
+        function (event, toState, toParams, fromState, fromParams, error) {//jshint ignore:line
+          devlog.channel('StateNav').error('ischNavContainer.$stateChangeError');
+        });
+    }
+
+    function registerStateChangeRejected() {
+
+      devlog.channel('StateNav').debug('registering $stateChangeRejected');
+      // ------------------------
+      // stateChange $stateChangeRejected
+      $rootScope.$on('$stateChangeRejected',
+        function (event, toState, toParams, fromState, fromParams, error) {//jshint ignore:line
+          devlog.channel('StateNav').error('ischNavContainer.$stateChangeRejected');
+        });
+    }
+
     // ------------------------
     // functions
     // ------------------------
 
     function handleStateChangeStart(event, toState, toParams, fromState, fromParams) {//jshint ignore:line
       devlog.channel('StateNav').debug('iscNavContainer.handleStateChangeStart');
-      var stateIsExcluded = iscCustomConfigHelper.stateIsExcluded(toState.name);
-
-      if (stateIsExcluded) {
-        devlog.channel('StateNav').warn('...excluded state');
-        // even if you are authorized and logged in, don't navigate to excluded states
-        // this prevents navigation to excluded pages via entering the uri directly in the browser
-        preventDefault(event);
-      }
-      else if (toState.name === fromState.name) {
-        devlog.channel('StateNav').debug('...double tap');
-        // no double taps
-        preventDefault(event);
-      }
+      //var stateIsExcluded = iscCustomConfigHelper.stateIsExcluded(toState.name);
+      //
+      //if (stateIsExcluded) {
+      //  devlog.channel('StateNav').warn('...excluded state');
+      //  // even if you are authorized and logged in, don't navigate to excluded states
+      //  // this prevents navigation to excluded pages via entering the uri directly in the browser
+      //  preventDefault(event);
+      //}
+      //else if (toState.name === fromState.name) {
+      //  devlog.channel('StateNav').debug('...double tap');
+      //  // no double taps
+      //  preventDefault(event);
+      //}
 
       // get the permissions for this state
       var isAuthorized = iscSessionModel.isAuthorized(toState.name); // either your role is permitted or the state is whitelisted
@@ -99,6 +130,7 @@
         if (!isAuthenticated) {
           devlog.channel('StateNav').debug('...not authenticated');
 
+          preventDefault(event, toState.name);
           //$state.go( DEFAULT_PAGES.beforeLogin );
           $rootScope.$broadcast(NAV_EVENTS.goToBeforeLoginPage);
           $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated);
@@ -121,17 +153,17 @@
       }
     }
 
-    function preventDefault(event) {
-      devlog.channel('StateNav').debug('...preventDefault');
+    function preventDefault(event, toStateName) {
+      devlog.channel('StateNav').debug('...preventDefault to', toStateName);
       event.preventDefault();
     }
 
     function loadDataFromStoredSession() {
-      devlog.channel('StateNav').debug( 'iscNavContainer.loadDataFromStoredSession');
+      devlog.channel('StateNav').debug('iscNavContainer.loadDataFromStoredSession');
 
       var storedConfig = iscSessionStorageHelper.getConfig();
       if (storedConfig && !_.isEmpty(storedConfig)) {
-        devlog.channel('StateNav').debug( '...got storedConfig: ', storedConfig );
+        devlog.channel('StateNav').debug('...got storedConfig: ', storedConfig);
         iscCustomConfigService.initSession(storedConfig);
       }
 
@@ -139,7 +171,7 @@
       // since the warning for sessionTimeout time is predicate on setting the sessionTimeout time first
       var storedLoginResponse = iscSessionStorageHelper.getLoginResponse();
       if (!_.isEmpty(storedLoginResponse)) {
-        devlog.channel('StateNav').debug( '...got storedLoginResponse: ',storedLoginResponse );
+        devlog.channel('StateNav').debug('...got storedLoginResponse: ', storedLoginResponse);
         iscSessionModel.create(storedLoginResponse, false);
       }
 

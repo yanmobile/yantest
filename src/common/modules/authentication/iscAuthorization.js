@@ -21,7 +21,6 @@
     };
     return service;
 
-
     function isAuthorized(stateToCheck) {
       authorizedRoutes = authorizedRoutes || [];
       stateToCheck     = stateToCheck || '';
