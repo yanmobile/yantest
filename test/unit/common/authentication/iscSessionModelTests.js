@@ -31,28 +31,28 @@
     ];
 
     var mockLoginResponse = {
-      "ChangePassword": 0,
-      "SessionTimeout": 3600,
-      "UserData"      : {
-        "FirstName": "Adam",
-        "FullName" : "Adam Everyman",
-        "LastName" : "Everyman",
-        "ProxyOnly": 0,
-        "userRole" : "Admin"
+      'ChangePassword': 0,
+      'SessionTimeout': 3600,
+      'UserData'      : {
+        'FirstName': 'Adam',
+        'FullName' : 'Adam Everyman',
+        'LastName' : 'Everyman',
+        'ProxyOnly': 0,
+        'userRole' : 'Admin'
       },
-      "reload"        : 0
+      'reload'        : 0
     };
 
     var mockLoginResponseProxy = {
-      "ChangePassword": 0,
-      "SessionTimeout": 3600,
-      "UserData"      : {
-        "FirstName": "Adam",
-        "FullName" : "Adam Everyman",
-        "LastName" : "Everyman",
-        "ProxyOnly": 1
+      'ChangePassword': 0,
+      'SessionTimeout': 3600,
+      'UserData'      : {
+        'FirstName': 'Adam',
+        'FullName' : 'Adam Everyman',
+        'LastName' : 'Everyman',
+        'ProxyOnly': 1
       },
-      "reload"        : 0
+      'reload'        : 0
     };
 
     // setup devlog
@@ -218,7 +218,6 @@
       });
 
       it('should know if someone is authorized, all permitted', function () {
-        sessionModel.create(loginData);
         sessionModel.setAuthorizedRoutes(['*']);
 
         var expected = sessionModel.isAuthorized('index.messages.outbox');
@@ -232,21 +231,19 @@
       });
 
       it('should know if someone is authorized, some permitted', function () {
-        sessionModel.create(loginData);
         sessionModel.setAuthorizedRoutes(['index.messages.outbox', 'foo']);
 
         var expected = sessionModel.isAuthorized('index.messages.outbox');
         expect(expected).toBe(true);
 
         var expected = sessionModel.isAuthorized('index');
-        expect(expected).toBe(false);
+        expect(expected).toBe(true);
 
         var expected = sessionModel.isAuthorized('foo');
         expect(expected).toBe(true);
       });
 
       it('should know if someone is authorized, some permitted by wildcard', function () {
-        sessionModel.create(loginData);
         sessionModel.setAuthorizedRoutes(['index.messages.*']);
 
         var expected = sessionModel.isAuthorized('index.messages');
@@ -259,51 +256,10 @@
         expect(expected).toBe(true);
 
         var expected = sessionModel.isAuthorized('index');
-        expect(expected).toBe(false);
+        expect(expected).toBe(true);
 
         var expected = sessionModel.isAuthorized('foo');
         expect(expected).toBe(false);
-      });
-    });
-
-    // -------------------------
-    describe('whitelist, setAnonymousRoutes tests ', function () {
-      it('should have a function isWhiteListed', function () {
-        expect(angular.isFunction(sessionModel.isWhiteListed)).toBe(true);
-      });
-
-      it('should know when a page is whitelisted', function () {
-
-        sessionModel.setAnonymousRoutes(['ix.foo', 'ix.fee', 'ix.baz.*', 'ix.buz.*']);
-
-        var expected = sessionModel.isWhiteListed('ix.foo');
-        expect(expected).toBe(true);
-
-        var expected = sessionModel.isWhiteListed('ix.fee');
-        expect(expected).toBe(true);
-
-        var expected = sessionModel.isWhiteListed('ix.baz');
-        expect(expected).toBe(true);
-
-        var expected = sessionModel.isWhiteListed('ix.baz.sub.sub');
-        expect(expected).toBe(true);
-
-        var expected = sessionModel.isWhiteListed('ix.baz.sub');
-        expect(expected).toBe(true);
-
-        var expected = sessionModel.isWhiteListed('ix.buz');
-        expect(expected).toBe(true);
-
-        var expected = sessionModel.isWhiteListed('ix.buz.sub.sub');
-        expect(expected).toBe(true);
-
-        // ---------
-        var expected = sessionModel.isWhiteListed('ix.bar.baz.buz');
-        expect(expected).toBe(false);
-
-        var expected = sessionModel.isWhiteListed('ix.bar');
-        expect(expected).toBe(false);
-
       });
     });
 
@@ -332,7 +288,7 @@
       it('should updateStateByRole, bogus role', function () {
 
         mockConfig.rolePermissions = {
-          "*": ['index.home.*'],
+          '*': ['index.home.*'],
           user: ['*']
         };
 
@@ -354,7 +310,7 @@
 
       it('should updateStateByRole, no role', function () {
         mockConfig.rolePermissions = {
-          "*": ['index.home.*'],
+          '*': ['index.home.*'],
           user: ['*']
         };
 
@@ -394,7 +350,7 @@
 
       it('should updateStateByRole, some permitted by wildcard, some not, some excluded', function () {
         mockConfig.rolePermissions = {
-          "*": ['index.home.*'],
+          '*': ['index.home.*'],
           user: ['index.library', 'index.messages', 'index.messages.sub1']
         };
 
@@ -423,7 +379,7 @@
 
       it('should updateStateByRole, some permitted by wildcard, some excluded', function () {
         mockConfig.rolePermissions = {
-          "*": ['index.home.*'],
+          '*': ['index.home.*'],
           user: ['index.messages.*']
         };
 

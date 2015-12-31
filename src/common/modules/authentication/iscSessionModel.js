@@ -5,15 +5,12 @@
 (function () {
   'use strict';
 
-  // ----------------------------
-  // injection
-  // ----------------------------
   angular.module('isc.authentication')
     .factory('iscSessionModel', iscSessionModel);
 
-  ////////////////////////////////
-  /* @ngInject */
-  function iscSessionModel(devlog, $rootScope, $interval, iscCustomConfigService, iscCustomConfigHelper, iscSessionStorageHelper, AUTH_EVENTS) {
+  function iscSessionModel(
+    devlog, $rootScope, $interval, iscAuthorization, iscCustomConfigService, iscCustomConfigHelper, iscSessionStorageHelper, AUTH_EVENTS
+  ) {
     devlog.channel('iscSessionModel').debug('iscSessionModel LOADED');
 
     // ----------------------------
@@ -23,20 +20,10 @@
     var credentials = null;
     var currentUser = null;
 
-    // contains a list of states with restricted permission
-    // and what those permissions are
-    // anything not forbidden is presumed to be allowed
-    //var statePermissions = null;
-    var permittedStates;
-
     var sessionTimeoutInSeconds = 0;
     var sessionTimeoutCounter   = 0;
     var sessionTimeoutWarning   = 0;
     var intervalPromise;
-
-    // dont require login for these views
-    var anonymousRoutes         = [];
-    var anonymousRouteWildcards = [];
 
     // ----------------------------
     // class factory
@@ -59,13 +46,11 @@
       getCurrentUser: getCurrentUser,
       setCurrentUser: setCurrentUser,
 
-      getAuthorizedRoutes: getAuthorizedRoutes,
-      setAuthorizedRoutes: setAuthorizedRoutes,
-      setAnonymousRoutes : setAnonymousRoutes,
+      getAuthorizedRoutes: iscAuthorization.getAuthorizedRoutes,
+      setAuthorizedRoutes: iscAuthorization.setAuthorizedRoutes,
 
-      isAuthorized   : isAuthorized,
+      isAuthorized   : iscAuthorization.isAuthorized,
       isAuthenticated: isAuthenticated,
-      isWhiteListed  : isWhiteListed,
 
       getFullName: getFullName
     };
@@ -77,15 +62,16 @@
     // ----------------------------
 
     function initSession(config) {
-      setAnonymousRoutes(config.rolePermissions['*']);
       model.setAuthorizedRoutes([]);
       iscCustomConfigService.addStates();
       iscSessionStorageHelper.setConfig(config);
 
       // update the states based on the user's role, if any
       var currentUser = iscSessionModel.getCurrentUser();
-      var userRole    = !!currentUser ? currentUser.userRole : '';
+      var userRole    = !!currentUser ? currentUser.userRole : '*';
       model.updateStateByRole(userRole, config);
+      model.setAuthorizedRoutes();
+
     }
 
     // ----------------------------
@@ -298,121 +284,10 @@
       currentUser = user;
     }
 
-
-    // --------------
-    function getAuthorizedRoutes() {
-      return permittedStates;
-    }
-
-    function setAuthorizedRoutes(val) {
-      permittedStates = val;
-    }
-
     // --------------
     function isAuthenticated() {
       devlog.channel('iscSessionModel').debug('iscSessionModel.isAuthenticated', currentUser);
       return !_.isEmpty(currentUser);
-    }
-
-    function isAuthorized(stateName) {
-      devlog.channel('iscSessionModel').debug('iscSessionModel.isAuthorized');
-      devlog.channel('iscSessionModel').debug('...stateName: ' + stateName);
-
-      // everything permitted
-      if (_.contains(permittedStates, '*')) {
-        devlog.channel('iscSessionModel').debug('...allowing everything');
-        //turn everything on
-        return true;
-      }
-
-      // otherwise check for wild cards or existence
-      var wildCardSuperState = getWildCardStateForState(stateName);
-      devlog.channel('iscSessionModel').debug('...wildCardSuperState: ' + wildCardSuperState);
-
-      if (wildCardSuperState) {
-        devlog.channel('iscSessionModel').debug('...stateName.indexOf( wildCardSuperState ): ' + stateName.indexOf(wildCardSuperState));
-        // weird bug in lodash where if the stateName === wildCardSuperState, _.indexOf returns -1
-        // so using this other form for checking
-        return stateName.indexOf(wildCardSuperState) > -1;
-      }
-      else {
-        return _.indexOf(permittedStates, stateName) > -1;
-      }
-    }
-
-    /**
-     * private
-     * @param {String} stateName
-     * @returns {String} wildCardSuperState || undefined
-     */
-    function getWildCardStateForState(stateName) {
-      devlog.channel('iscSessionModel').debug('...getWildCardStateForState, stateName', stateName);
-
-      var wildCardSuperState;
-      var stateToCheck;
-
-      _.forEach(permittedStates, function (permittedState) {
-        if (_.contains(permittedState, '.*')) {
-          // got a wildcard
-          stateToCheck = permittedState.substr(0, permittedState.length - 2);
-          devlog.channel('iscSessionModel').debug('...stateToCheck: ' + stateToCheck);
-          if (stateName.indexOf(stateToCheck) > -1 || stateName === stateToCheck) {
-            devlog.channel('iscSessionModel').debug('...gotcha');
-            wildCardSuperState = stateToCheck;
-          }
-        }
-      });
-
-      return wildCardSuperState;
-    }
-
-    /**
-     * Returns whether a state is whitelisted
-     * Also accepts wildcards in the form of 'index.stateName.*'
-     * NOTE: for wildcards, the wildcard is assumed to be the last state and 'index' the first state
-     * ie 'index.*.stateName' will fail
-     *
-     * @param {string} stateName
-     * @returns {boolean}
-     */
-    function isWhiteListed(stateName) {
-      devlog.channel('iscSessionModel').debug('iscSessionModel.isWhiteListed');
-      devlog.channel('iscSessionModel').debug('...anonymousRoutes: ' + JSON.stringify(anonymousRoutes));
-      devlog.channel('iscSessionModel').debug('...stateName: ' + stateName);
-
-      var whitelisted = _.contains(anonymousRoutes, stateName);
-
-      if (!whitelisted) {        // create a map of values that shows
-        // whether the stateName matches anything in the wildcard list
-        whitelisted = _.any(anonymousRouteWildcards, function (state) {
-          return _.contains(stateName, state);
-        });
-      }
-
-      devlog.channel('iscSessionModel').debug('...whitelisted: ' + whitelisted);
-      return whitelisted;
-    }
-
-    // --------------
-    function setAnonymousRoutes(val) {
-      devlog.channel('iscSessionModel').debug('iscSessionModel.setAnonymousRoutes: ' + JSON.stringify(val));
-
-      // reset the lists
-      anonymousRoutes         = [];
-      anonymousRouteWildcards = [];
-
-      // then populate wildcard states and non-wildcard states
-      _.forEach(val, function (state) {
-        if (state.indexOf('.*') !== -1) {
-          anonymousRouteWildcards.push(state.slice(0, -2));
-        }
-        else {
-          anonymousRoutes.push(state);
-        }
-      });
-
-      devlog.channel('iscSessionModel').debug('...anonymousRoutes: ' + JSON.stringify(anonymousRoutes));
-      devlog.channel('iscSessionModel').debug('...anonymousRouteWildcards: ' + JSON.stringify(anonymousRouteWildcards));
     }
 
     // --------------
