@@ -1,0 +1,56 @@
+/* Table Row Pagination */
+.pagination {
+  padding: 0;
+  width: 100%;
+  border-top: none;
+  list-style-type: none;
+  margin: 0 auto;
+  text-align: center;
+
+  li {
+    padding: .5rem;
+    min-width: none;
+    max-width: none;
+    height: auto;
+    margin: 0;
+    float: none;
+    display: inline-block;
+
+    a {
+      display: inline-block;
+      vertical-align: middle;
+      text-decoration: none;
+      color: $primary-color;
+      font-weight: 300;
+      font-size: 1rem;
+      text-align: center;
+
+      &:hover {
+        font-weight: 600;
+      }
+    }
+
+    &.active {
+      a {
+        font-weight: 600;
+      }
+    }
+
+    &.disabled {
+      a {
+        color: $gray;
+      }
+
+      svg {
+        fill: $gray;
+      }
+    }
+  }
+}
+
+.isc-pagination-arrow {
+  display: inline;
+  vertical-align: middle;
+  margin-top: 0px;
+  fill: $primary-color;
+}

@@ -1,0 +1,146 @@
+/*
+  UTILITIES
+  ---------
+
+  Responsive helper classes to assist you in quickly doing basic formatting and layout.
+
+  Features:
+   - Visibility
+   - Layout alignment
+   - Typography
+   - Color Swatches
+   - Dev Helpers
+*/
+
+/*------ Visibility ------*/
+// Makes an element visually hidden, but accessible.
+.hidden {
+  @include element-invisible;
+}
+
+/*------ Layout ------*/
+
+//Adds Global Padding
+.padding {padding: $global-padding;}
+
+//Directional Padding
+.padding-top {padding-top: $global-padding;}
+.padding-top-double {padding-top: $global-padding * 2;}
+.padding-bottom {padding-bottom: $global-padding;}
+.padding-bottom-double {padding-bottom: $global-padding * 2;}
+.padding-left {padding-left: $global-padding;}
+.padding-left-half {padding-left: $global-padding / 2;}
+.padding-right {padding-right: $global-padding;}
+.padding-right-half {padding-right: $global-padding / 2;}
+
+
+//Directional Margins
+.margin-top {margin-top: $global-margin;}
+.margin-top-double {margin-top: $global-margin * 2;}
+.margin-bottom {margin-bottom: $global-margin;}
+.margin-bottom-double {margin-bottom: $global-margin * 2;}
+.margin-left {margin-left: $global-margin;}
+.margin-left-half {margin-left: $global-margin / 2;}
+.margin-right {margin-right: $global-margin;}
+.margin-right-half {margin-right: $global-margin / 2;}
+
+//Removes ALL Margins and Padding
+.collapse {
+  padding: 0;
+  //margin: 0;
+
+  &.left {
+    padding: 0 $global-padding 0 0;
+  }
+
+  &.right {
+    padding: 0 0 0 $global-padding;
+  }
+}
+
+
+/*------ Typography ------*/
+
+.highlight {background-color: $gray-light;}
+
+
+
+/*------ Color Swatches ------*/
+
+// Theme Swatches
+.theme-swatch.primary {
+  background-color: palette(theme, primary);
+  color: palette(type, light);
+  text-align: center;
+}
+
+.theme-swatch.secondary {
+  background-color: palette(theme, secondary);
+  color: palette(type, light);
+  text-align: center;
+}
+
+.theme-swatch.tertiary {
+  background-color: palette(theme, tertiary);
+  color: palette(type, light);
+  text-align: center;
+}
+
+// Type Swatches
+.type-swatch.primary {
+  background-color: palette(type, primary);
+  color: palette(type, light);
+  text-align: center;
+}
+
+.type-swatch.secondary {
+  background-color: palette(type, secondary);
+  color: palette(type, primary);
+  text-align: center;
+}
+
+// Foundation Swatches
+.zurb-swatch.info {
+  background-color: palette(zurb, info);
+  color: palette(type, primary);
+  text-align: center;
+}
+
+.zurb-swatch.secondary {
+  background-color: palette(zurb, secondary);
+  color: palette(type, primary);
+  text-align: center;
+}
+
+.zurb-swatch.gray {
+  background-color: palette(zurb, gray);
+  color: palette(type, primary);
+  text-align: center;
+}
+
+.zurb-swatch.gray-light {
+  background-color: palette(zurb, gray-light);
+  color: palette(type, primary);
+  text-align: center;
+}
+
+.zurb-swatch.gray-dark {
+  background-color: palette(zurb, gray-dark);
+  color: palette(type, light);
+  text-align: center;
+}
+
+/* ------ For Devs ------ */
+
+/* Not in model flag
+ * Highlights UI elements missing in data model */
+
+.missing-model-flag {
+  border: 2px solid red !important;
+  padding: 0.125rem;
+}
+
+.different-model-flag {
+  border: 2px solid yellow !important;
+  padding: 0.125rem;
+}

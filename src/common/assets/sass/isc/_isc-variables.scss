@@ -4,10 +4,8 @@
 
 
 // --------------------------------------------------
-// Media queries breakpoints
+// OLD Media queries breakpoints
 // --------------------------------------------------
-
-
 
 // Extra small screen
 $screen-xs-min:              0px !default;
@@ -118,9 +116,9 @@ $white:            #ffffff !default; // #fff
 
 $white-smoke:      darken( $white, 5 );
 $gray-darker:      lighten($black, 13.5%) !default; // #222
-$gray-dark:        lighten($black, 20%) !default;   // #333
-$gray:             lighten($black, 33.5%) !default; // #555
-$gray-light:       lighten($black, 46.7%) !default; // #777
+//$gray-dark:        lighten($black, 20%) !default;   // #333
+//$gray:             lighten($black, 33.5%) !default; // #555
+//$gray-light:       lighten($black, 46.7%) !default; // #777
 $gray-lighter:     lighten($black, 93.5%) !default; // #eee
 
 $gray-10:          darken( $white, 10 );
@@ -254,8 +252,6 @@ $subheader-font-size: 16px;
 $table-th-size: 14px;
 $table-td-size: 14px;
 
-$isc-highlight-color: lighten( $brand-primary, 45 );
-
 // -------------------------
 // nav bar
 
@@ -315,6 +311,56 @@ $nav-select-height: 45px;
 $navbar-logo-height: 45px;
 $navbar-logo-height-sm: 25px;
 
+/* -------------------------
+/* New Variables
+/* ------------------------- */
+
+/* ---------------------------
+// Color Palette Variable Map
+// 1. Typography Swatches
+// 2. Theme Swatches
+------------------------- */
+
+$palettes: (
+  type: (
+    primary: #424242,
+    secondary: #8a9aa3,
+    light:  #ffffff
+  ),
+  zurb: (
+    secondary: $secondary-color,
+    info: $info-color,
+    gray: $gray,
+    gray-light: $gray-light,
+    gray-dark: $gray-dark
+  ),
+  theme: (
+    primary: #3c6f8a,
+    secondary: #63a6c9,
+    tertiary: #35b2ea,
+    neutral: #ebebeb
+  )
+);
+
+/* Palette Function
+ * For each palette, map the swatches
+ * and return the requested swatch type
+ */
+@function palette($palette, $color: 'primary') {
+    @return map-get(map-get($palettes, $palette), $color);
+}
 
 
+/* --- Layout --- */
 
+$global-margin: 1rem;
+
+
+/* --- Text --- */
+
+// Font-Weight Values - Match values to chosen font family for optimal rendering
+$font-weight-normal: 400;
+$font-weight-light: 300;
+$font-weight-semi-bold: 500;
+$font-weight-bold: 600;
+$font-weight-extra-bold: 800;

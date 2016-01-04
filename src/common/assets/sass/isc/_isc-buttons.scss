@@ -1,424 +1,292 @@
-//<a href="#" class="isc-button">light red</a>
+/*
+  BUTTONS
+  ----------
 
+  Includes basic style variations for a collection of commonly used button types.
+   - Basic Buttons, size & color variations
+   - Buttons Containing Icons
+   - Icons as Buttons
+   - Link Style Buttons (e.g. Add/Remove/Edit a table record)
+   - Buttons containing svgs
+*/
 
-.isc-btn-group{
-  button{
-    margin-right: 0 !important;
-    margin-left: 0 !important;
-  }
-}
+button, a.button {
+  font-weight: 500;
 
-.isc-btn {
-  display:inline-block;
-  padding:3px 15px;
+  .fa {vertical-align: middle;}
 
-  -moz-border-radius:4px;
-  -webkit-border-radius:4px;
-  border-radius:3px;
-
-  cursor:default;
-  cursor:pointer;
-
-  text-align: center;
-  font-size: $isc-button-font-size;
-  font-weight: $isc-button-font-weight;
-  text-decoration:none;
-  text-shadow:none;
-
-  display: inline-block;
-  vertical-align: middle;
-  line-height: 34px;
-
-  min-width: $isc-button-height;
-  min-height: $isc-button-height;
-  max-height: $isc-button-height;
-
-  // Disabled state
-  &:disabled,
-  &:disabled:hover,
-  &:disabled:focus {
-    color: darken( $white-smoke, 10 );
-    border:1px solid darken( $white-smoke, 10 );
-    background: $white-smoke;
-    cursor: not-allowed;
-  }
-
-  &.small {
-    font-size:8pt;
+  // Search Button
+  i.fa-search {
+    padding-right: 0.4rem;
+    line-height: 1;
+    vertical-align: middle;
+    padding-bottom: 0.175rem;
+    font-size: 0.9375rem;
   }
 
   &:focus {
-    outline:0;
-  }
-}
-
-.isc-btn-primary{
-  @extend .isc-btn;
-  color: $white;
-  background: $button-primary;
-  border:1px solid darken( $button-primary, 10 );
-
-  svg{
-    padding-left: 5px;
-    fill: darken( $brand-secondary, 60 );
-    width: 30px;
-    height: 30px;
-    vertical-align: middle;
+    outline: none;
   }
 
-  &:hover{
-    background: darken( $button-primary, 10 );
-    border:1px solid darken( $button-primary, 20 );
-  }
-
-}
-
-.isc-btn-danger{
-  @extend .isc-btn;
-  color: $white;
-  background: $brand-danger;
-  border:1px solid darken( $brand-danger, 10 );
-
-  &:hover{
-    background: darken( $brand-danger, 10 );
-    border:1px solid darken( $brand-danger, 20 );
-  }
-
-  &:active{
-    color:$white;
-  }
-}
-
-.isc-btn-secondary{
-  @extend .isc-btn;
-  color:darken( $brand-secondary, 60 );
-  background: $brand-secondary;
-  border:1px solid darken( $brand-secondary, 10 );
-
-  &:hover{
-    color:darken( $brand-secondary, 70 );
-    background: darken( $brand-secondary, 10 );
-    border:1px solid darken( $app-border-color, 30 );
-
-  }
-
-  &:active{
-    color:$white;
-  }
-
-  &:disabled{
-    background: lighten( $brand-secondary, 20 );
-  }
-
-  svg{
-    padding-left: 5px;
-    fill: darken( $brand-secondary, 60 );
-    width: 30px;
-    height: 30px;
-    vertical-align: middle;
-
-    &:hover{
-      fill: darken( $brand-secondary, 70 );
+  /* Alternative Button Types Defined Here */
+  &.cancel {
+    border: 1px solid $secondary-color;
+    // Foundation button style mixin
+    @include button-style(
+    //$background: $info-color,
+    $background-hover: auto, // Use "auto" to generate automatically
+    $color: #000,
+    $style: solid // Can be solid or hollow
+  );
+    &.custom-disabled {
+      @include button-disabled;
     }
   }
 }
 
-.isc-btn-white{
-  @extend .isc-btn;
-  color:darken( $brand-secondary, 60 );
-  background: $white;
-  border:1px solid darken( $app-border-color, 10 );
+/* Icon Buttons - No background, just clickable icon */
+// Drops margins and padding
+button, a.button {
 
-  &:hover{
-    color:darken( $brand-secondary, 70 );
-    background: darken( $brand-secondary, 10 );
-    border:1px solid darken( $app-border-color, 30 );
-  }
-
-  &:active{
-    color:$app-border-color;
-  }
-
-  svg{
-    padding-left: 5px;
-    fill: darken( $brand-secondary, 60 );
-    width: 30px;
-    height: 30px;
+  &.icon {
+    margin: 0;
+    padding: 0;
+    font-size: 1rem;
     vertical-align: middle;
-
-    &:hover{
-      fill: darken( $brand-secondary, 70 );
-    }
-  }
-}
-
-.isc-btn-dropdown {
-  @extend .isc-btn;
-  color:darken( $brand-secondary, 60 );
-  background: $white;
-  border:1px solid darken( $brand-secondary, 20 );
-
-  &:hover{
-    color:darken( $white, 70 );
-    background: darken( $white, 10 );
-    border:1px solid darken( $app-border-color, 30 );
-  }
-
-  &:active{
-    color:$brand-secondary;
-  }
-}
-
-.isc-btn-dropdown:after {
-  position:relative;
-  font-family: FontAwesome;
-  font-size: 24px;
-  top: 4px;
-  left: 0px;
-  right: -20px;
-  content: " \F107"; //&#xf107 unicode for fa-angle-down
-}
-
-.isc-navbar-icon{
-  @extend .isc-btn;
-
-  margin: 0;
-
-  max-width: 35px;
-  height: 35px;
-
-  background: none;
-  border: none;
-
-  svg{
-    fill: $white;
-
-    &:hover{
-      fill: $white-smoke;
-    }
-  }
-}
-
-.isc-hamburger-icon{
-  @extend .isc-navbar-icon;
-  padding: 6px 15px 0 0;
-  margin-left: 25px;
-
-  svg{
-    width: 35px;
-    height: 35px;
-  }
-}
-
-.isc-question-icon{
-  @extend .isc-navbar-icon;
-  padding: 4px 0 0 10px;
-  min-width: 35px;
-  max-width: 35px;
-
-  svg{
-    width: 35px;
-    height: 35px;
-    margin-left: -12px;
-  }
-}
-
-.isc-btn-link{
-  text-align: left;
-  font-size: $isc-button-font-size;
-  font-weight: $isc-button-font-weight;
-  text-decoration:none;
-  text-shadow:none;
-  background-color: transparent;
-  border: none;
-  outline: none;
-  margin: 0;
-  padding: 0;
-
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-kerning: auto;
-  font-size: 16px;
-
-  &.small{
-    font-size: 12px;
-  }
-
-  color: darken( $brand-link, 0 );
-
-  &:hover,
-  &:active{
-    color:darken( $brand-link, 15 );
-  }
-
-  &:disabled{
-    color:$gray-30;
-    cursor: not-allowed;
-  }
-}
-
-.isc-btn-search{
-  @extend .isc-btn-primary;
-  max-height: $isc-button-height;
-  vertical-align: middle;
-  line-height:30px;
-
-  @media #{$tab-or-less} {
-    font-size: 1em;
-    color: transparent;
     line-height: 1;
-    min-width: $isc-button-height * 1.25;
-    max-width: $isc-button-height * 1.25;
+    background: transparent;
 
-    &:active,
-    &:disabled,
-    &:disabled:hover{
-      font-size: 1em;
-      color: transparent;
+    svg {
+      fill: $primary-color;
+      color: $primary-color;
+      width: 1rem;
+      height: 1rem;
+      vertical-align: middle;
       line-height: 1;
     }
 
-    svg{
-      position: relative;
-      display: block;
-      top: -10px;
-      left: -6px;
+    // Foundation button style mixin
+    @include button-style(
+      $background: transparent, // No Background color
+      $background-hover: transparent, // No Background color on hover.
+      $color: $primary-color, // Text color
+      $style: solid // Can be solid or hollow
+    );
+    &.disabled {
+      @include button-disabled;
+    }
+
+    &:hover, &:focus, &:active {
+      color: darken($primary-color, 8);
+
+      svg {
+        fill: darken($primary-color, 8);
+        color: darken($primary-color, 8);
+      }
+    }
+
+    &.alert {
+      fill: $alert-color;
+      color: $alert-color;
+      background: transparent;
+
+      svg {
+        fill: $alert-color;
+        color: $alert-color;
+      }
+
+      &:hover, &:focus, &:active {
+        color: darken($alert-color, 8);
+        background: transparent;
+
+        svg {
+          fill: darken($alert-color, 8);
+          color: darken($alert-color, 8);
+        }
+      }
+    }
+
+    &.success {
+      fill: $success-color;
+      color: $success-color;
+      background: transparent;
+
+      svg {
+        fill: $success-color;
+        color: $success-color;
+      }
+
+      &:hover, &:focus, &:active {
+        color: darken($success-color, 8);
+        background: transparent;
+
+        svg {
+          fill: darken($success-color, 8);
+          color: darken($success-color, 8);
+        }
+      }
+    }
+
+    &.info {
+      fill: $info-color;
+      color: $info-color;
+      background: transparent;
+
+      svg {
+        fill: $info-color;
+        color: $info-color;
+      }
+
+      &:hover, &:focus, &:active {
+        color: darken($info-color, 8);
+        background: transparent;
+
+        svg {
+          fill: darken($info-color, 8);
+          color: darken($info-color, 8);
+        }
+      }
+    }
+
+    &.warning {
+      fill: $warning-color;
+      color: $warning-color;
+      background: transparent;
+
+      svg {
+        fill: $warning-color;
+        color: $warning-color;
+      }
+
+      &:hover, &:focus, &:active {
+        color: darken($warning-color, 8);
+        background: transparent;
+
+        svg {
+          fill: darken($warning-color, 8);
+          color: darken($warning-color, 8);
+        }
+      }
+    }
+
+    // Help Icon
+    &.help {
+      padding: 0.5rem;
+      text-align: center;
+
+      svg {
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+
+      &:hover, &:focus, &:active {
+        color: darken($primary-color, 8);
+
+        svg {
+          fill: darken($primary-color, 8);
+        }
+      }
+    }
+
+    // Hamburger Icon
+    &.hamburger {
+      padding: 0.5rem;
+      font-size: 1rem;
+      text-align: center;
+
+      svg {
+        width: 1.875rem;
+        height: 1.875rem;
+      }
+
+      &:hover, &:focus, &:active {
+        color: darken($primary-color, 8);
+
+        svg {
+          fill: darken($primary-color, 8);
+        }
+      }
+    }
+
+    // Clear icon, for filterable fields
+    &.clear {
+      fill: $alert-color;
+      color: $alert-color;
+      padding: .5rem .125rem 0 .3125rem;
+      margin: 0 0 0 .3125rem;;
+      text-align: center;
+
+      svg {
+        fill: $alert-color;
+        color: $alert-color;
+      }
+
+      &:hover, &:focus, &:active {
+        color: darken($alert-color, 8);
+
+        svg {
+          fill: darken($alert-color, 8);
+          color: darken($alert-color, 8);
+        }
+      }
     }
   }
-
-  svg{
-    display: inline-block;
-    padding-left: 5px;
-    fill: $white;
-    width: 30px;
-    height: 30px;
-    vertical-align: middle;
-  }
 }
 
 
-.isc-image-button {
-  border: none;
-  margin-top: 0px;
-  cursor: pointer;
-  cursor: hand;
-}
+/*  Link Style Buttons, e.g. Add New Table Row (Plus) Buttons */
+// Retains margins and padding
+button {
 
-a.isc-image-button {
-  display: inline !important;
-  white-space: nowrap;
-  font-size: 14px;
-  color: $white;
-  font-weight: 400;
-  text-align: left;
-  text-decoration: none;
+  &.link {
+    background: transparent;
+    color: $primary-color;
+    margin-bottom: 1rem;
 
-  // Hover state
-  &:hover {
-    color: lighten( $brand-primary, 20 );
-  }
-
-  // Disabled state
-  &.disabled,
-  &.disabled:hover,
-  &.disabled:focus {
-    color: darken($white, 25 );
-    cursor: $cursor-disabled;
-  }
-}
-
-.isc-styled-select-navbar{
-  @extend .isc-styled-select;
-
-  select{
-    font-size: 10px;
-  }
-}
-
-// header select styles
-.isc-styled-select {
-  overflow: hidden;
-  border: 1px solid rgba(255,255,255, .5);
-  border-radius: 2px;
-  background: rgba(0, 0, 0, .25) url(../assets/images/down-carat.png) no-repeat 93%;
-  padding-right: 20px;
-  width: $nav-select-width;
-
-  select{
-    background-color: rgba(0, 0, 0, 0);
-    min-width: 115%;
-    max-width: 115%;
-    margin-left: 10%;
-    min-height: $isc-button-height;
-    padding: 0px 20px 0 10px;
-    font-size: 1em;
-    color: white;
-    line-height: 1;
-    border: 0;
-    border-radius: 0;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-
-    &:focus,
-    &:hover{
-      outline: 0;
+    svg {
+      fill: $primary-color;
+      width: 1.5rem;
+      height: 1.5rem;
+      display: inline-block;
+      vertical-align: middle;
+      padding-right: .3125rem;
+      padding-bottom: .3125rem;
     }
-  }
 
-  &.proxy {
-    background: rgba(0, 0, 0, .5) url(../assets/images/down-carat.png) no-repeat 97%;
+    &:hover, &:focus, &:active {
+      background: transparent;
+      color: darken($primary-color, 8);
 
-    select{
-      color: #cdcdcd;
-    }
-  }
-
-  &.white {
-    background: white  url(../assets/images/down-carat-dark.png) no-repeat 93%;
-    border: 1px solid $app-border-color;
-    width: 100%;
-    select{
-      color: $gray-60;
+      svg {
+        fill: darken($primary-color, 8);
+      }
     }
   }
 }
 
-.isc-scroll-stick-container{
-  @include box-sizing( border-box );
-  position: relative;
-  display: inline-block;
-  text-align: left;
-  width: 100%;
-  background-color: rgba(255,255,255, 0);
-  border: 1px solid transparent;
-  z-index: 1;
-
-  .section{
-    padding: 5px 0 5px 0;
-    display: block;
-    min-height: 25px;
-
-    &:not(first-child){
-      border-top: 1px solid $app-border-color;
-      margin-top: 5px;
-    }
-  }
-
-  button{
-    margin-right: 10px
+/* Submit Input Buttons */
+input[type="submit"] {
+  @extend .button;
+  &.custom-disabled {
+    @include button-disabled;
   }
 }
 
-.isc-scroll-stick-container-fixed {
-  @extend .isc-scroll-stick-container;
+/* Hollow Buttons */
+//on Hover
+.button.hollow:hover, button.hollow:hover, .button.hollow:focus, button.hollow:focus {
+    border-color: $primary-color;
+    background: $gray-light;
+    color: $primary-color;
+}
 
-  @media #{$desktop} {
-    top: 10px;
-    padding: 20px
-  }
-
-  @media #{$mobile} {
-    top: 20px;
-    padding: 10px
+.button-group {
+  li {
+    margin: 0;
   }
 }
 
+/* Button Utilities  */
+
+//Remove margin
+button.flat, .button.flat, a.flat {margin: 0;}
