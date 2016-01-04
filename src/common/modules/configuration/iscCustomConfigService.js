@@ -7,8 +7,9 @@
 
   angular.module('isc.configuration')
     .provider('iscCustomConfigService', function () {
-      var routeSpecificRolePermissions = {};
-      var config                       = {};
+      var topTabOverrides         = {};
+      var rolePermissionOverrides = {};
+      var config                  = {};
 
       function hydrateRolePermissions(masterRoutes, routes) {
         /**
@@ -38,26 +39,24 @@
 
           config                 = configObj;
           config.rolePermissions = config.rolePermissions || [];
-          _.forEach(routeSpecificRolePermissions, function (value, key) {
+          _.forEach(rolePermissionOverrides, function (value, key) {
             config.rolePermissions[key] = config.rolePermissions[key] || [];
             Array.prototype.push.apply(config.rolePermissions[key], value);
           });
+
+          _.extend(config.topTabs, topTabOverrides);
         },
         addRolePermissions: function addRolePermissions(states) {
-          hydrateRolePermissions(routeSpecificRolePermissions, states);
+          hydrateRolePermissions(rolePermissionOverrides, states);
+        },
+        addTopNavTab      : function addTopNavTab(topNavTab) {
+          _.merge(topTabOverrides, topNavTab);
         },
         $get              : iscCustomConfigService
       };
 
-      /* @ngInject */
       function iscCustomConfigService(devlog, iscCustomConfigHelper) {
         devlog.channel('iscCustomConfigService').debug('iscCustomConfigService LOADED');
-
-        // ----------------------------
-        // vars
-        // ----------------------------
-
-        var topTabsArray;
 
         // ----------------------------
         // class factory
@@ -116,13 +115,6 @@
           devlog.channel('iscCustomConfigService').debug('...secondaryNavs', secondaryNavs);
           _.forEach(secondaryNavs, function (obj) {
             iscCustomConfigHelper.addStates(obj.secondaryNav);
-          });
-
-          // add the secondary tasks
-          var tasks = _.filter(config, 'tasks');
-          devlog.channel('iscCustomConfigService').debug('...tasks', tasks);
-          _.forEach(tasks, function (obj) {
-            iscCustomConfigHelper.addStates(obj.tasks);
           });
         }
       }// END CLASS

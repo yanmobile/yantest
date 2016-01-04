@@ -36,7 +36,8 @@
       "src/common/modules/**/*.js"
     ],
     "html" : [
-      "src/common/modules/**/*.html"
+      "src/common/modules/**/*.html",
+      "src/common/assets/**/*.html"
     ],
     "assets" : {
       "images" : [
