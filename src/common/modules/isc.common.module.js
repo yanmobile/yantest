@@ -25,6 +25,7 @@
       'isc.table',
       'isc.http',
       'isc.states',
+      'isc.spinner',
 
       // logging helper
       //'logLineNumber',
