@@ -27,7 +27,7 @@
       showLogin            : false,
       showLogout           : false,
 
-      tabs        :  _.toArray(iscCustomConfigService.getConfigSection('topTabs')),
+      tabs        :  _.toArray(iscCustomConfigService.getConfigSection('topTabs.*')),
       logoutButton: iscCustomConfigService.getConfigSection('logoutButton'),
       loginButton : iscCustomConfigService.getConfigSection('loginButton'),
 

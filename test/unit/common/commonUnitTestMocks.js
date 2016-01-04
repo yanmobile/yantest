@@ -35,53 +35,55 @@ var customConfig = {
   "userRoles": ["user", "guest"],
 
   "topTabs": {
-    "index.home": {
-      "state"         : "index.home",
-      "translationKey": "ISC_HOME_TAB",
-      "displayOrder"  : 1,
-      "exclude"       : false
-    },
+    "*": {
+      "index.home": {
+        "state"         : "index.home",
+        "translationKey": "ISC_HOME_TAB",
+        "displayOrder"  : 1,
+        "exclude"       : false
+      },
 
-    "index.wellness": {
-      "state"         : "index.wellness",
-      "translationKey": "ISC_WELLNESS_TAB",
-      "displayOrder"  : 2,
-      "exclude"       : true
-    },
+      "index.wellness": {
+        "state"         : "index.wellness",
+        "translationKey": "ISC_WELLNESS_TAB",
+        "displayOrder"  : 2,
+        "exclude"       : true
+      },
 
-    "index.messages": {
-      "state"         : "index.messages",
-      "translationKey": "ISC_MESSAGES_TAB",
-      "displayOrder"  : 3,
-      "exclude"       : true
-    },
+      "index.messages": {
+        "state"         : "index.messages",
+        "translationKey": "ISC_MESSAGES_TAB",
+        "displayOrder"  : 3,
+        "exclude"       : true
+      },
 
-    "index.library": {
-      "state"         : "index.library",
-      "translationKey": "ISC_LIBRARY_TAB",
-      "displayOrder"  : 4,
-      "exclude"       : true
-    },
+      "index.library": {
+        "state"         : "index.library",
+        "translationKey": "ISC_LIBRARY_TAB",
+        "displayOrder"  : 4,
+        "exclude"       : true
+      },
 
-    "index.calendar": {
-      "state"         : "index.calendar",
-      "translationKey": "ISC_CALENDAR_TAB",
-      "displayOrder"  : 5,
-      "exclude"       : true
-    },
+      "index.calendar": {
+        "state"         : "index.calendar",
+        "translationKey": "ISC_CALENDAR_TAB",
+        "displayOrder"  : 5,
+        "exclude"       : true
+      },
 
-    "index.myAccount": {
-      "state"         : "index.myAccount",
-      "translationKey": "ISC_MY_ACCOUNT_TAB",
-      "displayOrder"  : 6,
-      "exclude"       : true
-    },
+      "index.myAccount": {
+        "state"         : "index.myAccount",
+        "translationKey": "ISC_MY_ACCOUNT_TAB",
+        "displayOrder"  : 6,
+        "exclude"       : true
+      },
 
-    "index.customerTab": {
-      "state"         : "index.customerTab",
-      "translationKey": "ISC_CUSTOMER_TAB",
-      "displayOrder"  : 7,
-      "exclude"       : true
+      "index.customerTab": {
+        "state"         : "index.customerTab",
+        "translationKey": "ISC_CUSTOMER_TAB",
+        "displayOrder"  : 7,
+        "exclude"       : true
+      }
     }
   },
 

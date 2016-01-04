@@ -20,6 +20,7 @@
     // ----------------------------
     // vars
     // ----------------------------
+    var topNav = {};
     var secondaryNav;
     var secondaryNavTasks;
 
@@ -72,7 +73,6 @@
 
 
   }//END CLASS
-
 
 
 })();

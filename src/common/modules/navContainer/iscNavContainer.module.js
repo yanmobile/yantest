@@ -12,12 +12,7 @@
     'isc.animation',
     'isc.authentication',
     'isc.states'])
-    .config(function ($stateProvider, iscCustomConfigServiceProvider) {
-
-      iscCustomConfigServiceProvider.addRolePermissions({
-        'index': ['*']
-      });
-      
+    .config(function ($stateProvider) {
       // ----------------------------
       // state management
       // ----------------------------

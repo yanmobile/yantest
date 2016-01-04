@@ -1,4 +1,4 @@
-var angularTemplatePreprocessor = require("wallaby-ng-html2js-preprocessor");
+var angularTemplatePreprocessor = require('wallaby-ng-html2js-preprocessor');
 module.exports                  = function () {
   'use strict';
 
@@ -9,24 +9,24 @@ module.exports                  = function () {
   var commonModuleMocks = (commonConfig.module.mocks || []).map(noInstrument);
   var commonModuleJs    = commonConfig.module.js || [];
   var commonModuleTests = commonConfig.module.tests || [];
-
+  var commonModuleHtml  = commonConfig.module.html || [];
   return {
-    basePath       : '..', // Ignored through gulp-karmaa
-    "files"        : []
+    'files'        : []
       .concat(commonVendorJs)
       .concat(commonVendorMocks)
       .concat(commonModuleMocks)
-      .concat(commonModuleJs),
-    "tests"        : commonModuleTests,
-    "preprocessors": {
-      "src/common/modules/**/*.html": function (file) {
+      .concat(commonModuleJs)
+      .concat(commonModuleHtml),
+    'tests'        : commonModuleTests,
+    'preprocessors': {
+      'src/common/modules/**/*.html': function (file) {
         return angularTemplatePreprocessor.transform(file, {
-          "stripPrefix": "src/common/modules/",
-          "moduleName" : "isc.templates"
+          'stripPrefix': 'src/common/modules/',
+          'moduleName' : 'isc.templates'
         });
       }
     },
-    "testFramework": "jasmine"
+    'testFramework': 'jasmine'
   };
 
   function noInstrument(file) {
