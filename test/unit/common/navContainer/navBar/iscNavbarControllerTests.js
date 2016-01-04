@@ -14,7 +14,7 @@
         configHelper,
         uiHelper,
         AUTH_EVENTS,
-        controller;
+        navbarCtrl;
 
 
     // setup devlog
@@ -44,7 +44,7 @@
 
       rootScope  = $rootScope;
       scope      = $rootScope.$new ();
-      controller = $controller ('iscNavbarController as ctrl',
+      navbarCtrl = $controller ('iscNavbarController as ctrl',
                                 {
                                   '$scope': scope
                                 });
@@ -81,7 +81,7 @@
 
           it ('should have a value tabs', function () {
             expect (angular.isDefined (self.tabs)).toBe (true);
-            var topTabsList =  _.toArray(customConfigService.getConfigSection('topTabs'));
+            var topTabsList =  _.toArray(customConfigService.getConfigSection('topTabs.*'));
             expect (self.tabs).toEqual ( topTabsList);
           });
 

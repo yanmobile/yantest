@@ -51,20 +51,20 @@
 
       it( 'should add the states', function(){
         helper.addStates( mockConfig.topTabs );
-        var result = helper.getAllStates();
+        var result = helper.getAllStates("*");
 
         _.forEach( result, function( state ){
-          var configObj = mockConfig.topTabs[ state.state ];
+          var configObj = mockConfig.topTabs["*"][ state.state ];
           expect( angular.equals( configObj, state) ).toBe( true );
         });
       });
 
       it( 'should reset the states', function(){
         helper.addStates( mockConfig.topTabs );
-        var result = helper.getAllStates();
+        var result = helper.getAllStates("*");
 
         _.forEach( result, function( state ){
-          var configObj = mockConfig.topTabs[ state.state ];
+          var configObj = mockConfig.topTabs["*"][ state.state ];
           expect( angular.equals( configObj, state) ).toBe( true );
         });
 
@@ -95,10 +95,10 @@
       });
 
       it( 'should know if a state is excluded', function(){
-        mockConfig.topTabs['index.home'].exclude = true;
-        mockConfig.topTabs['index.wellness'].exclude = false;
+        mockConfig.topTabs["*"]['index.home'].exclude = true;
+        mockConfig.topTabs["*"]['index.wellness'].exclude = false;
 
-        helper.addStates( mockConfig.topTabs );
+        helper.addStates( mockConfig.topTabs["*"] );
 
         var expected = helper.stateIsExcluded( 'index.home' );
         expect( expected ).toBe( true );
