@@ -4,7 +4,7 @@
 (function () {
   'use strict';
 
-  angular.module('isc.http')
+  angular.module('isc.router')
     .provider('iscExternalRoute', iscExternalRouteProvider);
 
   /**
@@ -48,9 +48,11 @@
 
   /* @ngInject */
   function iscExternalRouteProvider($windowProvider) {
+    var _stateKey = 'routeStack';
+
     this.configure = function (mappingFunction, externalRequestExpirationInMinutes) {
       // Local window wrapper -- $window for tests
-      var window = $windowProvider.$get();
+      var window = _getWindow();
 
       // Get raw location hash
       var hash = window.location.hash.replace(/#/, ''),
@@ -76,31 +78,68 @@
         nextStateObject = mappingFunction(queryParams);
       }
 
-
       // If a next state was returned (a nextState string is minimally required), store desired state in session
-      // This will be returned during app.run with iscExternalRouteApi.getInitialState()
+      // This will be returned during app.run with iscExternalRouteApi.getNextState()
       if (_.isObject(nextStateObject) && nextStateObject.nextState) {
         var nextState   = nextStateObject.nextState,
             stateParams = nextStateObject.stateParams;
         if (!_.isObject(stateParams)) {
           stateParams = {};
         }
-        window.sessionStorage.setItem('initialState',
-          JSON.stringify({
-            'nextState'  : nextState,
-            'stateParams': stateParams,
-            // Set an expiration -- if this state is later retrieved after it has expired, this state will be ignored
-            'expiresOn'  : externalRequestExpirationInMinutes
-              ? moment().add(externalRequestExpirationInMinutes, 'minute').toISOString()
-              : undefined
-          })
-        );
+
+        this.addRoute({
+          'nextState'  : nextState,
+          'stateParams': stateParams,
+          // Set an expiration -- if this state is later retrieved after it has expired, this state will be ignored
+          'expiresOn'  : externalRequestExpirationInMinutes
+            ? moment().add(externalRequestExpirationInMinutes, 'minute').toISOString()
+            : undefined
+        });
       }
     };
 
-    this.$get = [function iscExternalRouteFactory() {
-      return new iscExternalRoute();
-    }];
+    this.getNext = function () {
+      var routeStack = _getStorage();
+      var nextState  = routeStack.pop();
+      _setStorage(routeStack);
+      return nextState;
+    };
+
+    this.addRoute = function (route) {
+      var routeStack = _getStorage();
+      routeStack.push(route);
+      _setStorage(routeStack);
+      return true;
+    };
+
+
+    this.$get = function iscExternalRouteFactory() {
+      return {
+        configure: this.configure,
+        getNext  : this.getNext,
+        addRoute : this.addRoute
+      }
+    };
+
+
+    // Private functions
+    function _getWindow() {
+      return $windowProvider.$get();
+    }
+
+    function _getStorage() {
+      var window     = _getWindow();
+      var routeStack = JSON.parse(window.sessionStorage.getItem(_stateKey));
+      if (!routeStack || !_.isArray(routeStack)) {
+        routeStack = [];
+        _setStorage([]);
+      }
+      return routeStack;
+    }
+
+    function _setStorage(value) {
+      _getWindow().sessionStorage.setItem(_stateKey, JSON.stringify(value));
+    }
 
   }
 })();
