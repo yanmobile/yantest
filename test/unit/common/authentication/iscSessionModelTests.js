@@ -277,9 +277,8 @@
       });
     });
 
-
     // -------------------------
-    describe('updateStateByRole tests ', function () {
+    xdescribe('updateStateByRole tests ', function () {
 
       it('should have a function updateStateByRole', function () {
         expect(angular.isFunction(sessionModel.updateStateByRole)).toBe(true);

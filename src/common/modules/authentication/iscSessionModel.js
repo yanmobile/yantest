@@ -18,7 +18,7 @@
     // ----------------------------
 
     var credentials = null;
-    var currentUser = { userRole: '*', FullName: 'anonymouse' };
+    var currentUser = { userRole: '*', FullName: 'anonymous' };
 
     var sessionTimeoutInSeconds = 0;
     var sessionTimeoutCounter   = 0;
@@ -287,8 +287,8 @@
     // --------------
     function isAuthenticated() {
       devlog.channel('iscSessionModel').debug('iscSessionModel.isAuthenticated', currentUser);
-      // "*" denotes anonymouse user (AKA not authenticated)
-      return _.get(currentUser, 'userRole', '*') !== "*";
+      // '*' denotes anonymous user (AKA not authenticated)
+      return _.get(currentUser, 'userRole', '*') !== '*';
     }
 
     // --------------
