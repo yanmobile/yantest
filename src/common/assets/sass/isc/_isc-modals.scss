@@ -1,7 +1,57 @@
-// --------------------------------------
-// modal wrapper
-// --------------------------------------
+/* Modals */
 
+.modal {
+  overflow: visible;
+
+  .title-bar.primary {
+    font-size: 1.25rem;
+    padding: 0.675rem 1rem;
+
+    .close-button {
+      top: 0.5rem;
+    }
+  }
+
+  //Forms inside modals
+  .form {
+    padding: 1rem 1rem 1rem 2rem;
+
+    @media #{$small} {
+      padding-left: 1;
+    }
+  }
+
+  //Force overflow visible
+  .grid-content, .grid-block {
+    margin: 0;
+    overflow: visible;
+  }
+
+  @media #{$small} {
+    height: auto;
+  }
+}
+
+// Contain xlarge modal width
+.xlarge > .modal {
+  max-width: 1000px;
+  overflow-y: scroll;
+
+  @media #{$medium} {
+    max-width: 1024px;
+  }
+  @media #{$small} {
+    max-width: 859px;
+    height: auto;
+  }
+}
+
+// --------------------------------
+// Old modal popup component:
+// TODO - Remove this block of code
+// --------------------------------
+
+// old modal wrapper
 .isc-modal-popups-wrapper{
   position: fixed;
   top: 0;
@@ -10,17 +60,13 @@
   height: 10px;
   z-index: $modal-z-index;
   background: none;
-  //border: 10px solid red;
-
   @include box-sizing( border-box );
 }
 
-.isc-popup-close{
+.isc-popup-close {
   @extend .isc-side-nav-close;
   color: $gray-light;
-
   padding: 0;
-
   margin-bottom: 10px;
   margin-right: 0;
 
@@ -31,10 +77,7 @@
   }
 }
 
-// --------------------------------------
-// modal background
-// --------------------------------------
-
+// old modal background
 .isc-modal-bkgrnd {
   position: fixed;
   top: 0 ;
@@ -44,17 +87,11 @@
   z-index: $modal-z-index - 10;
   opacity:0;
   visibility: hidden;
-
   background-color: $gray-lighter;
-  //  border: 10px solid red ;
 }
 
-// --------------------------------------
-// popup styles
-// --------------------------------------
-
-
-.isc-popup-wrapper{
+// old popup component
+.isc-popup-wrapper {
   @include box-sizing( border-box );
   display: block;
   position: fixed;

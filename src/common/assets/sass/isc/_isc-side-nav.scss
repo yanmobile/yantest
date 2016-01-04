@@ -1,266 +1,247 @@
+/* Sidebar Navigation */
 
-// --------------------------------------
-// side nav container
-// ----------------------------------------
+#sidebar {
+  width: 100%;
 
-.isc-side-nav-wrapper {
-  position: absolute !important;
-  top: -1000 ;
-  z-index: $modal-z-index;
-  opacity:0;
-  visibility: hidden;
+  .side-nav-container {
+    margin: 3rem 0 3rem 2rem;
+    padding: 0;
+    font-family: $body-font-family;
+
+    @media only screen and (min-width: 1025px) and (max-width: 1225px){
+      margin: 3rem 0 3rem 1rem;
+    }
+
+    @media #{$medium} {
+        margin-left: 0.75rem;
+    }
+    @media #{$small} {
+        margin-left: 0;
+    }
+  }
 }
 
-.isc-side-nav-container {
-  width: 100%;
-  height: 100%;
-  margin: 0;
+//Nav Menu
+.isc-side-nav {
+  background-color: $secondary-color;
+  border: 1px solid #dfe0db;
+  height: auto;
   padding: 0;
-  background-color: $brand-secondary ;
-  border: 1px solid $app-border-color ;
-  font-size: 14px;
-  text-align: left;
+  margin: 0 0 4rem 0;
+  width: 100%;
+  display: block;
 
+  li.isc-nav-item {
+    display: block;
+    line-height: 1.375;
+    margin: 0;
 
-  @media #{$desktop}{
-    max-width: 300px;
-  }
-}
-
-.isc-side-nav-header-container{
-  @include  flex();
-  @include  flex-type( 2 );
-  @include  flex-box-align( stretch );
-  @include  box-sizing( border-box );
-  @include  flex-direction( column );
-  justify-content: center;
-  order: 1;
-
-  background: $side-nav-background;
-  background-size: cover;
-}
-
-.isc-side-bar-nav-item-container{
-  @include  flex();
-  @include  flex-type( 3 );
-  @include  flex-box-align( stretch );
-  @include  box-sizing( border-box );
-  @include  flex-direction( column );
-  justify-content: flex-start;
-  order: 2;
-  overflow-x: hidden;
-  overflow-y: auto;
-  margin: 0px;
-
-}
-
-.isc-footer-container{
-  @include  flex();
-  @include  flex-type( 1 );
-  @include  flex-box-align( stretch );
-  @include  box-sizing( border-box );
-  @include  flex-direction( column );
-  justify-content: flex-end;
-  order: 3;
-
-//  border: 4px solid $app-border-color ;
-
-  margin-top: 0;
-  margin-left: -1px;
-  margin-bottom: -1px;
-  margin-right: -1px;
-
-  .user-container{
-    @include  flex();
-    @include  flex-type( 1 );
-    @include  flex-direction( column );
-    @include  flex-box-align( stretch );
-    justify-content: center;
-    order: 1;
-
-    padding: 20px 0 10px 0;
-  }
-
-  .button-container{
-    @include  flex();
-    @include  flex-type( 1 );
-    @include  flex-direction( row );
-    @include flex-box-align( center );
-    justify-content: center;
-    margin-left: 30px;
-    margin-right: 30px;
-    order: 2;
-
-//    border: 1px solid red;
-
-    padding: 10px 0 10px 0;
-
-    button {
-      min-width: 120px;
-    }
-  }
-
-  .legal-notices{
-    @include  flex();
-    @include  flex-type( 1 );
-    @include  flex-direction( row );
-    @include flex-justify-content( space-between );
-    margin-left: 30px;
-    margin-right: 30px;
-    order: 2;
-
-    a{
-      text-align: center;
-      padding: 0;
+    a {
+      color: $primary-color;
+      font-weight: normal;
+      text-align: left;
+      vertical-align: middle;
+      display: block;
+      z-index: 1;
+      line-height: 1.375;
+      cursor: default;
+      cursor: pointer;
       margin: 0;
-    }
+      background-color: transparent;
+      padding: 1rem;
 
-    padding: 10px 0 20px 0;
-  }
-}
+      @media only screen and (min-width: 1025px) and (max-width: 1130px){
+        padding: 1rem 0.5rem;
+        display: -ms-flexbox;
+      }
 
+      @media #{$large} {
+          display: -ms-flexbox;
+      }
 
-// --------------------------------------
-// header item styles
-// --------------------------------------
+      @media #{$medium}{
+        padding: 0.5rem;
+      }
 
-.isc-side-nav-close{
-  color: $white;
-  font-size: 20px;
-  text-align: right;
-  width: 100%;
-  padding: 10px 15px 0 0;
+      &:hover, &:focus, &:active, &.active {
+        background-color: white;
+        cursor: pointer;
+        outline: none;
+      }
 
-  // Hover state
-  &:hover,
-  &:focus {
-    text-decoration: none;
-    color: darken( $white, 20 );
-  }
-}
+      @media #{$medium-down}{
+        padding: 0.75rem 0.5rem;
+        font-size: 0.875rem;
+        white-space: nowrap;
+      }
 
-.isc-side-nav-logo{
-  margin: auto;
-  width: 100%;
-  height: 60px;
-  display: inline-block;
-  margin: 4px;
-  border: 1px solid transparent;
-  background: url("../assets/images/logo-big.png");
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-size: contain;
-}
+      .isc-sidebar-icon {
+        svg {
+          margin: 0 0.5rem 0 0;
+          vertical-align: middle;
+          display: inline-block;
+          width: 1.375rem;
+          height: 1.375rem;
+          fill: $primary-color;
+          line-height: 1.375;
+          padding: 0;
 
-.isc-app-name-sidebar{
-  color: $white;
-  font-weight: 500;
-  font-size: 18px;
-  letter-spacing: 2px;
-  text-align: center;
-  text-transform: capitalize;
-  margin-left: auto;
-  margin-right: auto;
-}
+          @media #{$medium-down} {
+            margin: 0 0.25rem 0 0;;
+            width: 1.125rem;
+            height: 1.125rem;
+            vertical-align: middle;
+          }
+        }
 
+        img {
+          margin: 0 0.5rem 0 0;
+          vertical-align: middle;
+          display: inline-block;
+          line-height: 1.375;
 
-// --------------------------------------
-// nav item styles
-// --------------------------------------
-
-.isc-side-bar-nav-item-wrapper{
-  @extend .isc-sidebar-item-container-1;
-  @include min-height-content;
-}
-
-
-.isc-side-nav-button {
-  width: 100%;
-  height: 100%;
-  color: $nav-link;
-  font-size: 14px;
-  font-weight: 400;
-  text-align: center;
-
-  padding: 15px 20px;
-
-  // slide up so the borders overlap
-  margin-bottom: 0px;
-  margin-top: -1px;
-
-  background-color: $brand-secondary;
-
-  // Disabled state
-  &.disabled,
-  &.disabled:hover,
-  &.disabled:focus {
-    background-color: $gray-light;
-    color: lighten($nav-link, 25 );
-    cursor: $cursor-disabled;
-  }
-
-  // Active class on item itself, not parent
-  &.selected,
-  &.active,
-  &.active:hover,
-  &.active:focus {
-    z-index: 2; // Place active items above their siblings for proper border styling
-    color: $nav-link;
-    font-weight: 600;
-    background-color: $white;
-    border-top: 1px solid $app-border-color;
-    border-bottom: 1px solid $app-border-color;
-
-    .side-nav-item-text {
-      color: $brand-link;
+          @media #{$medium-down} {
+            margin: 0 0.25rem 0 0;;
+            width: 1.125rem;
+            height: 1.125rem;
+          }
+        }
+      }
     }
   }
 }
 
-a.isc-side-nav-button {
-  text-decoration: none;
-  z-index: 1;
-  width: 100%;
+li.isc-nav-item:last-child a {
+  padding-bottom: 1rem;
 
-  // Hover state
-  &.active,
-  &:hover,
-  &:focus {
-    text-decoration: none;
-    color: darken( $nav-link, 20 );
-    background-color: $white;
-    border-top: 1px solid $app-border-color;
-    border-bottom: 1px solid $app-border-color;
-    z-index: 10;
+  @media #{$medium-down} {
+    padding-bottom: 1rem;
   }
 }
 
-// --------------------------------------
-// footer item styles
-// --------------------------------------
 
-
-.btn-footer{
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: auto;
-  margin-bottom: auto;
+.isc-sidebar-icon{
+  svg {
+    margin: auto;
+    vertical-align: middle;
+    display: inline-block;
+    width: 1.875rem;
+    height: 1.875rem;
+    fill: $primary-color;
+    padding-right: 0.5rem;
+  }
 }
 
-.label-footer{
-  margin-top: auto;
-  margin-bottom: auto;
-  margin-left: 0;
-  margin-right: auto;
-  color: $nav-link;
-  font-size: 12px;
+//Link Styles & States
+a.isc-nav-item {
+  color: $primary-color;
   font-weight: normal;
+  text-align: left;
+  z-index: 1;
+  cursor: default;
+  cursor: pointer;
 }
 
-.label-footer-bold{
-  @extend .label-footer;
-  margin-left: auto;
-  margin-right: 0;
-  font-weight: bolder;
-  text-transform: uppercase;
+// States when in ".active" state
+.active.isc-nav-item,
+.active.isc-nav-item:hover,
+.active.isc-nav-item:focus {
+  color: $primary-color;
+  font-weight: 500;
+  border: 1px solid #c2c4ba;
+}
+
+/* New Off-Canvas Nav Styles */
+
+.panel {
+  background: #f5f5f5;
+  overflow-y: visible;
+  z-index: 15;
+
+  .isc-side-nav {
+    border: none;
+  }
+
+  li.close {
+    height: 3rem;
+
+    .close-button {
+      position: absolute;
+      color: $gray-dark;
+      top: 1rem;
+      right: 1rem;
+      font-size: 2em;
+      line-height: 0.5;
+      cursor: pointer;
+    }
+  }
+
+  li.isc-nav-item {
+    display: block;
+    line-height: 1.375;
+    margin: 0;
+
+    a {
+      color: $primary-color;
+      font-weight: normal;
+      text-align: left;
+      vertical-align: middle;
+      display: block;
+      z-index: 1;
+      line-height: 1.375;
+      cursor: default;
+      cursor: pointer;
+      margin: 0;
+      background-color: transparent;
+      padding: 1rem 1rem 1rem 2rem;
+
+      @media #{$medium-down}{
+        padding: 1rem 1rem 1rem 2rem;
+      }
+
+      &:hover, &:focus, &:active, &.active {
+        background-color: white;
+        cursor: pointer;
+        outline: none;
+      }
+
+      @media #{$medium-down}{
+        padding: 1rem;
+        font-size: 1rem;
+        white-space: nowrap;
+      }
+
+      .isc-sidebar-icon {
+        svg {
+          margin: 0 0.5rem 0 0;
+          vertical-align: middle;
+          display: inline-block;
+          width: 1.375rem;
+          height: 1.375rem;
+          fill: $primary-color;
+          line-height: 1.375;
+          padding: 0;
+
+          @media #{$medium-down} {
+            margin: 0 0.5rem 0 0;
+            width: 1.375rem;
+            height: 1.375rem;
+            vertical-align: middle;
+          }
+        }
+
+        img {
+          margin: 0 0.5rem 0 0;
+          vertical-align: middle;
+          display: inline-block;
+          line-height: 1.375;
+
+          @media #{$medium-down} {
+            margin: 0 0.25rem 0 0;;
+            width: 1.125rem;
+          }
+        }
+      }
+    }
+  }
 }

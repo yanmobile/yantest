@@ -1,24 +1,15 @@
+// foundation
+@import "foundation/settings";
+@import "../../bower_components/foundation-apps/scss/foundation";
+
+// font awesome
 @import "font-awesome/font-awesome";
 
-// use for dev only
-@import "helpers";
-
-// isc styles
-@import "isc/isc";
-
-// styles related to the datepicker
+// angular datepicker
 @import "datepicker/angular-datepicker";
 
-// styles related to the calendar
+// angular calendar
 @import "fullcalendar/fullcalendar";
 
-// pagination directive styles
-@import "pagination-directive/isc-pagination";
-
-
-
-
-.isc-banner {
-  text-align:center;
-  background-color: orange;
-}
+// isc core
+@import "isc/isc";

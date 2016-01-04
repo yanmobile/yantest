@@ -1,27 +1,19 @@
-<div class="isc-footer-link-container only-desktop">
+<div class="grid-block align-justify">
 
-  <div class="left">
-    <span class="isc-footer-text" >{{'ISC_COPYRIGHT1' | translate}}</span>
+  <!--left-->
+  <div class="grid-block small-3 medium-6 large-6">
+    <ul class="menu-bar small-condense">
+      <li><p>{{'ISC_COPYRIGHT1' | translate}}</p></li>
+    </ul>
   </div>
 
-  <div class="right">
-    <a class="isc-footer-link"
-       ui-sref="index.info.about">{{'ISC_ABOUT_US' | translate}}</a>
-    <a class="isc-footer-link"
-       ui-sref="index.info.legal">{{'ISC_LEGAL' | translate}}</a>
-    <a class="isc-footer-link"
-       ui-sref="index.info.terms">&nbsp;{{'ISC_TERMS' | translate}}</a>
+  <!--right-->
+  <div class="grid-block small-9 medium-6 large-6 shrink">
+    <ul class="menu-bar small-condense">
+      <li><a ui-sref="index.info.about">{{'ISC_ABOUT_US' | translate}}</a>
+      <li><a ui-sref="index.info.legal">{{'ISC_LEGAL' | translate}}</a></li>
+      <li><a ui-sref="index.info.terms">&nbsp;{{'ISC_TERMS' | translate}}</a></li>
+    </ul>
   </div>
-</div>
 
-<div class="isc-footer-link-container only-tab-phab">
-  <div class="left">
-    <span class="isc-footer-text" >{{'ISC_COPYRIGHT1' | translate}}</span>
-  </div>
-</div>
-
-<div class="isc-footer-link-container only-phone">
-  <div class="left">
-    <span class="isc-footer-text" >{{'ISC_COPYRIGHT_SHORT' | translate}}</span>
-  </div>
 </div>

@@ -1,276 +1,276 @@
-// --------------------------------------
-// responsive table
-// ----------------------------------------
+/*
+  TABLES
+  ----------
 
-.isc-table {
-  border: none;
-  width: 100%;
+  Includes a few basic style variations for table elements - Just getting started here; more coming soon.
+   - Basic Tables
+   - Striped Tables
+   - Hover Tables
+   - Scroll Tables
+   - Full-Width Tables
+   - Elements Inside Tables
+*/
 
-  .back-button {
-    margin-bottom: 20px;
-    svg {
-      display: inline;
-      height: 17px;
-    }
-    span {
-      font-size: $table-td-size;
-      color: $black;
-    }
-  }
+/* Basic Tables */
 
-  .isc-table-btn-white {
-    @extend .isc-btn-white;
-    padding: 0 7px 0 2px;
-  }
+table {
+  font-family: $body-font-family, "Helvetica", Helvetica, Arial, sans-serif;
+  line-height: 1.4;
+  font-weight: $font-weight-normal;
+  font-size: 0.875rem; // Change to variable
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin-bottom: 1rem;
+  border-radius: 0;
+  color:  $body-font-color;
 
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    left: 0;
-    right: 0;
+  thead {
+    border-top: 1px solid lighten($app-border-color, 2);
+    border-bottom: 1px solid lighten($app-border-color, 2);
 
-    h3 {
-      font-weight: 700;
-      margin-bottom: 5px;
-    }
-
-    .isc-sortable {
+    th {
+      padding: 0.65rem;
+      text-align: left;
+      border-left: 1px solid lighten($app-border-color, 2);
+      border-right: 1px solid lighten($app-border-color, 2);
+      font-weight: $font-weight-semi-bold;
       white-space: nowrap;
-      &:after {
-        font-family: FontAwesome;
-        font-size: $table-th-size;
-        font-weight: 400;
-        content: " \F078";
+
+      // Sortable Columns
+      &.isc-sortable {
+        a {
+          white-space: nowrap;
+          &:after {
+            font-family: FontAwesome;
+            font-size: 0.75rem; // Change to variable
+            font-weight: 300;
+            content: "\F078";
+            padding-left: 0.3125rem;
+            vertical-align: middle;
+          }
+          &.reverse:after {
+            font-family: FontAwesome;
+            font-size: 0.75rem; // Change to variable
+            font-weight: 300;
+            content: "\F077";
+            padding-left: 0.3125rem;
+          }
+        }
+
+        &.hover {
+          background-color: #ccc;
+          color: $primary-color;
+        }
       }
-      &.reverse:after {
-        content: " \F077";
+
+      // Filterable Columns
+      &.isc-filterable {
+        a {
+          white-space: nowrap;
+          &:after {
+            font-family: FontAwesome;
+            font-size: 0.75rem; // Change to variable
+            font-weight: 300;
+            content: " \f0b0";
+            padding-left: 0.3125rem;
+            vertical-align: middle;
+          }
+        }
       }
     }
 
-    .isc-filterable {
-      white-space: nowrap;
-      &:after {
-        font-family: FontAwesome;
-        font-size: $table-th-size;
-        font-weight: 400;
-        content: " \f0b0";
+    //Clickable Table Head
+    a {
+      color:  $body-font-color;
+      cursor: hand;
+      cursor: pointer;
+      font-weight: $font-weight-semi-bold;
+      padding: 0.65rem;
+      font-size: 0.875rem;
+
+      th {
+        padding: 0;
       }
     }
 
-    .date {
-      text-decoration: none;
-    }
 
-    .color-bar {
-      height: 20px;
-      width: 5px;
-      border-radius: 5px;
-      display: inline-block;
-      float: left;
-      margin-right: 10px;
-    }
-
-    .orange {
-      background-color: orange;
-    }
-
-    .purple {
-      background-color: purple;
-    }
-
-    .green {
-      background-color: green;
-    }
   }
 
   tbody {
+
     tr {
       border-top: 1px solid $app-border-color;
-      &.isc-table-row-add {
-        border-top: none;
-      }
-
-      .cell-title {
-        display: none;
-      }
-    }
-  }
-
-  td, th {
-    padding: 6px;
-    text-align: left;
-    text-overflow: ellipsis;
-  }
-
-  th {
-    color: $gray-light;
-    font-size: $table-th-size;
-    font-weight: 900;
-  }
-
-  td {
-    color: $gray;
-    font-size: $table-td-size;
-    font-weight: 400;
-
-    span {
-      text-transform: capitalize;
-    }
-
-    div {
-      margin-bottom: 5px;
-    }
-
-    .isc-table-columm-commands {
-      width: $table-command-icon-width * 2;
-    }
-  }
-
-  @media #{$phab-or-less} {
-
-    /* Force table to not be like tables anymore */
-    table, thead, tbody, th, td, tr {
-      display: block;
-    }
-
-    /* Hide table headers (but not display: none;, for accessibility) */
-    thead tr {
-      position: absolute;
-      top: -9999px;
-      left: -9999px;
-    }
-
-    .summary-heading {
-      padding-top: 20px;
+      border-bottom: 1px solid $app-border-color;
 
       td {
-        display: block;
-      }
-    }
+        padding: 0.65rem;
+        text-decoration: none;
+        vertical-align: middle;
+        border-left: 1px solid lighten($app-border-color, 2);
+        border-right: 1px solid lighten($app-border-color, 2);
 
-    tbody tr:not(.isc-table-row-add) {
-      position: relative;
-
-      .cell-title {
-        display: block;
-      }
-
-      td.isc-table-td-commands {
-        width: $table-command-icon-width * 2;
-        position: absolute;
-        top: 10px;
-        right: 0px;
-        padding: 0 12.5px;
-
-        min-width: $table-command-icon-width * 2 + 25;
-        max-width: $table-command-icon-width * 2 + 25;
-
-      }
-    }
-
-    td {
-      /* Behave  like a "row" */
-      border: none;
-      border-bottom: 1px solid $tr-bkgrnd-dark;
-      position: relative;
-      padding-left: 15px;
-      width: 100%;
-    }
-
-    td:before {
-      /* Now like a table header */
-      position: absolute;
-      /* Top/left values mimic padding */
-      top: 6px;
-      left: 6px;
-      width: 45%;
-      padding-right: 10px;
-      white-space: nowrap;
-    }
-  }
-
-  @media #{$phablet} {
-    tr:not(.isc-table-row-add) {
-      // to display multiple items per row (as space allows)
-      @include flex();
-      @include flex-wrap(wrap);
-      @include flex-direction(row);
-      @include flex-justify-content(flex-start);
-      position: relative;
-
-      td {
-        width: auto;
-        min-width: 200px;
-        max-width: 200px;
-
-        > * {
-          display: block;
+        .button, button, .button-group, ul {
+          margin: 0;
         }
       }
-      padding-right: $table-command-icon-width * 2 + 25;
+    }
+  }
+
+  // Striped Tables
+  &.striped {
+
+    thead, tbody, tfoot {
+      background: white;
+    }
+
+    thead {
+      border-top: 1px solid lighten($app-border-color, 2);
+    }
+
+    tbody {
+
+      tr {
+        border-top: 1px solid lighten($app-border-color, 2);
+        border-bottom: 1px solid lighten($app-border-color, 2);
+
+        &:nth-child(even) {
+          background: #f9f9f9;
+        }
+      }
+    }
+
+    thead, tfoot {
+      background: #f9f9f9;
+      color: $body-font-color;
+
+      tr {
+        background: transparent;
+      }
+
+      th, td {
+        font-weight: $font-weight-bold;
+        text-align: left;
+      }
+    }
+  }
+
+  // Hover Tables
+  &.hover {
+
+    tr {
+      &:hover {
+        background-color: #f5f5f5;
+        cursor: pointer;
+      }
+    }
+  }
+
+  // Scroll Tables
+  &.scroll {
+    display: block;
+    width: 100%;
+    overflow-y: scroll;
+  }
+
+  caption {
+    font-weight: bold;
+    padding: 0.5rem 0.625rem 0.625rem;
+  }
+
+  // Full-Width Tables
+  &.expand {
+    width: 100%;
+  }
+}
+
+//Menu-bars in tables
+table {
+
+  .menu-bar {
+    background: transparent;
+
+    li {
+
+      a {
+        padding: 0.65rem;
+      }
     }
   }
 }
 
-.isc-table-cell-main {
-  font-size: $table-td-size !important;
-  color: $brand-link !important;
-  font-weight: 900 !important;
-}
 
-.isc-table-cell-multiline{
-  white-space: pre;
-  max-width: 200px;
-}
+table {
 
-.isc-table-command-icon {
-  max-width: 30px;
-  border: none;
-  background-color: white;
-  padding: 0 10px 4px 10px !important;
-  cursor: pointer;
+  //Table Head
+  thead a, .isc-clickable {
+    color:  $body-font-color;
+    cursor: hand;
+    cursor: pointer;
+    font-size: rem-calc(15);
 
-  svg {
-    display: inline-block;
-    vertical-align: middle;
-    width: 20px;
-    height: 20px;
-    fill: $pencil-button-color;
+    th {
+      padding-left: 0;
+      color: $body-font-color;
+      line-height: 1.5;
+      font-size: 0.9375rem;
+      vertical-align: bottom;
+      padding: 0 .375rem .375rem 0;
+      font-weight: $font-weight-semi-bold;
+      text-align: left;
+
+      @media only screen and (min-width: 1025px) and (max-width: 1045px){
+        font-size: 0.875rem;
+      }
+
+      @media #{$medium} {
+        font-size: 0.9375rem;
+      }
+
+      @media #{$small} {
+        font-size: 0.875rem;
+        white-space: nowrap;
+        font-weight: $font-weight-semi-bold;
+      }
+    }
   }
+}
 
-  &:hover,
-  &:disabled {
-    svg {
-      fill: darken($white-smoke, 10);
+//Elements in tables
+
+table {
+
+  //Table Titles
+  .title {
+    padding: 0;
+    margin: 0 0 1.25rem 0;
+    color: $body-font-color;
+    font-size: 1.5rem;
+    font-weight: $font-weight-semi-bold;
+
+    @media #{$phab-or-less} {
+      font-size: 1rem;
     }
   }
 
-  &:disabled {
-    cursor: not-allowed;
+  .date {text-decoration: none;}
+
+  .cell-title {display: none;}
+
+  //Lists in Tables
+  ul {
+    margin: 0;
+    font-size: 0.875rem;
   }
-}
 
-.isc-table-command-edit-icon {
-  @extend .isc-table-command-icon;
-}
-
-.isc-table-command-remove-icon {
-  @extend .isc-table-command-icon;
-  svg {
-    fill: $remove-button-color;
+  //section-blocks in tables
+  .section-block {
+    margin-bottom: 0;
   }
-}
 
-.isc-table-command-save-icon {
-  @extend .isc-table-command-icon;
-  svg {
-    fill: $button-primary;
-  }
-}
-
-.isc-table-command-cancel-icon {
-  @extend .isc-table-command-icon;
-  svg {
-    fill: $remove-button-color;
+  //Add New Record Wrapper
+  .add-button-wrapper {
+    margin: 2rem 0 0 0;
+    width: 100%;
+    padding: 0;
   }
 }

@@ -17,6 +17,21 @@
   background-image: linear-gradient(to bottom, $from, $to);
 }
 
+@mixin box-shadow( $type, $h, $v, $blur, $spread, $color ){
+  -moz-box-shadow:$type $h $v $blur $spread $color;
+  -webkit-box-shadow:$type $h $v $blur $spread $color;
+  box-shadow:$type $h $v $blur $spread $color;
+}
+
+@mixin background-gradient( $from, $to ){
+  background: $from;
+  background-image: -webkit-linear-gradient(top,$from, $to);
+  background-image: -moz-linear-gradient(top, $from, $to);
+  background-image: -ms-linear-gradient(top, $from, $to);
+  background-image: -o-linear-gradient(top, $from, $to);
+  background-image: linear-gradient(to bottom, $from, $to);
+}
+
 // --------------------------------------------------
 // alignment
 // --------------------------------------------------
@@ -278,5 +293,3 @@
     }
   }
 }
-
-

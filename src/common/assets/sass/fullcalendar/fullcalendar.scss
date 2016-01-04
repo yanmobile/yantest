@@ -58,7 +58,7 @@ html .fc,
 .fc-header-title h2 {
   white-space: nowrap;
   font-size: 14px;
-  color: $brand-primary-dark;
+  color: #222;
 }
 
 .fc .fc-header-space {
@@ -587,5 +587,3 @@ table.fc-border-separate {
 .fc-agenda .ui-resizable-resizing { /* TODO: better selector */
   _overflow: hidden;
 }
-
-

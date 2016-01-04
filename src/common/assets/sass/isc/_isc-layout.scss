@@ -1,0 +1,119 @@
+/* App Architecture */
+
+html, body {
+  height: 100vh;
+}
+
+.isc-app {
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  //height: 100vh;
+  //overflow: hidden;
+}
+
+
+.isc-app-content {
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  //height: 100vh;
+}
+
+/* Page Architecture */
+
+.isc-page-content {
+  height: 100vh;
+  padding: 3rem;
+
+  @media #{$tab-or-less} {
+    padding: 1rem;
+  }
+
+  @media #{$tablet}{
+    padding: 1rem;
+  }
+
+  @media #{$phablet}{
+    padding: 1rem;
+  }
+
+  @media #{$phone}{
+    padding: 1rem;
+  }
+
+}
+
+/* Content Architecture */
+
+// Blocks of page content
+.section-block {
+  @include grid-block;
+  @include grid-size(expand);
+  @include grid-orient(vertical);
+  @include grid-wrap(false);
+  @include grid-align(center);
+  @include grid-order(0);
+  padding: 1rem 0 0 0;
+  margin-bottom: 2rem;
+  overflow: visible;
+  overflow-y: inherit;
+  display: -ms-flexbox;
+  -ms-flex-flow: column nowrap;
+  -ms-flex-align: stretch;
+
+  &.top {
+    padding-top: 0;
+  }
+
+  .title {
+    margin-bottom: 2rem;
+  }
+}
+
+.content-block {
+  @include grid-content;
+  @include grid-size(expand);
+  @include grid-orient(vertical);
+  @include grid-wrap(false);
+  @include grid-align(center);
+  @include grid-order(0);
+  padding: 1rem 0 0 0;
+  margin-bottom: 2rem;
+  overflow: visible;
+  overflow-y: inherit;
+  display: -ms-flexbox;
+  -ms-flex-flow: column nowrap;
+  -ms-flex-align: stretch;
+
+  &.top {
+    padding-top: 0;
+  }
+}
+
+// Form Sections (Major)
+.form-section {
+  @include grid-block;
+  @include grid-size(expand);
+  @include grid-orient(vertical);
+  @include grid-wrap(false);
+  @include grid-align(center);
+  @include grid-order(0);
+  padding: 1rem 0 1 0;
+  margin-bottom: 2rem;
+  overflow: visible;
+  overflow-y: inherit;
+  display: -ms-flexbox;
+  -ms-flex-flow: column nowrap;
+  -ms-flex-align: stretch;
+
+  &.top {
+    padding-top: 0;
+  }
+}
+
+.sub-section {
+  padding-top: 1.5rem;
+}
