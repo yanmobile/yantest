@@ -1,95 +1,84 @@
-
-
 <!--top nav-->
-
-<div class="isc-nav-bar-container"
+<div class="top-nav"
      ng-controller="iscNavbarController as navbarCtrl">
 
-  <!--top section-->
-  <div class="isc-top-nav-container theme">
+  <div class="grid-block align-justify">
 
-    <div class="left">
-      <!-- logo -->
-      <div class="isc-nav-item">
-        <span class="isc-logo"
-              ng-include="'svg/logo.html'"></span>
-      </div>
+    <!--left-->
+    <div class="grid-block small-5 medium-4 large-3">
 
-      <!-- app name -->
-      <div class="isc-app-name-container">
-        <span class="isc-app-name-divider"></span>
-        <span class="isc-app-name">{{'ISC_APP_NAME' | translate }}</span>
-      </div>
-    </div>
-
-    <!-- proxy selects -->
-    <div class="right">
-
-      <div ng-if="navbarCtrl.sessionModel.isAuthenticated()"
-           class="isc-nav-item right">
-
-        <!--proxy dd-->
-        <div class="isc-nav-item">
-          <label class="isc-nav-label" >{{'ISC_VIEWING' | translate}}:</label>
-
-          <div class="isc-styled-select-navbar proxy">
-            <select>
-              <option>please select...</option>
-              <option>Gladys Smith</option>
-              <option>The Pops</option>
-            </select>
-          </div>
+      <div class="grid-block branding">
+        <!--logo-->
+        <div class="grid-block shrink">
+          <div class="isc-logo" ng-include="'svg/logo.html'"></div>
         </div>
 
-        <!--user dd-->
-        <div class="isc-nav-item">
-          <label class="isc-nav-label" >{{'ISC_USER' | translate}}:</label>
-
-          <div class="isc-styled-select-navbar">
-            <select>
-              <option>please select...</option>
-              <option>Gladys Smith</option>
-              <option>The Pops</option>
-            </select>
-          </div>
+        <!--app name-->
+        <div class="grid-block small-10 medium-8 large-10">
+          <div class="app-name">{{'ISC_APP_NAME' | translate }}</div>
         </div>
-
       </div>
-    </div>
-  </div>
 
-  <!--tabs-->
-  <div class="isc-sub-nav-container">
-    <div class="isc-main-tabs pull-left">
-      <div class="isc-tab-container pull-left"
-           ng-repeat="tab in navbarCtrl.tabs | orderBy: navbarCtrl.iscUiHelper.displayOrder"
-           ng-class="{'active': tab.$$active }"
-           ng-if="!tab.exclude">
-        <a class="isc-main-tab"
-           ng-class="{'active': tab.$$active }"
-           ng-click="navbarCtrl.setTabActive( tab )"
-           ui-sref="{{tab.state}}">{{tab.translationKey | translate}}</a>
-      </div>
     </div>
 
-    <div class="isc-main-tabs pull-right">
+    <!--right-->
 
-      <!-- login -->
-      <div class="isc-tab-container pull-right"
-           ng-if="navbarCtrl.showLogin">
-        <a class="isc-main-tab"
-           ui-sref="index.login">{{'ISC_LOGIN' | translate}}</a>
-      </div>
+    <!--div ng-if="navbarCtrl.sessionModel.isAuthenticated()"
+            class="grid-block medium-5 large-9 align-justify"-->
 
-      <!-- logout -->
-      <div class="isc-tab-container pull-right"
-           ng-if="navbarCtrl.showLogout">
-        <a class="isc-main-tab"
-           ng-click="navbarCtrl.logout()">{{'ISC_LOGOUT' | translate}}</a>
+    <!--Force visibility for now until authentication is functional-->
+    <div class="grid-block medium-5 large-9 align-justify">
+
+      <!--menu-bar-->
+      <div class="grid-block align-right">
+        <div class="grid-block shrink">
+          <ul class="icon-left menu-bar medium-condense" ng-controller="iscNavbarController as navbarCtrl">
+            <li><a href="#"><i class="fa fa-cog fa-fw"></i>Settings</a></li>
+            <li><a href="#"><i class="fa fa-question-circle fa-fw"></i>Help</a></li>
+            <li><a href="#"><i class="fa fa-sign-out fa-fw"></i>Logout</a></li>
+          </ul>
+        </div>
       </div>
 
     </div>
   </div>
+</div>
 
+<!--sub nav-->
+<div class="sub-nav"
+     ng-controller="iscNavbarController as navbarCtrl">
+
+  <div class="menu-group">
+    <div class="menu-group-left">
+      <ul class="condense menu-bar">
+        <li class="item"
+             ng-repeat="tab in navbarCtrl.tabs | orderBy: navbarCtrl.iscUiHelper.displayOrder"
+             ng-class="{'active': tab.$$active }"
+             ng-if="!tab.exclude">
+          <a ng-class="{'active': tab.$$active }"
+             ng-click="navbarCtrl.setTabActive( tab )"
+             ui-sref="{{tab.state}}">{{tab.translationKey | translate}}</a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="menu-group-right">
+      <ul class="condense menu-bar">
+        <!--login-->
+        <li class="item"
+             ng-if="navbarCtrl.showLogin">
+          <a class="isc-main-tab"
+             ui-sref="index.login">{{'ISC_LOGIN' | translate}}</a>
+        </li>
+
+        <!--logout-->
+        <li class="item"
+             ng-if="navbarCtrl.showLogout">
+          <a class=""
+             ng-click="navbarCtrl.logout()">{{'ISC_LOGOUT' | translate}}</a>
+        </li>
+      </ul>
+    </div>
+  </div>
 
 </div>
