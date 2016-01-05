@@ -23,6 +23,7 @@
     areSameDate : areSameDate,
     nullifyObj  : nullifyObj,
     isTypeOf    : isTypeOf,
+    makeObj     : makeObj,
     get         : advancedGet
   });
 
@@ -157,6 +158,12 @@
       results.push(parts);
     });
     return results;
+  }
+
+  function makeObj(key, value) {
+    var obj  = {};
+    obj[key] = value;
+    return obj;
   }
 
 
