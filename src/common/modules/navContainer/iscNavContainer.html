@@ -3,10 +3,10 @@
 <!--  modals                     -->
 <!-- --------------------------- -->
 
-<!-- side nav slide-in menu -->
+<!-- side nav slide-in menu --
 <div class="isc-side-nav-wrapper"
      ng-include="'navContainer/iscSideNav.html'"
-     ng-class="{'side-nav' : navCtrl.showSideNav }"></div>
+     ng-class="{'side-nav' : navCtrl.showSideNav }"></div-->
 
 <!--alert -->
 <div class="isc-alert-wrapper"
@@ -26,19 +26,9 @@
 <!--header nav and content-->
 <div class="isc-app-content">
 
-  <!--desktop header-->
-  <div class="isc-nav-bar isc-nav-bar-theme only-desktop"
+  <!--Responsive Top Navigation-->
+  <div class="isc-nav-bar"
        ng-include="'navContainer/iscNavbarDesktop.html'">
-  </div>
-
-  <!--tablet header-->
-  <div class="isc-nav-bar isc-nav-bar-theme only-tab-phab"
-       ng-include="'navContainer/iscNavbarTablet.html'">
-  </div>
-
-  <!--phone header-->
-  <div class="isc-nav-bar isc-nav-bar-theme only-phone"
-       ng-include="'navContainer/iscNavbarPhone.html'">
   </div>
 
   <!--page content-->
