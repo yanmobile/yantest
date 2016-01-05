@@ -9,7 +9,7 @@
   // injection
   // ----------------------------
 
-  angular.module('isc.states', []);
+  angular.module('isc.states', ['isc.core', 'ui.router']);
 
 
 })();
