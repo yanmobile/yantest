@@ -45,10 +45,19 @@
 
       //todo: decorate $stateProvider.state
       _.forEach(tabs, function (config, state) {
+
         if (config.roles) {
+          addPermissions();
+          addTopLevelTabs();
+        }
+
+        function addPermissions() {
           var permissions = _.makeObj(state, config.roles);
           iscCustomConfigServiceProvider.addRolePermissions(permissions);
+        }
 
+        function addTopLevelTabs() {
+          // displayOrder is a positive number
           if (_.get(config, "displayOrder", -1) > 0) {
             config.roles.forEach(function (role) {
               var addTopTab = _.makeObj(role, _.makeObj(state, config));
