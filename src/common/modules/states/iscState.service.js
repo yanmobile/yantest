@@ -49,10 +49,12 @@
           var permissions = _.makeObj(state, config.roles);
           iscCustomConfigServiceProvider.addRolePermissions(permissions);
 
-          config.roles.forEach(function (role) {
-            var addTopTab = _.makeObj(role, _.makeObj(state, config));
-            iscCustomConfigServiceProvider.addTopNavTab(addTopTab);
-          });
+          if (_.get(config, "displayOrder", -1) > 0) {
+            config.roles.forEach(function (role) {
+              var addTopTab = _.makeObj(role, _.makeObj(state, config));
+              iscCustomConfigServiceProvider.addTopNavTab(addTopTab);
+            });
+          }
         }
 
         // ----------------------------
