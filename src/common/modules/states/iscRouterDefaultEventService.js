@@ -133,18 +133,18 @@
 
           preventDefault(event, toState.name);
           //$state.go( DEFAULT_PAGES.beforeLogin );
-          $rootScope.$broadcast(NAV_EVENTS.goToBeforeLoginPage);
-          $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated);
+          $rootScope.$emit(NAV_EVENTS.goToBeforeLoginPage);
+          $rootScope.$emit(AUTH_EVENTS.notAuthenticated);
         }
         else {
           devlog.channel('IscRouterDefaultEventService').debug('... logged in, but not authorized');
-          $rootScope.$broadcast(AUTH_EVENTS.notAuthorized);
+          $rootScope.$emit(AUTH_EVENTS.notAuthorized);
 
           if (!fromState || !fromState.name) {
             devlog.channel('IscRouterDefaultEventService').debug('... going home');
             // edge case where your permissions changed underneath you
             // and you refreshed the page
-            $rootScope.$broadcast(NAV_EVENTS.goToBeforeLoginPage);
+            $rootScope.$emit(NAV_EVENTS.goToBeforeLoginPage);
           }
           else {
             devlog.channel('IscRouterDefaultEventService').debug('... going to ', fromState.name);

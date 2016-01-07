@@ -49,6 +49,7 @@
         if (config.roles) {
           addPermissions();
           addTopLevelTabs();
+          addLandingPages();
         }
 
         function addPermissions() {
@@ -62,6 +63,15 @@
             config.roles.forEach(function (role) {
               var addTopTab = _.makeObj(role, _.makeObj(state, config));
               iscCustomConfigServiceProvider.addTopNavTab(addTopTab);
+            });
+          }
+        }
+
+        function addLandingPages() {
+          var landingPageRoles = _.get(config, "landingPageFor", []);
+          if (landingPageRoles.length > 0) {
+            _.forEach(landingPageRoles, function (role) {
+              iscCustomConfigServiceProvider.setLandingPageFor(role, config.state);
             });
           }
         }

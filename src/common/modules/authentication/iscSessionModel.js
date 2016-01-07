@@ -17,8 +17,9 @@
     // vars
     // ----------------------------
 
+    var anonymousUser = { userRole: '*', FullName: 'anonymous' };
     var credentials = null;
-    var currentUser = { userRole: '*', FullName: 'anonymous' };
+    var currentUser = anonymousUser;
 
     var sessionTimeoutInSeconds = 0;
     var sessionTimeoutCounter   = 0;
@@ -51,7 +52,6 @@
 
       isAuthorized   : iscAuthorization.isAuthorized,
       isAuthenticated: isAuthenticated,
-
       getFullName: getFullName
     };
 
@@ -180,7 +180,7 @@
       devlog.channel('iscSessionModel').debug('iscSessionModel.destroy');
 
       // create a session with null data
-      currentUser = null;
+      currentUser = anonymousUser;
       credentials = null;
 
       // remove the user data so that the user
