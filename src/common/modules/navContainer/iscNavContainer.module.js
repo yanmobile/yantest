@@ -20,6 +20,11 @@
         .state('index', {
           abstract: true,
           url     : '/',
+          resolve: {
+            initFunctions: function (iscStateInit) {
+              return iscStateInit.run();
+            }
+          },
 
           views: {
             '@': {
