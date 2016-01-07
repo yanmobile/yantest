@@ -9,7 +9,7 @@
 
   /* @ngInject */
   function iscNavbarController(
-    devlog, $scope, $state, $rootScope, loginApi,
+    devlog, $scope, $state, $rootScope, loginApi, $window,
     iscCustomConfigService, iscCustomConfigHelper, iscUiHelper, iscSessionModel,
     AUTH_EVENTS
   ) {
