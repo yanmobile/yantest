@@ -1,5 +1,12 @@
 {
-  "releaseno": "internal",
-  "buildno"  : "{{buildno}}",
-  "codeno"   : "{{codeno}}"
+  "app" : {
+    "releaseno": "internal",
+    "buildno"  : "{{appBuildno}}",
+    "codeno"   : "{{appCodeno}}"
+  },
+  "core" : {
+    "releaseno": "internal",
+    "buildno"  : "{{coreBuildno}}",
+    "codeno"   : "{{coreCodeno}}"
+  }
 }

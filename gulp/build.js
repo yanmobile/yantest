@@ -40,6 +40,7 @@
       del           = require('del'),
       es            = require('event-stream'),
       exec          = require('child_process').exec,
+      execSync      = require('child_process').execSync,
       fs            = require('fs'),
       imagemin      = require('gulp-imagemin'),
       jshint        = require('gulp-jshint'),
@@ -109,7 +110,7 @@
     return gulp.src(srcFiles)
       .pipe(jshint())
       .pipe(jshint.reporter('jshint-stylish'))
-      .pipe(jscs({ fix: true }))
+      .pipe(jscs({fix: true}))
       .pipe(jscs.reporter())
       .pipe(size());
   });
@@ -174,7 +175,7 @@
       stream = stream.pipe(chmod(755))
         .pipe(imagemin({
           progressive: true,
-          svgoPlugins: [{ removeViewBox: false }],
+          svgoPlugins: [{removeViewBox: false}],
           use        : [pngcrush()]
         }));
     }
@@ -189,7 +190,7 @@
   gulp.task('sass', [], function () {
     return gulp
       .src(app.module.scss)
-      .pipe(sass({ errLogToConsole: true }))
+      .pipe(sass({errLogToConsole: true}))
       .on('error', handleError)
       .pipe(mobilizer('app.css', {
         'app.css'  : {
@@ -204,7 +205,7 @@
       //.pipe(cssmin())
       .pipe(gulp.dest('.tmp-css'))
       .pipe(concat('app.css'))
-      .pipe(rename({ basename: 'main', suffix: '.min' }))
+      .pipe(rename({basename: 'main', suffix: '.min'}))
       .pipe(gulp.dest(path.join(config.dest, 'css')))
       .pipe(size());
   });
@@ -227,7 +228,7 @@
       strip : 'app/modules/'
     };
 
-    streamqueue({ objectMode: true },
+    streamqueue({objectMode: true},
       gulp.src(common.vendor.js),
       gulp.src(app.vendor.js),
       gulp.src(_.get(common, 'module.assets.vendor.js', [])),
@@ -244,7 +245,7 @@
       //.pipe(uglify())
       .pipe(sourcemaps.init())
       .pipe(concat('app.js'))
-      .pipe(rename({ suffix: '.min' }))
+      .pipe(rename({suffix: '.min'}))
       .pipe(sourcemaps.write('.'))
       .pipe(gulp.dest(path.join(config.dest, 'js')));
   });
@@ -282,66 +283,143 @@
    =   Determine version info from git   =
    =======================================*/
 
-  var today    = new Date();
-  var todayISO = dateFormat(today, 'yyyy-mm-dd') + 'T00:00:00.000';
-  var suffix   = '';
-  var branchName, buildno, codeno;
+  var today            = new Date();
+  var todayISO         = dateFormat(today, 'yyyy-mm-dd') + 'T00:00:00.000';
+  var suffix           = '';
+  var outputDateFormat = 'yyyymmdd';
+  var syncEncoding     = {encoding: 'utf-8'};
+  var upstreamUpdated  = false;
 
-  // Get branch name
-  gulp.task('gitBranchName', function (callback) {
-    exec('git branch --list',
+  var appBuildno, appCodeno,
+      coreBuildno, coreBuildCount, coreCodeno,
+      coreSHA = '';
+
+  gulp.task('gitFetch', function (callback) {
+    exec('git fetch --multiple origin upstream',
       function (err, stdout) {
-        var lines = stdout.split('\n');
-        _.forEach(lines, function (line) {
-          if (line.match(/^\*/)) {
-            var split  = _.compact(line.split(/[ \t]/g));
-            branchName = split[_.indexOf(split, '*') + 1];
-
-            if (branchName !== 'master') {
-              suffix = '|' + branchName.substr(0, 10);
-            }
-          }
-        });
+        upstreamUpdated = !err;
         callback();
       });
   });
 
-  // Get SHA hash for most recent commit
-  gulp.task('gitCommitSHA', function (callback) {
-    exec('git log -n 1 --pretty=format:"%H" --branches=' + branchName + '*',
-      function (err, stdout) {
-        var sha = stdout;
-        codeno  = sha.substr(0, 6);
-        callback();
+  // Looks through local and remote:upstream history for the most recent shared commit
+  gulp.task('gitCoreInfo', function (callback) {
+    if (!upstreamUpdated) {
+      console.log('Warning: Unable to update remote "upstream" for version system')
+    }
+    else {
+      // Get all merged commits for this repo
+      var commits = execSync('git log origin/master --merges --pretty="%H|%ci" ', syncEncoding);
+
+      var lines = _.compact(commits.split('\n'));
+      var done  = false;
+
+      // Check each merged commit against upstream/master for a match
+      _.forEach(lines, function (commitLine) {
+        var commitInfo = _.compact(commitLine.split('|')),
+            commitSHA  = commitInfo[0],
+            commitDate = new Date(commitInfo[1]),
+            sinceDate  = new Date(commitDate).toISOString();
+
+        // Look at all merges from upstream/master since the local SHA we are checking against
+        var cmd = 'git log upstream/master --merges --pretty="%H|%ci" --since=\'' + sinceDate + '\'';
+
+        var upstream      = execSync(cmd, syncEncoding).trim();
+        var upstreamLines = _.compact(upstream.split('\n'));
+
+        _.forEach(upstreamLines, function (upstreamLine) {
+          var upstreamInfo = _.compact(upstreamLine.split('|')),
+              upstreamSHA  = upstreamInfo[0],
+              upstreamDate = new Date(upstreamInfo[1]);
+
+          // If the commit SHA matches, this is the most recent commit that is shared between core and this app
+          if (upstreamSHA === commitSHA) {
+            // Count up the number of builds from core on that date
+            coreBuildno = dateFormat(upstreamDate, outputDateFormat);
+            coreSHA     = upstreamSHA;
+            coreCodeno  = coreSHA.substr(0, 6);
+
+            // Get the build count for upstream/master on the date of the commit
+            var sinceDate = dateFormat(upstreamDate.toISOString(), 'yyyy-mm-dd') + 'T00:00:00.000',
+                untilDate = new Date(upstreamDate).toISOString();
+
+            var countCmd = 'git rev-list upstream/master --count --merges '
+              + ' --since=\'' + sinceDate + '\''
+              + ' --until=\'' + untilDate + '\'';
+
+            coreBuildCount = execSync(countCmd, syncEncoding).trim();
+
+            done = true;
+            return false; // break _.forEach
+          }
+        });
+
+        // Short-circuit for outer _.forEach
+        if (done) {
+          return false;
+        }
+      });
+
+      if (!coreCodeno) {
+        console.log('Warning: No commits matching remote "upstream/master" were found');
+        coreBuildno = coreCodeno = 'unavailable';
       }
-    );
+      else {
+        coreBuildno += ('.' + coreBuildCount);
+      }
+    }
+
+    callback();
   });
 
-  // Get commit count for the current branch for today
-  gulp.task('gitCommitCount', function (callback) {
-    // git rev-list for the commit count today
-    var gitCommand = ['git rev-list HEAD --count --since=\'', todayISO, '\'', ' --branches=', branchName, '*'].join('');
-    exec(gitCommand,
-      function (err, stdout) {
-        var count = parseInt(stdout) + 1;
-        buildno   = dateFormat(today, 'yyyymmdd') + '.' + count;
-        callback();
+  gulp.task('gitLocalInfo', function (callback) {
+    var branchName = '';
+
+    // Get branch name
+    var branchList = execSync('git branch --list', syncEncoding);
+    var lines      = branchList.split('\n');
+    _.forEach(lines, function (line) {
+      if (line.match(/^\*/)) {
+        var split  = _.compact(line.split(/[ \t]/g));
+        branchName = split[_.indexOf(split, "*") + 1];
+
+        if (branchName != 'master') {
+          suffix = '|' + branchName.substr(0, 10);
+        }
       }
+    });
+
+    // Get latest commit for this branch
+    var sha   = execSync('git log -n 1 --pretty=format:"%H" --branches=' + branchName + "*", syncEncoding);
+    appCodeno = sha.substr(0, 6);
+
+    // Get commit count for the current branch for today
+    var commitCount = execSync(
+      'git rev-list HEAD --count --since=\'' + todayISO + '\'' + ' --branches=' + branchName + "*",
+      syncEncoding
     );
+
+    var count  = parseInt(commitCount) + 1;
+    appBuildno = dateFormat(today, outputDateFormat) + "." + count;
+
+    callback();
   });
 
   // Merge the results into the version.json template
   gulp.task('setVersion', function () {
     gulp.src('version.json')
-      .pipe(replace('{{buildno}}', buildno + suffix))
-      .pipe(replace('{{codeno}}', codeno + suffix))
+      .pipe(replace('{{appBuildno}}', appBuildno + suffix))
+      .pipe(replace('{{appCodeno}}', appCodeno + suffix))
+      .pipe(replace('{{coreBuildno}}', coreBuildno))
+      .pipe(replace('{{coreCodeno}}', coreCodeno))
       .pipe(gulp.dest(config.dest));
   });
 
   // Sequence tasks
   gulp.task('version', function (done) {
-    seq('gitBranchName', 'gitCommitSHA', 'gitCommitCount', 'setVersion', done);
+    seq('gitFetch', 'gitCoreInfo', 'gitLocalInfo', 'setVersion', done);
   });
+
 
   /*======================================
    =                BUILD                =
@@ -357,7 +435,7 @@
    =               DEPLOY                =
    ======================================*/
   gulp.task('deploy', function (done) {
-    seq('build', 'fixRelativePath', 'processArgs', done);
+    seq('build', done);
   });
 
 })();
