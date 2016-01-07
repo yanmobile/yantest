@@ -47,9 +47,11 @@
      * @param permittedStates
      * @returns {{}}
      */
-    function setAuthorizedRoutes(permittedStates) {
+    function setAuthorizedRoutes(permittedStates, resetRoutes) {
       permittedStates = permittedStates || [];
-
+      if (resetRoutes) {
+        authorizedRoutes = {};
+      }
       permittedStates.forEach(function (state) {
         if (!_.get(authorizedRoutes, state)) {
           _.set(authorizedRoutes, state, {});

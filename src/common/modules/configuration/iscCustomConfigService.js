@@ -10,6 +10,7 @@
       var topTabOverrides         = {};
       var rolePermissionOverrides = {};
       var config                  = {};
+      var landingPages            = {};
 
       function hydrateRolePermissions(masterRoutes, routes) {
         /**
@@ -45,12 +46,18 @@
           });
 
           _.extend(config.topTabs, topTabOverrides);
+
+          config.landingPages = config.landingPages || {};
+          _.extend(config.landingPages, landingPages);
         },
         addRolePermissions: function addRolePermissions(states) {
           hydrateRolePermissions(rolePermissionOverrides, states);
         },
         addTopNavTab      : function addTopNavTab(topNavTab) {
           _.merge(topTabOverrides, topNavTab);
+        },
+        setLandingPageFor : function (role, state) {
+          landingPages[role] = state;
         },
         $get              : iscCustomConfigService
       };
