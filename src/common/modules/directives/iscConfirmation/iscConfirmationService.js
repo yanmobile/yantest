@@ -2,7 +2,7 @@
  * Created by hzou on 9/16/15.
  */
 
-(function(){
+(function () {
   'use strict';
   // ----------------------------
   // injection
@@ -12,19 +12,25 @@
     .provider('iscConfirmationService', iscConfirmationService);
 
 
-  function iscConfirmationService(){//jshint ignore:line
-
-    // to configure app-wide options in app.config block
-    // cmcConfirmationServiceProvider.setOptions({title: 'from app.js'});
+  // to configure app-wide options in app.config block
+  // IscConfirmationServiceProvider.setOptions({title: 'from app.js'});
+  function iscConfirmationService() {//jshint ignore:line
 
     var defaultOptions = getDefaultOptions();
-    this.setOptions    = function setOptions(options){
-      return _.extend(defaultOptions, options);
+
+    var provider = {
+      setOptions: setOptions,
+      $get      : iscConfirmationServiceFactory
     };
+    return provider;
 
-    this.$get = [ '$q', iscConfirmationServiceFactory ];
+    // -----------------------
+    // funcs
+    function setOptions(options) {
+      return _.extend(defaultOptions, options);
+    }
 
-    function iscConfirmationServiceFactory($q){
+    function iscConfirmationServiceFactory($q) {
 
       var deferred;
 
@@ -38,46 +44,45 @@
 
       return model;
 
-      function show(message){
+      function show(message) {
         deferred = $q.defer();
 
         model.options = angular.copy(defaultOptions);
-        if( _.isObject(message) ){
+        if (_.isObject(message)) {
           _.extend(model.options, message);
-        } else if( _.isString(message) ){
+        } else if (_.isString(message)) {
           model.options.message = message;
         }
-        if( model.isOpen ){
+        if (model.isOpen) {
           model.isOpen = false;
         }
         model.isOpen = true;
         return deferred.promise;
       }
 
-      function hide(){
+      function hide() {
         model.isOpen = false;
       }
 
-      function resolve(data){
+      function resolve(data) {
         model.isOpen = false;
         deferred.resolve(data || true);
       }
 
-      function reject(data){
+      function reject(data) {
         model.isOpen = false;
         deferred.reject(data || true);
       }
     }
 
-    function getDefaultOptions(){
+    function getDefaultOptions() {
       return {
-        title        : 'CMC_CONFIRM_DEFAULT_TITLE',
-        message      : 'CMC_CONFIRM_DEFAULT_MESSAGE',
-        btnOkText    : 'CMC_CONFIRM_BTN_CONFIRM',
-        btnCancelText: 'CMC_CONFIRM_BTN_CANCEL'
+        title        : 'ISC_CONFIRM_DEFAULT_TITLE',
+        message      : 'ISC_CONFIRM_DEFAULT_MESSAGE',
+        btnOkText    : 'ISC_CONFIRM_BTN_CONFIRM',
+        btnCancelText: 'ISC_CONFIRM_BTN_CANCEL'
       };
     }
   }//END CLASS
-
 
 })();
