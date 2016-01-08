@@ -2,7 +2,7 @@
  * Created by hzou on 9/16/15.
  */
 
-(function(){
+(function () {
   'use strict';
   // ----------------------------
   // injection
@@ -12,7 +12,7 @@
     .directive('iscConfirmation', iscConfirmation);
 
   /* @ngInject */
-  function iscConfirmation(){//jshint ignore:line
+  function iscConfirmation() {//jshint ignore:line
 
     // ----------------------------
     // vars
@@ -23,22 +23,23 @@
     // ----------------------------
     var directive = {
       restrict    : 'E',
-      templateUrl : 'directives/iscConfirmation/iscConfirmation.html',
       link        : link,
       controller  : controller,
-      controllerAs: 'iscConfirmCtrl'
+      controllerAs: 'iscConfirmCtrl',
+      templateUrl : function (elem, attrs) {
+        return attrs.templateUrl || 'directives/iscConfirmation/iscConfirmation.html';
+      }
     };
 
     return directive;
 
     // ----------------------------
-    // functions
-    // ----------------------------
-    function link($scope, elem, attrs, iscConfirmCtrl){
+    // link
+    function link($scope, elem, attrs, iscConfirmCtrl) {
       var modalScope = elem.find('[zf-modal]').scope();
-      $scope.$watch('iscConfirmCtrl.service.isOpen', function(newVal, oldVal){
-        if( newVal !== oldVal ){
-          if(newVal === true){
+      $scope.$watch('iscConfirmCtrl.service.isOpen', function (newVal, oldVal) {
+        if (newVal !== oldVal) {
+          if (newVal === true) {
             modalScope.show();
           } else {
             modalScope.hide();
@@ -46,14 +47,14 @@
         }
       });
     }
-    /* @ngInject */
-    function controller(iscConfirmationService){
+
+    // ----------------------------
+    // controller
+    function controller(iscConfirmationService) {
       var self     = this;
       self.service = iscConfirmationService;
     }
 
   }//END CLASS
-
-
 
 })();
