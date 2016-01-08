@@ -18,12 +18,11 @@
     iscCustomConfigService,
     iscSessionStorageHelper,
     AUTH_EVENTS,
-    APP_EVENTS,
     NAV_EVENTS
   ) {
     var service = {
+      loadDataFromStoredSession : loadDataFromStoredSession,
       registerDefaultEvents     : registerDefaultEvents,
-      registerAppLoadEvent      : registerAppLoadEvent,
       registerStateChangeStart  : registerStateChangeStart,
       registerStateChangeSuccess: registerStateChangeSuccess
 
@@ -31,21 +30,10 @@
     return service;
 
     function registerDefaultEvents() {
-      registerAppLoadEvent();
       registerStateChangeStart();
       registerStateChangeError();
       registerStateChangeRejected();
       registerStateChangeSuccess();
-    }
-
-    function registerAppLoadEvent() {
-
-      // ------------------------
-      // all the .run() functions have been called
-      // this is dispached from app.run() - so be sure to add it there
-      $rootScope.$on(APP_EVENTS.appLoaded, function () {
-        loadDataFromStoredSession();
-      });
     }
 
     function registerStateChangeStart() {
@@ -104,19 +92,6 @@
 
     function handleStateChangeStart(event, toState, toParams, fromState, fromParams) {//jshint ignore:line
       devlog.channel('IscRouterDefaultEventService').debug('iscNavContainer.handleStateChangeStart');
-      //var stateIsExcluded = iscCustomConfigHelper.stateIsExcluded(toState.name);
-      //
-      //if (stateIsExcluded) {
-      //  devlog.channel('IscRouterDefaultEventService').warn('...excluded state');
-      //  // even if you are authorized and logged in, don't navigate to excluded states
-      //  // this prevents navigation to excluded pages via entering the uri directly in the browser
-      //  preventDefault(event);
-      //}
-      //else if (toState.name === fromState.name) {
-      //  devlog.channel('IscRouterDefaultEventService').debug('...double tap');
-      //  // no double taps
-      //  preventDefault(event);
-      //}
 
       // get the permissions for this state
       var isAuthorized = iscSessionModel.isAuthorized(toState.name); // either your role is permitted or the state is whitelisted

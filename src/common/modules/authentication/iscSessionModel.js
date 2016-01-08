@@ -45,7 +45,6 @@
       getCredentials: getCredentials,
 
       getCurrentUser: getCurrentUser,
-      setCurrentUser: setCurrentUser,
 
       getAuthorizedRoutes: iscAuthorization.getAuthorizedRoutes,
       setAuthorizedRoutes: iscAuthorization.setAuthorizedRoutes,
