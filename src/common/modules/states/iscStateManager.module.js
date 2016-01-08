@@ -13,7 +13,7 @@
     .module('isc.states', ['isc.core', 'ui.router'])
     .run(run);
 
-  function run(iscRouterDefaultEventService, iscSessionModel, iscAuthorization) {
+  function run(iscRouterDefaultEventService, iscSessionModel, iscAuthorization, iscCustomConfigService) {
     iscRouterDefaultEventService.loadDataFromStoredSession();
 
     var currentUser = iscSessionModel.getCurrentUser();
