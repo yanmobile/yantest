@@ -27,12 +27,12 @@
     // ----------------------------
 
     var factory = {
-      addStates   : addStates,
-      resetStates : resetStates,
-      getStateObj : getStateObj,
-      getAllStates: getAllStates,
-
-      stateIsExcluded: stateIsExcluded,
+      //addStates   : addStates,
+      //resetStates : resetStates,
+      //getStateObj : getStateObj,
+      //getAllStates: getAllStates,
+      //
+      //stateIsExcluded: stateIsExcluded,
 
       getSectionTranslationKeyFromName: getSectionTranslationKeyFromName,
       getTranslationKeyFromName       : getTranslationKeyFromName
@@ -42,50 +42,6 @@
 
     // ----------------------------
     // functions
-    // ----------------------------
-
-    function addStates(states) {
-      devlog.channel('iscCustomConfigHelper').debug('iscCustomConfigHelper.addStates');
-      devlog.channel('iscCustomConfigHelper').debug('...states: ' + JSON.stringify(states));
-      _.merge(allStates, states);
-    }
-
-    function resetStates() {
-      allStates = {};
-    }
-
-    function getAllStates(role) {
-      return role == null ? allStates : _.get(allStates, role);
-    }
-
-    function getStateObj(state) {
-      devlog.channel('iscCustomConfigHelper').debug('iscCustomConfigHelper.getStateObj: ' + state);
-      var s = allStates[state];
-      devlog.channel('iscCustomConfigHelper').debug('...s: ' + JSON.stringify(s));
-      return s;
-    }
-
-    // ----------------------------
-    // used to check if a top nav element is excluded
-    // the interceptor uses this to disallow navigation to that state
-    // see iscCustomConfigInterceptor.request()
-    function stateIsExcluded(stateName) {
-      devlog.channel('iscCustomConfigHelper').debug('iscCustomConfigHelper.stateIsExcluded');
-      devlog.channel('iscCustomConfigHelper').debug('Checking if state is excluded');
-      if (!allStates[stateName]) {
-        devlog.channel('iscCustomConfigHelper').debug('State is not in allStates');
-        return true;
-      }
-
-      if (allStates[stateName].exclude) {
-        devlog.channel('iscCustomConfigHelper').debug(JSON.stringify(allStates[stateName]));
-        devlog.channel('iscCustomConfigHelper').debug('State is marked as exclude');
-        return true;
-      }
-
-      return false;
-    }
-
     // ----------------------------
 
     // get the translation key from the state name

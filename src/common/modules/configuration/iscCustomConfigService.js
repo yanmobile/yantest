@@ -22,10 +22,10 @@
            ]}
 
          TO:
-         [{'%HSCC_CMC_CarePlanApprover': ["index.home.*"]},
-         {'%HSCC_CMC_CarePlanCreator': ["index.home.*"]},
-         {'%HSCC_CMC_CarePlanViewer': ["index.home.*"]},
-         {'%HSCC_CMC_Administrator': ["index.home.*"]}]
+         [{'%HSCC_CMC_CarePlanApprover': ['index.home.*']},
+         {'%HSCC_CMC_CarePlanCreator': ['index.home.*']},
+         {'%HSCC_CMC_CarePlanViewer': ['index.home.*']},
+         {'%HSCC_CMC_Administrator': ['index.home.*']}]
          */
         _.forEach(routes, function (roles, routes) {
           _.forEach(roles, function (role) {
@@ -62,19 +62,21 @@
         $get              : iscCustomConfigService
       };
 
-      function iscCustomConfigService(devlog, iscCustomConfigHelper) {
+      function iscCustomConfigService(devlog, iscCustomConfigHelper, iscSessionModel) {
         devlog.channel('iscCustomConfigService').debug('iscCustomConfigService LOADED');
 
         // ----------------------------
         // class factory
         // ----------------------------
-
         var service = {
-
           getConfigSection: getConfigSection,
           getConfig       : getConfig,
           setConfig       : setConfig,
-          addStates       : addStates
+          addStates       : addStates,
+
+          getRolePermissions: _.partial(getConfigSection, 'rolePermissions', true),
+          getTopNav         : _.partial(getConfigSection, 'topTabs', true),
+          getLandingPage    : _.partial(getConfigSection, 'landingPages', true)
         };
 
         return service;
@@ -88,10 +90,18 @@
           return config;
         }
 
-        function getConfigSection(section) {
+        function getConfigSection(section, isRoleSpecific) {
           devlog.channel('iscCustomConfigService').debug('iscCustomConfigService.getConfigSection');
           devlog.channel('iscCustomConfigService').debug('...section' + section);
-          return _.get(config, section);
+
+          var retObj;
+          if (isRoleSpecific) {
+            var currentUserRole = iscSessionModel.getCurrentUserRole();
+            retObj              = _.get(config, section + '.' + currentUserRole);
+          } else {
+            retObj = _.get(config, section);
+          }
+          return retObj;
         }
 
         function setConfig(val) {

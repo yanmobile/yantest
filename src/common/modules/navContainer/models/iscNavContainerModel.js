@@ -12,22 +12,24 @@
   angular.module('iscNavContainer')
     .factory('iscNavContainerModel', iscNavContainerModel);
 
-
-  /* @ngInject */
-  function iscNavContainerModel(devlog, iscStateManager) {
-//   devlog('iscNavContainerModel').debug( 'iscNavContainerModel LOADED');
+  function iscNavContainerModel(devlog, $state, iscCustomConfigService, iscSessionModel, iscStateManager) {
+    // devlog('iscNavContainerModel').debug( 'iscNavContainerModel LOADED');
 
     // ----------------------------
     // vars
     // ----------------------------
-    var topNav = {};
+    var topNavArr = {};
     var secondaryNav;
     var secondaryNavTasks;
+
 
     // ----------------------------
     // class factory
     // ----------------------------
     var model = {
+
+      getTopNav: getTopNav,
+
       getSecondaryNav: getSecondaryNav,
       setSecondaryNav: setSecondaryNav,
 
@@ -35,7 +37,9 @@
       setSecondaryNavTasks: setSecondaryNavTasks,
       hasSecondaryNavTasks: hasSecondaryNavTasks,
 
-      getCurrentStateTranslationKey: getCurrentStateTranslationKey
+      getCurrentStateTranslationKey: getCurrentStateTranslationKey,
+
+      navigateToUserLandingPage: navigateToUserLandingPage
     };
 
     return model;
@@ -43,6 +47,27 @@
     // ----------------------------
     // functions
     // ----------------------------
+
+    function navigateToUserLandingPage() {
+      var currentUserRole = iscSessionModel.getCurrentUserRole();
+      var landingPage     = iscCustomConfigService.getConfigSection('landingPages')[currentUserRole];
+      $state.go(landingPage);
+    }
+
+    function getTopNav() {
+      var currentUserRole = iscSessionModel.getCurrentUserRole();
+      if(!topNavArr[currentUserRole]){
+        var topTabs = iscCustomConfigService.getConfigSection('topTabs');
+        var userTabs = _.extend({}, topTabs['*']); //show all tabs that's for anonymous
+        if (currentUserRole !== '*') {
+          _.extend(userTabs, topTabs[currentUserRole]);
+          topNavArr[currentUserRole] = _.toArray(userTabs);
+        }
+      }
+      return topNavArr[currentUserRole];
+    }
+
+
     function getSecondaryNav() {
       devlog('iscNavContainerModel').debug('getSecondaryNav');
       return secondaryNav;

@@ -12,27 +12,28 @@
     'isc.animation',
     'isc.authentication',
     'isc.states'])
-    .config(function ($stateProvider) {
-      // ----------------------------
-      // state management
-      // ----------------------------
-      $stateProvider
-        .state('index', {
-          abstract: true,
-          url     : '/',
-          resolve: {
-            initFunctions: function (iscStateInit) {
-              return iscStateInit.run();
-            }
-          },
+    .config(config);
 
-          views: {
-            '@': {
-              templateUrl: 'navContainer/iscNavContainer.html',
-              controller : 'iscNavigationController as navCtrl'
-            }
+  function config($stateProvider) {
+    // ----------------------------
+    // state management
+    // ----------------------------
+    $stateProvider
+      .state('index', {
+        abstract: true,
+        url     : '/',
+        resolve : {
+          initFunctions: function (iscStateInit) {
+            return iscStateInit.run();
           }
-        });
+        },
 
-    });
+        views: {
+          '@': {
+            templateUrl: 'navContainer/iscNavContainer.html',
+            controller : 'iscNavigationController as navCtrl'
+          }
+        }
+      });
+  }
 })();
