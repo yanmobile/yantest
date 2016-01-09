@@ -12,7 +12,7 @@
   function iscRouterDefaultEventService(
     devlog,
     $rootScope,
-    iscAuthorization,
+    iscAuthorizationModel,
     iscSessionModel,
     AUTH_EVENTS,
     NAV_EVENTS
@@ -86,7 +86,7 @@
       devlog.channel('IscRouterDefaultEventService').debug('iscNavContainer.handleStateChangeStart');
 
       // get the permissions for this state
-      var isAuthorized = iscAuthorization.isAuthorized(toState.name); // either your role is permitted or the state is whitelisted
+      var isAuthorized = iscAuthorizationModel.isAuthorized(toState.name); // either your role is permitted or the state is whitelisted
       var isAuthenticated = iscSessionModel.isAuthenticated(); // you are logged in
 
       devlog.channel('IscRouterDefaultEventService').debug('...isAuthorized', isAuthorized);

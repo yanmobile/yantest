@@ -91,8 +91,7 @@
         }
 
         function getConfigSection(section, isRoleSpecific) {
-          devlog.channel('iscCustomConfigService').debug('iscCustomConfigService.getConfigSection');
-          devlog.channel('iscCustomConfigService').debug('...section' + section);
+          devlog.channel('iscCustomConfigService').debug('iscCustomConfigService.getConfigSection', section);
 
           var retObj;
           if (isRoleSpecific) {

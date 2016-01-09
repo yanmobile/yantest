@@ -7,10 +7,10 @@
   'use strict';
 
   angular
-    .module('isc.authentication')
-    .factory('iscAuthorization', iscAuthorization);
+    .module('isc.authorization')
+    .factory('iscAuthorizationModel', iscAuthorizationModel);
 
-  function iscAuthorization(devlog, iscSessionModel, iscCustomConfigService) {
+  function iscAuthorizationModel(devlog, iscSessionModel, iscCustomConfigService) {
     var authorizedRoutes = {};
 
     if (!authorizedRoutes["*"]) {
@@ -22,9 +22,8 @@
     };
     return service;
 
-    //TODO: anonymous routes is currently not allowed by another role
     function isAuthorized(stateToCheck) {
-      devlog.channel('iscAuthorization').debug('Calling iscAuthorization.isAuthorized..');
+      devlog.channel('iscAuthorizationModel').debug('Calling iscAuthorizationModel.isAuthorized..');
       var currentUserRole = iscSessionModel.getCurrentUserRole();
 
       var authorizedUserRoutes = getAuthorizedRoutes(currentUserRole);
@@ -37,7 +36,7 @@
         isPermitted = isWhiteListed(stateToCheck, authorizedUserRoutes);
       }
 
-      devlog.channel('iscAuthorization').debug('is user authorized for', stateToCheck, '=>', !!isPermitted);
+      devlog.channel('iscAuthorizationModel').debug('is user authorized for', stateToCheck, '=>', !!isPermitted);
       return !!isPermitted;
     }
 
@@ -55,7 +54,7 @@
      * @returns {{}}
      */
     function mapAuthorizedUserRoute(userRole) {
-      devlog.channel('iscAuthorization').debug('Calling iscAuthorization.mapAuthorizedUserRoute for', userRole);
+      devlog.channel('iscAuthorizationModel').debug('Calling iscAuthorizationModel.mapAuthorizedUserRoute for', userRole);
 
       var rolePermissions = iscCustomConfigService.getConfigSection('rolePermissions');
       var permittedRoutes = rolePermissions[userRole];
@@ -71,7 +70,7 @@
     }
 
     function getAuthorizedRoutes(currentUserRole) {
-      devlog.channel('iscAuthorization').debug('Calling iscAuthorization.getAuthorizedRoutes..');
+      devlog.channel('iscAuthorizationModel').debug('Calling iscAuthorizationModel.getAuthorizedRoutes..');
 
       if (!authorizedRoutes[currentUserRole]) {
         mapAuthorizedUserRoute(currentUserRole);
@@ -83,13 +82,13 @@
     //** private functions **//
 
     function isBlackListed(stateToCheck, authorizedUserRoutes) {
-      devlog.channel('iscAuthorization').debug('Calling iscAuthorization.isBlackListed..');
+      devlog.channel('iscAuthorizationModel').debug('Calling iscAuthorizationModel.isBlackListed..');
       var blacklisted = authorizedUserRoutes['!*'] || _.get(authorizedUserRoutes, '!' + stateToCheck, false);
       return blacklisted || hasWildCardMatch(stateToCheck, authorizedUserRoutes, true);
     }
 
     function isWhiteListed(stateToCheck, authorizedUserRoutes) {
-      devlog.channel('iscAuthorization').debug('Calling iscAuthorization.isWhiteListed..');
+      devlog.channel('iscAuthorizationModel').debug('Calling iscAuthorizationModel.isWhiteListed..');
       var blacklisted = authorizedUserRoutes['*'] || _.get(authorizedUserRoutes, stateToCheck, false);
       return blacklisted || hasWildCardMatch(stateToCheck, authorizedUserRoutes, false);
     }
@@ -119,7 +118,7 @@
      * @returns {boolean} -- indicates if there's matching found
      */
     function hasWildCardMatch(stateToCheck, authorizedUserRoutes, checkBlacklisted) {
-      devlog.channel('iscAuthorization').debug('Calling iscAuthorization.hasWildCardMatch..');
+      devlog.channel('iscAuthorizationModel').debug('Calling iscAuthorizationModel.hasWildCardMatch..');
       var tokens = stateToCheck.split('.');
       var path   = checkBlacklisted ? '!' : '';
 
