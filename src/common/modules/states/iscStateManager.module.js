@@ -9,8 +9,20 @@
   // injection
   // ----------------------------
 
-  angular.module('isc.states', ['isc.core', 'ui.router']);
+  angular
+    .module('isc.states', ['isc.core', 'ui.router'])
+    .run(run);
 
+  function run(iscRouterDefaultEventService, iscSessionModel, iscAuthorization, iscCustomConfigService) {
+    iscRouterDefaultEventService.loadDataFromStoredSession();
+
+    var currentUser = iscSessionModel.getCurrentUser();
+    var userRole    = currentUser.userRole;
+
+    var authorizedRoutes = iscCustomConfigService.getConfigSection("rolePermissions")[userRole];
+    iscAuthorization.setAuthorizedRoutes(authorizedRoutes);
+
+  }
 
 })();
 

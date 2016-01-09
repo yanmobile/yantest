@@ -6,11 +6,6 @@
   'use strict';
 
   angular.module('iscNavContainer')
-
-    .constant('APP_EVENTS', {
-      appLoaded: 'iscAppLoaded'
-    })
-
     .constant('NAV_EVENTS', {
       showSecondaryNav      : 'iscShowSecondaryNav',
       hideSecondaryNav      : 'iscHideSecondaryNav',
@@ -18,5 +13,4 @@
       modalBackgroundClicked: 'iscModalBackgroundClicked',
       hideSideNavBar        : 'iscHideSideNavBar'
     });
-
 })();
