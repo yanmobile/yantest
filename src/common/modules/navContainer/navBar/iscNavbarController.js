@@ -51,7 +51,7 @@
     setShowRoles();
 
     function changeRole() {
-      devlog.channel('iscNavbarController').debug('calling changeRole)');
+      devlog.channel('iscNavbarController').debug('changeRole)');
       loginApi.changeRole(self.user.userRole).then(_loginSuccess);
 
       function _loginSuccess(responseData) {

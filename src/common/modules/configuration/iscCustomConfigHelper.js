@@ -27,13 +27,6 @@
     // ----------------------------
 
     var factory = {
-      //addStates   : addStates,
-      //resetStates : resetStates,
-      //getStateObj : getStateObj,
-      //getAllStates: getAllStates,
-      //
-      //stateIsExcluded: stateIsExcluded,
-
       getSectionTranslationKeyFromName: getSectionTranslationKeyFromName,
       getTranslationKeyFromName       : getTranslationKeyFromName
     };

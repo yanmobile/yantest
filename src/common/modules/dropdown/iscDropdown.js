@@ -30,12 +30,7 @@
   // ----------------------------
 
   angular.module('isc.directives')
-    .directive('iscDropdown', iscDropdown)
-    .constant('DROPDOWN_EVENTS', {
-      dropdownShow        : 'DROPDOWN_SHOW',
-      showDropdownList    : 'SHOW_DROPDOWN_LIST',
-      dropdownItemSelected: 'DROPDOWN_ITEM_SELECTED'
-    });
+    .directive('iscDropdown', iscDropdown);
 
   /* @ngInject */
   function iscDropdown( devlog,  $timeout, $rootScope, DROPDOWN_EVENTS, $global){//jshint ignore:line
