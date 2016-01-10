@@ -68,7 +68,7 @@
       var permittedRoutes = rolePermissions[userRole];
 
       if (!authorizedRoutes[userRole]) {
-        authorizedRoutes[userRole] = userRole === "*" ? {} : angular.copy(authorizedRoutes["*"]); //get everything from anonymous
+        authorizedRoutes[userRole] = (userRole === "*") ? {} : angular.copy(authorizedRoutes["*"]); //copy routes from anonymous
       }
       permittedRoutes.forEach(function (state) {  //maps an array into object
         if (!_.get(authorizedRoutes[userRole], state)) {
