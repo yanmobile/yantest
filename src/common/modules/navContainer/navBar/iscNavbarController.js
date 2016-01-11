@@ -25,29 +25,18 @@
       sessionModel : iscSessionModel,
 
       sectionTranslationKey: '',
-      showLogin            : false,
-      showLogout           : false,
-      isAuthenticated      : false,
-      showRoles            : false,
 
       getTabs     : iscNavContainerModel.getTopNav,
       logoutButton: iscCustomConfigService.getConfigSection('logoutButton'),
       loginButton : iscCustomConfigService.getConfigSection('loginButton'),
       userRoles   : [],
 
-      logout            : logout,
-      changeRole        : changeRole,
-      setShowLogin      : setShowLogin,
-      setShowLogout     : setShowLogout,
-      setShowRoles      : setShowRoles,
-      setIsAuthenticated: setIsAuthenticated,
-      setPageState      : setPageState,
-      setTabActiveState : setTabActiveState
+      logout           : logout,
+      changeRole       : changeRole,
+      setPageState     : setPageState,
+      setTabActiveState: setTabActiveState
     });
 
-    setIsAuthenticated();
-    setShowLogin();
-    setShowLogout();
     setShowRoles();
 
     function changeRole() {
@@ -75,34 +64,11 @@
       $rootScope.$emit(AUTH_EVENTS.logout);
     }
 
-    function setIsAuthenticated() {
-      devlog.channel('iscNavbarController').debug('iscNavbarController.isAuthenticated');
-
-      self.isAuthenticated = iscSessionModel.isAuthenticated();
-    }
-
     function setShowRoles() {
       devlog.channel('iscNavbarController').debug('iscNavbarController.isAuthenticated');
       self.user      = iscSessionModel.getCurrentUser();
       self.userRoles = _.get(self.user, 'Roles', [self.user.userRole]);
       self.showRoles = self.userRoles.length > 1;
-    }
-
-    function setShowLogin() {
-      devlog.channel('iscNavbarController').debug('iscNavbarController.showLogin');
-
-      var loggedIn    = iscSessionModel.isAuthenticated();
-      var isLoginPage = $state.is('index.login');
-
-      self.showLogin = !loggedIn && !isLoginPage;
-    }
-
-    function setShowLogout() {
-      devlog.channel('iscNavbarController').debug('iscNavbarController.showLogout');
-
-      var loggedIn    = self.sessionModel.isAuthenticated();
-      var isLoginPage = $state.is('index.login');
-      self.showLogout = loggedIn && !isLoginPage;
     }
 
     function setPageState(name) {
@@ -123,12 +89,8 @@
     $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
       devlog.channel('iscNavbarController').debug('iscNavbarController.$stateChangeSuccess', arguments);
       self.setPageState(toState.name);
-      self.setShowLogout();
-      self.setShowLogin();
-      self.setIsAuthenticated();
-      self.setShowRoles();
+      setShowRoles();
     });
-
 
     // when you refresh the page, this will reset the active state of the selected tab
     $scope.$evalAsync(function () {

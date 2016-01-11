@@ -5,6 +5,6 @@
 (function () {
   'use strict';
 
-  angular.module('isc.authorization', []);
+  angular.module('isc.authorization', ['isc.authentication']);
 
 })();

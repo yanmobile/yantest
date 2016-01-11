@@ -12,58 +12,45 @@
    =     iscCustomConfigServiceProvider     =
    ========================================*/
   function iscCustomConfigServiceProvider() {
-    var topTabOverrides         = {};
-    var rolePermissionOverrides = {};
-    var config                  = {};
-    var landingPages            = {};
+    var config = { rolePermissions: {}, landingPages: {}, topTabs: {} };
 
     return {
       loadConfig        : function loadConfig(configObj) {
-        config                 = configObj;
-        config.rolePermissions = config.rolePermissions || [];
-        _.forEach(rolePermissionOverrides, function (value, key) {
-          config.rolePermissions[key] = config.rolePermissions[key] || [];
-          Array.prototype.push.apply(config.rolePermissions[key], value);
-        });
-
-        _.extend(config.topTabs, topTabOverrides);
-
-        config.landingPages = config.landingPages || {};
-        _.extend(config.landingPages, landingPages);
+        updateConfig(configObj);
       },
       addRolePermissions: function addRolePermissions(states) {
-        hydrateRolePermissions(rolePermissionOverrides, states);
+        updateConfig(mapRolePermissions(states), 'rolePermissions');
       },
       addTopNavTab      : function addTopNavTab(topNavTab) {
-        _.merge(topTabOverrides, topNavTab);
+        _.merge(topNavTab, 'topTabs');
       },
       setLandingPageFor : function (role, state) {
-        landingPages[role] = state;
+        _.merge(_.makeObj(role, state), 'landingPages');
       },
       $get              : iscCustomConfigService
     };
 
-    function hydrateRolePermissions(masterRoutes, routes) {
-      /**
-       *
-       CONVERTS FORMAT FROM:
-       {'index.home.*': ['Role1', 'Nurse','Provider','Receptionist' ]}
 
-       TO:
-       [{'Role1': ['index.home.*']}, {'Nurse': ['index.home.*']}, {'Provider': ['index.home.*']}, {'Receptionist': ['index.home.*']}]
-       */
-      _.forEach(routes, function (roles, routes) {
-        _.forEach(roles, function (role) {
-          masterRoutes[role] = masterRoutes[role] || [];
-          masterRoutes[role].push(routes);
-        });
-      });
+    function updateConfig(object, key) {
+      if (key) {
+        _.merge(config[key], object, concatArrays);
+      } else {
+        _.merge(config, object, concatArrays);
+      }
+    }
+
+    //used as a helper method for _.merge() to indicate when
+    //to concat two arrays instead of overwrite properities by array index
+    function concatArrays(a, b) {
+      if (_.isArray(a)) {
+        return a.concat(b);
+      }
     }
 
     /*========================================
      =                 SERVICE                =
      ========================================*/
-    function iscCustomConfigService(devlog, iscCustomConfigHelper, iscSessionModel) {
+    function iscCustomConfigService(devlog) {
       devlog.channel('iscCustomConfigService').debug('iscCustomConfigService LOADED');
 
       // ----------------------------
@@ -71,14 +58,7 @@
       // ----------------------------
       var service = {
         getConfigSection: getConfigSection,
-        getConfig       : getConfig,
-        setConfig       : setConfig,
-        addStates       : addStates
-        //TODO: Add back once code has been refactored to use this
-        //,
-        //getRolePermissions: _.partial(getConfigSection, 'rolePermissions', true),
-        //getTopNav         : _.partial(getConfigSection, 'topTabs', true),
-        //getLandingPage    : _.partial(getConfigSection, 'landingPages', true)
+        getConfig       : getConfig
       };
 
       return service;
@@ -92,50 +72,46 @@
         return config;
       }
 
-      function getConfigSection(section, isRoleSpecific) {
+      function getConfigSection(section, role) {
         devlog.channel('iscCustomConfigService').debug('iscCustomConfigService.getConfigSection', section);
-
         var retObj;
-        if (isRoleSpecific) {
-          var currentUserRole = iscSessionModel.getCurrentUserRole();
-          retObj              = _.get(config, section + '.' + currentUserRole);
+        if (role) {
+          retObj = _.get(config, [section, role].join('.'));
         } else {
           retObj = _.get(config, section);
         }
         return retObj;
       }
 
-      function setConfig(val) {
-        devlog.channel('iscCustomConfigService').debug('iscCustomConfigService.setConfig');
-        devlog.channel('iscCustomConfigService').debug('...config ', val);
-        config = val;
-      }
-
-      // ----------------------------
-      // states
-
-      function addStates() {
-        devlog.channel('iscCustomConfigService').debug('iscCustomConfigService.addStates');
-
-        // add the top tabs
-        iscCustomConfigHelper.addStates(config.topTabs);
-
-        // add the login button if it exists
-        var login = config.loginButton;
-        if (!!login) {
-          iscCustomConfigHelper.addStates({
-            loginButton: config.loginButton
-          });
-        }
-
-        // add the secondary navs
-        var secondaryNavs = _.filter(config, 'secondaryNav');
-        devlog.channel('iscCustomConfigService').debug('...secondaryNavs', secondaryNavs);
-        _.forEach(secondaryNavs, function (obj) {
-          iscCustomConfigHelper.addStates(obj.secondaryNav);
-        });
-      }
     }// END CLASS
 
+    function mapRolePermissions(permissions) {
+      /**
+       *
+       CONVERTS FORMAT FROM:
+       {'index.home.*': ['Role1', 'Nurse','Provider','Receptionist' ]}
+
+       TO:
+       [{'Role1': ['index.home.*']}, {'Nurse': ['index.home.*']}, {'Provider': ['index.home.*']}, {'Receptionist': ['index.home.*']}]
+       */
+      var masterRoutes = {};
+      if (!_.isTypeOf(permissions, 'array')) {
+        //converting to an array
+        permissions = [permissions];
+      }
+
+      // NOTE: This is an Big O(n^3) operation.
+      // In practice this is Big O(n^2) operation, with very small # of items < 3.
+      // The permissions argument is usually an object instead of an array
+      _.forEach(permissions, function (permission) {
+        _.forEach(permission, function (roles, route) {
+          _.forEach(roles, function (role) {
+            masterRoutes[role] = masterRoutes[role] || [];
+            masterRoutes[role].push(route);
+          });
+        });
+      });
+      return masterRoutes;
+    }
   }
 })();

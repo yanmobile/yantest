@@ -16,10 +16,6 @@
   function iscAuthorizationModel(devlog, iscSessionModel, iscCustomConfigService) {
     var authorizedRoutes = {};
 
-    if (!authorizedRoutes["*"]) {
-      mapAuthorizedUserRoute("*");
-    }
-
     var service = {
       isAuthorized: isAuthorized
     };
@@ -27,11 +23,9 @@
 
     function isAuthorized(stateToCheck) {
       devlog.channel('iscAuthorizationModel').debug('iscAuthorizationModel.isAuthorized..');
-      var currentUserRole = iscSessionModel.getCurrentUserRole();
-
+      var currentUserRole      = iscSessionModel.getCurrentUserRole();
       var authorizedUserRoutes = getAuthorizedRoutes(currentUserRole);
       stateToCheck             = stateToCheck || '';
-
       var isPermitted;
       if (isBlackListed(stateToCheck, authorizedUserRoutes)) {
         isPermitted = false;
@@ -63,12 +57,11 @@
      */
     function mapAuthorizedUserRoute(userRole) {
       devlog.channel('iscAuthorizationModel').debug('iscAuthorizationModel.mapAuthorizedUserRoute for', userRole);
-
       var rolePermissions = iscCustomConfigService.getConfigSection('rolePermissions');
       var permittedRoutes = rolePermissions[userRole];
 
       if (!authorizedRoutes[userRole]) {
-        authorizedRoutes[userRole] = (userRole === "*") ? {} : angular.copy(authorizedRoutes["*"]); //copy routes from anonymous
+        authorizedRoutes[userRole] = (userRole === '*') ? {} : angular.copy(authorizedRoutes['*']); //get everything from anonymous
       }
       permittedRoutes.forEach(function (state) {  //maps an array into object
         if (!_.get(authorizedRoutes[userRole], state)) {
@@ -80,6 +73,9 @@
     function getAuthorizedRoutes(currentUserRole) {
       devlog.channel('iscAuthorizationModel').debug('iscAuthorizationModel.getAuthorizedRoutes..');
 
+      if (!authorizedRoutes['*']) { //anonymous user routes
+        mapAuthorizedUserRoute('*');
+      }
       if (!authorizedRoutes[currentUserRole]) {
         mapAuthorizedUserRoute(currentUserRole);
       }

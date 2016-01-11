@@ -12,52 +12,13 @@
         loginData,
         iscCustomConfigHelper,
         iscCustomConfigServiceProvider,
-        AUTH_EVENTS,
-        loginDataProxy;
-
+        AUTH_EVENTS;
 
     var mockConfig = angular.copy(customConfig);
-    var mockStates = [
-      { state: 'index.home', exclude: true },
-      { state: 'index.home.sub1', exclude: false },
-      { state: 'index.home.sub2', exclude: true },
-      { state: 'index.home.sub3', exclude: false },
-      { state: 'index.messages', exclude: true },
-      { state: 'index.messages.sub1', exclude: false },
-      { state: 'index.messages.sub2', exclude: true },
-      { state: 'index.messages.sub3', exclude: false },
-      { state: 'index.library', exclude: true },
-      { state: 'index.account', exclude: false }
-    ];
-
-    var mockLoginResponse = {
-      'ChangePassword': 0,
-      'SessionTimeout': 3600,
-      'UserData'      : {
-        'FirstName': 'Adam',
-        'FullName' : 'Adam Everyman',
-        'LastName' : 'Everyman',
-        'ProxyOnly': 0,
-        'userRole' : 'Admin'
-      },
-      'reload'        : 0
-    };
-
-    var mockLoginResponseProxy = {
-      'ChangePassword': 0,
-      'SessionTimeout': 3600,
-      'UserData'      : {
-        'FirstName': 'Adam',
-        'FullName' : 'Adam Everyman',
-        'LastName' : 'Everyman',
-        'ProxyOnly': 1
-      },
-      'reload'        : 0
-    };
 
     // setup devlog
     beforeEach(module('isc.core', function (devlogProvider) {
-      devlogProvider.loadConfig(customConfig);
+      devlogProvider.loadConfig(mockConfig);
     }));
 
     beforeEach(module('isc.configuration', function (_iscCustomConfigServiceProvider_) {
@@ -91,7 +52,6 @@
       };
 
       loginData      = angular.copy(mockLoginResponse);
-      loginDataProxy = angular.copy(mockLoginResponseProxy);
 
       sessionModel.create(loginData);
 
@@ -120,35 +80,35 @@
       });
 
       it('should create the config when calling create, new session', function () {
-        spyOn(rootScope, '$broadcast');
+        spyOn(rootScope, '$emit');
         sessionModel.create(loginData, true);
         expect(sessionModel.getCredentials()).toEqual({});
         expect(sessionModel.getCurrentUser()).toEqual(loginData.UserData);
-        expect(rootScope.$broadcast).toHaveBeenCalledWith(AUTH_EVENTS.loginSuccess);
+        expect(rootScope.$emit).toHaveBeenCalledWith(AUTH_EVENTS.loginSuccess);
 
       });
 
       it('should create the config when calling create, page refresh', function () {
-        spyOn(rootScope, '$broadcast');
+        spyOn(rootScope, '$emit');
         sessionModel.create(loginData, false);
         expect(sessionModel.getCredentials()).toEqual({});
         expect(sessionModel.getCurrentUser()).toEqual(loginData.UserData);
-        expect(rootScope.$broadcast).toHaveBeenCalledWith(AUTH_EVENTS.sessionResumedSuccess);
+        expect(rootScope.$emit).toHaveBeenCalledWith(AUTH_EVENTS.sessionResumedSuccess);
       });
 
       it('should destroy the config when calling destroy', function () {
-
-        var creds = sessionModel.getCredentials();
-        var user  = sessionModel.getCurrentUser();
+        var anonymousUser = { userRole: '*', FullName: 'anonymous' };
+        var creds         = sessionModel.getCredentials();
+        var user          = sessionModel.getCurrentUser();
         expect(creds).toEqual({});
         expect(user).toEqual(loginData.UserData);
 
         sessionModel.destroy();
-        var creds = sessionModel.getCredentials();
-        var user  = sessionModel.getCurrentUser();
+        var creds         = sessionModel.getCredentials();
+        var user          = sessionModel.getCurrentUser();
 
         expect(creds).toBe(null);
-        expect(user).toBe(null);
+        expect(user).toEqual(anonymousUser);
       });
     });
 
@@ -180,7 +140,9 @@
         sessionModel.initSessionTimeout(3400);
 
         var expected = sessionModel.getRemainingTime();
-        expect(expected).toBe(200);
+        // This is now the time remaining that ticks down from the initial max value to 0,
+        // not the time used ticking up to the max.
+        expect( expected ).toBe( 3400 );
       });
     });
 
@@ -192,73 +154,15 @@
       });
 
       it('should know when someone is authenticated', function () {
+        loginData.UserData.userRole = 'provider';
+        
         sessionModel.create(loginData);
         var expected = sessionModel.isAuthenticated();
+        console.log(expected);
         expect(expected).toBe(true);
 
         sessionModel.destroy();
         var expected = sessionModel.isAuthenticated();
-        expect(expected).toBe(false);
-      });
-    });
-
-    // -------------------------
-    describe('isAuthorized tests ', function () {
-
-      it('should have a function isAuthorized', function () {
-        expect(angular.isFunction(sessionModel.isAuthorized)).toBe(true);
-      });
-
-      it('should have a function getAuthorizedRoutes', function () {
-        expect(angular.isFunction(sessionModel.getAuthorizedRoutes)).toBe(true);
-      });
-
-      it('should have a function setAuthorizedRoutes', function () {
-        expect(angular.isFunction(sessionModel.setAuthorizedRoutes)).toBe(true);
-      });
-
-      it('should know if someone is authorized, all permitted', function () {
-        sessionModel.setAuthorizedRoutes(['*']);
-
-        var expected = sessionModel.isAuthorized('index.messages.outbox');
-        expect(expected).toBe(true);
-
-        var expected = sessionModel.isAuthorized('index');
-        expect(expected).toBe(true);
-
-        var expected = sessionModel.isAuthorized('foo');
-        expect(expected).toBe(true);
-      });
-
-      it('should know if someone is authorized, some permitted', function () {
-        sessionModel.setAuthorizedRoutes(['index.messages.outbox', 'foo']);
-
-        var expected = sessionModel.isAuthorized('index.messages.outbox');
-        expect(expected).toBe(true);
-
-        var expected = sessionModel.isAuthorized('index');
-        expect(expected).toBe(true);
-
-        var expected = sessionModel.isAuthorized('foo');
-        expect(expected).toBe(true);
-      });
-
-      it('should know if someone is authorized, some permitted by wildcard', function () {
-        sessionModel.setAuthorizedRoutes(['index.messages.*']);
-
-        var expected = sessionModel.isAuthorized('index.messages');
-        expect(expected).toBe(true);
-
-        var expected = sessionModel.isAuthorized('index.messages.outbox');
-        expect(expected).toBe(true);
-
-        var expected = sessionModel.isAuthorized('index.messages.inbox');
-        expect(expected).toBe(true);
-
-        var expected = sessionModel.isAuthorized('index');
-        expect(expected).toBe(true);
-
-        var expected = sessionModel.isAuthorized('foo');
         expect(expected).toBe(false);
       });
     });
@@ -273,189 +177,7 @@
         sessionModel.create(loginData);
 
         var expected = sessionModel.getFullName();
-        expect(expected).toBe(mockLoginResponse.UserData.FullName);
-      });
-    });
-
-    // -------------------------
-    xdescribe('updateStateByRole tests ', function () {
-
-      it('should have a function updateStateByRole', function () {
-        expect(angular.isFunction(sessionModel.updateStateByRole)).toBe(true);
-      });
-
-      it('should updateStateByRole, bogus role', function () {
-
-        mockConfig.rolePermissions = {
-          '*': ['index.home.*'],
-          user: ['*']
-        };
-
-        iscCustomConfigHelper.resetStates();
-        iscCustomConfigHelper.addStates(angular.copy(mockStates));
-
-        sessionModel.updateStateByRole('FOOBAR', mockConfig);
-        var allStates                = iscCustomConfigHelper.getAllStates();
-
-        _.forEach(allStates, function (state) {
-          if (_.contains(state.state, 'index.home')) {
-            expect(state.exclude).toBe(false); // if its whitelisted, dont exclude
-          }
-          else {
-            expect(state.exclude).toBe(true);
-          }
-        });
-      });
-
-      it('should updateStateByRole, no role', function () {
-        mockConfig.rolePermissions = {
-          '*': ['index.home.*'],
-          user: ['*']
-        };
-
-        iscCustomConfigHelper.resetStates();
-        iscCustomConfigHelper.addStates(angular.copy(mockStates));
-
-        sessionModel.updateStateByRole(null, mockConfig);
-        var allStates                = iscCustomConfigHelper.getAllStates();
-
-        _.forEach(allStates, function (state) {
-          if (_.contains(state.state, 'index.home')) {
-            expect(state.exclude).toBe(false); // if its whitelisted, dont exclude
-          }
-          else {
-            expect(state.exclude).toBe(true);
-          }
-
-        });
-      });
-
-      it('should updateStateByRole, all permitted by wildcard', function () {
-        mockConfig.noLoginRequired   = ['index.home.*'];
-        mockConfig.rolePermissions = {
-          user: ['*']
-        };
-
-        iscCustomConfigHelper.resetStates();
-        iscCustomConfigHelper.addStates(angular.copy(mockStates));
-
-        sessionModel.updateStateByRole('user', mockConfig);
-        var allStates                = iscCustomConfigHelper.getAllStates();
-
-        _.forEach(allStates, function (state) {
-          expect(state.exclude).toBe(false);
-        });
-      });
-
-      it('should updateStateByRole, some permitted by wildcard, some not, some excluded', function () {
-        mockConfig.rolePermissions = {
-          '*': ['index.home.*'],
-          user: ['index.library', 'index.messages', 'index.messages.sub1']
-        };
-
-        iscCustomConfigHelper.resetStates();
-        iscCustomConfigHelper.addStates(angular.copy(mockStates));
-
-        sessionModel.updateStateByRole('user', mockConfig);
-        var allStates                = iscCustomConfigHelper.getAllStates();
-
-        var permittedStates = mockConfig.rolePermissions.user;
-
-        _.forEach(allStates, function (state) {
-          if (_.contains(permittedStates, state.state)) {
-            expect(state.exclude).toBe(false); // if its in the permitted states, dont exclude
-          }
-          else if (_.contains(state.state, 'index.home')) {
-            expect(state.exclude).toBe(false); // or if its whitelisted, dont exclude
-          }
-          else {
-            expect(state.exclude).toBe(true); // otherwise disappear it
-          }
-        });
-
-        expect(allStates['index.messages.sub2'].exclude).toBe(true); //just to be sure
-      });
-
-      it('should updateStateByRole, some permitted by wildcard, some excluded', function () {
-        mockConfig.rolePermissions = {
-          '*': ['index.home.*'],
-          user: ['index.messages.*']
-        };
-
-        iscCustomConfigHelper.resetStates();
-        iscCustomConfigHelper.addStates(angular.copy(mockStates));
-
-        sessionModel.updateStateByRole('user', mockConfig);
-        var allStates                = iscCustomConfigHelper.getAllStates();
-
-        _.forEach(allStates, function (state) {
-
-          if (_.contains(state.state, 'index.home')) {
-            expect(state.exclude).toBe(false); // its whitelisted, dont exclude
-          }
-          else if (_.contains(state.state, 'index.messages')) {
-            expect(state.exclude).toBe(false); // or if its wild carded, dont exclude
-          }
-          else {
-            expect(state.exclude).toBe(true); // otherwise disappear it
-          }
-        });
-
-        expect(allStates['index.library'].exclude).toBe(true); //just to be sure
-      });
-
-      it('should updateStateByRole, no wildcard, some excluded', function () {
-        // no anonymous routes
-        mockConfig.rolePermissions = {
-          user: ['index.library', 'index.account']
-        };
-
-        iscCustomConfigHelper.resetStates();
-        iscCustomConfigHelper.addStates(angular.copy(mockStates));
-
-        sessionModel.updateStateByRole('user', mockConfig);
-        var allStates                = iscCustomConfigHelper.getAllStates();
-
-        _.forEach(allStates, function (state) {
-          if (state.state === 'index.library') {
-            expect(state.exclude).toBe(false); // explicitly permitted
-          }
-          else if (state.state === 'index.account') {
-            expect(state.exclude).toBe(false); // explicitly permitted
-          }
-          else {
-            expect(state.exclude).toBe(true); // otherwise disappear it
-          }
-        });
-      });
-
-      it('should updateStateByRole, no wildcard, some bogus states', function () {
-
-        // no anonymous routes
-        mockConfig.rolePermissions = {
-          user: ['index.library', 'index.account', 'foobar']
-        };
-
-        iscCustomConfigHelper.resetStates();
-        iscCustomConfigHelper.addStates(angular.copy(mockStates));
-
-        sessionModel.updateStateByRole('user', mockConfig);
-        var allStates                = iscCustomConfigHelper.getAllStates();
-
-        expect(allStates['foobar']).not.toBeDefined(); // bogus state
-
-        _.forEach(allStates, function (state) {
-          console.log(state);
-          if (state.state === 'index.library') {
-            expect(state.exclude).toBe(false); // explicitly permitted
-          }
-          else if (state.state === 'index.account') {
-            expect(state.exclude).toBe(false); // explicitly permitted
-          }
-          else {
-            expect(state.exclude).toBe(true); // otherwise disappear it
-          }
-        });
+        expect(expected).toBe(loginData.UserData.FullName);
       });
     });
 
