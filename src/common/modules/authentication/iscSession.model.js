@@ -34,8 +34,6 @@
       create : create,
       destroy: destroy,
 
-      initSession: initSession,
-
       initSessionTimeout : initSessionTimeout,
       stopSessionTimeout : stopSessionTimeout,
       resetSessionTimeout: resetSessionTimeout,
@@ -55,9 +53,6 @@
     // ----------------------------
     // functions
     // ----------------------------
-
-    function initSession(config) {
-      iscSessionStorageHelper.setConfig(config);
     }
 
     function create(sessionData, isSessionNew) {
