@@ -12,8 +12,8 @@
   angular.module('iscNavContainer')
     .factory('iscNavContainerModel', iscNavContainerModel);
 
-  function iscNavContainerModel(devlog, $state, iscCustomConfigService, iscSessionModel, iscStateManager) {
-    // devlog('iscNavContainerModel').debug( 'iscNavContainerModel LOADED');
+  function iscNavContainerModel(devlog, $state, iscCustomConfigService, iscSessionModel) {
+    devlog.channel('iscNavContainerModel').debug('iscNavContainerModel LOADED');
 
     // ----------------------------
     // vars
@@ -37,8 +37,6 @@
       setSecondaryNavTasks: setSecondaryNavTasks,
       hasSecondaryNavTasks: hasSecondaryNavTasks,
 
-      getCurrentStateTranslationKey: getCurrentStateTranslationKey,
-
       navigateToUserLandingPage: navigateToUserLandingPage
     };
 
@@ -56,8 +54,8 @@
 
     function getTopNav() {
       var currentUserRole = iscSessionModel.getCurrentUserRole();
-      if(!topNavArr[currentUserRole]){
-        var topTabs = iscCustomConfigService.getConfigSection('topTabs');
+      if (!topNavArr[currentUserRole]) {
+        var topTabs  = iscCustomConfigService.getConfigSection('topTabs');
         var userTabs = _.extend({}, topTabs['*']); //show all tabs that's for anonymous
         if (currentUserRole !== '*') {
           _.extend(userTabs, topTabs[currentUserRole]);
@@ -66,7 +64,6 @@
       }
       return topNavArr[currentUserRole];
     }
-
 
     function getSecondaryNav() {
       devlog('iscNavContainerModel').debug('getSecondaryNav');
@@ -91,11 +88,6 @@
     function hasSecondaryNavTasks() {
       return !!secondaryNavTasks && secondaryNavTasks.length > 0;
     }
-
-    function getCurrentStateTranslationKey() {
-      return iscStateManager.getCurrentStateTranslationKey();
-    }
-
 
   }//END CLASS
 

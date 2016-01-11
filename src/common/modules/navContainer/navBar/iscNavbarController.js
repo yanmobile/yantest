@@ -98,7 +98,7 @@
     }
 
     function setShowLogout() {
-      devlog.channel('iscNavbarController').debug('iscNavbarController.showLoout');
+      devlog.channel('iscNavbarController').debug('iscNavbarController.showLogout');
 
       var loggedIn    = self.sessionModel.isAuthenticated();
       var isLoginPage = $state.is('index.login');
