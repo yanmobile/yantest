@@ -22,10 +22,10 @@
         updateConfig(mapRolePermissions(states), 'rolePermissions');
       },
       addTopNavTab      : function addTopNavTab(topNavTab) {
-        _.merge(topNavTab, 'topTabs');
+        updateConfig(topNavTab, 'topTabs');
       },
       setLandingPageFor : function (role, state) {
-        _.merge(_.makeObj(role, state), 'landingPages');
+        updateConfig(_.makeObj(role, state), 'landingPages');
       },
       $get              : iscCustomConfigService
     };
