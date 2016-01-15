@@ -117,3 +117,9 @@ html, body {
 .sub-section {
   padding-top: 1.5rem;
 }
+
+.grid-content .grid-block {
+    margin-left: 0;
+    margin-right: 0;
+    flex-wrap: initial;
+}

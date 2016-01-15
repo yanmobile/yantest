@@ -37,7 +37,7 @@
         controller    : 'homeController',
         state         : 'index.home',
         translationKey: 'My Home',
-        roles         : ["*"],
+        roles         : ['*'],
         displayOrder  : 1
       }
      */
@@ -59,7 +59,7 @@
 
         function addTopLevelTabs() {
           // displayOrder is a positive number
-          if (_.get(config, "displayOrder", -1) > 0) {
+          if (_.get(config, 'displayOrder', -1) > 0) {
             config.roles.forEach(function (role) {
               var addTopTab = _.makeObj(role, _.makeObj(state, config));
               iscCustomConfigServiceProvider.addTopNavTab(addTopTab);
@@ -68,7 +68,7 @@
         }
 
         function addLandingPages() {
-          var landingPageRoles = _.get(config, "landingPageFor", []);
+          var landingPageRoles = _.get(config, 'landingPageFor', []);
           if (landingPageRoles.length > 0) {
             _.forEach(landingPageRoles, function (role) {
               iscCustomConfigServiceProvider.setLandingPageFor(role, config.state);
