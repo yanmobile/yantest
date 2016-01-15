@@ -108,12 +108,12 @@
     // session timeout callbacks
     self.onContinueSession = function () {
       devlog.channel('iscNavigationController').debug( 'iscNavigationController.onContinueSession');
-      $rootScope.$broadcast(AUTH_EVENTS.sessionTimeoutReset);
+      $rootScope.$emit(AUTH_EVENTS.sessionTimeoutReset);
     };
 
     self.onCancelSession = function () {
       devlog.channel('iscNavigationController').debug( 'iscNavigationController.onCancelSession');
-      $rootScope.$broadcast(AUTH_EVENTS.sessionTimeoutConfirm);
+      $rootScope.$emit(AUTH_EVENTS.sessionTimeoutConfirm);
     };
 
     // --------------

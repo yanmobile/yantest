@@ -10,6 +10,7 @@
       "src/common/bower_components/angular-animate/angular-animate.js",
       "src/common/bower_components/angular-utils-pagination/dirPagination.js",
       "src/common/bower_components/angular-filter/dist/angular-filter.js",
+      "src/common/bower_components/angular-messages/angular-messages.js",
       "src/common/bower_components/angular-translate/angular-translate.js",
       "src/common/bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js",
       "src/common/bower_components/angularjs-datepicker/dist/angular-datepicker.min.js",

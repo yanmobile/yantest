@@ -41,7 +41,7 @@
         switch ( response.status ) {
           case statusCode.Unauthorized:
             // this will happen if you just leave your computer on for a long time
-            $rootScope.$broadcast(AUTH_EVENTS.sessionTimeout, response);
+            $rootScope.$emit(AUTH_EVENTS.sessionTimeout, response);
             break;
           case statusCode.Forbidden:
             //display not-authorized modal

@@ -1,4 +1,3 @@
-
 <!-- --------------------------- -->
 <!--  modals                     -->
 <!-- --------------------------- -->
@@ -24,18 +23,23 @@
 <!-- --------------------------- -->
 
 <!--header nav and content-->
-<div class="isc-app-content">
+<div class="isc-app-content grid-frame vertical">
 
-  <!--Responsive Top Navigation-->
-  <div class="isc-nav-bar"
-       ng-include="'navContainer/iscNavbarDesktop.html'">
+  <div class="vertical grid-block">
+
+    <!--Responsive Top Navigation-->
+    <div class="isc-nav-bar"
+         ng-include="'navContainer/iscNavbarDesktop.html'">
+    </div>
+
+    <!--page content-->
+    <div class="isc-page-content grid-content"
+         ui-view></div>
+
   </div>
 
-  <!--page content-->
-  <div class="isc-page-content"
-       ui-view></div>
-
-  <!--footer-->
-  <div class="isc-footer"
-       ng-include="'navContainer/iscFooter.html'"></div>
 </div>
+
+<!--footer-->
+<div class="isc-footer"
+     ng-include="'navContainer/iscFooter.html'"></div>
