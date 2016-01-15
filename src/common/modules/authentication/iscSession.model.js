@@ -21,9 +21,26 @@
     var credentials   = null;
     var currentUser   = anonymousUser;
 
-    var sessionTimeoutInSeconds = 0;
-    var sessionTimeoutCounter   = 0;
-    var sessionTimeoutWarning   = 0;
+    var sessionTimeout   = {
+      warnAt     : 0,
+      expireAt   : 0,
+      remaining  : 0,
+      pingPromise: null,
+      syncedOn   : null,
+      status     : 'active'
+    };
+    var noResponseMaxAge = 60 * 5; // 5 minutes
+    var warnThreshold = 0.25;
+
+    var isConfigured = false;
+    // Initialize to empty promise in case it is not configured
+    var ping = function () {
+      var deferred = $q.defer();
+      deferred.resolve({});
+      return deferred.promise;
+    };
+    var sessionIdPath, remainingTimePath;
+
     var intervalPromise;
 
     // ----------------------------
@@ -45,7 +62,9 @@
       getCurrentUserRole: getCurrentUserRole,
 
       isAuthenticated: isAuthenticated,
-      getFullName: getFullName
+      getFullName    : getFullName,
+
+      configure         : configure
     };
 
     return model;
@@ -53,7 +72,6 @@
     // ----------------------------
     // functions
     // ----------------------------
-    }
 
     function create(sessionData, isSessionNew) {
       devlog.channel('iscSessionModel').debug('iscSessionModel.create');
@@ -66,17 +84,68 @@
       setCurrentUser(sessionData.UserData);
 
       // set the timeout
-      //sessionTimeoutInSeconds = 10; // DEV ONLY
-      sessionTimeoutInSeconds = sessionData.SessionTimeout;
+      var maxAge = sessionData.SessionTimeout;
+      iscSessionStorageHelper.setSessionTimeoutMax(maxAge);
+      initSessionTimeout(maxAge);
 
       $rootScope.$emit(AUTH_EVENTS.sessionChange);
       if (isSessionNew) {
         devlog.channel('iscSessionModel').debug('...new ');
-        $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
+        $rootScope.$emit(AUTH_EVENTS.loginSuccess);
       }
       else {
         // $log.debug( '...resumed ' );
-        $rootScope.$broadcast(AUTH_EVENTS.sessionResumedSuccess);
+        $rootScope.$emit(AUTH_EVENTS.sessionResumedSuccess);
+      }
+    }
+
+    /**
+     * Configures session management for server communication
+     * Pass in a configuration object with these properties:
+     *
+     * ping              - a function that calls a REST api which queries the server for remaining session time,
+     *                       without causing a session time renewal
+     * sessionIdPath     - the path in the response data that represents the session id
+     * remainingTimePath - the path in the response data that represents the remaining time in seconds
+     */
+    function configure(config) {
+      isConfigured      = true;
+      ping              = config.ping;
+      sessionIdPath     = config.sessionIdPath;
+      remainingTimePath = config.remainingTimePath;
+      noResponseMaxAge  = config.noResponseMaxAge || noResponseMaxAge;
+    }
+
+    // Calls a non-invasive ping API which inspects the current server session, without renewing that session,
+    // and returns information about the time remaining in this session.
+    function callPing(syncedOn) {
+      sessionTimeout.syncedOn = syncedOn || sessionTimeout.syncedOn;
+
+      var request = ping().then(_pingSuccess, _pingError)
+        .finally(function () {
+          sessionTimeout.pingPromise = null;
+        });
+
+      sessionTimeout.pingPromise = request;
+      return request;
+
+      // On successful ping, re-sync the local counter with the ping response,
+      // falling back to no change in the counter.
+      function _pingSuccess(response) {
+        var data                 = response.data;
+        sessionTimeout.status    = 'active';
+        sessionTimeout.syncedOn  = 'alive';
+        sessionTimeout.sessionId = _.get(data, sessionIdPath, sessionTimeout.sessionId);
+        sessionTimeout.remaining = _.get(data, remainingTimePath, sessionTimeout.remaining);
+      }
+
+      // Assumes any error returning from a ping means no server response
+      function _pingError() {
+        // Flag this as no response received
+        if (sessionTimeout.status === 'active') {
+          sessionTimeout.status    = 'no response';
+          sessionTimeout.remaining = noResponseMaxAge;
+        }
       }
     }
 
@@ -87,13 +156,15 @@
       currentUser = anonymousUser;
       credentials = null;
 
+      sessionTimeout.status = 'killed';
+
       // remove the user data so that the user
       // WONT stay logged in on page refresh
       iscSessionStorageHelper.destroy();
       stopSessionTimeout();
 
       $rootScope.$emit(AUTH_EVENTS.sessionChange);
-      $rootScope.$broadcast(AUTH_EVENTS.logoutSuccess);
+      $rootScope.$emit(AUTH_EVENTS.logoutSuccess);
     }
 
     // --------------
@@ -101,14 +172,18 @@
       devlog.channel('iscSessionModel').debug('iscSessionModel.initSessionTimeout');
       devlog.channel('iscSessionModel').debug('...timeoutCounter: ' + timeoutCounter);
 
-      // on page refresh we get this from sessionStorage and pass it in
-      // otherwise assume it to be 0
-      sessionTimeoutCounter = (timeoutCounter > 0) ? timeoutCounter : 0;
-      devlog.channel('iscSessionModel').debug('...sessionTimeoutCounter: ' + sessionTimeoutCounter);
-      devlog.channel('iscSessionModel').debug('...sessionTimeoutInSeconds: ' + sessionTimeoutInSeconds);
+      var maxAge = iscSessionStorageHelper.getSessionTimeoutMax();
 
-      sessionTimeoutWarning = parseInt(sessionTimeoutInSeconds * 0.75);
-      devlog.channel('iscSessionModel').debug('...sessionTimeoutWarning: ' + sessionTimeoutWarning);
+      // on page refresh we get this from sessionStorage and pass it in
+      // otherwise assume it to be the maxAge
+      sessionTimeout.remaining = (timeoutCounter > 0) ? timeoutCounter : maxAge;
+      devlog.channel('iscSessionModel').debug('...sessionTimeout.remaining: ' + sessionTimeout.remaining);
+
+      sessionTimeout.warnAt = parseInt(maxAge * warnThreshold);
+      devlog.channel('iscSessionModel').debug('...sessionTimeout.warnAt: ' + sessionTimeout.warnAt);
+
+      sessionTimeout.expireAt = 0;
+      devlog.channel('iscSessionModel').debug('...sessionTimeout.expireAt: ' + sessionTimeout.expireAt);
 
       doSessionTimeout();
     }
@@ -118,41 +193,80 @@
      */
     function doSessionTimeout() {
       devlog.channel('iscSessionModel').debug('iscSessionModel.doSessionTimeout');
-
       if (intervalPromise) {
         devlog.channel('iscSessionModel').debug('...already there');
         return;
       }
 
+      // Checks to perform each tick
       intervalPromise = $interval(function () {
-        sessionTimeoutCounter++;
+        sessionTimeout.remaining -= 5;
+        _setSessionAndLog();
 
-        iscSessionStorageHelper.setSessionTimeoutCounter(sessionTimeoutCounter);
+        if (sessionTimeout.status === 'no response') {
+          if (!sessionTimeout.pingPromise) {
+            callPing('no response');
+          }
+          _checkForNoResponseAtMax();
+        }
+        else {
+          if (!sessionTimeout.pingPromise) {
+            _checkForWarnOrExpire(isConfigured);
+          }
+        }
+      }, 5000);
+
+
+      function _setSessionAndLog() {
+        iscSessionStorageHelper.setSessionTimeoutCounter(sessionTimeout.remaining);
         devlog.channel('iscSessionModel').debug('...TICK ');
-        devlog.channel('iscSessionModel').debug('...sessionTimeoutInSeconds ' + sessionTimeoutInSeconds);
-        devlog.channel('iscSessionModel').debug('...sessionTimeoutCounter ' + sessionTimeoutCounter);
-        devlog.channel('iscSessionModel').debug('...sessionTimeoutWarning ' + sessionTimeoutWarning);
-        devlog.channel('iscSessionModel').debug('...remainingTime ' + getRemainingTime());
+        devlog.channel('iscSessionModel').debug('...sessionTimeout.expireAt ' + sessionTimeout.expireAt);
+        devlog.channel('iscSessionModel').debug('...sessionTimeout.remaining ' + sessionTimeout.remaining);
+        devlog.channel('iscSessionModel').debug('...sessionTimeout.warnAt ' + sessionTimeout.warnAt);
+        devlog.channel('iscSessionModel').debug('...remainingTime ' + sessionTimeout.remaining);
+      }
 
-        if (sessionTimeoutCounter >= sessionTimeoutWarning && sessionTimeoutCounter < sessionTimeoutInSeconds) {
-          // warn
-          devlog.channel('iscSessionModel').debug('...WARN ' + sessionTimeoutCounter);
-            callPing('warn').then(function () { _checkForWarnOrExpire(false); });
+      function _checkForNoResponseAtMax() {
+        // If the time with no response has reached its maximum, expire client session
+        if (sessionTimeout.remaining <= 0) {
+          _expireSession();
+        }
+      }
+
+      function _checkForWarnOrExpire(doPingFirst) {
+        // warn
+        if (sessionTimeout.remaining <= sessionTimeout.warnAt && sessionTimeout.remaining > sessionTimeout.expireAt) {
+          devlog.channel('iscSessionModel').debug('...WARN ' + sessionTimeout.remaining);
+          if (doPingFirst && sessionTimeout.syncedOn != 'warn') {
+            callPing('warn').then(function () {
               _checkForWarnOrExpire(false);
             });
-          $rootScope.$broadcast(AUTH_EVENTS.sessionTimeoutWarning);
+          }
+          else {
+            $rootScope.$emit(AUTH_EVENTS.sessionTimeoutWarning);
+          }
         }
-        else if (sessionTimeoutCounter >= sessionTimeoutInSeconds) {
-          devlog.channel('iscSessionModel').debug('...TIMEOUT ' + sessionTimeoutCounter);
-          // logout
-            callPing('expire').then(function () { _checkForWarnOrExpire(false); });
+
+        // expire/logout
+        else if (sessionTimeout.remaining <= sessionTimeout.expireAt) {
+          devlog.channel('iscSessionModel').debug('...TIMEOUT ' + sessionTimeout.remaining);
+
+          if (doPingFirst && sessionTimeout.syncedOn != 'expire') {
+            callPing('expire').then(function () {
               _checkForWarnOrExpire(false);
             });
-          $rootScope.$broadcast(AUTH_EVENTS.sessionTimeout);
-          iscSessionStorageHelper.setShowTimedOutAlert(true);
-          stopSessionTimeout();
+          }
+          else {
+            _expireSession();
+          }
         }
-      }, 1000);
+      }
+
+      function _expireSession() {
+        $rootScope.$emit(AUTH_EVENTS.sessionTimeout);
+        iscSessionStorageHelper.setShowTimedOutAlert(true);
+        stopSessionTimeout();
+      }
     }
 
     function stopSessionTimeout() {
@@ -168,16 +282,17 @@
 
     function resetSessionTimeout() {
       devlog.channel('iscSessionModel').debug('iscSessionModel.resetSessionTimeout');
-      if (sessionTimeout.syncedOn != 'no response') {
-      sessionTimeoutCounter = 0;
-      iscSessionStorageHelper.setSessionTimeoutCounter(sessionTimeoutCounter);
-      //stopSessionTimeout();
-      //doSessionTimeout();
+      // Do not reset timer if we are still waiting on a server response to a ping call
+      if (sessionTimeout.syncedOn !== 'no response') {
+        var maxAge               = iscSessionStorageHelper.getSessionTimeoutMax();
+        sessionTimeout.remaining = maxAge;
+        sessionTimeout.syncedOn  = 'alive';
+        iscSessionStorageHelper.setSessionTimeoutCounter(maxAge);
+      }
     }
 
     function getRemainingTime() {
-      var remaining = sessionTimeoutInSeconds - sessionTimeoutCounter;
-      return remaining;
+      return sessionTimeout.remaining;
     }
 
     // --------------

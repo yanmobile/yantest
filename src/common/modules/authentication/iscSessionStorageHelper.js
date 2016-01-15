@@ -35,6 +35,9 @@
       getSessionTimeoutCounter: getSessionTimeoutCounter,
       setSessionTimeoutCounter: setSessionTimeoutCounter,
 
+      getSessionTimeoutMax: getSessionTimeoutMax,
+      setSessionTimeoutMax: setSessionTimeoutMax,
+
       getShowTimedOutAlert: getShowTimedOutAlert,
       setShowTimedOutAlert: setShowTimedOutAlert,
 
@@ -91,6 +94,22 @@
     function setSessionTimeoutCounter(val) {
       devlog.channel('iscSessionStorageHelper').debug( 'iscSessionStorageHelper.setSessionTimeoutCounter:', val );
       setSessionStorageValue('sessionTimeoutCounter', val);
+    }
+
+    // ----------------------------
+    function getSessionTimeoutMax() {
+      var max = getValFromSessionStorage('sessionTimeoutMax', 0);
+      if (_.isNumber(max)) {
+        devlog.channel('iscSessionStorageHelper').debug( '...number: ' +  max );
+        return max;
+      }
+      devlog.channel('iscSessionStorageHelper').debug( '...nope: ' );
+      return 0;
+    }
+
+    function setSessionTimeoutMax(val) {
+      devlog.channel('iscSessionStorageHelper').debug( 'iscSessionStorageHelper.setSessionTimeoutMax:', val );
+      setSessionStorageValue('sessionTimeoutMax', val);
     }
 
     // ----------------------------

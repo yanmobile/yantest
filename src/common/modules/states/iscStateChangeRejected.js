@@ -39,7 +39,7 @@
           var toState  = $delegate.get(args[0]);
           var toParams = args[1];
 
-          $rootScope.$broadcast('$stateChangeRejected', toState, toParams, $delegate.current, $delegate.params, error);
+          $rootScope.$emit('$stateChangeRejected', toState, toParams, $delegate.current, $delegate.params, error);
 
           return error;
         }

@@ -14,6 +14,7 @@
       'mobile-angular-ui.gestures',
       'ngSanitize',
       'ngAnimate',
+      'ngMessages',
       'pascalprecht.translate',
       'angular.filter',
       '720kb.datepicker',

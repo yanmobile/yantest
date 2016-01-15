@@ -52,7 +52,7 @@
         case 401:
           devlog.channel('iscAuthenticationInterceptor').debug('...401');
           // this will happen if you just leave your computer on for a long time
-          $rootScope.$broadcast(AUTH_EVENTS.sessionTimeout, response);
+          $rootScope.$emit(AUTH_EVENTS.sessionTimeout, response);
           break;
 
         case 500: // these must be handled individually per app
@@ -61,7 +61,7 @@
 
         default:
           devlog.channel('iscAuthenticationInterceptor').debug('...default');
-          $rootScope.$broadcast(AUTH_EVENTS.notAuthorized, response);
+          $rootScope.$emit(AUTH_EVENTS.notAuthorized, response);
           break;
       }
 

@@ -1,47 +1,22 @@
-/* App Architecture */
-
-html, body {
-  height: 100vh;
-}
-
-.isc-app {
-  top: 0;
-  right: 0;
-  left: 0;
-  bottom: 0;
-  //height: 100vh;
-  //overflow: hidden;
-}
-
-
-.isc-app-content {
-  top: 0;
-  right: 0;
-  left: 0;
-  bottom: 0;
-  //height: 100vh;
-}
-
 /* Page Architecture */
 
 .isc-page-content {
-  height: 100vh;
-  padding: 3rem;
+  padding: 3rem 3rem 0 3rem;
 
   @media #{$tab-or-less} {
-    padding: 1rem;
+    padding: 3rem 1rem 0 1rem;
   }
 
   @media #{$tablet}{
-    padding: 1rem;
+    padding: 3rem 1rem 0 1rem;
   }
 
   @media #{$phablet}{
-    padding: 1rem;
+    padding: 3rem 1rem 0 1rem;
   }
 
   @media #{$phone}{
-    padding: 1rem;
+    padding: 3rem 1rem 0 1rem;
   }
 
 }
