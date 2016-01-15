@@ -22,7 +22,7 @@
          class="grid-block tr small-up-{{ddpTblCtrl.config.columns.length}}">
       <div ng-repeat="column in ddpTblCtrl.config.columns"
            class="{{column.cssTDClass || 'grid-block td'}}"
-           ng-include="column.templateUrl || 'shared/ddpTable/cells/cell.'+ (column.type || 'string') + '.html'">
+           ng-include="column.templateUrl || 'ddpTable/cells/cell.'+ (column.type || 'string') + '.html'">
       </div>
     </div>
   </div>

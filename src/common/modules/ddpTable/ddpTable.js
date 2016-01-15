@@ -15,14 +15,14 @@
         { key: 'Soups', model: 'Soups' },
         { key: 'Customer', model: 'Customer.Name' },
         { key: 'Order Time', model: 'Customer.Date', type: 'date' },
-        { key: 'Age', model: 'Customer.DOB', type: 'integer', templateUrl: 'shared/ddpTable/cells/cell.age.html' }
+        { key: 'Age', model: 'Customer.DOB', type: 'integer', templateUrl: 'ddpTable/cells/cell.age.html' }
       ]
     }
  */
 (function () {
   'use strict';
 
-  angular.module('app')
+  angular.module('isc.directives')
     .directive('ddpTable', ddpTable);
 
 
@@ -41,7 +41,7 @@
       },
       scope           : true,
       templateUrl     : function (elem, attrs) {
-        return attrs.templateUrl || 'shared/ddpTable/ddpTable.html';
+        return attrs.templateUrl || 'ddpTable/ddpTable.html';
       }
     };
 
