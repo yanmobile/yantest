@@ -4,7 +4,7 @@
 
   var mockConfig = angular.copy( customConfig );
 
-  describe('iscNavigationController', function(){
+  xdescribe('iscNavigationController', function(){
     var scope,
       self,
       rootScope,
@@ -66,7 +66,7 @@
     // -------------------------
     describe( 'onLoad tests ', function(){
 
-      xit( 'should know what to do onLoad, dont show warning', function(){
+      it( 'should know what to do onLoad, dont show warning', function(){
         spyOn( sessionStorageHelper, 'getShowTimedOutAlert' ).and.returnValue( false );
         spyOn( sessionStorageHelper, 'setShowTimedOutAlert' );
         spyOn( alertModel, 'setOptionsByType' );
@@ -84,7 +84,7 @@
         expect( sessionStorageHelper.setShowTimedOutAlert).not.toHaveBeenCalled();
       });
 
-      xit( 'should know what to do onLoad, show warning', function(){
+      it( 'should know what to do onLoad, show warning', function(){
         spyOn( sessionStorageHelper, 'getShowTimedOutAlert' ).and.returnValue( true );
         spyOn( sessionStorageHelper, 'setShowTimedOutAlert' );
         spyOn( alertModel, 'setOptionsByType' );
@@ -112,15 +112,15 @@
         spyOn( self, 'showAlertBox' );
         spyOn( alertModel, 'setOptionsByType' );
 
-        rootScope.$broadcast( AUTH_EVENTS.responseError );
+        rootScope.$emit( AUTH_EVENTS.responseError );
         expect( self.showAlertBox ).toHaveBeenCalled();
         expect( alertModel.setOptionsByType ).toHaveBeenCalledWith( AUTH_EVENTS.responseError, undefined, null, null);
 
-        rootScope.$broadcast( AUTH_EVENTS.notAuthenticated );
+        rootScope.$emit( AUTH_EVENTS.notAuthenticated );
         expect( self.showAlertBox ).toHaveBeenCalled();
         expect( alertModel.setOptionsByType ).toHaveBeenCalledWith( AUTH_EVENTS.notAuthenticated, undefined, null, null);
 
-        rootScope.$broadcast( AUTH_EVENTS.notAuthorized );
+        rootScope.$emit( AUTH_EVENTS.notAuthorized );
         expect( self.showAlertBox ).toHaveBeenCalled();
         expect( alertModel.setOptionsByType ).toHaveBeenCalledWith( AUTH_EVENTS.notAuthorized, undefined, null, null);
       });
@@ -131,7 +131,7 @@
 
         self.alertShowing = false;
 
-        rootScope.$broadcast( AUTH_EVENTS.sessionTimeoutWarning );
+        rootScope.$emit( AUTH_EVENTS.sessionTimeoutWarning );
         expect( self.showAlertBox ).toHaveBeenCalled();
         expect( self.alertShowing ).toBe( true );
         expect( alertModel.setOptionsByType ).toHaveBeenCalledWith( AUTH_EVENTS.sessionTimeoutWarning, undefined, self.onContinueSession, self.onCancelSession);
@@ -143,7 +143,7 @@
 
         self.alertShowing = true;
 
-        rootScope.$broadcast( AUTH_EVENTS.sessionTimeoutWarning );
+        rootScope.$emit( AUTH_EVENTS.sessionTimeoutWarning );
         expect( self.showAlertBox).not.toHaveBeenCalled();
         expect( self.alertShowing ).toBe( true );
         expect( alertModel.setOptionsByType).not.toHaveBeenCalled();
@@ -239,7 +239,7 @@
         spyOn( self, 'showSecondaryNavbar' );
         spyOn( self, 'hideSecondaryNavbar' );
 
-        rootScope.$broadcast( NAV_EVENTS.showSecondaryNav );
+        rootScope.$emit( NAV_EVENTS.showSecondaryNav );
         expect( self.showSecondaryNavbar ).toHaveBeenCalled();
         expect( self.hideSecondaryNavbar ).not.toHaveBeenCalled();
       });
@@ -252,7 +252,7 @@
         spyOn( self, 'showSecondaryNavbar' );
         spyOn( self, 'hideSecondaryNavbar' );
 
-        rootScope.$broadcast( NAV_EVENTS.hideSecondaryNav );
+        rootScope.$emit( NAV_EVENTS.hideSecondaryNav );
         expect( self.showSecondaryNavbar).not.toHaveBeenCalled();
         expect( self.hideSecondaryNavbar ).toHaveBeenCalled();
       });
@@ -266,9 +266,9 @@
       });
 
       it( 'should know what to do onContinueSession', function(){
-        spyOn( rootScope, '$broadcast' );
+        spyOn( rootScope, '$emit' );
         self.onContinueSession();
-        expect( rootScope.$broadcast ).toHaveBeenCalledWith( AUTH_EVENTS.sessionTimeoutReset );
+        expect( rootScope.$emit ).toHaveBeenCalledWith( AUTH_EVENTS.sessionTimeoutReset );
       });
     });
 
@@ -280,9 +280,9 @@
       });
 
       it( 'should know what to do onCancelSession', function(){
-        spyOn( rootScope, '$broadcast' );
+        spyOn( rootScope, '$emit' );
         self.onCancelSession();
-        expect( rootScope.$broadcast ).toHaveBeenCalledWith( AUTH_EVENTS.sessionTimeoutConfirm );
+        expect( rootScope.$emit ).toHaveBeenCalledWith( AUTH_EVENTS.sessionTimeoutConfirm );
       });
     });
 

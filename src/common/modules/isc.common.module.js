@@ -20,6 +20,8 @@
       'foundation',
       'angucomplete-alt',
       'isc.core',
+      'isc.authentication',
+      'isc.authorization',
       'isc.directives',
       'isc.filters',
       'isc.table',

@@ -14,20 +14,11 @@
       devlogProvider.loadConfig(customConfig);
     }));
 
-    // use custom config mocks
-    beforeEach(inject(function (_iscCustomConfigService_) {
-      var mockConfig = angular.copy(customConfig);
-      _iscCustomConfigService_.setConfig(mockConfig);
-    }));
-
     // don't worry about calls to assets
-    beforeEach(inject(function (_$httpBackend_) {
+    beforeEach(inject(function (_$httpBackend_, _iscHttpapi_) {
       $httpBackend = _$httpBackend_;
       $httpBackend.when('GET', /json$|html$/).respond(200, {});
-    }));
-
-    beforeEach(inject(function (_$httpBackend_, _iscHttpapi_) {
-      iscHttpapi      = _iscHttpapi_;
+      iscHttpapi   = _iscHttpapi_;
     }));
 
     // -------------------------

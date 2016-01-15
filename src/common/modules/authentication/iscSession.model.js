@@ -9,7 +9,7 @@
     .factory('iscSessionModel', iscSessionModel);
 
   function iscSessionModel(
-    devlog, $rootScope, $interval, iscAuthorization, iscCustomConfigService, iscCustomConfigHelper, iscSessionStorageHelper, AUTH_EVENTS
+    $q, devlog, $rootScope, $interval, iscSessionStorageHelper, AUTH_EVENTS
   ) {
     devlog.channel('iscSessionModel').debug('iscSessionModel LOADED');
 
@@ -18,8 +18,8 @@
     // ----------------------------
 
     var anonymousUser = { userRole: '*', FullName: 'anonymous' };
-    var credentials = null;
-    var currentUser = anonymousUser;
+    var credentials   = null;
+    var currentUser   = anonymousUser;
 
     var sessionTimeoutInSeconds = 0;
     var sessionTimeoutCounter   = 0;
@@ -34,9 +34,6 @@
       create : create,
       destroy: destroy,
 
-      initSession      : initSession,
-      updateStateByRole: updateStateByRole,
-
       initSessionTimeout : initSessionTimeout,
       stopSessionTimeout : stopSessionTimeout,
       resetSessionTimeout: resetSessionTimeout,
@@ -44,12 +41,9 @@
 
       getCredentials: getCredentials,
 
-      getCurrentUser: getCurrentUser,
+      getCurrentUser    : getCurrentUser,
+      getCurrentUserRole: getCurrentUserRole,
 
-      getAuthorizedRoutes: iscAuthorization.getAuthorizedRoutes,
-      setAuthorizedRoutes: iscAuthorization.setAuthorizedRoutes,
-
-      isAuthorized   : iscAuthorization.isAuthorized,
       isAuthenticated: isAuthenticated,
       getFullName: getFullName
     };
@@ -59,96 +53,6 @@
     // ----------------------------
     // functions
     // ----------------------------
-
-    function initSession(config) {
-      model.setAuthorizedRoutes([]);
-      iscCustomConfigService.addStates();
-      iscSessionStorageHelper.setConfig(config);
-
-      // update the states based on the user's role, if any
-      var currentUser = iscSessionModel.getCurrentUser();
-      var userRole    = !!currentUser ? currentUser.userRole : '*';
-      model.updateStateByRole(userRole, config);
-      model.setAuthorizedRoutes();
-
-    }
-
-    // ----------------------------
-    /**
-     * adds or removes tabs based on the user's permissions in the configFile.json
-     * eg:
-     'rolePermissions': {
-            '*': ['index'],
-            'user':['*'],
-            'guest':['index.home','index.library']
-       }
-     * supports wildcards (eg 'index.home.*')
-     * where '*' will allow all tabs
-     * NOTE - if you want to include some but not all subtabs,
-     *        be sure to also include the parent tab (eg ['index.messages', 'index.messages.subtab1' ])
-     *
-     * @param role String
-     */
-    function updateStateByRole(role, config) {
-      devlog.channel('iscSessionModel').debug('iscSessionModel.updateStateByRole', role);
-
-      var allStates = iscCustomConfigHelper.getAllStates();
-      devlog.channel('iscSessionModel').debug('...allStates', allStates);
-
-      // start by excluding everything
-      _.forEach(allStates, function (tab) {
-        if (tab) {
-          tab.exclude = true;
-        }
-      });
-
-      if (!config) {
-        return;
-      }
-
-      var anonymousStates     = angular.copy(config.rolePermissions['*'], []);
-      var userPermittedStates = angular.copy(config.rolePermissions[role]);
-      var allPermittedStates  = anonymousStates;
-      if (!!userPermittedStates) {
-        allPermittedStates = anonymousStates.concat(userPermittedStates);
-      }
-      model.setAuthorizedRoutes(allPermittedStates);
-      devlog.channel('iscSessionModel').debug('...allPermittedStates', allPermittedStates);
-
-      if (_.contains(allPermittedStates, '*')) {
-        //console.debug( '...adding all' );
-        //turn everything on
-        _.forEach(allStates, function (state) {
-          state.exclude = false;
-        });
-      }
-      else {
-
-        _.forEach(allPermittedStates, function (permittedTab) {
-          devlog.channel('iscSessionModel').debug('...permittedTab', permittedTab);
-
-          // handle wildcards
-          var starIdx = permittedTab.indexOf('.*');
-          if (starIdx > -1) {
-            var superState = permittedTab.substr(0, starIdx);
-            devlog.channel('iscSessionModel').debug('...superState', superState);
-
-            _.forEach(allStates, function (state) {
-              if (state.state.indexOf(superState) > -1) {
-                state.exclude = false;
-              }
-            });
-          }
-          else {
-            devlog.channel('iscSessionModel').debug('...allStates[permittedTab]', allStates[permittedTab]);
-            if (allStates[permittedTab]) {
-              allStates[permittedTab].exclude = false;
-            }
-          }
-        });
-      }
-
-      devlog.channel('iscSessionModel').debug('Finished updating navbar');
     }
 
     function create(sessionData, isSessionNew) {
@@ -165,6 +69,7 @@
       //sessionTimeoutInSeconds = 10; // DEV ONLY
       sessionTimeoutInSeconds = sessionData.SessionTimeout;
 
+      $rootScope.$emit(AUTH_EVENTS.sessionChange);
       if (isSessionNew) {
         devlog.channel('iscSessionModel').debug('...new ');
         $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
@@ -187,6 +92,7 @@
       iscSessionStorageHelper.destroy();
       stopSessionTimeout();
 
+      $rootScope.$emit(AUTH_EVENTS.sessionChange);
       $rootScope.$broadcast(AUTH_EVENTS.logoutSuccess);
     }
 
@@ -231,11 +137,17 @@
         if (sessionTimeoutCounter >= sessionTimeoutWarning && sessionTimeoutCounter < sessionTimeoutInSeconds) {
           // warn
           devlog.channel('iscSessionModel').debug('...WARN ' + sessionTimeoutCounter);
+            callPing('warn').then(function () { _checkForWarnOrExpire(false); });
+              _checkForWarnOrExpire(false);
+            });
           $rootScope.$broadcast(AUTH_EVENTS.sessionTimeoutWarning);
         }
         else if (sessionTimeoutCounter >= sessionTimeoutInSeconds) {
           devlog.channel('iscSessionModel').debug('...TIMEOUT ' + sessionTimeoutCounter);
           // logout
+            callPing('expire').then(function () { _checkForWarnOrExpire(false); });
+              _checkForWarnOrExpire(false);
+            });
           $rootScope.$broadcast(AUTH_EVENTS.sessionTimeout);
           iscSessionStorageHelper.setShowTimedOutAlert(true);
           stopSessionTimeout();
@@ -256,6 +168,7 @@
 
     function resetSessionTimeout() {
       devlog.channel('iscSessionModel').debug('iscSessionModel.resetSessionTimeout');
+      if (sessionTimeout.syncedOn != 'no response') {
       sessionTimeoutCounter = 0;
       iscSessionStorageHelper.setSessionTimeoutCounter(sessionTimeoutCounter);
       //stopSessionTimeout();
@@ -274,18 +187,23 @@
 
     // --------------
     function getCurrentUser() {
-      return currentUser;
+      return angular.copy(currentUser); // To prevent external modificiation
     }
 
     function setCurrentUser(user) {
       devlog.channel('iscSessionModel').debug('iscSessionModel.setCurrentUser');
       devlog.channel('iscSessionModel').debug('...user: ' + angular.toJson(user));
-      currentUser = user;
+      currentUser = angular.copy(user); // To prevent external modificiation
+    }
+
+    // --------------
+    function getCurrentUserRole() {
+      return _.get(currentUser, "userRole");
     }
 
     // --------------
     function isAuthenticated() {
-      devlog.channel('iscSessionModel').debug('iscSessionModel.isAuthenticated', currentUser);
+      //devlog.channel('iscSessionModel').debug('iscSessionModel.isAuthenticated', currentUser);
       // '*' denotes anonymous user (AKA not authenticated)
       return _.get(currentUser, 'userRole', '*') !== '*';
     }

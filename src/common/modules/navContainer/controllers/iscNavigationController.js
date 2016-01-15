@@ -13,7 +13,7 @@
   function iscNavigationController(
     devlog, $rootScope, $timeout, $scope, $translate,
     iscSessionModel, iscSessionStorageHelper, iscNavContainerModel, iscAlertModel,
-    iscCustomConfigHelper, iscUiHelper, iscStateManager, iscLanguageService,
+    iscCustomConfigHelper, iscUiHelper, iscLanguageService,
     AUTH_EVENTS, NAV_EVENTS
   ) {
     devlog.channel('iscNavigationController').debug( 'iscNavigationController LOADED');
@@ -25,7 +25,6 @@
     self.navModel           = iscNavContainerModel;
     self.sessionModel       = iscSessionModel;
     self.customConfigHelper = iscCustomConfigHelper;
-    self.stateManager       = iscStateManager;
     self.iscUiHelper        = iscUiHelper;
 
     self.showLanguageDropDown = iscLanguageService.showDropDown();
@@ -77,7 +76,6 @@
       devlog.channel('iscNavigationController').debug( 'iscNavigationController.hideSecondaryNavbar');
       self.showSecondaryNav = false;
       self.showModalBkgrnd  = false;
-      self.stateManager.setParentSref('');
     };
 
     // --------------

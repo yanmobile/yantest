@@ -19,7 +19,7 @@
     }));
 
     beforeEach( inject( function( $rootScope, $q, iscAuthenticationInterceptor ){
-      rootScope = $rootScope; //NOTE when spying on $rootScope.$broadcast, you cant use $rootScope.$new()
+      rootScope = $rootScope; //NOTE when spying on $rootScope.$emit, you cant use $rootScope.$new()
       q = $q;
       interceptor = iscAuthenticationInterceptor;
 
@@ -36,12 +36,12 @@
       it( 'should do the right thing on responseError', function(){
         var response = {error: 'Oops'};
 
-        spyOn( rootScope, '$broadcast' );
+        spyOn( rootScope, '$emit' );
         spyOn( q, 'reject' );
 
         interceptor.responseError( response );
 
-        expect( rootScope.$broadcast ).toHaveBeenCalled();
+        expect( rootScope.$emit ).toHaveBeenCalled();
         expect( q.reject ).toHaveBeenCalledWith( response );
       });
     });

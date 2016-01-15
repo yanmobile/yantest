@@ -1,156 +1,125 @@
 (function () {
   'use strict';
 
-  describe('iscAuthorization test', function () {
+  describe('iscAuthorizationModel test', function () {
 
-    var iscAuthorization;
+    var authorizationModel,
+        sessionModel,
+        customConfigServiceProvider;
 
     // setup devlog
     beforeEach(module('isc.core', function (devlogProvider) {
       devlogProvider.loadConfig(customConfig);
     }));
 
-    beforeEach(module('isc.authentication'));
+    beforeEach(module('isc.configuration', function (iscCustomConfigServiceProvider) {
+      iscCustomConfigServiceProvider.loadConfig(customConfig);
+      customConfigServiceProvider = iscCustomConfigServiceProvider;
+    }));
 
-    beforeEach(inject(function (_iscAuthorization_) {
-      iscAuthorization = _iscAuthorization_;
+    beforeEach(module('isc.authorization'));
+
+    beforeEach(inject(function (_iscAuthorizationModel_, _iscSessionModel_) {
+      authorizationModel = _iscAuthorizationModel_;
+      sessionModel       = _iscSessionModel_;
+
+      var loginData = angular.copy(mockLoginResponse);
+      sessionModel.create(loginData);
     }));
 
     describe('sanity check', function () {
       it('should factory and its methods should be defined', function () {
-        expect(iscAuthorization).toBeDefined();
-        expect(iscAuthorization.setAuthorizedRoutes).toBeDefined();
-        expect(iscAuthorization.isAuthorized).toBeDefined();
+        expect(authorizationModel).toBeDefined();
+        expect(authorizationModel.isAuthorized).toBeDefined();
       });
-    });
-
-    describe('build Route Map logic', function () {
-
-      it('should return empty object if null/undefined is passed in', function () {
-
-        var routes = iscAuthorization.setAuthorizedRoutes(null);
-        expect(routes).toBeDefined();
-        expect(routes).toEqual({});
-
-      });
-
-      it('should return object containing 1 level per state tree', function () {
-        var permittedRoutes = ['index', 'index.home', 'index.home.leaf'];
-        var expectedRoutes  = { index: { home: { leaf: {} } } };
-
-        var routes = iscAuthorization.setAuthorizedRoutes(permittedRoutes);
-
-        expect(routes).toBeDefined();
-        expect(routes).toEqual(expectedRoutes);
-
-      });
-
-      it('should be able to specify descendent states first', function () {
-        var permittedRoutes = ['index.home.leaf', 'index.home', 'index'];
-        var expectedRoutes  = { index: { home: { leaf: {} } } };
-
-        var routes = iscAuthorization.setAuthorizedRoutes(permittedRoutes);
-
-        expect(routes).toBeDefined();
-        expect(_.isEmpty(routes)).toBe(false);
-        expect(routes).toEqual(expectedRoutes);
-
-      });
-
-      it('should be able to map wildcards (.*)', function () {
-        var permittedRoutes = ['index.*'];
-        var expectedRoutes  = { index: { '*': {} } };
-
-        var routes = iscAuthorization.setAuthorizedRoutes(permittedRoutes);
-
-        expect(routes).toBeDefined();
-        expect(_.isEmpty(routes)).toBe(false);
-        expect(routes).toEqual(expectedRoutes);
-
-      });
-
     });
 
     describe('checking permissions via isAuthorized', function () {
 
       it('should return false if the stateToCheck and/or permittedStates is null/undefined', function () {
-        var permittedStates = null;
-        var stateToCheck    = null;
+        var stateToCheck = null;
 
-        var isAuthorized = iscAuthorization.isAuthorized(stateToCheck, permittedStates);
+        //iscCustomConfigServiceProvider.addRolePermissions(permissions);
+        var isAuthorized = authorizationModel.isAuthorized(stateToCheck);
         expect(isAuthorized).toBe(false);
       });
 
       it('should allow all routes', function () {
-        var permittedStates = iscAuthorization.setAuthorizedRoutes(['*']);
-        var stateToCheck    = 'index.messages.outbox';
-
-        var isAuthorized = iscAuthorization.isAuthorized(stateToCheck, permittedStates);
+        customConfigServiceProvider.addRolePermissions({ 'index.messages.outbox': ['*'] });
+        var stateToCheck = 'index.messages.outbox';
+        var isAuthorized = authorizationModel.isAuthorized(stateToCheck);
         expect(isAuthorized).toBe(true);
       });
 
       it('should return false if the route is not permitted', function () {
-        var permittedStates = iscAuthorization.setAuthorizedRoutes(['index', 'index.home']);
-        var stateToCheck    = 'index.foo';
+        customConfigServiceProvider.addRolePermissions({ 'index': ['*'] });
+        customConfigServiceProvider.addRolePermissions({ 'index.home': ['*'] });
+        var stateToCheck = 'index.foo';
 
-        var isAuthorized = iscAuthorization.isAuthorized(stateToCheck, permittedStates);
+        var isAuthorized = authorizationModel.isAuthorized(stateToCheck);
         expect(isAuthorized).toBe(false);
       });
 
       it('should return true if the route is permitted', function () {
-        var permittedStates = iscAuthorization.setAuthorizedRoutes(['index', 'index.home']);
-        var stateToCheck    = 'index';
+        var isAuthorized, stateToCheck;
 
-        var isAuthorized = iscAuthorization.isAuthorized(stateToCheck, permittedStates);
+        customConfigServiceProvider.addRolePermissions({ 'index': ['*'] });
+        customConfigServiceProvider.addRolePermissions({ 'index.home': ['*'] });
+
+        stateToCheck = 'index';
+
+        isAuthorized = authorizationModel.isAuthorized(stateToCheck);
         expect(isAuthorized).toBe(true);
 
         stateToCheck = 'index.home';
-        isAuthorized = iscAuthorization.isAuthorized(stateToCheck, permittedStates);
+        isAuthorized = authorizationModel.isAuthorized(stateToCheck);
         expect(isAuthorized).toBe(true);
       });
 
       it('should permit parent route if child route is permitted', function () {
-        var permittedStates = iscAuthorization.setAuthorizedRoutes(['index.home.leaf']);
-        var stateToCheck    = 'index.home';
+        customConfigServiceProvider.addRolePermissions({ 'index.home.leaf': ['*'] });
+        var stateToCheck = 'index.home';
 
-        var isAuthorized = iscAuthorization.isAuthorized(stateToCheck, permittedStates);
+        var isAuthorized = authorizationModel.isAuthorized(stateToCheck);
         expect(isAuthorized).toBe(true);
 
       });
 
       it('should return true if the route is part of wild card pattern', function () {
-        var permittedStates = iscAuthorization.setAuthorizedRoutes(['index.*']);
+        customConfigServiceProvider.addRolePermissions({ 'index.*': ['*'] });
 
         var stateToCheck = 'index.home';
-        var isAuthorized = iscAuthorization.isAuthorized(stateToCheck, permittedStates);
+        var isAuthorized = authorizationModel.isAuthorized(stateToCheck);
         expect(isAuthorized).toBe(true);
 
         stateToCheck = 'index.home.foo.bar';
-        isAuthorized = iscAuthorization.isAuthorized(stateToCheck, permittedStates);
+        isAuthorized = authorizationModel.isAuthorized(stateToCheck);
         expect(isAuthorized).toBe(true);
       });
 
       it('should return false if state is in black list', function () {
-        var permittedStates = iscAuthorization.setAuthorizedRoutes(['index.*', '!index.home.*']);
+        customConfigServiceProvider.addRolePermissions({ 'index.*': ['*'] });
+        customConfigServiceProvider.addRolePermissions({ '!index.home.*': ['*'] });
 
         var stateToCheck = 'index.home';
-        var isAuthorized = iscAuthorization.isAuthorized(stateToCheck, permittedStates);
+        var isAuthorized = authorizationModel.isAuthorized(stateToCheck);
         expect(isAuthorized).toBe(false);
 
         var stateToCheck = 'index.home.child';
-        var isAuthorized = iscAuthorization.isAuthorized(stateToCheck, permittedStates);
+        var isAuthorized = authorizationModel.isAuthorized(stateToCheck);
         expect(isAuthorized).toBe(false);
 
         var stateToCheck = 'index.foo';
-        var isAuthorized = iscAuthorization.isAuthorized(stateToCheck, permittedStates);
+        var isAuthorized = authorizationModel.isAuthorized(stateToCheck);
         expect(isAuthorized).toBe(true);
       });
 
       it('should return false if state is in black list wild card pattern', function () {
-        var permittedStates = iscAuthorization.setAuthorizedRoutes(['index.*', '!index.home.*']);
+        customConfigServiceProvider.addRolePermissions({ 'index.*': ['*'] });
+        customConfigServiceProvider.addRolePermissions({ '!index.home.*': ['*'] });
 
         var stateToCheck = 'index.home.foo';
-        var isAuthorized = iscAuthorization.isAuthorized(stateToCheck, permittedStates);
+        var isAuthorized = authorizationModel.isAuthorized(stateToCheck);
         expect(isAuthorized).toBe(false);
       });
     });

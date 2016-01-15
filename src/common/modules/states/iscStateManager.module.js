@@ -10,19 +10,8 @@
   // ----------------------------
 
   angular
-    .module('isc.states', ['isc.core', 'ui.router'])
-    .run(run);
+    .module('isc.states', ['isc.authentication', 'isc.core', 'ui.router']);
 
-  function run(iscRouterDefaultEventService, iscSessionModel, iscAuthorization, iscCustomConfigService) {
-    iscRouterDefaultEventService.loadDataFromStoredSession();
-
-    var currentUser = iscSessionModel.getCurrentUser();
-    var userRole    = currentUser.userRole;
-
-    var authorizedRoutes = iscCustomConfigService.getConfigSection("rolePermissions")[userRole];
-    iscAuthorization.setAuthorizedRoutes(authorizedRoutes);
-
-  }
 
 })();
 

@@ -6,125 +6,112 @@
   'use strict';
 
   angular.module('isc.configuration')
-    .provider('iscCustomConfigService', function () {
-      var topTabOverrides         = {};
-      var rolePermissionOverrides = {};
-      var config                  = {};
-      var landingPages            = {};
+    .provider('iscCustomConfigService', iscCustomConfigServiceProvider);
 
-      function hydrateRolePermissions(masterRoutes, routes) {
-        /**
-         * CONVERTS FORMAT FROM:
-         {'index.home.*': ['%HSCC_CMC_CarePlanApprover',
-           '%HSCC_CMC_CarePlanCreator',
-           '%HSCC_CMC_CarePlanViewer',
-           '%HSCC_CMC_Administrator'
-           ]}
+  /*========================================
+   =     iscCustomConfigServiceProvider     =
+   ========================================*/
+  function iscCustomConfigServiceProvider() {
+    var config = { rolePermissions: {}, landingPages: {}, topTabs: {} };
 
-         TO:
-         [{'%HSCC_CMC_CarePlanApprover': ["index.home.*"]},
-         {'%HSCC_CMC_CarePlanCreator': ["index.home.*"]},
-         {'%HSCC_CMC_CarePlanViewer': ["index.home.*"]},
-         {'%HSCC_CMC_Administrator': ["index.home.*"]}]
-         */
-        _.forEach(routes, function (roles, routes) {
-          _.forEach(roles, function (role) {
-            masterRoutes[role] = masterRoutes[role] || [];
-            masterRoutes[role].push(routes);
-          });
-        });
+    return {
+      loadConfig        : function loadConfig(configObj) {
+        updateConfig(configObj);
+      },
+      addRolePermissions: function addRolePermissions(states) {
+        updateConfig(mapRolePermissions(states), 'rolePermissions');
+      },
+      addTopNavTab      : function addTopNavTab(topNavTab) {
+        updateConfig(topNavTab, 'topTabs');
+      },
+      setLandingPageFor : function (role, state) {
+        updateConfig(_.makeObj(role, state), 'landingPages');
+      },
+      $get              : iscCustomConfigService
+    };
+
+
+    function updateConfig(object, key) {
+      if (key) {
+        _.merge(config[key], object, concatArrays);
+      } else {
+        _.merge(config, object, concatArrays);
       }
+    }
 
-      return {
-        loadConfig        : function loadConfig(configObj) {
+    //used as a helper method for _.merge() to indicate when
+    //to concat two arrays instead of overwrite properities by array index
+    function concatArrays(a, b) {
+      if (_.isArray(a)) {
+        return a.concat(b);
+      }
+    }
 
-          config                 = configObj;
-          config.rolePermissions = config.rolePermissions || [];
-          _.forEach(rolePermissionOverrides, function (value, key) {
-            config.rolePermissions[key] = config.rolePermissions[key] || [];
-            Array.prototype.push.apply(config.rolePermissions[key], value);
-          });
+    /*========================================
+     =                 SERVICE                =
+     ========================================*/
+    function iscCustomConfigService(devlog) {
+      devlog.channel('iscCustomConfigService').debug('iscCustomConfigService LOADED');
 
-          _.extend(config.topTabs, topTabOverrides);
-
-          config.landingPages = config.landingPages || {};
-          _.extend(config.landingPages, landingPages);
-        },
-        addRolePermissions: function addRolePermissions(states) {
-          hydrateRolePermissions(rolePermissionOverrides, states);
-        },
-        addTopNavTab      : function addTopNavTab(topNavTab) {
-          _.merge(topTabOverrides, topNavTab);
-        },
-        setLandingPageFor : function (role, state) {
-          landingPages[role] = state;
-        },
-        $get              : iscCustomConfigService
+      // ----------------------------
+      // class factory
+      // ----------------------------
+      var service = {
+        getConfigSection: getConfigSection,
+        getConfig       : getConfig
       };
 
-      function iscCustomConfigService(devlog, iscCustomConfigHelper) {
-        devlog.channel('iscCustomConfigService').debug('iscCustomConfigService LOADED');
+      return service;
 
-        // ----------------------------
-        // class factory
-        // ----------------------------
+      // ----------------------------
+      // functions
+      // ----------------------------
+      function getConfig() {
+        devlog.channel('iscCustomConfigService').debug('iscCustomConfigService.getConfig');
+        devlog.channel('iscCustomConfigService').debug('...config ' + JSON.stringify(config));
+        return config;
+      }
 
-        var service = {
-
-          getConfigSection: getConfigSection,
-          getConfig       : getConfig,
-          setConfig       : setConfig,
-          addStates       : addStates
-        };
-
-        return service;
-
-        // ----------------------------
-        // functions
-        // ----------------------------
-        function getConfig() {
-          devlog.channel('iscCustomConfigService').debug('iscCustomConfigService.getConfig');
-          devlog.channel('iscCustomConfigService').debug('...config ' + JSON.stringify(config));
-          return config;
+      function getConfigSection(section, role) {
+        devlog.channel('iscCustomConfigService').debug('iscCustomConfigService.getConfigSection', section);
+        var retObj;
+        if (role) {
+          retObj = _.get(config, [section, role].join('.'));
+        } else {
+          retObj = _.get(config, section);
         }
+        return retObj;
+      }
 
-        function getConfigSection(section) {
-          devlog.channel('iscCustomConfigService').debug('iscCustomConfigService.getConfigSection');
-          devlog.channel('iscCustomConfigService').debug('...section' + section);
-          return _.get(config, section);
-        }
+    }// END CLASS
 
-        function setConfig(val) {
-          devlog.channel('iscCustomConfigService').debug('iscCustomConfigService.setConfig');
-          devlog.channel('iscCustomConfigService').debug('...config ', val);
-          config = val;
-        }
+    function mapRolePermissions(permissions) {
+      /**
+       *
+       CONVERTS FORMAT FROM:
+       {'index.home.*': ['Role1', 'Nurse','Provider','Receptionist' ]}
 
-        // ----------------------------
-        // states
+       TO:
+       [{'Role1': ['index.home.*']}, {'Nurse': ['index.home.*']}, {'Provider': ['index.home.*']}, {'Receptionist': ['index.home.*']}]
+       */
+      var masterRoutes = {};
+      if (!_.isTypeOf(permissions, 'array')) {
+        //converting to an array
+        permissions = [permissions];
+      }
 
-        function addStates() {
-          devlog.channel('iscCustomConfigService').debug('iscCustomConfigService.addStates');
-
-          // add the top tabs
-          iscCustomConfigHelper.addStates(config.topTabs);
-
-          // add the login button if it exists
-          var login = config.loginButton;
-          if (!!login) {
-            iscCustomConfigHelper.addStates({
-              loginButton: config.loginButton
-            });
-          }
-
-          // add the secondary navs
-          var secondaryNavs = _.filter(config, 'secondaryNav');
-          devlog.channel('iscCustomConfigService').debug('...secondaryNavs', secondaryNavs);
-          _.forEach(secondaryNavs, function (obj) {
-            iscCustomConfigHelper.addStates(obj.secondaryNav);
+      // NOTE: This is an Big O(n^3) operation.
+      // In practice this is Big O(n^2) operation, with very small # of items < 3.
+      // The permissions argument is usually an object instead of an array
+      _.forEach(permissions, function (permission) {
+        _.forEach(permission, function (roles, route) {
+          _.forEach(roles, function (role) {
+            masterRoutes[role] = masterRoutes[role] || [];
+            masterRoutes[role].push(route);
           });
-        }
-      }// END CLASS
-
-    });
+        });
+      });
+      return masterRoutes;
+    }
+  }
 })();

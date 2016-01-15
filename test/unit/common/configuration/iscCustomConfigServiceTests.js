@@ -1,7 +1,7 @@
 (function () {
   'use strict';
   //console.log( 'iscCustomConfigService Tests' );
-
+  var permittedStates;
   var mockConfig = angular.copy(customConfig);
 
   describe('iscCustomConfigService', function () {
@@ -9,60 +9,78 @@
         customConfigService,
         provider;
 
-    var mockStates = [
-      { state: 'index.home', exclude: true },
-      { state: 'index.home.sub1', exclude: false },
-      { state: 'index.home.sub2', exclude: true },
-      { state: 'index.home.sub3', exclude: false },
-      { state: 'index.messages', exclude: true },
-      { state: 'index.messages.sub1', exclude: false },
-      { state: 'index.messages.sub2', exclude: true },
-      { state: 'index.messages.sub3', exclude: false },
-      { state: 'index.library', exclude: true },
-      { state: 'index.account', exclude: false }
-    ];
-
-
-    // this loads all the external templates used in directives etc
-    // eg, everything in **/*.html
-    beforeEach(module('isc.templates'));
-
-
     // setup devlog
-    beforeEach(module('isc.core', function (devlogProvider) {
+    beforeEach(module('isc.core', function (devlogProvider, $provide) {
+      $provide.value('$log', console);
       devlogProvider.loadConfig(customConfig);
     }));
 
     // log statements
-    beforeEach(module('isc.configuration', function ($provide, iscCustomConfigServiceProvider) {
-      $provide.value('$log', console);
+    beforeEach(module('isc.configuration', function (iscCustomConfigServiceProvider) {
       provider = iscCustomConfigServiceProvider;
       iscCustomConfigServiceProvider.loadConfig(mockConfig);
     }));
 
-
     beforeEach(inject(function ($rootScope, $httpBackend, iscCustomConfigService, iscCustomConfigHelper) {
-      helper       = iscCustomConfigHelper;
+      helper = iscCustomConfigHelper;
 
       customConfigService = iscCustomConfigService;
     }));
 
+    describe('getConfigSection', function () {
+      it('should return entire section', function () {
+        var permissions = customConfigService.getConfigSection('rolePermissions');
+        expect(permissions).toEqual(mockConfig.rolePermissions);
+      });
+
+      it('should return config for specific role', function () {
+        var permissions = customConfigService.getConfigSection('rolePermissions', '*');
+        expect(permissions).toEqual(mockConfig.rolePermissions['*']);
+      });
+    });
 
     describe('iscCustomConfigServiceProvider addRolePermissions', function () {
 
-      it('should should have permissions added via .addRolePermissions()', function () {
-        var permittedStates;
-        provider.addRolePermissions({
-          'myRoute.*': [
-            'user',
-            '%HSCC_CMC_CarePlanCreator'
-          ]
-        });
-
-        permittedStates     = customConfigService.getConfigSection('rolePermissions');
-
+      it('should addRolePermissions to be called first', function () {
+        provider.addRolePermissions({ 'myRoute.*': ['*'] });
         provider.loadConfig(mockConfig);
-        permittedStates     = customConfigService.getConfigSection('rolePermissions');
+
+        permittedStates = customConfigService.getConfigSection('rolePermissions', '*');
+        expect(permittedStates).toBeDefined();
+        expect(_.contains(permittedStates, 'myRoute.*')).toBe(true);
+      });
+
+      it('should loadConfig to be called first', function () {
+        provider.loadConfig(mockConfig);
+        provider.addRolePermissions({ 'myRoute.*': ['*'] });
+
+        permittedStates = customConfigService.getConfigSection('rolePermissions', '*');
+        expect(permittedStates).toBeDefined();
+        expect(_.contains(permittedStates, 'myRoute.*')).toBe(true);
+      });
+
+      it('should allow adding a single route', function () {
+        provider.addRolePermissions({ 'myRoute.*': ['*'] });
+
+        permittedStates = customConfigService.getConfigSection('rolePermissions', '*');
+        expect(permittedStates).toBeDefined();
+        expect(_.contains(permittedStates, 'myRoute.*')).toBe(true);
+      });
+
+      it('should allow padding in an array of routes', function () {
+        provider.addRolePermissions([{ 'myRoute.*': ['*'] }, { 'yourRoute.*': ['*'] }]);
+
+        permittedStates = customConfigService.getConfigSection('rolePermissions', '*');
+        expect(permittedStates).toBeDefined();
+        expect(_.contains(permittedStates, 'myRoute.*')).toBe(true);
+        expect(_.contains(permittedStates, 'yourRoute.*')).toBe(true);
+      });
+
+      it('should be able to add multiple roles', function () {
+        provider.addRolePermissions({
+          'myRoute.*': ['user', '%HSCC_CMC_CarePlanCreator']
+        });
+        permittedStates = customConfigService.getConfigSection('rolePermissions');
 
         var statesEvaluated = 0;
         ['user',
@@ -82,17 +100,12 @@
         expect(angular.isFunction(customConfigService.getConfig)).toBe(true);
       });
 
-      it('should have a function setConfig', function () {
-        expect(angular.isFunction(customConfigService.setConfig)).toBe(true);
-      });
-
       it('should return the config when calling getConfig', function () {
         var result = customConfigService.getConfig();
-        expect(result).toBe(mockConfig);
+        expect(result).toEqual(mockConfig);
       });
     });
 
   });
-
 })();
 

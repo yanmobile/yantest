@@ -12,6 +12,11 @@
       devlogProvider.loadConfig(customConfig);
     }));
 
+    // setup devlog
+    beforeEach(module('isc.configuration', function (iscCustomConfigServiceProvider) {
+      iscCustomConfigServiceProvider.loadConfig(customConfig);
+    }));
+
     beforeEach(module('isc.http', function ($provide) {
       fakeDevLog = { channel: _.noop, debug: _.noop };
       $provide.value('devlog', fakeDevLog);
@@ -50,7 +55,7 @@
         spyOn(fakeDevLog, 'debug');
 
         interceptor.request({ url: 'foo.html' });
-        expect(fakeDevLog.channel).not.toHaveBeenCalled();
+        expect(fakeDevLog.channel).not.toHaveBeenCalledWith('iscLoggingInterceptor');
       });
 
     });
@@ -88,26 +93,28 @@
 
       it('should not log when response.data is not object or array', function () {
         spyOn(fakeDevLog, 'debug');
+        console.log(fakeDevLog.debug);
+
 
         var response = { config: { url: 'foo.json', data: 'myData' }, data: '' };
         interceptor.response(response);
-        expect(fakeDevLog.channel).not.toHaveBeenCalled();
+        expect(fakeDevLog.channel).not.toHaveBeenCalledWith('iscLoggingInterceptor');
 
         response = { config: { url: 'foo.json', data: 'myData' }, data: new Date() };
         interceptor.response(response);
-        expect(fakeDevLog.channel).not.toHaveBeenCalled();
+        expect(fakeDevLog.channel).not.toHaveBeenCalledWith('iscLoggingInterceptor');
 
         response = { config: { url: 'foo.json', data: 'myData' }, data: 123 };
         interceptor.response(response);
-        expect(fakeDevLog.channel).not.toHaveBeenCalled();
+        expect(fakeDevLog.channel).not.toHaveBeenCalledWith('iscLoggingInterceptor');
 
         response = { config: { url: 'foo.json', data: 'myData' }, data: new RegExp('foo') };
         interceptor.response(response);
-        expect(fakeDevLog.channel).not.toHaveBeenCalled();
+        expect(fakeDevLog.channel).not.toHaveBeenCalledWith('iscLoggingInterceptor');
 
         response = { config: { url: 'foo.json', data: 'myData' }, data: false };
         interceptor.response(response);
-        expect(fakeDevLog.channel).not.toHaveBeenCalled();
+        expect(fakeDevLog.channel).not.toHaveBeenCalledWith('iscLoggingInterceptor');
       });
 
     });
