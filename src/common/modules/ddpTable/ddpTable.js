@@ -53,7 +53,9 @@
     function controller() {
       var self = this;
 
-      self.sort = sort;
+      angular.extend(self, {
+        sort: sort
+      });
 
       /*========================================
        =                 private               =
@@ -65,7 +67,6 @@
         } else { //asc => desc
           self.sortDirection = !self.sortDirection;
         }
-
       }
     }
 
