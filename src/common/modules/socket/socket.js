@@ -13,11 +13,16 @@
 
   function socket(devlog, $rootScope) {
     devlog.channel('socket').debug('socket LOADED');
-    var socket = io.connect();
+    var socket;
     return {
-      on  : on,
-      emit: emit
+      connect: connect,
+      on     : on,
+      emit   : emit
     };
+
+    function connect() {
+      socket = io.connect();
+    }
 
     function on(eventName, callback) {
       devlog.channel('socket').debug('on called');
