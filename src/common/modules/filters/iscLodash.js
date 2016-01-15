@@ -19,7 +19,7 @@
     /*
      This is a lodash proxy filter.
      It takes the arguments and strips out the 2nd parameter (lodashFunc)
-     and applies the rest of the arguments for to invoke the targeted lodash function
+     and applies the rest of the arguments for invoking the targeted lodash function
      */
     return function (value, lodashFunc) {
       var retVal = value;
