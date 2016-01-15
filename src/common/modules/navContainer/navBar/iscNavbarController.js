@@ -9,7 +9,7 @@
 
   /* @ngInject */
   function iscNavbarController(
-    devlog, $scope, $state, $rootScope, loginApi, $window,
+    devlog, $scope, $state, $rootScope, $window,
     iscNavContainerModel,
     iscCustomConfigService, iscCustomConfigHelper, iscUiHelper, iscSessionModel,
     AUTH_EVENTS
@@ -32,32 +32,12 @@
       userRoles   : [],
 
       logout           : logout,
-      changeRole       : changeRole,
       setPageState     : setPageState,
       setTabActiveState: setTabActiveState
     });
 
     setShowRoles();
 
-    function changeRole() {
-      devlog.channel('iscNavbarController').debug('changeRole)');
-      loginApi.changeRole(self.user.userRole).then(_loginSuccess);
-
-      function _loginSuccess(responseData) {
-        var name    = responseData.UserData.Name;
-        var session = _.extend(responseData, { SessionTimeout: responseData.sessionInfo.remainingTime });
-        _.extend(responseData.UserData, {
-          userRole: responseData.ApplicationRole,
-          FullName: [name.GivenName, name.FamilyName].join(' ')
-        });
-
-        // Create a session for timeout testing purposes
-        iscSessionModel.create(session, true);
-
-        // Saving session.id here to test/demonstrate scope of sessionStorage
-        $window.sessionStorage.setItem('sessionId', session.sessionId);
-      }
-    }
 
     function logout() {
       devlog.channel('iscNavbarController').debug('iscNavbarController.logout');
