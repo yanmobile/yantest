@@ -1,0 +1,30 @@
+<div class="small-12 large-10">
+  <div ng-if="ddpTblCtrl.config.title" class="grid-block">
+    <h3>{{ddpTblCtrl.config.title | translate}}</h3>
+  </div>
+
+  <div class="vertical grid-block grid-table">
+
+    <!--thead-->
+    <div class="grid-block thead tr small-up-{{ddpTblCtrl.config.columns.length}}">
+      <div ng-repeat="column in ddpTblCtrl.config.columns"
+           ng-init="sortable = ddpTblCtrl.config.sortable && column.sortable !== false"
+           class="{{column.cssTHClass || 'grid-block th'}}"
+           ng-class="{'isc-sortable': sortable}">
+
+        <a ng-click="ddpTblCtrl.sort(column)" ng-if="sortable">{{column.key| translate}}</a>
+        <a ng-if="!sortable">{{column.key| translate}}</a>
+      </div>
+    </div>
+
+    <!--tbody-->
+    <div ng-repeat="row in ddpTblCtrl.data | filter:{} | orderBy:ddpTblCtrl.sortBy:ddpTblCtrl.sortDirection"
+         class="grid-block tr small-up-{{ddpTblCtrl.config.columns.length}}">
+      <div ng-repeat="column in ddpTblCtrl.config.columns"
+           class="{{column.cssTDClass || 'grid-block td'}}"
+           ng-include="column.templateUrl || 'shared/ddpTable/cells/cell.'+ (column.type || 'string') + '.html'">
+      </div>
+    </div>
+  </div>
+
+</div>

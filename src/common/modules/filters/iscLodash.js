@@ -19,7 +19,12 @@
     return function (value, lodashFunc) {
       var retVal = value;
       if (value) {
-        retVal = _[lodashFunc](value);
+        var args = _.toArray(arguments);
+        args.splice(1, 1); //remove lodashFunc;
+        var func = _[lodashFunc];
+        if (_.isFunction(func)) {
+          retVal = func.apply(func, args);
+        }
       }
 
       return retVal;
