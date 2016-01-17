@@ -66,6 +66,11 @@
     // -----------------------------
 
     //
+    $rootScope.$on(AUTH_EVENTS.sessionChange, function () {
+      self.isAuthenticated = self.iscSessionModel.isAuthenticated();
+    });
+
+    //
     $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
       devlog.channel('iscNavbarController').debug('iscNavbarController.$stateChangeSuccess', arguments);
       self.setPageState(toState.name);

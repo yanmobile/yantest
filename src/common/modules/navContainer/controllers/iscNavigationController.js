@@ -12,7 +12,7 @@
   /* @ngInject */
   function iscNavigationController(
     devlog, $rootScope, $timeout, $scope, $translate,
-    iscSessionModel, iscSessionStorageHelper, iscNavContainerModel, iscAlertModel,
+    iscSessionModel, iscSessionStorageHelper, iscNavContainerModel,
     iscCustomConfigHelper, iscUiHelper, iscLanguageService,
     AUTH_EVENTS, NAV_EVENTS
   ) {
@@ -134,8 +134,6 @@
         if (showTimedOutAlert) {
           devlog.channel('iscNavigationController').debug( '...showTimedOutAlert 2',showTimedOutAlert);
           iscSessionStorageHelper.setShowTimedOutAlert(false);
-          iscAlertModel.setOptionsByType(AUTH_EVENTS.sessionTimeout, null, null, null);
-          self.showAlertBox();
         }
       }, 250);
     };
@@ -149,20 +147,14 @@
     $scope.$on(AUTH_EVENTS.responseError, function (event, response) {
       devlog.channel('iscNavigationController').debug( 'iscNavigationController.responseError' );
       devlog.channel('iscNavigationController').debug( '...response' + JSON.stringify( response ));
-      iscAlertModel.setOptionsByType(AUTH_EVENTS.responseError, response, null, null);
-      self.showAlertBox();
     });
 
     $scope.$on(AUTH_EVENTS.notAuthenticated, function (event, response) {
 //      devlog.channel('iscNavigationController').debug( 'iscNavigationController.loginError' );
-      iscAlertModel.setOptionsByType(AUTH_EVENTS.notAuthenticated, response, null, null);
-      self.showAlertBox();
     });
 
     $scope.$on(AUTH_EVENTS.notAuthorized, function (event, response) {
 //      devlog.channel('iscNavigationController').debug( 'iscNavigationController.loginError' );
-      iscAlertModel.setOptionsByType(AUTH_EVENTS.notAuthorized, response, null, null);
-      self.showAlertBox();
     });
 
     $scope.$on(AUTH_EVENTS.sessionTimeoutWarning, function (event, response) {
@@ -175,8 +167,6 @@
       }
       devlog.channel('iscNavigationController').debug( '...yup' );
       self.alertShowing = true;
-      iscAlertModel.setOptionsByType(AUTH_EVENTS.sessionTimeoutWarning, response, self.onContinueSession, self.onCancelSession);
-      self.showAlertBox();
     });
 
     $scope.$on(AUTH_EVENTS.sessionTimeout, function () {
