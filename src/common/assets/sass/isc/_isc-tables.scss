@@ -127,6 +127,37 @@ table {
   border-top: 1px solid $app-border-color;
   border-bottom: 1px solid $app-border-color;
   margin-bottom: 2rem;
+  display: table;
+
+  .thead {
+    display: table-header-group;
+
+    .tr {
+      display: table-row;
+
+      .th {
+        display: table-cell;
+        font-weight: $font-weight-bold;
+
+        @media #{$small} {
+          font-weight: $font-weight-semi-bold;
+        }
+      }
+    }
+  }
+
+  .tbody {
+    display: table-row-group;
+
+    .tr {
+      display: table-row;
+
+      .td {
+        display: table-cell;
+        border-top: 1px solid $app-border-color;
+      }
+    }
+  }
 
   .th, .td {
     padding: 0.65rem;
@@ -135,75 +166,28 @@ table {
     font-size: 0.875rem;
     border-left: 1px solid $app-border-color;
 
+    @media #{$small} {
+      padding: 0.3125rem;
+      font-size: 0.75rem;
+    }
+
     &:last-of-type {
       border-right: 1px solid $app-border-color;
     }
   }
 
-  .th {
-    font-weight: $font-weight-bold;
-  }
-
-  .td {
-    border-top: 1px solid $app-border-color;
-  }
-
   // Striped Tables
   &.striped {
 
-    .thead, .tbody, .tfoot {
-      background: initial;
-    }
-
     .tr {
-
-      &:not(.thead){
-
-        &:nth-child(odd) {
-          background: #f9f9f9;
-        }
+      &:nth-child(even) {
+        background: #f9f9f9;
       }
     }
 
-    .thead, .tfoot {
+    .thead {
       background: #f9f9f9;
       color: $body-font-color;
-
-      .tr {
-        background: inital;
-      }
-
-      .th, .td {
-        font-weight: $font-weight-bold;
-        text-align: left;
-      }
-    }
-  }
-
-  // Striped Tables
-  &.striped {
-
-    .thead, .tbody, .tfoot {
-      background: initial;
-    }
-
-    .tr {
-
-      &:not(.thead){
-
-        &:nth-child(odd) {
-          background: #f9f9f9;
-        }
-      }
-    }
-
-    .thead, .tfoot {
-      background: #f9f9f9;
-      color: $body-font-color;
-
-      .tr {
-        background: inital;
-      }
 
       .th, .td {
         font-weight: $font-weight-bold;
@@ -270,7 +254,6 @@ table {
         &:nth-child(odd) {
           background: #f9f9f9;
         }
-
       }
     }
   }
@@ -283,7 +266,6 @@ table {
       &:nth-child(even) {
         background: #f9f9f9;
       }
-
     }
   }
 
@@ -310,6 +292,10 @@ th, .th {
     font-weight: $font-weight-bold;
     padding: 0;
     font-size: 0.875rem;
+
+    @media #{$small} {
+      font-weight: $font-weight-semi-bold;
+    }
   }
 
   // Sortable Columns
@@ -324,6 +310,12 @@ th, .th {
         content: "\F078";
         padding-left: 0.3125rem;
         vertical-align: middle;
+
+        @media #{$small} {
+          padding-left: 0.25rem;
+          font-weight: $font-weight-semi-bold;
+          font-size: 0.65rem; // Change to variable
+        }
       }
 
       &.reverse:after {
@@ -332,6 +324,12 @@ th, .th {
         font-weight: 300;
         content: "\F077";
         padding-left: 0.3125rem;
+
+        @media #{$small} {
+          padding-left: 0.25rem;
+          font-weight: $font-weight-semi-bold;
+          font-size: 0.65rem; // Change to variable
+        }
       }
     }
 
@@ -393,11 +391,27 @@ table, .grid-table, .grid-table-columns {
   // Menu Bars
   .menu-bar {
     background: transparent;
+    margin: 0 auto;
 
     li {
-
       a {
-        padding: 0.65rem;
+        padding: 0.65rem 1rem;
+
+        @media #{$small} {
+          padding: 0.5rem 0.75rem;
+        }
+      }
+    }
+
+    &.condense {
+      li {
+        a {
+          padding: 0.65rem;
+
+          @media #{$small} {
+            padding: 0.5rem;
+          }
+        }
       }
     }
   }
@@ -407,7 +421,31 @@ table, .grid-table, .grid-table-columns {
     margin: 0;
   }
 
-  //section-blocks in tables
+  //Button Groups
+  .button-group {
+    background: transparent;
+
+    li {
+      a {
+
+        @media #{$small} {
+          padding: 0.3125rem 0.5rem;
+          font-size: 0.75rem;
+        }
+
+        .fa-lg {
+
+          @media #{$small} {
+            font-size: 0.85rem;
+            line-height: 0.2rem;
+            //vertical-align: -15%;
+          }
+        }
+      }
+    }
+  }
+
+  //section-blocks
   .section-block {
     margin-bottom: 0;
   }
