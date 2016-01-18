@@ -91,9 +91,14 @@
       width: 1.75rem;
       fill: $logo-color;
 
-      @media #{$medium-down} {
+      @media #{$medium} {
         height: 1.5rem;
         width: 1.5rem;
+      }
+
+      @media #{$small} {
+        height: 1.3125rem;
+        width: 1.3125rem;
       }
     }
   }
@@ -116,9 +121,13 @@
     margin-left: 0.65rem;
     vertical-align: middle;
 
-    @media #{$medium-down} {
+    @media #{$medium} {
       font-size: 1.25rem;
-      margin-left: 0.65rem;
+    }
+
+    @media #{$small} {
+      font-size: 1.125rem;
+      margin-left: 0.3125rem;
     }
   }
 }
