@@ -11,7 +11,7 @@
     "angular-translate": "2.8.1",
     "angular-translate-loader-static-files": "2.8.1",
     "angular-ui-router": "0.2.12",
-    "font-awesome": "4.3.0",
+    "font-awesome": "~4.5.0",
     "greensock": "1.15.1",
     "jquery": "2.1.4",
     "lodash": "3.8.0",
