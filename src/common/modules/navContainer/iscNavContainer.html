@@ -1,26 +1,25 @@
-<!-- --------------------------- -->
-<!--  modals                     -->
-<!-- --------------------------- -->
+<div class="grid-frame vertical">
+  <!-- --------------------------- -->
+  <!--  modals                     -->
+  <!-- --------------------------- -->
 
-<!-- side nav slide-in menu --
-<div class="isc-side-nav-wrapper"
-     ng-include="'navContainer/iscSideNav.html'"
-     ng-class="{'side-nav' : navCtrl.showSideNav }"></div-->
+  <!-- side nav slide-in menu --
+  <div class="isc-side-nav-wrapper"
+       ng-include="'navContainer/iscSideNav.html'"
+       ng-class="{'side-nav' : navCtrl.showSideNav }"></div-->
 
-<!--modal background-->
-<div class="isc-modal-bkgrnd"
-     ng-click="navCtrl.hideAllPopups()"
-     ng-class="{'modal-bkgrnd-anime' : navCtrl.showModalBkgrnd }"></div>
+  <!--modal background-->
+  <div class="isc-modal-bkgrnd"
+       ng-click="navCtrl.hideAllPopups()"
+       ng-class="{'modal-bkgrnd-anime' : navCtrl.showModalBkgrnd }"></div>
 
 
-<!-- --------------------------- -->
-<!--  main app                   -->
-<!-- --------------------------- -->
+  <!-- --------------------------- -->
+  <!--  main app                   -->
+  <!-- --------------------------- -->
 
-<!--header nav and content-->
-<div class="isc-app-content grid-frame vertical">
-
-  <div class="vertical grid-block">
+  <!--header nav and content-->
+  <div class="isc-app-content vertical grid-block">
 
     <!--Responsive Top Navigation-->
     <div class="isc-nav-bar"
@@ -33,8 +32,8 @@
 
   </div>
 
-</div>
+  <!--footer-->
+  <div class="isc-footer"
+       ng-include="'navContainer/iscFooter.html'"></div>
 
-<!--footer-->
-<div class="isc-footer"
-     ng-include="'navContainer/iscFooter.html'"></div>
+</div>
