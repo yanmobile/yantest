@@ -23,8 +23,10 @@
         abstract: true,
         url     : '/',
         resolve : {
-          initFunctions: function (iscStateInit) {
-            return iscStateInit.run();
+          initFunctions: function (iscStateInit, iscNavContainerModel) {
+            return iscStateInit.run().then(function (resolves) {
+              iscNavContainerModel.setVersionInfo(resolves.versionInfo);
+            });
           }
         },
 

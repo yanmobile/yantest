@@ -21,6 +21,7 @@
     var topNavArr = {};
     var secondaryNav;
     var secondaryNavTasks;
+    var versionInfo;
 
 
     // ----------------------------
@@ -32,6 +33,9 @@
 
       getSecondaryNav: getSecondaryNav,
       setSecondaryNav: setSecondaryNav,
+
+      getVersionInfo : getVersionInfo,
+      setVersionInfo : setVersionInfo,
 
       getSecondaryNavTasks: getSecondaryNavTasks,
       setSecondaryNavTasks: setSecondaryNavTasks,
@@ -73,6 +77,14 @@
     function setSecondaryNav(val) {
       devlog('iscNavContainerModel').debug('setSecondaryNav');
       secondaryNav = val;
+    }
+
+    function getVersionInfo() {
+      return versionInfo;
+    }
+
+    function setVersionInfo(val) {
+      versionInfo = val;
     }
 
     function getSecondaryNavTasks() {
