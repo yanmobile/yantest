@@ -142,6 +142,24 @@
 
 
     // --------------
+    // version info
+    // --------------
+    self.versionInfo = {};
+
+    var removeWatch = $scope.$watch(
+      function () {
+        return iscNavContainerModel.getVersionInfo();
+      },
+      function (newVal) {
+        if (newVal) {
+          angular.merge(self.versionInfo, newVal);
+          removeWatch();
+        }
+      }
+    );
+
+
+    // --------------
     // listeners
     // --------------
     $scope.$on(AUTH_EVENTS.responseError, function (event, response) {
