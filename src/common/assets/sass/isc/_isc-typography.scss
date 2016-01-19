@@ -26,8 +26,16 @@ p {
     color: $success-color;
   }
 
-  &.readonly {
+  &.inline, &.readonly {
     margin: 0;
+    padding: 0.6rem 0;
+    display: inline-block;
+  }
+}
+
+/* Links */
+a {
+  &.inline {
     padding: 0.6rem 0;
     display: inline-block;
   }
