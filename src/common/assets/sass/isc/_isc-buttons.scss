@@ -29,14 +29,15 @@ button, a.button {
   }
 
   /* Alternative Button Types Defined Here */
-  &.cancel {
-    border: 1px solid $secondary-color;
+  &.cancel, &.secondary {
+    border-radius: $button-radius;
+
     // Foundation button style mixin
     @include button-style(
-    //$background: $info-color,
-    $background-hover: auto, // Use "auto" to generate automatically
-    $color: #000,
-    $style: solid // Can be solid or hollow
+    $background: scale-color($secondary-color, $lightness: -5%),
+    $background-hover: auto, // "auto" to generate automatically
+    $color: auto,
+    $style: solid //solid or hollow
   );
     &.custom-disabled {
       @include button-disabled;
@@ -67,10 +68,10 @@ button, a.button {
 
     // Foundation button style mixin
     @include button-style(
-      $background: transparent, // No Background color
-      $background-hover: transparent, // No Background color on hover.
-      $color: $primary-color, // Text color
-      $style: solid // Can be solid or hollow
+      $background: transparent, // No Background
+      $background-hover: transparent, // No Background on hover
+      $color: $primary-color,
+      $style: solid // solid or hollow
     );
     &.disabled {
       @include button-disabled;

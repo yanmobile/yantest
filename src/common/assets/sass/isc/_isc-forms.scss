@@ -23,14 +23,12 @@ form, .isc-form {
   @media #{$phab-or-less}{
     padding: 0.75rem;
   }
-  
+
   .grid-content, .grid-block {
     overflow: visible;
     //overflow-y: inherit !important;
   }
 }
-
-aside form {margin: 1rem 0;}
 
 /* Form Inputs */
 
@@ -39,8 +37,9 @@ input[type="text"], input[type="password"], input[type="date"],
 input[type="datetime"], input[type="datetime-local"], input[type="month"],
 input[type="week"], input[type="email"], input[type="number"], input[type="search"],
 input[type="tel"], input[type="time"], input[type="url"], input[type="color"], textarea {
-  margin: 0 0 1.5rem 0;
+  margin: 0 0 1rem 0;
   box-shadow: none;
+  border-radius: $global-radius;
 
   &.ng-invalid, &.invalid, &.error{
     border: 1px solid $alert-color;
@@ -108,12 +107,17 @@ input {
     // Filterable Fields
     button.icon.clear, a.button.icon.clear {
       padding: 0 0.5rem 0 0;
-      border-radius: 0 3px 3px 0;
+      border-radius: 0 $global-radius $global-radius 0;
       border-top: 1px solid $input-border;
       border-right: 1px solid $input-border;
       border-bottom: 1px solid $input-border;
     }
   }
+}
+
+/* Select Inputs */
+select {
+  border-radius: $global-radius;
 }
 
 /* Radios & Checkboxes */
