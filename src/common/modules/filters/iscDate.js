@@ -17,6 +17,11 @@
     devlog.channel('iscDate').debug( 'iscDate LOADED');
 
     return function(date, format) {
+      // moment(undefined) is the current date
+      // moment(null) and moment('') are Invalid Dates
+      if (!date) {
+        return '';
+      }
       if(!moment) {
         devlog.channel('iscDate').error('Error: momentJS is not loaded as a global');
         return '!momentJS';
