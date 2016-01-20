@@ -1,3 +1,5 @@
+.DS_store
+.tmp-css
 .idea/
 .yo-rc.json
 .idea/modules.xml
