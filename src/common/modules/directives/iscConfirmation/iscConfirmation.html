@@ -3,7 +3,7 @@
 
     <!--Header-->
     <div class="primary title-bar">
-      <div class="center title"> {{ iscConfirmCtrl.service.options.title | translate}}</div>
+      <div class="center title">{{ iscConfirmCtrl.service.options.title | translate}}</div>
     </div>
 
     <div class="grid-content" style="padding-top: 2rem;">
@@ -11,7 +11,7 @@
       <p class="text-center">{{iscConfirmCtrl.service.options.message | translate}}</p>
 
       <div class="clearfix">
-        <button class="info float-left" ng-if="iscConfirmCtrl.service.options.btnCancelText"
+        <button class="cancel float-left" ng-if="iscConfirmCtrl.service.options.btnCancelText"
                 ng-click="iscConfirmCtrl.service.reject()">
           {{ iscConfirmCtrl.service.options.btnCancelText| translate}}
         </button>
