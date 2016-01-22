@@ -233,7 +233,7 @@ $h6-font-size: rem-calc(18) !default;
 // 5. Grid
 // - - - - - - - - - - - - - - -
 
-// $container-width: rem-calc(900);
+$container-width: rem-calc(1600) !default;
 // $block-padding: $global-padding;
 // $total-columns: 12;
 // $block-grid-max-size: 6;
