@@ -2,11 +2,11 @@
 .isc-footer {
   background: $primary-color;
   margin: 0;
-  padding: 0.5rem 2rem;
+  padding: 0 2rem;
   width: 100%;
 
   @media #{$medium-down} {
-    padding: 1rem;
+    padding: 0 1rem;
   }
 
   .menu-bar {
