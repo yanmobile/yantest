@@ -67,7 +67,7 @@
 
     //
     $rootScope.$on(AUTH_EVENTS.sessionChange, function () {
-      self.isAuthenticated = self.iscSessionModel.isAuthenticated();
+      self.isAuthenticated = self.sessionModel.isAuthenticated();
     });
 
     //
