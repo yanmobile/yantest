@@ -147,6 +147,16 @@
 // Sub Navigation
 .sub-nav {
   background: $secondary-color;
+  padding: 0 3rem;
+
+  @media #{$medium} {
+    padding: 0 1rem;
+  }
+
+  @media #{$small} {
+    padding: 0 1rem;
+  }
+
   .menu-group {
     background: transparent;
 
