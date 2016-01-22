@@ -20,8 +20,8 @@
       emit   : emit
     };
 
-    function connect() {
-      socket = io.connect();
+    function connect(uri) {
+      socket = io.connect(uri);
     }
 
     function on(eventName, callback) {
