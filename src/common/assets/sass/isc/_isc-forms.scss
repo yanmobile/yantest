@@ -40,13 +40,16 @@ input[type="tel"], input[type="time"], input[type="url"], input[type="color"], t
   margin: 0 0 1rem 0;
   box-shadow: none;
   border-radius: $global-radius;
+  border: $input-border;
 
   &.ng-invalid, &.invalid, &.error{
     border: 1px solid $alert-color;
   }
-  &.error {
-    border: 1px solid $alert-color;
+
+  &:focus {
+    border-color: darken( $app-border-color, 50% );
   }
+
   &[disabled] {
     cursor: not-allowed;
   }
@@ -118,6 +121,11 @@ input {
 /* Select Inputs */
 select {
   border-radius: $global-radius;
+  border: $input-border;
+
+  &:focus {
+    border-color: darken( $app-border-color, 50% );
+  }
 }
 
 /* Radios & Checkboxes */
@@ -230,6 +238,14 @@ input[type='file'] {display : none;}
     border: $input-border;
     box-shadow: none;
     padding: 0.5rem 0.3125rem 0.5rem 0.75rem;
+
+    &.ng-invalid, &.invalid, &.error{
+      border: 1px solid $alert-color;
+    }
+
+    &:focus {
+      border-color: darken( $app-border-color, 50% );
+    }
   }
 
   .date-components-day, .date-components-month, .date-components-year {
