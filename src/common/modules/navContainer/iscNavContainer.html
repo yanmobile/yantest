@@ -27,13 +27,15 @@
     </div>
 
     <!--page content-->
-    <div class="isc-page-content grid-content"
-         ui-view></div>
+    <div class="grid-content">
+      <div class="isc-page-content grid-container"
+           ui-view></div>
+    </div>
 
   </div>
 
   <!--footer-->
-  <div class="isc-footer"
+  <div class="isc-footer grid-block shrink"
        ng-include="'navContainer/iscFooter.html'"></div>
 
 </div>
