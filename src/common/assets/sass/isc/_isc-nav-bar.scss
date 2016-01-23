@@ -1,7 +1,7 @@
 /* Top Navigation / App Bar */
 .top-nav {
   background: $primary-color;
-  padding: 1rem 2.5rem 1rem 3rem;
+  padding: 1rem 3rem 1rem 3rem;
 
   @media #{$medium} {
     padding: 1rem;
@@ -73,11 +73,6 @@
 
 /* Branding */
 .branding {
-  margin-top: 0.4rem;
-
-  @media #{$medium-down} {
-    margin-top: 0.45rem;
-  }
 
   //logo
   .isc-logo {
@@ -168,6 +163,10 @@
 
         a {
           padding: 0.75rem;
+
+          @media #{$small} {
+            font-size: 0.9735rem;
+          }
 
           &.active, &:active, &:focus {
             background: white;
