@@ -1,8 +1,8 @@
 /* Base */
 @import "isc-variables"; // TODO - Deconstruct, remove bloat, create systematic app variables from scratch and theming POA
 @import "isc-mixins"; // TODO - Deconstruct, remove bloat, create organized, useful mixins from scratch
-@import "isc-utilities"; // TODO - Deconstruct and organize new utility classes here
 @import "isc-breakpoints"; // TODO - Assess completeness, remove old-isc classes and any non-breakpoint variables
+@import "isc-utilities"; // TODO - Deconstruct and organize new utility classes here
 @import "isc-app";
 
 /* Atoms */

@@ -33,6 +33,62 @@
 .padding-right {padding-right: $global-padding;}
 .padding-right-half {padding-right: $global-padding / 2;}
 
+.small-collapse {
+  @media #{$small} {
+    margin: 0;
+    padding: 0;
+  }
+}
+
+.medium-collapse {
+  @media #{$medium} {
+    margin: 0;
+    padding: 0;
+  }
+}
+
+.large-collapse {
+  @media #{$large} {
+    margin: 0;
+    padding: 0;
+  }
+}
+
+.small-padding-left {
+  @media #{$small} {
+    padding-left: 1rem;
+  }
+}
+
+.small-padding-right {
+  @media #{$small} {
+    padding-right: 1rem;
+  }
+}
+
+.medium-padding-left {
+  @media #{$medium} {
+    padding-left: 1rem;
+  }
+}
+
+.medium-padding-right {
+  @media #{$medium} {
+    padding-right: 1rem;
+  }
+}
+
+.large-padding-left {
+  @media #{$large} {
+    padding-left: 1rem;
+  }
+}
+
+.large-padding-right {
+  @media #{$large} {
+    padding-right: 1rem;
+  }
+}
 
 //Add Directional Margins
 .margin-top {margin-top: $global-margin;}
