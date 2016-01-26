@@ -100,11 +100,11 @@ $body-font-color: #424242 !default;
 // Application Colors
 $primary-color: #00558b !default;
 $secondary-color: #f1f1f1 !default;
-// $alert-color: #F04124;
-// $info-color: #A0D3E8;
-// $success-color: #43AC6A;
-// $warning-color: #F08A24;
-// $dark-color: #232323;
+$alert-color: #F04124 !default;
+$info-color: #A0D3E8 !default;
+$success-color: #43AC6A !default;
+$warning-color: #F08A24 !default;
+$dark-color: #232323 !default;
 // $gray: #dfdfdf;
 // $gray-dark: darken($gray, 8);
 // $gray-light: lighten($gray, 8);
@@ -196,7 +196,7 @@ $h6-font-size: rem-calc(18) !default;
 // We use these to style anchors
 // $anchor-text-decoration: none;
 // $anchor-text-decoration-hover: none;
-// $anchor-font-color: $primary-color;
+$anchor-font-color: $primary-color !default;
 // $anchor-font-color-hover: scale-color($anchor-font-color, $lightness: -14%);
 
 // We use these to style the <hr> element
