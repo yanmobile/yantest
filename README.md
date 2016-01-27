@@ -36,13 +36,16 @@ To use:
         
 Run application:
 
-    <sudo> npm install -g bower gulp
+    npm install -g bower gulp
+    npm install     //from project root folder
     cd src/common
     bower install
+    cd src/app      //application specific
+    bower install   //application specific
     gulp serve
     
 Run tests:
 
-    gulp test
+    gulp test        //only available as part of app specific task
     gulp test:common
     gulp test:app    //application specific
