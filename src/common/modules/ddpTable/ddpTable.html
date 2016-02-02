@@ -2,7 +2,13 @@
   <h3>{{ddpTblCtrl.config.title | translate}}</h3>
 </div>
 
-<div class="vertical grid-block grid-table">
+<div ng-if="ddpTblCtrl.data.length === 0" class="grid-block">
+  <p class="{{column.cssEmptyClass || 'empty-message'}}">
+    {{ (ddpTblCtrl.config.emptyText || "ISC_NO_ITEMS") | translate}}
+  </p>
+</div>
+
+<div ng-if="ddpTblCtrl.data.length > 0" class="vertical grid-block grid-table">
 
   <!--thead-->
   <div class="grid-block thead">
@@ -21,7 +27,7 @@
   <!--tbody-->
   <div class="grid-block tbody">
     <div ng-repeat="row in ddpTblCtrl.data | filter:{} | orderBy:ddpTblCtrl.sortBy:ddpTblCtrl.sortDirection"
-         class="grid-block tr">
+         class="{{column.cssTRClass || 'grid-block tr'}}">
       <div ng-repeat="column in ddpTblCtrl.config.columns"
            class="{{column.cssTDClass || 'grid-block td'}}"
            ng-include="column.templateUrl || 'ddpTable/cells/cell.'+ (column.type || 'string') + '.html'">
