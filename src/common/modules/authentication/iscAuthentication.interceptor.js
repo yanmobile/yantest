@@ -11,7 +11,7 @@
     .factory('iscAuthenticationInterceptor', iscAuthenticationInterceptor);
 
   /* @ngInject */
-  function iscAuthenticationInterceptor(devlog, $rootScope, $q, iscSessionModel, AUTH_EVENTS) {//jshint ignore:line
+  function iscAuthenticationInterceptor(devlog, $rootScope, $q, AUTH_EVENTS) {//jshint ignore:line
 
     // ----------------------------
     // vars
@@ -36,7 +36,7 @@
       devlog.channel('iscAuthenticationInterceptor').debug('Intercepting response for %s', response.config.url, response);
       if (!response.config.cache) {
         devlog.channel('iscAuthenticationInterceptor').debug('Resetting timeout');
-        iscSessionModel.resetSessionTimeout();
+        $rootScope.$emit(AUTH_EVENTS.sessionTimeoutReset, response);
       } else {
         devlog.channel('iscAuthenticationInterceptor').debug('No session timeout reset');
       }

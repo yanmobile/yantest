@@ -67,7 +67,11 @@
 
     //
     $rootScope.$on(AUTH_EVENTS.sessionChange, function () {
-      self.isAuthenticated = self.sessionModel.isAuthenticated();
+      self.isAuthenticated = iscSessionModel.isAuthenticated();
+    });
+
+    $rootScope.$on(AUTH_EVENTS.iscSessionResumedSuccess, function () {
+      self.isAuthenticated = iscSessionModel.isAuthenticated();
     });
 
     //

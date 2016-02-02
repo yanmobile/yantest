@@ -10,16 +10,18 @@
     .run(run);
 
 
-  function run(devlog, $rootScope, AUTH_EVENTS, iscSessionModel, iscSessionStorageHelper) {
+  function run(devlog, $rootScope, AUTH_EVENTS, $timeout, storage, iscSessionModel, $http) {
     devlog.channel('IscRouterDefaultEventService').debug('iscNavContainer.loadDataFromStoredSession');
 
     // NOTE - set the login response and create the session BEFORE calling initSessionTimeout
     // since the warning for sessionTimeout time is predicate on setting the sessionTimeout time first
-    var storedLoginResponse = iscSessionStorageHelper.getLoginResponse();
+    var storedLoginResponse = storage.get('loginResponse');
     if (!_.isEmpty(storedLoginResponse)) {
       devlog.channel('IscRouterDefaultEventService').debug('...got storedLoginResponse: ', storedLoginResponse);
       iscSessionModel.create(storedLoginResponse, false);
-      $rootScope.$emit(AUTH_EVENTS.iscSessionResumedSuccess);
+      $timeout(function () {
+        $rootScope.$emit(AUTH_EVENTS.iscSessionResumedSuccess);
+      });
     }
 
     var timeoutCounter = iscSessionStorageHelper.getSessionTimeoutCounter();

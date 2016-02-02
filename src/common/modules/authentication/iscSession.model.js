@@ -8,9 +8,7 @@
   angular.module('isc.authentication')
     .factory('iscSessionModel', iscSessionModel);
 
-  function iscSessionModel(
-    $q, devlog, $rootScope, $interval, iscSessionStorageHelper, AUTH_EVENTS
-  ) {
+  function iscSessionModel($q, $http, devlog, $rootScope, $interval, storage, iscSessionStorageHelper, AUTH_EVENTS) {
     devlog.channel('iscSessionModel').debug('iscSessionModel LOADED');
 
     // ----------------------------
@@ -64,7 +62,7 @@
       isAuthenticated: isAuthenticated,
       getFullName    : getFullName,
 
-      configure         : configure
+      configure: configure
     };
 
     return model;
@@ -78,8 +76,10 @@
       // $log.debug( '...sessionData: ' + JSON.stringify( sessionData  ));
 
       // store the login response for page refreshes
-      iscSessionStorageHelper.setLoginResponse(sessionData);
-
+      storage.set('loginResponse', sessionData);
+      storage.set('jwt', sessionData.jwt);
+      $http.defaults.headers.common.jwt = sessionData.jwt;
+      
       credentials = {}; // for now we arent using credentials
       setCurrentUser(sessionData.UserData);
 
@@ -155,6 +155,10 @@
       // create a session with null data
       currentUser = anonymousUser;
       credentials = null;
+
+      storage.remove('jwt');
+      storage.remove('loginResponse');
+      $http.defaults.headers.common.jwt = null;
 
       sessionTimeout.status = 'killed';
 
