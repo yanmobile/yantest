@@ -11,6 +11,7 @@
    - Checkboxes and radio buttons, single and grouped
    - File inputs
    - Date inputs: Date components and datepickers, datepicker ranges
+   - Validation Styles
 */
 
 /* Base Form Architecture */
@@ -41,10 +42,6 @@ input[type="tel"], input[type="time"], input[type="url"], input[type="color"], t
   box-shadow: none;
   border-radius: $global-radius;
   border: $input-border;
-
-  &.ng-invalid, &.invalid, &.error{
-    border: 1px solid $alert-color;
-  }
 
   &:focus {
     border-color: darken( $app-border-color, 50% );
@@ -223,6 +220,12 @@ ul.check-group {
   }
 }
 
+label {
+  &.radio {
+    margin-left: 0.125rem;
+  }
+}
+
 // File Inputs
 input[type='file'] {display : none;}
 
@@ -234,14 +237,7 @@ input[type='file'] {display : none;}
   input[type="number"], input[type="number"], input[type="date"],
   input[type="datetime"], input[type="datetime-local"],
   input[type="month"], input[type="week"], input[type="time"] {
-    border-radius: $global-radius;
-    border: $input-border;
-    box-shadow: none;
     padding: 0.5rem 0.3125rem 0.5rem 0.75rem;
-
-    &.ng-invalid, &.invalid, &.error{
-      border: 1px solid $alert-color;
-    }
 
     &:focus {
       border-color: darken( $app-border-color, 50% );
@@ -355,4 +351,72 @@ input#startDate, input#endDate {
   @media #{$small} {
     font-size: 0.875rem;
   }
+}
+
+/* Validation */
+
+/* Invalid fields are fields that have been touched, yet fail to meet validation requirements
+ * Thus, fields should never be shown as invalid by default - only after they've been touched
+ * Touched required fields that remain pristine (no value entered) show a red border
+ *
+ * When invalid fields display an .error message:
+ * bottom margins should be moved underneath the error message to preserve layout rhythm
+*/
+
+
+// Single Inputs - All Types
+input[type="text"], input[type="password"], input[type="date"],
+input[type="datetime"], input[type="datetime-local"], input[type="month"],
+input[type="week"], input[type="email"], input[type="number"], input[type="search"],
+input[type="tel"], input[type="time"], input[type="url"], input[type="color"], textarea, select {
+
+  &.ng-invalid {
+
+    &.ng-touched {
+      border: 1px solid $alert-color;
+    }
+  }
+
+}
+
+// Date Component Inputs
+.date-container {
+
+  &.ng-invalid {
+
+    input[type="number"] {
+
+      &.ng-touched {
+        border: 1px solid $alert-color;
+      }
+    }
+
+  }
+}
+
+//.has-error wrapper
+.has-error {
+
+  input, select {
+    margin-bottom: 0.25rem;
+  }
+
+  //.error-message inside .has-error wrapper
+  label{
+    &.error-message {
+      font-weight: $font-weight-normal;
+      font-size: 0.875rem;
+    }
+  }
+
+  .date-container {
+    input {
+      border: 1px solid $alert-color;
+    }
+  }
+}
+
+.error {
+  margin-bottom: 1em;
+  font-weight: normal;
 }
