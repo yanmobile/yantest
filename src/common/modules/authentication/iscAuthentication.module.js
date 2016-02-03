@@ -10,7 +10,7 @@
     .run(run);
 
 
-  function run(devlog, $rootScope, AUTH_EVENTS, $timeout, storage, iscSessionModel, $http) {
+  function run(devlog, $rootScope, AUTH_EVENTS, $timeout, storage, iscSessionModel, iscSessionStorageHelper) {
     devlog.channel('IscRouterDefaultEventService').debug('iscNavContainer.loadDataFromStoredSession');
 
     // NOTE - set the login response and create the session BEFORE calling initSessionTimeout
