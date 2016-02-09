@@ -18,9 +18,11 @@
     NAV_EVENTS
   ) {
     var service = {
-      registerDefaultEvents     : registerDefaultEvents,
-      registerStateChangeStart  : registerStateChangeStart, //optionally register events individually
-      registerStateChangeSuccess: registerStateChangeSuccess //optionally register events individually
+      registerDefaultEvents      : registerDefaultEvents,
+      registerStateChangeStart   : registerStateChangeStart,
+      registerStateChangeSuccess : registerStateChangeSuccess,
+      registerStateChangeError   : registerStateChangeError,
+      registerStateChangeRejected: registerStateChangeRejected
     };
     return service;
 
@@ -44,7 +46,7 @@
           devlog.channel('IscRouterDefaultEventService').debug('.....to: ', toState.name);
 
           devlog.channel('IscRouterDefaultEventService').debug('State change request received');
-          devlog.channel('IscRouterDefaultEventService').debug('Beginning state change from \'%s\' to \'%s\'', fromState.name, toState.name);
+          devlog.channel('IscRouterDefaultEventService').debug('Beginning state change from \'%s\' to \'%s\'', _.wrapText(fromState.name), _.wrapText(toState.name));
 
           handleStateChangeStart(event, toState, toParams, fromState, fromParams);
         });
@@ -55,7 +57,7 @@
       // stateChange success
       $rootScope.$on('$stateChangeSuccess',
         function (event, toState, toParams, fromState, fromParams) {//jshint ignore:line
-          devlog.channel('IscRouterDefaultEventService').debug('ischNavContainer.$stateChangeSuccess');
+          devlog.channel('IscRouterDefaultEventService').debug('ischNavContainer.$stateChangeSuccess', _.wrapText(toState.name));
         });
     }
 
@@ -65,7 +67,7 @@
       // stateChange error
       $rootScope.$on('$stateChangeError',
         function (event, toState, toParams, fromState, fromParams, error) {//jshint ignore:line
-          devlog.channel('IscRouterDefaultEventService').error('ischNavContainer.$stateChangeError');
+          devlog.channel('IscRouterDefaultEventService').error('ischNavContainer.$stateChangeError', error);
         });
     }
 
@@ -77,10 +79,9 @@
       $rootScope.$on('$stateChangeRejected',
         function (event, toState, toParams, fromState, fromParams, error) {//jshint ignore:line
           devlog.channel('IscRouterDefaultEventService').error('ischNavContainer.$stateChangeRejected');
-          devlog.channel('IscRouterDefaultEventService').error('.... to state', toState.state);
+          devlog.channel('IscRouterDefaultEventService').error('.... to state', _.wrapText(toState.state, '=='));
         });
     }
-
 
     function handleStateChangeStart(event, toState, toParams, fromState, fromParams) {//jshint ignore:line
       devlog.channel('IscRouterDefaultEventService').debug('iscNavContainer.handleStateChangeStart');

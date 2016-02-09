@@ -110,7 +110,7 @@
     return gulp.src(srcFiles)
       .pipe(jshint())
       .pipe(jshint.reporter('jshint-stylish'))
-      .pipe(jscs({fix: true}))
+      .pipe(jscs({ fix: true }))
       .pipe(jscs.reporter())
       .pipe(size());
   });
@@ -175,7 +175,7 @@
       stream = stream.pipe(chmod(755))
         .pipe(imagemin({
           progressive: true,
-          svgoPlugins: [{removeViewBox: false}],
+          svgoPlugins: [{ removeViewBox: false }],
           use        : [pngcrush()]
         }));
     }
@@ -190,7 +190,7 @@
   gulp.task('sass', [], function () {
     return gulp
       .src(app.module.scss)
-      .pipe(sass({errLogToConsole: true}))
+      .pipe(sass({ errLogToConsole: true }))
       .on('error', handleError)
       .pipe(mobilizer('app.css', {
         'app.css'  : {
@@ -205,7 +205,7 @@
       //.pipe(cssmin())
       .pipe(gulp.dest('.tmp-css'))
       .pipe(concat('app.css'))
-      .pipe(rename({basename: 'main', suffix: '.min'}))
+      .pipe(rename({ basename: 'main', suffix: '.min' }))
       .pipe(gulp.dest(path.join(config.dest, 'css')))
       .pipe(size());
   });
@@ -228,7 +228,7 @@
       strip : 'app/modules/'
     };
 
-    streamqueue({objectMode: true},
+    streamqueue({ objectMode: true },
       gulp.src(common.vendor.js),
       gulp.src(app.vendor.js),
       gulp.src(_.get(common, 'module.assets.vendor.js', [])),
@@ -245,7 +245,7 @@
       //.pipe(uglify())
       .pipe(sourcemaps.init())
       .pipe(concat('app.js'))
-      .pipe(rename({suffix: '.min'}))
+      .pipe(rename({ suffix: '.min' }))
       .pipe(sourcemaps.write('.'))
       .pipe(gulp.dest(path.join(config.dest, 'js')));
   });
@@ -287,7 +287,7 @@
   var todayISO         = dateFormat(today, 'yyyy-mm-dd') + 'T00:00:00.000';
   var suffix           = '';
   var outputDateFormat = 'yyyymmdd';
-  var syncEncoding     = {encoding: 'utf-8'};
+  var syncEncoding     = { encoding: 'utf-8' };
   var upstreamUpdated  = false;
 
   var appBuildno, appCodeno,
