@@ -12,7 +12,7 @@
   angular.module('iscNavContainer')
     .factory('iscNavContainerModel', iscNavContainerModel);
 
-  function iscNavContainerModel(devlog, $state, iscCustomConfigService, iscSessionModel) {
+  function iscNavContainerModel(devlog, $state, iscCustomConfigService, iscSessionModel, $timeout) {
     devlog.channel('iscNavContainerModel').debug('iscNavContainerModel LOADED');
 
     // ----------------------------
@@ -27,6 +27,7 @@
     // ----------------------------
     // class factory
     // ----------------------------
+
     var model = {
 
       getTopNav: getTopNav,
@@ -34,8 +35,8 @@
       getSecondaryNav: getSecondaryNav,
       setSecondaryNav: setSecondaryNav,
 
-      getVersionInfo : getVersionInfo,
-      setVersionInfo : setVersionInfo,
+      getVersionInfo: getVersionInfo,
+      setVersionInfo: setVersionInfo,
 
       getSecondaryNavTasks: getSecondaryNavTasks,
       setSecondaryNavTasks: setSecondaryNavTasks,
