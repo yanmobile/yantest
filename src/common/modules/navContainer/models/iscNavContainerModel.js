@@ -12,7 +12,7 @@
   angular.module('iscNavContainer')
     .factory('iscNavContainerModel', iscNavContainerModel);
 
-  function iscNavContainerModel(devlog, $state, iscCustomConfigService, iscSessionModel, $timeout) {
+  function iscNavContainerModel(devlog, $state, iscCustomConfigService, iscSessionModel) {
     devlog.channel('iscNavContainerModel').debug('iscNavContainerModel LOADED');
 
     // ----------------------------
@@ -54,7 +54,11 @@
     function navigateToUserLandingPage() {
       var currentUserRole = iscSessionModel.getCurrentUserRole();
       var landingPage     = iscCustomConfigService.getConfigSection('landingPages')[currentUserRole];
-      $state.go(landingPage);
+      if (landingPage != null) {
+        $state.go(landingPage);
+      } else {
+        devlog.channel('iscNavContainerModel').error('No landing page found for', _.wrapText(currentUserRole), 'role');
+      }
     }
 
     function getTopNav() {
