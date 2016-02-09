@@ -11,7 +11,7 @@
     .factory('iscAuthenticationInterceptor', iscAuthenticationInterceptor);
 
   /* @ngInject */
-  function iscAuthenticationInterceptor(devlog, $rootScope, $q, iscSessionModel, AUTH_EVENTS) {//jshint ignore:line
+  function iscAuthenticationInterceptor(devlog, $rootScope, $q, AUTH_EVENTS) {//jshint ignore:line
 
     // ----------------------------
     // vars
