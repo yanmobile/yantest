@@ -95,7 +95,10 @@
 
       if (!isAuthorized) {
         devlog.channel('IscRouterDefaultEventService').debug(toState.name + ' is not authorized');
-        preventDefault(event, toState.name);
+        preventDefault(event, toState.name, {
+          source: "iscRouterDefaultEventService.handleStateChangeStart",
+          error : "User is not authorized to access " + _.wrapText(toState.name)
+        });
 
         if (!isAuthenticated) {
           devlog.channel('IscRouterDefaultEventService').debug('...not authenticated');
@@ -108,8 +111,9 @@
       }
     }
 
-    function preventDefault(event, toStateName) {
+    function preventDefault(event, toStateName, error) {
       devlog.channel('IscRouterDefaultEventService').debug('...preventDefault to', toStateName);
+      devlog.channel('IscRouterDefaultEventService').error('... ' + _.wrapText(toStateName) + ' is unauthorized. ', error);
       event.preventDefault();
     }
   }

@@ -58,7 +58,7 @@
     function mapAuthorizedUserRoute(userRole) {
       devlog.channel('iscAuthorizationModel').debug('iscAuthorizationModel.mapAuthorizedUserRoute for', userRole);
       var rolePermissions = iscCustomConfigService.getConfigSection('rolePermissions');
-      var permittedRoutes = rolePermissions[userRole];
+      var permittedRoutes = rolePermissions[userRole] || [];
 
       if (!authorizedRoutes[userRole]) {
         authorizedRoutes[userRole] = (userRole === '*') ? {} : angular.copy(authorizedRoutes['*']); //get everything from anonymous
