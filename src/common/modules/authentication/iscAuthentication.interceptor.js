@@ -16,6 +16,8 @@
     // ----------------------------
     // vars
     // ----------------------------
+    //TODO: make this configurable
+    var blacklistExts = ['.html', '.json'];
 
     // ----------------------------
     // factory class
@@ -33,17 +35,12 @@
     // ----------------------------
 
     function response(response) {//jshint ignore:line
-      devlog.channel('iscAuthenticationInterceptor').debug('Intercepting response for %s', response.config.url, response);
-      if (!response.config.cache) {
-        devlog.channel('iscAuthenticationInterceptor').debug('Resetting timeout');
-        iscSessionModel.resetSessionTimeout();
-      } else {
-        devlog.channel('iscAuthenticationInterceptor').debug('No session timeout reset');
+      if (!response.config.cache && !endsWithExts(response.config.url, blacklistExts)) {
+        devlog.channel('iscAuthenticationInterceptor').debug('Resetting timeout for %s', response.config.url, response);
+        $rootScope.$emit(AUTH_EVENTS.sessionTimeoutReset, response);
       }
 
-      var deferred = $q.defer();
-      deferred.resolve(response);
-      return deferred.promise;
+      return response;
     }
 
     function responseError(response) {
@@ -69,5 +66,10 @@
       return $q.reject(response);
     }
 
+    function endsWithExts(url, exts) {
+      return _.any(exts, function (ext) {
+        return _.endsWith(url, ext);
+      });
+    }
   }// END CLASS
 })();

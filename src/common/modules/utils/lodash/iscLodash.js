@@ -24,7 +24,8 @@
     nullifyObj  : nullifyObj,
     isTypeOf    : isTypeOf,
     makeObj     : makeObj,
-    get         : advancedGet
+    get         : advancedGet,
+    wrapText    : wrapText
   });
 
   // Present is defined by not undefined and not null.
@@ -164,6 +165,12 @@
     var obj  = {};
     obj[key] = value;
     return obj;
+  }
+
+  function wrapText(val, text) {
+    text = text || '"';
+
+    return text + val + text;
   }
 
 

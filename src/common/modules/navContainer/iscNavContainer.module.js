@@ -11,31 +11,6 @@
     'isc.core',
     'isc.animation',
     'isc.authentication',
-    'isc.states'])
-    .config(config);
+    'isc.states']);
 
-  function config($stateProvider) {
-    // ----------------------------
-    // state management
-    // ----------------------------
-    $stateProvider
-      .state('index', {
-        abstract: true,
-        url     : '/',
-        resolve : {
-          initFunctions: function (iscStateInit, iscNavContainerModel) {
-            return iscStateInit.run().then(function (resolves) {
-              iscNavContainerModel.setVersionInfo(resolves.versionInfo);
-            });
-          }
-        },
-
-        views: {
-          '@': {
-            templateUrl: 'navContainer/iscNavContainer.html',
-            controller : 'iscNavigationController as navCtrl'
-          }
-        }
-      });
-  }
 })();
