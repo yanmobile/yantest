@@ -25,7 +25,8 @@
     isTypeOf    : isTypeOf,
     makeObj     : makeObj,
     get         : advancedGet,
-    wrapText    : wrapText
+    wrapText    : wrapText,
+    interpolate : interpolate
   });
 
   // Present is defined by not undefined and not null.
@@ -173,6 +174,20 @@
     return text + val + text;
   }
 
+  //from:http://stackoverflow.com/questions/1408289/how-can-i-do-string-interpolation-in-javascript
+  //usage:
+  // _.interpolate("I am {0}", {'0': 5})
+  // => "I am 5
+  // _.interpolate("I am {0}", [5])
+  // => "I am 5
+  function interpolate(template, scope) {
+    return template.replace(/{([^{}]*)}/g,
+      function (a, b) {
+        var r = scope[b];
+        return typeof r === 'string' || typeof r === 'number' ? r : a;
+      }
+    );
+  }
 
   //END CLASS
 })();
