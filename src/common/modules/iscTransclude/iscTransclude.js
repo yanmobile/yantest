@@ -152,7 +152,7 @@
 
     function pre(scope, element, attrs, iscTranscludeCtrl) {
       var configItemKey = 'configItem';
-      scope.$watchCollection(attrs.config, updateConfig);
+      scope.$watch(attrs.config, updateConfig, true);
 
       function updateConfig(config, oldConfig) {
 
