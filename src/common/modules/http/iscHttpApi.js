@@ -23,9 +23,10 @@
   function iscHttpapi($http, iscSessionModel) {
 
     return {
-      get : get,
-      put : put,
-      post: post
+      get   : get,
+      put   : put,
+      post  : post,
+      delete: deleteApi
     };
 
     /**
@@ -50,6 +51,14 @@
     function post(url, data, config) {
       var partialReturnedResponseData = _.partial(returnResponseData, config);
       return $http.post(url, data, config).then(partialReturnedResponseData);
+    }
+
+    /**
+     * Methods: delete(url, [config]);
+     */
+    function deleteApi(url, config) {
+      var partialReturnedResponseData = _.partial(returnResponseData, config);
+      return $http.delete(url, config).then(partialReturnedResponseData);
     }
 
     function returnResponseData(config, response) {

@@ -23,8 +23,8 @@
 
     ////////////////
     function get(storageKey, entityPath) {
-      devlog.channel('storage').log('get...');
-      devlog.channel('storage').log("storageKey", storageKey, "entityPath", entityPath);
+      devlog.channel('storage').debug('get...');
+      devlog.channel('storage').debug("storageKey", storageKey, "entityPath", entityPath);
       var val;
       if (entityPath == null) { //if no entityPath is supplied (only 1 parameter)
         val = getFromStorage(storageKey);
@@ -37,8 +37,8 @@
     }
 
     function set(storageKey, entityPath, value) {
-      devlog.channel('storage').log('set...');
-      devlog.channel('storage').log("storageKey", storageKey, "entityPath", entityPath, "value", value);
+      devlog.channel('storage').debug('set...');
+      devlog.channel('storage').debug("storageKey", storageKey, "entityPath", entityPath, "value", value);
 
       if (value == null) {
         value = entityPath;
@@ -51,8 +51,8 @@
     }
 
     function remove(storageKey) {
-      devlog.channel('storage').log('remove...');
-      devlog.channel('storage').log("storageKey", storageKey);
+      devlog.channel('storage').debug('remove...');
+      devlog.channel('storage').debug("storageKey", storageKey);
       removeFromStorage(storageKey);
     }
 
