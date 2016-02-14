@@ -49,8 +49,3 @@ Run tests:
     gulp test        //only available as part of app specific task
     gulp test:common
     gulp test:app    //application specific
-
-##Changelog:
-### 02/14/2016
-* Renaming "iscNavbarDesktop.html" to "iscNavbar.html"
- 
