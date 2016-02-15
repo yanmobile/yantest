@@ -14,6 +14,7 @@
    ========================================*/
   function getConfig() {
     return {
+      'devlogWhitelist': [],
       'formats'        : {
         'date': {
           'shortDate'   : 'MM-DD-YYYY',
