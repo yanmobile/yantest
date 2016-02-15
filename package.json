@@ -34,7 +34,7 @@
     "imagemin-pngcrush": "0.1.0",
     "jasmine-core": "2.4.1",
     "jshint-stylish": "0.4.0",
-    "karma": "0.13.15",
+    "karma": "0.13.21",
     "karma-jasmine": "0.3.6",
     "karma-ng-html2js-preprocessor": "0.1.2",
     "karma-phantomjs-launcher": "0.1.4",
