@@ -17,7 +17,7 @@
 
       /* @ngInject */
       function devlogService($log) {
-        var devlog = {};
+        var devlog   = {};
 
         // make devlog function as an extension of angular $log
         ['log', 'info', 'warn', 'error', 'debug'].forEach(function (method) {
@@ -27,13 +27,15 @@
             devlog.clearChannelPrefix();
           };
         });
-        devlog.trace = function () { console.trace(); };
+        devlog.trace = function () {
+          console.trace();
+        };
 
         // null interface for channels that fail
-        var nullobj  = {};
-        nullobj.log  = _.noop;
-        nullobj.info = _.noop;
-        nullobj.warn = _.noop;
+        var nullobj   = {};
+        nullobj.log   = _.noop;
+        nullobj.info  = _.noop;
+        nullobj.warn  = _.noop;
         nullobj.error = _.noop;
         nullobj.debug = _.noop;
         nullobj.trace = _.noop;
@@ -58,6 +60,7 @@
             return nullobj;
           }
           var whitelist = config.devlogWhitelist;
+          var blacklist = config.devlogBlacklist || [];
 
           //no whitelist present
           //means suppress
@@ -77,7 +80,7 @@
           //otherwise suppress
           var approved = [];
           for ( var i = 0; i < args.length; i++ ) {
-            if (whitelist.indexOf(args[i]) >= 0) {
+            if (blacklist.indexOf(args[i]) === -1 && whitelist.indexOf(args[i]) >= 0) {
               approved.push(args[i]);
             } else if (whitelist.indexOf('*') >= 0 && whitelist.indexOf('!' + args[i]) < 0) {
               approved.push(args[i]);
@@ -106,7 +109,7 @@
         devlog.clearChannelPrefix = function () {
           devlog.channelPrefix = '';
         };
-        devlog.prefixArgs          = function (msgParams) {
+        devlog.prefixArgs         = function (msgParams) {
           //msg_params is of type Arguments from function
           var args = Array.prototype.slice.call(msgParams);
           if (args[0] && (typeof args[0] === 'string' || args[0] instanceof String)) {

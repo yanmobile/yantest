@@ -135,6 +135,18 @@
         );
       }
     );
+
+    describe('blacklisted channel', function () {
+      it(
+        'should not go through when channel is blacklisted',
+        function () {
+          mockConfig.devlogBlacklist.push('apple');
+          mockConfig.devlogWhitelist.push('apple');
+          devlog.channel('apple').debug('This is a debug message');
+          expect($log.debug.logs).toEqual([]);
+        }
+      );
+    });
   });
 
 })();
