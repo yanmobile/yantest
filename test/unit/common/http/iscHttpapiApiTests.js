@@ -57,6 +57,17 @@
 
         $httpBackend.flush();
       });
+
+      it('should return response.data when DELETE is invoked', function () {
+
+        $httpBackend.whenDELETE(url).respond(responseData);
+
+        iscHttpapi.delete(url).then(function (response) {
+          expect(response).toEqual(responseData);
+        });
+
+        $httpBackend.flush();
+      });
     });
 
     describe('calling iscHttpapi\'s methods with {responseAsObject:true} overload', function () {
@@ -99,6 +110,20 @@
 
 
         iscHttpapi.post(url, null, overloads).then(function (response) {
+          expect(response.config).not.toBeNull();
+          expect(response.data).not.toBeNull();
+
+          expect(response.data).toEqual(responseData);
+        });
+        $httpBackend.flush();
+      });
+
+      it('should respond with raw ajax object when performing a DELETE request', function () {
+
+        $httpBackend.whenDELETE(url).respond(responseData);
+
+
+        iscHttpapi.delete(url, overloads).then(function (response) {
           expect(response.config).not.toBeNull();
           expect(response.data).not.toBeNull();
 
