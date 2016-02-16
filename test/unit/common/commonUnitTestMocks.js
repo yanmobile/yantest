@@ -25,6 +25,7 @@
 var customConfig = {
   'baseUrl'        : 'http://hscommdev.iscinternal.com/public/api/v1',
   'devlogWhitelist': [],
+  'devlogBlacklist': [],
   'landingPages'   : {},
   'rolePermissions': {
     '*'    : ['index.login'],
