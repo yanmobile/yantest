@@ -80,10 +80,12 @@
           //otherwise suppress
           var approved = [];
           for ( var i = 0; i < args.length; i++ ) {
-            if (blacklist.indexOf(args[i]) === -1 && whitelist.indexOf(args[i]) >= 0) {
-              approved.push(args[i]);
-            } else if (whitelist.indexOf('*') >= 0 && whitelist.indexOf('!' + args[i]) < 0) {
-              approved.push(args[i]);
+            if (!_.includes(blacklist, args[i])) {
+              if (whitelist.indexOf(args[i]) >= 0) {
+                approved.push(args[i]);
+              } else if (whitelist.indexOf('*') >= 0 && whitelist.indexOf('!' + args[i]) < 0) {
+                approved.push(args[i]);
+              }
             }
           }
           if (approved.length > 0) {
