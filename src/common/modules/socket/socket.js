@@ -21,7 +21,7 @@
     };
 
     function connect(uri) {
-      socket = io.connect(uri);
+      socket = io.connect(uri, { 'forceNew': true });
     }
 
     function on(eventName, callback) {
