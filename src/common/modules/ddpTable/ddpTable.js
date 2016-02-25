@@ -54,12 +54,20 @@
       var self = this;
 
       angular.extend(self, {
-        sort: sort
+        sort   : sort,
+        getSort: getSort
       });
 
       /*========================================
        =                 private               =
        ========================================*/
+      /**
+       * Place the specfied column as sort column
+       * sortDirection: true => asc
+       * sortDirection: false => desc
+       * @param column
+       *
+       */
       function sort(column) {
         if (self.sortBy !== column.model) {
           self.sortBy        = column.model;
@@ -67,6 +75,19 @@
         } else { //asc => desc
           self.sortDirection = !self.sortDirection;
         }
+      }
+
+      /**
+       * Gets the state of the sort for the specified column
+       * @param column
+       * @return null = not sorted, 'asc' = ascending, 'desc' = descending
+       */
+      function getSort(column) {
+        var sortState = null;
+        if (self.sortBy === column.model) {
+          sortState = self.sortDirection ? 'asc' : 'desc';
+        }
+        return sortState;
       }
     }
 

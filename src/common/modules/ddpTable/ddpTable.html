@@ -18,7 +18,9 @@
            class="{{column.cssTHClass || 'grid-block th'}}"
            ng-class="{'isc-sortable': sortable}">
 
-        <a ng-click="ddpTblCtrl.sort(column)" ng-if="sortable">{{column.key| translate}}</a>
+        <a ng-click="ddpTblCtrl.sort(column)" ng-if="sortable">{{column.key| translate}}
+          <i class="fa" ng-class="{'fa-sort':null == ddpTblCtrl.getSort(column), 'fa-sort-asc': 'asc' == ddpTblCtrl.getSort(column), 'fa-sort-desc': 'desc' == ddpTblCtrl.getSort(column)}"></i>
+        </a>
         <a ng-if="!sortable">{{column.key| translate}}</a>
       </div>
     </div>
