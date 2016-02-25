@@ -303,21 +303,6 @@ th, .th {
     a {
       white-space: nowrap;
 
-      &:after {
-        font-family: FontAwesome;
-        font-size: 0.75rem; // Change to variable
-        font-weight: 300;
-        content: "\F078";
-        padding-left: 0.3125rem;
-        vertical-align: middle;
-
-        @media #{$small} {
-          padding-left: 0.25rem;
-          font-weight: $font-weight-semi-bold;
-          font-size: 0.65rem; // Change to variable
-        }
-      }
-
       &.reverse:after {
         font-family: FontAwesome;
         font-size: 0.75rem; // Change to variable
