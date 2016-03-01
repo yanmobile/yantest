@@ -35,7 +35,7 @@
           <ul class="icon-left menu-bar condense large-expand" ng-controller="iscNavbarController as navbarCtrl">
             <li ng-show="navbarCtrl.sessionModel.isAuthenticated()"><a><i class="fa fa-cog fa-fw"></i>Settings</a></li>
             <li><a><i class="fa fa-question-circle fa-fw"></i>Help</a></li>
-            <li ng-show="!navbarCtrl.sessionModel.isAuthenticated()"><a ui-sref="index.login"><i class="fa fa-sign-in fa-fw"></i>Login</a></li>
+            <li ng-show="!navbarCtrl.sessionModel.isAuthenticated()"><a ui-sref="anonymous.login"><i class="fa fa-sign-in fa-fw"></i>Login</a></li>
             <li ng-show="navbarCtrl.sessionModel.isAuthenticated()"><a ng-click="navbarCtrl.logout()"><i class="fa fa-sign-out fa-fw"></i>Logout</a></li>
           </ul>
         </div>
