@@ -15,6 +15,9 @@
   function getConfig() {
     return {
       'devlogWhitelist': [],
+      'session'        : {
+        'routeMemoryExpirationInMinutes': 15
+      },
       'formats'        : {
         'date': {
           'shortDate'   : 'MM-DD-YYYY',
