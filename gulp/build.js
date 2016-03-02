@@ -190,6 +190,7 @@
   gulp.task('sass', [], function () {
     return gulp
       .src(app.module.scss)
+      .pipe(sourcemaps.init())
       .pipe(sass({ errLogToConsole: true }))
       .on('error', handleError)
       .pipe(mobilizer('app.css', {
@@ -203,9 +204,9 @@
         }
       }))
       //.pipe(cssmin())
-      .pipe(gulp.dest('.tmp-css'))
       .pipe(concat('app.css'))
       .pipe(rename({ basename: 'main', suffix: '.min' }))
+      .pipe(sourcemaps.write())
       .pipe(gulp.dest(path.join(config.dest, 'css')))
       .pipe(size());
   });
