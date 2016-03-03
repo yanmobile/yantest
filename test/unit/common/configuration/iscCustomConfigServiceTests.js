@@ -47,7 +47,7 @@
 
         permittedStates = customConfigService.getConfigSection('rolePermissions', '*');
         expect(permittedStates).toBeDefined();
-        expect(_.contains(permittedStates, 'myRoute.*')).toBe(true);
+        expect(_.includes(permittedStates, 'myRoute.*')).toBe(true);
       });
 
       it('should loadConfig to be called first', function () {
@@ -56,7 +56,7 @@
 
         permittedStates = customConfigService.getConfigSection('rolePermissions', '*');
         expect(permittedStates).toBeDefined();
-        expect(_.contains(permittedStates, 'myRoute.*')).toBe(true);
+        expect(_.includes(permittedStates, 'myRoute.*')).toBe(true);
       });
 
       it('should allow adding a single route', function () {
@@ -64,7 +64,7 @@
 
         permittedStates = customConfigService.getConfigSection('rolePermissions', '*');
         expect(permittedStates).toBeDefined();
-        expect(_.contains(permittedStates, 'myRoute.*')).toBe(true);
+        expect(_.includes(permittedStates, 'myRoute.*')).toBe(true);
       });
 
       it('should allow padding in an array of routes', function () {
@@ -72,8 +72,8 @@
 
         permittedStates = customConfigService.getConfigSection('rolePermissions', '*');
         expect(permittedStates).toBeDefined();
-        expect(_.contains(permittedStates, 'myRoute.*')).toBe(true);
-        expect(_.contains(permittedStates, 'yourRoute.*')).toBe(true);
+        expect(_.includes(permittedStates, 'myRoute.*')).toBe(true);
+        expect(_.includes(permittedStates, 'yourRoute.*')).toBe(true);
       });
 
       it('should be able to add multiple roles', function () {
@@ -86,7 +86,7 @@
         ['user',
           '%HSCC_CMC_CarePlanCreator'
         ].forEach(function (role) {
-            expect(_.contains(permittedStates[role], 'myRoute.*')).toBe(true);
+            expect(_.includes(permittedStates[role], 'myRoute.*')).toBe(true);
             statesEvaluated++;
           });
         expect(statesEvaluated).toBe(2);

@@ -67,7 +67,7 @@
     }
 
     function endsWithExts(url, exts) {
-      return _.any(exts, function (ext) {
+      return _.some(exts, function (ext) {
         return _.endsWith(url, ext);
       });
     }
