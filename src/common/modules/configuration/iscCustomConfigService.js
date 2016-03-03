@@ -32,10 +32,11 @@
 
 
     function updateConfig(object, key) {
+      console.log(object, key);
       if (key) {
-        _.merge(config[key], object, concatArrays);
+        _.mergeWith(config[key], object, concatArrays);
       } else {
-        _.merge(config, object, concatArrays);
+        _.mergeWith(config, object, concatArrays);
       }
     }
 

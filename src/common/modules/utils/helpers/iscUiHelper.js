@@ -45,7 +45,7 @@
       devlog.channel('iscUiHelper').debug('...allTabs', allTabs);
 
       _.forEach(allTabs, function (tab) {
-        if (_.contains(state, tab.state)) {
+        if (_.includes(state, tab.state)) {
           tab.$$active = true;
         }
         else {

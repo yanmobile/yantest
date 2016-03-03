@@ -97,7 +97,7 @@
   /**
    * Limitations: the array filtering syntax only supports string path and not array paths
    *
-   * Enhances the _.get functionality by adding the ability to supply a findWhere clause to
+   * Enhances the _.get functionality by adding the ability to supply a find clause to
    * search array items.
 
    ---- ORIG DOC ----
@@ -134,12 +134,12 @@
   function advancedGet(obj, path, defaultValue) {
     var val = obj;
 
-    if (isTypeOf(path, 'string') && _.contains(path, ':')) {
+    if (isTypeOf(path, 'string') && _.includes(path, ':')) {
       toPath(path).forEach(function (part) {
-        if (_.contains(part, ':')) {
+        if (_.includes(part, ':')) {
           part     = part.replace(reFixJson, '"$2": ');
           var json = JSON.parse(part);
-          val      = _.findWhere(val, json);
+          val      = _.find(val, json);
         } else {
           val = origGet(val, part, defaultValue);
         }

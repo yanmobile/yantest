@@ -37,7 +37,7 @@
       var preventDefault = response.config.preventDefault;
       preventDefault     = preventDefault || [];
 
-      if (preventDefault !== true && !_.contains(preventDefault, response.status)) {
+      if (preventDefault !== true && !_.includes(preventDefault, response.status)) {
         switch ( response.status ) {
           case statusCode.Unauthorized:
             // this will happen if you just leave your computer on for a long time

@@ -24,7 +24,9 @@
     function isAuthorized(stateToCheck) {
       devlog.channel('iscAuthorizationModel').debug('iscAuthorizationModel.isAuthorized..');
       var currentUserRole      = iscSessionModel.getCurrentUserRole();
+      console.log(currentUserRole);
       var authorizedUserRoutes = getAuthorizedRoutes(currentUserRole);
+      console.log(authorizedUserRoutes)
       stateToCheck             = stateToCheck || '';
       var isPermitted;
       if (isBlackListed(stateToCheck, authorizedUserRoutes)) {
@@ -124,7 +126,7 @@
       var tokens = stateToCheck.split('.');
       var path   = checkBlacklisted ? '!' : '';
 
-      return _.any(tokens, function (token) {
+      return _.some(tokens, function (token) {
         path += token + '.';
         return _.get(authorizedUserRoutes, path + '*', false);
       });
