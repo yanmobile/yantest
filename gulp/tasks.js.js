@@ -20,7 +20,7 @@ function init(gulp, plugins, config, _) {
 
     var componentOpts = {
       module: 'isc.common',
-      strip : 'components/foundation/modules/'
+      strip : 'components/foundation/default/modules/'
     };
 
     var customOpts = {
