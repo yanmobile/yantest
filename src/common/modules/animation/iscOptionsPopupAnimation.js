@@ -9,6 +9,16 @@
     .animation( '.popup-anime', iscOptionsPopupAnimation );
 
   /* @ngInject */
+  /**
+   * @memberof core-ui-animation
+   * @ngdoc animation
+   * @name iscOptionsPopupAnimation
+   * @param devlog
+   * @param iscAnimationService
+   * @param TweenMax
+   * @param EASE_DUR
+   * @returns {{beforeAddClass: beforeAddClass, beforeRemoveClass: beforeRemoveClass}}
+     */
   function iscOptionsPopupAnimation( devlog, iscAnimationService, TweenMax, EASE_DUR ){
 
   // --------------------
@@ -34,6 +44,12 @@
   // functions
   // --------------------
 
+    /**
+     * @memberof iscOptionsPopupAnimation
+     * @param element
+     * @param className
+     * @param done
+       */
     function beforeAddClass( element, className, done ){
       devlog.channel('iscOptionsPopupAnimation').debug( 'iscOptionsPopupAnimation.beforeAddClass' );
       //
@@ -67,6 +83,12 @@
       }
     }
 
+    /**
+     * @memberof iscOptionsPopupAnimation
+     * @param element
+     * @param className
+     * @param done
+       */
     function beforeRemoveClass( element, className, done ){
       devlog.channel('iscOptionsPopupAnimation').debug( 'iscOptionsPopupAnimation.beforeRemoveClass' );
       if( className === 'popup-anime' ){
@@ -82,6 +104,11 @@
       }
     }
 
+    /**
+     * @memberof iscOptionsPopupAnimation
+     * @param elem
+     * @param done
+       */
     function onRemoveComplete( elem, done ){
       TweenMax.set( elem, {autoAlpha:0});
       done();

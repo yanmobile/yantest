@@ -9,6 +9,16 @@
     .animation( '.scroll-stick', iscScrollStickAnimation );
 
   /* @ngInject */
+  /**
+   * @memberof core-ui-animation
+   * @ngdoc animation
+   * @name iscScrollStickAnimation
+   * @param devlog
+   * @param $window
+   * @param TweenMax
+   * @param EASE_DUR
+   * @returns {{beforeAddClass: beforeAddClass, beforeRemoveClass: beforeRemoveClass}}
+     */
   function iscScrollStickAnimation( devlog, $window,  TweenMax, EASE_DUR ){
 
   // --------------------
@@ -34,6 +44,12 @@
   // functions
   // --------------------
 
+    /**
+     * @memberof iscScrollStickAnimation
+     * @param element
+     * @param className
+     * @param done
+       */
     function beforeAddClass( element, className, done ){
       devlog.channel('iscScrollStickAnimation').debug( 'iscScrollStickAnimation.beforeAddClass' );
 
@@ -65,6 +81,12 @@
       }
     }
 
+    /**
+     * @memberof iscScrollStickAnimation
+     * @param element
+     * @param className
+     * @param done
+       */
     function beforeRemoveClass( element, className, done ){
       devlog.channel('iscScrollStickAnimation').debug( 'iscScrollStickAnimation.beforeRemoveClass' );
 
@@ -97,11 +119,21 @@
       }
     }
 
+    /**
+     * @memberof iscScrollStickAnimation
+     * @param elem
+     * @param done
+       */
     function onRemoveComplete( elem, done ){
       //TweenMax.set( elem, {autoAlpha:0});
       done();
     }
 
+    /**
+     * @memberof iscScrollStickAnimation
+     * @param elem
+     * @returns {{width: number, margin: number, top: number}}
+       */
     function getParams( elem ){//jshint ignore:line
       var winW = $window.innerWidth;
       var tabletOrlarger = winW >= 960;

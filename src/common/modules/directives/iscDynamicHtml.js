@@ -12,6 +12,14 @@
     .directive( 'iscDynamicHtml', iscDynamicHtml );
 
   /* @ngInject */
+  /**
+   * @ngdoc directive
+   * @memberof core-ui-directives
+   * @param devlog
+   * @param $compile
+   * @param $templateCache
+   * @returns {{restrict: string, replace: boolean, link: link}}
+     */
   function iscDynamicHtml( devlog, $compile, $templateCache ){//jshint ignore:line
 //    devlog.channel('iscDynamicHtml').debug( 'iscDynamicHtml LOADED');
 
@@ -36,6 +44,12 @@
     // functions
     // ----------------------------
 
+    /**
+     *
+     * @param scope
+     * @param elem
+     * @param attr
+       */
     function link( scope, elem, attr ){
       scope.$watch( attr.iscDynamicHtml, function( html ){
         devlog.channel('iscDynamicHtml').debug( 'iscDynamicHtml', html );

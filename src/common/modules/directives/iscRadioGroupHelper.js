@@ -16,6 +16,12 @@
     .factory('iscRadioGroupHelper', iscRadioGroupHelper);
 
   /* @ngInject */
+  /**
+   * @ngdoc factory
+   * @memberof core-ui-directives
+   * @param devlog
+   * @returns {{radioSelect: radioSelect}}
+     */
   function iscRadioGroupHelper(devlog) {//jshint ignore:line
     devlog.channel('iscRadioGroupHelper').debug('iscRadioGroupHelper LOADED');
 
@@ -36,6 +42,11 @@
     // functions
     // ----------------------------
 
+    /**
+     *
+     * @param selectedItem
+     * @param radioGroup
+       */
     function radioSelect(selectedItem, radioGroup) {
       devlog.channel('iscRadioGroupHelper').debug('iscRadioGroupHelper.radioSelect');
       devlog.channel('iscRadioGroupHelper').debug('...selectedItem', selectedItem);

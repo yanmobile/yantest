@@ -23,6 +23,13 @@
     .directive ('iscAutofocus', iscAutofocus);
 
   /* @ngInject */
+  /**
+   * @ngdoc directive
+   * @memberof core-ui-directives
+   * @param devlog
+   * @param $timeout
+   * @returns {{restrict: string, link: link}}
+     */
   function iscAutofocus (devlog, $timeout) {
     devlog.channel('iscAutofocus').debug( 'iscAutofocus LOADED');
 
@@ -44,6 +51,12 @@
     // functions
     // ----------------------------
 
+    /**
+     *
+     * @param scope
+     * @param elem
+     * @param attr
+       */
     function link (scope, elem, attr) {
       $timeout (function () {
         elem[ 0 ].focus ();

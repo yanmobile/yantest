@@ -14,6 +14,12 @@
     .directive( 'iscCheckBox', iscCheckBox );
 
   /* @ngInject */
+  /**
+   * @memberof core-ui-directives
+   * @ngdoc directive
+   * @param devlog
+   * @returns {{restrict: string, transclude: boolean, require: string, scope: {onToggle: string}, link: link, templateUrl: directive.templateUrl}}
+     */
   function iscCheckBox( devlog ){//jshint ignore:line
 //    devlog.channel('iscCheckBox').debug( 'iscCheckBox LOADED');
 
@@ -43,6 +49,13 @@
     // functions
     // ----------------------------
 
+    /**
+     *
+     * @param scope
+     * @param elem
+     * @param attr
+     * @param ngModelCtrl
+       */
     function link( scope, elem, attr, ngModelCtrl ){
 
       scope.selected = false;

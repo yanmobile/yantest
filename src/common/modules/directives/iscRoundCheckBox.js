@@ -12,6 +12,12 @@
     .directive( 'iscRoundCheckBox', iscRoundCheckBox );
 
   /* @ngInject */
+  /**
+   * @memberof core-ui-directives
+   * @ngdoc directive
+   * @param devlog
+   * @returns {{restrict: string, transclude: boolean, require: string, scope: {onToggle: string}, link: link, templateUrl: directive.templateUrl}}
+     */
   function iscRoundCheckBox( devlog ){//jshint ignore:line
     devlog.channel('iscRoundCheckBox').debug( 'iscRoundCheckBox LOADED');
 
@@ -41,6 +47,13 @@
     // functions
     // ----------------------------
 
+    /**
+     *
+     * @param scope
+     * @param elem
+     * @param attr
+     * @param ngModelCtrl
+       */
     function link( scope, elem, attr, ngModelCtrl ){
 
       scope.selected = false;
