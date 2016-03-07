@@ -37,7 +37,7 @@ var plugins = {
 
 var configs = {
   common   : require('./gulp/common.json'),
-  component: require('./gulp/components.json'),
+  component: require('./src/components/foundation/base/components.json'),
   app      : require('./gulp/app.json')
 };
 

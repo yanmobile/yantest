@@ -13,9 +13,15 @@ module.exports = {
 };
 
 function init(gulp, plugins, config, _) {
-  gulp.task('dir', function (done) {
+
+  gulp.task('component.json', function (done) {
+    gulp.src(['src/components/foundation/default/component.json']).
+      pipe(gulp.dest('gulp'));
+  });
+
+  gulp.task('package', function (done) {
     config.folderModules = {
-      components: path.join("src/components/modules/"),
+      components: path.join("src/components/foundation/default/modules/"),
       common    : path.join("src/common/modules/"),
       app       : path.join("src/app/modules/")
     };
