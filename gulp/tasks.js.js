@@ -18,6 +18,11 @@ function init(gulp, plugins, config) {
       strip : 'common/modules/'
     };
 
+    var componentOpts = {
+      module: 'isc.common',
+      strip : 'components/modules/'
+    };
+
     var customOpts = {
       module: 'isc.common',
       strip : 'app/modules/'
@@ -30,15 +35,14 @@ function init(gulp, plugins, config) {
       plugins._.get(config.common, 'module.assets.vendor.js', []),
       plugins._.get(config.component, 'module.assets.vendor.js', []),
       plugins._.get(config.app, 'module.assets.vendor.js', []),
+      //config.common.module.modules,
+      //config.component.module.modules,
+      //config.app.module.modules,
       config.common.module.js,
       config.component.module.js,
       config.app.module.js);
 
-    plugins.streamqueue({ objectMode: true },
-      gulp.src(jsSrc),
-      gulp.src(config.common.module.html).pipe(plugins.templateCache(commonOpts)),
-      gulp.src(config.app.module.html).pipe(plugins.templateCache(customOpts))
-    )
+    gulp.src(jsSrc)
       .pipe(plugins.filelog())
       .pipe(plugins.ngAnnotate())
       //.pipe(plugins.uglify())
@@ -46,6 +50,15 @@ function init(gulp, plugins, config) {
       .pipe(plugins.concat('app.js'))
       .pipe(plugins.rename({ suffix: '.min' }))
       .pipe(plugins.sourcemaps.write('.'))
+      .pipe(gulp.dest(plugins.path.join(config.app.dest.folder, 'js')));
+
+    plugins.streamqueue({ objectMode: true },
+      gulp.src(config.common.module.html).pipe(plugins.templateCache(commonOpts)),
+      gulp.src(config.component.module.html).pipe(plugins.templateCache(componentOpts)),
+      gulp.src(config.app.module.html).pipe(plugins.templateCache(customOpts))
+    )
+      .pipe(plugins.filelog())
+      .pipe(plugins.concat('templates.min.js'))
       .pipe(gulp.dest(plugins.path.join(config.app.dest.folder, 'js')));
   });
 }

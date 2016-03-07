@@ -12,7 +12,11 @@
       'angularUtils.directives.dirPagination',
       '720kb.datepicker',
       'foundation',
-      'angucomplete-alt'
+      'angucomplete-alt',
+      'isc.directives',
+      'isc.table',
+      'isc.spinner',
+      'iscNavContainer'
     ]);
 
 })();

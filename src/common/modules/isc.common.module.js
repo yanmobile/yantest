@@ -19,19 +19,11 @@
       'isc.core',
       'isc.authentication',
       'isc.authorization',
-      'isc.directives',
       'isc.filters',
-      'isc.table',
       'isc.http',
       'isc.router',
-      'isc.states',
-      'isc.spinner',
+      'isc.states'
 
-      // logging helper
-      //'logLineNumber',
-
-      // isc tabbed navigation module
-      'iscNavContainer'
     ]);
 
 })();

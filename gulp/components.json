@@ -8,7 +8,6 @@
       "src/components/bower_components/foundation-apps/dist/js/foundation-apps-templates.js"
     ],
     "mocks" : [
-      "src/components/bower_components/angular-mocks/angular-mocks.js"
     ],
     "fonts" : [
       "src/components/bower_components/font-awesome/fonts/fontawesome-webfont.*"
@@ -16,7 +15,8 @@
   },
   "module" : {
     "js" : [
-      "src/components/modules/isc.components.module.js"
+      "src/components/modules/**/*.module.js",
+      "src/components/modules/**/*.js"
     ],
     "html" : [
       "src/components/modules/**/*.html",
