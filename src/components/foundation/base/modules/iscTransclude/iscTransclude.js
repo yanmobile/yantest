@@ -181,7 +181,7 @@
 
             firstChar = _.first(propValue);
             //remove parameter type indicator
-            if (_.contains(['@', '=', '&'], firstChar)) {
+            if (_.includes(['@', '=', '&'], firstChar)) {
               propValue = propValue.substring(1);
             }
 

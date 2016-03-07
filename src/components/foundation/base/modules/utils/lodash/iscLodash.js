@@ -135,9 +135,9 @@
   function advancedGet(obj, path, defaultValue) {
     var val = obj;
 
-    if (isTypeOf(path, 'string') && _.contains(path, ':')) {
+    if (isTypeOf(path, 'string') && _.includes(path, ':')) {
       toPath(path).forEach(function (part) {
-        if (_.contains(part, ':')) {
+        if (_.includes(part, ':')) {
           part     = part.replace(reFixJson, '"$2": ');
           var json = JSON.parse(part);
           val      = _.findWhere(val, json);
