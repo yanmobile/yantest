@@ -26,12 +26,23 @@ function init(gulp, plugins, config, _) {
       components[pathName] = getDirectories(modulePath);
     });
 
-    gutil.log("components", components);
+    _.forEach(components, function (component, name) {
+      _.forEach(component, function (folder) {
+        console.log(folder.path, folder.name);
+      });
+    });
   });
 
   function getDirectories(srcpath) {
-    return fs.readdirSync(srcpath).filter(function (file) {
-      return fs.statSync(path.join(srcpath, file)).isDirectory();
-    });
+    return fs.readdirSync(srcpath)
+      .filter(function (file) {
+        return fs.statSync(path.join(srcpath, file)).isDirectory();
+      }).map(function (file) {
+        return {
+          name: file,
+          path: path.join(srcpath, file)
+        };
+      });
   }
 }
+

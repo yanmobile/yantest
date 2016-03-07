@@ -1,34 +1,35 @@
 {
+  "baseUrl": "src/components/foundation/",
   "vendor" : {
     "js" : [
-      "src/components/bower_components/angular-utils-pagination/dirPagination.js",
-      "src/components/bower_components/angucomplete-alt/angucomplete-alt.js",
-      "src/components/bower_components/angularjs-datepicker/dist/angular-datepicker.min.js",
-      "src/components/bower_components/foundation-apps/dist/js/foundation-apps.js",
-      "src/components/bower_components/foundation-apps/dist/js/foundation-apps-templates.js"
+      "src/components/foundation/bower_components/angular-utils-pagination/dirPagination.js",
+      "src/components/foundation/bower_components/angucomplete-alt/angucomplete-alt.js",
+      "src/components/foundation/bower_components/angularjs-datepicker/dist/angular-datepicker.min.js",
+      "src/components/foundation/bower_components/foundation-apps/dist/js/foundation-apps.js",
+      "src/components/foundation/bower_components/foundation-apps/dist/js/foundation-apps-templates.js"
     ],
     "mocks" : [
     ],
     "fonts" : [
-      "src/components/bower_components/font-awesome/fonts/fontawesome-webfont.*"
+      "src/components/foundation/bower_components/font-awesome/fonts/fontawesome-webfont.*"
     ]
   },
   "module" : {
     "js" : [
-      "src/components/modules/**/*.module.js",
-      "src/components/modules/**/*.js"
+      "src/components/foundation/modules/**/*.module.js",
+      "src/components/foundation/modules/**/*.js"
     ],
     "html" : [
-      "src/components/modules/**/*.html",
-      "src/components/assets/**/*.html"
+      "src/components/foundation/modules/**/*.html",
+      "src/components/foundation/assets/**/*.html"
     ],
     "assets" : {
       "images" : [
-        "src/components/assets/images/**/*"
+        "src/components/foundation/assets/images/**/*"
       ],
       "vendor" : {
         "js" : [
-          "src/components/assets/plugins/**/*.js"
+          "src/components/foundation/assets/plugins/**/*.js"
         ]
       }
     },
