@@ -1,0 +1,45 @@
+/* footer bar */
+.isc-footer {
+  background: $primary-color;
+  margin: 0;
+  padding: 0 2rem;
+  width: 100%;
+
+  @media #{$medium-down} {
+    padding: 0 1rem;
+  }
+
+  .menu-bar {
+    background: transparent;
+
+    li {
+      color: palette(type, light);
+      color: palette(type, light);
+      line-height: 1;
+
+      &:first-of-type {
+        margin-left: 0;
+      }
+
+      a, p {
+        color: palette(type, light);
+        margin: 0;
+        font-weight: 500;
+        font-size: 0.75rem;
+        padding: 1rem;
+        line-height: 1;
+
+        @media #{$small} {
+          padding: 0.75rem 0.5rem;
+        }
+      }
+
+      a {
+        &:hover, &:focus, &:active {
+          color: palette(type, light);
+          background: smartscale($primary-color, 7%);
+        }
+      }
+    }
+  }
+}

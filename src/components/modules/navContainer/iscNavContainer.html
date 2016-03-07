@@ -1,0 +1,41 @@
+<div class="grid-frame vertical">
+  <!-- --------------------------- -->
+  <!--  modals                     -->
+  <!-- --------------------------- -->
+
+  <!-- side nav slide-in menu --
+  <div class="isc-side-nav-wrapper"
+       ng-include="'navContainer/iscSideNav.html'"
+       ng-class="{'side-nav' : navCtrl.showSideNav }"></div-->
+
+  <!--modal background-->
+  <div class="isc-modal-bkgrnd"
+       ng-click="navCtrl.hideAllPopups()"
+       ng-class="{'modal-bkgrnd-anime' : navCtrl.showModalBkgrnd }"></div>
+
+
+  <!-- --------------------------- -->
+  <!--  main app                   -->
+  <!-- --------------------------- -->
+
+  <!--header nav and content-->
+  <div class="isc-app-content vertical grid-block">
+
+    <!--Responsive Top Navigation-->
+    <div class="isc-nav-bar"
+         ng-include="'navContainer/iscNavbar.html'">
+    </div>
+
+    <!--page content-->
+    <div class="grid-content small-collapse">
+      <div class="isc-page-content grid-container"
+           ui-view></div>
+    </div>
+
+  </div>
+
+  <!--footer-->
+  <div class="isc-footer grid-block shrink"
+       ng-include="'navContainer/iscFooter.html'"></div>
+
+</div>

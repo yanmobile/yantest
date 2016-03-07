@@ -14,6 +14,7 @@ function init(gulp, plugins, config) {
   gulp.task('fonts', function () {
     var typography = []
       .concat(config.common.vendor.fonts)
+      .concat(config.component.vendor.fonts)
       .concat(config.app.vendor.fonts);
 
     return gulp.src(typography)

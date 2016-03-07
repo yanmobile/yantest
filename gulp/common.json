@@ -9,27 +9,21 @@
       "src/common/bower_components/socket.io-client/socket.io.js",
       "src/common/bower_components/angular/angular.js",
       "src/common/bower_components/angular-animate/angular-animate.js",
-      "src/common/bower_components/angular-utils-pagination/dirPagination.js",
       "src/common/bower_components/angular-filter/dist/angular-filter.js",
       "src/common/bower_components/angular-messages/angular-messages.js",
       "src/common/bower_components/angular-translate/angular-translate.js",
       "src/common/bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js",
-      "src/common/bower_components/angularjs-datepicker/dist/angular-datepicker.min.js",
       "src/common/bower_components/angular-ui-router/release/angular-ui-router.js",
       "src/common/bower_components/angular-animate/angular-animate.js",
       "src/common/bower_components/angular-sanitize/angular-sanitize.js",
       "src/common/bower_components/mobile-angular-ui/dist/js/mobile-angular-ui.gestures.js",
       "src/common/bower_components/mobile-angular-ui/dist/js/mobile-angular-ui.migrate.js",
-      "src/common/bower_components/mobile-angular-ui/dist/js/mobile-angular-ui.js",
-      "src/common/bower_components/foundation-apps/dist/js/foundation-apps.js",
-      "src/common/bower_components/foundation-apps/dist/js/foundation-apps-templates.js",
-      "src/common/bower_components/angucomplete-alt/angucomplete-alt.js"
+      "src/common/bower_components/mobile-angular-ui/dist/js/mobile-angular-ui.js"
     ],
     "mocks" : [
       "src/common/bower_components/angular-mocks/angular-mocks.js"
     ],
     "fonts" : [
-      "src/common/bower_components/font-awesome/fonts/fontawesome-webfont.*"
     ]
   },
   "module" : {

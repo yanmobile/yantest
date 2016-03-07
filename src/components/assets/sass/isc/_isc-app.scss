@@ -1,0 +1,28 @@
+/* Interaction & Animation */
+
+.isc-clickable {
+  cursor: hand;
+  cursor: pointer;
+}
+
+// page animation
+.isc-page-content.ng-enter,
+.isc-page-content.ng-leave {
+  //-webkit-transition: all .5s ease-out;
+  //transition: all .5s ease-out;
+}
+
+.isc-page-content.ng-enter {opacity: 0;}
+.isc-page-content.ng-enter-active {opacity: 1;}
+
+.isc-page-content.ng-leave,
+.isc-page-content.ng-leave-active {
+  opacity: 0; display: none;
+}
+
+// Accessibility
+@media not speech {
+  :focus {
+    outline: 0;
+  }
+}

@@ -37,8 +37,9 @@ var plugins = {
 };
 
 var configs = {
-  common: require('./gulp/common.json'),
-  app   : require('./gulp/app.json')
+  common   : require('./gulp/common.json'),
+  component: require('./gulp/components.json'),
+  app      : require('./gulp/app.json')
 };
 
 var tasks = require('require-dir')('./gulp/');

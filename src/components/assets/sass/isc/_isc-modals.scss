@@ -1,0 +1,53 @@
+/* Modals */
+
+.modal {
+  overflow: visible;
+
+  .title-bar.primary {
+    font-size: 1.25rem;
+    padding: 0.675rem 1rem;
+    text-transform: capitalize;
+
+    .close-button {
+      top: 0.5rem;
+    }
+  }
+
+  //Force overflow visible
+  .grid-content, .grid-block {
+    margin: 0;
+    overflow: visible;
+  }
+
+  @media #{$small} {
+    height: auto;
+  }
+}
+
+//forms inside modals
+aside {
+
+  form, .form {
+    padding: 1rem;
+    border: none;
+
+    .controls {
+      margin-top: $global-margin;
+    }
+  }
+
+}
+
+// Contain xlarge modal width
+.xlarge > .modal {
+  max-width: 1000px;
+  overflow-y: scroll;
+
+  @media #{$medium} {
+    max-width: 1024px;
+  }
+  @media #{$small} {
+    max-width: 859px;
+    height: auto;
+  }
+}

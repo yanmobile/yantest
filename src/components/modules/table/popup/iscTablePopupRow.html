@@ -1,0 +1,34 @@
+<!--data columns-->
+<td isc-table-cell ng-if="column.type !== 'commands' && !iscRowCtrl.isAddRow"
+    ng-repeat="column in iscTblCtrl.tableConfig.columns track by $index"
+    class="{{iscRowCtrl.inEditMode ? column.editCellClass : column.cellClass}}"
+    ng-class="{'isc-table-td-commands' : column.type === 'commands'}"></td>
+
+<!-- commands -->
+<td ng-if="!iscRowCtrl.isAddRow">
+  <div ng-include="iscTblCtrl.tableConfig.commandColumnTemplate || 'table/popup/iscTablePopupRowCommandColumn.html'">
+  </div>
+</td>
+
+<!-- add button -->
+<td ng-if="iscRowCtrl.isAddRow"
+    colspan="{{iscTblCtrl.tableConfig.columns.length}}">
+  <div class="add-button-wrapper">
+    <button class="isc-btn-link"
+            ng-click="iscRowCtrl.onCommand('create', $event, column.commands.create.callback)">
+      <span ng-include="'svg/isc-plus-box.html'"></span>
+      {{ iscTblCtrl.tableConfig.addBtnTranslationKey | translate }}
+    </button>
+  </div>
+</td>
+
+<td>
+  <isc-zf-modal-wrapper
+    wrapper-name="{{iscTblCtrl.tableConfig.popupWrapperName}}"
+    wrapper-offset="{{iscTblCtrl.tableConfig.popupWrapperOffset}}"
+    scrollable-modal="{{iscTblCtrl.tableConfig.popupScrollable}}">
+    <div zf-modal id="{{'modal'+$index}}" class="collapse" overlay-close="false" isc-table-popup-opener isc-table-popup-closer tabindex="0">
+      <div ng-if="iscRowCtrl.inEditMode" ng-include="iscTblCtrl.tableConfig.popupEditTemplate || 'table/popup/iscTablePopupEditor.html'"></div>
+    </div>
+  </isc-zf-modal-wrapper>
+</td>

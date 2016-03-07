@@ -8,7 +8,6 @@
   angular.module('isc.common',
     [
       // third party modules
-      'angularUtils.directives.dirPagination',
       'ui.router',
       'mobile-angular-ui',
       'mobile-angular-ui.gestures',
@@ -17,9 +16,6 @@
       'ngMessages',
       'pascalprecht.translate',
       'angular.filter',
-      '720kb.datepicker',
-      'foundation',
-      'angucomplete-alt',
       'isc.core',
       'isc.authentication',
       'isc.authorization',

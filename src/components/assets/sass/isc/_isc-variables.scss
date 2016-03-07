@@ -1,0 +1,371 @@
+// --------------------------------------------------
+// Variables
+// --------------------------------------------------
+
+
+// --------------------------------------------------
+// OLD Media queries breakpoints
+// --------------------------------------------------
+
+// Extra small screen
+$screen-xs-min:              0px !default;
+
+// Small screen / phone
+$screen-sm-min:              480px !default;
+
+// Medium screen / phablet
+$screen-ph-min:              640px !default;
+
+// Medium screen / tablet
+$screen-md-min:              960px !default;
+
+// Large screen / desktop
+$screen-lg-min:              1200px !default;
+
+// Extra large screen / desktop
+$screen-xl-min:              1440px !default;
+
+// Extra large screen / desktop
+$screen-xxl-min:              1660px !default;
+
+// now deprecated
+$screen-xs-max:              ($screen-sm-min - 1) !default;
+$screen-sm-max:              ($screen-md-min - 1) !default;
+$screen-md-max:              ($screen-lg-min - 1) !default;
+
+// So media queries don't overlap when required, provide a maximum
+$screen-phone-min:   480px !default;
+$screen-phablet-min: 640px !default;
+$screen-tablet-min:  960px !default;
+$screen-desktop-min: 1200px !default;
+
+$screen-phone-max:   ($screen-phablet-min - 1) !default;
+$screen-phablet-max: ($screen-tablet-min - 1) !default;
+$screen-tablet-max:  ($screen-desktop-min - 1) !default;
+$screen-desktop-max:  ($screen-xl-min - 1) !default;
+
+
+//
+// usage:
+//
+//  @media #{$desktop} {
+//    background: red;
+//  }
+//
+
+//$media-phone:    "only screen and (max-width: #{$screen-phone-max})";
+//$media-phablet:  "only screen and (min-width: #{$screen-phablet-min}) and (max-width: #{$screen-phablet-max})";
+//$media-tablet:   "only screen and (min-width: #{$screen-tablet-min}) and (max-width: #{$screen-tablet-max})";
+//$media-desktop:  "only screen and (min-width: #{$screen-desktop-min})";
+//
+//// everything but desktop
+//$media-mobile:  "only screen and (max-width: #{$screen-tablet-max})";
+//
+//// tablet or bigger
+//$media-desk-tab:   "only screen and (min-width: #{$screen-tablet-min})";
+//
+//// below tablet
+//$media-desk-tab:   "only screen and (max-width: #{$screen-phablet-max})";
+//
+////  phablet or bigger
+//$media-phab-or-more:   "only screen and (min-width: #{$screen-phablet-min})";
+//
+//// below phablet
+//$media-below-phab:   "only screen and (max-width: #{$screen-phone-max})";
+
+
+$phone:    		  "only screen and (max-width: #{$screen-phone-max})";
+$phablet:  			"only screen and (min-width: #{$screen-phablet-min}) and (max-width: #{$screen-phablet-max})";
+$tablet:        "only screen and (min-width: #{$screen-tablet-min}) and (max-width: #{$screen-tablet-max})";
+$desktop:       "only screen and (min-width: #{$screen-desktop-min})";//1200
+$just-desktop:  "only screen and (min-width: #{$screen-desktop-min}) and (max-width: #{$screen-desktop-max})";//1200
+$xl-plus: 		  "only screen and (min-width: #{$screen-xl-min})";//1440
+$xxl-plus: 		  "only screen and (min-width: #{$screen-xxl-min})";//1660
+
+// tablet or bigger
+$tab-plus:  "only screen and (min-width: #{$screen-tablet-min})";
+
+// tablet or phablet
+$tab-phab:   "only screen and (min-width: #{$screen-phablet-min}) and (max-width: #{$screen-tablet-max})";
+
+// tablet or less
+$tab-or-less:  "only screen and (max-width: #{$screen-tablet-max})";
+
+// everything but desktop
+$mobile:    "only screen and (max-width: #{$screen-tablet-max})";
+
+// phablet or larger
+$phab-plus: "only screen and (min-width: #{$screen-phablet-min})";
+
+// below phab size
+$below-phab: "only screen and (max-width: #{$screen-phone-max})";
+
+// phab size or below
+$phab-or-less: "only screen and (max-width: #{$screen-phablet-max})";
+
+
+// --------------------------------------------------
+// colors
+// --------------------------------------------------
+
+// -------------------------
+// Grays
+
+$black:            #000 !default;
+$white:            #ffffff !default; // #fff
+
+$white-smoke:      darken( $white, 5 );
+$gray-darker:      lighten($black, 13.5%) !default; // #222
+//$gray-dark:        lighten($black, 20%) !default;   // #333
+//$gray:             lighten($black, 33.5%) !default; // #555
+//$gray-light:       lighten($black, 46.7%) !default; // #777
+$gray-lighter:     lighten($black, 93.5%) !default; // #eee
+
+$gray-10:          darken( $white, 10 );
+$gray-20:          darken( $white, 20 );
+$gray-30:          darken( $white, 30 );
+$gray-40:          darken( $white, 40 );
+$gray-50:          darken( $white, 50 );
+$gray-60:          darken( $white, 60 );
+$gray-70:          darken( $white, 70 );
+$gray-80:          darken( $white, 80 );
+$gray-90:          darken( $white, 90 );
+
+// -------------------------
+// brand colors
+
+//--------------------------------------------
+//SOLID DARK
+//--------------------------------------------
+$brand-primary:         #5e4db7 !default;
+$brand-primary-dark:    darken( $brand-primary, 20% ) !default;
+$brand-secondary:       #f5f5f5;
+$brand-success:         #5cb85c !default;
+$brand-info:            #58656a !default;
+$brand-warning:         #f7f7c5 !default;
+$brand-danger:          #d9534f !default;
+$brand-link: #4aafca !default;
+$logo-color: $white;
+
+$brand-page-title-color: $brand-primary;
+$brand-page-subtitle-color: $gray-dark;
+
+$nav-link:        #628080 !default;
+$nav-text:        #fdfbff !default;
+$button-primary:        $brand-primary !default;
+$button-primary-disabled: #bfddd7 !default;
+
+$app-border-color: darken( $brand-secondary, 10 );
+
+$app-border-drop-shadow: 0px 3px 8px 0px rgba(0,0,0,0.65);
+
+$tr-bkgrnd-light: $brand-secondary;
+$tr-bkgrnd-dark: $white;
+
+$top-nav-background: $brand-primary;
+$footer-background: $brand-primary;
+$side-nav-background: $brand-primary;
+
+
+// --------------------------------------------
+// SOLID LIGHT
+// --------------------------------------------
+//$brand-primary:         #b2e5dc !default;
+//$brand-primary-dark:    #25a992 !default;
+//$brand-secondary:       #f5f5f5;
+//$brand-success:         #5cb85c !default;
+//$brand-info:            #58656a !default;
+//$brand-warning:         #f7f7c5 !default;
+//$brand-danger:          #d9534f !default;
+//$brand-link:            #ca4000 !default;
+//$logo-color: darken( $brand-primary-dark, 10 );
+//
+//$nav-link:        #628080 !default;
+//$nav-text:        #090408 !default;
+//$button-primary:        $brand-primary-dark !default;
+//$button-primary-disabled: #bfddd7 !default;
+//
+//$brand-page-title-color: $brand-primary-dark;
+//$brand-page-subtitle-color: $gray-dark;
+//
+//$app-border-color: darken( $brand-secondary, 30 );
+//$app-border-drop-shadow: 0px 3px 8px 0px rgba(0,0,0,0.65);
+//
+//$tr-bkgrnd-light: $brand-secondary;
+//$tr-bkgrnd-dark: $white;
+//
+//$top-nav-background: $brand-primary;
+//$footer-background: $brand-primary;
+//$side-nav-background: $brand-primary;
+
+
+// --------------------------------------------
+// THEME SKY
+// --------------------------------------------
+//$brand-primary:         #019aba !default;
+//$brand-primary-dark:    #017fa0 !default;
+//$brand-secondary:       #f5f1e6;
+//$brand-success:         #5cb85c !default;
+//$brand-info:            #58656a !default;
+//$brand-warning:         #f7f7c5 !default;
+//$brand-danger:          #d9534f !default;
+//$brand-link:            #de750c !default;
+//$logo-color: $white;
+//
+//$nav-link:                   #5c7b7d !default;
+//$nav-text:                   #000400 !default;
+//$button-primary:             $brand-primary !default;
+//$button-primary-disabled:    #bfddd7 !default;
+//
+//$brand-page-title-color: $brand-primary;
+//$brand-page-subtitle-color: $gray-dark;
+//
+//$app-border-color: #dfe0db;
+//$app-border-drop-shadow: 0px 3px 8px 0px rgba(0,0,0,0.65);
+//
+//$tr-bkgrnd-dark: lighten( $brand-secondary, 5 );
+//$tr-bkgrnd-light: $white;
+//
+//$top-nav-background: url( ../assets/images/blue-clouds.jpg );
+//$footer-background: url( ../assets/images/blue-clouds-footer.jpg );
+//$side-nav-background: url( ../assets/images/blue-clouds.jpg );
+
+// --------------------------------------------------
+// application
+// --------------------------------------------------
+
+$zindex-app: 1;
+$modal-z-index: 2147483647;
+
+$isc-gutter: 50px;
+$isc-gutter-sm: 20px;
+
+//** Disabled cursor for form controls and buttons.
+$cursor-disabled: not-allowed !default;
+
+//** Global text color on `<body>`.
+$text-color:            $gray-dark !default;
+$body-font-size: 14px;
+$header-font-size: 18px;
+$subheader-font-size: 16px;
+
+$table-th-size: 14px;
+$table-td-size: 14px;
+
+// -------------------------
+// nav bar
+
+$isc-nav-item-spacing: 15px;
+
+$isc-side-nav-desktop-width: 285px;
+$isc-side-nav-media-width: 350px;
+$isc-side-nav-media-height: 350px;
+$isc-side-nav-width: $isc-side-nav-media-width;
+$isc-side-nav-height: $isc-side-nav-media-height;
+
+//total header height
+$app-top-nav-height-desktop: 150px;
+$app-top-nav-height-tablet: 75px;
+$app-top-nav-height-phone: 55px;
+
+// branded section height
+$app-header-height-desktop: 105px;
+$app-header-height-tablet: $app-top-nav-height-tablet;
+$app-header-height-phone: $app-top-nav-height-phone;
+
+$app-top-nav-logo-height: 100px;
+$app-top-nav-logo-height-sm: 45px;
+$app-top-nav-logo-width-sidebar: 230px;
+
+$app-sub-nav-height: $app-top-nav-height-desktop/4;
+
+// -------------------------
+// footer
+
+$app-footer-height:      54px;
+$app-footer-height-sm:   30px;
+
+// -------------------------
+// buttons
+$isc-button-font-size: $body-font-size;
+$isc-button-font-weight: 700;
+$isc-button-height: 45px;
+
+// -------------------------
+// isc-table
+$pencil-button-color: #61ab45;
+$remove-button-color: #e81d25;
+$table-command-icon-width: 35px;
+
+// -------------------------
+// general
+
+$form-input-height: 45px;
+
+$nav-font-size: 13px;
+$nav-section-title-size: 20px;
+
+$nav-select-width: 160px;
+$nav-select-height: 45px;
+
+$navbar-logo-height: 45px;
+$navbar-logo-height-sm: 25px;
+
+/* -------------------------
+/* New Variables
+/* ------------------------- */
+
+/* ---------------------------
+// Color Palette Variable Map
+// 1. Typography Swatches
+// 2. Theme Swatches
+------------------------- */
+
+$palettes: (
+  type: (
+    primary: #424242,
+    secondary: #5d686d,
+    tertiary: #8a9aa3,
+    light:  #ffffff
+  ),
+  zurb: (
+    secondary: $secondary-color,
+    info: $info-color,
+    gray: $gray,
+    gray-light: $gray-light,
+    gray-dark: $gray-dark
+  ),
+  theme: (
+    primary: #3c6f8a,
+    secondary: #63a6c9,
+    tertiary: #35b2ea,
+    neutral: #ebebeb
+  )
+);
+
+/* Palette Function
+ * For each palette, map the swatches
+ * and return the requested swatch type
+ * Usage: color: palette(type, secondary);
+ */
+@function palette($palette, $color: 'primary') {
+    @return map-get(map-get($palettes, $palette), $color);
+}
+
+
+$placeholder-text-color: lighten( palette(type, tertiary), 10% );
+
+
+/* --- Layout --- */
+
+$global-margin: 1rem;
+
+
+/* --- Text --- */
+
+// Font-Weight Values - Match values to chosen font family for optimal rendering
+$font-weight-normal: 400;
+$font-weight-light: 300;
+$font-weight-semi-bold: 500;
+$font-weight-bold: 600;
+$font-weight-extra-bold: 800;

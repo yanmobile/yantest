@@ -1,0 +1,83 @@
+
+<div ng-controller="iscNavbarController as navbarCtrl"
+     class="isc-side-nav-container">
+
+  <!--HEADER-->
+  <div class="isc-side-nav-header-container theme">
+
+    <div class="isc-item-wrapper-1">
+      <a class="isc-side-nav-close"
+         ng-click="navCtrl.hideSideNavbar()"><span class="fa fa-close"></span></a>
+    </div>
+
+      <!-- logo -->
+      <div class="isc-item-wrapper-3">
+        <span class="isc-logo-sidenav"
+              ng-include="'svg/logo.html'"></span>
+      </div>
+
+    <div class="isc-item-wrapper-2">
+      <h1 class="isc-app-name-sidebar">{{'ISC_APP_NAME' | translate}}</h1>
+    </div>
+
+  </div>
+
+  <!--NAV ITEMS-->
+  <div class="isc-side-bar-nav-item-container"
+       ng-click="navCtrl.hideSideNavbar()">
+
+    <div class="isc-item-wrapper-1"
+         ng-if="!tab.exclude"
+         ng-repeat="tab in navbarCtrl.tabs | orderBy: navbarCtrl.iscUiHelper.displayOrder">
+
+      <a class="isc-side-nav-button"
+         ng-class="{'selected':tab.$$active}"
+         ui-sref="{{tab.state}}">{{tab.translationKey | translate}}
+      </a>
+    </div>
+  </div>
+
+  <!--FOOTER-->
+  <div class="isc-footer-container">
+
+    <div class="user-container">
+      <div class="isc-item-wrapper-1">
+        <span class="label-footer-bold text-right">user:&nbsp;&nbsp;</span>
+        <span class="label-footer text-left">adameveryman</span>
+      </div>
+    </div>
+
+    <div class="button-container"
+         ng-click="navCtrl.hideSideNavbar()">
+
+      <div class="isc-item-wrapper-1"
+           ng-if="navbarCtrl.sessionModel.isAuthenticated()">
+        <button class="isc-btn-primary btn-footer"
+           ui-sref="index.myAccount">{{'ISC_MY_ACCOUNT_TAB' | translate}}</button>
+      </div>
+
+      <div class="isc-item-wrapper-1"
+           ng-if="navbarCtrl.sessionModel.isAuthenticated()">
+        <button class="isc-btn-primary btn-footer"
+                ng-click="navbarCtrl.logout()">{{'ISC_LOGOUT' | translate}}</button>
+      </div>
+
+      <div class="isc-item-wrapper-1"
+           ng-if="!navbarCtrl.sessionModel.isAuthenticated()">
+        <button class="isc-btn-primary btn-footer"
+                ui-sref="anonymous.login">{{'ISC_LOGIN' | translate}}</button>
+      </div>
+
+    </div>
+
+    <div class="legal-notices">
+      <a class="isc-footer-link"
+         ui-sref="index.info.about">{{'ISC_ABOUT_US' | translate}}</a>
+      <a class="isc-footer-link"
+         ui-sref="index.info.legal">{{'ISC_LEGAL' | translate}}</a>
+      <a class="isc-footer-link"
+         ui-sref="index.info.terms">&nbsp;{{'ISC_TERMS' | translate}}</a>
+    </div>
+  </div>
+</div>
+

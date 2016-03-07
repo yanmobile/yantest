@@ -1,0 +1,88 @@
+<div class="isc-table">
+  <!--title-->
+  <h1 ng-if="iscTblCtrl.tableData[ iscTblCtrl.tableConfig.title ] || iscTblCtrl.tableConfig.title | translate"
+    class="{{iscTblCtrl.tableConfig.titleClass}}">{{ iscTblCtrl.tableData[ iscTblCtrl.tableConfig.title ] || iscTblCtrl.tableConfig.title | translate }}</h1>
+
+  <!--back button for wellness workflows -->
+  <button ng-if="hasBackButton"
+          ng-click="iscTblCtrl.backButtonCallback()"
+          class="isc-table-btn-white back-button">
+    <span ng-include="'svg/isc-arrow-back.html'"></span>
+    <span>{{ iscTblCtrl.tableConfig.backButtonText || 'ISC_BACK' | translate }}</span>
+  </button>
+
+  <!--subtitles-->
+  <h2 ng-if="iscTblCtrl.tableConfig.subtitle">{{ iscTblCtrl.tableData[ iscTblCtrl.tableConfig.subtitle ] || iscTblCtrl.tableConfig.subtitle | translate }}</h2>
+
+  <h3 ng-if="iscTblCtrl.tableConfig.subsubtitle">{{ iscTblCtrl.tableData[ iscTblCtrl.tableConfig.subsubtitle ] || iscTblCtrl.tableConfig.subsubtitle | translate }}</h3>
+  <!--desktop and tablet-->
+  <table class="{{iscTblCtrl.tableConfig.tableClass}}">
+    <!--header-->
+    <thead>
+    <tr ng-if="iscTblCtrl.tableConfig.summaryTitle">
+      <td>
+        <span class="color-bar {{iscTblCtrl.tableConfig.summaryClass}}"></span>
+
+        <h2 class="summary-heading">{{iscTblCtrl.tableRows.length}} {{iscTblCtrl.tableConfig.summaryTitle | translate }}</h2>
+      </td>
+    </tr>
+
+    <!-- Data column headers-->
+    <tr >
+      <th ng-repeat="column in iscTblCtrl.tableConfig.columns track by $index">
+
+        <span ng-if="column.columnClick === 'none'">  {{column.title | translate}} </span>
+
+        <a ng-if="column.columnClick === 'sort' || !column.columnClick"
+           ng-class="{ 'isc-sortable': !!iscTblCtrl.sortField.name && column.key === iscTblCtrl.sortField.name, 'reverse': iscTblCtrl.sortField.reverse }"
+           ng-click="iscTblCtrl.sortColumn(column)"
+           marker="marker"
+           class="isc-clickable">{{ column.title | translate }}</a>
+
+        <a ng-if="column.columnClick === 'filter' "
+           class="isc-filterable"
+           ng-click="column.filterFunction(column)"
+           class="isc-clickable">{{ column.title | translate }}</a>
+      </th>
+    </tr>
+    </thead>
+
+    <tbody>
+
+    <!--rows-->
+    <tr dir-paginate="dataItem in iscTblCtrl.tableRows "
+        current-page="iscTblCtrl.currentPage"
+        model-data="iscTblCtrl.tableRows"
+        pagination-id="iscTblCtrl.tableConfig.key"
+        ng-form
+        name="iscRowForm"
+        isc-table-row>
+    </tr>
+
+    <!--empty row -->
+    <tr ng-if="!iscTblCtrl.tableRows.length">
+      <td colspan="{{iscTblCtrl.tableConfig.columns.length}}">
+        {{(iscTblCtrl.tableConfig.emptyRowMessage || 'ISC_NO_ITEMS') | translate}}
+      </td>
+    </tr>
+
+    <!-- footer -->
+    <tr ng-if="!!iscTblCtrl.tableConfig.footerRowTemplate" isc-table-footer-row>
+    </tr>
+
+    <!--add row -->
+    <tr class="isc-table-row-add"
+        ng-if="iscTblCtrl.tableConfig.editable"
+        isc-table-add-row
+        ng-form
+        name="iscRowForm">
+    </tr>
+    </tbody>
+  </table>
+
+  <dir-pagination-controls ng-if="iscTblCtrl.tableRows.length > 0 "
+                           on-page-change="iscTblCtrl.changePage( newPageNumber )"
+                           pagination-id="iscTblCtrl.tableConfig.key"
+                           template-url="thirdParty/dirPagination.tpl.html"></dir-pagination-controls>
+
+</div>

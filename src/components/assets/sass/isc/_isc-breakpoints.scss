@@ -1,0 +1,53 @@
+/** Breakpoint Variables **/
+
+// So media queries don't overlap when required, provide a minimum
+$screen-phone-min:   320px !default;
+$screen-phablet-min: 414px !default;
+$screen-tablet-min:  768px !default;
+$screen-desktop-min: 1025px !default;
+$small-min: 1px !default;
+$medium-min: 859px !default;
+$large-min: 1025px !default;
+
+// Max
+$screen-phone-max:   ($screen-phablet-min - 1) !default;
+$screen-phablet-max: ($screen-tablet-min - 1) !default;
+$screen-tablet-max:  ($screen-desktop-min - 1) !default;
+
+$small-max: ($medium-min - 1) !default;
+$medium-max: ($large-min - 1) !default;
+$medium-portrait-max: 1000px !default;
+
+$phone:     "only screen and (max-width: #{$screen-phone-max})";
+$phablet:   "only screen and (min-width: #{$screen-phablet-min}) and (max-width: #{$screen-phablet-max})";
+$tablet:    "only screen and (min-width: #{$screen-tablet-min}) and (max-width: #{$screen-tablet-max})";
+$desktop:   "only screen and (min-width: #{$screen-desktop-min})";
+
+$small:     "only screen and (max-width: #{$small-max})";
+$medium:    "only screen and (min-width: #{$medium-min}) and (max-width: #{$medium-max})";
+$medium-portrait: "only screen and (min-width: #{$medium-min}) and (max-width: #{$medium-portrait-max})";
+$large:     "only screen and (min-width: #{$large-min})";
+
+// medium down
+$medium-down:   "only screen and (max-width: #{$medium-max})";
+
+// tablet or bigger
+$tab-plus:  "only screen and (min-width: #{$screen-tablet-min})";
+
+// tablet or phablet
+$tab-phab:   "only screen and (min-width: #{$screen-phablet-min}) and (max-width: #{$screen-tablet-max})";
+
+// tablet or less
+$tab-or-less:  "only screen and (max-width: #{$screen-tablet-max})";
+
+// everything but desktop
+$mobile:    "only screen and (max-width: #{$medium-max})";
+
+// phablet or larger
+$phab-plus: "only screen and (min-width: #{$screen-phablet-min})";
+
+// below phab size
+$below-phab: "only screen and (max-width: #{$screen-phone-max})";
+
+// phab size or below
+$phab-or-less: "only screen and (max-width: #{$screen-phablet-max})";
