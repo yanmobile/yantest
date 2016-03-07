@@ -27,8 +27,10 @@
     ]
   },
   "module" : {
+    "modules": [
+      "src/common/modules/**/*.module.js"
+    ],
     "js" : [
-      "src/common/modules/**/*.module.js",
       "src/common/modules/**/*.js"
     ],
     "html" : [

@@ -6,7 +6,7 @@
   'use strict';
 
   angular
-    .module('isc.spinner', [])
+    .module('isc.spinner')
     .config(config);
 
 

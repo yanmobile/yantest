@@ -11,22 +11,7 @@ module.exports = {
 };
 
 function init(gulp, plugins, config, _) {
-  gulp.task('js', function () {
-
-    var commonOpts = {
-      module: 'isc.common',
-      strip : 'common/modules/'
-    };
-
-    var componentOpts = {
-      module: 'isc.common',
-      strip : 'components/foundation/default/modules/'
-    };
-
-    var customOpts = {
-      module: 'isc.common',
-      strip : 'app/modules/'
-    };
+  gulp.task('scripts', function () {
 
     var jsSrc = _.concat(
       config.common.vendor.js,
@@ -35,6 +20,9 @@ function init(gulp, plugins, config, _) {
       _.get(config.common, 'module.assets.vendor.js', []),
       _.get(config.component, 'module.assets.vendor.js', []),
       _.get(config.app, 'module.assets.vendor.js', []),
+      config.common.module.modules,
+      config.component.module.modules,
+      config.app.module.modules,
       config.common.module.js,
       config.component.module.js,
       config.app.module.js);
@@ -49,13 +37,5 @@ function init(gulp, plugins, config, _) {
       .pipe(plugins.sourcemaps.write('.'))
       .pipe(gulp.dest(plugins.path.join(config.app.dest.folder, 'js')));
 
-    plugins.streamqueue({ objectMode: true },
-      gulp.src(config.common.module.html).pipe(plugins.templateCache(commonOpts)),
-      gulp.src(config.component.module.html).pipe(plugins.templateCache(componentOpts)),
-      gulp.src(config.app.module.html).pipe(plugins.templateCache(customOpts))
-    )
-      .pipe(plugins.filelog())
-      .pipe(plugins.concat('templates.min.js'))
-      .pipe(gulp.dest(plugins.path.join(config.app.dest.folder, 'js')));
   });
 }
