@@ -10,7 +10,7 @@ module.exports = {
   init: init
 };
 
-function init(gulp, plugins, config) {
+function init(gulp, plugins, config, _) {
   gulp.task('js', function () {
 
     var commonOpts = {
@@ -28,16 +28,13 @@ function init(gulp, plugins, config) {
       strip : 'app/modules/'
     };
 
-    var jsSrc = plugins._.concat(
+    var jsSrc = _.concat(
       config.common.vendor.js,
       config.component.vendor.js,
       config.app.vendor.js,
-      plugins._.get(config.common, 'module.assets.vendor.js', []),
-      plugins._.get(config.component, 'module.assets.vendor.js', []),
-      plugins._.get(config.app, 'module.assets.vendor.js', []),
-      //config.common.module.modules,
-      //config.component.module.modules,
-      //config.app.module.modules,
+      _.get(config.common, 'module.assets.vendor.js', []),
+      _.get(config.component, 'module.assets.vendor.js', []),
+      _.get(config.app, 'module.assets.vendor.js', []),
       config.common.module.js,
       config.component.module.js,
       config.app.module.js);

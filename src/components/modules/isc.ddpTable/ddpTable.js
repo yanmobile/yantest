@@ -22,7 +22,7 @@
 (function () {
   'use strict';
 
-  angular.module('isc.directives')
+  angular.module('isc.ddpTable')
     .directive('ddpTable', ddpTable);
 
 
@@ -41,7 +41,7 @@
       },
       scope           : true,
       templateUrl     : function (elem, attrs) {
-        return attrs.templateUrl || 'ddpTable/ddpTable.html';
+        return attrs.templateUrl || 'isc.ddpTable/ddpTable.html';
       }
     };
 

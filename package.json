@@ -45,6 +45,7 @@
     "require-dir": "0.1.0",
     "run-sequence": "0.3.6",
     "streamqueue": "0.1.1",
+    "through2": "^2.0.1",
     "wallaby-ng-html2js-preprocessor": "0.1.0",
     "wiredep": "1.8.5"
   },

@@ -15,6 +15,7 @@
       'angucomplete-alt',
       'isc.directives',
       'isc.table',
+      'isc.ddpTable',
       'isc.spinner',
       'iscNavContainer'
     ]);

@@ -32,8 +32,7 @@ var plugins = {
   uglify       : require('gulp-uglify'),
   wiredep      : require('wiredep'),
   jscs         : require('gulp-jscs'),
-  filelog      : require('gulp-filelog'),
-  _            : require('lodash')
+  filelog      : require('gulp-filelog')
 };
 
 var configs = {
@@ -50,6 +49,6 @@ gulp.task('default', ['clean'], function () {
 
 _.forEach(tasks, function (task, name) {
   if (typeof task.init === "function") {
-    task.init(gulp, plugins, configs);
+    task.init(gulp, plugins, configs, _);
   }
 });

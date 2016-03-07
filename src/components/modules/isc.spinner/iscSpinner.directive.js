@@ -12,7 +12,7 @@
       controllerAs    : 'spinnerCtrl',
       restrict        : 'EA',
       templateUrl     : function (elem, attrs) {
-        return attrs.templateUrl || 'iscSpinner/iscSpinner.html';
+        return attrs.templateUrl || 'isc.spinner/iscSpinner.html';
       }
     };
     return directive;

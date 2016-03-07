@@ -10,7 +10,7 @@ module.exports = {
   init: init
 };
 
-function init(gulp, plugins, config) {
+function init(gulp, plugins, config, _) {
 
   /*======================================
    =   Determine version info from git   =
@@ -44,12 +44,12 @@ function init(gulp, plugins, config) {
       // Get all merged commits for this repo
       var commits = plugins.execSync('git log origin/master --merges --pretty="%H|%ci" ', syncEncoding);
 
-      var lines = plugins._.compact(commits.split('\n'));
+      var lines = _.compact(commits.split('\n'));
       var done  = false;
 
       // Check each merged commit against upstream/master for a match
-      plugins._.forEach(lines, function (commitLine) {
-        var commitInfo = plugins._.compact(commitLine.split('|')),
+      _.forEach(lines, function (commitLine) {
+        var commitInfo = _.compact(commitLine.split('|')),
             commitSHA  = commitInfo[0],
             commitDate = new Date(commitInfo[1]),
             sinceDate  = new Date(commitDate).toISOString();
@@ -58,10 +58,10 @@ function init(gulp, plugins, config) {
         var cmd = 'git log upstream/master --merges --pretty="%H|%ci" --since=\'' + sinceDate + '\'';
 
         var upstream      = plugins.execSync(cmd, syncEncoding).trim();
-        var upstreamLines = plugins._.compact(upstream.split('\n'));
+        var upstreamLines = _.compact(upstream.split('\n'));
 
-        plugins._.forEach(upstreamLines, function (upstreamLine) {
-          var upstreamInfo = plugins._.compact(upstreamLine.split('|')),
+        _.forEach(upstreamLines, function (upstreamLine) {
+          var upstreamInfo = _.compact(upstreamLine.split('|')),
               upstreamSHA  = upstreamInfo[0],
               upstreamDate = new Date(upstreamInfo[1]);
 
@@ -83,11 +83,11 @@ function init(gulp, plugins, config) {
             coreBuildCount = plugins.execSync(countCmd, syncEncoding).trim();
 
             done = true;
-            return false; // break plugins._.forEach
+            return false; // break _.forEach
           }
         });
 
-        // Short-circuit for outer plugins._.forEach
+        // Short-circuit for outer _.forEach
         if (done) {
           return false;
         }
@@ -111,10 +111,10 @@ function init(gulp, plugins, config) {
     // Get branch name
     var branchList = plugins.execSync('git branch --list', syncEncoding);
     var lines      = branchList.split('\n');
-    plugins._.forEach(lines, function (line) {
+    _.forEach(lines, function (line) {
       if (line.match(/^\*/)) {
-        var split  = plugins._.compact(line.split(/[ \t]/g));
-        branchName = split[plugins._.indexOf(split, "*") + 1];
+        var split  = _.compact(line.split(/[ \t]/g));
+        branchName = split[_.indexOf(split, "*") + 1];
 
         if (branchName != 'master') {
           suffix = '|' + branchName.substr(0, 10);

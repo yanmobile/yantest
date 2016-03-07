@@ -32,7 +32,7 @@
          class="{{column.cssTRClass || 'grid-block tr'}}">
       <div ng-repeat="column in ddpTblCtrl.config.columns"
            class="{{column.cssTDClass || 'grid-block td'}}"
-           ng-include="column.templateUrl || 'ddpTable/cells/cell.'+ (column.type || 'string') + '.html'">
+           ng-include="column.templateUrl || 'isc.ddpTable/cells/cell.'+ (column.type || 'string') + '.html'">
       </div>
     </div>
   </div>

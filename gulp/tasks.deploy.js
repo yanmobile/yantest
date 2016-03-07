@@ -10,7 +10,7 @@ module.exports = {
   init: init
 };
 
-function init(gulp, plugins, config) {
+function init(gulp, plugins, config, _) {
   gulp.task('deploy', function (done) {
     plugins.seq('build', done);
   });
