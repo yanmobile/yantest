@@ -10,6 +10,16 @@
 
 
   /* @ngInject */
+  /**
+   * @ngdoc animation
+   * @memberof core-ui-animation
+   * @name iscBlinkOutFadeInAnimation
+   * @param devlog
+   * @param $window
+   * @param TweenMax
+   * @param EASE_DUR
+   * @returns {{beforeAddClass: beforeAddClass, beforeRemoveClass: beforeRemoveClass}}
+     */
   function iscBlinkOutFadeInAnimation( devlog, $window, TweenMax, EASE_DUR ){
 
   // --------------------
@@ -35,6 +45,12 @@
   // functions
   // --------------------
 
+    /**
+     * @memberof iscBlinkOutFadeInAnimation
+     * @param element
+     * @param className
+     * @param done
+       */
     function beforeAddClass( element, className, done ){
       devlog.channel('iscBlinkOutFadeInAnimation').debug( 'iscBlinkOutFadeInAnimation.beforeAddClass' );
       if( className === 'blink-out-fade-in' ){
@@ -46,6 +62,12 @@
       }
     }
 
+    /**
+     * @memberof iscBlinkOutFadeInAnimation
+     * @param element
+     * @param className
+     * @param done
+       */
     function beforeRemoveClass( element, className, done ){
       devlog.channel('iscBlinkOutFadeInAnimation').debug( 'iscBlinkOutFadeInAnimation.beforeRemoveClass' );
       if( className === 'blink-out-fade-in' ){

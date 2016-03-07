@@ -9,6 +9,17 @@
     .animation( '.modal-bg-anime', iscAppModalBkgrndAnimation );
 
   /* @ngInject */
+  /**
+   * @ngdoc animation
+   * @memberof core-ui-animation
+   * @name iscAppModalBkgrndAnimation
+   * @param devlog
+   * @param $window
+   * @param iscAnimationService
+   * @param TweenMax
+   * @param EASE_DUR
+   * @returns {{beforeAddClass: beforeAddClass, beforeRemoveClass: beforeRemoveClass}}
+     */
   function iscAppModalBkgrndAnimation( devlog, $window, iscAnimationService, TweenMax, EASE_DUR ){
 
   // --------------------
@@ -34,6 +45,12 @@
   // functions
   // --------------------
 
+    /**
+     * @memberof iscAppModalBkgrndAnimation
+     * @param element
+     * @param className
+     * @param done
+       */
     function beforeAddClass( element, className, done ){
       devlog.channel('iscAppModalBkgrndAnimation').debug( 'iscAppModalBkgrndAnimation.beforeAddClass' );
       if (className === 'modal-bg-anime') {
@@ -52,6 +69,12 @@
       }
     }
 
+    /**
+     * @memberof iscAppModalBkgrndAnimation
+     * @param element
+     * @param className
+     * @param done
+       */
     function beforeRemoveClass( element, className, done ){
       devlog.channel('iscAppModalBkgrndAnimation').debug( 'iscAppModalBkgrndAnimation.beforeRemoveClass' );
       if( className === 'modal-bg-anime' ){
@@ -62,6 +85,11 @@
       }
     }
 
+    /**
+     * @memberof iscAppModalBkgrndAnimation
+     * @param elem
+     * @param done
+     */
     function onRemoveComplete( elem, done ){
       TweenMax.set( elem, {display:'none', autoAlpha:0});
       done();

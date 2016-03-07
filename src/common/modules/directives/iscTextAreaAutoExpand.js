@@ -24,19 +24,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
 
- * Adapted from: http://code.google.com/p/gaequery/source/browse/trunk/src/static/scripts/jquery.autogrow-textarea.js
- *
- * Works nicely with the following styles:
- * textarea {
- *  resize: none;
- *  word-wrap: break-word;
- *  transition: 0.05s;
- *  -moz-transition: 0.05s;
- *  -webkit-transition: 0.05s;
- *  -o-transition: 0.05s;
- * }
- *
- * Usage: <textarea isc-text-area-autoExpand ng-model="someValue"></textarea>
+
  **/
 
 
@@ -50,6 +38,26 @@
     .directive( 'iscTextAreaAutoExpand', iscTextAreaAutoExpand );
 
   /* @ngInject */
+  /**
+   * @memberof core-ui-directives
+   * @ngdoc directive
+   * @param devlog
+   * @returns {{restrict: string, require: string, link: link}}
+   * @description
+   *  Adapted from: http://code.google.com/p/gaequery/source/browse/trunk/src/static/scripts/jquery.autogrow-textarea.js
+   *
+   * Works nicely with the following styles:
+   * textarea {
+   *  resize: none;
+   *  word-wrap: break-word;
+   *  transition: 0.05s;
+   *  -moz-transition: 0.05s;
+   *  -webkit-transition: 0.05s;
+   *  -o-transition: 0.05s;
+   * }
+   *
+   * Usage: <textarea isc-text-area-autoExpand ng-model="someValue"></textarea>
+     */
   function iscTextAreaAutoExpand( devlog ){ //jshint ignore: line
     devlog.channel('iscTextAreaAutoExpand').debug( 'iscTextAreaAutoExpand LOADED');
 
@@ -73,6 +81,13 @@
     // functions
     // ----------------------------
 
+    /**
+     *
+     * @param scope
+     * @param element
+     * @param attr
+     * @param ngModelCtrl
+       */
     function link( scope, element, attr, ngModelCtrl ){
 
       var minHeight = MIN_HEIGHT;

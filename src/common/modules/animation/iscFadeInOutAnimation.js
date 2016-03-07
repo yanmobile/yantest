@@ -9,6 +9,16 @@
     .animation( '.fade-in-out', iscFadeInOutAnimation );
 
   /* @ngInject */
+  /**
+   * @ngdoc animation
+   * @memberof core-ui-animation
+   * @name iscFadeInOutAnimation
+   * @param devlog
+   * @param $window
+   * @param TweenMax
+   * @param EASE_DUR
+   * @returns {{beforeAddClass: beforeAddClass, beforeRemoveClass: beforeRemoveClass}}
+     */
   function iscFadeInOutAnimation( devlog, $window, TweenMax, EASE_DUR ){
 
   // --------------------
@@ -34,6 +44,12 @@
   // functions
   // --------------------
 
+    /**
+     * @memberof iscFadeInOutAnimation
+     * @param element
+     * @param className
+     * @param done
+       */
     function beforeAddClass( element, className, done ){
       devlog.channel('iscFadeInOutAnimation').debug( 'iscFadeInOutAnimation.beforeAddClass' );
 
@@ -46,6 +62,12 @@
       }
     }
 
+    /**
+     * @memberof iscFadeInOutAnimation
+     * @param element
+     * @param className
+     * @param done
+       */
     function beforeRemoveClass( element, className, done ){
       devlog.channel('iscFadeInOutAnimation').debug( 'iscFadeInOutAnimation.beforeRemoveClass' );
       if( className === 'fade-in-out' ){
@@ -56,6 +78,11 @@
       }
     }
 
+    /**
+     * @memberof iscFadeInOutAnimation
+     * @param element
+     * @param done
+       */
     function onRemoveComplete( element, done ){
       // reset element here
       TweenMax.set( element, {autoAlpha: 0, display: 'none'});

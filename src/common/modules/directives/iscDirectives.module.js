@@ -5,6 +5,9 @@
 (function () {
   'use strict';
 
+  /**
+   * @namespace core-ui-directives
+   */
   angular
     .module('isc.directives', ['isc.core', 'pascalprecht.translate']);
 
