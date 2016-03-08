@@ -1,0 +1,7 @@
+<div class="grid-content collapse-left" ng-if="options.data.showLabel">
+  <label for="{{id}}" class="form-label inline">
+    {{to.label}}
+    {{to.required ? '*' : ''}}
+  </label>
+  <formly-transclude></formly-transclude>
+</div>

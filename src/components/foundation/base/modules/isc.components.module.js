@@ -13,9 +13,12 @@
       '720kb.datepicker',
       'foundation',
       'angucomplete-alt',
+      'formly',
+      'isc.forms',
       'isc.directives',
       'isc.table',
       'isc.ddpTable',
+      'isc.notification',
       'isc.spinner',
       'iscNavContainer'
     ]);

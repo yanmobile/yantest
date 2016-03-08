@@ -1,0 +1,13 @@
+<div>
+  <div ng-transclude></div>
+  <ul class="isc-typeahead-list"
+      ng-show="typeaheadCtrl.showList && typeaheadCtrl.isDirty && typeaheadCtrl.getFilteredList().length && !typeaheadCtrl.selectedItem">
+    <li tabindex="1"
+        ng-click="typeaheadCtrl.select(result)"
+        ng-keypress="typeaheadCtrl.select(result)"
+        class="isc-dropdown-item isc-dd"
+        ng-repeat="result in typeaheadCtrl.getFilteredList()">
+      {{ result[typeaheadCtrl.listField || 'name']}}
+    </li>
+  </ul>
+</div>

@@ -1,0 +1,451 @@
+/*
+  FORMS
+  -----
+
+  Base Form Architecture and basic styles for iscForm generator components.
+
+  Includes:
+   - Base form architecture and typography
+   - Inputs: text, textareas, prefix/postfix, filterable fields, typeaheads, selects, checkboxes, radios
+   - Date inputs: Date components and datepickers, datepicker ranges
+   - Dynamic fields
+   - Validation errors
+   - Special field wrappers
+*/
+
+/* Form Layout */
+
+form {
+  &.formly {
+    border: 1px solid gainsboro;
+    background: white;
+    padding: 2rem;
+
+    @media #{$medium} {
+      padding: 1rem;
+    }
+
+    @media #{$small} {
+      padding: 0 1rem;
+    }
+
+    //All Devices
+    .padding {
+      padding: 1.5rem;
+    }
+
+    .padding-left {
+      padding-left: 1.5rem;
+    }
+
+    .padding-right {
+      padding-right: 1.5rem;
+    }
+
+    .padding-top {
+      padding-top: 1.5rem;
+    }
+
+    .padding-bottom {
+      padding-bottom: 1.5rem;
+    }
+
+    //Medium Devices
+    .medium-padding {
+      @media #{$medium} {
+        padding: 1.5rem;
+      }
+    }
+
+    .medium-padding-left {
+      @media #{$medium} {
+        padding-left: 1.5rem;
+      }
+    }
+
+    .medium-padding-right {
+      @media #{$medium} {
+        padding-right: 1.5rem;
+      }
+    }
+
+    .medium-padding-top {
+      @media #{$medium} {
+        padding-top: 1.5rem;
+      }
+    }
+
+    .medium-padding-bottom {
+      @media #{$medium} {
+        padding-bottom : 1.5rem;
+      }
+    }
+
+    //Large Devices Only
+    .large-padding {
+      @media #{$large} {
+        padding: 1.5rem;
+      }
+    }
+
+    .large-padding-left {
+      @media #{$large} {
+        padding-left: 1.5rem;
+      }
+    }
+
+    .large-padding-right {
+      @media #{$large} {
+        padding-right: 1.5rem;
+      }
+    }
+
+    .large-padding-top {
+      @media #{$large} {
+        padding-top: 1.5rem;
+      }
+    }
+
+    .large-padding-bottom {
+      @media #{$large} {
+        padding-bottom : 1.5rem;
+      }
+    }
+  }
+
+  .grid-table {
+
+    .thead {
+      font-size: 0.9375rem;
+
+      .th {
+        font-size: 0.9375rem;
+        font-weight: $font-weight-bold;
+
+        &.isc-sortable {
+          a {
+
+            @media #{$small} {
+              font-size: 0.75rem;
+              line-height: 1;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Full Page Subform
+.subform-page {
+  background: white;
+  padding: 1rem 0;
+
+  .controls {
+    margin-top: 2rem;
+  }
+}
+
+
+/* Form Typography */
+.form-page {
+  margin-bottom: 2rem;
+
+  h3 {
+    font-size: 1.5rem;
+  }
+
+  h5 {
+    font-size: 1.125rem;
+  }
+  // Help Text
+  h6 {
+    margin-bottom: 1.5rem;
+    color: $body-font-color;
+    font-weight: $font-weight-normal;
+  }
+
+  .instructions {
+    margin-bottom: 1rem;
+
+    h5 {
+      font-size: 1.125rem;
+
+      @media #{$medium} {
+        font-size: 1rem;
+      }
+
+      @media #{$small} {
+        font-size: 1rem;
+      }
+    }
+  }
+
+  //View mode
+  .formly-field {
+
+    &.formly-field-__viewMode__input,
+    &.formly-field-__viewMode__date,
+    &.formly-field-__viewMode__radio,
+    &.formly-field-__viewMode__select {
+
+      label {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+.form-title {
+  margin: 1rem 0 2rem 0;
+}
+
+// TODO - Help Text wrapper?
+.help-text {
+  margin: 0 0 0 0;
+
+  h6 {
+    //margin: 1rem 0;
+    color: $body-font-color;
+    font-weight: $font-weight-normal;
+  }
+}
+
+
+
+
+/* Typeahead */
+$isc-btn-color: #FFFFFF;
+
+.isc-dropdown-selection-list{
+  background-color: $isc-btn-color;
+  top:50px;
+  position:absolute;
+  left:550px;
+  visibility: visible;
+  border:1px solid $app-border-color;
+  z-index: $modal-z-index !important;
+}
+
+.isc-typeahead-list {
+  @extend .isc-dropdown-selection-list;
+
+  top: initial !important;
+  left: initial !important;
+  margin: 0;
+  margin-top: -2px;
+  list-style-type: none;
+  width: 100%;
+
+  li {
+    outline: none;
+    list-style-type: none;
+    padding: 0.25rem;
+
+    &:hover, &:focus {
+      background-color: $brand-secondary;
+    }
+  }
+}
+
+.typeahead > div {width: 100%;}
+
+input {
+  &.typeahead {
+    margin: 0;
+    box-shadow: none;
+    border-radius: $global-radius;
+    border: $input-border;
+    height: 2.4rem;
+    padding: 0.5rem;
+    display: block;
+    font-size: 1rem;
+    vertical-align: middle;
+  }
+}
+
+
+/* date-container */
+
+.date-container {
+  max-width: none;
+}
+
+/* Upon submit, forms containing multiple errors will display
+ * each error in a floating notification box.
+*/
+
+.notification {
+
+  &.alert, &.success {
+
+    label {
+      color: white;
+    }
+  }
+}
+
+/* Breadcrumbs */
+
+.context {
+  margin: 0.5rem 0 2.75rem 0;
+}
+
+.breadcrumb {
+  list-style: none;
+  overflow: hidden;
+  font-size: 1rem;
+  line-height: 1.5;
+  border: 1px solid $primary-color;
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+
+  @media #{$medium} {
+    font-size: 0.875rem;
+  }
+
+  @media #{$small} {
+    margin-top: 1rem;
+    font-size: 0.75rem;
+  }
+
+  li {
+    float: left;
+
+    &:first-child a {
+      padding-left: 20px;
+
+      @media #{$medium} {
+        padding-left: 15px;
+      }
+
+      @media #{$small} {
+        padding-left: 10px;
+      }
+    }
+
+    &:last-child a {
+      padding-right: 20px;
+
+      @media #{$medium} {
+        padding-right: 13px;
+      }
+
+      @media #{$small} {
+        padding-right: 8px;
+      }
+    }
+
+    &.active {
+
+      .breadcrumb-text {
+        display: inline-block;
+      }
+
+      a {
+        //background: #f9f9f9;
+        background: $primary-color;
+        color: white;
+        font-weight: $font-weight-bold;
+
+        &:after {
+          //border-left-color: #f9f9f9;
+          border-left-color: $primary-color;
+        }
+      }
+    }
+
+    a {
+      color: $primary-color;
+      text-decoration: none;
+      padding: 10px 0 10px 55px;
+      background: white;
+      position: relative;
+      display: block;
+      float: left;
+
+      @media #{$medium} {
+        padding: 10px 0 10px 31px;
+      }
+
+      @media #{$small} {
+        padding: 5px 0 5px 26px;
+      }
+
+      &:focus {
+        outline: none;
+      }
+
+      &:hover,
+      &:focus {
+        //background: #f9f9f9;
+
+        &:after {
+          //border-left-color: #f9f9f9;
+        }
+      }
+
+      &:after {
+        content: " ";
+        display: block;
+        width: 0;
+        height: 0;
+        border-top: 50px solid transparent;
+        /* Go big on the size, and let overflow hide */
+        border-bottom: 50px solid transparent;
+        border-left: 30px solid white;
+        position: absolute;
+        top: 50%;
+        margin-top: -50px;
+        left: 100%;
+        z-index: 2;
+
+        @media #{$medium} {
+          border-top: 30px solid transparent;
+          border-left: 20px solid white;
+          border-bottom: 30px solid transparent;
+          margin-top: -30px;
+        }
+
+        @media #{$small} {
+          border-top: 25px solid transparent;
+          border-left: 15px solid white;
+          border-bottom: 25px solid transparent;
+          margin-top: -25px;
+        }
+      }
+
+      &:before {
+        content: " ";
+        display: block;
+        width: 0;
+        height: 0;
+        border-top: 50px solid transparent;
+        /* Go big on the size, and let overflow hide */
+        border-bottom: 50px solid transparent;
+        border-left: 30px solid $primary-color;
+        position: absolute;
+        top: 50%;
+        margin-top: -50px;
+        margin-left: 1px;
+        left: 100%;
+        z-index: 1;
+
+        @media #{$medium} {
+          border-top: 30px solid transparent;
+          border-left: 20px solid $primary-color;
+          border-bottom: 30px solid transparent;
+          margin-top: -30px;
+        }
+
+        @media #{$small} {
+          border-top: 25px solid transparent;
+          border-left: 15px solid $primary-color;
+          border-bottom: 25px solid transparent;
+          margin-top: -25px;
+        }
+      }
+    }
+  }
+}
