@@ -9,30 +9,30 @@ To use:
 
     clone the github repository in a sibling directory
     The folder structure should be similar to this:
-        gulp (contains all the build tasks, including common.json)
-            common.json
-            app.json    //application specific
-            build.js
-            test-unit.js
-        gulpfile.js
-        package.json
-        src
-            common
-                assets
-                modules
-                    bower.json
-            app    //application specific
-                assets
-                bower.json
-                modules
-                    app
-                    (other app-specific modules...)
-            favicon.ico
-            index.html
-        test
-            unit
-                common
-                app    //application specific
+    
+    |-- src //source code
+    |   |-- common  //should not contain any UI Components / CSS styles
+    |   |   |-- assets
+    |   |   |-- modules
+    |   |   |-- bower.json    
+    |   |-- components
+    |   |   |-- foundation
+    |   |   |   |-- base //default edition
+    |   |   |   |   |-- assets
+    |   |   |   |   |-- modules
+    |   |   |   |   |-- bower.json
+    |   |   |   |   |-- components.json //if this edition is picked, this file will be copied to "gulp/components.json"
+    |   |-- app     //application specific
+    |   |   |-- assets
+    |   |   |-- modules
+    |   |   |-- bower.json  
+    |   |   |-- bower.json
+    |   |-- test
+    |   |   |-- unit
+    |   |   |   |-- common
+    |   |   |   |-- component
+    |   |   |   |-- app     //application specific
+
         
 Run application:
 
