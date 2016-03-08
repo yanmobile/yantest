@@ -10,6 +10,9 @@ node_modules/
 www/
 platforms/
 docs/
+NG/
+REG/
+ngdocs/
 
 #local config for each developer
 src/app/assets/configuration/localConfig.json
