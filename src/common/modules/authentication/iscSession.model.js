@@ -8,6 +8,19 @@
   angular.module('isc.authentication')
     .factory('iscSessionModel', iscSessionModel);
 
+  /**
+   * @memberof core-ui-authentication
+   * @ngdoc factory
+   * @param $q
+   * @param $http
+   * @param devlog
+   * @param $rootScope
+   * @param $interval
+   * @param storage
+   * @param iscSessionStorageHelper
+   * @param AUTH_EVENTS
+   * @returns {{create: create, destroy: destroy, initSessionTimeout: initSessionTimeout, stopSessionTimeout: stopSessionTimeout, resetSessionTimeout: resetSessionTimeout, getRemainingTime: getRemainingTime, getCredentials: getCredentials, getCurrentUser: getCurrentUser, getCurrentUserRole: getCurrentUserRole, isAuthenticated: isAuthenticated, getFullName: getFullName, configure: configure}}
+     */
   function iscSessionModel($q, $http, devlog, $rootScope, $interval, storage, iscSessionStorageHelper, AUTH_EVENTS) {
     devlog.channel('iscSessionModel').debug('iscSessionModel LOADED');
 
@@ -32,6 +45,10 @@
 
     var isConfigured = false;
     // Initialize to empty promise in case it is not configured
+    /**
+     *
+     * @returns {promise} The promise object calls "resolve" with an empty object as a parameter
+       */
     var ping = function () {
       var deferred = $q.defer();
       deferred.resolve({});
@@ -71,6 +88,11 @@
     // functions
     // ----------------------------
 
+    /**
+     *
+     * @param sessionData
+     * @param isSessionNew
+       */
     function create(sessionData, isSessionNew) {
       devlog.channel('iscSessionModel').debug('iscSessionModel.create');
       // $log.debug( '...sessionData: ' + JSON.stringify( sessionData  ));
@@ -100,6 +122,9 @@
     }
 
     /**
+     *
+     * @param config
+     * @description
      * Configures session management for server communication
      * Pass in a configuration object with these properties:
      *
@@ -107,7 +132,7 @@
      *                       without causing a session time renewal
      * sessionIdPath     - the path in the response data that represents the session id
      * remainingTimePath - the path in the response data that represents the remaining time in seconds
-     */
+       */
     function configure(config) {
       isConfigured      = true;
       ping              = config.ping;
@@ -116,8 +141,15 @@
       noResponseMaxAge  = config.noResponseMaxAge || noResponseMaxAge;
     }
 
-    // Calls a non-invasive ping API which inspects the current server session, without renewing that session,
-    // and returns information about the time remaining in this session.
+    //
+    /**
+     *
+     * @param syncedOn
+     * @returns {*}
+     * @description
+     * Calls a non-invasive ping API which inspects the current server session, without renewing that session,
+     * and returns information about the time remaining in this session.
+       */
     function callPing(syncedOn) {
       sessionTimeout.syncedOn = syncedOn || sessionTimeout.syncedOn;
 
@@ -149,6 +181,7 @@
       }
     }
 
+
     function destroy() {
       devlog.channel('iscSessionModel').debug('iscSessionModel.destroy');
 
@@ -172,6 +205,10 @@
     }
 
     // --------------
+    /**
+     *
+     * @param timeoutCounter
+       */
     function initSessionTimeout(timeoutCounter) {
       devlog.channel('iscSessionModel').debug('iscSessionModel.initSessionTimeout');
       devlog.channel('iscSessionModel').debug('...timeoutCounter: ' + timeoutCounter);
@@ -273,6 +310,9 @@
       }
     }
 
+    /**
+     *
+     */
     function stopSessionTimeout() {
       devlog.channel('iscSessionModel').debug('iscSessionModel.stopSessionTimeout');
       if (angular.isDefined(intervalPromise)) {
@@ -295,20 +335,36 @@
       }
     }
 
+    /**
+     *
+     * @returns {number}
+       */
     function getRemainingTime() {
       return sessionTimeout.remaining;
     }
 
     // --------------
+    /**
+     *
+     * @returns {*}
+       */
     function getCredentials() {
       return credentials;
     }
 
     // --------------
+    /**
+     *
+     * @returns {XMLList|XML}
+       */
     function getCurrentUser() {
       return angular.copy(currentUser); // To prevent external modificiation
     }
 
+    /**
+     *
+     * @param user
+       */
     function setCurrentUser(user) {
       devlog.channel('iscSessionModel').debug('iscSessionModel.setCurrentUser');
       devlog.channel('iscSessionModel').debug('...user: ' + angular.toJson(user));
@@ -316,11 +372,19 @@
     }
 
     // --------------
+    /**
+     *
+     * @returns {*}
+       */
     function getCurrentUserRole() {
       return _.get(currentUser, "userRole");
     }
 
     // --------------
+    /**
+     *
+     * @returns {boolean}
+       */
     function isAuthenticated() {
       //devlog.channel('iscSessionModel').debug('iscSessionModel.isAuthenticated', currentUser);
       // '*' denotes anonymous user (AKA not authenticated)
@@ -328,6 +392,10 @@
     }
 
     // --------------
+    /**
+     *
+     * @returns {string}
+       */
     function getFullName() {
       devlog.channel('iscSessionModel').debug('iscSessionModel.getFullName');
       return !!currentUser ? currentUser.FullName : '';
