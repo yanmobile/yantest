@@ -3,9 +3,6 @@
  */
 
 
-/*==================================
- =            Copy fonts            =
- ==================================*/
 module.exports = {
   init: init
 };
@@ -14,6 +11,7 @@ function init(gulp, plugins, config, _) {
   gulp.task('images', function () {
     var srcImages = []
       .concat(config.common.module.assets.images)
+      .concat(config.components.module.assets.images)
       .concat(config.app.module.assets.images);
     var stream    = gulp.src(srcImages);
 

@@ -3,9 +3,6 @@
  */
 
 
-/*==================================
- =            Copy fonts            =
- ==================================*/
 module.exports = {
   init: init
 };
@@ -13,19 +10,19 @@ module.exports = {
 function init(gulp, plugins, config, _) {
   gulp.task('scripts', function () {
 
-    var jsSrc = _.concat(
-      config.common.vendor.js,
-      config.component.vendor.js,
-      config.app.vendor.js,
-      _.get(config.common, 'module.assets.vendor.js', []),
-      _.get(config.component, 'module.assets.vendor.js', []),
-      _.get(config.app, 'module.assets.vendor.js', []),
-      config.common.module.modules,
-      config.component.module.modules,
-      config.app.module.modules,
-      config.common.module.js,
-      config.component.module.js,
-      config.app.module.js);
+    var configPaths = ["vendor.js",
+      "assets.vendor.js",
+      "module.modules",
+      "module.js"
+    ];
+
+    var jsSrc = [];
+    _.forEach(configPaths, function (configPath) {
+      jsSrc.push(_.get(config.common, configPath, []));
+      jsSrc.push(_.get(config.component, configPath, []));
+      jsSrc.push(_.get(config.app, configPath, []));
+    });
+    jsSrc     = _.flatten(jsSrc);
 
     gulp.src(jsSrc)
       .pipe(plugins.filelog())
