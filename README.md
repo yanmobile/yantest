@@ -21,6 +21,13 @@ To use:
                 assets
                 modules
                     bower.json
+            components  //ui component (foundation/angular material/bootstrap/iconic)
+                foundation  //foundation for apps
+                    base    //default edition
+                        assets
+                        bower.json
+                        modules
+                            bower.json
             app    //application specific
                 assets
                 bower.json
