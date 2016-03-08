@@ -1,0 +1,44 @@
+{
+  "vendor" : {
+    "js" : [
+      "src/components/foundation/base/bower_components/angular-utils-pagination/dirPagination.js",
+      "src/components/foundation/base/bower_components/angucomplete-alt/angucomplete-alt.js",
+      "src/components/foundation/base/bower_components/angularjs-datepicker/dist/angular-datepicker.min.js",
+      "src/components/foundation/base/bower_components/foundation-apps/dist/js/foundation-apps.js",
+      "src/components/foundation/base/bower_components/foundation-apps/dist/js/foundation-apps-templates.js"
+    ],
+    "mocks" : [
+    ],
+    "fonts" : [
+      "src/components/foundation/base/bower_components/font-awesome/fonts/fontawesome-webfont.*"
+    ]
+  },
+  "module" : {
+    "modules": [
+      "src/components/foundation/base/modules/**/*.module.js"
+    ],
+    "js" : [
+      "src/components/foundation/base/modules/**/*.js"
+    ],
+    "html" : [
+      "src/components/foundation/base/modules/**/*.html",
+      "src/components/foundation/base/assets/**/*.html"
+    ],
+    "assets" : {
+      "images" : [
+        "src/components/foundation/base/assets/images/**/*"
+      ],
+      "vendor" : {
+        "js" : [
+          "src/components/foundation/base/assets/plugins/**/*.js"
+        ]
+      }
+    },
+    "mocks" : [
+      "test/unit/components/componentUnitTestMocks.js"
+    ],
+    "tests" : [
+      "test/unit/components/**/*Tests.js"
+    ]
+  }
+}
