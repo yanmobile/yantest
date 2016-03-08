@@ -5,6 +5,13 @@
 (function () {
   'use strict';
 
+    /**
+     * @memberof core-ui-authentication
+     * @ngdoc constant
+     * @name AUTH_EVENTS
+     * @description
+     * Please click the "source" link on the header to see the constants
+     */
   angular
     .module('isc.authentication')
     .constant('AUTH_EVENTS', {
