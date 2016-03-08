@@ -10,16 +10,24 @@ To use:
     clone the github repository in a sibling directory
     The folder structure should be similar to this:
     
+    
+    |-- gulp.js //utilizes gulp tasks inside of ./gulp folder
+    |-- config.xml  //used by cordova
+    |-- jsdocs
+    |   |-- conf.json   //jsDocs configuration
     |-- src //source code
+    |   |-- index.html
     |   |-- common  //should not contain any UI Components / CSS styles
     |   |   |-- assets
     |   |   |-- modules
+    |   |   |   |-- isc.common.module.js
     |   |   |-- bower.json    
     |   |-- components
     |   |   |-- foundation
     |   |   |   |-- base //default edition
     |   |   |   |   |-- assets
     |   |   |   |   |-- modules
+    |   |   |   |   |   |-- isc.components.module.js
     |   |   |   |   |-- bower.json
     |   |   |   |   |-- components.json //if this edition is picked, this file will be copied to "gulp/components.json"
     |   |-- app     //application specific
@@ -27,11 +35,11 @@ To use:
     |   |   |-- modules
     |   |   |-- bower.json  
     |   |   |-- bower.json
-    |   |-- test
-    |   |   |-- unit
-    |   |   |   |-- common
-    |   |   |   |-- component
-    |   |   |   |-- app     //application specific
+    |-- test
+    |   |-- unit
+    |   |   |-- common
+    |   |   |-- component
+    |   |   |-- app     //application specific
 
         
 Run application:

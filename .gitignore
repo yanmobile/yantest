@@ -1,15 +1,10 @@
 .DS_store
-.tmp-css
 .yo-rc.json
-.idea/modules.xml
-.tmp-css
 
+.tmp-css/
 .idea/
 bower_components/
 node_modules/
 www/
 platforms/
 docs/
-
-#local config for each developer
-src/app/assets/configuration/localConfig.json
