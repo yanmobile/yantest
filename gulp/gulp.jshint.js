@@ -11,10 +11,10 @@ function init(gulp, plugins, config, _) {
 
   var srcFiles = []
     .concat(config.common.module.modules)
-    .concat(config.components.module.modules)
+    .concat(config.component.module.modules)
     .concat(config.app.module.modules)
     .concat(config.common.module.js)
-    .concat(config.components.module.js)
+    .concat(config.component.module.js)
     .concat(config.app.module.js);
 
   gulp.task('jshint', function () {
