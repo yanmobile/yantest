@@ -12,7 +12,7 @@ In order to upgrade the framework to this framework version, the projects needs 
 * In src/app/modules/app.module.js file, change "isc.common" dependency to "isc.components"
 * In src/index.html file, add "```<script src="js/templates.min.js"></script>```" html tag after "```<script src="js/app.min.js"></script>```" tag
 
-   
+```   
     //from
     <!-- inject:js -->
     <script src="js/app.min.js"></script>
@@ -23,11 +23,11 @@ In order to upgrade the framework to this framework version, the projects needs 
     <script src="js/app.min.js"></script>
     <!-- end inject -->
     <script src="js/templates.min.js"></script>
-
+```
     
 * In gulp/app.json file, separate "module/js" block into two blocks: "module/modules" and "module/js"
 
-
+```
     // from
     "js" : [    
       "src/app/modules/**/app.module.js",
@@ -44,6 +44,7 @@ In order to upgrade the framework to this framework version, the projects needs 
     "js" : [
       "src/app/modules/**/*.js"
     ],
+```
 
 ### 02/15/2016
 -- added support for blacklist
