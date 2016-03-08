@@ -15,7 +15,7 @@
         { key: 'Soups', model: 'Soups' },
         { key: 'Customer', model: 'Customer.Name' },
         { key: 'Order Time', model: 'Customer.Date', type: 'date' },
-        { key: 'Age', model: 'Customer.DOB', type: 'integer', templateUrl: 'ddpTable/cells/cell.age.html' }
+        { key: 'Age', model: 'Customer.DOB', type: 'integer', templateUrl: 'isc.ddpTable/cells/cell.age.html' }
       ]
     }
  */
