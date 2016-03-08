@@ -8,9 +8,10 @@
 ##### upgrade notes:
 In order to upgrade the framework to this framework version, the projects needs to do these following things:
 
-* Remove gulp/watch.js file
-* In src/app/modules/app.module.js file, change "isc.common" dependency to "isc.components"
-* In src/index.html file, add "```<script src="js/templates.min.js"></script>```" html tag after "```<script src="js/app.min.js"></script>```" tag
+1. Remove gulp/watch.js file
+2. In src/app/modules/app.module.js file, change "isc.common" dependency to "isc.components"
+3. In src/app/modules/app.module.js file, add "isc.templates" as a dependency. 
+4. In src/index.html file, add "```<script src="js/templates.min.js"></script>```" html tag after "```<script src="js/app.min.js"></script>```" tag
 
 ```   
     //from
@@ -25,7 +26,7 @@ In order to upgrade the framework to this framework version, the projects needs 
     <script src="js/templates.min.js"></script>
 ```
     
-* In gulp/app.json file, separate "module/js" block into two blocks: "module/modules" and "module/js"
+5. In gulp/app.json file, separate "module/js" block into two blocks: "module/modules" and "module/js"
 
 ```
     // from
