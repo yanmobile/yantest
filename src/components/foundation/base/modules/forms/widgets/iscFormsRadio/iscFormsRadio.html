@@ -1,0 +1,14 @@
+<div>
+  <div ng-repeat="option in options.templateOptions.options" class="radio-list grid-block">
+    <label class="radio">
+      <input type="radio"
+             id="{{id + '_'+ $index}}"
+             name="{{id + '_'+ $index}}"
+             tabindex="0"
+             ng-value="option"
+             ng-checked="radioCtrl.model[valueProp] === option[valueProp]"
+             ng-click="onSelect(option)">
+      {{option[displayProp]}}
+    </label>
+  </div>
+</div>

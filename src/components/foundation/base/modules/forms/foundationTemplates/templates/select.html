@@ -1,0 +1,13 @@
+<div class="grid-block expand">
+  <select
+      ng-if="!isObjectModel"
+      ng-model="model[options.key]"
+      ng-options="option for option in to.options track by option">
+  </select>
+
+  <select
+      ng-if="isObjectModel"
+      ng-model="model[options.key]"
+      ng-options="option as option[displayProp] group by option[groupProp] for option in to.options track by option[valueProp]">
+  </select>
+</div>

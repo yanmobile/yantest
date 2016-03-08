@@ -1,0 +1,17 @@
+<div class="vertical grid-block">
+
+  <div class="grid-block shrink">
+    <label for="{{id}}" class="form-label">
+      {{to.label}}
+      {{to.required ? '*' : ''}}
+    </label>
+
+    <a class="button icon align-center"
+       ng-if="::options.data.helpText"
+       title="{{::options.data.helpText}}"> <i class="fa fa-question-circle"></i>
+    </a>
+
+  </div>
+
+  <formly-transclude></formly-transclude>
+</div>

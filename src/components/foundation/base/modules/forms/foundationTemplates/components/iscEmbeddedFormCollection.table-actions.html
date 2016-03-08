@@ -1,0 +1,21 @@
+<ul class="icon-list">
+  <li>
+    <button class="icon"
+            type="button"
+            title="Edit"
+            ng-click="efCollectionCtrl.editForm(row);">
+      <i class="fa fa-edit"></i>
+    </button>
+  </li>
+  <li>
+    <button class="icon alert"
+            type="button"
+            title="Remove"
+            ng-click="efCollectionCtrl.removeForm(row);">
+      <i class="fa fa-remove"></i>
+    </button>
+  </li>
+</ul>
+<span class="has-error">
+  <label class="error-message" ng-if="efCollectionCtrl.hasValidationError(row);">! invalid</label>
+</span>

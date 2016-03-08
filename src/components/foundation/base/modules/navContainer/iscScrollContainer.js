@@ -1,0 +1,23 @@
+(function () {
+  'use strict';
+
+  /**
+   * A directive for registering the element with iscScrollContainerService as a scrolling container.
+   */
+  angular
+    .module('iscNavContainer')
+    .directive('iscScrollContainer', iscScrollContainer);
+
+  /* @ngInject */
+  function iscScrollContainer(iscScrollContainerService) {
+    var directive = {
+      restrict: 'EA',
+      link    : link
+    };
+    return directive;
+
+    function link(scope, element, attrs) {
+      iscScrollContainerService.registerScrollingContent(element);
+    }
+  }
+})();
