@@ -1,0 +1,37 @@
+{
+  "tags": {
+    "allowUnknownTags": true,
+    "dictionaries": ["jsdoc","closure"]
+  },
+  "source": {
+    "includePattern": ".+\\.js(doc)?$",
+    "excludePattern": "(^|\\/|\\\\)_",
+    "include": [ "." ],
+    "exclude": [ "./node_modules","./src/common/bower_components" ]
+  },
+  "plugins": [
+    "node_modules/jsdoc/plugins/markdown",
+    "node_modules/angular-jsdoc/common/plugins/ngdoc"
+  ],
+  "templates": {
+    "systemName"            : "HS Core UI",
+    //"footer"                : "This is the footer",
+    "copyright"             :  "Copyright message",
+    "includeDate"           : "true",
+    "navType"               : "vertical",
+    "theme"                 : "cerulean",
+    "linenums"              : "false",
+    "collapseSymbols"       : "true",
+    "inverseNav"            : "true",
+    "outputSourceFiles"     : "true" ,
+    "dateFormat"            : "YYYY MMM Do",
+    "syntaxTheme"           : "dark",
+    "sort"                  : "boolean"
+  },
+  "opts": {
+    "template": "./node_modules/angular-jsdoc/angular-template",
+    "encoding": "utf8",
+    "destination": "../hs-core-ui/docs",
+    "recurse": true
+  }
+}

@@ -9,6 +9,7 @@ bower_components/
 node_modules/
 www/
 platforms/
+docs/
 
 #local config for each developer
 src/app/assets/configuration/localConfig.json

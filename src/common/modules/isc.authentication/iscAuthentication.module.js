@@ -5,6 +5,9 @@
 (function () {
   'use strict';
 
+  /**
+   * @namespace core-ui-authentication
+   */
   angular
     .module('isc.authentication', ['isc.core', 'isc.configuration'])
     .run(run);
