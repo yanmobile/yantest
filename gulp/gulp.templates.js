@@ -11,14 +11,18 @@ function init(gulp, plugins, config, _) {
   gulp.task('templates', function () {
 
     var tplCacheOpts = {
-      module: 'isc.common'
+      module    : 'isc.templates',
+      standalone: true
     };
 
-    plugins.streamqueue({ objectMode: true },
-      gulp.src(config.common.module.html).pipe(plugins.templateCache(tplCacheOpts)),
-      gulp.src(config.component.module.html).pipe(plugins.templateCache(tplCacheOpts)),
-      gulp.src(config.app.module.html).pipe(plugins.templateCache(tplCacheOpts))
-    )
+    var templates    = _.concat(config.common.module.html,
+      config.component.module.html,
+      config.app.module.html);
+
+    gulp
+      .src(templates)
+      .pipe(plugins.filelog())
+      .pipe(plugins.templateCache(tplCacheOpts))
       .pipe(plugins.filelog())
       .pipe(plugins.concat('templates.min.js'))
       .pipe(gulp.dest(plugins.path.join(config.app.dest.folder, 'js')));
