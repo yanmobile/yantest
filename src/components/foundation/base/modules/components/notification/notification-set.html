@@ -1,0 +1,30 @@
+<div class="notification-container {{position}}">
+  <zf-notification ng-repeat="notification in notifications"
+                   title="notification.title"
+                   image="notification.image"
+                   notif-id="notification.id"
+                   color="notification.color"
+                   autoclose="notification.autoclose">
+
+    <!-- notification content -->
+    <div ng-bind-html="notification.content"
+         isc-scroll-to="{{notification.scrollTo}}">
+    </div>
+
+    <!-- linky ng-messages for validation -->
+    <div class="grid-block"
+         ng-init="options = notification.options; to = options.templateOptions; "
+         ng-if="notification.$error"
+         isc-scroll-to="{{notification.scrollTo}}"
+         ng-messages="notification.$error">
+      <div ng-messages-include="forms/foundationTemplates/validation.html"></div>
+      <div ng-message="{{::name}}"
+           class="grid-content collapse"
+           ng-repeat="(name, message) in ::options.validation.messages">
+        <label class="error-message">
+          {{message(options.formControl.$viewValue, options.formControl.$modelValue, this)}}
+        </label>
+      </div>
+    </div>
+  </zf-notification>
+</div>

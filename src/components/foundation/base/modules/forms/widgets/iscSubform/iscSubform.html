@@ -1,0 +1,84 @@
+<div>
+  <!--Subform Container-->
+  <div ng-include="'forms/widgets/iscForm/iscFullPageSubform.html'"
+       ng-if="subformCtrl.childConfig.renderForm"
+       class="subformAnimation">
+  </div>
+
+  <!--Parent Form Container-->
+  <div ng-hide="subformCtrl.childConfig.renderForm">
+
+    <!--Main form (has pages with fields)-->
+    <div ng-if="subformCtrl.multiConfig">
+
+      <!--Main Form Title-->
+      <h2 class="form-title"><span>{{ subformCtrl.formTitle | translate }}</span></h2>
+
+      <!--Page layout-->
+      <div ng-switch="subformCtrl.pageLayout">
+        <div ng-switch-when="paged">
+          <div ng-include="'forms/widgets/iscForm/iscPagedForm.html'"></div>
+        </div>
+
+        <div ng-switch-default>
+          <div ng-include="'forms/widgets/iscForm/iscScrollingForm.html'"></div>
+        </div>
+      </div>
+
+      <!--Main form Cancel and Submit Buttons-->
+      <div class="grid-block margin-top">
+        <div class="grid-content collapse clearfix">
+          <button type="button"
+                  ng-click="subformCtrl.onCancel()"
+                  id="cancelButton"
+                  name="cancelButton"
+                  class="cancel button large float-left"
+              >{{ subformCtrl.mode === 'view' ? 'Back' : 'Cancel' }}
+          </button>
+        </div>
+        <div class="grid-content collapse clearfix" ng-if="subformCtrl.mode != 'view'">
+          <button type="submit"
+                  class="button large float-right"
+              >Submit
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!--Child form (has fields only)-->
+    <div ng-if="subformCtrl.singleConfig">
+      <!--Subform Breadcrumbs-->
+      <div class="grid-block context">
+        <ul class="breadcrumb">
+          <li ng-repeat="breadcrumb in subformCtrl.breadcrumbs" ng-class="{ 'active' : $last}">
+            <a ng-click="subformCtrl.breadcrumbClick($index, breadcrumb.onCancel)">{{ breadcrumb.name }}></a>
+          </li>
+        </ul>
+      </div>
+
+      <!--Subform form-->
+      <formly-form model="subformCtrl.model"
+                   fields="subformCtrl.singleConfig.fields"
+                   options="subformCtrl.options"
+                   form="subformCtrl.singleConfig.subform.form">
+      </formly-form>
+
+      <!--Subform buttons-->
+      <div class="controls clearfix">
+        <button class="cancel float-left flat"
+                type="button"
+                ng-click="subformCtrl.singleConfig.onCancel()">
+          Cancel
+        </button>
+
+        <button class="float-right flat"
+                type="button"
+                ng-click="subformCtrl.singleConfig.onSubmit()">
+          Save {{subformCtrl.singleConfig.itemLabel}}
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+</div>
