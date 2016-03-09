@@ -10,10 +10,11 @@
     "exclude": [ "./node_modules","./src/common/bower_components" ]
   },
   "plugins": [
-
+    "node_modules/jsdoc/plugins/markdown",
+    "node_modules/angular-jsdoc/common/plugins/ngdoc"
   ],
   "templates": {
-    "systemName"            : "HS Core Tools<a href=\"../ngdocs/index.html\" style=\"position:relative;top:15px\">ng-docs</a>",
+    "systemName"            : "HS Core UI",
     //"footer"                : "This is the footer",
     "copyright"             :  "Copyright message",
     "includeDate"           : "true",
@@ -28,7 +29,7 @@
     "sort"                  : "boolean"
   },
   "opts": {
-    "template": "./node_modules/ink-docstrap/template",
+    "template": "./node_modules/angular-jsdoc/angular-template",
     "encoding": "utf8",
     "recurse": true
   }
