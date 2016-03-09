@@ -16,8 +16,10 @@
     ]
   },
   "module" : {
+    "modules": [
+      "src/components/foundation/base/modules/**/*.module.js"
+    ],
     "js" : [
-      "src/components/foundation/base/modules/**/*.module.js",
       "src/components/foundation/base/modules/**/*.js"
     ],
     "html" : [
