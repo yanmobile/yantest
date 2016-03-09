@@ -82,11 +82,15 @@ Run tests:
   1. Ensure you have a local git remote upstream is pointing to "https://github.com/intersystems/hs-core-ui.git"
     1. execute ```git remote -v``` to check existing git remote repo mappings
     2. if "upstream" doesn't exist, add it by executing ```git remote add upstream https://github.com/intersystems/hs-core-ui.git```
-  2. create a new branch of your master ```git checkout -b framework-update origin master```
+  2. create a new branch off remote master ```git checkout -b framework-update origin/master```
   3. pull the framework into your branch ```git pull upstream master```
-  4. resolve conflicts (if any)
-  5. commit and push to origin
-  6. create a PR to merge this to your project's master branch
+  4. resolve conflicts (if any) and commit
+  5. update your node and bower packages (we recommend using [hs-core-tools](https://github.com/intersystems/hs-core-tools) ```slush hs:install```)
+  6. follow changelog.md instruction for post update changes
+  7. Verify your application still works
+  8. commit your changes (if any)
+  9. push to origin ```git pull origin framework-update```
+  10. create a PR to merge this to your project's master branch
 * **How do I specify who is authorized to access my page (ui-router state)?**
   * Navigate to where you've defined the ui-router state for your landing page and update **roles** property.  For reference, see  **src/app/modules/login/login.module.js**
 * **How do I specify a landing page for specific user role?**
