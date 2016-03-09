@@ -11,7 +11,7 @@ function init(gulp, plugins, config, _) {
   gulp.task('scripts', function () {
 
     var configPaths = ["vendor.js",
-      "assets.vendor.js",
+      "module.assets.vendor.js",
       "module.modules",
       "module.js"
     ];
