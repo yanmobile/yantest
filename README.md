@@ -93,3 +93,39 @@ Run tests:
   * Navigate to where you've defined the ui-router state for your landing page and add/update  **landingPageFor** property and include your user role as one of the array values. For reference, see  **src/app/modules/login/login.module.js**
 * **How come when I successfully authenticated a user(Status Code 200 from REST API), nothing happens, I am still at the login page?**
   * That's because you haven't specified a landing page for the authenticated user role. You need to specifiy a landing page for your authenticated user's role. For reference, see  **src/app/modules/login/login.module.js**
+
+
+##Git 101
+
+* To switch between existing local branches
+  * ```git checkout <branch>```
+* Check which branch you are currently on (current branch)
+  * ```git branch```
+* Check existing local branches
+  * ```git branch```
+* Create a new branch based off your current branch and switch to your new branch
+  * ```git branch -b <branch>```
+* Create a new branch based off a origin *branch* and switch to your new branch
+  * ```git checkout -b <branch> origin/<branch>```
+* delete a local branch
+  * ```git branch -d <branch>```
+* Check existing remote repos
+  * ```git remote -v```
+* Add upstream repo
+  * ```git remote add upstream <core repo uri>```
+* Check status of git (what's staged and unstaged)
+  * ```git status```
+* Add all files to staged area
+  * ```git add <file path>```
+* Add updated files to staged area
+  * ```git add -u```
+* Commit the staged changes with message
+  * ```git commit -m '<message>'```
+* Push commits to origin branch
+  * ```git push origin <branch>```
+* Fetch all server branches
+  * ```git fetch```
+* Update your branch to the latest
+  * ```git pull origin <branch>```
+* Cherry-pick a commit from another branch into your current branch
+  * ```git cherry-pick <commit hash>```
