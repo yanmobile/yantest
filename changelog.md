@@ -6,7 +6,7 @@
 * adding support for edition (uk/us/french)
 
 ##### upgrade notes:
-In order to upgrade the framework to this framework version, the projects needs to do these following things:
+In order to upgrade the framework to this framework version, each project needs to do these following things:
 
 1. Remove gulp/watch.js file
 2. In src/app/modules/app.module.js file, change "isc.common" dependency to "isc.components"
