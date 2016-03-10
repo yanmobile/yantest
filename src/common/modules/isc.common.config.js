@@ -14,7 +14,8 @@
    ========================================*/
   function getConfig() {
     return {
-      'devlogWhitelist': [],
+      'devlogWhitelist': ['*'],
+      'devlogBlacklist': [],
       'session'        : {
         'routeMemoryExpirationInMinutes': 15
       },
