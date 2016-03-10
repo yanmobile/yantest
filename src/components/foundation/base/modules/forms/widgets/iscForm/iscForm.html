@@ -1,62 +1,11 @@
-<form class="formly" novalidate name="iscForm"
-      ng-submit="formCtrl.onSubmit()"
-      ng-click="formCtrl.closeAnnotations()">
-  <!-- Validation notifications -->
-  <isc-notification-set></isc-notification-set>
-
-  <!--Main form-->
-  <div ng-hide="formCtrl.childConfig.renderForm">
-    <div ng-if="formCtrl.multiConfig">
-      <isc-subform model="formCtrl.model"
-                   form-title="formCtrl.formDefinition.name"
-                   options="formCtrl.options"
-                   multi-config="formCtrl.multiConfig">
-      </isc-subform>
-    </div>
-
-    <!--Validation form-->
-    <div ng-hide="true">
-      <div ng-if="formCtrl.validation.renderForm">
-        <formly-form model="formCtrl.validation.model"
-                     options="formCtrl.validation.options"
-                     fields="formCtrl.validation.fields"
-                     form="formCtrl.validation.form">
-        </formly-form>
-      </div>
-    </div>
-
-    <!--Debugging-->
-    <div ng-if="::formCtrl.debugDisplay.additionalModels">
-      <hr/>
-
-      <div class="grid-block">
-        <div class="grid-content">
-          <h4>Additional Data Models (debugging display only)</h4>
-          <pre>{{formCtrl.additionalModels | json}}</pre>
-        </div>
-      </div>
-    </div>
-
-    <div ng-if="::formCtrl.debugDisplay.annotations">
-      <hr/>
-
-      <div class="grid-block">
-        <div class="grid-content">
-          <h4>Annotation Data (debugging display only)</h4>
-          <pre>{{formCtrl.options.formState._annotations.data | json}}</pre>
-        </div>
-      </div>
-    </div>
-
-    <div ng-if="::formCtrl.debugDisplay.formData">
-      <hr/>
-
-      <div class="grid-block">
-        <div class="grid-content">
-          <h4>Form Data (debugging display only)</h4>
-          <pre>{{formCtrl.model | json}}</pre>
-        </div>
-      </div>
-    </div>
-  </div>
-</form>
+<div class="grid-block">
+  <isc-form-internal ng-if="formCtrl.showInternal"
+                     form-definition="formCtrl.formDefinition"
+                     model="formCtrl.model"
+                     options="formCtrl.options"
+                     additional-models="formCtrl.additionalModels"
+                     annotations-api="formCtrl.annotationsApi"
+                     validate-form-api="formCtrl.validateFormApi"
+                     submit-form-api="formCtrl.submitFormApi()">
+  </isc-form-internal>
+</div>

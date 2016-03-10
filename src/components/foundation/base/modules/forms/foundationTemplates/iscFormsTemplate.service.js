@@ -168,7 +168,7 @@
 
               // formId will not be available for unsubmitted, new forms
               // Ensure they are up to date when submitting queued annotations
-              formId: parseInt(formlyRootCtrl.id)
+              formId: parseInt(annotationsState.index)
             };
 
             // Inject utilities so they are available in FDN expressions
@@ -201,8 +201,8 @@
 
             // Helper functions
             function getFormlyRoot(scope) {
-              if (scope.formCtrl) {
-                return scope.formCtrl;
+              if (scope.formInternalCtrl) {
+                return scope.formInternalCtrl;
               }
               var parent = scope.$parent;
               if (parent) {
