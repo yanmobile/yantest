@@ -9,7 +9,7 @@ module.exports = {
 
 function init(gulp, plugins, config, _) {
   gulp.task('build', function (done) {
-    var tasks = ['html', 'fonts', 'images', 'scripts', 'templates', 'assets', 'sass', 'favicon', 'version'];
-    plugins.seq('clean', tasks, done);
+    var tasks = ['html', 'fonts', 'images', 'scripts', 'templates', 'i18n', 'mocks', 'sass', 'favicon'];
+    plugins.seq('clean', 'install', tasks, done);
   });
 }
