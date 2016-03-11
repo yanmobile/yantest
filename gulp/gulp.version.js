@@ -25,7 +25,7 @@ function init(gulp, plugins, config, _) {
       coreSHA = '';
 
   gulp.task('gitFetch', function (callback) {
-    plugins.exec('git fetch --multiple origin upstream',
+    return plugins.exec('git fetch --multiple origin upstream',
       function (err, stdout) {
         upstreamUpdated = !err;
         callback();
@@ -133,11 +133,12 @@ function init(gulp, plugins, config, _) {
     appBuildno = plugins.dateFormat(today, outputDateFormat) + "." + count;
 
     callback();
+    return;
   });
 
   // Merge the results into the version.json template
   gulp.task('setVersion', function () {
-    gulp.src('version.json')
+    return gulp.src('version.json')
       .pipe(plugins.replace('{{appBuildno}}', appBuildno + suffix))
       .pipe(plugins.replace('{{appCodeno}}', appCodeno + suffix))
       .pipe(plugins.replace('{{coreBuildno}}', coreBuildno))
@@ -147,7 +148,7 @@ function init(gulp, plugins, config, _) {
 
   // Sequence tasks
   gulp.task('version', function (done) {
-    plugins.seq('gitFetch', 'gitCoreInfo', 'gitLocalInfo', 'setVersion', done);
+    return plugins.seq('gitFetch', 'gitCoreInfo', 'gitLocalInfo', 'setVersion', done);
   });
 
 }

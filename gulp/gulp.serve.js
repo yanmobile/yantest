@@ -58,7 +58,7 @@
      ======================================*/
 
     gulp.task('serve', function(done) {
-        seq('build', 'server', done);
+        return seq('build', 'server', done);
     });
 
 

@@ -12,14 +12,4 @@ function init(gulp, plugins, config, _) {
     return gulp.src(config.app.module.assets.i18n)
       .pipe(gulp.dest(plugins.path.join(config.app.dest.folder, 'assets/i18n')));
   });
-
-  gulp.task('mocks', function () {
-    return gulp.src(config.app.module.assets.mocks)
-      .pipe(gulp.dest(plugins.path.join(config.app.dest.folder, 'assets/mockData')));
-  });
-
-  gulp.task('assets', function (done) {
-    var tasks = ['i18n', 'mocks'];
-    plugins.seq(tasks, done);
-  });
 }
