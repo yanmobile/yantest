@@ -18,6 +18,13 @@
       'session'        : {
         'routeMemoryExpirationInMinutes': 15
       },
+      'debugDisplay'   : {
+        'forms': {
+          'additionalModels': false,
+          'annotations'     : false,
+          'formData'        : false
+        }
+      },
       'formats'        : {
         'date': {
           'shortDate'   : 'MM-DD-YYYY',
