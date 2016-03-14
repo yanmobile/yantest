@@ -15,7 +15,7 @@
       <h2 class="form-title"><span>{{ subformCtrl.formTitle | translate }}</span></h2>
 
       <!--Page layout-->
-      <div ng-switch="subformCtrl.pageLayout">
+      <div ng-switch="subformCtrl.multiConfig.layout">
         <div ng-switch-when="paged">
           <div ng-include="'forms/widgets/iscForm/iscPagedForm.html'"></div>
         </div>
