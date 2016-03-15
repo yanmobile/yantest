@@ -155,9 +155,10 @@
      * Gets the form with the given formKey name.
      * @param {String} formKey
      * @param {=String} mode
+     * @param {=Object} subformDefinitions
      * @returns {Object}
      */
-    function getFormDefinition(formKey, mode) {
+    function getFormDefinition(formKey, mode, subformDefinitions) {
       // If form is already cached, return the cached form in a promise
       var cachedForm;
       switch (mode) {
@@ -179,24 +180,26 @@
       else {
         iscFormsApi.getFormDefinition(formKey).then(function (responseData) {
           var primaryPromises   = [],
-              secondaryPromises = [];
+              secondaryPromises = [],
+              form              = responseData,
+              subforms          = subformDefinitions || {};
 
           // Subform-only definitions are a bare array
-          if (_.isArray(responseData)) {
-            primaryPromises = primaryPromises.concat(_processFields(responseData));
+          if (_.isArray(form)) {
+            primaryPromises = primaryPromises.concat(_processFields(form));
           }
           else {
-            _.forEach(responseData.pages, function (page) {
+            _.forEach(form.pages, function (page) {
               primaryPromises = primaryPromises.concat(_processFields(page.fields));
             });
           }
 
           // If an FDN-specified dataModelInit function is indicated, fetch this as a user script
-          if (responseData.dataModelInit) {
-            var scriptPromise = iscFormsApi.getUserScript(responseData.dataModelInit)
+          if (form.dataModelInit) {
+            var scriptPromise = iscFormsApi.getUserScript(form.dataModelInit)
               .then(function (response) {
-                var script                 = eval(response);
-                responseData.dataModelInit = (function (iscHttpapi) {
+                var script         = eval(response);
+                form.dataModelInit = (function (iscHttpapi) {
                   return script;
                 })();
                 return true;
@@ -207,16 +210,22 @@
           // After all necessary template calls have completed, return the form
           $q.all(primaryPromises).then(function () {
             $q.all(secondaryPromises).then(function () {
-              var editMode = responseData;
+              var editMode = {
+                form    : form,
+                subforms: subforms
+              };
 
               // Cache the editable version
               _.set(_formsCache, formKey, editMode);
 
               // Make a deep copy for the view mode version
-              var viewMode = angular.merge({}, editMode);
+              var viewMode = {
+                form    : angular.merge({}, form),
+                subforms: subforms
+              };
 
               // Replace templates in the view mode with readonly versions
-              _.forEach(viewMode.pages, function (page) {
+              _.forEach(viewMode.form.pages, function (page) {
                 replaceTemplates(page.fields);
               });
 
@@ -323,60 +332,77 @@
              */
             function _processEmbeddedForm(field, data) {
               var embeddedType = data.embeddedType,
-                  embeddedPage = data.embeddedPage;
+                  embeddedPage = data.embeddedPage,
+                  isCollection = field.type === 'embeddedFormCollection' || field.extends === 'embeddedFormCollection';
 
               // If a linked type, look up that type and import the fields []
               if (embeddedType) {
-                fieldPromises.push(
-                  // Fetch the embedded type
-                  getFormDefinition(embeddedType).then(function (embeddedForm) {
-                    var fields = [];
+                if (subforms[embeddedType] === undefined) {
+                  if (isCollection) {
+                    subforms[embeddedType] = [];
+                  }
 
-                    // If this is a bare array of fields (subform-only definition),
-                    // then the response form is only the fields [] for this form.
-                    if (_.isArray(embeddedForm)) {
-                      fields = embeddedForm;
-                    }
+                  fieldPromises.push(
+                    // Fetch the embedded type
+                    getFormDefinition(embeddedType, mode, subforms)
+                      .then(function (embeddedForm) {
+                        var fields = [],
+                            form   = embeddedForm.form;
 
-                    // If this is a full form with page and form wrappers, we can only use a fields [] from it.
-                    // If an embeddedPage was provided, use the fields [] from that page;
-                    // otherwise, use the fields [] on the first page.
-                    else {
-                      var pages = embeddedForm.pages,
-                          page  = undefined;
-
-                      // Page lookup can be either a 0-based index or a page name
-                      if (embeddedPage) {
-                        if (_.isNumber(embeddedPage)) {
-                          page = _.get(pages, embeddedPage);
+                        // If this is a bare array of fields (subform-only definition),
+                        // then the response form is only the fields [] for this form.
+                        if (_.isArray(form)) {
+                          fields = form;
                         }
+
+                        // If this is a full form with page and form wrappers, we can only use a fields [] from it.
+                        // If an embeddedPage was provided, use the fields [] from that page;
+                        // otherwise, use the fields [] on the first page.
                         else {
-                          page = _.find(pages, { name: embeddedPage });
+                          var pages = form.pages,
+                              page  = undefined;
+
+                          // Page lookup can be either a 0-based index or a page name
+                          if (embeddedPage) {
+                            if (_.isNumber(embeddedPage)) {
+                              page = _.get(pages, embeddedPage);
+                            }
+                            else {
+                              page = _.find(pages, { name: embeddedPage });
+                            }
+                          }
+                          // If no page was provided, use the first one
+                          else {
+                            page = _.get(pages, '0');
+                          }
+
+                          fields = _.get(page, 'fields', []);
                         }
-                      }
-                      // If no page was provided, use the first one
-                      else {
-                        page = _.get(pages, '0');
-                      }
 
-                      fields = _.get(page, 'fields', []);
-                    }
+                        // Force inheritance of the data property
+                        forceDataInheritance(fields);
 
-                    // Force inheritance of the data property
-                    forceDataInheritance(fields);
+                        if (isCollection) {
+                          // Push a subform listener into the fields list
+                          fields.push({
+                            'type': 'embeddedFormListener'
+                          });
 
-                    // Push a subform listener into the fields list
-                    fields.push({
-                      'type': 'embeddedFormListener'
-                    });
+                          // Update the subforms hash table
+                          subforms[embeddedType] = fields;
+                        }
 
-                    // Update the fields in this embedded form from the looked-up form
-                    _.set(field, 'templateOptions.fields', fields);
-                  })
-                );
+                        // A non-collection embedded form is inlined in the parent form
+                        else {
+                          // Update the fields in this embedded form from the looked-up form
+                          _.set(field, 'templateOptions.fields', fields);
+                        }
+                      })
+                  );
+                }
+
+                fieldPromises = fieldPromises.concat(_processFields(_.get(field, 'templateOptions.fields')));
               }
-
-              fieldPromises = fieldPromises.concat(_processFields(_.get(field, 'templateOptions.fields')));
             }
           }
 

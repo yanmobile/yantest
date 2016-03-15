@@ -33,10 +33,10 @@
                   id="cancelButton"
                   name="cancelButton"
                   class="cancel button large float-left"
-              >{{ subformCtrl.mode === 'view' ? 'Back' : 'Cancel' }}
+              >{{ subformCtrl.options.formState._mode === 'view' ? 'Back' : 'Cancel' }}
           </button>
         </div>
-        <div class="grid-content collapse clearfix" ng-if="subformCtrl.mode != 'view'">
+        <div class="grid-content collapse clearfix" ng-if="subformCtrl.options.formState._mode != 'view'">
           <button type="submit"
                   class="button large float-right"
               >Submit

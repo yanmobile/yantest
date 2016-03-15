@@ -111,9 +111,19 @@
 
         // Radio button
         iscFormsTemplateService.registerType({
-          name    : 'radio',
-          template: '<isc-forms-radio ng-model="model[options.key]" model="model[options.key]" options="options"></isc-forms-radio>',
-          wrapper : ['templateLabel', 'templateHasError']
+          name      : 'radio',
+          template  : '<isc-forms-radio id="id" ng-model="model[options.key]" model="model[options.key]" options="options" is-object-model="isObjectModel"></isc-forms-radio>',
+          wrapper   : ['templateLabel', 'templateHasError'],
+          controller: function ($scope) {
+            var data = _.get($scope, 'options.data', {});
+
+            // Use explicit definition if set, otherwise infer object/primitive mode based on first option in list
+            $scope.isObjectModel = _.get(data, 'isObject');
+            if ($scope.isObjectModel === undefined) {
+              var options          = _.get($scope, 'to.options', []);
+              $scope.isObjectModel = _.isObject(_.head(options));
+            }
+          }
         });
 
         // Select/dropdown
@@ -130,7 +140,7 @@
             // Use explicit definition if set, otherwise infer object/primitive mode based on first option in list
             $scope.isObjectModel = _.get(data, 'isObject');
             if ($scope.isObjectModel === undefined) {
-              var options = _.get($scope, 'to.options', []);
+              var options          = _.get($scope, 'to.options', []);
               $scope.isObjectModel = _.isObject(_.head(options));
             }
           }
@@ -274,7 +284,10 @@
             var opts            = $scope.options;
 
             $scope.efModel = $scope.model[opts.key] = ($scope.model[opts.key] || {});
-            $scope.efFields = templateOptions.fields;
+            $scope.efFields  = templateOptions.fields;
+            $scope.efOptions = {
+              formState: $scope.formState
+            };
           }
         });
 

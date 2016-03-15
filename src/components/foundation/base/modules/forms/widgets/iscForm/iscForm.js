@@ -120,7 +120,7 @@
 
             reconcileModelWithFormDefinition();
 
-            populateAdditionalModels(self.formDefinition.dataModelInit);
+            populateAdditionalModels(self.formDefinition.form.dataModelInit);
           });
       }
 
@@ -129,7 +129,7 @@
       // it does not contain properties that are not supported by the new definition.
       function reconcileModelWithFormDefinition() {
         if (originalFormKey && originalFormKey != self.localFormKey) {
-          var form = self.formDefinition,
+          var form = self.formDefinition.form,
               data = self.model;
 
           self.model = _mergeFormAndData();
@@ -227,14 +227,15 @@
 
       // Default api for submitting a form is to submit to formDataApi
       function submitForm() {
+        var formDefinition = self.formDefinition.form;
         // Wrap data with additional information and metadata
         var formWrapper = {
-          formDefinition  : self.formDefinition,
+          formDefinition  : formDefinition,
           additionalModels: self.additionalModels,
           formData        : {
             formKey    : self.localFormKey,
-            formName   : self.formDefinition.name,
-            formType   : self.formDefinition.formType,
+            formName   : formDefinition.name,
+            formType   : formDefinition.formType,
             id         : self.id ? parseInt(self.id) : undefined,
             author     : iscSessionModel.getCurrentUser(),
             completedOn: moment().toISOString(),

@@ -19,8 +19,10 @@
       require         : 'ngModel',
       scope           : true,
       bindToController: {
-        model  : '=',
-        options: '='
+        id           : '=',
+        model        : '=',
+        options      : '=',
+        isObjectModel: '='
       },
       controllerAs    : 'radioCtrl',
       controller      : controller,
@@ -34,10 +36,14 @@
     // functions
     // ----------------------------
     function controller() {
+      var self = this;
+
     }
 
     function link(scope, elem, attrs, ngModel) {
-      var options = scope.radioCtrl.options;
+      var ctrl          = scope.radioCtrl,
+          options       = ctrl.options,
+          isObjectModel = ctrl.isObjectModel;
 
       scope.displayProp = _.get(options, 'data.displayField', 'name');
       scope.valueProp   = _.get(options, 'data.valueField', 'value');
@@ -45,14 +51,23 @@
 
       ngModel.$render = function () {
         if (ngModel.$viewValue) {
-          scope.radioCtrl.model = ngModel.$viewValue;
+          ctrl.model = ngModel.$viewValue;
         }
       };
 
       scope.onSelect = function (option) {
-        scope.radioCtrl.model = option;
+        ctrl.model = option;
         ngModel.$setTouched();
-        ngModel.$setViewValue(scope.radioCtrl.model);
+        ngModel.$setViewValue(ctrl.model);
+      };
+
+      ctrl.isChecked = function (option) {
+        if (isObjectModel) {
+          return ctrl.model[scope.valueProp] === option[scope.valueProp];
+        }
+        else {
+          return ctrl.model === option;
+        }
       };
     }
 
