@@ -37,6 +37,7 @@
     // ----------------------------
     // functions
     // ----------------------------
+    /* @ngInject */
     function controller($scope) {
       var self = this;
       var currentScrollPos;

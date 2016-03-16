@@ -79,7 +79,7 @@
         // Base type overrides
         formlyConfig.setType({
           name      : baseType,
-          controller: function ($scope, iscNotificationService) {
+          controller: /* @ngInject */ function ($scope, iscNotificationService) {
             iscNotificationService.registerFieldScope($scope);
 
             var formlyRootCtrl = getFormlyRoot($scope);

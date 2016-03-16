@@ -11,7 +11,6 @@
   angular.module('isc.directives')
     .directive('iscConfirmation', iscConfirmation);
 
-  /* @ngInject */
   function iscConfirmation() {//jshint ignore:line
 
     // ----------------------------
@@ -35,6 +34,7 @@
 
     // ----------------------------
     // link
+    /* @ngInject */
     function link($scope, elem, attrs, iscConfirmCtrl) {
       var modalScope = elem.find('[zf-modal]').scope();
       $scope.$watch('iscConfirmCtrl.service.isOpen', function (newVal, oldVal) {
@@ -50,6 +50,7 @@
 
     // ----------------------------
     // controller
+    /* @ngInject */
     function controller(iscConfirmationService) {
       var self     = this;
       self.service = iscConfirmationService;

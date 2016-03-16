@@ -34,6 +34,7 @@
     // ----------------------------
     // functions
     // ----------------------------
+    /* @ngInject */
     function controller($scope){
       var self      = this;
       self.inPopup  = true;

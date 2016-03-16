@@ -35,6 +35,7 @@
     // ----------------------------
     // functions
     // ----------------------------
+    /* @ngInject */
     function controller($scope) {
       var self = this;
 

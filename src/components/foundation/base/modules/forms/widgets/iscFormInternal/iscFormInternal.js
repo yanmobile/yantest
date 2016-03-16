@@ -28,6 +28,7 @@
 
     return directive;
 
+    /* @ngInject */
     function controller($scope) {
       var self = this;
 
