@@ -1,5 +1,5 @@
 <div>
-  <div ng-repeat="option in radioCtrl.options.templateOptions.options" class="radio-list grid-block">
+  <div ng-repeat="option in radioCtrl.options.templateOptions.options track by $index" class="radio-list grid-block">
     <label class="radio">
       <input type="radio"
              id="{{id + '_'+ $index}}"

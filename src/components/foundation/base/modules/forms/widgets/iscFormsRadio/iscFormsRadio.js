@@ -63,7 +63,7 @@
 
       ctrl.isChecked = function (option) {
         if (isObjectModel) {
-          return ctrl.model[scope.valueProp] === option[scope.valueProp];
+          return ctrl.model && ctrl.model[scope.valueProp] === option[scope.valueProp];
         }
         else {
           return ctrl.model === option;
