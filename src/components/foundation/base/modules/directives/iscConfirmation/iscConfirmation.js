@@ -34,7 +34,6 @@
 
     // ----------------------------
     // link
-    /* @ngInject */
     function link($scope, elem, attrs, iscConfirmCtrl) {
       var modalScope = elem.find('[zf-modal]').scope();
       $scope.$watch('iscConfirmCtrl.service.isOpen', function (newVal, oldVal) {

@@ -81,7 +81,8 @@
           defaultOptions: {
             noFormControl: false
           },
-          controller    : /*@ngInject*/ function ($scope) {
+          /*@ngInject*/
+          controller    : function ($scope) {
             var templateOptions  = $scope.to;
             var opts             = $scope.options;
             $scope.multiCheckbox = {
@@ -114,7 +115,8 @@
           name       : 'radio',
           templateUrl: 'forms/foundationTemplates/templates/radio.html',
           wrapper    : ['templateLabel', 'templateHasError'],
-          controller : /*@ngInject*/ function ($scope) {
+          /*@ngInject*/
+          controller : function ($scope) {
             var data = _.get($scope, 'options.data', {});
 
             // Use explicit definition if set, otherwise infer object/primitive mode based on first option in list
@@ -131,7 +133,8 @@
           name       : 'select',
           templateUrl: 'forms/foundationTemplates/templates/select.html',
           wrapper    : ['templateLabel', 'templateHasError'],
-          controller : /*@ngInject*/ function ($scope) {
+          /*@ngInject*/
+          controller : function ($scope) {
             var data           = _.get($scope, 'options.data', {});
             $scope.displayProp = _.get(data, 'displayField', 'name');
             $scope.valueProp   = _.get(data, 'valueField', 'value');
@@ -224,7 +227,8 @@
           name       : 'typeahead',
           templateUrl: 'forms/foundationTemplates/templates/typeahead.html',
           wrapper    : ['templateLabel', 'templateHasError'],
-          controller : /*@ngInject*/ function ($scope) {
+          /*@ngInject*/
+          controller : function ($scope) {
             var key             = $scope.options.key;
             $scope.displayField = _.get($scope.options, 'data.displayField', '');
             $scope.localModel   = {};
@@ -249,7 +253,8 @@
           name       : 'typeaheadWithScript',
           templateUrl: 'forms/foundationTemplates/templates/typeaheadWithScript.html',
           wrapper    : ['templateLabel', 'templateHasError'],
-          controller : /*@ngInject*/ function ($scope) {
+          /*@ngInject*/
+          controller : function ($scope) {
             var key             = $scope.options.key;
             $scope.displayField = _.get($scope.options, 'data.displayField', '');
             $scope.localModel   = {};
@@ -279,7 +284,8 @@
           name       : 'embeddedForm',
           templateUrl: 'forms/foundationTemplates/templates/embeddedForm.html',
           wrapper    : ['templateLabel', 'templateHasError'],
-          controller : /*@ngInject*/ function ($scope) {
+          /*@ngInject*/
+          controller : function ($scope) {
             var templateOptions = $scope.to;
             var opts            = $scope.options;
 
@@ -296,7 +302,8 @@
           name       : 'embeddedFormCollection',
           templateUrl: 'forms/foundationTemplates/templates/embeddedFormCollection.html',
           wrapper    : ['templateLabel', 'templateHasError'],
-          controller : /*@ngInject*/ function ($scope, iscFormsValidationService) {
+          /*@ngInject*/
+          controller : function ($scope, iscFormsValidationService) {
             iscFormsValidationService.registerCollection(
               $scope.options.key, {
                 id   : $scope.id,
