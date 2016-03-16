@@ -1,0 +1,115 @@
+.chart {
+	position: relative;
+	margin-top: rem-calc(15);
+
+	h6 {
+		margin-left: rem-calc(15);
+	}
+
+	.chart-buttons {
+		margin-right: rem-calc(40);
+		.button {
+			margin-right: rem-calc(10);
+		}
+	}
+
+	svg {
+		.axis {
+			path, line {
+			  fill: none;
+			  stroke: black;
+			  shape-rendering: crispEdges;
+			}
+		}
+
+		.line-group {
+
+			.line {
+			  fill: none;
+			  stroke: $dark-color;
+			  stroke-width: 1.5px;
+			}
+		}
+		
+		.hover-capture {
+			cursor: pointer;
+			pointer-events: all;
+			fill: none;
+		}
+
+		.point {
+			fill-opacity: 0.75;
+			fill: $dark-color;
+			&.selected {
+				fill: $primary-color;
+			}
+		}
+
+		.svg-image {
+			cursor: pointer;
+			pointer-events: all;
+			svg {
+				overflow: visible;
+				circle {
+					fill: transparent;
+				}
+				path {
+					fill: $alert-color;
+					background: #fff;
+				}
+			}
+			&.selected {
+				svg {
+					path {
+						fill: $warning-color;
+					}
+				}
+			}
+		}
+
+		.brush {
+			.extent {
+				pointer-events: none;
+				fill: $primary-color;
+				fill-opacity: .165;
+			}
+
+			.resize {
+				rect {
+					fill: $dark-color;
+					fill-opacity: .165;
+				}
+			}
+		}
+	}
+
+	.hover-items.action-sheet.top {
+		position: absolute;
+		pointer-events: none;
+		top: unset;
+		bottom: unset;
+		width: 200px;
+		border-radius: 3px;
+		cursor: pointer;
+		transform: unset;
+		min-height: 65px;
+		visibility: hidden;
+
+		&.active {
+			visibility: visible;
+		}
+
+		&.event {
+			bottom: 70px;
+		}
+
+		p {
+			line-height: 1;
+			margin-bottom: 0;
+
+			&:not(:last-child) {
+				margin-bottom: rem-calc(3);
+			}
+		}
+	}
+}

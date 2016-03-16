@@ -1,6 +1,7 @@
 {
   "vendor" : {
     "js" : [
+      "src/components/foundation/base/bower_components/d3/d3.js",
       "src/components/foundation/base/bower_components/angular-utils-pagination/dirPagination.js",
       "src/components/foundation/base/bower_components/angucomplete-alt/angucomplete-alt.js",
       "src/components/foundation/base/bower_components/angularjs-datepicker/dist/angular-datepicker.min.js",
@@ -32,7 +33,7 @@
       ],
       "vendor" : {
         "js" : [
-          "src/components/foundation/base/assets/plugins/**/*.js"
+          "src/components/foundation/base/assets/vendors/n3-charts/build/LineChart.js"
         ]
       }
     },
