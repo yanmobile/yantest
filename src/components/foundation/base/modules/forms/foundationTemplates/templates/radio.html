@@ -1,10 +1,6 @@
-<div ng-repeat="(key, option) in to.options" class="radio-list grid-block">
-  <label class="radio">
-    <input type="radio"
-           id="{{id + '_'+ $index}}"
-           tabindex="0"
-           ng-value="option"
-           ng-model="model[options.key]">
-      {{option[to.labelProp || 'name']}}
-  </label>
-</div>
+<isc-forms-radio id="id"
+                 ng-model="model[options.key]"
+                 model="model[options.key]"
+                 options="options"
+                 is-object-model="isObjectModel">
+</isc-forms-radio>

@@ -81,7 +81,7 @@
           defaultOptions: {
             noFormControl: false
           },
-          controller    : /* @ngInject */ function ($scope) {
+          controller    : /*@ngInject*/ function ($scope) {
             var templateOptions  = $scope.to;
             var opts             = $scope.options;
             $scope.multiCheckbox = {
@@ -111,10 +111,10 @@
 
         // Radio button
         iscFormsTemplateService.registerType({
-          name      : 'radio',
-          template  : '<isc-forms-radio id="id" ng-model="model[options.key]" model="model[options.key]" options="options" is-object-model="isObjectModel"></isc-forms-radio>',
-          wrapper   : ['templateLabel', 'templateHasError'],
-          controller: function ($scope) {
+          name       : 'radio',
+          templateUrl: 'forms/foundationTemplates/templates/radio.html',
+          wrapper    : ['templateLabel', 'templateHasError'],
+          controller : /*@ngInject*/ function ($scope) {
             var data = _.get($scope, 'options.data', {});
 
             // Use explicit definition if set, otherwise infer object/primitive mode based on first option in list
@@ -131,7 +131,7 @@
           name       : 'select',
           templateUrl: 'forms/foundationTemplates/templates/select.html',
           wrapper    : ['templateLabel', 'templateHasError'],
-          controller : function ($scope) {
+          controller : /*@ngInject*/ function ($scope) {
             var data           = _.get($scope, 'options.data', {});
             $scope.displayProp = _.get(data, 'displayField', 'name');
             $scope.valueProp   = _.get(data, 'valueField', 'value');
@@ -149,7 +149,7 @@
         // Textarea
         iscFormsTemplateService.registerType({
           name          : 'textarea',
-          template      : '<div class="grid-block"><textarea class="" ng-model="model[options.key]"></textarea></div>',
+          templateUrl   : 'forms/foundationTemplates/templates/textarea.html',
           wrapper       : ['templateLabel', 'templateHasError'],
           defaultOptions: {
             ngModelAttrs: {
@@ -162,7 +162,7 @@
         // Date components [ DD / MM / YYYY ]
         iscFormsTemplateService.registerType({
           name          : 'dateComponents',
-          template      : '<isc-forms-date-components ng-model="model[options.key]"></isc-forms-date-components>',
+          templateUrl   : 'forms/foundationTemplates/templates/dateComponents.html',
           wrapper       : ['templateLabel', 'templateHasError'],
           defaultOptions: {
             data: {
@@ -174,7 +174,7 @@
         // Date components [ DD / MM / YYYY ]
         iscFormsTemplateService.registerType({
           name          : 'dateComponentsPartial',
-          template      : '<isc-forms-date-components ng-model="model[options.key]" model-as-object="true" allow-partial-dates="true"></isc-forms-date-components>',
+          template      : 'forms/foundationTemplates/templates/dateComponentsPartial.html',
           wrapper       : ['templateLabel', 'templateHasError'],
           defaultOptions: {
             validators: {
@@ -224,7 +224,7 @@
           name       : 'typeahead',
           templateUrl: 'forms/foundationTemplates/templates/typeahead.html',
           wrapper    : ['templateLabel', 'templateHasError'],
-          controller : function ($scope) {
+          controller : /*@ngInject*/ function ($scope) {
             var key             = $scope.options.key;
             $scope.displayField = _.get($scope.options, 'data.displayField', '');
             $scope.localModel   = {};
@@ -249,7 +249,7 @@
           name       : 'typeaheadWithScript',
           templateUrl: 'forms/foundationTemplates/templates/typeaheadWithScript.html',
           wrapper    : ['templateLabel', 'templateHasError'],
-          controller : function ($scope) {
+          controller : /*@ngInject*/ function ($scope) {
             var key             = $scope.options.key;
             $scope.displayField = _.get($scope.options, 'data.displayField', '');
             $scope.localModel   = {};
@@ -279,7 +279,7 @@
           name       : 'embeddedForm',
           templateUrl: 'forms/foundationTemplates/templates/embeddedForm.html',
           wrapper    : ['templateLabel', 'templateHasError'],
-          controller : function ($scope) {
+          controller : /*@ngInject*/ function ($scope) {
             var templateOptions = $scope.to;
             var opts            = $scope.options;
 
@@ -293,10 +293,10 @@
 
         // Embedded form collection
         iscFormsTemplateService.registerType({
-          name      : 'embeddedFormCollection',
-          template  : '<isc-embedded-form-collection ng-model="model[options.key]" collection-label="to.label" options="options" form-state="formState" annotations="annotations" id="{{id}}"></isc-embedded-form-collection>',
-          wrapper   : ['templateLabel', 'templateHasError'],
-          controller: function ($scope, iscFormsValidationService) {
+          name       : 'embeddedFormCollection',
+          templateUrl: 'forms/foundationTemplates/templates/embeddedFormCollection.html',
+          wrapper    : ['templateLabel', 'templateHasError'],
+          controller : /*@ngInject*/ function ($scope, iscFormsValidationService) {
             iscFormsValidationService.registerCollection(
               $scope.options.key, {
                 id   : $scope.id,
@@ -309,8 +309,8 @@
         // This field will not be rendered in the DOM, but will listen for FORMS_EVENTS
         // This is useful for communication in embedded subforms
         iscFormsTemplateService.registerType({
-          name    : 'embeddedFormListener',
-          template: '<isc-embedded-form-listener ng-model="model" options="options" form="form"></isc-embedded-form-listener>'
+          name       : 'embeddedFormListener',
+          templateUrl: 'forms/foundationTemplates/templates/embeddedFormListener.html'
         });
       }
 
