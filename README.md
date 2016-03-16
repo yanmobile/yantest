@@ -78,6 +78,40 @@ Run tests:
   * Open up your "src/app/modules/app.config.js" file and add/remove channels in 'devlogWhitelist' and 'devlogBlacklist' arrays. Note: "\*" means all channels.
 * **How do I change the REST API's hostname and Port number?**
   *  You can change the hostname and PORT number inside of app config file located "src/app/modules/app.config.js" 
+  *  
+* **How do I promote an application feature to the framework?** (Be sure your changes are in common/components folder)
+  * **Scenario 1**: The code I want to promote to framework are all in their own commits
+    * Create a new branch off upstream master ```git checkout -b <branch> upstream/master```
+    * Cherry-pick the feature commits. For each of your commits in reverse chronological order (oldest first) 
+        * ```git cherry-pick <commit-hash>```
+            * if you have conflicts, resolve them first then continue ```git cherry-pick --continue```  
+        * Once you have all the source code, commit the changes (if needed). 
+    * Push the changes to upstream (not origin)  ```git push upstream <branch> ```
+    * Create a Pull Request
+  * **Scenario 2**: The code I want to promote to framework are commited but contains non-feature code
+    * Create a new branch off upstream master ```git checkout -b <branch> upstream/master```
+    * Cherry-pick the feature commits. For each of your commits in reverse chronological order (oldest first) 
+        * ```git cherry-pick --no-ff --no-commit <commit-hash>```
+            * if you have conflicts, resolve them first then continue ```git cherry-pick --continue```  
+        * Remove all changes that's not part of your feature
+        * Once you have all the source code, commit the changes
+    * Push the changes to upstream (not origin)  ```git push upstream <branch>``
+    * Create a Pull Request`
+  * **Scenario 3**: The code I want to promote to framework have not been commited
+    * Stash your changes ```git stash save "<message>"```
+    * Create a new branch off upstream master ```git checkout -b <branch> upstream/master```
+    * Apply your stashed changes ```git stash apply```
+    * Resolve conflicts (if any)
+    * Once you have all the source code, commit the changes
+    * Push the changes to upstream (not origin)  ```git push upstream <branch> ```
+    * Create a Pull Request
+  * **Scenario 4**: The code I want to promote to framework are commited, and I can't easily isolate the commits. But the good news is, the code is all in my <localBranch>
+    * Create a new branch off upstream master ```git checkout -b <branch> upstream/master```
+    * Merge your <localBranch> into your <branch> without fast-forward and commit, which allows you to pick the changes you want ```git merge --no-ff --no-commit <localBranch>```
+    * Remove the files/changes you don't want to promote to the framework
+    * Once you have all the source code, commit the changes
+    * Push the changes to upstream (not origin)  ```git push upstream <branch> ```
+    * Create a Pull Request
 * **I have an existing application and my framework is out of date. How can I upgrade my application's framework?**
   1. Ensure you have a local git remote upstream is pointing to "https://github.com/intersystems/hs-core-ui.git"
     1. execute ```git remote -v``` to check existing git remote repo mappings
