@@ -3,8 +3,8 @@
 
   /* @ngInject */
   function iscEmbeddedFormCollection($filter, FoundationApi, appConfig, FORMS_EVENTS,
-                                    iscFormsTemplateService, iscFormsValidationService,
-                                    iscScrollContainerService) {//jshint ignore:line
+                                     iscFormsTemplateService, iscFormsValidationService,
+                                     iscScrollContainerService) {//jshint ignore:line
 
     // ----------------------------
     // vars
@@ -35,6 +35,7 @@
     // ----------------------------
     // functions
     // ----------------------------
+    /* @ngInject */
     function controller($scope) {
       var self = this;
 
@@ -42,7 +43,8 @@
           templateOptions = opts.templateOptions,
           key             = opts.key,
           editAs          = _.get(opts, 'data.collections.editAs'),
-          viewAs          = _.get(opts, 'data.collections.viewAs');
+          viewAs          = _.get(opts, 'data.collections.viewAs'),
+          subforms        = self.formState._subforms;
 
       // Inherit formState for subform
       self.subformOptions = {
@@ -76,7 +78,8 @@
       self.label = _.get(opts, 'data.embeddedLabel', templateOptions.label);
 
       // Flatten field groups down for table header and cell iteration
-      self.fields = angular.merge({}, templateOptions.fields);
+      var type    = _.get(opts, 'data.embeddedType');
+      self.fields = angular.merge({}, subforms[type]);
       mergeBuiltInTemplates(self.fields);
 
       createTableFields();

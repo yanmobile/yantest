@@ -17,6 +17,7 @@
     };
     return directive;
 
+    /* @ngInject */
     function iscSpinnerController(devlog, iscSpinnerModel) {
       devlog.channel('iscSpinnerController').debug('inside iscSpinnerController');
       var self       = this;

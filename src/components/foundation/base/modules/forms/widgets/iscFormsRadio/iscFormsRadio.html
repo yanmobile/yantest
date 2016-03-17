@@ -1,14 +1,14 @@
 <div>
-  <div ng-repeat="option in options.templateOptions.options" class="radio-list grid-block">
+  <div ng-repeat="option in radioCtrl.options.templateOptions.options track by $index" class="radio-list grid-block">
     <label class="radio">
       <input type="radio"
              id="{{id + '_'+ $index}}"
-             name="{{id + '_'+ $index}}"
+             name="{{radioCtrl.id}}"
              tabindex="0"
              ng-value="option"
-             ng-checked="radioCtrl.model[valueProp] === option[valueProp]"
+             ng-checked="radioCtrl.isChecked(option)"
              ng-click="onSelect(option)">
-      {{option[displayProp]}}
+      {{radioCtrl.isObjectModel ? option[displayProp] : option}}
     </label>
   </div>
 </div>

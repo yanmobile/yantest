@@ -11,7 +11,6 @@
   angular.module('isc.directives')
     .directive('iscConfirmation', iscConfirmation);
 
-  /* @ngInject */
   function iscConfirmation() {//jshint ignore:line
 
     // ----------------------------
@@ -50,6 +49,7 @@
 
     // ----------------------------
     // controller
+    /* @ngInject */
     function controller(iscConfirmationService) {
       var self     = this;
       self.service = iscConfirmationService;

@@ -28,6 +28,7 @@
 
     return directive;
 
+    /* @ngInject */
     function controller($scope) {
       var self = this;
 
@@ -41,7 +42,8 @@
             _validation : {},
             _annotations: {
               data: []
-            }
+            },
+            _subforms   : self.formDefinition.subforms
           }
         },
         childConfig     : {}
@@ -159,7 +161,7 @@
       function watchPages() {
         // Throttle for initial load or large model changes
         var throttledFilter = _.throttle(filterPages, 100);
-        _.forEach(self.formDefinition.pages, function (page) {
+        _.forEach(self.formDefinition.form.pages, function (page) {
           var hideExp = page.hideExpression;
           if (hideExp) {
             $scope.$watch(
@@ -173,10 +175,10 @@
           }
         });
 
-        self.pages       = self.formDefinition.pages;
+        self.pages       = self.formDefinition.form.pages;
         self.multiConfig = {
           pages          : self.pages,
-          layout         : self.formDefinition.pageLayout,
+          layout         : self.formDefinition.form.pageLayout,
           currentPage    : self.currentPage,
           selectablePages: [],
           forms          : self.forms,
@@ -187,7 +189,7 @@
       }
 
       function filterPages() {
-        self.multiConfig.selectablePages = _.filter(self.formDefinition.pages, function (page) {
+        self.multiConfig.selectablePages = _.filter(self.formDefinition.form.pages, function (page) {
           return !page._isHidden;
         });
       }
