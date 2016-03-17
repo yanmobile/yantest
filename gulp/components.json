@@ -34,7 +34,7 @@
       ],
       "vendor" : {
         "js" : [
-          "src/components/foundation/base/assets/plugins/**/*.js"
+          "src/components/foundation/base/assets/vendors/n3-charts/build/LineChart.js",
           "src/components/foundation/base/assets/vendors/leaflet/leaflet.js"
         ]
       }
