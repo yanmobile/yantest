@@ -1,5 +1,14 @@
 
 #Core Changes
+### 03/17/2016
+#### upgrade notes:
+In order to fix the unit tests broken by 03/08/2016 edition refactring, application developers will need update these files:
+[Changes can be found here](https://github.com/intersystems/hs-core-tools/pull/24/files)
+
+1. wallaby.config.app.js
+2. gulp/test-unit.app.js
+3. test/karma.config.app.js
+
 
 ### 03/08/2016
 #### breaking change
