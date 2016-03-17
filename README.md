@@ -120,10 +120,10 @@ Run tests:
   3. pull the framework into your branch ```git pull upstream master```
   4. resolve conflicts (if any) and commit
   5. update your node and bower packages (we recommend using [hs-core-tools](https://github.com/intersystems/hs-core-tools) ```slush hs:install```)
-  6. follow changelog.md instruction for post update changes
+  6. follow [changelog.md](https://github.com/intersystems/hs-core-ui/blob/master/changelog.md) instruction for post update changes
   7. Verify your application still works
   8. commit your changes (if any)
-  9. push to origin ```git pull origin framework-update```
+  9. push to origin ```git push origin framework-update```
   10. create a PR to merge this to your project's master branch
 * **How do I specify who is authorized to access my page (ui-router state)?**
   * Navigate to where you've defined the ui-router state for your landing page and update **roles** property.  For reference, see  **src/app/modules/login/login.module.js**
