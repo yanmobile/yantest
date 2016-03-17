@@ -5,10 +5,11 @@
 (function () {
   'use strict';
 
-  var gulp         = require('gulp');
-  var $            = require('gulp-load-plugins')();
-  var seq          = require('run-sequence');
-  var commonConfig = require('./common.json');
+  var gulp             = require('gulp');
+  var $                = require('gulp-load-plugins')();
+  var seq              = require('run-sequence');
+  var commonConfig     = require('./common.json');
+  var componentsConfig = require('./components.json');
 
   var commonVendorJs      = commonConfig.vendor.js || [];
   var commonVendorMocks   = commonConfig.vendor.mocks || [];
@@ -16,7 +17,14 @@
   var commonModuleJs      = commonConfig.module.js || [];
   var commonModuleMocks   = commonConfig.module.mocks || [];
   var commonModuleHtml    = commonConfig.module.html || [];
-  var commonModuleTests   = commonConfig.module.tests || [];
+
+  var componentsVendorJs      = componentsConfig.vendor.js || [];
+  var componentsVendorMocks   = componentsConfig.vendor.mocks || [];
+  var componentsModuleModules = componentsConfig.module.modules || [];
+  var componentsModuleJs      = componentsConfig.module.js || [];
+  var componentsModuleMocks   = componentsConfig.module.mocks || [];
+  var componentsModuleHtml    = componentsConfig.module.html || [];
+  var componentsModuleTests   = componentsConfig.module.tests || [];
 
   /*================================================
    =              Run unit tests                   =
@@ -25,20 +33,26 @@
   // --------------------------------
   // run the common tests
   // --------------------------------
-  gulp.task('test:common', function () {
+  gulp.task('test:components', function () {
 
     var commonTestFiles = []
       .concat(commonVendorJs)
+      .concat(componentsVendorJs)
       .concat(commonModuleModules)
+      .concat(componentsModuleModules)
       .concat(commonModuleJs)
+      .concat(componentsModuleJs)
       .concat(commonVendorMocks)
+      .concat(componentsVendorMocks)
       .concat(commonModuleMocks)
+      .concat(componentsModuleMocks)
       .concat(commonModuleHtml)
-      .concat(commonModuleTests);
+      .concat(componentsModuleHtml)
+      .concat(componentsModuleTests);
 
     return gulp.src(commonTestFiles)
       .pipe($.karma({
-        configFile: 'test/karma.conf.common.js',
+        configFile: 'test/karma.conf.components.js',
         action    : 'run'
       }))
       .on('error', function (err) {

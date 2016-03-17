@@ -4,24 +4,26 @@ module.exports                  = function () {
 
   var commonConfig = require('./gulp/common.json');
 
-  var commonVendorJs    = (commonConfig.vendor.js || []).map(noInstrument);
-  var commonVendorMocks = (commonConfig.vendor.mocks || []).map(noInstrument);
-  var commonModuleMocks = (commonConfig.module.mocks || []).map(noInstrument);
-  var commonModuleJs    = commonConfig.module.js || [];
-  var commonModuleTests = commonConfig.module.tests || [];
-  var commonModuleHtml  = commonConfig.module.html || [];
+  var commonVendorJs      = (commonConfig.vendor.js || []).map(noInstrument);
+  var commonVendorMocks   = (commonConfig.vendor.mocks || []).map(noInstrument);
+  var commonModuleMocks   = (commonConfig.module.mocks || []).map(noInstrument);
+  var commonModuleModules = commonConfig.module.modules || [];
+  var commonModuleJs      = commonConfig.module.js || [];
+  var commonModuleTests   = commonConfig.module.tests || [];
+  var commonModuleHtml    = commonConfig.module.html || [];
   return {
     'files'        : []
       .concat(commonVendorJs)
       .concat(commonVendorMocks)
       .concat(commonModuleMocks)
+      .concat(commonModuleModules)
       .concat(commonModuleJs)
       .concat(commonModuleHtml),
     'tests'        : commonModuleTests,
     'preprocessors': {
       'src/common/modules/**/*.html': function (file) {
         return angularTemplatePreprocessor.transform(file, {
-          'stripPrefix': 'src/common/modules/',
+          stripPrefix: 'src\/(app|common|components)\/.*\/?modules\/',
           'moduleName' : 'isc.templates'
         });
       }

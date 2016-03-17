@@ -22,7 +22,7 @@
       },
 
       ngHtml2JsPreprocessor: {
-        stripPrefix: 'src/common/modules/',
+        stripPrefix: 'src\/(app|common|components)\/.*\/?modules\/',
         moduleName: 'isc.templates' // include beforeEach( module( 'isc.templates' )) in unit tests
       },
 
