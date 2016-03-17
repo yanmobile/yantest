@@ -21,7 +21,8 @@
       'isc.ddpTable',
       'isc.notification',
       'isc.spinner',
-      'iscNavContainer'
+      'iscNavContainer',
+      'isc.error'
     ]);
 
 })();
