@@ -128,7 +128,7 @@
       // we need to process the implicit data model of the new formDefinition to ensure
       // it does not contain properties that are not supported by the new definition.
       function reconcileModelWithFormDefinition() {
-        if (originalFormKey && originalFormKey != self.localFormKey) {
+        if (originalFormKey && originalFormKey !== self.localFormKey) {
           var form = self.formDefinition.form,
               data = self.model;
 
@@ -168,7 +168,7 @@
                     if (isEfCollection) {
                       var sourceCollectionSize = _.get(data, fullPath, []).length;
                       if (sourceCollectionSize) {
-                        _.set(model, fullPath, Array(sourceCollectionSize));
+                        _.set(model, fullPath, new Array(sourceCollectionSize));
                         _.fill(model[fullPath], {});
                       }
                     }
@@ -182,7 +182,7 @@
                       _.forEach(sourceData, function (item, index) {
                         var indexedKey = [parentPath, '[', index, ']', '.', key].join(''),
                             value      = _.get(data, indexedKey);
-                        if (value != undefined) {
+                        if (value !== undefined) {
                           _.set(model, indexedKey, value);
                         }
                       });
@@ -190,7 +190,7 @@
                     else {
                       var value = _.get(data, key);
 
-                      if (value != undefined) {
+                      if (value !== undefined) {
                         _.set(model, key, value);
                       }
                     }

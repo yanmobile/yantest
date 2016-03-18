@@ -130,7 +130,7 @@
         _.debounce(update, 100)();
 
         function update() {
-          if (newVal != oldVal) {
+          if (newVal !== oldVal) {
             var date = scope.date;
 
             if (allowPartialDates) {
@@ -245,7 +245,7 @@
             var selStart = event.target.selectionStart,
                 selEnd   = event.target.selectionEnd;
 
-            if (selStart != undefined) {
+            if (selStart !== undefined) {
               return event.target.value.substr(selStart, selEnd - selStart);
             }
             else {
@@ -261,7 +261,7 @@
             if ($window.getSelection) {
               return $window.getSelection().toString();
             }
-            else if ($document.selection && $document.selection.type != 'Control') {
+            else if ($document.selection && $document.selection.type !== 'Control') {
               return $document.selection.createRange().text;
             }
           }
@@ -285,7 +285,7 @@
         else if (_(monthsWith30Days).includes(+date.month)) {
           maxDay = 30;
         }
-        else if (date.month == '2') {
+        else if (date.month === '2') {
           if (moment([date.year]).isLeapYear()) {
             maxDay = 29;
           }

@@ -141,9 +141,7 @@
 
           onCollectionModified();
         }
-        else {
-          // TODO - show message if invalid? (iscFormModel.validate will touch each control during validation)
-        }
+        // TODO - show message if invalid? (iscFormModel.validate will touch each control during validation)
       };
 
       self.removeForm = function (row) {
@@ -184,7 +182,7 @@
         });
 
         // Actions
-        if (self.mode != 'view') {
+        if (self.mode !== 'view') {
           tableColumns.push(
             {
               key        : 'Actions',

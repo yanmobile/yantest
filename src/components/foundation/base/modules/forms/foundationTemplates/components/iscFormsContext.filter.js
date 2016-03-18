@@ -13,7 +13,7 @@
         var thisContext = context;
 
         // Walk the context object to the end
-        while (thisContext.context != undefined) {
+        while (thisContext.context !== undefined) {
           thisContext = thisContext.context;
           dataItem    = dataItem.context;
 
@@ -28,18 +28,18 @@
 
         function isMatch() {
           // If we have left the scope of the data item, this is not a match
-          return thisContext && dataItem
+          return thisContext && dataItem &&
               // Include iff both the key and the contextId (form id or item id) match
-            && dataItem.key === thisContext.key
-            && dataItem.contextId === thisContext.contextId;
+            dataItem.key === thisContext.key &&
+            dataItem.contextId === thisContext.contextId;
         }
       });
 
       // Get linked conversations by annotation ID
       var annotationsIds = _.map(filteredData, 'id');
-      filteredData = filteredData.concat(_.filter(data, function (item) {
-        return item.context.type === 'message'
-          && _.includes(annotationsIds, item.context.contextId);
+      filteredData       = filteredData.concat(_.filter(data, function (item) {
+        return item.context.type === 'message' &&
+          _.includes(annotationsIds, item.context.contextId);
       }));
 
       return filteredData;

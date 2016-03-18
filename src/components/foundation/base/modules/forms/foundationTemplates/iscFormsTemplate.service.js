@@ -132,7 +132,6 @@
                 $scope.validationShowCondition = '$submitted';
                 break;
 
-              case 'change':
               // Default is to validate on $dirty
               default:
                 $scope.validationShowCondition = '$dirty';
@@ -249,7 +248,7 @@
                 // This means it has a containing context for the parent
                 // Contexts are nested instances of the same object type
                 var container = _.merge({}, annotationsState.context);
-                while (container.context != undefined) {
+                while (container.context !== undefined) {
                   container = container.context;
                 }
 

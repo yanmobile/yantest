@@ -6,7 +6,7 @@
     .module('isc.forms')
     .factory('iscFormsModel', iscFormsModel);
 
-  function iscFormsModel($q, $templateCache,
+  function iscFormsModel($q, $templateCache, $window,
                          iscHttpapi,
                          iscFormsCodeTableApi, iscFormsTemplateService, iscFormsApi) {
     var _typeCache          = {};
@@ -87,7 +87,7 @@
           }
         );
         _.forEach(existingFormsToInactivate, function (form) {
-          if (form.formKey != formStatus.formKey) {
+          if (form.formKey !== formStatus.formKey) {
             form.status = 'Inactive';
             formStatuses.push({
               formKey: form.formKey,
@@ -198,7 +198,7 @@
           if (form.dataModelInit) {
             var scriptPromise = iscFormsApi.getUserScript(form.dataModelInit)
               .then(function (response) {
-                var script         = eval(response);
+                var script         = parseScript(response);
                 form.dataModelInit = (function (iscHttpapi) {
                   return script;
                 })();
@@ -312,7 +312,7 @@
             function _processUserScript(field, scriptName) {
               var scriptPromise = iscFormsApi.getUserScript(scriptName)
                 .then(function (response) {
-                  var script = eval(response),
+                  var script = parseScript(response),
                       getApi = script.api.get;
                   // Expose iscHttpapi to api getter function
                   if (getApi) {
@@ -360,7 +360,7 @@
                         // otherwise, use the fields [] on the first page.
                         else {
                           var pages = form.pages,
-                              page  = undefined;
+                              page;
 
                           // Page lookup can be either a 0-based index or a page name
                           if (embeddedPage) {
@@ -425,7 +425,7 @@
              * @private
              */
             function _processScript(response) {
-              var template = eval(response);
+              var template = parseScript(response);
 
               _injectHtml(template);
               _injectCss();
@@ -494,7 +494,7 @@
 
               // Creates the style element
               function _createStyle(id, styles) {
-                var style       = document.createElement('style');
+                var style       = $window.document.createElement('style');
                 style.id        = id;
                 style.innerHTML = styles;
                 return style;
@@ -524,7 +524,7 @@
           var ancestorDataStack = _.compact(_getAncestors(field.type)),
               ancestorData;
 
-          while (ancestorData = ancestorDataStack.pop()) {
+          while ((ancestorData = ancestorDataStack.pop()) !== undefined) {
             // Prefer the most local data to ancestral data
             _.merge(data, ancestorData, data);
           }
@@ -574,7 +574,7 @@
             // Collections handle view mode on their own.
             // field.key is the data path into the model, so if this is not present,
             // there is no model (e.g., an "instructions" template or arbitrary html).
-            if (field.type && field.type != 'embeddedFormCollection' && field.key) {
+            if (field.type && field.type !== 'embeddedFormCollection' && field.key) {
               var viewModeType   = viewModePrefix + field.type;
               var registeredType = iscFormsTemplateService.getRegisteredType(viewModeType);
               if (!registeredType) {
@@ -593,6 +593,12 @@
           }
         }
       });
+    }
+
+    function parseScript(script) {
+      // Ignoring JSHint for eval()
+      // This is only ever evaluated on scripts returned from a trusted backend REST source
+      return eval(script); // jshint ignore:line
     }
   }
 })();

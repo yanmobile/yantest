@@ -63,7 +63,7 @@
       function getContext(index) {
         var localContext = _.merge({}, context),
             endContext   = localContext;
-        while (endContext.context != undefined) {
+        while (endContext.context !== undefined) {
           endContext = endContext.context;
         }
         endContext.context = {
