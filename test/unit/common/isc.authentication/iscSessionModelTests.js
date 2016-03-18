@@ -158,7 +158,6 @@
         
         sessionModel.create(loginData);
         var expected = sessionModel.isAuthenticated();
-        console.log(expected);
         expect(expected).toBe(true);
 
         sessionModel.destroy();

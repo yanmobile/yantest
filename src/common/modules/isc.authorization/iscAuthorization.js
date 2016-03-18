@@ -24,9 +24,7 @@
     function isAuthorized(stateToCheck) {
       devlog.channel('iscAuthorizationModel').debug('iscAuthorizationModel.isAuthorized..');
       var currentUserRole      = iscSessionModel.getCurrentUserRole();
-      console.log(currentUserRole);
       var authorizedUserRoutes = getAuthorizedRoutes(currentUserRole);
-      console.log(authorizedUserRoutes)
       stateToCheck             = stateToCheck || '';
       var isPermitted;
       if (isBlackListed(stateToCheck, authorizedUserRoutes)) {

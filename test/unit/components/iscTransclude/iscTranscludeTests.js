@@ -45,7 +45,6 @@
       _.extend($parentScope, scopeProps);
       element             = $compile(template)($parentScope);
       $scope              = element.scope();
-      console.log($templateCache.get('src/components/foundation/base/modules/iscTransclude/iscGridFormRWItem.html'));
       $scope.$digest();
 
       jqLabel    = element.find(labelTemplateSelector);

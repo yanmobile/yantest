@@ -2,14 +2,17 @@
  * Created by douglasgoodman on 1/16/15.
  */
 
-(function () {
+module.exports = {
+  init: init
+};
+
+function init(gulp, plugins, config, _) {
   'use strict';
 
-  var gulp             = require('gulp');
-  var $                = require('gulp-load-plugins')();
-  var seq              = require('run-sequence');
-  var commonConfig     = require('./common.json');
-  var componentsConfig = require('./components.json');
+  var karma = require('karma').Server;
+
+  var commonConfig     = config.common;
+  var componentsConfig = config.component;
 
   var commonVendorJs      = commonConfig.vendor.js || [];
   var commonVendorMocks   = commonConfig.vendor.mocks || [];
@@ -33,9 +36,10 @@
   // --------------------------------
   // run the common tests
   // --------------------------------
-  gulp.task('test:components', function () {
+  gulp.task('test:components', function (done) {
 
-    var commonTestFiles = []
+
+    var srcFiles = []
       .concat(commonVendorJs)
       .concat(componentsVendorJs)
       .concat(commonModuleModules)
@@ -50,16 +54,13 @@
       .concat(componentsModuleHtml)
       .concat(componentsModuleTests);
 
-    return gulp.src(commonTestFiles)
-      .pipe($.karma({
-        configFile: 'test/karma.conf.components.js',
-        action    : 'run'
-      }))
-      .on('error', function (err) {
-        // Make sure failed tests cause gulp to exit non-zero
-        throw err;
-      });
-  });
+    var configPath = plugins.path.join(__dirname, "../test/karma.conf.components.js");
+    return new karma({
+      configFile: configPath,
+      files     : srcFiles,
+      singleRun : true
+    }, done).start();
 
-})();
+  });
+}
 
