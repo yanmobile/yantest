@@ -63,7 +63,7 @@
       var rawVal = $window.localStorage.getItem(storageKey);
       var value;
       try {
-        value = rawVal != null ? JSON.parse(rawVal) : null;
+        value = _.isNil(rawVal) ? null : JSON.parse(rawVal);
       } catch ( ex ) {
         value = null;
       }

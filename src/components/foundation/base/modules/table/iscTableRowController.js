@@ -83,7 +83,7 @@
       function getCommandCallback(command, domCallback){
         var callback       = domCallback;
         var commandsColumn = _.find(self.iscTblCtrl.tableConfig.columns, { type: 'commands' });
-        if( callback == null && commandsColumn ){
+        if( _.isNil(callback) && commandsColumn ){
           callback = _.get(commandsColumn, 'commands.' + command + '.callback');
 
         }
@@ -108,7 +108,7 @@
     }
 
     function defaultCreateCallback( event ){
-      if( self.iscTblCtrl.dataItem == null ){
+      if(_.isNil(self.iscTblCtrl.dataItem)){
         $scope.dataItem = self.dataItem = self.iscTblCtrl.createRow();
         self.editModeData = angular.copy(self.dataItem);
         self.inEditMode   = self.iscTblCtrl.tableConfig.editable === true ? 'inline' : self.iscTblCtrl.tableConfig.editable;
@@ -116,7 +116,7 @@
     }
 
     function defaultEditCallback( event ){
-      if( self.iscTblCtrl.dataItem == null ){
+      if(_.isNil(self.iscTblCtrl.dataItem)){
         self.editModeData = angular.copy(self.dataItem);
         self.inEditMode   = self.iscTblCtrl.tableConfig.editable === true ? 'inline' : self.iscTblCtrl.tableConfig.editable;
         self.iscTblCtrl.editRow(self.dataItem);
