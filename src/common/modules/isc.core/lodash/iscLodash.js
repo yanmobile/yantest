@@ -150,7 +150,7 @@
       val = origGet(obj, path);
     }
 
-    return _.isNil(val) ? val : defaultValue;
+    return !_.isNil(val) ? val : defaultValue;
   }
 
   function toPath(path) {
