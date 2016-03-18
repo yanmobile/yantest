@@ -93,8 +93,6 @@
 
       it('should not log when response.data is not object or array', function () {
         spyOn(fakeDevLog, 'debug');
-        console.log(fakeDevLog.debug);
-
 
         var response = { config: { url: 'foo.json', data: 'myData' }, data: '' };
         interceptor.response(response);
