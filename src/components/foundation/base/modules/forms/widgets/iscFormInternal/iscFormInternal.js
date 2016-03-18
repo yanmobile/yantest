@@ -6,7 +6,7 @@
 
   /* @ngInject */
   function iscFormInternal($window,
-                           appConfig, iscNotificationService,
+                           iscCustomConfigService, iscNotificationService,
                            iscFormsValidationService) {
     var directive = {
       restrict        : 'E',
@@ -35,7 +35,7 @@
       _.merge(self, {
         forms           : [],
         additionalModels: {},
-        debugDisplay    : appConfig.debugDisplay.forms,
+        debugDisplay    : _.get(iscCustomConfigService.getConfig(), 'debugDisplay.forms', {}),
         options         : {
           formState: {
             _mode       : self.mode,
