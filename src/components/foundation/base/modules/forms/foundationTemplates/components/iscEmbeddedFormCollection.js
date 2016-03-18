@@ -180,7 +180,7 @@
             display         : field.display,
             type            : field.type,
             dateFormat      : self.dateFormat
-          }
+          };
         });
 
         // Actions
@@ -314,7 +314,7 @@
       // Initialize model value for collection rows in $render
       ngModelCtrl.$render = function () {
         scope.efCollectionCtrl.collectionModel = ngModelCtrl.$modelValue || [];
-      }
+      };
     }
 
   }//END CLASS

@@ -92,7 +92,7 @@
             formStatuses.push({
               formKey: form.formKey,
               status : 'Inactive'
-            })
+            });
           }
         });
       }
@@ -145,7 +145,7 @@
             validations.push({
               key   : field.key,
               fields: field.templateOptions.fields
-            })
+            });
           }
         });
       }
@@ -241,7 +241,7 @@
                 default:
                   deferred.resolve(editMode);
               }
-            })
+            });
           });
 
           /***
@@ -563,7 +563,7 @@
         else {
           var data            = _.get(field, 'data.viewMode', {}),
               viewTemplate    = data.template,
-              viewTemplateUrl = data.templateUrl
+              viewTemplateUrl = data.templateUrl;
           if (viewTemplate) {
             field.template = viewTemplate;
           }

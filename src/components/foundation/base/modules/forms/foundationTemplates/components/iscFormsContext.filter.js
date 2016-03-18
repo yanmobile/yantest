@@ -43,7 +43,7 @@
       }));
 
       return filteredData;
-    }
+    };
   }
 
   angular.module('isc.forms')

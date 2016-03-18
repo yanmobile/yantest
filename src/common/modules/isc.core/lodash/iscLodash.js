@@ -31,12 +31,14 @@
 
   // Present is defined by not undefined and not null.
   function isPresent(obj) {
-    return obj != null;
+    console.warn('[deprecated] _.isPresent(), use _.isNil() instead.');
+    return !_.isNil(obj);
   }
 
   // Present is defined by not undefined and not null.
   function isNotPresent(obj) {
-    return obj == null;
+    console.warn('[deprecated] _.isNotPresent(), use !_.isNil() instead.');
+    return _.isNil(obj);
   }
 
   function getAge(dob, format) {
@@ -148,7 +150,7 @@
       val = origGet(obj, path);
     }
 
-    return isPresent(val) ? val : defaultValue;
+    return _.isNil(val) ? val : defaultValue;
   }
 
   function toPath(path) {

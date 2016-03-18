@@ -118,7 +118,7 @@
         configure: this.configure,
         getNext  : this.getNext,
         addRoute : this.addRoute
-      }
+      };
     };
 
 

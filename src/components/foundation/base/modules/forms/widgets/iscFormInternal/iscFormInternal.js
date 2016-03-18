@@ -131,7 +131,7 @@
                 scrollTo: fieldScope.id
               };
             });
-          })
+          });
         });
 
         _.forEach(alerts, function (alert) {

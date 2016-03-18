@@ -51,5 +51,5 @@
 
         return $window.hsModelUtils.getError(module, spec);
       }
-    })
+    });
 })();

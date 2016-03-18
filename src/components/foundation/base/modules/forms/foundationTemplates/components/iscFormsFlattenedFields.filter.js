@@ -16,7 +16,7 @@
     function flattenFields(fields, annotationState) {
       var fieldArray = [];
       _.forEach(fields, function (field) {
-        fieldArray = fieldArray.concat(getFields(field, annotationState))
+        fieldArray = fieldArray.concat(getFields(field, annotationState));
       });
       return fieldArray;
     }
