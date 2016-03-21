@@ -167,3 +167,108 @@ Run tests:
   * ```git pull origin <branch>```
 * Cherry-pick a commit from another branch into your current branch
   * ```git cherry-pick <commit hash>```
+
+## Bash 101 (OS X only)
+```
+# go to home (same as cd ~)
+cd 
+
+# go to last directory (good fo toggling between two directories)
+cd -
+
+#search previous commands
+CTRL+R
+
+# previous command's all arguments
+!*
+
+#previous command's last arguments
+!^
+
+#previous command's first command
+!$
+
+#previous command
+!!
+Example: npm install
+Sudo !! => sudo npm install
+
+#last command start with cat
+!cat
+
+#last command containing cat
+!?cat
+
+#replace cat with meow in last command
+^cat^meow
+
+#expansion {one, two}
+Echo {r,p,s}{r,p,s}{r,p,s}
+Mv file.zip{,.bak} => file.zip.bak
+
+#human readable size
+Ls -h
+
+#mkdir create parent directories as needed
+Mkdir -p parent/child/myfolder
+
+#create/update access time
+Touch <file name>
+
+#copy entire directory and its content
+Cp -a src/ dest/
+
+#find files
+Find /home -name '.bash*'
+
+#find files updated less than 5 minutes ago
+-mmin 5
+
+#perform operations on files found
+Find . -type f -exec ls -l {} \;
+#maxdepth
+--maxdepth1 
+
+#exec command without it blocking
+Sleep 100 &
+Nodemon server.js &
+
+#user processes
+Ps
+
+#stop process
+Kill PID
+
+#find process by name
+pgrep
+
+#stop rpocess by name
+Pkill name
+
+#find content in a file (case insensitive)
+Grep -i 'ipv4' filename.txt
+
+#find all non comments
+Grep -v '#" filename.txt
+
+#redirect command from a file
+Grep 'ssh' < ~/processes.txt
+
+#only matching
+echo 'spaceship' | grep -o 'ship' => 'ship'
+
+#redirect to a file and output to screen
+Tee 'hello tere' hi.txt
+
+#find all instances of 'hello' in *.txt(recursive)
+find . -type f -print0 | xargs -0 grep -I
+
+#first x items (head)
+Head -10 <file>
+
+#last few 
+Tail -f (follow live-update) 
+
+
+```
+
