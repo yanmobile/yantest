@@ -13,7 +13,7 @@
      ng-show="page === subformCtrl.multiConfig.currentPage"
      class="grid-content collapse form-page">
 
-  <h3>{{page.name}}</h3>
+  <h3>{{page.name | translate}}</h3>
 
   <formly-form model="subformCtrl.model"
                options="subformCtrl.options"
