@@ -13,8 +13,7 @@
       put   : put,
       post  : post,
       delete: deleteApi,
-
-      getFirstForPatient: getFirstForPatient
+      list  : list
     };
 
     return api;
@@ -39,9 +38,10 @@
       return iscHttpapi.delete(url + id);
     }
 
-    function getFirstForPatient(patientId) {
-      devlog.channel('iscFormDataApi').debug('iscFormDataApi.getFirstForPatient');
-      return iscHttpapi.get(url + 'patient/' + patientId);
+    function list() {
+      devlog.channel('iscFormDataApi').debug('iscFormDataApi.list');
+      return iscHttpapi.get(url);
     }
+
   }
 })();
