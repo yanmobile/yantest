@@ -44,7 +44,9 @@
         if (form.$invalid) {
           _.forEach(form.$error, function (errorType) {
             _.forEach(errorType, function (control) {
-              control.$setTouched && control.$setTouched();
+              if (control.$setTouched) {
+                control.$setTouched();
+              }
             });
           });
           return {
@@ -195,5 +197,5 @@
           }
         }
       }
-    })
+    });
 })();

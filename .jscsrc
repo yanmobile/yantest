@@ -1,10 +1,11 @@
 {
-  "excludeFiles" : [
+  "excludeFiles"                           : [
     "node_modules/**",
     "src/common/bower_components/**",
+    "src/components/**/bower_components/**",
     "src/app/bower_components/**"
   ],
-  "requireCurlyBraces" : [
+  "requireCurlyBraces"                     : [
     "if",
     "else",
     "for",
@@ -13,24 +14,21 @@
     "try",
     "catch"
   ],
-  "requireOperatorBeforeLineBreak" : true,
+  "requireOperatorBeforeLineBreak"         : true,
   "requireCamelCaseOrUpperCaseIdentifiers" : true,
-  "requireSemicolons" : true,
-//  "maximumNumberOfLines" : 250,
-  "maximumLineLength" : {
-    "value" : 175,
+  "requireSemicolons"                      : true,
+  "maximumLineLength"                      : {
+    "value"         : 175,
     "allowComments" : true,
-    "allowRegex" : true
+    "allowRegex"    : true
   },
-  "validateIndentation" : 4,
-  "validateQuoteMarks" : "'",
-  "validateParameterSeparator" : ", ",
-  "disallowMultipleLineStrings" : true,
-  "disallowMixedSpacesAndTabs" : true,
-  "disallowTrailingWhitespace" : true,
+  "validateIndentation"                    : 2,
+  "validateParameterSeparator"             : ", ",
+  "disallowMultipleLineStrings"            : true,
+  "disallowMixedSpacesAndTabs"             : true,
+  "disallowTrailingWhitespace"             : true,
   "disallowSpaceAfterPrefixUnaryOperators" : true,
-  "disallowMultipleVarDecl" : null,
-  "requireSpaceAfterKeywords" : [
+  "requireSpaceAfterKeywords"              : [
     "if",
     "else",
     "for",
@@ -41,7 +39,7 @@
     "try",
     "catch"
   ],
-  "requireSpaceBeforeBinaryOperators" : [
+  "requireSpaceBeforeBinaryOperators"      : [
     "=",
     "+=",
     "-=",
@@ -77,27 +75,31 @@
     "!=",
     "!=="
   ],
-  "requireSpaceAfterBinaryOperators" : true,
-  "requireSpacesInConditionalExpression" : true,
-  "requireSpaceBeforeBlockStatements" : true,
-  "requireLineFeedAtFileEnd" : true,
-  "disallowSpacesInsideObjectBrackets" : "all",
-  "disallowSpacesInsideArrayBrackets" : "all",
-  "disallowSpacesInsideParentheses" : true,
-  "jsDoc" : {
-    "checkAnnotations" : true,
-    "checkParamNames" : true,
-    "requireParamTypes" : true,
-    "checkReturnTypes" : true,
-    "checkTypes" : true
+  "requireSpaceAfterBinaryOperators"       : true,
+  "requireSpacesInConditionalExpression"   : true,
+  "requireSpaceBeforeBlockStatements"      : true,
+  "requireLineFeedAtFileEnd"               : true,
+  "disallowSpacesInsideObjectBrackets"     : "all",
+  "disallowSpacesInsideArrayBrackets"      : "all",
+  "disallowSpacesInsideParentheses"        : true,
+  "jsDoc"                                  : {
+    "checkAnnotations" : {
+      "preset" : "jsdoc3",
+      "extra"  : {
+        "ngdoc" : true
+      }
+    }
   },
-  "disallowMultipleLineBreaks" : true,
-  "disallowCommaBeforeLineBreak" : null,
-  "disallowDanglingUnderscores" : null,
-  "disallowEmptyBlocks" : true,
-  "disallowTrailingComma" : true,
-  "requireCommaBeforeLineBreak" : true,
-  "requireDotNotation" : true,
-  "requireMultipleVarDecl" : null,
-  "requireParenthesesAroundIIFE" : true
+  "disallowMultipleLineBreaks"             : true,
+  "disallowCommaBeforeLineBreak"           : null,
+  "disallowDanglingUnderscores"            : null,
+  "disallowEmptyBlocks"                    : true,
+  "disallowTrailingComma"                  : true,
+  "requireCommaBeforeLineBreak"            : true,
+  "requireDotNotation"                     : true,
+  //  "disallowMultipleVarDecl"                : true,
+  "requireParenthesesAroundIIFE"           : true,
+  "disallowNestedTernaries"                : {
+    "maxLevel" : 1
+  }
 }

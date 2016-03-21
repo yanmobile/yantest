@@ -40,7 +40,7 @@
       self.invokeSelect = function (model, onSelectFn) {
         return function bridgeSelect(item) {
           onSelectFn(model, item);
-        }
+        };
       };
     }
 

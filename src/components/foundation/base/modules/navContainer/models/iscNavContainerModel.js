@@ -54,7 +54,7 @@
     function navigateToUserLandingPage() {
       var currentUserRole = iscSessionModel.getCurrentUserRole();
       var landingPage     = iscCustomConfigService.getConfigSection('landingPages')[currentUserRole];
-      if (landingPage != null) {
+      if (!_.isNil(landingPage)) {
         $state.go(landingPage);
       } else {
         devlog.channel('iscNavContainerModel').error('No landing page found for', _.wrapText(currentUserRole), 'role');

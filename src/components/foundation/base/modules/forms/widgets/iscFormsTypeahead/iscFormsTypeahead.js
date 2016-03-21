@@ -46,8 +46,8 @@
         self.focusInput();
 
         function callSelect(fn) {
-          var fnCall;
-          if (fnCall = fn()) {
+          var fnCall = fn();
+          if (fnCall) {
             fnCall(item);
           }
         }

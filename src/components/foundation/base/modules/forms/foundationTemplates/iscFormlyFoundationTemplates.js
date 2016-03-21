@@ -237,14 +237,12 @@
               if (_.isObject(item)) {
                 var copiedItem          = _.merge({}, item);
                 $scope.model[key]       = copiedItem;
-                $scope.localModel.input = $scope.displayField
-                  ? copiedItem[$scope.displayField]
-                  : copiedItem;
+                $scope.localModel.input = $scope.displayField ? copiedItem[$scope.displayField] : copiedItem;
               }
               else {
                 $scope.localModel.input = $scope.model[key] = item;
               }
-            }
+            };
           }
         });
 

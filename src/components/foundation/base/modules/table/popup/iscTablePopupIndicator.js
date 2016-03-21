@@ -15,7 +15,7 @@
     .directive('iscTablePopupIndicator', iscTablePopupIndicator);
 
   /* @ngInject */
-  function iscTablePopupIndicator(){
+  function iscTablePopupIndicator(devlog){
     devlog.channel('iscTablePopupIndicator').debug( 'iscTablePopupIndicator LOADED');
 
     // ----------------------------

@@ -26,7 +26,7 @@
       devlog.channel('storage').debug('get...');
       devlog.channel('storage').debug("storageKey", storageKey, "entityPath", entityPath);
       var val;
-      if (entityPath == null) { //if no entityPath is supplied (only 1 parameter)
+      if (_.isNil(entityPath)) { //if no entityPath is supplied (only 1 parameter)
         val = getFromStorage(storageKey);
       } else {
         val = getFromStorage(storageKey);
@@ -40,7 +40,7 @@
       devlog.channel('storage').debug('set...');
       devlog.channel('storage').debug("storageKey", storageKey, "entityPath", entityPath, "value", value);
 
-      if (value == null) {
+      if (_.isNil(value)) {
         value = entityPath;
         saveToStorage(storageKey, value);
       } else {
@@ -63,7 +63,7 @@
       var rawVal = $window.localStorage.getItem(storageKey);
       var value;
       try {
-        value = rawVal != null ? JSON.parse(rawVal) : null;
+        value = _.isNil(rawVal) ? null : JSON.parse(rawVal);
       } catch ( ex ) {
         value = null;
       }

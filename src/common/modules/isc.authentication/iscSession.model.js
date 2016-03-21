@@ -278,7 +278,7 @@
         // warn
         if (sessionTimeout.remaining <= sessionTimeout.warnAt && sessionTimeout.remaining > sessionTimeout.expireAt) {
           devlog.channel('iscSessionModel').debug('...WARN ' + sessionTimeout.remaining);
-          if (doPingFirst && sessionTimeout.syncedOn != 'warn') {
+          if (doPingFirst && sessionTimeout.syncedOn !== 'warn') {
             callPing('warn').then(function () {
               _checkForWarnOrExpire(false);
             });
@@ -292,7 +292,7 @@
         else if (sessionTimeout.remaining <= sessionTimeout.expireAt) {
           devlog.channel('iscSessionModel').debug('...TIMEOUT ' + sessionTimeout.remaining);
 
-          if (doPingFirst && sessionTimeout.syncedOn != 'expire') {
+          if (doPingFirst && sessionTimeout.syncedOn !== 'expire') {
             callPing('expire').then(function () {
               _checkForWarnOrExpire(false);
             });

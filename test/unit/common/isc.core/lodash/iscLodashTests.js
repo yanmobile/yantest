@@ -5,7 +5,7 @@
   describe('iscLodash', function () {
 
     describe('_.isPresent()', function () {
-      it('should return false if value == null or undefined', function () {
+      it('should return false if _.isNil(value)', function () {
         expect(_.isPresent(null)).toBe(false);
         expect(_.isPresent(undefined)).toBe(false);
       });
@@ -23,7 +23,7 @@
       });
     });
     describe('_.isNotPresent()', function () {
-      it('should return true if value == null or undefined', function () {
+      it('should return true if _.isNil(value)', function () {
         expect(_.isNotPresent(null)).toBe(true);
         expect(_.isNotPresent(undefined)).toBe(true);
       });

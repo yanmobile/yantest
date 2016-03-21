@@ -141,9 +141,7 @@
 
           onCollectionModified();
         }
-        else {
-          // TODO - show message if invalid? (iscFormModel.validate will touch each control during validation)
-        }
+        // TODO - show message if invalid? (iscFormModel.validate will touch each control during validation)
       };
 
       self.removeForm = function (row) {
@@ -180,11 +178,11 @@
             display         : field.display,
             type            : field.type,
             dateFormat      : self.dateFormat
-          }
+          };
         });
 
         // Actions
-        if (self.mode != 'view') {
+        if (self.mode !== 'view') {
           tableColumns.push(
             {
               key        : 'Actions',
@@ -314,7 +312,7 @@
       // Initialize model value for collection rows in $render
       ngModelCtrl.$render = function () {
         scope.efCollectionCtrl.collectionModel = ngModelCtrl.$modelValue || [];
-      }
+      };
     }
 
   }//END CLASS

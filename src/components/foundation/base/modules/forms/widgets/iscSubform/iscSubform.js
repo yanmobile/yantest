@@ -128,7 +128,7 @@
 
         // Return to parent breadcrumb state
         var breadcrumb = self.breadcrumbs.pop();
-        while (breadcrumb && breadcrumb.ctrl != self) {
+        while (breadcrumb && breadcrumb.ctrl !== self) {
           breadcrumb = self.breadcrumbs.pop();
         }
         self.breadcrumbs.push(breadcrumb);
