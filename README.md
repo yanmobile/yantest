@@ -176,99 +176,59 @@ cd
 # go to last directory (good fo toggling between two directories)
 cd -
 
-#search previous commands
-CTRL+R
-
-# previous command's all arguments
+# last command's arguments
 !*
 
-#previous command's last arguments
+# last command's last arguments
 !^
 
-#previous command's first command
+# last command's first command
 !$
 
-#previous command
+# last command
 !!
-Example: npm install
-Sudo !! => sudo npm install
 
-#last command start with cat
+# search last commands
+CTRL+R
+
+# last command start with cat
 !cat
 
-#last command containing cat
+# last command containing cat
 !?cat
 
-#replace cat with meow in last command
+# replace cat with meow in last command
 ^cat^meow
 
-#expansion {one, two}
-Echo {r,p,s}{r,p,s}{r,p,s}
-Mv file.zip{,.bak} => file.zip.bak
+# list directory with human readable size in long format
+ls -lh
 
-#human readable size
-Ls -h
+# mkdir create parent directories as needed
+mkdir -p parent/child/myfolder
 
-#mkdir create parent directories as needed
-Mkdir -p parent/child/myfolder
-
-#create/update access time
-Touch <file name>
+# create new file if doesn't exist or update access time if already exists
+touch <file name>
 
 #copy entire directory and its content
-Cp -a src/ dest/
+cp -a src/ dest/
 
-#find files
-Find /home -name '.bash*'
+# delete a folder and its content
+rm -rf <folder>
 
-#find files updated less than 5 minutes ago
--mmin 5
+# find files in /home directory which matches '.bash*' pattern
+find /home -name '.bash*'
 
-#perform operations on files found
-Find . -type f -exec ls -l {} \;
-#maxdepth
---maxdepth1 
+# first few lines
+head <file>
 
-#exec command without it blocking
-Sleep 100 &
-Nodemon server.js &
+# last few lines
+tail <file>
 
-#user processes
-Ps
+# last few lines and watch for updates
+tail -f <file>
 
-#stop process
-Kill PID
-
-#find process by name
-pgrep
-
-#stop rpocess by name
-Pkill name
-
-#find content in a file (case insensitive)
-Grep -i 'ipv4' filename.txt
-
-#find all non comments
-Grep -v '#" filename.txt
-
-#redirect command from a file
-Grep 'ssh' < ~/processes.txt
-
-#only matching
-echo 'spaceship' | grep -o 'ship' => 'ship'
-
-#redirect to a file and output to screen
-Tee 'hello tere' hi.txt
-
-#find all instances of 'hello' in *.txt(recursive)
-find . -type f -print0 | xargs -0 grep -I
-
-#first x items (head)
-Head -10 <file>
-
-#last few 
-Tail -f (follow live-update) 
-
+# output the content of a file
+less <filename>
 
 ```
 
