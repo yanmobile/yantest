@@ -1,5 +1,6 @@
 <div>
-  <div ng-repeat="option in radioCtrl.options.templateOptions.options track by $index" class="radio-list grid-block">
+  <div ng-repeat="option in radioCtrl.options.templateOptions.options track by $index"
+       class="radio-list grid-block">
     <label class="radio">
       <input type="radio"
              id="{{id + '_'+ $index}}"
@@ -8,7 +9,7 @@
              ng-value="option"
              ng-checked="radioCtrl.isChecked(option)"
              ng-click="onSelect(option)">
-      {{radioCtrl.isObjectModel ? option[displayProp] : option}}
+      {{(radioCtrl.isObjectModel ? option[displayProp] : option) | translate}}
     </label>
   </div>
 </div>

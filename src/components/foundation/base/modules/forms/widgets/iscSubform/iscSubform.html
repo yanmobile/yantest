@@ -33,13 +33,13 @@
                   id="cancelButton"
                   name="cancelButton"
                   class="cancel button large float-left"
-              >{{ subformCtrl.options.formState._mode === 'view' ? 'Back' : 'Cancel' }}
+              >{{ (subformCtrl.options.formState._mode === 'view' ? 'Forms_Back_Button' : 'Forms_Cancel_Button') | translate}}
           </button>
         </div>
         <div class="grid-content collapse clearfix" ng-if="subformCtrl.options.formState._mode != 'view'">
           <button type="submit"
                   class="button large float-right"
-              >Submit
+              >{{'Forms_Submit_Button' | translate}}
           </button>
         </div>
       </div>
@@ -51,7 +51,9 @@
       <div class="grid-block context">
         <ul class="breadcrumb">
           <li ng-repeat="breadcrumb in subformCtrl.breadcrumbs" ng-class="{ 'active' : $last}">
-            <a ng-click="subformCtrl.breadcrumbClick($index, breadcrumb.onCancel)">{{ breadcrumb.name }}></a>
+            <a ng-click="subformCtrl.breadcrumbClick($index, breadcrumb.onCancel)">
+              {{ breadcrumb.name | translate }}>
+            </a>
           </li>
         </ul>
       </div>
@@ -68,13 +70,13 @@
         <button class="cancel float-left flat"
                 type="button"
                 ng-click="subformCtrl.singleConfig.onCancel()">
-          Cancel
+          {{'Forms_Cancel_Button' | translate}}
         </button>
 
         <button class="float-right flat"
                 type="button"
                 ng-click="subformCtrl.singleConfig.onSubmit()">
-          Save {{subformCtrl.singleConfig.itemLabel}}
+          {{'Forms_Save_Button' | translate}} {{subformCtrl.singleConfig.itemLabel}}
         </button>
       </div>
 
