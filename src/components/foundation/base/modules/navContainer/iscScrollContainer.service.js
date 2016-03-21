@@ -35,7 +35,7 @@
     function getCurrentScrollPosition(index) {
       var contentIndex = getContentIndex(index);
 
-      if (contentIndex != undefined) {
+      if (contentIndex !== undefined) {
         return scrollingContent[contentIndex].scrollTop();
       }
       else {
@@ -53,7 +53,7 @@
       var contentIndex   = getContentIndex(index),
           scrollPosition = parseInt(position || 0);
 
-      if (contentIndex != undefined && !isNaN(scrollPosition)) {
+      if (contentIndex !== undefined && !isNaN(scrollPosition)) {
         if (duration) {
           scrollingContent[contentIndex].animate({
             scrollTop: position
