@@ -55,8 +55,8 @@
    *     a style configuration for the submit button
    *
    *   button configurations are objects with the following properties:
-   *     style : css styles to apply to the button
-   *     text  : an i18n translation key or literal text to render on the button
+   *     cssClass : css styles to apply to the button
+   *     text     : an i18n translation key or literal text to render on the button
    *
    *   e.g., to change the text of the submit button to "Complete":
    *     viewConfig : {
@@ -188,12 +188,12 @@
       function getViewDefaults() {
         return {
           cancelButton: {
-            style: 'cancel button large float-left',
-            text : self.mode === 'view' ? 'Forms_Back_Button' : 'Forms_Cancel_Button'
+            cssClass: 'cancel button large float-left',
+            text    : self.mode === 'view' ? 'Forms_Back_Button' : 'Forms_Cancel_Button'
           },
           submitButton: {
-            style: 'button large float-right',
-            text : 'Forms_Submit_Button'
+            cssClass: 'button large float-right',
+            text    : 'Forms_Submit_Button'
           }
         };
       }
