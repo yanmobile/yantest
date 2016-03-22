@@ -5,8 +5,7 @@
     .directive('iscFormInternal', iscFormInternal);
 
   /* @ngInject */
-  function iscFormInternal($window,
-                           iscCustomConfigService, iscNotificationService,
+  function iscFormInternal(iscCustomConfigService, iscNotificationService,
                            iscFormsValidationService) {
     var directive = {
       restrict        : 'E',
@@ -19,6 +18,7 @@
         annotationsApi  : '=',
         additionalModels: '=',
         validateFormApi : '=',
+        cancelFormApi   : '&',
         submitFormApi   : '&'
       },
       bindToController: true,
@@ -54,7 +54,7 @@
       self.validation = iscFormsValidationService.getValidationObject();
 
       self.onCancel = function () {
-        $window.history.back();
+        self.cancelFormApi();
       };
 
       self.onSubmit = function () {

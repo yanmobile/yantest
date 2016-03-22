@@ -4,8 +4,51 @@
   angular.module('isc.forms')
     .directive('iscForm', iscForm);
 
+  /**
+   * iscForm - A directive for displaying a form
+   *
+   * Parameters:
+   *
+   * formKey    : The unique identifier for the form definition.
+   * formType   : The category to which the form belongs. This is defined in the form's FDN.
+   * mode       : 'edit' or 'view'
+   * id         : If provided, form data with this value is retrieved and loaded into this form instance.
+   *
+   * formConfig : A configuration object that may include some or all of the following additional configuration:
+   *   additionalModelInit
+   *     A function or expression to be invoked during form init, which may populate additional data models.
+   *
+   *   useOriginalFormKey
+   *     If loading an existing form in edit mode and this property is truthy, the formKey of the persisted form
+   *     is used, even if this differs from the active formKey of type formType.
+   *     Default: false
+   *
+   *   annotationsApi
+   *     The API to use for annotations in this form, if applicable. These properties may be defined:
+   *       getFormAnnotations
+   *       closeAnnotationPanel
+   *       initAnnotationQueue
+   *       processAnnotationQueue
+   *     Default: none
+   *
+   *   onSubmit
+   *     The function called when the form is submitted by the user.
+   *     Default: submits the form to iscFormDataApi
+   *
+   *   afterSubmit
+   *     A callback for after onSubmit has completed.
+   *     Default: returns the user to his or her landing page
+   *
+   *   onCancel
+   *     The function called when all edits to the form are canceled by the user.
+   *     Default: none
+   *
+   *   afterCancel
+   *     A callback for after onCancel has completed.
+   *     Default: goes back one page in the browser history
+   */
   /* @ngInject */
-  function iscForm($stateParams, $q,
+  function iscForm($stateParams, $q, $window,
                    iscSessionModel, iscNavContainerModel,
                    iscFormsModel, iscFormsValidationService, iscFormDataApi) {//jshint ignore:line
     var directive = {
@@ -13,13 +56,11 @@
       replace         : true,
       controllerAs    : 'formCtrl',
       scope           : {
-        formType           : '@',
-        formKey            : '@',
-        annotationsApi     : '=',
-        mode               : '@',
-        id                 : '@',
-        additionalModelInit: '=',
-        useOriginalFormKey : '='
+        formType  : '@',
+        formKey   : '@',
+        mode      : '@',
+        id        : '@',
+        formConfig: '='
       },
       bindToController: true,
       controller      : controller,
@@ -30,6 +71,10 @@
 
     function controller() {
       var self = this;
+
+      var defaultConfig = getFormDefaults();
+      self.formConfig = self.formConfig || {};
+      _.extend(self.formConfig, defaultConfig, self.formConfig);
 
       _.merge(self, {
         localFormKey          : self.formKey,
@@ -57,13 +102,14 @@
         closeAnnotationPanel  : emptyFunction,
         initAnnotationQueue   : emptyFunction,
         processAnnotationQueue: emptyFunction
-      }, self.annotationsApi);
+      }, self.formConfig.annotationsApi);
 
       self.validateFormApi = function () {
         return iscFormsValidationService.validateCollections(self.model, self.validationDefinition);
       };
 
       self.submitFormApi = submitForm;
+      self.cancelFormApi = cancelForm;
 
       init();
 
@@ -71,10 +117,57 @@
       // Private/helper functions
       var originalFormKey;
 
+      function getFormDefaults() {
+        // Default api for submitting a form is to submit to iscFormDataApi
+        function onSubmit() {
+          var formDefinition = self.formDefinition.form;
+          // Wrap data with additional information and metadata
+          var formWrapper = {
+            formDefinition  : formDefinition,
+            additionalModels: self.additionalModels,
+            formData        : {
+              formKey    : self.localFormKey,
+              formName   : formDefinition.name,
+              formType   : formDefinition.formType,
+              id         : self.id ? parseInt(self.id) : undefined,
+              author     : iscSessionModel.getCurrentUser(),
+              completedOn: moment().toISOString(),
+              data       : self.model
+            }
+          };
+
+          if (self.id) {
+            return iscFormDataApi.put(parseInt(self.id), formWrapper).then(_updateAnnotations);
+          }
+          else {
+            return iscFormDataApi.post(formWrapper).then(_updateAnnotations);
+          }
+
+          function _updateAnnotations(form) {
+            self.annotationsApi.processAnnotationQueue(form.id);
+          }
+        }
+
+        function afterSubmit() {
+          iscNavContainerModel.navigateToUserLandingPage();
+        }
+
+        function afterCancel() {
+          $window.history.back();
+        }
+
+        return {
+          onSubmit   : onSubmit,
+          afterSubmit: afterSubmit,
+          onCancel   : emptyFunction,
+          afterCancel: afterCancel
+        };
+      }
+
       function init() {
         // Resolve default formKey if not provided,
         // and if not using formKey previously persisted with form
-        if (!self.localFormKey && !(self.id && self.useOriginalFormKey)) {
+        if (!self.localFormKey && !(self.id && self.formConfig.useOriginalFormKey)) {
           iscFormsModel.getActiveForm(self.formType).then(function (form) {
             self.localFormKey = form.formKey;
             getFormData();
@@ -98,7 +191,7 @@
               originalFormKey = formData.formKey;
 
               // Option to force using the formKey saved in the form previously
-              if (!self.localFormKey && self.useOriginalFormKey) {
+              if (!self.localFormKey && self.formConfig.useOriginalFormKey) {
                 self.localFormKey = originalFormKey;
               }
               self.model = formData.data;
@@ -205,7 +298,7 @@
       function populateAdditionalModels(fdnScript) {
         // If provided, call init function/expression to populate additional dynamic data models, such as patients
         evalScript(fdnScript);
-        evalScript(self.additionalModelInit);
+        evalScript(self.formConfig.additionalModelInit);
 
         getValidationDefinition();
 
@@ -225,40 +318,14 @@
       }
 
 
-      // Default api for submitting a form is to submit to formDataApi
       function submitForm() {
-        var formDefinition = self.formDefinition.form;
-        // Wrap data with additional information and metadata
-        var formWrapper = {
-          formDefinition  : formDefinition,
-          additionalModels: self.additionalModels,
-          formData        : {
-            formKey    : self.localFormKey,
-            formName   : formDefinition.name,
-            formType   : formDefinition.formType,
-            id         : self.id ? parseInt(self.id) : undefined,
-            author     : iscSessionModel.getCurrentUser(),
-            completedOn: moment().toISOString(),
-            data       : self.model
-          }
-        };
+        $q.when(self.formConfig.onSubmit())
+          .then(self.formConfig.afterSubmit);
+      }
 
-        // Save form and return to dashboard
-        // If an existing form, PUT; otherwise POST
-        var saveCall;
-        if (self.id) {
-          saveCall = iscFormDataApi.put(parseInt(self.id), formWrapper).then(_updateAnnotations);
-        }
-        else {
-          saveCall = iscFormDataApi.post(formWrapper).then(_updateAnnotations);
-        }
-        saveCall.then(function () {
-          iscNavContainerModel.navigateToUserLandingPage();
-        });
-
-        function _updateAnnotations(form) {
-          self.annotationsApi.processAnnotationQueue(form.id);
-        }
+      function cancelForm() {
+        $q.when(self.formConfig.onCancel())
+          .then(self.formConfig.afterCancel);
       }
     }
   }
