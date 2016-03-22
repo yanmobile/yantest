@@ -1,5 +1,9 @@
 
-#Core Changes
+# Core Changes
+### 03/22/2016
+#### upgrade notes:
+Application developers will need to update their internationalization file to support the latest core tools and core UI changes. Everything above the CUSTOM section in src/app/assets/i18n/locale-en_US.json should consist of the contents of [this file](https://github.com/intersystems/hs-core-tools/blob/i18n-defaults-20160321/templates/appModule/src/app/assets/i18n/locale-en_US.json). 
+
 ### 03/17/2016 & 03/18/2016
 #### upgrade notes:
 In order to fix the unit tests broken by 03/08/2016 edition refactoring, application developers will need update these files:
