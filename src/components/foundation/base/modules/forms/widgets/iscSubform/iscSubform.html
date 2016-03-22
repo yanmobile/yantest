@@ -32,14 +32,14 @@
                   ng-click="subformCtrl.onCancel()"
                   id="cancelButton"
                   name="cancelButton"
-                  class="cancel button large float-left"
-              >{{ (subformCtrl.options.formState._mode === 'view' ? 'Forms_Back_Button' : 'Forms_Cancel_Button') | translate}}
+                  ng-class="subformCtrl.multiConfig.viewConfig.cancelButton.style"
+              >{{ subformCtrl.multiConfig.viewConfig.cancelButton.text | translate}}
           </button>
         </div>
         <div class="grid-content collapse clearfix" ng-if="subformCtrl.options.formState._mode != 'view'">
           <button type="submit"
-                  class="button large float-right"
-              >{{'Forms_Submit_Button' | translate}}
+                  ng-class="subformCtrl.multiConfig.viewConfig.submitButton.style"
+              >{{subformCtrl.multiConfig.viewConfig.submitButton.text | translate}}
           </button>
         </div>
       </div>
