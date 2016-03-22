@@ -41,22 +41,36 @@ To use:
     |   |   |-- component
     |   |   |-- app     //application specific
 
-        
-Run application:
+           
+Run application ([slush style](https://github.com/intersystems/hs-core-tools)):
+
+    slush hs:install #installs npm and bower packages
+    gulp serve
+    
+Run application (manually):
 
     npm install -g bower gulp
-    npm install     //from project root folder
+    npm install     #from project root folder
     cd src/common
     bower install
-    cd src/app      //application specific
-    bower install   //application specific
+    cd src/app      #application specific
+    bower install   #application specific
     gulp serve
     
 Run tests:
 
-    gulp test        //only available as part of app specific task
+    gulp test        #only available as part of app specific task
     gulp test:common
-    gulp test:app    //application specific
+    gulp test:components
+    gulp test:app    #application specific
+
+Update framework: //make sure your workarea is clean 
+
+    #1. git checkout -b framework-update-<date> origin/master
+    #2. git pull upstream master
+    #3. git push origin framework-update-<date>
+    slush hs:updateCore 
+    create PR on GitHub
 
 ##FAQs
 * **This framework looks awesome, how do I create a fully functional application using this framework in a couple of minutes?**
