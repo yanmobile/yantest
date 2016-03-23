@@ -76,8 +76,7 @@
     }
 
     function doesFieldStoreObject(field) {
-      var data = field.data || {};
-      return field.templateOptions.options || data.codeTable || data.displayField || data.isObject;
+      return _.get(field, 'data.isObject') || _.get(field, 'data.displayField');
     }
 
     function getCustomDisplayOptions(field) {

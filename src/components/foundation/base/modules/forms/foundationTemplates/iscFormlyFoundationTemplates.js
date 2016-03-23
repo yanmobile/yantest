@@ -119,12 +119,7 @@
           controller : function ($scope) {
             var data = _.get($scope, 'options.data', {});
 
-            // Use explicit definition if set, otherwise infer object/primitive mode based on first option in list
             $scope.isObjectModel = _.get(data, 'isObject');
-            if ($scope.isObjectModel === undefined) {
-              var options          = _.get($scope, 'to.options', []);
-              $scope.isObjectModel = _.isObject(_.head(options));
-            }
           }
         });
 
@@ -140,12 +135,7 @@
             $scope.valueProp   = _.get(data, 'valueField', 'value');
             $scope.groupProp   = _.get(data, 'groupField', 'group');
 
-            // Use explicit definition if set, otherwise infer object/primitive mode based on first option in list
             $scope.isObjectModel = _.get(data, 'isObject');
-            if ($scope.isObjectModel === undefined) {
-              var options          = _.get($scope, 'to.options', []);
-              $scope.isObjectModel = _.isObject(_.head(options));
-            }
           }
         });
 

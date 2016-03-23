@@ -301,6 +301,12 @@
                   );
                 }
 
+                // If data.isObject is not set, infer object/primitive mode based on first option in options list
+                var options = _.get(field, 'templateOptions.options', []);
+                if (data.isObject === undefined && options) {
+                  _.set(field, 'data.isObject', _.isObject(_.head(options)));
+                }
+
                 // If the type is not already registered, load it and register it with formly
                 if (!iscFormsTemplateService.isTypeRegistered(type)) {
                   _getCustomTemplate(type);
