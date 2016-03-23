@@ -14,7 +14,7 @@
    * mode       : 'edit' or 'view'
    * id         : If provided, form data with this value is retrieved and loaded into this form instance.
    *
-   * formConfig : A configuration object that may include some or all of the following additional configuration:
+   * formConfig : A configuration object that may include some or all of the following behavior configuration:
    *   additionalModelInit
    *     A function or expression to be invoked during form init, which may populate additional data models.
    *
@@ -46,6 +46,24 @@
    *   afterCancel
    *     A callback for after onCancel has completed.
    *     Default: goes back one page in the browser history
+   *
+   * viewConfig : A configuration object that may include some or all of the following display configuration:
+   *   cancelButton
+   *     a style configuration for the cancel button
+   *
+   *   submitButton
+   *     a style configuration for the submit button
+   *
+   *   button configurations are objects with the following properties:
+   *     cssClass : css styles to apply to the button
+   *     text     : an i18n translation key or literal text to render on the button
+   *
+   *   e.g., to change the text of the submit button to "Complete":
+   *     viewConfig : {
+   *       submitButton : {
+   *         text : 'Complete'
+   *       }
+   *     }
    */
   /* @ngInject */
   function iscForm($stateParams, $q, $window,
@@ -60,7 +78,8 @@
         formKey   : '@',
         mode      : '@',
         id        : '@',
-        formConfig: '='
+        formConfig: '=',
+        viewConfig: '='
       },
       bindToController: true,
       controller      : controller,
@@ -74,7 +93,10 @@
 
       var defaultConfig = getFormDefaults();
       self.formConfig = self.formConfig || {};
-      _.extend(self.formConfig, defaultConfig, self.formConfig);
+      _.merge(self.formConfig, defaultConfig, self.formConfig);
+
+      var viewDefaults = getViewDefaults();
+      self.internalViewConfig = _.merge(viewDefaults, self.viewConfig);
 
       _.merge(self, {
         localFormKey          : self.formKey,
@@ -89,7 +111,6 @@
           }
         }
       });
-
 
       // Empty stubs for annotations, to remove dependency
       function emptyAnnotationData() { return $q.when([]); }
@@ -161,6 +182,19 @@
           afterSubmit: afterSubmit,
           onCancel   : emptyFunction,
           afterCancel: afterCancel
+        };
+      }
+
+      function getViewDefaults() {
+        return {
+          cancelButton: {
+            cssClass: 'cancel button large float-left',
+            text    : self.mode === 'view' ? 'Forms_Back_Button' : 'Forms_Cancel_Button'
+          },
+          submitButton: {
+            cssClass: 'button large float-right',
+            text    : 'Forms_Submit_Button'
+          }
         };
       }
 

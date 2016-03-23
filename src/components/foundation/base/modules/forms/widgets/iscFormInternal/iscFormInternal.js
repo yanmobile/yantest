@@ -19,7 +19,8 @@
         additionalModels: '=',
         validateFormApi : '=',
         cancelFormApi   : '&',
-        submitFormApi   : '&'
+        submitFormApi   : '&',
+        viewConfig      : '='
       },
       bindToController: true,
       controller      : controller,
@@ -182,7 +183,8 @@
           currentPage    : self.currentPage,
           selectablePages: [],
           forms          : self.forms,
-          onCancel       : self.onCancel
+          onCancel       : self.onCancel,
+          viewConfig     : self.viewConfig || {}
         };
 
         throttledFilter();
