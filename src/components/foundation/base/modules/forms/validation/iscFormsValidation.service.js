@@ -118,7 +118,7 @@
          * Useful for waiting for longer-running third-party synchronous functions (such as form building) to complete.
          *
          * @param {Function} sleepTest
-         * @param {=number} maxWait
+         * @param {number} maxWait
          * @returns {Promise}
          */
         function sleepUntil(sleepTest, maxWait) {
