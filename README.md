@@ -145,7 +145,11 @@ Update framework: //make sure your workarea is clean
   * Navigate to where you've defined the ui-router state for your landing page and add/update  **landingPageFor** property and include your user role as one of the array values. For reference, see  **src/app/modules/login/login.module.js**
 * **How come when I successfully authenticated a user(Status Code 200 from REST API), nothing happens, I am still at the login page?**
   * That's because you haven't specified a landing page for the authenticated user role. You need to specifiy a landing page for your authenticated user's role. For reference, see  **src/app/modules/login/login.module.js**
-
+* **I created a Pull-Request, but it won't let me merge it due to conflicts. How do I resolve this?**
+  * merge the lates of origin master to your local branch  ```git pull origin master ```
+  * resolve conflicts
+  * stage and commit your resolved changes  ```git commit -m '<your message>'
+  * Assume your branch is called "my-feature-branch". Push your changes to your tracked server branch  ```git push origin <my-feature-branch> ```
 
 ##Git 101
 
@@ -181,7 +185,14 @@ Update framework: //make sure your workarea is clean
   * ```git pull origin <branch>```
 * Cherry-pick a commit from another branch into your current branch
   * ```git cherry-pick <commit hash>```
+* log commits on oneline
+  * ```git log --oneline```
+* remote locally branches which no longer exists on server
+  * ```git remote update --prune```
+* create git aliases for logging last commit (usage: git last)
+  * ```git config --global alias.last 'log -1 --oneline HEAD'```
 
+Excerpt From: Scott Chacon, Ben Straub. “Pro Git.” iBooks. ```
 ## Bash 101 (OS X only)
 ```
 # go to home (same as cd ~)
