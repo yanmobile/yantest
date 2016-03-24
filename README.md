@@ -148,7 +148,7 @@ Update framework: //make sure your workarea is clean
 * **I created a Pull-Request, but it won't let me merge it due to conflicts. How do I resolve this?**
   * merge the lates of origin master to your local branch  ```git pull origin master ```
   * resolve conflicts
-  * stage and commit your resolved changes  ```git commit -m '<your message>'
+  * stage and commit your resolved changes  ```git commit -am '<your message>```
   * Assume your branch is called "my-feature-branch". Push your changes to your tracked server branch  ```git push origin <my-feature-branch> ```
 
 ##Git 101
