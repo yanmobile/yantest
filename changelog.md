@@ -3,7 +3,7 @@
 
 ### 03/24/2016
 #### upgrade notes:
-Application developers will need to update their add a folder "appModules" within their modules folder and place a "appModules.module.js" file inside. This should contain an angular module declaration injecting all app specific modules created up until this point, and injecting nothing if the only modules are "home", "layout", and "login". The developer must then remove the app specific injections from app.module.js.
+Application developers will need to place a "routes.module.js" file within their "modules" foler. This should contain a "routes" angular module declaration injecting all app specific modules created up until this point, including "home", "layout", and "login". The developer must then remove the app specific injections from app.module.js.
 
 ### 03/22/2016
 #### upgrade notes:
