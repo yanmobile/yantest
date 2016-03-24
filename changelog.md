@@ -1,5 +1,10 @@
 
 # Core Changes
+
+### 03/24/2016
+#### upgrade notes:
+Application developers will need to update their add a folder "appModules" within their modules folder and place a "appModules.module.js" file inside. This should contain an angular module declaration injecting all app specific modules created up until this point, and injecting nothing if the only modules are "home", "layout", and "login". The developer must then remove the app specific injections from app.module.js.
+
 ### 03/22/2016
 #### upgrade notes:
 Application developers will need to update their internationalization file to support the latest core tools and core UI changes. Everything above the CUSTOM section in src/app/assets/i18n/locale-en_US.json should consist of the contents of [this file](https://github.com/intersystems/hs-core-tools/blob/i18n-defaults-20160321/templates/appModule/src/app/assets/i18n/locale-en_US.json). 
