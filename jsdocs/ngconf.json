@@ -7,7 +7,7 @@
     "includePattern": ".+\\.js(doc)?$",
     "excludePattern": "(^|\\/|\\\\)_",
     "include": [ "." ],
-    "exclude": [ "./node_modules","./src/common/bower_components" ]
+    "exclude": [ "./node_modules","./src/common/bower_components","./src/components/foundation/base/bower_components","./www" ]
   },
   "plugins": [
     "node_modules/jsdoc/plugins/markdown",
