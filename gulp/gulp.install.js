@@ -18,6 +18,5 @@ function init(gulp, plugins, config, _) {
     return gulp.src(src)
       .pipe(plugins.filelog())
       .pipe(install());
-
   });
 }

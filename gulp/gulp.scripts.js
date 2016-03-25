@@ -25,7 +25,7 @@ function init(gulp, plugins, config, _) {
     jsSrc     = _.flatten(jsSrc);
 
     gulp.src(jsSrc)
-      .pipe(plugins.filelog())
+      //.pipe(plugins.filelog())
       .pipe(plugins.ngAnnotate())
       //.pipe(plugins.uglify())
       .pipe(plugins.sourcemaps.init())
