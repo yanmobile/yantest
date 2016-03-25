@@ -170,10 +170,10 @@
     return obj;
   }
 
-  function wrapText(val, text) {
-    text = text || '"';
+  function wrapText(val, wrapWith) {
+    wrapWith = wrapWith || '"';
 
-    return text + val + text;
+    return wrapWith + val + wrapWith;
   }
 
   //from:http://stackoverflow.com/questions/1408289/how-can-i-do-string-interpolation-in-javascript
