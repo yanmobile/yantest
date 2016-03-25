@@ -55,6 +55,19 @@
 
       self.breadcrumbClick = breadcrumbClick;
 
+      self.formButtons = getFormButtons();
+
+
+      function getFormButtons() {
+        var buttons = _.get(self, 'multiConfig.buttonConfig', {});
+        var buttonArray = _.map(buttons, function (button, name) {
+            return _.merge({}, button, {
+              name : name
+            });
+          }
+        );
+        return _.sortBy(buttonArray, 'order');
+      }
 
       function onClick(button) {
         var click      = button.onClick || function () { },

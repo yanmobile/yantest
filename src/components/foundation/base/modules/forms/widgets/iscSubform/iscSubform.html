@@ -27,14 +27,14 @@
 
       <!--Main form Buttons-->
       <div class="grid-block margin-top">
-        <div ng-repeat="(name, button) in subformCtrl.multiConfig.buttonConfig | orderBy : button.order track by name"
+        <div ng-repeat="button in subformCtrl.formButtons track by button.name"
              ng-if="!button.hide"
              class="grid-content collapse clearfix">
-          <button type="{{name === 'submit' ? 'submit' : 'button'}}"
-                  id="{{'button' + name}}"
-                  name="{{'button' + name}}"
+          <button type="{{button.name === 'submit' ? 'submit' : 'button'}}"
+                  id="{{button.name + 'Button'}}"
+                  name="{{button.name + 'Button'}}"
                   ng-class="button.cssClass"
-                  ng-click="name === 'submit' ? undefined : subformCtrl.onClick(button)">
+                  ng-click="button.name === 'submit' ? undefined : subformCtrl.onClick(button)">
             {{ button.text | translate }}
           </button>
         </div>
