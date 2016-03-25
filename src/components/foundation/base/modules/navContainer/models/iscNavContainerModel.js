@@ -65,12 +65,14 @@
       var currentUserRole = iscSessionModel.getCurrentUserRole();
       if (!topNavArr[currentUserRole]) {
         var topTabs  = iscCustomConfigService.getConfigSection('topTabs');
-        var userTabs = _.extend({}, topTabs['*']); //show all tabs that's for anonymous
+        var userTabs = _.extend({}, topTabs['*']); // include anonymous tabs
         if (currentUserRole !== '*') {
           _.extend(userTabs, topTabs[currentUserRole]);
-          topNavArr[currentUserRole] = _.toArray(userTabs);
         }
+
+        topNavArr[currentUserRole] = _.toArray(userTabs);
       }
+      
       return topNavArr[currentUserRole];
     }
 
