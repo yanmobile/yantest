@@ -25,21 +25,17 @@
         </div>
       </div>
 
-      <!--Main form Cancel and Submit Buttons-->
+      <!--Main form Buttons-->
       <div class="grid-block margin-top">
-        <div class="grid-content collapse clearfix">
-          <button type="button"
-                  ng-click="subformCtrl.onCancel()"
-                  id="cancelButton"
-                  name="cancelButton"
-                  ng-class="subformCtrl.multiConfig.viewConfig.cancelButton.cssClass"
-              >{{ subformCtrl.multiConfig.viewConfig.cancelButton.text | translate}}
-          </button>
-        </div>
-        <div class="grid-content collapse clearfix" ng-if="subformCtrl.options.formState._mode != 'view'">
-          <button type="submit"
-                  ng-class="subformCtrl.multiConfig.viewConfig.submitButton.cssClass"
-              >{{subformCtrl.multiConfig.viewConfig.submitButton.text | translate}}
+        <div ng-repeat="(name, button) in subformCtrl.multiConfig.buttonConfig | orderBy : button.order track by name"
+             ng-if="!button.hide"
+             class="grid-content collapse clearfix">
+          <button type="{{name === 'submit' ? 'submit' : 'button'}}"
+                  id="{{'button' + name}}"
+                  name="{{'button' + name}}"
+                  ng-class="button.cssClass"
+                  ng-click="name === 'submit' ? undefined : subformCtrl.onClick(button)">
+            {{ button.text | translate }}
           </button>
         </div>
       </div>

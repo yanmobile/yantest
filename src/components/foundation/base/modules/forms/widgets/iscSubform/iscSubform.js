@@ -5,7 +5,7 @@
     .directive('iscSubform', iscSubform);
 
   /* @ngInject */
-  function iscSubform(FORMS_EVENTS, $filter, iscScrollContainerService, iscConfirmationService) {//jshint ignore:line
+  function iscSubform(FORMS_EVENTS, $q, $filter, iscScrollContainerService, iscConfirmationService) {//jshint ignore:line
 
     // ----------------------------
     // vars
@@ -51,12 +51,20 @@
         ctrl: self
       });
 
-      self.onCancel = _.get(self, 'multiConfig.onCancel')
-      || _.get(self, 'singleConfig.onCancel')
-      || function () {
-      };
+      self.onClick = onClick;
 
-      self.breadcrumbClick = function (index, onCancel) {
+      self.breadcrumbClick = breadcrumbClick;
+
+
+      function onClick(button) {
+        var click      = button.onClick || function () { },
+            afterClick = button.afterClick || function () { };
+
+        $q.when(click())
+          .then(afterClick);
+      }
+
+      function breadcrumbClick(index, onCancel) {
         var dirtyBreadcrumb;
 
         for (var i = index; i < self.breadcrumbs.length; i++) {
@@ -78,7 +86,8 @@
         function onYes() {
           onCancel();
         }
-      };
+      }
+
 
       // Event listeners
       $scope.$on(FORMS_EVENTS.showSubform, function (event, subformParams) {

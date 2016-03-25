@@ -1,8 +1,6 @@
 (function () {
   'use strict';
 
-  angular.module('isc.forms')
-    .directive('iscForm', iscForm);
 
   /**
    * iscForm - A directive for displaying a form
@@ -31,40 +29,62 @@
    *       processAnnotationQueue
    *     Default: none
    *
-   *   onSubmit
-   *     The function called when the form is submitted by the user.
-   *     Default: submits the form to iscFormDataApi
+   * buttonConfig : A configuration object for form button configuration. This is an object with
+   *   properties that represent buttons at the end of the main (parent) form.
+   *   By default, the following two buttons are defined:
    *
-   *   afterSubmit
-   *     A callback for after onSubmit has completed.
-   *     Default: returns the user to his or her landing page
+   *   cancel
+   *     configuration for the cancel button
+   *     Defaults:
+   *       afterClick: goes back one page in the browser history
+   *       cssClass  : 'cancel button large float-left'
+   *       text      : if mode is 'view', 'Forms_Back_Button', else 'Forms_Cancel_Button'
+   *       order     : 1
    *
-   *   onCancel
-   *     The function called when all edits to the form are canceled by the user.
-   *     Default: none
+   *   submit
+   *     configuration for the submit button
+   *     Defaults:
+   *       onClick   : submits the form to iscFormDataApi
+   *       afterClick: returns the user to his or her landing page
+   *       cssClass  : 'button large float-left'
+   *       text      : 'Forms_Submit_Button'
+   *       hide      : hidden if mode is 'view'
+   *       order     : 2
    *
-   *   afterCancel
-   *     A callback for after onCancel has completed.
-   *     Default: goes back one page in the browser history
+   *   [other properties]
+   *     configuration for other buttons at the bottom of the form
+   *     Defaults: none
    *
-   * viewConfig : A configuration object that may include some or all of the following display configuration:
-   *   cancelButton
-   *     a style configuration for the cancel button
-   *
-   *   submitButton
-   *     a style configuration for the submit button
    *
    *   button configurations are objects with the following properties:
-   *     cssClass : css styles to apply to the button
-   *     text     : an i18n translation key or literal text to render on the button
+   *     onClick    : a function to call when the button is clicked
+   *     afterClick : a function callback called after the button click event has completed
+   *     cssClass   : css styles to apply to the button
+   *     text       : an i18n translation key or literal text to render on the button
+   *     order      : order in which to render the button
+   *     hide       : if truthy, the button will not be rendered in the UI
    *
-   *   e.g., to change the text of the submit button to "Complete":
-   *     viewConfig : {
-   *       submitButton : {
-   *         text : 'Complete'
+   *
+   *   Example usage:
+   *   to change the text of the submit button to "Complete" and add a "Home" button in the middle:
+   *     buttonConfig : {
+   *       submit : {
+   *         text  : 'Complete',
+   *         order : 3
+   *       },
+   *       home : {
+   *         text    : 'Back Home',
+   *         cssClass: 'button',
+   *         onClick : function() {
+   *           // ... custom business logic
+   *         },
+   *         order   : 2
    *       }
    *     }
+   *
    */
+  angular.module('isc.forms')
+    .directive('iscForm', iscForm);
   /* @ngInject */
   function iscForm($stateParams, $q, $window,
                    iscSessionModel, iscNavContainerModel,
@@ -74,12 +94,12 @@
       replace         : true,
       controllerAs    : 'formCtrl',
       scope           : {
-        formType  : '@',
-        formKey   : '@',
-        mode      : '@',
-        id        : '@',
-        formConfig: '=',
-        viewConfig: '='
+        formType    : '@',
+        formKey     : '@',
+        mode        : '@',
+        id          : '@',
+        formConfig  : '=',
+        buttonConfig: '='
       },
       bindToController: true,
       controller      : controller,
@@ -91,18 +111,18 @@
     function controller() {
       var self = this;
 
-      var defaultConfig = getFormDefaults();
-      self.formConfig = self.formConfig || {};
-      _.merge(self.formConfig, defaultConfig, self.formConfig);
+      var defaultFormConfig = getFormDefaults();
+      self.formConfig       = self.formConfig || {};
+      _.merge(self.formConfig, defaultFormConfig, self.formConfig);
 
-      var viewDefaults = getViewDefaults();
-      self.internalViewConfig = _.merge(viewDefaults, self.viewConfig);
+      var defaultButtonConfig   = getButtonDefaults();
+      self.internalButtonConfig = _.merge(defaultButtonConfig, self.buttonConfig);
 
       _.merge(self, {
         localFormKey          : self.formKey,
         formDefinition        : {},
         internalFormDefinition: {},
-        validationDefinition  : {},
+        validationDefinition  : [],
         additionalModels      : {},
         model                 : {},
         options               : {
@@ -129,9 +149,6 @@
         return iscFormsValidationService.validateCollections(self.model, self.validationDefinition);
       };
 
-      self.submitFormApi = submitForm;
-      self.cancelFormApi = cancelForm;
-
       init();
 
 
@@ -139,11 +156,15 @@
       var originalFormKey;
 
       function getFormDefaults() {
+        return {};
+      }
+
+      function getButtonDefaults() {
         // Default api for submitting a form is to submit to iscFormDataApi
         function onSubmit() {
           var formDefinition = self.formDefinition.form;
           // Wrap data with additional information and metadata
-          var formWrapper = {
+          var formWrapper    = {
             formDefinition  : formDefinition,
             additionalModels: self.additionalModels,
             formData        : {
@@ -178,22 +199,17 @@
         }
 
         return {
-          onSubmit   : onSubmit,
-          afterSubmit: afterSubmit,
-          onCancel   : emptyFunction,
-          afterCancel: afterCancel
-        };
-      }
-
-      function getViewDefaults() {
-        return {
-          cancelButton: {
-            cssClass: 'cancel button large float-left',
-            text    : self.mode === 'view' ? 'Forms_Back_Button' : 'Forms_Cancel_Button'
+          cancel: {
+            onClick   : emptyFunction,
+            afterClick: afterCancel,
+            cssClass  : 'cancel button large float-left',
+            text      : self.mode === 'view' ? 'Forms_Back_Button' : 'Forms_Cancel_Button'
           },
-          submitButton: {
-            cssClass: 'button large float-right',
-            text    : 'Forms_Submit_Button'
+          submit: {
+            onClick   : onSubmit,
+            afterClick: afterSubmit,
+            cssClass  : 'button large float-right',
+            text      : 'Forms_Submit_Button'
           }
         };
       }
@@ -284,8 +300,8 @@
               }
               else {
                 if (field.key) {
-                  var key      = field.key,
-                      fullPath = (parentPath ? parentPath + '.' : '') + key;
+                  var key            = field.key,
+                      fullPath       = (parentPath ? parentPath + '.' : '') + key;
                   // templateOptions.fields is populated with subform fields for embedded forms
                   var embeddedFields = _.get(field, 'templateOptions.fields'),
                       isEfCollection = field.type === 'embeddedFormCollection' || field.extends === 'embeddedFormCollection';
@@ -349,17 +365,6 @@
             self.validationDefinition = validationDefinition;
             self.showInternal         = true;
           });
-      }
-
-
-      function submitForm() {
-        $q.when(self.formConfig.onSubmit())
-          .then(self.formConfig.afterSubmit);
-      }
-
-      function cancelForm() {
-        $q.when(self.formConfig.onCancel())
-          .then(self.formConfig.afterCancel);
       }
     }
   }
