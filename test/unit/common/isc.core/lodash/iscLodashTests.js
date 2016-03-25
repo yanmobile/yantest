@@ -100,6 +100,18 @@
 
     describe('_.isTypeOf()', function () {
 
+      it('should return false when the comparison type is not string', function () {
+        expect(_.isTypeOf({}, 1)).toBe(false);
+        expect(_.isTypeOf({}, new Date())).toBe(false);
+        expect(_.isTypeOf({}, /./)).toBe(false);  //regex
+        expect(_.isTypeOf({}, false)).toBe(false);
+        expect(_.isTypeOf({}, true)).toBe(false);
+        expect(_.isTypeOf({}, NaN)).toBe(false);
+        expect(_.isTypeOf({}, null)).toBe(false);
+        expect(_.isTypeOf({}, _.noop)).toBe(false); //func
+        expect(_.isTypeOf({}, {})).toBe(false);
+      });
+
       it('should return true: null = "null"', function () {
         //phantomjs returns the wrong value when testing against null.
         // this is the real value:
@@ -197,6 +209,72 @@
       });
 
     });
+
+    describe('_.makeObj()', function () {
+      it('should make a single property object when key/value is passed in', function () {
+        var obj = _.makeObj('age', 20);
+        expect(obj).toEqual({ age: 20 });
+      });
+    });
+
+    describe('_.wrapText()', function () {
+      it('should wrap value in quotes', function () {
+        var text = _.wrapText(0);
+        expect(text).toEqual('"0"');
+
+        text = _.wrapText(null);
+        expect(text).toEqual('"null"');
+
+        text = _.wrapText(undefined);
+        expect(text).toEqual('"undefined"');
+
+        text = _.wrapText({});
+        expect(text).toEqual('"[object Object]"');
+
+        text = _.wrapText([1, 2, 3]);
+        expect(text).toEqual('"1,2,3"');
+
+      });
+
+      it('should be able to wrap text values', function () {
+        var text = _.wrapText("1");
+        expect(text).toEqual('"1"');
+      });
+
+      it('should be able to use different wrap text', function () {
+        var text = _.wrapText(2, "||");
+        expect(text).toEqual('||2||');
+      });
+
+      it('should be able to use different wrap text', function () {
+        var text = _.wrapText(2, "||");
+        expect(text).toEqual('||2||');
+      });
+
+    });
+
+    describe('_.interpolate()', function () {
+      it('should interpolate accept an array', function () {
+        var text = _.interpolate("I am {0}", [5]);
+        expect(text).toBe("I am 5");
+      });
+
+      it('should interpolate accept object param', function () {
+        var text = _.interpolate("I am {age}", { age: 5 });
+        expect(text).toBe("I am 5");
+      });
+
+      it('should be able to interpolate multiple strings', function () {
+        var text = _.interpolate("I am {0}, but I like a {1} year old.", [85, 20]);
+        expect(text).toBe("I am 85, but I like a 20 year old.");
+      });
+
+      it('should interpolate accept object param', function () {
+        var text = _.interpolate("I am {realAge}, but I like a {feelLikeAge} year old.", { realAge: 85, feelLikeAge: 20 });
+        expect(text).toBe("I am 85, but I like a 20 year old.");
+      });
+    });
+
   });
 })();
 
