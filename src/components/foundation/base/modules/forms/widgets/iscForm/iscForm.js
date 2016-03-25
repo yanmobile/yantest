@@ -1,6 +1,8 @@
 (function () {
   'use strict';
 
+  angular.module('isc.forms')
+    .directive('iscForm', iscForm);
 
   /**
    * iscForm - A directive for displaying a form
@@ -83,8 +85,7 @@
    *     }
    *
    */
-  angular.module('isc.forms')
-    .directive('iscForm', iscForm);
+
   /* @ngInject */
   function iscForm($stateParams, $q, $window,
                    iscSessionModel, iscNavContainerModel,
