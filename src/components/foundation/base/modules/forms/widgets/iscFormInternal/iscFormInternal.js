@@ -12,13 +12,12 @@
       replace         : true,
       controllerAs    : 'formInternalCtrl',
       scope           : {
-        formDefinition  : '=',
-        model           : '=',
-        options         : '=',
-        annotationsApi  : '=',
-        additionalModels: '=',
-        validateFormApi : '=',
-        buttonConfig    : '='
+        formDefinition : '=',
+        model          : '=',
+        options        : '=',
+        formConfig     : '=',
+        validateFormApi: '=',
+        buttonConfig   : '='
       },
       bindToController: true,
       controller      : controller,
@@ -33,7 +32,6 @@
 
       _.merge(self, {
         forms           : [],
-        additionalModels: {},
         debugDisplay    : _.get(iscCustomConfigService.getConfig(), 'debugDisplay.forms', {}),
         options         : {
           formState: {
@@ -46,9 +44,11 @@
           }
         },
         childConfig     : {},
+        formConfig      : {},
         buttonConfig    : {}
       }, self);
 
+      self.additionalModels = _.get(self.formConfig, 'additionalModels', {});
 
       // Object to hold data and structure for temporary form validation
       self.validation = iscFormsValidationService.getValidationObject();
@@ -156,7 +156,7 @@
       }
 
       function closeAnnotations() {
-        self.annotationsApi.closeAnnotationPanel();
+        self.formConfig.annotationsApi.closeAnnotationPanel();
       }
 
       function onSubmit() {

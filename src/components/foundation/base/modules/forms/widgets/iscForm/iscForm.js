@@ -111,9 +111,9 @@
     function controller() {
       var self = this;
 
-      var defaultFormConfig = getFormDefaults();
-      self.formConfig       = self.formConfig || {};
-      _.merge(self.formConfig, defaultFormConfig, self.formConfig);
+      var defaultFormConfig   = getFormDefaults();
+      self.formConfig         = self.formConfig || {};
+      self.internalFormConfig = _.merge(self.formConfig, defaultFormConfig, self.formConfig);
 
       var defaultButtonConfig   = getButtonDefaults();
       self.internalButtonConfig = _.merge(defaultButtonConfig, self.buttonConfig);
@@ -123,7 +123,6 @@
         formDefinition        : {},
         internalFormDefinition: {},
         validationDefinition  : [],
-        additionalModels      : {},
         model                 : {},
         options               : {
           formState: {
@@ -137,14 +136,6 @@
 
       function emptyFunction() { }
 
-      // Defaults if not provided
-      self.annotationsApi = _.extend({
-        getFormAnnotations    : emptyAnnotationData,
-        closeAnnotationPanel  : emptyFunction,
-        initAnnotationQueue   : emptyFunction,
-        processAnnotationQueue: emptyFunction
-      }, self.formConfig.annotationsApi);
-
       self.validateFormApi = function () {
         return iscFormsValidationService.validateCollections(self.model, self.validationDefinition);
       };
@@ -156,7 +147,18 @@
       var originalFormKey;
 
       function getFormDefaults() {
-        return {};
+        // Empty annotations API if not provided
+        var annotationsApi = {
+          getFormAnnotations    : emptyAnnotationData,
+          closeAnnotationPanel  : emptyFunction,
+          initAnnotationQueue   : emptyFunction,
+          processAnnotationQueue: emptyFunction
+        };
+
+        return {
+          annotationsApi  : annotationsApi,
+          additionalModels: {}
+        };
       }
 
       function getButtonDefaults() {
@@ -166,7 +168,7 @@
           // Wrap data with additional information and metadata
           var formWrapper    = {
             formDefinition  : formDefinition,
-            additionalModels: self.additionalModels,
+            additionalModels: self.formConfig.additionalModels,
             formData        : {
               formKey    : self.localFormKey,
               formName   : formDefinition.name,
@@ -186,7 +188,7 @@
           }
 
           function _updateAnnotations(form) {
-            self.annotationsApi.processAnnotationQueue(form.id);
+            self.formConfig.annotationsApi.processAnnotationQueue(form.id);
           }
         }
 
@@ -229,10 +231,10 @@
       }
 
       function getFormData() {
-        self.annotationsApi.initAnnotationQueue();
+        self.formConfig.annotationsApi.initAnnotationQueue();
 
         if (self.id) {
-          self.annotationsApi.getFormAnnotations(self.id).then(function (annotations) {
+          self.formConfig.annotationsApi.getFormAnnotations(self.id).then(function (annotations) {
             self.options.formState._annotations = {
               index: self.id,
               data : annotations
@@ -354,7 +356,7 @@
 
         function evalScript(script) {
           if (script && _.isFunction(script)) {
-            script(self.additionalModels, $stateParams);
+            script(self.formConfig.additionalModels, $stateParams);
           }
         }
       }
