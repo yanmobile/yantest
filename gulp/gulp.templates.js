@@ -21,9 +21,8 @@ function init(gulp, plugins, config, _) {
 
     gulp
       .src(templates)
-      .pipe(plugins.filelog())
+      //.pipe(plugins.filelog())
       .pipe(plugins.templateCache(tplCacheOpts))
-      .pipe(plugins.filelog())
       .pipe(plugins.concat('templates.min.js'))
       .pipe(gulp.dest(plugins.path.join(config.app.dest.folder, 'js')));
   });

@@ -10,6 +10,6 @@ module.exports = {
 function init(gulp, plugins, config, _) {
   gulp.task('build', function (done) {
     var tasks = ['html', 'fonts', 'images', 'scripts', 'templates', 'i18n', 'mocks', 'sass', 'jshint', 'favicon', 'version'];
-    plugins.seq('clean', 'install', tasks, done);
+    plugins.seq('clean', tasks, done);
   });
 }
