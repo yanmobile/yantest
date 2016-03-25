@@ -46,7 +46,7 @@
    *     Defaults:
    *       onClick   : submits the form to iscFormDataApi
    *       afterClick: returns the user to his or her landing page
-   *       cssClass  : 'button large float-left'
+   *       cssClass  : 'button large float-right'
    *       text      : 'Forms_Submit_Button'
    *       hide      : hidden if mode is 'view'
    *       order     : 2
