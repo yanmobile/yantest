@@ -52,13 +52,13 @@
     }
 
     function setPageState(name) {
-      self.setTabActiveState(name);
+      self.setTabActiveState(name,self.getTabs());
       self.sectionTranslationKey = iscCustomConfigHelper.getSectionTranslationKeyFromName(name);
     }
 
     function setTabActiveState(state) {
       devlog.channel('iscNavbarController').debug('iscNavbarController.setTabActiveState');
-      self.iscUiHelper.setTabActiveState(state, self.tabs);
+      self.iscUiHelper.setTabActiveState(state, self.getTabs());
     }
 
     // -----------------------------
