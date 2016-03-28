@@ -126,7 +126,13 @@ Update framework: //make sure your workarea is clean
     * Once you have all the source code, commit the changes
     * Push the changes to upstream (not origin)  ```git push upstream <branch> ```
     * Create a Pull Request
-* **I have an existing application and my framework is out of date. How can I upgrade my application's framework?**
+* **I have an existing application and my framework is out of date. How can I upgrade my application's framework (cool slush way)?**
+  1. Ensure you have a local git remote upstream is pointing to "https://github.com/intersystems/hs-core-ui.git"
+    1. execute ```git remote -v``` to check existing git remote repo mappings
+    2. if "upstream" doesn't exist, add it by executing ```git remote add upstream https://github.com/intersystems/hs-core-ui.git```
+  2. execute slush hs:updateCore
+  3. create a PR to merge this to your project's master branch
+* **I have an existing application and my framework is out of date. How can I upgrade my application's framework (the old fashion way)?**
   1. Ensure you have a local git remote upstream is pointing to "https://github.com/intersystems/hs-core-ui.git"
     1. execute ```git remote -v``` to check existing git remote repo mappings
     2. if "upstream" doesn't exist, add it by executing ```git remote add upstream https://github.com/intersystems/hs-core-ui.git```
