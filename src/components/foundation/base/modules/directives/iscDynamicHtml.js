@@ -11,14 +11,14 @@
   angular.module( 'isc.directives' )
     .directive( 'iscDynamicHtml', iscDynamicHtml );
   /**
-   * @ngdoc iscDynamicHtml
+   * @ngdoc directive
    * @memberOf directives
    * @name iscDynamicHtml
    * @param devlog
    * @param $compile
    * @param $templateCache
    * @returns {{restrict: string, replace: boolean, link: link}}
-   * @discreption
+   * @description
    * this directive allows to inject html dynamcally
    */
   /* @ngInject */

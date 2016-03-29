@@ -10,7 +10,15 @@
 
   angular.module( 'isc.directives' )
     .directive( 'iscRoundCheckBox', iscRoundCheckBox );
-
+  /**
+   * @ngdoc directive
+   * @memberOf directives
+   * @name iscRoundCheckBox
+   * @scope
+   * @restrict 'EA'
+   * @param devlog
+   * @returns {{restrict: string, transclude: boolean, require: string, scope: {onToggle: string}, link: link, templateUrl: directive.templateUrl}}
+   */
   /* @ngInject */
   function iscRoundCheckBox( devlog ){//jshint ignore:line
     devlog.channel('iscRoundCheckBox').debug( 'iscRoundCheckBox LOADED');
