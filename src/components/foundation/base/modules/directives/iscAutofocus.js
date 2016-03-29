@@ -22,6 +22,19 @@
   angular.module ('isc.directives')
     .directive ('iscAutofocus', iscAutofocus);
 
+
+  /**
+   * @ngdoc directive
+   * @memberOf directives
+   * @name AutoFocus
+   * @restrict 'A'
+   * @element ANY
+   * @param devlog {object} logging plugin with filtering controls over the logged text
+   * @param $timeout {object= } angular wrapper for setTimeout
+   * @returns {{restrict: string, link: link}}
+   * @description
+   * This directive for auto-focus on the elements which its attached to.
+   */
   /* @ngInject */
   function iscAutofocus (devlog, $timeout) {
     devlog.channel('iscAutofocus').debug( 'iscAutofocus LOADED');
@@ -43,7 +56,14 @@
     // ----------------------------
     // functions
     // ----------------------------
-
+    /**
+     *
+     * @param scope
+     * @param elem
+     * @param attr
+     * @description
+     * The method is the link method for the directive
+       */
     function link (scope, elem, attr) {
       $timeout (function () {
         elem[ 0 ].focus ();
