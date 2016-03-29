@@ -1,10 +1,16 @@
 (function () {
   'use strict';
 
+  angular.module('isc.forms')
+      .filter('iscFormsContext', iscFormsContext);
+
   /**
+   * @ngdoc filter
+   * @memberOf isc.forms
+   * @returns {Function}
+   * @description
    * Filters a set of annotation data by the given context
    */
-
   /* @ngInject */
   function iscFormsContext() {
     return function (data, context) {
@@ -46,7 +52,6 @@
     };
   }
 
-  angular.module('isc.forms')
-    .filter('iscFormsContext', iscFormsContext);
+
 
 })();
