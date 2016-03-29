@@ -1,7 +1,21 @@
 (function () {
   'use strict';
 
+  // ----------------------------
+  // injection
+  // ----------------------------
+
+  angular.module('isc.forms')
+      .directive('iscEmbeddedFormListener', iscEmbeddedFormListener);
+
   /* @ngInject */
+  /**
+   * @ngdoc directive
+   * @memberOf isc.forms
+   * @scope
+   * @param FORMS_EVENTS
+   * @returns {{restrict: string, replace: boolean, require: string, scope: {options: string, form: string}, link: link}}
+     */
   function iscEmbeddedFormListener(FORMS_EVENTS) {//jshint ignore:line
 
     // ----------------------------
@@ -50,12 +64,7 @@
 
   }//END CLASS
 
-  // ----------------------------
-  // injection
-  // ----------------------------
 
-  angular.module('isc.forms')
-    .directive('iscEmbeddedFormListener', iscEmbeddedFormListener);
 
 
 })();

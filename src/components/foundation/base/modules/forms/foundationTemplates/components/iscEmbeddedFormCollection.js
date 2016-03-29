@@ -1,6 +1,27 @@
 (function () {
   'use strict';
 
+  // ----------------------------
+  // injection
+  // ----------------------------
+
+  angular.module('isc.forms')
+      .directive('iscEmbeddedFormCollection', iscEmbeddedFormCollection);
+  /**
+   * @ngdoc directive
+   * @memberOf isc.forms
+   * @name iscEmbeddedFormCollection
+   * @scope
+   * @restrict 'E'
+   * @param $filter
+   * @param FoundationApi
+   * @param appConfig
+   * @param FORMS_EVENTS
+   * @param iscFormsTemplateService
+   * @param iscFormsValidationService
+   * @param iscScrollContainerService
+   * @returns {{restrict: string, replace: boolean, require: string, controllerAs: string, scope: {id: string, formState: string, options: string, annotations: string}, bindToController: boolean, controller: controller, link: link, templateUrl: string}}
+   */
   /* @ngInject */
   function iscEmbeddedFormCollection($filter, FoundationApi, appConfig, FORMS_EVENTS,
                                      iscFormsTemplateService, iscFormsValidationService,
@@ -159,10 +180,17 @@
 
 
       // Private/helper functions
+      /**
+       * @memberOf iscEmbeddedFormCollection
+       * @returns {*}
+         */
       function getValidation() {
         return self.formState._validation[self.id];
       }
 
+      /**
+       * @memberOf iscEmbeddedFormCollection
+       */
       function createTableFields() {
         self.flattenedFields = $filter('iscFormsFlattenedFields')(self.fields, self.subformOptions.formState._annotations);
 
@@ -200,6 +228,8 @@
       }
 
       /**
+       * @memberOf iscEmbeddedFormCollection
+       * @descripiton
        * Sets the context on the subform so that field controls in that subform can use the annotation system.
        * @param {number=} index - The index of the row being edited. If for a new row, leave undefined.
        */
@@ -208,6 +238,8 @@
       }
 
       /**
+       * @memberOf iscEmbeddedFormCollection
+       * @description
        * Merges properties on built-in templates into the fields list in this controller.
        * This is necessary because the formly engine has not yet processed these templates,
        * and we may need properties defined as defaultOptions in those templates to render them in the collection.
@@ -232,6 +264,9 @@
         });
       }
 
+      /**
+       * @memberOf iscEmbeddedFormCollection
+       */
       function onCollectionModified() {
         self.subformOptions.formState._validation.$submitted = false;
 
@@ -240,17 +275,26 @@
         self.ngModelCtrl.$validate();
       }
 
+      /**
+       * @memberOf iscEmbeddedFormCollection
+       */
       function updateModelWithValidation() {
         // Broadcast down to the subform listener to set the model
         $scope.$broadcast(FORMS_EVENTS.setFormModel, self.editModel, false);
         iscFormsValidationService.validateForm(self.subform.form);
       }
 
+      /**
+       * @memberOf iscEmbeddedFormCollection
+       */
       function updateModel() {
         // Broadcast down to the subform listener to set the model
         $scope.$broadcast(FORMS_EVENTS.setFormModel, self.editModel, true);
       }
 
+      /**
+       * @memberOf iscEmbeddedFormCollection
+       */
       function showSubform() {
         // Delete the controller's reference to the formly-form's form attribute.
         // It will be regenerated on the scope by the formly-form when it is shown next time.
@@ -287,6 +331,9 @@
         }
       }
 
+      /**
+       * @memberOf iscEmbeddedFormCollection
+       */
       function hideSubform() {
         // Defer to avoid a flicker while Foundation catches up
 
@@ -317,12 +364,6 @@
 
   }//END CLASS
 
-  // ----------------------------
-  // injection
-  // ----------------------------
-
-  angular.module('isc.forms')
-    .directive('iscEmbeddedFormCollection', iscEmbeddedFormCollection);
 
 
 })();
