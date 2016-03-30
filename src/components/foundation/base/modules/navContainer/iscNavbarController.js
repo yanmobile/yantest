@@ -27,17 +27,13 @@
       sectionTranslationKey: '',
 
       getTabs     : iscNavContainerModel.getTopNav,
-      logoutButton: iscCustomConfigService.getConfigSection('logoutButton'),
-      loginButton : iscCustomConfigService.getConfigSection('loginButton'),
       userRoles   : [],
 
-      logout           : logout,
       setPageState     : setPageState,
       setTabActiveState: setTabActiveState
     });
 
     setShowRoles();
-
 
     function logout() {
       devlog.channel('iscNavbarController').debug('iscNavbarController.logout');

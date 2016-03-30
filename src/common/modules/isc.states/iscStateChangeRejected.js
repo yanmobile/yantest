@@ -17,8 +17,7 @@
   function stateChangeRejected($provide) {
     $provide.decorator('$state', decorateTransitionTo);
 
-    decorateTransitionTo.$inject = ['$delegate', '$rootScope'];
-
+    /* @ngInject */
     function decorateTransitionTo($delegate, $rootScope) { //$delegate === $state
       var nativeTransitionTo = $delegate.transitionTo; //transfer reference
 

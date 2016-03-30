@@ -3,7 +3,7 @@
 
   var mockConfig = angular.copy(customConfig);
 
-  xdescribe('iscNavigationController', function () {
+  describe('iscNavigationController', function () {
     var scope,
         self,
         rootScope,
@@ -17,20 +17,17 @@
         $state,
         controller;
 
-    // setup devlog
-    beforeEach(module('isc.core', function (devlogProvider) {
-      devlogProvider.loadConfig(customConfig);
-    }));
 
-    // show $log statements
-    beforeEach(module('iscNavContainer', function ($provide) {
+    // setup devlog
+    beforeEach(module('isc.core', 'isc.configuration', 'iscNavContainer', function (devlogProvider, iscCustomConfigServiceProvider, $provide) {
+      devlogProvider.loadConfig(mockConfig);
+      iscCustomConfigServiceProvider.loadConfig(mockConfig);
       $provide.value('$log', console);
     }));
 
     // this loads all the external templates used in directives etc
     // eg, everything in **/partials/*.html
     beforeEach(module('isc.templates'));
-
 
     beforeEach(inject(function (
       $rootScope, $controller, _$state_, $httpBackend, $timeout, $translate,
@@ -39,8 +36,6 @@
     ) {
 
       mockConfig = angular.copy(customConfig);
-      iscCustomConfigService.setConfig(mockConfig);
-
       iscSessionStorageHelper.setConfig(mockConfig);
 
       translate            = $translate;
@@ -64,7 +59,7 @@
     }));
 
     // -------------------------
-    describe('onLoad tests ', function () {
+    xdescribe('onLoad tests ', function () {
 
       it('should know what to do onLoad, dont show warning', function () {
         spyOn(sessionStorageHelper, 'getShowTimedOutAlert').and.returnValue(false);
@@ -106,7 +101,7 @@
     });
 
     // -------------------------
-    describe('showAlertBox tests ', function () {
+    xdescribe('showAlertBox tests ', function () {
 
       it('should open the alert with the right args', function () {
         spyOn(self, 'showAlertBox');
@@ -162,99 +157,6 @@
         self.onSelectLanguage({ filename: 'es-es' });
         expect(translate.use).toHaveBeenCalled();
         expect(sessionStorageHelper.setSessionStorageValue).toHaveBeenCalled();
-      });
-    });
-
-    describe('showSideNavbar tests ', function () {
-
-      it('should have a function showSideNavbar', function () {
-        expect(angular.isFunction(self.showSideNavbar)).toBe(true);
-      });
-
-      it('should know what to do showSideNavbar', function () {
-        self.showSideNav     = false;
-        self.showModalBkgrnd = false;
-
-        self.showSideNavbar();
-        expect(self.showSideNav).toBe(true);
-        expect(self.showModalBkgrnd).toBe(true);
-      });
-    });
-
-    // -------------------------
-    describe('hideSideNavbar tests ', function () {
-
-      it('should have a function hideSideNavbar', function () {
-        expect(angular.isFunction(self.hideSideNavbar)).toBe(true);
-      });
-
-      it('should know what to do hideSideNavbar', function () {
-        self.showSideNav     = true;
-        self.showModalBkgrnd = true;
-
-        self.hideSideNavbar();
-        expect(self.showSideNav).toBe(false);
-        expect(self.showModalBkgrnd).toBe(false);
-      });
-    });
-
-    // -------------------------
-    describe('showSecondaryNavbar tests ', function () {
-
-      it('should have a function showSecondaryNavbar', function () {
-        expect(angular.isFunction(self.showSecondaryNavbar)).toBe(true);
-      });
-
-      it('should know what to do showSecondaryNavbar', function () {
-        self.showSecondaryNav = false;
-        self.showModalBkgrnd  = false;
-
-        self.showSecondaryNavbar();
-        expect(self.showSecondaryNav).toBe(true);
-        expect(self.showModalBkgrnd).toBe(true);
-      });
-    });
-
-    // -------------------------
-    describe('hideSecondaryNavbar tests ', function () {
-
-      it('should have a function hideSecondaryNavbar', function () {
-        expect(angular.isFunction(self.hideSecondaryNavbar)).toBe(true);
-      });
-
-      it('should know what to do hideSecondaryNavbar', function () {
-        self.showSecondaryNav = true;
-        self.showModalBkgrnd  = true;
-
-        self.hideSecondaryNavbar();
-        expect(self.showSecondaryNav).toBe(false);
-        expect(self.showModalBkgrnd).toBe(false);
-      });
-    });
-
-    // -------------------------
-    describe('showSecondaryNavbar event tests ', function () {
-
-      it('should respond correctly to showSecondaryNavbar events', function () {
-        spyOn(self, 'showSecondaryNavbar');
-        spyOn(self, 'hideSecondaryNavbar');
-
-        rootScope.$emit(NAV_EVENTS.showSecondaryNav);
-        expect(self.showSecondaryNavbar).toHaveBeenCalled();
-        expect(self.hideSecondaryNavbar).not.toHaveBeenCalled();
-      });
-    });
-
-    // -------------------------
-    describe('hideSecondaryNav event tests ', function () {
-
-      it('should respond correctly to hideSecondaryNav events', function () {
-        spyOn(self, 'showSecondaryNavbar');
-        spyOn(self, 'hideSecondaryNavbar');
-
-        rootScope.$emit(NAV_EVENTS.hideSecondaryNav);
-        expect(self.showSecondaryNavbar).not.toHaveBeenCalled();
-        expect(self.hideSecondaryNavbar).toHaveBeenCalled();
       });
     });
 

@@ -2,9 +2,9 @@
   'use strict';
   //console.log( 'iscNavbarController Tests' );
 
-  var mockConfig = angular.copy (customConfig);
+  var mockConfig = angular.copy(customConfig);
 
-  xdescribe ('iscNavbarController', function () {
+  describe('iscNavbarController', function () {
     var scope,
         self,
         rootScope,
@@ -18,41 +18,34 @@
 
 
     // setup devlog
-    beforeEach(module('isc.core', function (devlogProvider) {
-      devlogProvider.loadConfig(customConfig);
-    }));
-
-    // show $log statements
-    beforeEach( module( 'isc.configuration', function( iscCustomConfigServiceProvider ){
-      iscCustomConfigServiceProvider.loadConfig (mockConfig);
-    }));
-
-    // show $log statements
-    beforeEach( module( 'iscNavContainer', function( $provide ){
+    beforeEach(module('isc.core', 'isc.configuration', 'iscNavContainer', function (devlogProvider, iscCustomConfigServiceProvider, $provide) {
+      devlogProvider.loadConfig(mockConfig);
+      iscCustomConfigServiceProvider.loadConfig(mockConfig);
       $provide.value('$log', console);
     }));
 
+    beforeEach(inject(function (
+      $rootScope,
+      $controller,
+      $state,
+      iscCustomConfigService,
+      iscCustomConfigHelper,
+      iscUiHelper,
+      iscSessionModel,
+      _AUTH_EVENTS_
+    ) {
 
-    beforeEach (inject (function ($rootScope,
-                                  $controller,
-                                  $state,
-                                  iscCustomConfigService,
-                                  iscCustomConfigHelper,
-                                  iscUiHelper,
-                                  iscSessionModel,
-                                  _AUTH_EVENTS_) {
-
-      mockConfig = angular.copy (customConfig);
+      mockConfig = angular.copy(customConfig);
 
       customConfigService = iscCustomConfigService;
       //customConfigService.setConfig (mockConfig);
 
       rootScope  = $rootScope;
-      scope      = $rootScope.$new ();
-      navbarCtrl = $controller ('iscNavbarController as ctrl',
-                                {
-                                  '$scope': scope
-                                });
+      scope      = $rootScope.$new();
+      navbarCtrl = $controller('iscNavbarController as ctrl',
+        {
+          '$scope': scope
+        });
 
       self = scope.ctrl;
 
@@ -65,203 +58,51 @@
     }));
 
     // -------------------------
-    describe (
-        'setup tests',
-        function () {
+    describe(
+      'setup tests',
+      function () {
 
-          it ('should have a value sectionTranslationKey', function () {
-            expect (angular.isDefined (self.sectionTranslationKey)).toBe (true);
-            expect (self.sectionTranslationKey).toBe ('');
-          });
-
-          it ('should have a value tabs', function () {
-            expect (angular.isDefined (self.tabs)).toBe (true);
-            var topTabsList =  _.toArray(customConfigService.getConfigSection('topTabs.*'));
-            expect (self.tabs).toEqual ( topTabsList);
-          });
-
+        it('should have a value sectionTranslationKey', function () {
+          expect(angular.isDefined(self.sectionTranslationKey)).toBe(true);
+          expect(self.sectionTranslationKey).toBe('');
         });
+      });
 
     // -------------------------
-    describe (
-        '$stateChangeSuccess tests',
-        function () {
+    describe(
+      'setPageState tests',
+      function () {
 
-          it ('should call the right functions on $stateChangeSuccess', function () {
-            spyOn (self, 'setPageState');
-            spyOn (self, 'setShowLogout');
-            spyOn (self, 'setShowLogin');
-
-            rootScope.$emit ('$stateChangeSuccess', {}, { name: 'foo' });
-            expect (self.setPageState).toHaveBeenCalled ();
-            expect (self.setShowLogout).toHaveBeenCalled ();
-            expect (self.setShowLogin).toHaveBeenCalled ();
-          });
+        it('should have a function setPageState', function () {
+          expect(angular.isFunction(self.setPageState)).toBe(true);
         });
+
+        it('should setPageState', function () {
+          spyOn(configHelper, 'getSectionTranslationKeyFromName').and.returnValue('foo');
+          spyOn(self, 'setTabActiveState');
+
+          self.setPageState('bar');
+          expect(configHelper.getSectionTranslationKeyFromName).toHaveBeenCalledWith('bar');
+        });
+      });
 
     // -------------------------
-    describe (
-        'logout tests ',
-        function () {
+    describe(
+      'setTabActiveState tests',
+      function () {
 
-          it ('should have a function logout', function () {
-            expect (angular.isFunction (self.logout)).toBe (true);
-          });
-
-          it ('should call the right functions on logout', function () {
-            spyOn (rootScope, '$emit');
-
-            self.logout ();
-            expect (rootScope.$emit).toHaveBeenCalledWith (AUTH_EVENTS.logout);
-          });
+        it('should have a function setTabActiveState', function () {
+          expect(angular.isFunction(self.setTabActiveState)).toBe(true);
         });
 
-    // -------------------------
-    describe (
-        'setShowLogin tests',
-        function () {
+        it('should setTabActiveState', function () {
+          spyOn(uiHelper, 'setTabActiveState');
 
-          it ('should have a function setShowLogin', function () {
-            expect (angular.isFunction (self.setShowLogin)).toBe (true);
-          });
-
-          it ('should know when to show the login button, authenticated and logged in', function () {
-            spyOn (sessionModel, 'isAuthenticated').and.returnValue (true);
-            spyOn (state, 'is').and.returnValue (true);
-            spyOn (self, 'setPageState');
-            spyOn (self, 'setShowLogout');
-
-            rootScope.$emit ('$stateChangeSuccess', {}, { name: 'foo' });
-            self.setShowLogin ();
-            expect (self.showLogin).toBe (false);
-          });
-
-          it ('should know when to show the login button, NOT authenticated but logged in', function () {
-            spyOn (self.sessionModel, 'isAuthenticated').and.returnValue (false);
-            spyOn (state, 'is').and.returnValue (true);
-            spyOn (self, 'setPageState');
-            spyOn (self, 'setShowLogout');
-
-            rootScope.$emit ('$stateChangeSuccess', {}, { name: 'foo' });
-            self.setShowLogin ();
-            expect (self.showLogin).toBe (false);
-
-          });
-
-          it ('should know when to show the login button, authenticated but NOT logged in', function () {
-            spyOn (self.sessionModel, 'isAuthenticated').and.returnValue (true);
-            spyOn (state, 'is').and.returnValue (false);
-            spyOn (self, 'setPageState');
-            spyOn (self, 'setShowLogout');
-
-            rootScope.$emit ('$stateChangeSuccess', {}, { name: 'foo' });
-            self.setShowLogin ();
-            expect (self.showLogin).toBe (false);
-          });
-
-          it ('should know when to show the login button, NOT authenticated and NOT logged in', function () {
-            spyOn (self.sessionModel, 'isAuthenticated').and.returnValue (false);
-            spyOn (state, 'is').and.returnValue (false);
-            spyOn (self, 'setPageState');
-            spyOn (self, 'setShowLogout');
-
-            rootScope.$emit ('$stateChangeSuccess', {}, { name: 'foo' });
-            self.setShowLogin ();
-            expect (self.showLogin).toBe (true);
-          });
+          self.setTabActiveState('bar');
+          expect(uiHelper.setTabActiveState).toHaveBeenCalledWith('bar', jasmine.objectContaining(self.getTabs()));
         });
-
-    // -------------------------
-    describe (
-        'setShowLogout tests',
-        function () {
-
-          it ('should have a function setShowLogout', function () {
-            expect (angular.isFunction (self.setShowLogout)).toBe (true);
-          });
-
-          it ('should know when to show the logout button, authenticated and on login page', function () {
-            spyOn (sessionModel, 'isAuthenticated').and.returnValue (true);
-            spyOn (state, 'is').and.returnValue (true);
-            spyOn (self, 'setPageState');
-            spyOn (self, 'setShowLogin');
-
-            rootScope.$emit ('$stateChangeSuccess', {}, { name: 'foo' });
-            self.setShowLogout ();
-            expect (self.showLogout).toBe (false);
-          });
-
-          it ('should know when to show the logout button, NOT authenticated and on login page', function () {
-            spyOn (self.sessionModel, 'isAuthenticated').and.returnValue (false);
-            spyOn (state, 'is').and.returnValue (true);
-            spyOn (self, 'setPageState');
-            spyOn (self, 'setShowLogin');
-
-            rootScope.$emit ('$stateChangeSuccess', {}, { name: 'foo' });
-            self.setShowLogout ();
-            expect (self.showLogout).toBe (false);
-
-          });
-
-          it ('should know when to show the logout button, authenticated and NOT on login page', function () {
-            spyOn (self.sessionModel, 'isAuthenticated').and.returnValue (true);
-            spyOn (state, 'is').and.returnValue (false);
-            spyOn (self, 'setPageState');
-            spyOn (self, 'setShowLogin');
-
-            rootScope.$emit ('$stateChangeSuccess', {}, { name: 'foo' });
-            self.setShowLogout ();
-            expect (self.showLogout).toBe (true);
-          });
-
-          it ('should know when to show the logout button, NOT authenticated and NOT on login page', function () {
-            spyOn (self.sessionModel, 'isAuthenticated').and.returnValue (false);
-            spyOn (state, 'is').and.returnValue (false);
-            spyOn (self, 'setPageState');
-            spyOn (self, 'setShowLogin');
-
-            rootScope.$emit ('$stateChangeSuccess', {}, { name: 'foo' });
-            self.setShowLogout ();
-            expect (self.showLogout).toBe (false);
-          });
-        });
-
-    // -------------------------
-    describe (
-        'setPageState tests',
-        function () {
-
-          it ('should have a function setPageState', function () {
-            expect (angular.isFunction (self.setPageState)).toBe (true);
-          });
-
-          it ('should setPageState', function () {
-            spyOn (configHelper, 'getSectionTranslationKeyFromName').and.returnValue ('foo');
-            spyOn (self, 'setTabActiveState');
-
-            self.setPageState ('bar');
-            expect (self.setTabActiveState).toHaveBeenCalledWith ('bar');
-            expect (configHelper.getSectionTranslationKeyFromName).toHaveBeenCalledWith ('bar');
-          });
-        });
-
-    // -------------------------
-    describe (
-        'setTabActiveState tests',
-        function () {
-
-          it ('should have a function setTabActiveState', function () {
-            expect (angular.isFunction (self.setTabActiveState)).toBe (true);
-          });
-
-          it ('should setTabActiveState', function () {
-            spyOn (uiHelper, 'setTabActiveState');
-
-            self.setTabActiveState ('bar');
-            expect (uiHelper.setTabActiveState).toHaveBeenCalledWith ('bar', self.tabs);
-          });
-        });
+      });
 
   });
-}) ();
+})();
 

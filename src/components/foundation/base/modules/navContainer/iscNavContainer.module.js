@@ -9,7 +9,6 @@
     'pascalprecht.translate',
     'isc.configuration',
     'isc.core',
-    'isc.animation',
     'isc.authentication',
     'isc.states']);
 

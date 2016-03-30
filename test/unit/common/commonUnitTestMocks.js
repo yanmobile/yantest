@@ -95,11 +95,6 @@ var customConfig = {
     'exclude'       : false
   },
 
-  'logoutButton': {
-    'translationKey': 'ISC_LOGOUT_BTN',
-    'exclude'       : true
-  },
-
   'messages': {
     'secondaryNav': {
 
