@@ -1,9 +1,14 @@
 
 # Core Changes
+### 03/30/2016
+#### upgrade notes:
+iscNavContainer.html in app folder is no longer in use and it should be removed.
+see: https://github.com/intersystems/hs-core-tools/pull/39/files
+
 
 ### 03/24/2016
 #### upgrade notes:
-Application developers will need to place a "routes.module.js" file within their "modules" foler. This should contain a "routes" angular module declaration injecting all app specific modules created up until this point, including "home", "layout", and "login". The developer must then remove the app specific injections from app.module.js.
+Application developers will need to place a "routes.module.js" file within their "modules" folder. This should contain a "routes" angular module declaration injecting all app specific modules created up until this point, including "home", "layout", and "login". The developer must then remove the app specific injections from app.module.js.
 
 ### 03/22/2016
 #### upgrade notes:
