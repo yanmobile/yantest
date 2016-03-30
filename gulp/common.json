@@ -3,7 +3,6 @@
     "js" : [
       "src/common/bower_components/jquery/dist/jquery.js",
       "src/common/bower_components/lodash/lodash.js",
-      "src/common/bower_components/greensock/src/minified/TweenMax.min.js",
       "src/common/bower_components/moment/moment.js",
       "src/common/assets/plugins/progress-skylo/skylo.js",
       "src/common/bower_components/socket.io-client/socket.io.js",
