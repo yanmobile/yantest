@@ -5,8 +5,7 @@
   var mockConfig = angular.copy(customConfig);
 
   describe('iscCustomConfigService', function () {
-    var helper,
-        customConfigService,
+    var customConfigService,
         provider;
 
     // setup devlog
@@ -21,9 +20,7 @@
       iscCustomConfigServiceProvider.loadConfig(mockConfig);
     }));
 
-    beforeEach(inject(function ($rootScope, $httpBackend, iscCustomConfigService, iscCustomConfigHelper) {
-      helper = iscCustomConfigHelper;
-
+    beforeEach(inject(function ($rootScope, $httpBackend, iscCustomConfigService) {
       customConfigService = iscCustomConfigService;
     }));
 
