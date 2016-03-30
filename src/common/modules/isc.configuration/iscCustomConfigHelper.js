@@ -9,26 +9,23 @@
   // inject
   // ----------------------------
 
-  angular.module('isc.configuration')
-    .factory('iscCustomConfigHelper', iscCustomConfigHelper);
+  angular.module ('isc.configuration')
+      .factory ('iscCustomConfigHelper', iscCustomConfigHelper);
 
   /* @ngInject */
-  function iscCustomConfigHelper(devlog) {
-    devlog.channel('iscCustomConfigHelper').debug('iscCustomConfigHelper LOADED');
+  function iscCustomConfigHelper (devlog, $state) {
+    devlog.channel ('iscCustomConfigHelper').debug ('iscCustomConfigHelper LOADED');
 
     // ----------------------------
     // vars
     // ----------------------------
-
-    var allStates = {};
 
     // ----------------------------
     // class factory
     // ----------------------------
 
     var factory = {
-      getSectionTranslationKeyFromName: getSectionTranslationKeyFromName,
-      getTranslationKeyFromName       : getTranslationKeyFromName
+      getSectionTranslationKeyFromName: getSectionTranslationKeyFromName
     };
 
     return factory;
@@ -37,28 +34,23 @@
     // functions
     // ----------------------------
 
-    // get the translation key from the state name
-    function getTranslationKeyFromName(stateName) {
-      devlog.channel('iscCustomConfigHelper').debug('iscCustomConfigHelper.getTranslationKeyFromName: ' + stateName);
-      var state = allStates[stateName];
-      return state ? state.translationKey : 'ISC_NOT_FOUND';
-    }
-
     // get the top level section's translation key from the state name
-    function getSectionTranslationKeyFromName(stateName) {
-      devlog.channel('iscCustomConfigHelper').debug('iscCustomConfigHelper.getSectionTranslationKeyFromName: ' + stateName);
-      var arr     = stateName.split('.');
-      var sectArr = arr.splice(0, 2); // the first two values are the section
-      var sectionName = sectArr.join('.');
+    function getSectionTranslationKeyFromName (stateName) {
+      devlog.channel ('iscCustomConfigHelper').debug (
+          'iscCustomConfigHelper.getSectionTranslationKeyFromName: ' + stateName);
 
-      devlog.channel('iscCustomConfigHelper').debug('...sectArr: ' + sectArr);
-      devlog.channel('iscCustomConfigHelper').debug('...sectionName: ' + sectionName);
+      var arr         = stateName.split ('.');
+      var sectArr     = arr.splice (0, 2); // the first two values are the section
+      var sectionName = sectArr.join ('.');
+      var state = $state.get (sectionName);
 
-      var state = allStates[sectionName];
+      devlog.channel ('iscCustomConfigHelper').debug ('...sectArr: ', sectArr);
+      devlog.channel ('iscCustomConfigHelper').debug ('...sectionName: ', sectionName);
+      devlog.channel ('iscCustomConfigHelper').debug ('...state: ', state);
 
       return state ? state.translationKey : '';
     }
 
   }// END CLASS
 
-})();
+}) ();

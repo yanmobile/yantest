@@ -10,7 +10,6 @@
         httpBackend,
         $window,
         loginData,
-        iscCustomConfigHelper,
         iscCustomConfigServiceProvider,
         AUTH_EVENTS;
 
@@ -30,9 +29,8 @@
       $provide.value('$log', console);
     }));
 
-    beforeEach(inject(function ($rootScope, $httpBackend, $timeout, _$window_, _AUTH_EVENTS_, iscSessionModel, _iscCustomConfigHelper_) {
+    beforeEach(inject(function ($rootScope, $httpBackend, $timeout, _$window_, _AUTH_EVENTS_, iscSessionModel) {
 
-      iscCustomConfigHelper = _iscCustomConfigHelper_;
       rootScope             = $rootScope;
       scope                 = $rootScope.$new();
       sessionModel          = iscSessionModel;
@@ -155,7 +153,7 @@
 
       it('should know when someone is authenticated', function () {
         loginData.UserData.userRole = 'provider';
-        
+
         sessionModel.create(loginData);
         var expected = sessionModel.isAuthenticated();
         expect(expected).toBe(true);
