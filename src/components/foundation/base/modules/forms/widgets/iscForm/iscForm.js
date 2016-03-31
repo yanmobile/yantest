@@ -13,6 +13,7 @@
    * formType   : The category to which the form belongs. This is defined in the form's FDN.
    * mode       : 'edit' or 'view'
    * id         : If provided, form data with this value is retrieved and loaded into this form instance.
+   * model      : If provided, this is used as the form data model.
    *
    * formConfig : A configuration object that may include some or all of the following behavior configuration:
    *   additionalModelInit
@@ -98,7 +99,8 @@
         formType    : '@',
         formKey     : '@',
         mode        : '@',
-        id          : '@',
+        id          : '@?',
+        model       : '=?',
         formConfig  : '=',
         buttonConfig: '='
       },
