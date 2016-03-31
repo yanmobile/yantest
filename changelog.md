@@ -1,5 +1,10 @@
 
 # Core Changes
+
+### 03/31/2016
+#### upgrade notes:
+Application developers should add a `moduleApi` property to their `app.config.js` file to match the configuration [here](https://github.com/intersystems/hs-core-tools/pull/43/files).
+
 ### 03/30/2016
 #### upgrade notes:
 iscNavContainer.html in app folder is no longer in use and it should be removed.
