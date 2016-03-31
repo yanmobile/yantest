@@ -7,7 +7,7 @@
 
   angular
     .module('isc.common')
-    .constant('coreConfig', getConfig());
+    .constant('componentConfig', getConfig());
 
   /*========================================
    =                 config                =
