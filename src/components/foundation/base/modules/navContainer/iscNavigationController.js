@@ -53,32 +53,6 @@
     };
 
     // --------------
-    self.showSideNavbar = function () {
-      self.hideAllPopups(); // close any that are already up
-      self.showSideNav     = true;
-      self.showModalBkgrnd = true;
-    };
-
-    self.hideSideNavbar = function () {
-      self.showSideNav     = false;
-      self.showModalBkgrnd = false;
-    };
-
-    // --------------
-    self.showSecondaryNavbar = function () {
-      devlog.channel('iscNavigationController').debug( 'iscNavigationController.showSecondaryNavbar');
-      self.hideAllPopups(); // close any that are already up
-      self.showSecondaryNav = true;
-      self.showModalBkgrnd  = true;
-    };
-
-    self.hideSecondaryNavbar = function () {
-      devlog.channel('iscNavigationController').debug( 'iscNavigationController.hideSecondaryNavbar');
-      self.showSecondaryNav = false;
-      self.showModalBkgrnd  = false;
-    };
-
-    // --------------
     self.showAlertBox = function () {
       devlog.channel('iscNavigationController').debug( 'iscNavigationController.showAlertBox');
       self.hideAllPopups(); // close any that are already up

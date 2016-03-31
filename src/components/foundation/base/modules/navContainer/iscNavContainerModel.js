@@ -32,15 +32,8 @@
 
       getTopNav: getTopNav,
 
-      getSecondaryNav: getSecondaryNav,
-      setSecondaryNav: setSecondaryNav,
-
       getVersionInfo: getVersionInfo,
       setVersionInfo: setVersionInfo,
-
-      getSecondaryNavTasks: getSecondaryNavTasks,
-      setSecondaryNavTasks: setSecondaryNavTasks,
-      hasSecondaryNavTasks: hasSecondaryNavTasks,
 
       navigateToUserLandingPage: navigateToUserLandingPage
     };
@@ -76,16 +69,6 @@
       return topNavArr[currentUserRole];
     }
 
-    function getSecondaryNav() {
-      devlog('iscNavContainerModel').debug('getSecondaryNav');
-      return secondaryNav;
-    }
-
-    function setSecondaryNav(val) {
-      devlog('iscNavContainerModel').debug('setSecondaryNav');
-      secondaryNav = val;
-    }
-
     function getVersionInfo() {
       return versionInfo;
     }
@@ -93,21 +76,6 @@
     function setVersionInfo(val) {
       versionInfo = val;
     }
-
-    function getSecondaryNavTasks() {
-      devlog('iscNavContainerModel').debug('getSecondaryNavTasks');
-      return secondaryNavTasks;
-    }
-
-    function setSecondaryNavTasks(val) {
-      devlog('iscNavContainerModel').debug('setSecondaryNavTasks');
-      secondaryNavTasks = val;
-    }
-
-    function hasSecondaryNavTasks() {
-      return !!secondaryNavTasks && secondaryNavTasks.length > 0;
-    }
-
   }//END CLASS
 
 
