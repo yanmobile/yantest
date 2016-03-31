@@ -4,7 +4,16 @@
   /* @ngInject */
   angular
     .module('isc.forms')
-    .factory('iscFormsValidationService', function ($q, $timeout) {
+    .factory('iscFormsValidationService',iscFormsValidationService);
+
+    /**
+     * @ngdoc factory
+     * @memberOf isc.forms
+     * @param $q
+     * @param $timeout
+     * @returns {{init: init, getValidationObject: getValidationObject, registerCollection: registerCollection, validateForm: validateForm, validateCollections: validateCollections}}
+     */
+  function iscFormsValidationService($q, $timeout) {
       var options;
       var validation = {};
       var keyMap     = {};
@@ -34,6 +43,7 @@
       }
 
       /**
+       * @description
        * Synchronously returns true iff the given form is valid.
        * If invalid, all invalid controls are touched to trigger their UI validation.
        *
@@ -60,6 +70,7 @@
       }
 
       /**
+       * @description
        * Asycnhronously returns true iff all collections in the given (root-level) model are valid.
        * While entering data into a subform (part of a collection), validateForm should be used
        * on that subform to determine validity.
@@ -111,16 +122,17 @@
           return !validation.form;
         }
 
-        /**
-         * Waits until sleepTest evaluates to truthy, then resolves.
-         * Short-circuits and returns false if the maxWaitInMillis time is exceeded.
-         *
-         * Useful for waiting for longer-running third-party synchronous functions (such as form building) to complete.
-         *
-         * @param {Function} sleepTest
-         * @param {number} maxWait
-         * @returns {Promise}
-         */
+          /**
+           * @description
+           * Waits until sleepTest evaluates to truthy, then resolves.
+           * Short-circuits and returns false if the maxWaitInMillis time is exceeded.
+           *
+           * Useful for waiting for longer-running third-party synchronous functions (such as form building) to complete.
+           *
+           * @param sleepTest {function}
+           * @param maxWait {number
+           * @returns {promise}
+           */
         function sleepUntil(sleepTest, maxWait) {
           maxWait = maxWait || maxWaitInMillis;
           return $timeout(function () {
@@ -135,6 +147,7 @@
         }
 
         /**
+         * @description
          * Processes each collection item that needs to be validated.
          */
         function processForm() {
@@ -197,5 +210,5 @@
           }
         }
       }
-    });
+    }
 })();

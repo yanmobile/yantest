@@ -12,6 +12,21 @@
     .directive('iscCriticalBanner', iscCriticalBanner);
 
   /* @ngInject */
+  /**
+   * @ngdoc directive
+   * @memberOf directives
+   * @name iscCriticalBanner
+   * @scope
+   * @restrict 'EA'
+   * @returns {{restrict: string, scope: {message: string, cssClass: string}, controller: controller, controllerAs: string, bindToController: boolean, templateUrl: directive.templateUrl}}
+   * @description
+   * directive that creates a critical banner - provides a default implementation as well as hook to provide your own implementation
+   * injected thru attributes
+   * @example
+   * <div iscCriticalBanner ></div>
+   * <div iscCriticalBanner templateUrl="myCriticalBanner.html" ></div>
+   *
+     */
   function iscCriticalBanner() {//jshint ignore:line
 
     // ----------------------------

@@ -11,6 +11,13 @@
   angular.module('isc.directives')
     .directive('iscConfirmation', iscConfirmation);
 
+  /**
+   * @ngdoc directive
+   * @memberOf directives
+   * @name iscConfirmation
+   * @restrict 'E'
+   * @returns {{restrict: string, link: link, controller: controller, controllerAs: string, templateUrl: directive.templateUrl}}
+     */
   function iscConfirmation() {//jshint ignore:line
 
     // ----------------------------

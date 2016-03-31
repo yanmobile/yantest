@@ -17,7 +17,22 @@
 
   angular.module('isc.directives')
     .directive('iscRadio', iscRadio);
-
+  /**
+   * @ngdoc directive
+   * @memberOf directives
+   * @name iscRadio
+   * @param devlog
+   * @param iscRadioGroupHelper
+   * @returns {{restrict: string, transclude: boolean, scope: {radioGroup: string, radioItem: string}, link: link, templateUrl: directive.templateUrl}}
+   * @example
+   * radioGroup {Array} - a list of objects that form the group of radio buttons
+   * radioItem  {Object} - the selected item from the radioGroup
+   *              (MUST be a member of the radioGroup array to work properly)
+   * <isc-radio radio-item="scope.selectedItem"
+   *            radio-group="myRadioGroup"
+   *            ng-click="onRadioSelect( scope.selectedItem )><isc-radio>
+   *
+   */
   /* @ngInject */
   function iscRadio(devlog, iscRadioGroupHelper) {
     devlog.channel('iscRadio').debug('iscRadio LOADED');

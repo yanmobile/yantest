@@ -3,7 +3,15 @@
 
   angular.module('isc.directives')
     .directive('iscScrollTo', iscScrollTo);
-
+  /**
+   * @ngdoc directive
+   * @memberOf directives
+   * @name iscScrollTo
+   * @scope
+   * @restrict 'A'
+   * @param $uiViewScroll
+   * @returns {{restrict: string, link: link}}
+   */
   /* @ngInject */
   function iscScrollTo($uiViewScroll) {//jshint ignore:line
     // ----------------------------

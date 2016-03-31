@@ -16,6 +16,17 @@
     .factory('iscRadioGroupHelper', iscRadioGroupHelper);
 
   /* @ngInject */
+  /**
+   * @ngdoc factory
+   * @memberOf directives
+   * @name iscRadioGroupHelper
+   * @param devlog
+   * @returns {{radioSelect: radioSelect}}
+   * @description
+   * this is for a group of items with a $$selected property
+   * the iscRadio directive handles this functionality internally
+   * but if you need to call it in an outside function, this can be used
+     */
   function iscRadioGroupHelper(devlog) {//jshint ignore:line
     devlog.channel('iscRadioGroupHelper').debug('iscRadioGroupHelper LOADED');
 
@@ -36,6 +47,11 @@
     // functions
     // ----------------------------
 
+    /**
+     *
+     * @param selectedItem
+     * @param radioGroup
+       */
     function radioSelect(selectedItem, radioGroup) {
       devlog.channel('iscRadioGroupHelper').debug('iscRadioGroupHelper.radioSelect');
       devlog.channel('iscRadioGroupHelper').debug('...selectedItem', selectedItem);
