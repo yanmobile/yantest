@@ -18,23 +18,6 @@
       'session'        : {
         'routeMemoryExpirationInMinutes': 15
       },
-      'moduleApi' : {
-        'forms' : {
-          'path'    : 'api/v1/forms'
-        },
-        'formData' : {
-          'path'    : 'api/v1/formData'
-        },
-        'formInfo' : {
-          'path'    : 'api/v1/formInfo'
-        },
-        'formTemplates' : {
-          'path'    : 'api/v1/formTemplates'
-        },
-        'formCodeTables' : {
-          'path'    : 'api/v1/codeTables'
-        }
-      },
       'debugDisplay'   : {
         'forms': {
           'additionalModels': false,
