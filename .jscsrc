@@ -86,7 +86,13 @@
     "checkAnnotations" : {
       "preset" : "jsdoc3",
       "extra"  : {
-        "ngdoc" : true
+        "ngdoc" : true,
+        "memberOf": true,
+        "description": true,
+        "restrict" : true,
+        "element" : true,
+        "scope" : true,
+        "namespace" : true
       }
     }
   },
