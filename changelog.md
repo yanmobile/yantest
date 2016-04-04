@@ -6,7 +6,7 @@ In order to get the default footer to show the current version number, update yo
 
 ### 03/31/2016
 #### upgrade notes:
-The `app/modules/shared/apis/apiHelper.js` file should be updated to match [the updated source file](https://github.com/intersystems/hs-core-tools/blob/module-api-configuration/templates/appModule/src/app/modules/shared/apis/apiHelper.js).
+The `app/modules/shared/apis/apiHelper.js` file should be updated to match [the updated source file](https://github.com/intersystems/hs-core-tools/pull/43/files).
 
 Application developers will need to update the `config` phase of `app.module.js` to ensure that `componentConfig` is included in the DI, and that it is merged into `appConfig` correctly. See [here](https://github.com/intersystems/hs-core-tools/pull/44/files) for details. 
 
