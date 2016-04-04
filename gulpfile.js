@@ -12,15 +12,17 @@ var plugins = {
   es           : require('event-stream'),
   exec         : require('child_process').exec,
   execSync     : require('child_process').execSync,
+  filelog      : require('gulp-filelog'),
   fs           : require('fs'),
   imagemin     : require('gulp-imagemin'),
+  jscs         : require('gulp-jscs'),
   jshint       : require('gulp-jshint'),
   karma        : require('karma').server,
   mobilizer    : require('gulp-mobilizer'),
-  path         : require('path'),
-  pngcrush     : require('imagemin-pngcrush'),
   ngAnnotate   : require('gulp-ng-annotate'),
   ngFilesort   : require('gulp-angular-filesort'),
+  path         : require('path'),
+  pngcrush     : require('imagemin-pngcrush'),
   rename       : require('gulp-rename'),
   replace      : require('gulp-replace'),
   sass         : require('gulp-sass'),
@@ -30,9 +32,7 @@ var plugins = {
   streamqueue  : require('streamqueue'),
   templateCache: require('gulp-angular-templatecache'),
   uglify       : require('gulp-uglify'),
-  wiredep      : require('wiredep'),
-  jscs         : require('gulp-jscs'),
-  filelog      : require('gulp-filelog')
+  wiredep      : require('wiredep')
 };
 
 var configs = {
