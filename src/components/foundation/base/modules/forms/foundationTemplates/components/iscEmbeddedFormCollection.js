@@ -229,7 +229,7 @@
 
       /**
        * @memberOf iscEmbeddedFormCollection
-       * @descripiton
+       * @description
        * Sets the context on the subform so that field controls in that subform can use the annotation system.
        * @param {number=} index - The index of the row being edited. If for a new row, leave undefined.
        */

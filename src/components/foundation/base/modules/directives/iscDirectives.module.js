@@ -5,7 +5,7 @@
 (function () {
   'use strict';
   /**
-   * @namesapce directives
+   * @namespace directives
    * @memberof directives
    * @ngdoc module
    * @name Directives Module
