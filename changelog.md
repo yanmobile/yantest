@@ -1,5 +1,8 @@
 
 # Core Changes
+### 04/04/2016
+#### upgrade notes:
+In order to get the default footer to show the current version number, update your `app/modules/app.module.js` to include the changes described [here](https://github.com/intersystems/hs-core-tools/pull/48/files)
 
 ### 03/31/2016
 #### upgrade notes:
