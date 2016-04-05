@@ -116,10 +116,11 @@
 
       var defaultFormConfig   = getFormDefaults();
       self.formConfig         = self.formConfig || {};
-      self.internalFormConfig = _.merge(self.formConfig, defaultFormConfig, self.formConfig);
+      self.internalFormConfig = _.defaultsDeep(self.formConfig, defaultFormConfig);
 
       var defaultButtonConfig   = getButtonDefaults();
-      self.internalButtonConfig = _.merge(defaultButtonConfig, self.buttonConfig);
+      self.buttonConfig         = self.buttonConfig || {};
+      self.internalButtonConfig = _.defaultsDeep(self.buttonConfig, defaultButtonConfig);
 
       _.merge(self, {
         localFormKey          : self.formKey,
@@ -236,12 +237,8 @@
       function getFormData() {
         self.formConfig.annotationsApi.initAnnotationQueue();
 
-        if (self.id) {
-          self.formConfig.annotationsApi.getFormAnnotations(self.id).then(function (annotations) {
-            self.options.formState._annotations = {
-              index: self.id,
-              data : annotations
-            };
+        getAnnotationData().then(function () {
+          if (self.id) {
             iscFormDataApi.get(self.id).then(function (formData) {
               originalFormKey = formData.formKey;
 
@@ -253,10 +250,26 @@
 
               getFormDefinition();
             });
+          }
+          else {
+            getFormDefinition();
+          }
+        });
+      }
+
+      function getAnnotationData() {
+        var getApi = _.get(self.formConfig, 'annotationsApi.getFormAnnotations');
+        if (getApi && _.isFunction(getApi)) {
+          return getApi(self.id).then(function (annotations) {
+            self.options.formState._annotations = {
+              index: self.id,
+              data : annotations
+            };
+            return annotations;
           });
         }
         else {
-          getFormDefinition();
+          $q.when([]);
         }
       }
 
