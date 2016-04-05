@@ -70,14 +70,14 @@ Update framework: //make sure your workarea is clean
     #2. git pull upstream master
     #3. git push origin framework-update-<date>
     slush hs:updateCore 
-    create PR on GitHub
+    #create PR on GitHub
 
 Override app.config.js:
 
-    #1. gulp serve --config <any valid directory>/app.config.js
-    please note that the file name has to be app.config.js since the tool is design
-    to override any file and need to correct basename to find the original file and
-    override it.
+    gulp serve --config <any valid directory>/app.config.js
+    #please note that the file name has to be app.config.js since the tool is design
+    #to override any file and need to correct basename to find the original file and
+    #override it.
 
 
 ##FAQs
