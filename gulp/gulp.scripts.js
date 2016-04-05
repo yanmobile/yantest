@@ -8,9 +8,7 @@ module.exports = {
 };
 
 function init(gulp, plugins, config, _) {
-  var appconfig = 'src/app/modules/app.config.js',
-      configOverride = getArg('--config'),
-      cwd = process.cwd();
+  var configOverride = getArg('--config');
 
   gulp.task('scripts', function () {
 
@@ -29,13 +27,13 @@ function init(gulp, plugins, config, _) {
 
     if(configOverride){
       jsSrc.push(configOverride);
-      jsSrc.push("!src/app/modules/app.config.js");
+      jsSrc.push(config.app.appConfigOverride);
     }
 
     jsSrc     = _.flatten(jsSrc);
 
     gulp.src(jsSrc)
-      .pipe(plugins.filelog())
+      //.pipe(plugins.filelog())
       .pipe(plugins.ngAnnotate())
       //.pipe(plugins.uglify())
       .pipe(plugins.sourcemaps.init())
