@@ -27,7 +27,7 @@ function init(gulp, plugins, config, _) {
 
     if(configOverride){
       jsSrc.push(configOverride);
-      jsSrc.push(config.app.appConfigOverride);
+      jsSrc.push(config.app.excludeConfig);
     }
 
     jsSrc     = _.flatten(jsSrc);
