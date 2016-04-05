@@ -1,5 +1,13 @@
 
 # Core Changes
+### 04/05/2016
+#### upgrade notes:
+Application developers will need to update the `config` phase of `app.module.js` to ensure that `componentConfig` is included in the DI, and that it is merged into `appConfig` correctly. The `config` phase should include this line:
+``` javascript
+_.defaults(appConfig, componentsConfig, coreConfig);
+```
+See [here](https://github.com/intersystems/hs-core-tools/pull/50/files) for details. 
+
 ### 04/04/2016
 #### upgrade notes:
 In order to get the default footer to show the current version number, update your `app/modules/app.module.js` to include the changes described [here](https://github.com/intersystems/hs-core-tools/pull/48/files)
@@ -7,8 +15,6 @@ In order to get the default footer to show the current version number, update yo
 ### 03/31/2016
 #### upgrade notes:
 The `app/modules/shared/apis/apiHelper.js` file should be updated to match [the updated source file](https://github.com/intersystems/hs-core-tools/pull/43/files).
-
-Application developers will need to update the `config` phase of `app.module.js` to ensure that `componentConfig` is included in the DI, and that it is merged into `appConfig` correctly. See [here](https://github.com/intersystems/hs-core-tools/pull/44/files) for details. 
 
 ### 03/30/2016
 #### upgrade notes:
@@ -22,7 +28,7 @@ Application developers will need to place a "routes.module.js" file within their
 
 ### 03/22/2016
 #### upgrade notes:
-Application developers will need to update their internationalization file to support the latest core tools and core UI changes. Everything above the CUSTOM section in src/app/assets/i18n/locale-en_US.json should consist of the contents of [this file](https://github.com/intersystems/hs-core-tools/blob/i18n-defaults-20160321/templates/appModule/src/app/assets/i18n/locale-en_US.json). 
+Application developers will need to update their internationalization file to support the latest core tools and core UI changes. Everything above the CUSTOM section in src/app/assets/i18n/locale-en_US.json should consist of the contents of [this file](https://github.com/intersystems/hs-core-tools/blob/master/templates/appModule/src/app/assets/i18n/locale-en_US.json).
 
 ### 03/17/2016 & 03/18/2016
 #### upgrade notes:
