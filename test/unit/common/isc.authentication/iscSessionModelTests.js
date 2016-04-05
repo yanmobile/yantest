@@ -127,24 +127,6 @@
     });
 
     // -------------------------
-    describe('getRemainingTime tests ', function () {
-      it('should have a function getRemainingTime', function () {
-        expect(angular.isFunction(sessionModel.getRemainingTime)).toBe(true);
-      });
-
-      it('should get the remaining time', function () {
-        sessionModel.create(loginData); // RemainingTime = 3600
-
-        sessionModel.initSessionTimeout(3400);
-
-        var expected = sessionModel.getRemainingTime();
-        // This is now the time remaining that ticks down from the initial max value to 0,
-        // not the time used ticking up to the max.
-        expect( expected ).toBe( 3400 );
-      });
-    });
-
-    // -------------------------
     describe('isAuthenticated tests ', function () {
 
       it('should have a function isAuthenticated', function () {

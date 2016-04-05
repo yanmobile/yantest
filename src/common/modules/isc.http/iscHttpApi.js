@@ -64,11 +64,6 @@
     function returnResponseData(config, response) {
       config = config || {};
 
-      // On any server response, assume session has been renewed
-      if (!config.bypassSessionReset) {
-        iscSessionModel.resetSessionTimeout();
-      }
-
       if (config.responseAsObject) {
         return response;
       } else {

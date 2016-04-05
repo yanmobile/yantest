@@ -7,10 +7,8 @@
   angular.module('iscNavContainer')
     .controller('iscNavbarController', iscNavbarController);
 
-  /* @ngInject */
   function iscNavbarController(
-    devlog, $scope, $state, $rootScope, $window,
-    iscNavContainerModel,
+    devlog, $scope, $state, $rootScope, iscNavContainerModel,
     iscCustomConfigService, iscCustomConfigHelper, iscUiHelper, iscSessionModel,
     AUTH_EVENTS
   ) {
@@ -26,8 +24,9 @@
 
       sectionTranslationKey: '',
 
-      getTabs     : iscNavContainerModel.getTopNav,
-      userRoles   : [],
+      getTabs  : iscNavContainerModel.getTopNav,
+      userRoles: [],
+      logout   : logout,
 
       setPageState     : setPageState,
       setTabActiveState: setTabActiveState
@@ -48,7 +47,7 @@
     }
 
     function setPageState(name) {
-      self.setTabActiveState(name,self.getTabs());
+      self.setTabActiveState(name, self.getTabs());
       self.sectionTranslationKey = iscCustomConfigHelper.getSectionTranslationKeyFromName(name);
     }
 

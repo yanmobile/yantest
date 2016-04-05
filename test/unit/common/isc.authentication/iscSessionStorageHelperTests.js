@@ -82,53 +82,6 @@
         expect(expected).toEqual(defaultVal);
       });
     });
-
-    // -------------------------
-    describe('get/setSessionTimeoutCounter tests ', function () {
-
-      it('should have a function getSessionTimeoutCounter', function () {
-        expect(angular.isFunction(sessionStorageHelper.getSessionTimeoutCounter)).toBe(true);
-      });
-
-      it('should have a function setSessionTimeoutCounter', function () {
-        expect(angular.isFunction(sessionStorageHelper.setSessionTimeoutCounter)).toBe(true);
-      });
-
-      it('should get a sessionTimeout counter', function () {
-        sessionStorageHelper.destroy();
-
-        var defaultVal = -1; // see class for details
-        var expected = sessionStorageHelper.getSessionTimeoutCounter();
-        expect(expected).toEqual(defaultVal);
-
-        var counter = 500;
-        window.sessionStorage.setItem('sessionTimeoutCounter', angular.toJson(counter));
-
-        var expected = sessionStorageHelper.getSessionTimeoutCounter();
-        expect(expected).toEqual(counter);
-      });
-
-      it('should set a state permssions', function () {
-        sessionStorageHelper.destroy();
-
-        var defaultVal = -1; // see class for details
-
-        var counter  = 'asdfasdf'; // bad data should return the defauld
-        sessionStorageHelper.setSessionTimeoutCounter(counter);
-        var expected = sessionStorageHelper.getSessionTimeoutCounter();
-        expect(expected).toEqual(defaultVal);
-
-        var counter  = 12;
-        sessionStorageHelper.setSessionTimeoutCounter(counter);
-        var expected = sessionStorageHelper.getSessionTimeoutCounter();
-        expect(expected).toEqual(counter);
-
-        sessionStorageHelper.setSessionTimeoutCounter(); // should return the default val
-        var expected = sessionStorageHelper.getSessionTimeoutCounter();
-        expect(expected).toEqual(defaultVal);
-      });
-    });
-
     // -------------------------
     describe('get/setShowTimedOutAlert tests ', function () {
 

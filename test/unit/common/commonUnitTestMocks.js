@@ -10,7 +10,7 @@
 
   // Append style element to head
   document.head.appendChild(styleEl);
-  styleSheet  = styleEl.sheet;
+  styleSheet = styleEl.sheet;
   styleSheet.insertRule('meta.foundation-mq { font-family: "small=&medium=&large=&xlarge=&xxlarge="; }', 0);
 
 
@@ -278,5 +278,8 @@ var mockLoginResponse = {
     'FullName' : 'Adam Everyman',
     'LastName' : 'Everyman',
     'userRole' : '*'
+  },
+  'sessionInfo'    : {
+    expiresOn: moment().add(30, 'minutes').toString()
   }
 };

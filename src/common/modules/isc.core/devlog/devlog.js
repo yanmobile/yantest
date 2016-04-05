@@ -17,13 +17,19 @@
 
       /* @ngInject */
       function devlogService($log) {
-        var devlog   = {};
+        var devlog = {};
 
         // make devlog function as an extension of angular $log
-        ['log', 'info', 'warn', 'error', 'debug'].forEach(function (method) {
+        ['log', 'info', 'warn', 'error', 'debug', 'logFn'].forEach(function (method) {
           devlog[method] = function () {
             var args = devlog.prefixArgs(arguments);
-            $log[method].apply($log, args);
+            if (method !== 'logFn') {
+              $log[method].apply($log, args);
+            } else {
+              args.unshift("====");
+              args.push("() ====");
+              $log.log.apply($log, args);
+            }
             devlog.clearChannelPrefix();
           };
         });
@@ -33,6 +39,7 @@
 
         // null interface for channels that fail
         var nullobj   = {};
+        nullobj.logFn = _.noop;
         nullobj.log   = _.noop;
         nullobj.info  = _.noop;
         nullobj.warn  = _.noop;
