@@ -51,7 +51,11 @@
     function response(response) {//jshint ignore:line
       if (!response.config.cache && !endsWithExts(response.config.url, blacklistExts)) {
         devlog.channel('iscAuthenticationInterceptor').debug('Resetting timeout for %s', response.config.url, response);
-        $rootScope.$emit(AUTH_EVENTS.sessionTimeoutReset, response);
+
+        // On any server response, assume session has been renewed
+        if (!response.config.bypassSessionReset) {
+          $rootScope.$emit(AUTH_EVENTS.sessionTimeoutReset, response);
+        }
       }
 
       return response;

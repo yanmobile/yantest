@@ -8,25 +8,26 @@
 (function () {
   'use strict';
 
-  var origGet = _.get;
+  var origGet      = _.get;
   //from original lodash source code, used for parsing _.get() path
   var rePropName   = /[^.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(\\{.+\})|(["'])((?:(?!\2)[^\n\\]|\\.)*?)\2)\]/g;
   var reEscapeChar = /\\(\\)?/g;
   //sanitizes object data by adding quotes
-  var reFixJson = /(['"])?([a-zA-Z0-9_]+)(['"])?:/g;
+  var reFixJson    = /(['"])?([a-zA-Z0-9_]+)(['"])?:/g;
   //save the original _.get
 
   _.mixin({
-    isPresent   : isPresent,
-    isNotPresent: isNotPresent,
-    getAge      : getAge,
-    areSameDate : areSameDate,
-    nullifyObj  : nullifyObj,
-    isTypeOf    : isTypeOf,
-    makeObj     : makeObj,
-    get         : advancedGet,
-    wrapText    : wrapText,
-    interpolate : interpolate
+    isPresent       : isPresent,
+    isNotPresent    : isNotPresent,
+    getAge          : getAge,
+    areSameDate     : areSameDate,
+    nullifyObj      : nullifyObj,
+    isTypeOf        : isTypeOf,
+    makeObj         : makeObj,
+    get             : advancedGet,
+    wrapText        : wrapText,
+    interpolate     : interpolate,
+    getRemainingTime: getRemainingTime
   });
 
   // Present is defined by not undefined and not null.
@@ -189,6 +190,10 @@
         return typeof r === 'string' || typeof r === 'number' ? r : a;
       }
     );
+  }
+
+  function getRemainingTime(time) {
+    return (moment(time) - Date.now()) / 1000;
   }
 
   //END CLASS

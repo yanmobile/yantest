@@ -32,11 +32,8 @@
       getConfig: getConfig,
       setConfig: setConfig,
 
-      getSessionTimeoutCounter: getSessionTimeoutCounter,
-      setSessionTimeoutCounter: setSessionTimeoutCounter,
-
-      getSessionTimeoutMax: getSessionTimeoutMax,
-      setSessionTimeoutMax: setSessionTimeoutMax,
+      getSessionExpiresOn: getSessionExpiresOn,
+      setSessionExpiresOn: setSessionExpiresOn,
 
       getShowTimedOutAlert: getShowTimedOutAlert,
       setShowTimedOutAlert: setShowTimedOutAlert,
@@ -81,35 +78,19 @@
     }
 
     // ----------------------------
-    function getSessionTimeoutCounter() {
-      var counter = getValFromSessionStorage('sessionTimeoutCounter', -1);
-      if (_.isNumber(counter)) {
-        devlog.channel('iscSessionStorageHelper').debug( '...number: ' +  counter );
-        return counter;
-      }
-      devlog.channel('iscSessionStorageHelper').debug( '...nope: ' );
-      return -1;
-    }
-
-    function setSessionTimeoutCounter(val) {
-      devlog.channel('iscSessionStorageHelper').debug( 'iscSessionStorageHelper.setSessionTimeoutCounter:', val );
-      setSessionStorageValue('sessionTimeoutCounter', val);
-    }
-
-    // ----------------------------
-    function getSessionTimeoutMax() {
-      var max = getValFromSessionStorage('sessionTimeoutMax', 0);
-      if (_.isNumber(max)) {
+    function getSessionExpiresOn() {
+      var max = getValFromSessionStorage('sessionExpiresOn', null);
+      if (max) {
         devlog.channel('iscSessionStorageHelper').debug( '...number: ' +  max );
-        return max;
+        return new Date(max);
       }
       devlog.channel('iscSessionStorageHelper').debug( '...nope: ' );
-      return 0;
+      return new Date();
     }
 
-    function setSessionTimeoutMax(val) {
-      devlog.channel('iscSessionStorageHelper').debug( 'iscSessionStorageHelper.setSessionTimeoutMax:', val );
-      setSessionStorageValue('sessionTimeoutMax', val);
+    function setSessionExpiresOn(val) {
+      devlog.channel('iscSessionStorageHelper').debug( 'iscSessionStorageHelper.setSessionExpiresOn:', val );
+      setSessionStorageValue('sessionExpiresOn', val);
     }
 
     // ----------------------------

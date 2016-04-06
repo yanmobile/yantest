@@ -19,8 +19,8 @@
    * @param storage
    * @param iscSessionStorageHelper
    * @param AUTH_EVENTS
-   * @returns {{create: create, destroy: destroy, initSessionTimeout: initSessionTimeout, stopSessionTimeout: stopSessionTimeout, resetSessionTimeout: resetSessionTimeout, getRemainingTime: getRemainingTime, getCredentials: getCredentials, getCurrentUser: getCurrentUser, getCurrentUserRole: getCurrentUserRole, isAuthenticated: isAuthenticated, getFullName: getFullName, configure: configure}}
-     */
+   * @returns {{create: create, destroy: destroy, initSessionTimeout: initSessionTimeout, stopSessionTimeout: stopSessionTimeout, resetSessionTimeout: resetSessionTimeout, getCredentials: getCredentials, getCurrentUser: getCurrentUser, getCurrentUserRole: getCurrentUserRole, isAuthenticated: isAuthenticated, getFullName: getFullName, configure: configure}}
+   */
   function iscSessionModel($q, $http, devlog, $rootScope, $interval, storage, iscSessionStorageHelper, AUTH_EVENTS) {
     devlog.channel('iscSessionModel').debug('iscSessionModel LOADED');
 
@@ -32,31 +32,32 @@
     var credentials   = null;
     var currentUser   = anonymousUser;
 
-    var sessionTimeout   = {
+    var sessionTimeout = {
       warnAt     : 0,
       expireAt   : 0,
-      remaining  : 0,
+      maxAge     : 0,
       pingPromise: null,
       syncedOn   : null,
       status     : 'active'
     };
+
     var noResponseMaxAge = 60 * 5; // 5 minutes
-    var warnThreshold = 0.25;
+    var warnThreshold    = 0.25;  //percent
 
     var isConfigured = false;
     // Initialize to empty promise in case it is not configured
     /**
      *
      * @returns {promise} The promise object calls "resolve" with an empty object as a parameter
-       */
-    var ping = function () {
+     */
+    var ping         = function () {
       var deferred = $q.defer();
       deferred.resolve({});
       return deferred.promise;
     };
-    var sessionIdPath, remainingTimePath;
+    var sessionIdPath;
 
-    var intervalPromise;
+    var timeoutInterval;
 
     // ----------------------------
     // class factory
@@ -69,7 +70,6 @@
       initSessionTimeout : initSessionTimeout,
       stopSessionTimeout : stopSessionTimeout,
       resetSessionTimeout: resetSessionTimeout,
-      getRemainingTime   : getRemainingTime,
 
       getCredentials: getCredentials,
 
@@ -92,23 +92,23 @@
      *
      * @param sessionData
      * @param isSessionNew
-       */
+     */
     function create(sessionData, isSessionNew) {
-      devlog.channel('iscSessionModel').debug('iscSessionModel.create');
+      devlog.channel('iscSessionModel').logFn('create');
       // $log.debug( '...sessionData: ' + JSON.stringify( sessionData  ));
 
       // store the login response for page refreshes
       storage.set('loginResponse', sessionData);
       storage.set('jwt', sessionData.jwt);
       $http.defaults.headers.common.jwt = sessionData.jwt;
-      
+
       credentials = {}; // for now we arent using credentials
       setCurrentUser(sessionData.UserData);
 
       // set the timeout
-      var maxAge = sessionData.SessionTimeout;
-      iscSessionStorageHelper.setSessionTimeoutMax(maxAge);
-      initSessionTimeout(maxAge);
+      sessionTimeout.maxAge = sessionData.SessionTimeout;
+      iscSessionStorageHelper.setSessionExpiresOn(sessionData.sessionInfo.expiresOn);
+      initSessionTimeout(sessionTimeout.maxAge);
 
       $rootScope.$emit(AUTH_EVENTS.sessionChange);
       if (isSessionNew) {
@@ -131,14 +131,12 @@
      * ping              - a function that calls a REST api which queries the server for remaining session time,
      *                       without causing a session time renewal
      * sessionIdPath     - the path in the response data that represents the session id
-     * remainingTimePath - the path in the response data that represents the remaining time in seconds
-       */
+     */
     function configure(config) {
-      isConfigured      = true;
-      ping              = config.ping;
-      sessionIdPath     = config.sessionIdPath;
-      remainingTimePath = config.remainingTimePath;
-      noResponseMaxAge  = config.noResponseMaxAge || noResponseMaxAge;
+      isConfigured     = true;
+      ping             = config.ping;
+      sessionIdPath    = config.sessionIdPath;
+      noResponseMaxAge = config.noResponseMaxAge || noResponseMaxAge;
     }
 
     //
@@ -149,8 +147,9 @@
      * @description
      * Calls a non-invasive ping API which inspects the current server session, without renewing that session,
      * and returns information about the time remaining in this session.
-       */
+     */
     function callPing(syncedOn) {
+      devlog.channel('iscSessionModel').logFn('callPing');
       sessionTimeout.syncedOn = syncedOn || sessionTimeout.syncedOn;
 
       var request = ping().then(_pingSuccess, _pingError)
@@ -164,26 +163,27 @@
       // On successful ping, re-sync the local counter with the ping response,
       // falling back to no change in the counter.
       function _pingSuccess(response) {
+        devlog.channel('iscSessionModel').logFn('_pingSuccess');
         var data                 = response.data;
         sessionTimeout.status    = 'active';
         sessionTimeout.syncedOn  = 'alive';
         sessionTimeout.sessionId = _.get(data, sessionIdPath, sessionTimeout.sessionId);
-        sessionTimeout.remaining = _.get(data, remainingTimePath, sessionTimeout.remaining);
+        updateExpireAndWarnAt(data.sessionInfo.expiresOn);
       }
 
       // Assumes any error returning from a ping means no server response
       function _pingError() {
+        devlog.channel('iscSessionModel').logFn('_pingError');
         // Flag this as no response received
         if (sessionTimeout.status === 'active') {
-          sessionTimeout.status    = 'no response';
-          sessionTimeout.remaining = noResponseMaxAge;
+          sessionTimeout.status = 'no response';
         }
       }
     }
 
 
     function destroy() {
-      devlog.channel('iscSessionModel').debug('iscSessionModel.destroy');
+      devlog.channel('iscSessionModel').logFn('destroy');
 
       // create a session with null data
       currentUser = anonymousUser;
@@ -208,41 +208,39 @@
     /**
      *
      * @param timeoutCounter
-       */
-    function initSessionTimeout(timeoutCounter) {
-      devlog.channel('iscSessionModel').debug('iscSessionModel.initSessionTimeout');
-      devlog.channel('iscSessionModel').debug('...timeoutCounter: ' + timeoutCounter);
+     */
+    function initSessionTimeout() {
+      devlog.channel('iscSessionModel').logFn("initSessionTimeout");
 
-      var maxAge = iscSessionStorageHelper.getSessionTimeoutMax();
+      var expiration = iscSessionStorageHelper.getSessionExpiresOn();
 
-      // on page refresh we get this from sessionStorage and pass it in
-      // otherwise assume it to be the maxAge
-      sessionTimeout.remaining = (timeoutCounter > 0) ? timeoutCounter : maxAge;
-      devlog.channel('iscSessionModel').debug('...sessionTimeout.remaining: ' + sessionTimeout.remaining);
+      updateExpireAndWarnAt(expiration);
 
-      sessionTimeout.warnAt = parseInt(maxAge * warnThreshold);
-      devlog.channel('iscSessionModel').debug('...sessionTimeout.warnAt: ' + sessionTimeout.warnAt);
-
-      sessionTimeout.expireAt = 0;
-      devlog.channel('iscSessionModel').debug('...sessionTimeout.expireAt: ' + sessionTimeout.expireAt);
-
+      _logTimer();
       doSessionTimeout();
+    }
+
+    function updateExpireAndWarnAt(expiration) {
+      var current = Date.now();
+
+      // otherwise assume it to be the maxAge
+      sessionTimeout.warnAt   = current.add((expiration - current) * (1 - warnThreshold), 'ms').toDate();
+      sessionTimeout.expireAt = expiration;
     }
 
     /**
      * private
      */
     function doSessionTimeout() {
-      devlog.channel('iscSessionModel').debug('iscSessionModel.doSessionTimeout');
-      if (intervalPromise) {
+      devlog.channel('iscSessionModel').logFn("doSessionTimeout");
+      if (timeoutInterval) {
         devlog.channel('iscSessionModel').debug('...already there');
         return;
       }
 
       // Checks to perform each tick
-      intervalPromise = $interval(function () {
-        sessionTimeout.remaining -= 5;
-        _setSessionAndLog();
+      timeoutInterval = $interval(function () {
+        _logTimer();
 
         if (sessionTimeout.status === 'no response') {
           if (!sessionTimeout.pingPromise) {
@@ -255,29 +253,23 @@
             _checkForWarnOrExpire(isConfigured);
           }
         }
-      }, 5000);
-
-
-      function _setSessionAndLog() {
-        iscSessionStorageHelper.setSessionTimeoutCounter(sessionTimeout.remaining);
-        devlog.channel('iscSessionModel').debug('...TICK ');
-        devlog.channel('iscSessionModel').debug('...sessionTimeout.expireAt ' + sessionTimeout.expireAt);
-        devlog.channel('iscSessionModel').debug('...sessionTimeout.remaining ' + sessionTimeout.remaining);
-        devlog.channel('iscSessionModel').debug('...sessionTimeout.warnAt ' + sessionTimeout.warnAt);
-        devlog.channel('iscSessionModel').debug('...remainingTime ' + sessionTimeout.remaining);
-      }
+      }, 3000);
 
       function _checkForNoResponseAtMax() {
+        devlog.channel('iscSessionModel').logFn("_checkForNoResponseAtMax");
         // If the time with no response has reached its maximum, expire client session
-        if (sessionTimeout.remaining <= 0) {
+        if (moment().isAfter(sessionTimeout.expireAt)) {
           _expireSession();
         }
       }
 
       function _checkForWarnOrExpire(doPingFirst) {
+        devlog.channel('iscSessionModel').logFn("_checkForWarnOrExpire");
+        var now = new Date();
+
         // warn
-        if (sessionTimeout.remaining <= sessionTimeout.warnAt && sessionTimeout.remaining > sessionTimeout.expireAt) {
-          devlog.channel('iscSessionModel').debug('...WARN ' + sessionTimeout.remaining);
+        if (_.getRemainingTime(sessionTimeout.warnAt) <= 0 && _.getRemainingTime(sessionTimeout.expireAt) > 0) {
+          devlog.channel('iscSessionModel').debug('...expireAt ', sessionTimeout.expireAt);
           if (doPingFirst && sessionTimeout.syncedOn !== 'warn') {
             callPing('warn').then(function () {
               _checkForWarnOrExpire(false);
@@ -289,8 +281,8 @@
         }
 
         // expire/logout
-        else if (sessionTimeout.remaining <= sessionTimeout.expireAt) {
-          devlog.channel('iscSessionModel').debug('...TIMEOUT ' + sessionTimeout.remaining);
+        else if (sessionTimeout.expireAt - Date.now() < 0) {
+          devlog.channel('iscSessionModel').debug('...sessionTimeout.expireAt ' + sessionTimeout.expireAt);
 
           if (doPingFirst && sessionTimeout.syncedOn !== 'expire') {
             callPing('expire').then(function () {
@@ -304,6 +296,7 @@
       }
 
       function _expireSession() {
+        devlog.channel('iscSessionModel').logFn("_expireSession");
         $rootScope.$emit(AUTH_EVENTS.sessionTimeout);
         iscSessionStorageHelper.setShowTimedOutAlert(true);
         stopSessionTimeout();
@@ -314,40 +307,33 @@
      *
      */
     function stopSessionTimeout() {
-      devlog.channel('iscSessionModel').debug('iscSessionModel.stopSessionTimeout');
-      if (angular.isDefined(intervalPromise)) {
+      devlog.channel('iscSessionModel').logFn("stopSessionTimeout");
+      if (angular.isDefined(timeoutInterval)) {
         devlog.channel('iscSessionModel').debug('...cancelling');
-        $interval.cancel(intervalPromise);
-        intervalPromise = null;
+        $interval.cancel(timeoutInterval);
+        timeoutInterval = null;
       }
 
-      devlog.channel('iscSessionModel').debug('...intervalPromise', intervalPromise);
+      devlog.channel('iscSessionModel').debug('...timeoutInterval', timeoutInterval);
     }
 
     function resetSessionTimeout() {
-      devlog.channel('iscSessionModel').debug('iscSessionModel.resetSessionTimeout');
+      devlog.channel('iscSessionModel').logFn("resetSessionTimeout");
       // Do not reset timer if we are still waiting on a server response to a ping call
       if (sessionTimeout.syncedOn !== 'no response') {
-        var maxAge               = iscSessionStorageHelper.getSessionTimeoutMax();
-        sessionTimeout.remaining = maxAge;
-        sessionTimeout.syncedOn  = 'alive';
-        iscSessionStorageHelper.setSessionTimeoutCounter(maxAge);
-      }
-    }
 
-    /**
-     *
-     * @returns {number}
-       */
-    function getRemainingTime() {
-      return sessionTimeout.remaining;
+        var expiration = moment().add(sessionTimeout.maxAge, 's').toDate();
+
+        updateExpireAndWarnAt(expiration);
+        sessionTimeout.syncedOn = 'alive';
+      }
     }
 
     // --------------
     /**
      *
      * @returns {*}
-       */
+     */
     function getCredentials() {
       return credentials;
     }
@@ -356,15 +342,15 @@
     /**
      *
      * @returns {XMLList|XML}
-       */
+     */
     function getCurrentUser() {
-      return angular.copy(currentUser); // To prevent external modificiation
+      return angular.copy(currentUser); // To prevent external modification
     }
 
     /**
      *
      * @param user
-       */
+     */
     function setCurrentUser(user) {
       devlog.channel('iscSessionModel').debug('iscSessionModel.setCurrentUser');
       devlog.channel('iscSessionModel').debug('...user: ' + angular.toJson(user));
@@ -375,7 +361,7 @@
     /**
      *
      * @returns {*}
-       */
+     */
     function getCurrentUserRole() {
       return _.get(currentUser, "userRole");
     }
@@ -384,7 +370,7 @@
     /**
      *
      * @returns {boolean}
-       */
+     */
     function isAuthenticated() {
       //devlog.channel('iscSessionModel').debug('iscSessionModel.isAuthenticated', currentUser);
       // '*' denotes anonymous user (AKA not authenticated)
@@ -395,12 +381,16 @@
     /**
      *
      * @returns {string}
-       */
+     */
     function getFullName() {
       devlog.channel('iscSessionModel').debug('iscSessionModel.getFullName');
       return !!currentUser ? currentUser.FullName : '';
     }
 
+    function _logTimer() {
+      devlog.channel('iscSessionModel').debug('...sessionTimeout.expireAt', sessionTimeout.expireAt, "(" + _.getRemainingTime(sessionTimeout.expireAt) + "s remaining)");
+      devlog.channel('iscSessionModel').debug('...sessionTimeout.warnAt', sessionTimeout.warnAt, "(" + _.getRemainingTime(sessionTimeout.warnAt) + "s remaining)");
+    }
   }// END CLASS
 
 

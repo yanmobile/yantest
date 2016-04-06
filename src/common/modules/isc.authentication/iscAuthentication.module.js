@@ -26,13 +26,6 @@
         $rootScope.$emit(AUTH_EVENTS.iscSessionResumedSuccess);
       });
     }
-
-    var timeoutCounter = iscSessionStorageHelper.getSessionTimeoutCounter();
-    devlog.channel('IscRouterDefaultEventService').debug('...got a counter: ', timeoutCounter);
-    if (timeoutCounter > 0) {
-      devlog.channel('IscRouterDefaultEventService').debug('...got a counter: ' + timeoutCounter);
-      iscSessionModel.initSessionTimeout(timeoutCounter);
-    }
   }
 
 })();

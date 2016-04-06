@@ -18,7 +18,7 @@
     }));
 
     beforeEach(module('isc.http', function ($provide) {
-      fakeDevLog = { channel: _.noop, debug: _.noop };
+      fakeDevLog = { channel: _.noop, debug: _.noop, logFn: _.noop };
       $provide.value('devlog', fakeDevLog);
       spyOn(fakeDevLog, 'channel').and.returnValue(fakeDevLog);
     }));
