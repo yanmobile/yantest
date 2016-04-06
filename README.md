@@ -44,41 +44,34 @@ To use:
            
 Run application ([slush style](https://github.com/intersystems/hs-core-tools)):
 
-    slush hs:install #installs npm and bower packages
-    gulp serve
-    
-Run application (manually):
+```bash
+slush hs:install #installs npm and bower packages
+gulp serve
+```
 
-    npm install -g bower gulp
-    npm install     #from project root folder
-    cd src/common
-    bower install
-    cd src/app      #application specific
-    bower install   #application specific
-    gulp serve
-    
 Run tests:
 
-    gulp test        #only available as part of app specific task
-    gulp test:common
-    gulp test:components
-    gulp test:app    #application specific
+```bash
+gulp test        #only available as part of app specific task
+gulp test:common
+gulp test:components
+gulp test:app    #application specific
+```
 
 Update framework: //make sure your workarea is clean 
 
-    #1. git checkout -b framework-update-<date> origin/master
-    #2. git pull upstream master
-    #3. git push origin framework-update-<date>
-    slush hs:updateCore 
-    #create PR on GitHub
+```bash
+slush hs:updateCore 
+#create PR on GitHub
+```
 
 Override app.config.js:
-
-    gulp serve --config <any valid directory>/app.config.js
-    #please note that the file name has to be app.config.js since the tool is design
-    #to override any file and need to correct basename to find the original file and
-    #override it.
-
+```bash
+gulp serve --config <any valid directory>/app.config.js
+#please note that the file name has to be app.config.js since the tool is design
+#to override any file and need to correct basename to find the original file and
+#override it.
+```
 
 ##FAQs
 * **This framework looks awesome, how do I create a fully functional application using this framework in a couple of minutes?**
@@ -207,7 +200,7 @@ Override app.config.js:
   * ```git config --global alias.last 'log -1 --oneline HEAD'```
 
 ## Bash 101 (OS X only)
-```
+```bash
 # go to home (same as cd ~)
 cd 
 
