@@ -221,7 +221,7 @@
     }
 
     function updateExpireAndWarnAt(expiration) {
-      var current = Date.now();
+      var current = moment();
 
       // otherwise assume it to be the maxAge
       sessionTimeout.warnAt   = current.add((expiration - current) * (1 - warnThreshold), 'ms').toDate();
