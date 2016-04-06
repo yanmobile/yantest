@@ -296,10 +296,11 @@
             }
 
             function makeContext(type) {
+              var contextId = parseInt(annotationsState.index);
               return {
                 type     : type,
                 isQueued : annotationsState.index === undefined ? true : undefined,
-                contextId: parseInt(annotationsState.index),
+                contextId: _.isNaN(contextId) ? null : contextId,
                 key      : $scope.options.key
               };
 
