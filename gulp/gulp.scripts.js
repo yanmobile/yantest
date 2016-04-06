@@ -8,6 +8,8 @@ module.exports = {
 };
 
 function init(gulp, plugins, config, _) {
+  var configOverride = getArg('--config');
+
   gulp.task('scripts', function () {
 
     var configPaths = ["vendor.js",
@@ -22,6 +24,12 @@ function init(gulp, plugins, config, _) {
       jsSrc.push(_.get(config.component, configPath, []));
       jsSrc.push(_.get(config.app, configPath, []));
     });
+
+    if(configOverride){
+      jsSrc.push(configOverride);
+      jsSrc.push(config.app.excludeConfig);
+    }
+
     jsSrc     = _.flatten(jsSrc);
 
     gulp.src(jsSrc)
@@ -35,4 +43,18 @@ function init(gulp, plugins, config, _) {
       .pipe(gulp.dest(plugins.path.join(config.app.dest.folder, 'js')));
 
   });
+
+  /**
+   * @description
+   * This function finds the value of command line parameters regardless their location or their appearance order
+   * for example: gulp script --config /tmp/app.config.js
+   * getArg("--config") // => /tmp/app.config.js
+   * @param key
+   * @returns {*}
+   */
+  function getArg(key){
+    var index = process.argv.indexOf(key);
+    var next = process.argv[index + 1];
+    return (index < 0) ? null : (!next || next[0] === "-") ? true : next;
+  }
 }
