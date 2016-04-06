@@ -28,7 +28,7 @@
     // vars
     // ----------------------------
 
-    var anonymousUser = { userRole: '*', FullName: 'anonymous' };
+    var anonymousUser = {userRole: '*', FullName: 'anonymous'};
     var credentials   = null;
     var currentUser   = anonymousUser;
 
@@ -55,7 +55,7 @@
       deferred.resolve({});
       return deferred.promise;
     };
-    var sessionIdPath;
+    var sessionIdPath, expirationPath;
 
     var timeoutInterval;
 
@@ -107,7 +107,7 @@
 
       // set the timeout
       sessionTimeout.maxAge = sessionData.SessionTimeout;
-      iscSessionStorageHelper.setSessionExpiresOn(sessionData.sessionInfo.expiresOn);
+      iscSessionStorageHelper.setSessionExpiresOn(_.get(sessionData, expirationPath));
       initSessionTimeout(sessionTimeout.maxAge);
 
       $rootScope.$emit(AUTH_EVENTS.sessionChange);
@@ -136,6 +136,7 @@
       isConfigured     = true;
       ping             = config.ping;
       sessionIdPath    = config.sessionIdPath;
+      expirationPath   = config.expirationPath;
       noResponseMaxAge = config.noResponseMaxAge || noResponseMaxAge;
     }
 
@@ -168,7 +169,7 @@
         sessionTimeout.status    = 'active';
         sessionTimeout.syncedOn  = 'alive';
         sessionTimeout.sessionId = _.get(data, sessionIdPath, sessionTimeout.sessionId);
-        updateExpireAndWarnAt(data.sessionInfo.expiresOn);
+        updateExpireAndWarnAt(_.get(data, expirationPath));
       }
 
       // Assumes any error returning from a ping means no server response
@@ -221,11 +222,13 @@
     }
 
     function updateExpireAndWarnAt(expiration) {
-      var current = moment();
+      if (expiration !== undefined) {
+        var current = moment();
 
-      // otherwise assume it to be the maxAge
-      sessionTimeout.warnAt   = current.add((expiration - current) * (1 - warnThreshold), 'ms').toDate();
-      sessionTimeout.expireAt = expiration;
+        // otherwise assume it to be the maxAge
+        sessionTimeout.warnAt   = current.add((expiration - current) * (1 - warnThreshold), 'ms').toDate();
+        sessionTimeout.expireAt = expiration;
+      }
     }
 
     /**
