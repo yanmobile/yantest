@@ -2,6 +2,10 @@
 # Core Changes
 ### 04/05/2016
 #### upgrade notes:
+If your application needs to send cookies with each request, add ```$httpProvider.defaults.withCredentials = true;``` to your app.module.js file. See [this PR](https://github.com/intersystems/hs-core-tools/pull/52/files)
+
+### 04/05/2016
+#### upgrade notes:
 Application developers will need to update the `config` phase of `app.module.js` to ensure that `componentConfig` is included in the DI, and that it is merged into `appConfig` correctly. The `config` phase should include this line:
 ``` javascript
 _.defaults(appConfig, componentsConfig, coreConfig);
