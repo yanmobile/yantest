@@ -168,6 +168,7 @@
         sessionTimeout.status    = 'active';
         sessionTimeout.syncedOn  = 'alive';
         sessionTimeout.sessionId = _.get(data, sessionIdPath, sessionTimeout.sessionId);
+        updateExpireAndWarnAt(data.sessionInfo.expiresOn);
       }
 
       // Assumes any error returning from a ping means no server response
@@ -211,16 +212,20 @@
     function initSessionTimeout() {
       devlog.channel('iscSessionModel').logFn("initSessionTimeout");
 
-      var current = moment();
-
       var expiration = iscSessionStorageHelper.getSessionExpiresOn();
 
-      // on page refresh we get this from sessionStorage and pass it in
+      updateExpireAndWarnAt(expiration);
+
+      _logTimer();
+      doSessionTimeout();
+    }
+
+    function updateExpireAndWarnAt(expiration) {
+      var current = Date.now();
+
       // otherwise assume it to be the maxAge
       sessionTimeout.warnAt   = current.add((expiration - current) * (1 - warnThreshold), 'ms').toDate();
       sessionTimeout.expireAt = expiration;
-      _logTimer();
-      doSessionTimeout();
     }
 
     /**
@@ -253,7 +258,7 @@
       function _checkForNoResponseAtMax() {
         devlog.channel('iscSessionModel').logFn("_checkForNoResponseAtMax");
         // If the time with no response has reached its maximum, expire client session
-        if (sessionTimeout.expireAt - new Date() < 0) {
+        if (moment().isAfter(sessionTimeout.expireAt)) {
           _expireSession();
         }
       }
@@ -314,11 +319,12 @@
 
     function resetSessionTimeout() {
       devlog.channel('iscSessionModel').logFn("resetSessionTimeout");
-      var current = moment();
       // Do not reset timer if we are still waiting on a server response to a ping call
       if (sessionTimeout.syncedOn !== 'no response') {
-        sessionTimeout.expireAt = moment().add(sessionTimeout.maxAge, 's').toDate();
-        sessionTimeout.warnAt   = current.add((sessionTimeout.expireAt - current) * (1 - warnThreshold), 'ms').toDate();
+
+        var expiration = moment().add(sessionTimeout.maxAge, 's').toDate();
+
+        updateExpireAndWarnAt(expiration);
         sessionTimeout.syncedOn = 'alive';
       }
     }
