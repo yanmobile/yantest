@@ -1,5 +1,17 @@
 
 # Core Changes
+### 04/06/2016
+#### upgrade notes:
+If your application uses `iscSessionModel.configure` to manage session across tabs, you should remove
+``` javascript
+'remainingTimePath': 'sessionInfo.remainingTime'
+```
+and add
+``` javascript
+'expirationPath'   : 'sessionInfo.expiresOn'
+```
+to the `configure` call. See [this PR](https://github.com/intersystems/hs-core-tools/pull/55) for more information.
+
 ### 04/05/2016
 #### upgrade notes:
 If your application needs to send cookies with each request, add ```$httpProvider.defaults.withCredentials = true;``` to your app.module.js file. See [this PR](https://github.com/intersystems/hs-core-tools/pull/52/files)
