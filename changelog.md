@@ -16,6 +16,7 @@ This is a breaking change, in order to apply the change developers has to go thr
    all the conflicts.
 5. Search your project for state which matching the following pattern: "anonymous.*" and change it to "unauthenticated.*"
 6. Search your project for state which matching the following pattern: "index.*" and change it to "authenticated.*"
+See [this PR](https://github.com/intersystems/hs-core-tools/pull/54/files)
 
 ### 04/06/2016
 #### upgrade notes:
