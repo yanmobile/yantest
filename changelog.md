@@ -14,8 +14,8 @@ This is a breaking change, in order to apply the change developers has to go thr
    ``` slush hs:appModule```
    This command will create a new branch with the latest code. You can apply the stash (from 1. above) and address
    all the conflicts.
-5. Search your project for "anonymouse.*" and change it to "unauthenticated.*"
-6. Search references to "index.*" and change it to "authenticated.*"
+5. Search your project for state which matching the following pattern: "anonymouse.*" and change it to "unauthenticated.*"
+6. Search your project for state which matching the following pattern: "index.*" and change it to "authenticated.*"
 
 ### 04/06/2016
 #### upgrade notes:
