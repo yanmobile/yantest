@@ -50,7 +50,7 @@
       "test/unit/common/commonUnitTestMocks.js"
     ],
     "tests" : [
-      "test/unit/common/**/*Tests.js"
+      "test/unit/common/**/*.test.js"
     ]
   }
 }
