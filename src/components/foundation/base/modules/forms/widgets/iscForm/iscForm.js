@@ -106,7 +106,9 @@
       },
       bindToController: true,
       controller      : controller,
-      templateUrl     : 'forms/widgets/iscForm/iscForm.html'
+      templateUrl     : function (elem, attrs) {
+        return attrs.templateUrl || 'forms/widgets/iscForm/iscForm.html';
+      }
     };
 
     return directive;

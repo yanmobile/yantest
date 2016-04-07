@@ -17,7 +17,9 @@
     var directive = {
       restrict        : 'E',
       replace         : true,
-      templateUrl     : 'iscNotification/iscNotificationSet.html'
+      templateUrl     : function (elem, attrs) {
+        return attrs.templateUrl || 'iscNotification/iscNotificationSet.html';
+      }
     };
 
     return directive;

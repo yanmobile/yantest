@@ -48,7 +48,10 @@
       bindToController: true,
       controller      : controller,
       link            : link,
-      templateUrl     : 'forms/foundationTemplates/components/iscEmbeddedFormCollection.html'
+      templateUrl     : function (elem, attrs) {
+        return attrs.templateUrl || 'forms/foundationTemplates/components/iscEmbeddedFormCollection.html';
+      }
+
     };
 
     return directive;

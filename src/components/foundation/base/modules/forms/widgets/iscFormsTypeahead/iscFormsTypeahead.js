@@ -28,7 +28,9 @@
       controller      : controller,
       controllerAs    : 'typeaheadCtrl',
       bindToController: true,
-      templateUrl     : 'forms/widgets/iscFormsTypeahead/iscFormsTypeahead.html'
+      templateUrl     : function (elem, attrs) {
+        return attrs.templateUrl || 'forms/widgets/iscFormsTypeahead/iscFormsTypeahead.html';
+      }
     };
 
     function controller($filter) {

@@ -29,7 +29,9 @@
       bindToController: true,
       controller      : controller,
       link            : link,
-      templateUrl     : 'forms/widgets/iscSubform/iscSubform.html'
+      templateUrl     : function (elem, attrs) {
+        return attrs.templateUrl || 'forms/widgets/iscSubform/iscSubform.html';
+      }
     };
 
     return directive;
