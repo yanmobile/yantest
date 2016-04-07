@@ -37,7 +37,9 @@
       },
       controllerAs    : 'dateComponentsCtrl',
       controller      : controller,
-      templateUrl     : 'forms/widgets/iscFormsDateComponents/iscFormsDateComponents.html'
+      templateUrl     : function (elem, attrs) {
+            return attrs.templateUrl || 'forms/widgets/iscFormsDateComponents/iscFormsDateComponents.html';
+         }
     };
 
     return directive;

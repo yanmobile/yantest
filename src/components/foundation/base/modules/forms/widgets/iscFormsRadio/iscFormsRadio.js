@@ -27,7 +27,9 @@
       controllerAs    : 'radioCtrl',
       controller      : controller,
       link            : link,
-      templateUrl     : 'forms/widgets/iscFormsRadio/iscFormsRadio.html'
+      templateUrl     : function (elem, attrs) {
+             return attrs.templateUrl || 'forms/widgets/iscFormsRadio/iscFormsRadio.html';
+          }
     };
 
     return directive;

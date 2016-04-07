@@ -21,7 +21,9 @@
       },
       bindToController: true,
       controller      : controller,
-      templateUrl     : 'forms/widgets/iscFormInternal/iscFormInternal.html'
+      templateUrl     : function (elem, attrs) {
+        return attrs.templateUrl || 'forms/widgets/iscFormInternal/iscFormInternal.html';
+      }
     };
 
     return directive;
