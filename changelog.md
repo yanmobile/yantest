@@ -9,7 +9,7 @@ This is a breaking change, in order to apply the change developers has to go thr
    ``` command line
        slush hs:updateCore
    ```
-3. Rename the files "app/modules/layout/anonymouse.html"  to "app/modules/layout/unauthenticated.html"
+3. Rename the files "app/modules/layout/anonymous.html"  to "app/modules/layout/unauthenticated.html"
 4. In order to update files that are application related, the easiest approach is to run the slush command
    ``` slush hs:appModule```
    This command will create a new branch with the latest code. You can apply the stash (from 1. above) and address
