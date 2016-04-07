@@ -65,7 +65,7 @@
       self.isAuthenticated = iscSessionModel.isAuthenticated();
     });
 
-    $rootScope.$on(AUTH_EVENTS.iscSessionResumedSuccess, function () {
+    $rootScope.$on(AUTH_EVENTS.sessionResumedSuccess, function () {
       self.isAuthenticated = iscSessionModel.isAuthenticated();
     });
 

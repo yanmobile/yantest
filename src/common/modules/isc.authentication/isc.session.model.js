@@ -107,8 +107,9 @@
 
       // set the timeout
       sessionTimeout.maxAge = sessionData.SessionTimeout;
-      iscSessionStorageHelper.setSessionExpiresOn(_.get(sessionData, expirationPath));
-      initSessionTimeout(sessionTimeout.maxAge);
+      var initialExpiresOn = moment().add(sessionTimeout.maxAge, 'seconds');
+      iscSessionStorageHelper.setSessionExpiresOn(initialExpiresOn);
+      initSessionTimeout();
 
       $rootScope.$emit(AUTH_EVENTS.sessionChange);
       if (isSessionNew) {
