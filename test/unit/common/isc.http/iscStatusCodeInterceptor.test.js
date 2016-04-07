@@ -7,6 +7,9 @@
 
     var fakeConfirmationService;
     var interceptor;
+    var $rootScope;
+    var AUTH_EVENTS;
+    var statusCode;
 
     // setup devlog
     beforeEach(module('isc.core', function (devlogProvider) {
@@ -21,8 +24,11 @@
       $provide.value('iscConfirmationService', fakeConfirmationService);
     }));
 
-    beforeEach(inject(function (iscStatusCodesInterceptor) {
+    beforeEach(inject(function (iscStatusCodesInterceptor, _$rootScope_, _AUTH_EVENTS_, _statusCode_) {
       interceptor = iscStatusCodesInterceptor;
+      $rootScope  = _$rootScope_;
+      AUTH_EVENTS = _AUTH_EVENTS_;
+      statusCode  = _statusCode_;
     }));
 
 
@@ -32,6 +38,26 @@
     describe('sanity check', function () {
       it('should have interceptor defined', function () {
         expect(interceptor).toBeDefined();
+      });
+    });
+
+    describe('status code 401', function () {
+      it('should broadcast AUTH_EVENTS.sessionTimeout', function () {
+        spyOn($rootScope, '$emit');
+        var response = { status: statusCode.Unauthorized, config: {} };
+        interceptor.responseError(response);
+        expect($rootScope.$emit).toHaveBeenCalledWith(AUTH_EVENTS.sessionTimeout, response);
+
+      });
+    });
+
+    describe('status code 403', function () {
+      it('should broadcast AUTH_EVENTS.notAuthenticated', function () {
+        spyOn($rootScope, '$emit');
+        var response = { status: statusCode.Forbidden, config: {} };
+        interceptor.responseError(response);
+        expect($rootScope.$emit).toHaveBeenCalledWith(AUTH_EVENTS.notAuthenticated, response);
+
       });
     });
 
@@ -92,5 +118,5 @@
       });
     });
 
-  })
+  });
 }());

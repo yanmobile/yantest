@@ -20,7 +20,7 @@
     .factory('iscHttpapi', iscHttpapi);
 
   /* @ngInject */
-  function iscHttpapi($http, iscSessionModel) {
+  function iscHttpapi($http) {
 
     return {
       get   : get,
@@ -61,6 +61,15 @@
       return $http.delete(url, config).then(partialReturnedResponseData);
     }
 
+    /**
+     * Private function used to unwrap response and return response.data
+     * If config.responseAsObject exists, the entire response object will be returned
+     * instead of just the response.data
+     *
+     * @param config
+     * @param response
+     * @returns {*} - response.data
+     */
     function returnResponseData(config, response) {
       config = config || {};
 
