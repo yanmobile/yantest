@@ -2,7 +2,7 @@
 # Core Changes
 ### 04/07/2016
 #### upgrade notes:
-Making the routing more clear we have changed the names "index" to "authenticated" and the name "anonymous" to "unauthenticated"
+Making the routing more clear we have changed the state names "index" to "authenticated" and the name "anonymous" to "unauthenticated"
 This is a breaking change, in order to apply the change developers has to go thru a serious of steps
 1. If you have un-commited changes, please stash the files so you can apply the changes in one of the next steps
 2. update the framework
@@ -14,7 +14,7 @@ This is a breaking change, in order to apply the change developers has to go thr
    ``` slush hs:appModule```
    This command will create a new branch with the latest code. You can apply the stash (from 1. above) and address
    all the conflicts.
-5. Search your project for state which matching the following pattern: "anonymouse.*" and change it to "unauthenticated.*"
+5. Search your project for state which matching the following pattern: "anonymous.*" and change it to "unauthenticated.*"
 6. Search your project for state which matching the following pattern: "index.*" and change it to "authenticated.*"
 
 ### 04/06/2016
