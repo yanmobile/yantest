@@ -3,7 +3,8 @@
  */
 
 /**
- * This is a lodash proxy filter for invoking lodash methods
+ * This is a proxy filter for invoking lodash methods
+ *
  */
 
 (function () {
@@ -14,13 +15,19 @@
   angular.module('isc.filters')
     .filter('lodash', lodash);
 
+  /* @ngInject */
+  /**
+   * @description This is a lodash proxy filter.
+   *  It takes the arguments and strips out the 2nd parameter (lodashFunc)
+   *  and applies the rest of the arguments for invoking the targeted lodash function
+   * usage
+   *  {{row | lodash:"get":column.model | lodash:"getAge"}}
+   * @namespace isc.filters
+   * @ngdoc filter
+   * @returns {*} -- return the result lodash filter
+   */
   function lodash() {
 
-    /*
-     This is a lodash proxy filter.
-     It takes the arguments and strips out the 2nd parameter (lodashFunc)
-     and applies the rest of the arguments for invoking the targeted lodash function
-     */
     return function (value, lodashFunc) {
       var retVal = value;
       if (value) {
