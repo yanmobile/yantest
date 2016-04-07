@@ -16,7 +16,7 @@ function init(gulp, plugins, config, _) {
   var today            = new Date();
   var todayISO         = plugins.dateFormat(today, 'yyyy-mm-dd') + 'T00:00:00.000';
   var suffix           = '';
-  var outputDateFormat = 'yyyymmdd';
+  var outputDateFormat = 'yyyy.mmdd';
   var syncEncoding     = { encoding: 'utf-8' };
   var upstreamUpdated  = false;
 
