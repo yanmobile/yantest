@@ -23,7 +23,7 @@
       devlog.channel('IscRouterDefaultEventService').debug('...got storedLoginResponse: ', storedLoginResponse);
       iscSessionModel.create(storedLoginResponse, false);
       $timeout(function () {
-        $rootScope.$emit(AUTH_EVENTS.iscSessionResumedSuccess);
+        $rootScope.$emit(AUTH_EVENTS.sessionResumedSuccess);
       });
     }
   }
