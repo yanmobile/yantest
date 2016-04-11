@@ -19,7 +19,7 @@ function init(gulp, plugins, config, _) {
       config.component.module.html,
       config.app.module.html);
 
-    gulp
+    return gulp
       .src(templates)
       //.pipe(plugins.filelog())
       .pipe(plugins.templateCache(tplCacheOpts))

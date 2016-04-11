@@ -13,7 +13,7 @@ module.exports = {
 function init(gulp, plugins, config, _) {
 
   gulp.task('component.json', function (done) {
-    gulp.src(['src/components/foundation/default/component.json']).
+    return gulp.src(['src/components/foundation/default/component.json']).
       pipe(gulp.dest('gulp'));
   });
 }

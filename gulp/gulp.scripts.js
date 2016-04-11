@@ -7,54 +7,78 @@ module.exports = {
   init: init
 };
 
-function init(gulp, plugins, config, _) {
-  var configOverride = getArg('--config');
+function init(gulp, plugins, config, _, util) {
+  var configOverride = util.getArg('--config');
 
-  gulp.task('scripts', function () {
+  gulp.task('scripts:vendor', function () {
+    var vendors = _.concat(config.common.vendor.js,
+      config.component.vendor.js,
+      config.app.vendor.js,
+      config.common.module.assets.vendor.js,
+      config.component.module.assets.vendor.js,
+      config.app.module.assets.vendor.js);
 
-    var configPaths = ["vendor.js",
-      "module.assets.vendor.js",
-      "module.modules",
-      "module.js"
-    ];
-
-    var jsSrc = [];
-    _.forEach(configPaths, function (configPath) {
-      jsSrc.push(_.get(config.common, configPath, []));
-      jsSrc.push(_.get(config.component, configPath, []));
-      jsSrc.push(_.get(config.app, configPath, []));
-    });
-
-    if(configOverride){
-      jsSrc.push(configOverride);
-      jsSrc.push(config.app.excludeConfig);
-    }
-
-    jsSrc     = _.flatten(jsSrc);
-
-    gulp.src(jsSrc)
+    return gulp.src(vendors)
       //.pipe(plugins.filelog())
-      .pipe(plugins.ngAnnotate())
-      //.pipe(plugins.uglify())
-      .pipe(plugins.sourcemaps.init())
-      .pipe(plugins.concat('app.js'))
-      .pipe(plugins.rename({ suffix: '.min' }))
-      .pipe(plugins.sourcemaps.write('.'))
+      .pipe(plugins.concat('1.vendor.min.js'))
+      // .pipe(plugins.bytediff.start())
+      // .pipe(plugins.uglify())
+      // .pipe(plugins.bytediff.stop())
       .pipe(gulp.dest(plugins.path.join(config.app.dest.folder, 'js')));
-
   });
 
-  /**
-   * @description
-   * This function finds the value of command line parameters regardless their location or their appearance order
-   * for example: gulp script --config /tmp/app.config.js
-   * getArg("--config") // => /tmp/app.config.js
-   * @param key
-   * @returns {*}
-   */
-  function getArg(key){
-    var index = process.argv.indexOf(key);
-    var next = process.argv[index + 1];
-    return (index < 0) ? null : (!next || next[0] === "-") ? true : next;
-  }
+  gulp.task('scripts:common', function () {
+    var src = _.concat(config.common.module.modules,
+      config.common.module.js);
+
+    return gulp.src(src)
+      //.pipe(plugins.filelog())
+      .pipe(plugins.sourcemaps.init())
+      .pipe(plugins.ngAnnotate())
+      .pipe(plugins.concat('3.common.min.js'))
+      // .pipe(plugins.bytediff.start())
+      // .pipe(plugins.uglify())
+      // .pipe(plugins.bytediff.stop())
+      .pipe(plugins.sourcemaps.write('.'))
+      .pipe(gulp.dest(plugins.path.join(config.app.dest.folder, 'js')));
+  });
+
+  gulp.task('scripts:components', function () {
+    var src = _.concat(
+      config.component.module.modules,
+      config.component.module.js);
+
+    return gulp.src(src)
+      //.pipe(plugins.filelog())
+      .pipe(plugins.sourcemaps.init())
+      .pipe(plugins.ngAnnotate())
+      .pipe(plugins.concat('5.components.min.js'))
+      // .pipe(plugins.bytediff.start())
+      // .pipe(plugins.uglify())
+      // .pipe(plugins.bytediff.stop())
+      .pipe(plugins.sourcemaps.write('.'))
+      .pipe(gulp.dest(plugins.path.join(config.app.dest.folder, 'js')));
+  });
+
+  gulp.task('scripts:app', function () {
+    var src = _.concat(config.app.module.modules, config.app.module.js);
+
+    if (configOverride) {
+      src.push(configOverride);
+      src.push(config.app.excludeConfig);
+    }
+
+    // gulp.src(src.concat(["!src/app/modules/login/login.controller.js"]))
+    return gulp.src(src)
+      .pipe(plugins.sourcemaps.init())
+      .pipe(plugins.concat('7.app.min.js', { newLine: ';' }))
+      .pipe(plugins.ngAnnotate())
+      // .pipe(plugins.bytediff.start())
+      // .pipe(plugins.uglify())
+      // .pipe(plugins.bytediff.stop())
+      .pipe(plugins.sourcemaps.write('./'))
+      .pipe(gulp.dest(plugins.path.join(config.app.dest.folder, 'js')));
+  });
+
+  gulp.task('scripts', ["scripts:vendor", "scripts:common", "scripts:components", "scripts:app"]);
 }

@@ -1,5 +1,10 @@
 
 # Core Changes
+### 04/11/2016
+#### upgrade notes:
+[This PR](https://github.com/intersystems/hs-core-ui/pull/180) updates the gulp tasks to minify files when deployed and separated the scripts into 4 files when used in development. Individual applications needs to be updated in order to work with this latest framework changes. The changes can be found [here](https://github.com/intersystems/hs-core-tools/pull/56). You can choose to apply the specific changes the existing files or take the updated files.  
+
+
 ### 04/07/2016
 #### upgrade notes:
 Making the routing more clear we have changed the state names "index" to "authenticated" and the name "anonymous" to "unauthenticated"
