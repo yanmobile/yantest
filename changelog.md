@@ -3,20 +3,13 @@
 ### 04/07/2016
 #### upgrade notes:
 Making the routing more clear we have changed the state names "index" to "authenticated" and the name "anonymous" to "unauthenticated"
-This is a breaking change, in order to apply the change developers has to go thru a serious of steps
-1. If you have un-commited changes, please stash the files so you can apply the changes in one of the next steps
-2. update the framework
-   ``` command line
-       slush hs:updateCore
-   ```
-3. Rename the files "app/modules/layout/anonymous.html"  to "app/modules/layout/unauthenticated.html"
-4. In order to update files that are application related, the easiest approach is to run the slush command
-   ``` slush hs:appModule```
-   This command will create a new branch with the latest code. You can apply the stash (from 1. above) and address
-   all the conflicts.
-5. Search your project for state which matching the following pattern: "anonymous.*" and change it to "unauthenticated.*"
-6. Search your project for state which matching the following pattern: "index.*" and change it to "authenticated.*"
-See [this PR](https://github.com/intersystems/hs-core-tools/pull/54/files)
+This is a breaking change, in order to apply the change developers have to go through a series of steps:
+1. If you have uncommitted changes, please stash the files so you can apply the changes in one of the next steps.
+2. Update the framework with `slush hs:updateCore`.
+3. Rename the files "app/modules/layout/anonymous.html"  to "app/modules/layout/unauthenticated.html".
+4. In order to update files that are application related, the easiest approach is to run `slush hs:appModule`. This command will create a new branch with the latest code. You can apply the stash (from 1. above) and address all the conflicts.
+5. Search your project for states which match the following pattern: "anonymous.\*" and change them to "unauthenticated.\*"
+6. Search your project for states which match the following pattern: "index.\*" and change them to "authenticated.\*". See [this PR](https://github.com/intersystems/hs-core-tools/pull/54/files).
 
 ### 04/06/2016
 #### upgrade notes:
