@@ -10,17 +10,31 @@ module.exports = {
 function init(gulp, plugins, config, _) {
 
   gulp.task('html', function () {
-    var inject = [];
+    return plugins.seq(["html:index", "html:config"]);
+  });
+
+  gulp.task('html:index', function () {
+    var inject = ['<!-- inject:js -->'];
 
     if (config.app.cordova) {
-      inject.push('<script src="cordova.js"></script>');
+      inject.unshift('<script src="cordova.js"></script>');
     }
 
-    gulp.src(['src/index.html'])
-      .pipe(plugins.replace('<!-- inject:js -->', inject.join('\n')))
-      .pipe(gulp.dest(config.app.dest.folder));
+    var cwd = process.cwd();
+    // It's not necessary to read the files (will speed up things), we're only after their paths:
+    process.chdir(cwd + "/www");
+    var jsFiles = gulp.src(['js/*.js'], { read: false })
+      .pipe(plugins.filelog());
+    process.chdir(cwd);
 
-    gulp.src(['src/config.xml'])
+    return gulp.src(['src/index.html'])
+      .pipe(plugins.replace('<!-- inject:js -->', inject.join('\n')))
+      .pipe(plugins.inject(jsFiles))
+      .pipe(gulp.dest(config.app.dest.folder));
+  });
+
+  gulp.task('html:config', function () {
+    return gulp.src(['src/config.xml'])
       .pipe(gulp.dest(config.app.dest.folder));
   });
 }

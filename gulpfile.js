@@ -4,35 +4,35 @@ var gulp = require('gulp');
 var _    = require('lodash');
 
 var plugins = {
-  chmod        : require('gulp-chmod'),
-  concat       : require('gulp-concat'),
-  cssmin       : require('gulp-cssmin'),
+  chmod        : require('gulp-chmod'), //changes file permissions
+  concat       : require('gulp-concat'),  //concatenating multiple files into 1
+  cssmin       : require('gulp-cssmin'),  //minifies css
   dateFormat   : require('dateformat'),
-  del          : require('del'),
+  del          : require('del'),  //deleting folders/files
   es           : require('event-stream'),
   exec         : require('child_process').exec,
   execSync     : require('child_process').execSync,
-  filelog      : require('gulp-filelog'),
-  fs           : require('fs'),
-  imagemin     : require('gulp-imagemin'),
-  jscs         : require('gulp-jscs'),
-  jshint       : require('gulp-jshint'),
-  karma        : require('karma').server,
-  mobilizer    : require('gulp-mobilizer'),
-  ngAnnotate   : require('gulp-ng-annotate'),
-  ngFilesort   : require('gulp-angular-filesort'),
+  filelog      : require('gulp-filelog'), //used for logging files in the pipe to the console
+  fs           : require('fs'), //file system
+  imagemin     : require('gulp-imagemin'),  //used by pngCrush
+  jscs         : require('gulp-jscs'),  //javascript coding styles
+  jshint       : require('gulp-jshint'),  //js linting
+  karma        : require('karma').server, //unit test runner
+  mobilizer    : require('gulp-mobilizer'), //?
+  ngAnnotate   : require('gulp-ng-annotate'), //adding ngAnnotate
   path         : require('path'),
-  pngcrush     : require('imagemin-pngcrush'),
-  rename       : require('gulp-rename'),
+  pngcrush     : require('imagemin-pngcrush'),  //img resizer
+  rename       : require('gulp-rename'),  //rename files
   replace      : require('gulp-replace'),
-  sass         : require('gulp-sass'),
-  seq          : require('run-sequence'),
-  size         : require('gulp-size'),
-  sourcemaps   : require('gulp-sourcemaps'),
-  streamqueue  : require('streamqueue'),
+  sass         : require('gulp-sass'), //sass => css
+  seq          : require('run-sequence'), //run tasks in parallel
+  size         : require('gulp-size'),  //output file size
+  sourcemaps   : require('gulp-sourcemaps'),  //generate sourcemaps
   templateCache: require('gulp-angular-templatecache'),
-  uglify       : require('gulp-uglify'),
-  wiredep      : require('wiredep')
+  uglify       : require('gulp-uglify'),  //minify/uglify
+  wiredep      : require('wiredep'),  //used for injecting
+  bytediff     : require('gulp-bytediff'),  //tells the file size before and after a gulp operation
+  inject       : require('gulp-inject') // used for injecting scripts
 };
 
 var configs = {
@@ -41,14 +41,45 @@ var configs = {
   app      : require('./gulp/app.json')
 };
 
-var tasks = require('require-dir')('./gulp/');
+var util = {
+  getArg: getArg
+};
+
+/*========================================
+ =           gulp tasks                =
+ ========================================*/
 
 gulp.task('default', ['clean'], function () {
   gulp.start('build');
 });
 
-_.forEach(tasks, function (task, name) {
-  if (typeof task.init === "function") {
-    task.init(gulp, plugins, configs, _);
-  }
-});
+initTasksInGulpFolder();
+
+
+/*========================================
+ =                 funcs                 =
+ ========================================*/
+
+function initTasksInGulpFolder() {
+  var tasks = require('require-dir')('./gulp/');
+
+  _.forEach(tasks, function (task, name) {
+    if (typeof task.init === "function") {
+      task.init(gulp, plugins, configs, _, util);
+    }
+  });
+}
+
+/**
+ * @description
+ * This function finds the value of command line parameters regardless their location or their appearance order
+ * for example: gulp script --config /tmp/app.config.js
+ * getArg("--config") // => /tmp/app.config.js
+ * @param key
+ * @returns {*}
+ */
+function getArg(key) {
+  var index = process.argv.indexOf(key);
+  var next  = process.argv[index + 1];
+  return (index < 0) ? null : (!next || next[0] === "-") ? true : next;
+}

@@ -8,7 +8,7 @@ module.exports = {
 };
 
 function init(gulp, plugins, config, _) {
-  gulp.task('deploy', function (done) {
-    plugins.seq('build', done);
+  return gulp.task('deploy', function () {
+    return plugins.seq('clean', ['fonts', 'images', 'scripts:deploy', 'templates', 'i18n', 'sass', 'favicon', 'version'], 'html');
   });
 }
