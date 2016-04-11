@@ -1,11 +1,6 @@
 /**
  * Created by paul robbins on 7/21/15
  *
- SAMPLE HTML USAGE
- <isc-form-date-components
- ng-model='ctrl.model.data.dob' >
- </isc-form-date-components>
-
  */
 
 (function () {
@@ -14,6 +9,22 @@
   angular.module('isc.core')
     .directive('iscFormsDateComponents', iscFormsDateComponents);
 
+
+  /**
+   * @ngDoc directive
+   * @memberOf isc.core
+   * @param $global
+   * @param $window
+   * @param $document
+   * @param devlog
+   * @param iscCustomConfigService
+   * @returns {{restrict: string, replace: boolean, require: string, scope: boolean, link: link, bindToController: {modelAsObject: string, allowPartialDates: string}, controllerAs: string, controller: controller, templateUrl: directive.templateUrl}}
+   * @example
+   * SAMPLE HTML USAGE
+   *   <isc-form-date-components
+   *      ng-model='ctrl.model.data.dob' >
+   *   </isc-form-date-components>
+     */
   /* @ngInject */
   function iscFormsDateComponents($global, $window, $document,
                                   devlog, iscCustomConfigService) {//jshint ignore:line
@@ -50,6 +61,13 @@
     function controller() {
     }
 
+    /**
+     * @memberOf iscFormsDateComponents
+     * @param scope
+     * @param elem
+     * @param attrs
+       * @param ngModel
+       */
     function link(scope, elem, attrs, ngModel) {
       var modelAsObject     = scope.dateComponentsCtrl.modelAsObject,
           // Partial dates only make sense if stored as an object

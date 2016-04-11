@@ -13,6 +13,13 @@
   angular.module('isc.directives')
     .directive('ngTransclude', ngTransclude);
 
+
+  /**
+   * @ngDoc directive
+   * @memberOf isc.directives
+   * @param $compile
+   * @returns {{priority: number, compile: compile}}
+     */
   /* @ngInject */
   function ngTransclude($compile){
     return {

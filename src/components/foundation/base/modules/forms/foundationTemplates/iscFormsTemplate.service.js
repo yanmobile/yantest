@@ -26,6 +26,7 @@
   /**
    * @ngdoc factory
    * @memberOf isc.forms
+   * @name iscFormsTemplateService
    * @param $filter
    * @param $window
    * @param $sce
@@ -33,6 +34,21 @@
    * @param formlyConfig
    * @param hsModelUtils
    * @returns {{isTypeRegistered: isTypeRegistered, getRegisteredType: getRegisteredType, registerWrapper: *, registerBaseType: registerBaseType, registerType: registerType, appendWrapper: appendWrapper}}
+   * @description
+   * Wraps the formlyConfig service:
+   * registerBaseType should be called (once), then registerType may be used to register any other types.
+   *
+   * The base type provides common functionality for all formly templates and their controllers. This includes:
+   *
+   * _                  : makes lodash available in FDN expressions
+   * moment             : makes moment available in FDN expressions
+   * formModel          : a reference to the root formly model. This is useful for expressions that may need to modify
+   *                      model values outside their own control or page scope
+   * hasCustomValidator : a function that takes a custom validator name and returns whether that validator is used on
+   *                      this control. This is useful for making custom validators reusable by defining them once on
+   *                      the control template and then including them by name in controls that should use them.
+   * getDefaultViewValue: a function that returns the display for a view mode field which uses the default view template.
+   *
    */
   /* @ngInject */
   function iscFormsTemplateService($filter, $window, $sce, appConfig, formlyConfig, hsModelUtils) {
@@ -56,7 +72,7 @@
     return service;
 
     /**
-     *
+     * @memberOf iscFormsTemplateService
      * @param fields
      * @returns {*}
      */
@@ -87,7 +103,7 @@
     }
 
     /**
-     *
+     * @memberOf iscFormsTemplateService
      * @param type
      * @returns {boolean}
      */
@@ -96,7 +112,7 @@
     }
 
     /**
-     *
+     * @memberOf iscFormsTemplateService
      * @param type
      * @returns {*}
      */
@@ -105,7 +121,7 @@
     }
 
     /**
-     *
+     * @memberOf iscFormsTemplateService
      */
     function registerBaseType() {
       // Base type overrides
@@ -315,7 +331,7 @@
     }
 
     /**
-     *
+     * @memberOf iscFormsTemplateService
      * @param type
      */
     function registerType(type) {
@@ -325,7 +341,7 @@
     }
 
     /**
-     *
+     * @memberOf iscFormsTemplateService
      * @param wrapperName
      * @param templateName
      */

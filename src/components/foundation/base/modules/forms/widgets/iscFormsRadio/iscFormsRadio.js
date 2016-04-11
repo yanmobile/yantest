@@ -4,6 +4,12 @@
   angular.module('isc.core')
     .directive('iscFormsRadio', iscFormsRadio);
 
+
+  /**
+   * @ngDoc directive
+   * @memberOf isc.core
+   * @returns {{restrict: string, replace: boolean, require: string, scope: boolean, bindToController: {id: string, model: string, options: string, isObjectModel: string}, controllerAs: string, controller: controller, link: link, templateUrl: directive.templateUrl}}
+     */
   /* @ngInject */
   function iscFormsRadio() {//jshint ignore:line
     // ----------------------------
@@ -42,6 +48,13 @@
 
     }
 
+    /**
+     * memberOf iscFormsRadio
+     * @param scope
+     * @param elem
+     * @param attrs
+       * @param ngModel
+       */
     function link(scope, elem, attrs, ngModel) {
       var ctrl          = scope.radioCtrl,
           options       = ctrl.options,

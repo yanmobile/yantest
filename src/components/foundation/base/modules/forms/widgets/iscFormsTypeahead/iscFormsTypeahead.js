@@ -4,6 +4,12 @@
   angular.module('isc.core')
     .directive('iscFormsTypeahead', iscFormsTypeahead);
 
+  /**
+   * @ngDoc directive
+   * @memberOf isc.core
+   * @param $timeout
+   * @returns {{restrict: string, scope: {onSelect: string, apiSelect: string, listData: string, listField: string, limitTo: string, minlength: string, bypassInputFilter: string}, replace: boolean, transclude: boolean, link: link, controller: controller, controllerAs: string, bindToController: boolean, templateUrl: templateUrl}}
+     */
   function iscFormsTypeahead($timeout) {
     var UP_ARROW_KEY_CODE   = 38;
     var DOWN_ARROW_KEY_CODE = 40;

@@ -4,6 +4,12 @@
   angular.module('isc.core')
     .directive('iscFormsTypeaheadBridge', iscFormsTypeaheadBridge);
 
+
+  /**
+   * @ngDoc directive
+   * @memberOf isc.core
+   * @returns {{restrict: string, controllerAs: string, controller: controller}}
+     */
   /* @ngInject */
   function iscFormsTypeaheadBridge() {//jshint ignore:line
     return {
