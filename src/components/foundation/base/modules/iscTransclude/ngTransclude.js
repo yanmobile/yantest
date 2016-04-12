@@ -15,7 +15,7 @@
 
 
   /**
-   * @ngDoc directive
+   * @ngdoc directive
    * @memberOf isc.directives
    * @param $compile
    * @returns {{priority: number, compile: compile}}

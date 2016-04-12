@@ -117,7 +117,7 @@
 
   /* @ngInject */
   /**
-   * @ngDoc directive
+   * @ngdoc directive
    * @memberOf isc.directives
    * @description
    * * This is a highly generic multi-transclusion directive. It defaults to 'iscTransclude/iscGridFormItem.html' as template,

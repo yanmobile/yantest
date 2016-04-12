@@ -7,7 +7,7 @@
     .factory('iscNotificationService',iscNotificationService);
 
     /**
-     * @ngDoc factory
+     * @ngdoc factory
      * @memberOf isc.notification
      * @param FoundationApi
      * @param NOTIFICATION

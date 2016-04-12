@@ -6,7 +6,7 @@
     .directive('iscSpinner', iscSpinner);
 
   /**
-   * @ngDoc directive
+   * @ngdoc directive
    * @memberOf isc.spinner
    * @returns {{bindToController: {}, controller: iscSpinnerController, controllerAs: string, restrict: string, templateUrl: directive.templateUrl}}
      */
@@ -24,7 +24,7 @@
 
     /* @ngInject */
     /**
-     * @ngDoc controller
+     * @ngdoc controller
      * @memberOf iscSpinner
      * @param devlog
      * @param iscSpinnerModel

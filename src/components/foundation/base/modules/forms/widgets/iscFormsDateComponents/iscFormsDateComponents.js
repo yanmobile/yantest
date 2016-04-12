@@ -11,7 +11,7 @@
 
 
   /**
-   * @ngDoc directive
+   * @ngdoc directive
    * @memberOf isc.core
    * @param $global
    * @param $window

@@ -12,7 +12,7 @@
     .factory('httpLoaderInterceptor', httpLoaderInterceptor);
 
   /**
-   * @ngDoc factory
+   * @ngdoc factory
    * @memberOf isc.spinner
    * @param $q
    * @param iscSpinnerModel

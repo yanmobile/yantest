@@ -6,7 +6,7 @@
 
 
   /**
-   * @ngDoc factory
+   * @ngdoc factory
    * @memberOf isc.forms
    * @param devlog
    * @param apiHelper

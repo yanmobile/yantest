@@ -6,7 +6,7 @@
 
   /* @ngInject */
   /**
-   * @ngDoc directive
+   * @ngdoc directive
    * @memberOf isc.forms
    * @param FORMS_EVENTS
    * @param $q
