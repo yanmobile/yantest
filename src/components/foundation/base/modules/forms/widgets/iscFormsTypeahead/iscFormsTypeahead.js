@@ -5,7 +5,7 @@
     .directive('iscFormsTypeahead', iscFormsTypeahead);
 
   /**
-   * @ngDoc directive
+   * @ngdoc directive
    * @memberOf isc.core
    * @param $timeout
    * @returns {{restrict: string, scope: {onSelect: string, apiSelect: string, listData: string, listField: string, limitTo: string, minlength: string, bypassInputFilter: string}, replace: boolean, transclude: boolean, link: link, controller: controller, controllerAs: string, bindToController: boolean, templateUrl: templateUrl}}

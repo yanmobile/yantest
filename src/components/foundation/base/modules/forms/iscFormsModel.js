@@ -7,7 +7,7 @@
     .factory('iscFormsModel', iscFormsModel);
 
   /**
-   * @ngDoc factory
+   * @ngdoc factory
    * @memberOf isc.forms
    * @param $q
    * @param $templateCache

@@ -11,7 +11,7 @@
     .controller('error404Controller', error404Controller);
 
   /**
-   * @ngDoc controller
+   * @ngdoc controller
    * @memberOf isc.error
    * @param devlog
      */

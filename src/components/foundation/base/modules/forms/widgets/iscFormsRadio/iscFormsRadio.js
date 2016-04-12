@@ -6,7 +6,7 @@
 
 
   /**
-   * @ngDoc directive
+   * @ngdoc directive
    * @memberOf isc.core
    * @returns {{restrict: string, replace: boolean, require: string, scope: boolean, bindToController: {id: string, model: string, options: string, isObjectModel: string}, controllerAs: string, controller: controller, link: link, templateUrl: directive.templateUrl}}
      */

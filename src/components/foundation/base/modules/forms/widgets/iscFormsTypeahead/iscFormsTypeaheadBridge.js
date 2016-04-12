@@ -6,7 +6,7 @@
 
 
   /**
-   * @ngDoc directive
+   * @ngdoc directive
    * @memberOf isc.core
    * @returns {{restrict: string, controllerAs: string, controller: controller}}
      */

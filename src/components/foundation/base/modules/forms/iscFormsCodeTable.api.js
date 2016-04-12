@@ -7,7 +7,7 @@
     .factory('iscFormsCodeTableApi', iscFormsCodeTableApi);
 
     /**
-     * @ngDoc factory
+     * @ngdoc factory
      * @memberOf isc.forms
      * @param iscHttpapi
      * @param apiHelper

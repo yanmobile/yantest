@@ -89,7 +89,7 @@
 
 
   /**
-   * @ngDoc directive
+   * @ngdoc directive
    * @memberOf isc.Forms
    * @param $stateParams
    * @param $q

@@ -7,7 +7,7 @@
 
 
   /**
-   * @ngDoc directive
+   * @ngdoc directive
    * @memberOf isc.notification
    * @returns {{restrict: string, replace: boolean, templateUrl: directive.templateUrl}}
      */

@@ -6,7 +6,7 @@
 
   /* @ngInject */
   /**
-   * @ngDoc directive
+   * @ngdoc directive
    * @memberOf isc.forms
    * @param $q
    * @param iscCustomConfigService

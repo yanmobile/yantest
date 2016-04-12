@@ -15,7 +15,7 @@
     .factory('iscSpinnerModel', iscSpinnerModel);
 
   /**
-   * @ngDoc factory
+   * @ngdoc factory
    * @memberOf isc.spinner
    * @param devlog
    * @returns {{addPendingReq: addPendingReq, subtractPendingReq: subtractPendingReq, getPendingReqs: getPendingReqs}}
