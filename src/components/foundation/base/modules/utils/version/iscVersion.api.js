@@ -4,7 +4,14 @@
   /* @ngInject */
   angular
     .module('isc.core')
-    .factory('iscVersionApi', function (iscHttpapi) {
+    .factory('iscVersionApi',iscVersionApi);
+    /**
+     * @ngdoc factory
+     * @memberOf isc.core
+     * @param iscHttpapi
+     * @returns {{load: load, get: get}}
+     */
+    function iscVersionApi(iscHttpapi) {
       var _url = 'version.json';
 
       var _versionInfo;
@@ -32,6 +39,6 @@
       function get() {
         return _.merge({}, _versionInfo);
       }
-    });
+    }
 
 })();

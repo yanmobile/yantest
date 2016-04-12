@@ -9,6 +9,11 @@
     .controller('iscTableRowController', iscTableRowController);
 
   /* @ngInject */
+  /**
+   * @ngdoc controller
+   * @memberOf isc.table
+   * @param $scope
+     */
   function iscTableRowController($scope){
 
     // ----------------------------
@@ -27,6 +32,12 @@
     // functions
     // ----------------------------
 
+    /**
+     * @memberOf iscTableRowController
+     * @param commandName
+     * @param event
+     * @param domCallback
+       */
     function onCommand(commandName, event, domCallback){
       var rest = _.toArray(arguments);
       rest     = _.slice(rest, 3);
@@ -80,6 +91,12 @@
             callback.apply(self, rest);
           } //else do nothing
       }
+      /**
+       * @memberOf iscTableRowController
+       * @param command
+       * @param domCallback
+       * @returns {*}
+         */
       function getCommandCallback(command, domCallback){
         var callback       = domCallback;
         var commandsColumn = _.find(self.iscTblCtrl.tableConfig.columns, { type: 'commands' });
@@ -92,8 +109,14 @@
     }
 
 
-    // This approach is the pessimistic approach, UI/model is only updated/refreshed
-    // when api calls are successful. The changes are wrapped in the 'then' blocks.
+
+    /**
+     * @memberOf iscTableRowController
+     * @param event
+     * @description
+     * This approach is the pessimistic approach, UI/model is only updated/refreshed
+     * when api calls are successful. The changes are wrapped in the 'then' blocks.
+       */
     function defaultRemoveCallback( event ){
       var apicall = _.get(self, 'iscTblCtrl.tableConfig.api.remove', angular.noop);
       apicall(self.dataItem).then(function(){
@@ -101,12 +124,20 @@
       });
     }
 
+    /**
+     * @memberOf iscTableRowController
+     * @param event
+       */
     function defaultCancelEditCallback( event ){
       self.editModeData = {};
       self.inEditMode   = false;
       self.iscTblCtrl.cancelEdit();
     }
 
+    /**
+     * @memberOf iscTableRowController
+     * @param event
+       */
     function defaultCreateCallback( event ){
       if(_.isNil(self.iscTblCtrl.dataItem)){
         $scope.dataItem = self.dataItem = self.iscTblCtrl.createRow();
@@ -115,6 +146,10 @@
       }
     }
 
+    /**
+     * @memberOf iscTableRowController
+     * @param event
+       */
     function defaultEditCallback( event ){
       if(_.isNil(self.iscTblCtrl.dataItem)){
         self.editModeData = angular.copy(self.dataItem);
@@ -123,6 +158,10 @@
       }
     }
 
+    /**
+     * @memberOf iscTableRowController
+     * @param event
+       */
     function defaultSaveCallback( event ){
       var apicall;
 

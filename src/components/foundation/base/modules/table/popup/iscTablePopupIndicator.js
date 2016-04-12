@@ -15,6 +15,12 @@
     .directive('iscTablePopupIndicator', iscTablePopupIndicator);
 
   /* @ngInject */
+  /**
+   * @ngdoc directive
+   * @memberOf isc.table
+   * @param devlog
+   * @returns {{restrict: string, controller: controller, controllerAs: string}}
+     */
   function iscTablePopupIndicator(devlog){
     devlog.channel('iscTablePopupIndicator').debug( 'iscTablePopupIndicator LOADED');
 

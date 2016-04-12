@@ -10,6 +10,15 @@
 
 
   /* @ngInject */
+  /**
+   * @memberOf isc.table
+   * @ngdoc directive
+   * @param devlog
+   * @param $state
+   * @param $templateCache
+   * @param $compile
+   * @returns {{scope: boolean, restrict: string, controllerAs: string, compile: compile}}
+     */
   function iscTableFooterRow( devlog, $state, $templateCache, $compile ){
     devlog.channel('iscTableFooterRow').debug('iscTableFooterRow.LOADED');
 

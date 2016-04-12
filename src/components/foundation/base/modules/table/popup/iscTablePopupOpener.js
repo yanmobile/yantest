@@ -16,6 +16,15 @@
     .directive('iscTablePopupOpener', iscTablePopupOpener);
 
   /* @ngInject */
+  /**
+   * @ngdoc directive
+   * @memberOf isc.table
+   * @param devlog
+   * @param $state
+   * @param $templateCache
+   * @param $compile
+   * @returns {{restrict: string, link: link}}
+     */
   function iscTablePopupOpener(devlog, $state, $templateCache, $compile){//jshint ignore:line
     devlog.channel('iscTablePopupOpener').debug( 'iscTablePopupOpener LOADED');
 

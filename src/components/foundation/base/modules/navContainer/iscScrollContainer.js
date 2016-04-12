@@ -9,6 +9,12 @@
     .directive('iscScrollContainer', iscScrollContainer);
 
   /* @ngInject */
+  /**
+   * @ngdoc directive
+   * @memberOf iscNavContainer
+   * @param iscScrollContainerService
+   * @returns {{restrict: string, link: link}}
+     */
   function iscScrollContainer(iscScrollContainerService) {
     var directive = {
       restrict: 'EA',

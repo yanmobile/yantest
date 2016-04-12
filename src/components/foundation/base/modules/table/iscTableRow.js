@@ -21,6 +21,15 @@
     .directive( 'iscTableRow', iscTableRow );
 
   /* @ngInject */
+  /**
+   * @ngdoc directive
+   * @memberOf isc.table
+   * @param devlog
+   * @param $state
+   * @param $templateCache
+   * @param $compile
+   * @returns {{scope: boolean, restrict: string, priority: number, controllerAs: string, controller: string, compile: compile}}
+     */
   function iscTableRow( devlog, $state, $templateCache, $compile ){
     devlog.channel('iscTableRow').debug('iscTableRow.LOADED');
 
@@ -70,6 +79,11 @@
         } );
       }
 
+      /**
+       * @memberOf iscTableRow
+       * @param templateStr
+       * @returns {*}
+         */
       function removeTemplateSpaces(templateStr) {
         return templateStr
             .replace(/\r?\n|\r/g, ' ')  //replace newline with space

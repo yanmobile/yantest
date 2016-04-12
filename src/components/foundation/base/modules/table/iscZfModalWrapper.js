@@ -30,6 +30,34 @@
   angular.module( 'isc.table' )
     .directive( 'iscZfModalWrapper', iscZfModalWrapper );
 
+  /**
+   * @ngdoc directive
+   * @memberOf isc.table
+   * @description
+   * Created by paul robbins on 10/05/2015
+   * Wrapper element for zf-modals:
+   * wrapper-name and wrapper-offset
+   * - set the distance from the top of the page
+   * inner-wrapper-name
+   * - specifies the element name of an inside wrapper, if needed for styling
+   * scrollable-modal
+   * - if truthy, enables scrolling within the modal
+   * @example
+   * SAMPLE HTML USAGE
+   * <isc-zf-modal-wrapper
+   *   wrapper-name="cmcCarePlan"
+   *   wrapper-offset="-4"
+   *   inner-wrapper-name="iscZfModalInnerWrapper"
+   *    scrollable-modal="true">
+   *   <div zf-modal>
+   *   <!-- optional inner wrapper -->
+   *      <div name="iscZfModalInnerWrapper">
+   *   ...
+   *     </div>
+   *  </div>
+   * </isc-zf-modal-wrapper>
+   * @returns {{restrict: string, link: link}}
+     */
   function iscZfModalWrapper() {//jshint ignore:line
 
     // ----------------------------

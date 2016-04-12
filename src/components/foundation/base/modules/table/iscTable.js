@@ -179,6 +179,12 @@
     .directive( 'iscTable', iscTable );
 
   /* @ngInject */
+  /**
+   * @ngdoc directive
+   * @memberOf isc.table
+   * @param devlog
+   * @returns {{scope: {tableConfig: string, tableData: string, filterFunction: string, rowButtonCallback: string, backButtonCallback: string, tableName: string}, restrict: string, replace: boolean, templateUrl: directive.templateUrl, bindToController: boolean, link: link, controller: controller, controllerAs: string}}
+     */
   function iscTable( devlog ){ //jshint ignore:line
     devlog.channel('iscTable').debug('iscTable.LOADED');
 
@@ -254,6 +260,9 @@
       self.sortField = {reverse: false};
       }
 
+      /**
+       * @memberOf iscTable
+       */
       function applyFilter() {
         var rows = self.tableRows;
         if (self.tableConfig.sortable) {
@@ -262,6 +271,10 @@
         self.filteredRows = rows;
       }
 
+      /**
+       * @memberOf iscTable
+       * @param column
+         */
       self.sortColumn = function (column) {
         if ( (column.columnClick === 'sort' || !column.columnClick) && self.sortField.name === column.key) {
           self.sortField.reverse = !self.sortField.reverse;
@@ -271,10 +284,19 @@
         applyFilter();
       };
 
+      /**
+       * @memberOf iscTable
+       * @param newPageNumber
+         */
       self.changePage = function (newPageNumber) {
         self.currentPage = newPageNumber;
       };
 
+      /**
+       * @memberOf iscTable
+       * @param item
+       * @returns {*}
+         */
       self.doFilter = function (item) {
         devlog.channel('iscTable').debug( 'iscTable.doFilter', item );
         var fitlerable = _.some( self.tableConfig.columns, function( column ){
@@ -293,24 +315,46 @@
       // ----------------------------
       // functions
       // ----------------------------
+      /**
+       * @memberOf iscTable
+       * @param key
+       * @returns {*}
+         */
       function getColumnByKey(key){
         return _.find(self.tableConfig.columns, {key: key});
       }
 
+      /**
+       * @memberOf iscTable
+       * @param row
+         */
       function deleteRow(row) {
         _.remove(self.tableRows, row);
       }
 
+      /**
+       * @memberOf iscTable
+       * @param row
+         */
       function addRow(row) {
         self.tableRows.push(row);
         self.dataItem = null;
       }
 
+      /**
+       * @memberOf iscTable
+       * @param row
+       * @param oldRow
+         */
       function updateRow(row, oldRow) {
         angular.extend(oldRow, row);
         self.dataItem = null;
       }
 
+      /**
+       * @memberOf iscTable
+       * @returns {null|{isNew: boolean}|*}
+         */
       function createRow() {
         var dataItem = {isNew: true};
         self.tableConfig.columns.forEach(function (column) {
@@ -322,10 +366,17 @@
         return self.dataItem;
       }
 
+      /**
+       * @memberOf iscTable
+       * @param row
+         */
       function editRow(row) {
         self.dataItem = row;
       }
 
+      /**
+       * @memberOf iscTable
+       */
       function cancelEdit() {
         self.dataItem = null;
       }

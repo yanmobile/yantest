@@ -6,6 +6,11 @@
     .factory('iscScrollContainerService', iscScrollContainerService);
 
   /* @ngInject */
+  /**
+   * @ngdoc factory
+   * @memberOf iscNavContainer
+   * @returns {{registerScrollingContent: registerScrollingContent, getCurrentScrollPosition: iscScrollContainerService.getCurrentScrollPosition, setCurrentScrollPosition: setCurrentScrollPosition}}
+     */
   function iscScrollContainerService() {
     var scrollingContent = [];
 
@@ -28,6 +33,8 @@
     }
 
     /**
+     * @memberOf iscScrollContainerService
+     * @description
      * Gets the scroll position of the given scrollingContent index.
      * @param {number|String=} index
      * @returns {*}
@@ -44,6 +51,8 @@
     }
 
     /**
+     * @memberOf iscScrollContainerService
+     * @description
      * Sets the scroll position of the given scrollingContent index.
      * @param {number} position - The position to scroll to
      * @param {number=} duration - The animation duration in millis
