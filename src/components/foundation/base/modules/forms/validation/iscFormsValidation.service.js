@@ -26,6 +26,10 @@
         validateCollections: validateCollections
       };
 
+      /**
+       * @memberOf iscFormsValidationService
+       * @param formOptions
+         */
       function init(formOptions) {
         options    = formOptions;
         validation = {
@@ -34,10 +38,19 @@
         keyMap     = {};
       }
 
+      /**
+       * @memberOf iscFormsValidationService
+       * @returns {{}}
+         */
       function getValidationObject() {
         return validation;
       }
 
+      /**
+       * @memberOf iscFormsValidationService
+       * @param key
+       * @param value
+         */
       function registerCollection(key, value) {
         keyMap[key] = value;
       }
@@ -46,7 +59,7 @@
        * @description
        * Synchronously returns true iff the given form is valid.
        * If invalid, all invalid controls are touched to trigger their UI validation.
-       *
+       * @memberOf iscFormsValidationService
        * @param form - the ngFormController for the form to validate
        * @returns {Object} - isValid: whether the form passed validation; $error: the $error list
        */
@@ -83,6 +96,7 @@
        * @param {Object} model - The root-level model for the form
        * @param {Array} collectionConfigs - The configuration objects for the collections in this form
        * @returns {Promise}
+       * @memberOf iscFormsValidationService
        */
       function validateCollections(model, collectionConfigs) {
         var sleepLengthInMillis = 50,
@@ -114,10 +128,18 @@
 
         return deferred.promise;
 
+        /**
+         * @memberOf iscFormsValidationService
+         * @returns {boolean}
+           */
         function formIsPopulated() {
           return !!validation.form;
         }
 
+        /**
+         * @memberOf iscFormsValidationService
+         * @returns {boolean}
+           */
         function formIsDestroyed() {
           return !validation.form;
         }
@@ -128,7 +150,7 @@
            * Short-circuits and returns false if the maxWaitInMillis time is exceeded.
            *
            * Useful for waiting for longer-running third-party synchronous functions (such as form building) to complete.
-           *
+           * @memberOf iscFormsValidationService
            * @param sleepTest {function}
            * @param maxWait {number
            * @returns {promise}
@@ -147,6 +169,7 @@
         }
 
         /**
+         * @memberOf iscFormsValidationService
          * @description
          * Processes each collection item that needs to be validated.
          */

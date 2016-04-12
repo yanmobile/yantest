@@ -5,6 +5,15 @@
     .directive('iscFormInternal', iscFormInternal);
 
   /* @ngInject */
+  /**
+   * @ngDoc directive
+   * @memberOf isc.forms
+   * @param $q
+   * @param iscCustomConfigService
+   * @param iscNotificationService
+   * @param iscFormsValidationService
+   * @returns {{restrict: string, replace: boolean, controllerAs: string, scope: {formDefinition: string, model: string, options: string, formConfig: string, validateFormApi: string, buttonConfig: string}, bindToController: boolean, controller: controller, templateUrl: directive.templateUrl}}
+     */
   function iscFormInternal($q,
                            iscCustomConfigService, iscNotificationService, iscFormsValidationService) {
     var directive = {
@@ -65,6 +74,10 @@
 
 
       // Private/helper functions
+      /**
+       * @memberOf iscFormInternal
+       *
+       */
       function init() {
         // Initialize validation and notification components
         iscFormsValidationService.init(self.options);
@@ -76,6 +89,11 @@
         }, 0);
       }
 
+      /**
+       * @memberOf iscFormInternal
+       * @param mainFormErrors
+       * @param subformErrors
+         */
       function showFailedValidation(mainFormErrors, subformErrors) {
         mainFormErrors = _.compact(mainFormErrors);
 
@@ -110,17 +128,33 @@
           iscNotificationService.showAlert(alert);
         });
 
+        /**
+         * @memberOf iscFormInternal
+         * @param error
+         * @returns {string}
+           */
         function makeError(error) {
           return '<label class="error-message">In ' + error.label + ': ' + pluralize('record', error.records.length) + ' invalid.</label>';
         }
 
+        /**
+         * @memberOf iscFormInternal
+         * @param text
+         * @param count
+         * @returns {string}
+           */
         function pluralize(text, count) {
           return count + ' ' + text + (count > 1 ? 's are' : ' is');
         }
       }
 
 
-      // Sets up watches on pages having a hideExpression property
+      //
+      /**
+       * @memberOf iscFormInternal
+       * @description
+       * Sets up watches on pages having a hideExpression property
+       */
       function watchPages() {
         // Throttle for initial load or large model changes
         var throttledFilter = _.throttle(filterPages, 100);
@@ -151,16 +185,25 @@
         throttledFilter();
       }
 
+      /**
+       * @memberOf iscFormInternal
+       */
       function filterPages() {
         self.multiConfig.selectablePages = _.filter(self.formDefinition.form.pages, function (page) {
           return !page._isHidden;
         });
       }
 
+      /**
+       * @memberOf iscFormInternal
+       */
       function closeAnnotations() {
         self.formConfig.annotationsApi.closeAnnotationPanel();
       }
 
+      /**
+       * @memberOf iscFormInternal
+       */
       function onSubmit() {
         self.options.formState._validation.$submitted = true;
 
@@ -197,6 +240,9 @@
         }
       }
 
+      /**
+       * @memberOf iscFormInternal
+       */
       function submitForm() {
         var submitConfig = _.get(self.buttonConfig, 'submit', {}),
             onSubmit     = submitConfig.onClick || function () { },

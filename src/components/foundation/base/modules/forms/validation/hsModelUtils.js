@@ -7,6 +7,7 @@
     .factory('hsModelUtils', hsModelUtils);
 
     /**
+     *
      * @ngdoc factory
      * @memberOf isc.forms
      * @param $window
@@ -57,6 +58,7 @@
        *   this needs to be Patient.Name.First.
        * @param module
        * @param spec
+       * @memberOf hsModelUtils
        */
       function getError(module, spec) {
 

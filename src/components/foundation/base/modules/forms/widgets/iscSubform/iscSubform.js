@@ -5,6 +5,16 @@
     .directive('iscSubform', iscSubform);
 
   /* @ngInject */
+  /**
+   * @ngDoc directive
+   * @memberOf isc.forms
+   * @param FORMS_EVENTS
+   * @param $q
+   * @param $filter
+   * @param iscScrollContainerService
+   * @param iscConfirmationService
+   * @returns {{restrict: string, replace: boolean, controllerAs: string, scope: {model: string, options: string, formTitle: string, breadcrumbs: string, multiConfig: string, singleConfig: string}, bindToController: boolean, controller: controller, link: link, templateUrl: directive.templateUrl}}
+     */
   function iscSubform(FORMS_EVENTS, $q, $filter, iscScrollContainerService, iscConfirmationService) {//jshint ignore:line
 
     // ----------------------------

@@ -4,7 +4,16 @@
   /* @ngInject */
   angular
     .module('isc.notification')
-    .factory('iscNotificationService', function (FoundationApi, NOTIFICATION) {
+    .factory('iscNotificationService',iscNotificationService);
+
+    /**
+     * @ngDoc factory
+     * @memberOf isc.notification
+     * @param FoundationApi
+     * @param NOTIFICATION
+     * @returns {{init: init, setDefaults: setDefaults, registerFieldScope: registerFieldScope, getFieldScope: getFieldScope, showAlert, showWarning, showSuccess, showDark}}
+     */
+    function iscNotificationService(FoundationApi, NOTIFICATION) {
       var defaults = {};
 
       var fieldScope = {};
@@ -26,19 +35,33 @@
         showDark   : showDark
       };
 
+        /**
+         * @memberOf iscNotificationService
+         */
       function init() {
         fieldScope = {};
       }
 
+        /**
+         * @memberOf iscNotificationService
+         * @param scope
+         */
       function registerFieldScope(scope) {
         fieldScope[scope.id] = scope;
       }
 
+        /**
+         * @memberOf iscNotificationService
+         * @param id
+         * @returns {*}
+         */
       function getFieldScope(id) {
         return _.get(fieldScope, id, {});
       }
 
       /**
+       * @memberOf iscNotificationService
+       * @description
        * Sets default options for notifications from the configuration object.
        * @param {Object} config - position (const), type (const), autoclose (number)
        */
@@ -47,6 +70,8 @@
       }
 
       /**
+       * @memberOf iscNotificationService
+       * @description
        * Shows a notification with the configured parameters.
        * @param {string} type (const)
        * @param {Object} config:
@@ -71,5 +96,5 @@
           }
         );
       }
-    });
+    }
 })();

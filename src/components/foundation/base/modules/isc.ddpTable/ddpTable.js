@@ -25,7 +25,27 @@
   angular.module('isc.ddpTable')
     .directive('ddpTable', ddpTable);
 
-
+  /**
+   * @ngdoc directive
+   * @memberOf isc.ddpTable
+   * @description
+   * Configuration:
+   *
+   * {
+   *   title   : 'Sortable table by ddpTable',
+   *   sortable: true,
+   *   columns : [
+   *     { key: 'Salads', model: 'Salads', sortable: false },
+   *     { key: 'Entrees', model: 'Entrees', type: 'string' },
+   *     { key: 'Desserts', model: 'Desserts', cssTHClass: 'grid-block th', cssTDClass: 'grid-block td'  },
+   *     { key: 'Soups', model: 'Soups' },
+   *     { key: 'Customer', model: 'Customer.Name' },
+   *     { key: 'Order Time', model: 'Customer.Date', type: 'date' },
+   *     { key: 'Age', model: 'Customer.DOB', type: 'integer', templateUrl: 'isc.ddpTable/cells/cell.age.html' }
+   *   ]
+   * }
+   * @returns {{restrict: string, controller: controller, controllerAs: string, bindToController: {config: string, data: string}, scope: boolean, templateUrl: directive.templateUrl}}
+     */
   function ddpTable() {//jshint ignore:line
 
     // ----------------------------

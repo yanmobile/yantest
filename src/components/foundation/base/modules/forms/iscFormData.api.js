@@ -4,6 +4,16 @@
   angular.module('isc.forms')
     .factory('iscFormDataApi', iscFormDataApi);
 
+
+  /**
+   * @ngDoc factory
+   * @memberOf isc.forms
+   * @param devlog
+   * @param apiHelper
+   * @param iscCustomConfigService
+   * @param iscHttpapi
+   * @returns {{get: get, put: put, post: post, delete: deleteApi, list: list}}
+     */
   /* @ngInject */
   function iscFormDataApi(devlog, apiHelper, iscCustomConfigService, iscHttpapi) {
     var config       = iscCustomConfigService.getConfig(),
@@ -21,26 +31,51 @@
 
     return api;
 
+    /**
+     * @memberOf iscFormDataApi
+     * @param id
+     * @returns {*}
+       */
     function get(id) {
       devlog.channel('iscFormDataApi').debug('iscFormDataApi.get');
       return iscHttpapi.get([formDataUrl, id].join('/'));
     }
 
+    /**
+     * @memberOf iscFormDataApi
+     * @param id
+     * @param form
+     * @returns {*}
+       */
     function put(id, form) {
       devlog.channel('iscFormDataApi').debug('iscFormDataApi.put');
       return iscHttpapi.put([formDataUrl, id].join('/'), form);
     }
 
+    /**
+     * @memberOf iscFormDataApi
+     * @param form
+     * @returns {*}
+       */
     function post(form) {
       devlog.channel('iscFormDataApi').debug('iscFormDataApi.post');
       return iscHttpapi.post(formDataUrl, form);
     }
 
+    /**
+     * @memberOf iscFormDataApi
+     * @param id
+     * @returns {*}
+       */
     function deleteApi(id) {
       devlog.channel('iscFormDataApi').debug('iscFormDataApi.delete');
       return iscHttpapi.delete([formDataUrl, id].join('/'));
     }
 
+    /**
+     * @memberOf iscFormDataApi
+     * @returns {*}
+       */
     function list() {
       devlog.channel('iscFormDataApi').debug('iscFormDataApi.list');
       return iscHttpapi.get(formDataUrl);

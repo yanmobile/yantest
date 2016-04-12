@@ -4,7 +4,17 @@
   /* @ngInject */
   angular
     .module('isc.forms')
-    .factory('iscFormsCodeTableApi', function (iscHttpapi, apiHelper, iscCustomConfigService) {
+    .factory('iscFormsCodeTableApi', iscFormsCodeTableApi);
+
+    /**
+     * @ngDoc factory
+     * @memberOf isc.forms
+     * @param iscHttpapi
+     * @param apiHelper
+     * @param iscCustomConfigService
+     * @returns {{loadAll: loadAll, get: get}}
+     */
+    function iscFormsCodeTableApi(iscHttpapi, apiHelper, iscCustomConfigService) {
       var config       = iscCustomConfigService.getConfig(),
           moduleConfig = _.get(config, 'moduleApi', {});
 
@@ -18,6 +28,8 @@
       };
 
       /**
+       * @memberOf iscFormsCodeTableApi
+       * @description
        * Loads all the code tables from the server and caches them locally.
        * @returns {Promise}
        */
@@ -31,6 +43,8 @@
       }
 
       /**
+       * @memberOf iscFormsCodeTableApi
+       * @description
        * Synchronously returns a single code table by name.
        * @param {String} name
        * @returns {Array}
@@ -38,6 +52,6 @@
       function get(name) {
         return _.get(codeTableCache, name, []);
       }
-    });
+    }
 
 })();

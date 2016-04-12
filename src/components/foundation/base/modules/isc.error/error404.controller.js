@@ -10,6 +10,11 @@
   angular.module('isc.error')
     .controller('error404Controller', error404Controller);
 
+  /**
+   * @ngDoc controller
+   * @memberOf isc.error
+   * @param devlog
+     */
   function error404Controller(devlog) {
     devlog.channel('error404Controller').debug('error404Controller LOADED');
 

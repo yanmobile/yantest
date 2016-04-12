@@ -11,6 +11,14 @@
     .module('isc.spinner')
     .factory('httpLoaderInterceptor', httpLoaderInterceptor);
 
+  /**
+   * @ngDoc factory
+   * @memberOf isc.spinner
+   * @param $q
+   * @param iscSpinnerModel
+   * @param devlog
+   * @returns {{request: request, response: response, responseError: responseError}}
+     */
   function httpLoaderInterceptor($q, iscSpinnerModel, devlog) {
 
     var factory = {
@@ -21,6 +29,11 @@
 
     return factory;
 
+    /**
+     * @memberOf httpLoaderInterceptor
+     * @param config
+     * @returns {*}
+       */
     function request(config) {
       if (config.showLoader) {
         devlog.channel('httpLoaderInterceptor').debug('adding url to loader ' + config.url);
@@ -29,6 +42,11 @@
       return config;
     }
 
+    /**
+     * @memberOf httpLoaderInterceptor
+     * @param res
+     * @returns {*}
+       */
     function response(res) {
       if (res.config.showLoader) {
         devlog.channel('httpLoaderInterceptor').debug('moving url from loader ' + res.config.url);
@@ -37,6 +55,11 @@
       return res;
     }
 
+    /**
+     * @memberOf httpLoaderInterceptor
+     * @param res
+     * @returns {*}
+       */
     function responseError(res) {
       if (res.config.showLoader) {
         devlog.channel('httpLoaderInterceptor').debug('moving url from loader ' + res.config.url);

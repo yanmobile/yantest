@@ -5,6 +5,12 @@
     .directive('iscNotificationSet', iscNotificationSet);
 
 
+
+  /**
+   * @ngDoc directive
+   * @memberOf isc.notification
+   * @returns {{restrict: string, replace: boolean, templateUrl: directive.templateUrl}}
+     */
   /* @ngInject */
   function iscNotificationSet() {//jshint ignore:line
     // ----------------------------

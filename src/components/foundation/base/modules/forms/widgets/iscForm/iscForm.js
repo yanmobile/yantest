@@ -87,6 +87,102 @@
    *
    */
 
+
+  /**
+   * @ngDoc directive
+   * @memberOf isc.Forms
+   * @param $stateParams
+   * @param $q
+   * @param $window
+   * @param iscSessionModel
+   * @param iscNavContainerModel
+   * @param iscFormsModel
+   * @param iscFormsValidationService
+   * @param iscFormDataApi
+   * @returns {{restrict: string, replace: boolean, controllerAs: string, scope: {formType: string, formKey: string, mode: string, id: string, model: string, formConfig: string, buttonConfig: string}, bindToController: boolean, controller: controller, templateUrl: directive.templateUrl}}
+   * @description
+   *    * iscForm - A directive for displaying a form
+   *
+   * Parameters:
+   *
+   * formKey    : The unique identifier for the form definition.
+   * formType   : The category to which the form belongs. This is defined in the form's FDN.
+   * mode       : 'edit' or 'view'
+   * id         : If provided, form data with this value is retrieved and loaded into this form instance.
+   * model      : If provided, this is used as the form data model.
+   *
+   * formConfig : A configuration object that may include some or all of the following behavior configuration:
+   *   additionalModelInit
+   *     A function or expression to be invoked during form init, which may populate additional data models.
+   *
+   *   useOriginalFormKey
+   *     If loading an existing form in edit mode and this property is truthy, the formKey of the persisted form
+   *     is used, even if this differs from the active formKey of type formType.
+   *     Default: false
+   *
+   *   annotationsApi
+   *     The API to use for annotations in this form, if applicable. These properties may be defined:
+   *       getFormAnnotations
+   *       closeAnnotationPanel
+   *       initAnnotationQueue
+   *       processAnnotationQueue
+   *     Default: none
+   *
+   * buttonConfig : A configuration object for form button configuration. This is an object with
+   *   properties that represent buttons at the end of the main (parent) form.
+   *   By default, the following two buttons are defined:
+   *
+   *   cancel
+   *     configuration for the cancel button
+   *     Defaults:
+   *       afterClick: goes back one page in the browser history
+   *       cssClass  : 'cancel button large float-left'
+   *       text      : if mode is 'view', 'Forms_Back_Button', else 'Forms_Cancel_Button'
+   *       order     : 1
+   *
+   *   submit
+   *     configuration for the submit button
+   *     Defaults:
+   *       onClick   : submits the form to iscFormDataApi
+   *       afterClick: returns the user to his or her landing page
+   *       cssClass  : 'button large float-right'
+   *       text      : 'Forms_Submit_Button'
+   *       hide      : hidden if mode is 'view'
+   *       order     : 2
+   *
+   *   [other properties]
+   *     configuration for other buttons at the bottom of the form
+   *     Defaults: none
+   *
+   *
+   *   button configurations are objects with the following properties:
+   *     onClick    : a function to call when the button is clicked
+   *     afterClick : a function callback called after the button click event has completed
+   *     cssClass   : css styles to apply to the button
+   *     text       : an i18n translation key or literal text to render on the button
+   *     order      : order in which to render the button
+   *     hide       : if truthy, the button will not be rendered in the UI
+   *
+   * @example
+   *   Example usage:
+   *   to change the text of the submit button to "Complete" and add a "Home" button in the middle:
+   *     buttonConfig : {
+   *       submit : {
+   *         text  : 'Complete',
+   *         order : 3
+   *       },
+   *       home : {
+   *         text    : 'Back Home',
+   *         cssClass: 'button',
+   *         onClick : function() {
+   *           // ... custom business logic
+   *         },
+   *         order   : 2
+   *       }
+   *     }
+   *
+
+   */
   /* @ngInject */
   function iscForm($stateParams, $q, $window,
                    iscSessionModel, iscNavContainerModel,
@@ -113,6 +209,9 @@
 
     return directive;
 
+    /**
+     * @memberOf iscForm
+     */
     function controller() {
       var self = this;
 
@@ -138,8 +237,15 @@
       });
 
       // Empty stubs for annotations, to remove dependency
+      /**
+       * @memberOf iscForm
+       * @returns {*}
+         */
       function emptyAnnotationData() { return $q.when([]); }
 
+      /**
+       * @memberOf iscForm
+       */
       function emptyFunction() { }
 
       self.validateFormApi = function () {
@@ -152,6 +258,10 @@
       // Private/helper functions
       var originalFormKey;
 
+      /**
+       * @memberOf iscForm
+       * @returns {{annotationsApi: {getFormAnnotations: iscForm.emptyAnnotationData, closeAnnotationPanel: iscForm.emptyFunction, initAnnotationQueue: iscForm.emptyFunction, processAnnotationQueue: iscForm.emptyFunction}, additionalModels: {}}}
+         */
       function getFormDefaults() {
         // Empty annotations API if not provided
         var annotationsApi = {
@@ -167,6 +277,10 @@
         };
       }
 
+      /**
+       * @memberOf iscForm
+       * @returns {{cancel: {onClick: iscForm.emptyFunction, afterClick: afterCancel, cssClass: string, text: string}, submit: {onClick: onSubmit, afterClick: afterSubmit, cssClass: string, text: string}}}
+         */
       function getButtonDefaults() {
         // Default api for submitting a form is to submit to iscFormDataApi
         function onSubmit() {
@@ -198,10 +312,16 @@
           }
         }
 
+        /**
+         * @memberOf iscForm
+         */
         function afterSubmit() {
           iscNavContainerModel.navigateToUserLandingPage();
         }
 
+        /**
+         * @memberOf iscForm
+         */
         function afterCancel() {
           $window.history.back();
         }
@@ -222,6 +342,9 @@
         };
       }
 
+      /**
+       * @memberOf iscForm
+       */
       function init() {
         // Resolve default formKey if not provided,
         // and if not using formKey previously persisted with form
@@ -236,6 +359,9 @@
         }
       }
 
+      /**
+       * @memberOf iscForm
+       */
       function getFormData() {
         self.formConfig.annotationsApi.initAnnotationQueue();
 
@@ -259,6 +385,10 @@
         });
       }
 
+      /**
+       * @memberOf iscForm
+       * @returns {*}
+         */
       function getAnnotationData() {
         var getApi = _.get(self.formConfig, 'annotationsApi.getFormAnnotations');
         if (getApi && _.isFunction(getApi)) {
@@ -275,6 +405,9 @@
         }
       }
 
+      /**
+       * @memberOf iscForm
+       */
       function getFormDefinition() {
         iscFormsModel.getFormDefinition(self.localFormKey, self.mode)
           .then(function (formDefinition) {
@@ -287,9 +420,14 @@
           });
       }
 
-      // If the original/persisted formKey differs from the formKey of the definition,
-      // we need to process the implicit data model of the new formDefinition to ensure
-      // it does not contain properties that are not supported by the new definition.
+
+      /**
+       * @memberOf iscForm
+       * @description
+       *  If the original/persisted formKey differs from the formKey of the definition,
+       * we need to process the implicit data model of the new formDefinition to ensure
+       * it does not contain properties that are not supported by the new definition.
+       */
       function reconcileModelWithFormDefinition() {
         if (originalFormKey && originalFormKey !== self.localFormKey) {
           var form = self.formDefinition.form,
@@ -299,6 +437,8 @@
         }
 
         /**
+         * @memberOf iscForm
+         * @description
          * Prunes any properties in data that are not keyed by fields in form.
          * @returns {Object}
          * @private
@@ -365,8 +505,14 @@
         }
       }
 
+      /**
+       * @memberOf iscForm
+       * @param fdnScript
+       * @description
+       * If provided, call init function/expression to populate additional dynamic data models, such as patients
+         */
       function populateAdditionalModels(fdnScript) {
-        // If provided, call init function/expression to populate additional dynamic data models, such as patients
+        //
         evalScript(fdnScript);
         evalScript(self.formConfig.additionalModelInit);
 
@@ -379,6 +525,9 @@
         }
       }
 
+      /**
+       * @memberOf iscForm
+       */
       function getValidationDefinition() {
         iscFormsModel.getValidationDefinition(self.localFormKey)
           .then(function (validationDefinition) {

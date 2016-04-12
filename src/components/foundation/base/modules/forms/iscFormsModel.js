@@ -6,6 +6,18 @@
     .module('isc.forms')
     .factory('iscFormsModel', iscFormsModel);
 
+  /**
+   * @ngDoc factory
+   * @memberOf isc.forms
+   * @param $q
+   * @param $templateCache
+   * @param $window
+   * @param iscHttpapi
+   * @param iscFormsCodeTableApi
+   * @param iscFormsTemplateService
+   * @param iscFormsApi
+   * @returns {{getForms, getActiveForm, getActiveForms, setFormStatus: setFormStatus, getFormDefinition: getFormDefinition, getValidationDefinition: getValidationDefinition}}
+     */
   function iscFormsModel($q, $templateCache, $window,
                          iscHttpapi,
                          iscFormsCodeTableApi, iscFormsTemplateService, iscFormsApi) {
@@ -40,6 +52,11 @@
       getValidationDefinition: getValidationDefinition
     };
 
+    /**
+     * @memberOf iscFormsModel
+     * @param formType
+     * @returns {*}
+       */
     function getCachedType(formType) {
       var cachedType = _.get(_typeCache, formType);
       if (!cachedType) {
@@ -49,6 +66,13 @@
       return cachedType;
     }
 
+    /**
+     * @memberOf iscFormsModel
+     * @param config
+     * @param formType
+     * @param formList
+       * @returns {*}
+       */
     function getFormStatus(config, formType, formList) {
       var allowMultiple = !!config.returnMultiple,
           limitToActive = !!config.limitToActive,
@@ -73,6 +97,13 @@
       }
     }
 
+    /**
+     * @memberOf iscFormsModel
+     * @param formType
+     * @param formStatus
+     * @param formList
+       * @returns {*}
+       */
     function setFormStatus(formType, formStatus, formList) {
       var cache               = getCachedType(formType),
           allowMultipleActive = _.includes(multipleActiveFormTypes, formType),
@@ -108,6 +139,11 @@
       return iscFormsApi.setFormStatus(formType, formStatuses);
     }
 
+    /**
+     * @memberOf iscFormsModel
+     * @param formKey
+     * @returns {*}
+       */
     function getValidationDefinition(formKey) {
       var cachedValidation = _.get(_validationCache, formKey);
       var validations      = [];
@@ -151,7 +187,9 @@
       }
     }
 
-    /***
+    /**
+     * @memberOf iscFormsModel
+     * @description
      * Gets the form with the given formKey name.
      * @param {String} formKey
      * @param {=String} mode
@@ -244,7 +282,9 @@
             });
           });
 
-          /***
+          /**
+           * @memberOf iscFormsModel
+           * @description
            * Additional processing for fields to bind to the formly form.
            * @param fields
            * @returns {Array}
@@ -412,7 +452,9 @@
             }
           }
 
-          /***
+          /**
+           * @memberOf iscFormsModel
+           * @description
            * Loads the template script and other assets for the given custom template name.
            * @param templateName
            * @private
@@ -425,7 +467,9 @@
               });
             primaryPromises.push(scriptPromise);
 
-            /***
+            /**
+             * @memberOf iscFormsModel
+             * @description
              * Processes the javascript source for the custom template
              * @returns {Object}
              * @private
@@ -444,7 +488,9 @@
               return template;
             }
 
-            /***
+            /**
+             * @memberOf iscFormsModel
+             * @description
              * Fetches html for the template and puts it in the $templateCache.
              * @private
              */
@@ -465,7 +511,9 @@
               }
             }
 
-            /***
+            /**
+             * @memberOf iscFormsModel
+             * @description
              * Fetches the stylesheet for the template and adds it to the page.
              * Adapted from: https://medium.com/opinionated-angularjs/angular-dynamically-injecting-css-file-using-route-resolve-and-promises-7bfcb8ccd05b#.djlx7z6on
              * but modified to write in a dynamic style tag rather than a static file.
@@ -514,6 +562,8 @@
     }
 
     /**
+     * @memberOf iscFormsModel
+     * @description
      * Forces the data property on all fields to explicitly inherit data properties from ancestor(s).
      * This is only necessary on any fields inside an embeddedFormCollection, as this is the only template
      * that needs to operate on the raw fields array (for the tabular view of data).
@@ -539,6 +589,12 @@
         }
       });
 
+      /**
+       * @memberOf iscFormsModel
+       * @param type
+       * @returns {Array}
+         * @private
+         */
       function _getAncestors(type) {
         var stack    = [],
             template = iscFormsTemplateService.getRegisteredType(type);
@@ -558,6 +614,8 @@
     }
 
     /**
+     * @memberOf iscFormsModel
+     * @description
      * Replaces the templates for each field in fields with its viewMode version.
      * @param fields
      */
@@ -601,9 +659,16 @@
       });
     }
 
+    /**
+     * @memberOf iscFormsModel
+     * @description
+     *  This is only ever evaluated on scripts returned from a trusted backend REST source
+     * @param script
+     * @returns {Object}
+       */
     function parseScript(script) {
       // Ignoring JSHint for eval()
-      // This is only ever evaluated on scripts returned from a trusted backend REST source
+      //
       return eval(script); // jshint ignore:line
     }
   }
