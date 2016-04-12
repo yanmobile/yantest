@@ -16,7 +16,7 @@
 
   /* @ngInject */
   /**
-   * @ngDoc directive
+   * @ngdoc directive
    * @memberOf isc.table
    * @param devlog
    * @returns {{restrict: string, controller: controller, controllerAs: string}}

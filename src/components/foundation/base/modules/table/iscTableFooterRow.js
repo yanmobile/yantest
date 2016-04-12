@@ -12,7 +12,7 @@
   /* @ngInject */
   /**
    * @memberOf isc.table
-   * @ngDoc directive
+   * @ngdoc directive
    * @param devlog
    * @param $state
    * @param $templateCache

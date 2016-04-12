@@ -7,7 +7,7 @@
 
   /* @ngInject */
   /**
-   * @ngDoc factory
+   * @ngdoc factory
    * @memberOf iscNavContainer
    * @returns {{registerScrollingContent: registerScrollingContent, getCurrentScrollPosition: iscScrollContainerService.getCurrentScrollPosition, setCurrentScrollPosition: setCurrentScrollPosition}}
      */

@@ -11,7 +11,7 @@
 
   /* @ngInject */
   /**
-   * @ngDoc controller
+   * @ngdoc controller
    * @memberOf iscNavContainer
    * @param devlog
    * @param $rootScope

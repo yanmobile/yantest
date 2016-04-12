@@ -10,7 +10,7 @@
 
   /* @ngInject */
   /**
-   * @ngDoc directive
+   * @ngdoc directive
    * @memberOf isc.table
    * @param devlog
    * @param $state

@@ -180,7 +180,7 @@
 
   /* @ngInject */
   /**
-   * @ngDoc directive
+   * @ngdoc directive
    * @memberOf isc.table
    * @param devlog
    * @returns {{scope: {tableConfig: string, tableData: string, filterFunction: string, rowButtonCallback: string, backButtonCallback: string, tableName: string}, restrict: string, replace: boolean, templateUrl: directive.templateUrl, bindToController: boolean, link: link, controller: controller, controllerAs: string}}

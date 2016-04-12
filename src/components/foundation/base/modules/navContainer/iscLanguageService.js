@@ -16,7 +16,7 @@
   // --------------------
 
   /**
-   * @ngDoc factory
+   * @ngdoc factory
    * @memberOf iscNavContainer
    * @param devlog
    * @param $window

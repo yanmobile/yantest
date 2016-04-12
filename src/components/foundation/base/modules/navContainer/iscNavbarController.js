@@ -8,7 +8,7 @@
     .controller('iscNavbarController', iscNavbarController);
 
   /**
-   * @ngDoc controller
+   * @ngdoc controller
    * @memberOf iscNavContainer
    * @param devlog
    * @param $scope

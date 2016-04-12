@@ -10,7 +10,7 @@
 
   /* @ngInject */
   /**
-   * @ngDoc directive
+   * @ngdoc directive
    * @memberOf iscNavContainer
    * @param iscScrollContainerService
    * @returns {{restrict: string, link: link}}

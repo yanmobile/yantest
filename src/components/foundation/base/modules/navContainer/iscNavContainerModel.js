@@ -13,7 +13,7 @@
     .factory('iscNavContainerModel', iscNavContainerModel);
 
   /**
-   * @ngDoc factory
+   * @ngdoc factory
    * @memberOf iscNavContainer
    * @param devlog
    * @param $state

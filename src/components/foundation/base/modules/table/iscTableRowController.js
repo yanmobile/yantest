@@ -10,7 +10,7 @@
 
   /* @ngInject */
   /**
-   * @ngDoc controller
+   * @ngdoc controller
    * @memberOf isc.table
    * @param $scope
      */

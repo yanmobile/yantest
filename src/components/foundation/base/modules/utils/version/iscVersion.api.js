@@ -6,7 +6,7 @@
     .module('isc.core')
     .factory('iscVersionApi',iscVersionApi);
     /**
-     * @ngDoc factory
+     * @ngdoc factory
      * @memberOf isc.core
      * @param iscHttpapi
      * @returns {{load: load, get: get}}

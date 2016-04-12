@@ -31,7 +31,7 @@
     .directive( 'iscZfModalWrapper', iscZfModalWrapper );
 
   /**
-   * @ngDoc directive
+   * @ngdoc directive
    * @memberOf isc.table
    * @description
    * Created by paul robbins on 10/05/2015
