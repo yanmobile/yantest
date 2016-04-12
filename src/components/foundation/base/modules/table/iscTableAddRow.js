@@ -9,6 +9,15 @@
     .directive( 'iscTableAddRow', iscTableAddRow );
 
   /* @ngInject */
+  /**
+   * @ngDoc directive
+   * @memberOf isc.table
+   * @param devlog
+   * @param $state
+   * @param $templateCache
+   * @param $compile
+   * @returns {{scope: boolean, restrict: string, controllerAs: string, controller: string, compile: compile}}
+     */
   function iscTableAddRow( devlog, $state, $templateCache, $compile ){
     devlog.channel('iscTableAddRow').debug('iscTableAddRow.LOADED');
 

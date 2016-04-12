@@ -10,6 +10,23 @@
     .controller('iscNavigationController', iscNavigationController);
 
   /* @ngInject */
+  /**
+   * @ngDoc controller
+   * @memberOf iscNavContainer
+   * @param devlog
+   * @param $rootScope
+   * @param $timeout
+   * @param $scope
+   * @param $translate
+   * @param iscSessionModel
+   * @param iscSessionStorageHelper
+   * @param iscNavContainerModel
+   * @param iscCustomConfigHelper
+   * @param iscUiHelper
+   * @param iscLanguageService
+     * @param AUTH_EVENTS
+     * @param NAV_EVENTS
+     */
   function iscNavigationController(
     devlog, $rootScope, $timeout, $scope, $translate,
     iscSessionModel, iscSessionStorageHelper, iscNavContainerModel,
@@ -41,6 +58,9 @@
     self.showModalBkgrnd  = false;
 
     // --------------
+    /**
+     * @memberOf iscNavigationController
+     */
     self.hideAllPopups = function () {
       devlog.channel('iscNavigationController').debug( 'iscNavigationController.hideAllPopups');
       self.showModalBkgrnd  = false;
@@ -53,6 +73,9 @@
     };
 
     // --------------
+    /**
+     * @memberOf iscNavigationController
+     */
     self.showAlertBox = function () {
       devlog.channel('iscNavigationController').debug( 'iscNavigationController.showAlertBox');
       self.hideAllPopups(); // close any that are already up
@@ -61,12 +84,19 @@
       self.alertShowing    = true;
     };
 
+    /**
+     * @memberOf iscNavigationController
+     */
     self.hideAlertBox = function () {
       self.showAlert       = false;
       self.showModalBkgrnd = false;
       self.alertShowing    = false;
     };
 
+    /**
+     * @memberOf iscNavigationController
+     * @param val
+       */
     self.onSelectLanguage = function (val) {
       iscSessionStorageHelper.setSessionStorageValue('currentLanguage', val);
       $translate.use(val.fileName);
@@ -80,11 +110,17 @@
 
     // --------------
     // session timeout callbacks
+    /**
+     * @memberOf iscNavigationController
+     */
     self.onContinueSession = function () {
       devlog.channel('iscNavigationController').debug( 'iscNavigationController.onContinueSession');
       $rootScope.$emit(AUTH_EVENTS.sessionTimeoutReset);
     };
 
+    /**
+     * @memberOf iscNavigationController
+     */
     self.onCancelSession = function () {
       devlog.channel('iscNavigationController').debug( 'iscNavigationController.onCancelSession');
       $rootScope.$emit(AUTH_EVENTS.sessionTimeoutConfirm);
@@ -93,6 +129,9 @@
     // --------------
     // on load
     // --------------
+    /**
+     * @memberOf iscNavigationController
+     */
     self.onLoad = function () {
       devlog.channel('iscNavigationController').debug( 'iscNavigationController.onLoad');
       devlog.channel('iscNavigationController').debug( '...alertShowing ', self.alertShowing );

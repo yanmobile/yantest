@@ -4,10 +4,27 @@
 
 (function () {
   'use strict';
+  // ----------------------------
+  // injection
+  // ----------------------------
+
+  angular.module ('iscNavContainer')
+      .factory ('iscLanguageService', iscLanguageService);
 
   // --------------------
   // INPLEMENTATION DETAILS
   // --------------------
+
+  /**
+   * @ngDoc factory
+   * @memberOf iscNavContainer
+   * @param devlog
+   * @param $window
+   * @param $translate
+   * @param iscCustomConfigService
+   * @param iscSessionStorageHelper
+   * @returns {{showDropDown: showDropDown, getLanguages: getLanguages, getSelectedLanguage: getSelectedLanguage}}
+     */
   /* @ngInject */
   function iscLanguageService (devlog, $window, $translate, iscCustomConfigService, iscSessionStorageHelper) {
     devlog.channel('iscLanguageService').debug( 'iscLanguageService LOADED');
@@ -36,7 +53,10 @@
     // ----------------------------
     // functions
     // ----------------------------
-
+    /**
+     * @memberOf iscLanguageService
+     * @returns {*}
+       */
     function getLanguages () {
       if (!initIsDone) {
         doInit ();
@@ -44,6 +64,10 @@
       return languages;
     }
 
+    /**
+     * @memberOf iscLanguageService
+     * @returns {boolean}
+       */
     function showDropDown () {
       if (!initIsDone) {
         doInit ();
@@ -52,6 +76,10 @@
       return showLanguageDropDown;
     }
 
+    /**
+     * @memberOf iscLanguageService
+     * @returns {*}
+       */
     function getSelectedLanguage () {
       if (!initIsDone) {
         doInit ();
@@ -60,6 +88,9 @@
       return selectedLanguage;
     }
 
+    /**
+     * @memberOf iscLanguageService
+     */
     function doInit () {
 
       languages = iscCustomConfigService.getConfigSection ('languageList');
@@ -108,11 +139,6 @@
   }//END CLASS
 
 
-  // ----------------------------
-  // injection
-  // ----------------------------
 
-  angular.module ('iscNavContainer')
-      .factory ('iscLanguageService', iscLanguageService);
 
 }) ();

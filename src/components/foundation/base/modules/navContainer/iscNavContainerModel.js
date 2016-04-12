@@ -12,6 +12,15 @@
   angular.module('iscNavContainer')
     .factory('iscNavContainerModel', iscNavContainerModel);
 
+  /**
+   * @ngDoc factory
+   * @memberOf iscNavContainer
+   * @param devlog
+   * @param $state
+   * @param iscCustomConfigService
+   * @param iscSessionModel
+   * @returns {{getTopNav: getTopNav, getVersionInfo: getVersionInfo, setVersionInfo: setVersionInfo, navigateToUserLandingPage: navigateToUserLandingPage}}
+     */
   function iscNavContainerModel(devlog, $state, iscCustomConfigService, iscSessionModel) {
     devlog.channel('iscNavContainerModel').debug('iscNavContainerModel LOADED');
 
@@ -43,7 +52,9 @@
     // ----------------------------
     // functions
     // ----------------------------
-
+    /**
+     * @memberOf iscNavContainerModel
+     */
     function navigateToUserLandingPage() {
       var currentUserRole = iscSessionModel.getCurrentUserRole();
       var landingPage     = iscCustomConfigService.getConfigSection('landingPages')[currentUserRole];
@@ -54,6 +65,10 @@
       }
     }
 
+    /**
+     * @memberOf iscNavContainerModel
+     * @returns {*}
+       */
     function getTopNav() {
       var currentUserRole = iscSessionModel.getCurrentUserRole();
       if (!topNavArr[currentUserRole]) {
@@ -69,10 +84,18 @@
       return topNavArr[currentUserRole];
     }
 
+    /**
+     * @memberOf iscNavContainerModel
+     * @returns {*}
+       */
     function getVersionInfo() {
       return versionInfo;
     }
 
+    /**
+     * @memberOf iscNavContainerModel
+     * @param val
+       */
     function setVersionInfo(val) {
       versionInfo = val;
     }

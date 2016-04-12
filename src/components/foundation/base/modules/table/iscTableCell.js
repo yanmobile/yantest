@@ -9,6 +9,15 @@
     .directive( 'iscTableCell', iscTableCell );
 
   /* @ngInject */
+  /**
+   * @ngDoc directive
+   * @memberOf isc.table
+   * @param devlog
+   * @param $state
+   * @param $templateCache
+   * @param $compile
+   * @returns {{restrict: string, compile: compile}}
+     */
   function iscTableCell( devlog, $state, $templateCache, $compile ){
     devlog.channel('iscTableCell').debug('iscTableCell.LOADED');
 
@@ -84,6 +93,10 @@
         }
       }
 
+      /**
+       * @memberOf iscTableCell
+       * @returns {*}
+         */
       function getDisplayText(){
 
         var cellData = _.get( scope.dataItem, scope.column.key );
@@ -107,6 +120,11 @@
         return retVal;
       }
 
+      /**
+       * @memberOf iscTableCell
+       * @param val
+       * @returns {boolean}
+         */
       function notThere( val ){
         return !val && val !== 0;
       }

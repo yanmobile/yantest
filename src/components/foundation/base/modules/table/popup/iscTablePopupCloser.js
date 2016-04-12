@@ -15,6 +15,13 @@
     .directive( 'iscTablePopupCloser', iscTablePopupCloser );
 
   /* @ngInject */
+  /**
+   * @ngDoc directive
+   * @memberOf isc.table
+   * @param devlog
+   * @param $global
+   * @returns {{restrict: string, link: link}}
+     */
   function iscTablePopupCloser(devlog, $global ) {
     devlog.channel('iscTablePopupCloser').debug( 'iscTablePopupCloser LOADED');
 
