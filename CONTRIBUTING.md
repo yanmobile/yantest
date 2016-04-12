@@ -70,6 +70,10 @@ Good pull requests - patches, improvements, new features - are a fantastic
 help. They should remain focused in scope and avoid containing unrelated
 commits.
 
+**Don't** create a PR which can cause master to be in a broken/bad state.
+
+**Please ensure** there aren't any **test and linter** errors.
+
 **Please ask first** before embarking on any significant pull request (e.g.
 implementing features, refactoring code, porting to a different language),
 otherwise you risk spending a lot of time working on something that the
