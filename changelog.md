@@ -1,5 +1,9 @@
 
 # Core Changes
+### 04/13/2016
+[This PR](https://github.com/intersystems/hs-core-tools/pull/57) adds support for second level navigation. It also added ngAnnotate inject comments. Please apply [the changes](https://github.com/intersystems/hs-core-tools/pull/57) described here to your own projects.
+
+
 ### 04/11/2016
 #### upgrade notes:
 [This PR](https://github.com/intersystems/hs-core-ui/pull/180) updates the gulp tasks to minify files when deployed and separated the scripts into 4 files when used in development. Individual applications needs to be updated in order to work with this latest framework changes. The changes can be found [here](https://github.com/intersystems/hs-core-tools/pull/56). You can choose to apply the specific changes the existing files or take the updated files.  
