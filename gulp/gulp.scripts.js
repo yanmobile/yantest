@@ -20,7 +20,9 @@ function init(gulp, plugins, config, _, util) {
 
     return gulp.src(vendors)
       //.pipe(plugins.filelog())
+      .pipe(plugins.sourcemaps.init())
       .pipe(plugins.concat('1.vendor.min.js'))
+      .pipe(plugins.sourcemaps.write('.'))
       // .pipe(plugins.bytediff.start())
       // .pipe(plugins.uglify())
       // .pipe(plugins.bytediff.stop())
