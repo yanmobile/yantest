@@ -38,7 +38,7 @@ var plugins = {
 var configs = {
   common   : require('./gulp/common.json'),
   component: require('./gulp/components.json'),
-  app      : require('./gulp/app.json')
+  app      : readJson('./gulp/app.json', {})
 };
 
 var util = {
@@ -82,4 +82,22 @@ function getArg(key) {
   var index = process.argv.indexOf(key);
   var next  = process.argv[index + 1];
   return (index < 0) ? null : (!next || next[0] === "-") ? true : next;
+}
+
+/**
+ * Reads the json file and returns its content. If the file is not found, it will return defaults or {}
+ * 
+ * @param filePath
+ * @returns {*}
+ */
+function readJson(filePath, defaults) {
+  var json;
+  try {
+    filePath = plugins.path.join(filePath);
+    json     = plugins.fs.readFileSync(filePath, 'utf8');
+    json     = JSON.parse(json);
+  } catch ( ex ) {
+    json = defaults || {};
+  }
+  return json;
 }
