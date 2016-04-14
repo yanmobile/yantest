@@ -18,7 +18,7 @@
       'isc.forms',
       'isc.directives',
       'isc.table',
-      'isc.ddpTable',
+      'isc.fauxTable',
       'isc.notification',
       'isc.spinner',
       'iscNavContainer',

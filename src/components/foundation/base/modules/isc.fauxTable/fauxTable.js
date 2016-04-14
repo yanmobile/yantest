@@ -2,37 +2,20 @@
  * Created by hzou on 1/13/16.
  */
 
-/**
- * Configuration:
- *
- * {
-      title   : 'Sortable table by ddpTable',
-      sortable: true,
-      columns : [
-        { key: 'Salads', model: 'Salads', sortable: false },
-        { key: 'Entrees', model: 'Entrees', type: 'string' },
-        { key: 'Desserts', model: 'Desserts', cssTHClass: 'grid-block th', cssTDClass: 'grid-block td'  },
-        { key: 'Soups', model: 'Soups' },
-        { key: 'Customer', model: 'Customer.Name' },
-        { key: 'Order Time', model: 'Customer.Date', type: 'date' },
-        { key: 'Age', model: 'Customer.DOB', type: 'integer', templateUrl: 'isc.ddpTable/cells/cell.age.html' }
-      ]
-    }
- */
 (function () {
   'use strict';
 
-  angular.module('isc.ddpTable')
-    .directive('ddpTable', ddpTable);
+  angular.module('isc.fauxTable')
+    .directive('fauxTable', fauxTable);
 
   /**
    * @ngdoc directive
-   * @memberOf isc.ddpTable
+   * @memberOf isc.fauxTable
    * @description
    * Configuration:
    *
    * {
-   *   title   : 'Sortable table by ddpTable',
+   *   title   : 'Sortable table by fauxTable',
    *   sortable: true,
    *   columns : [
    *     { key: 'Salads', model: 'Salads', sortable: false },
@@ -41,12 +24,12 @@
    *     { key: 'Soups', model: 'Soups' },
    *     { key: 'Customer', model: 'Customer.Name' },
    *     { key: 'Order Time', model: 'Customer.Date', type: 'date' },
-   *     { key: 'Age', model: 'Customer.DOB', type: 'integer', templateUrl: 'isc.ddpTable/cells/cell.age.html' }
+   *     { key: 'Age', model: 'Customer.DOB', type: 'integer', templateUrl: 'isc.fauxTable/cells/cell.age.html' }
    *   ]
    * }
    * @returns {{restrict: string, controller: controller, controllerAs: string, bindToController: {config: string, data: string}, scope: boolean, templateUrl: directive.templateUrl}}
      */
-  function ddpTable() {//jshint ignore:line
+  function fauxTable() {//jshint ignore:line
 
     // ----------------------------
     // class factory
@@ -54,14 +37,14 @@
     var directive = {
       restrict        : 'EA',
       controller      : controller,
-      controllerAs    : 'ddpTblCtrl',
+      controllerAs    : 'fauxTblCtrl',
       bindToController: {
         config: '=',
         data  : '='
       },
       scope           : true,
       templateUrl     : function (elem, attrs) {
-        return attrs.templateUrl || 'isc.ddpTable/ddpTable.html';
+        return attrs.templateUrl || 'isc.fauxTable/fauxTable.html';
       }
     };
 
@@ -82,7 +65,7 @@
        =                 private               =
        ========================================*/
       /**
-       * Place the specfied column as sort column
+       * Place the specified column as sort column
        * sortDirection: true => asc
        * sortDirection: false => desc
        * @param column
