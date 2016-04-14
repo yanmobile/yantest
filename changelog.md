@@ -1,6 +1,11 @@
 
 # Core Changes
 ### 04/14/2016
+[This PR](https://github.com/intersystems/hs-core-ui/pull/189)
+Updated the wallaby config for both components and common to support javascript libraries that need to be included during testing with "Wallaby".
+The files that were updated are "wallaby.config.common.js" and "wallaby.config.components.js"
+
+### 04/14/2016
 [This PR](https://github.com/intersystems/hs-core-ui/pull/187) renames ddpTable to fauxTable. As an application developer and your application uses ddpTable, you'll need to do the following:
  1. Search and replace ```ddp-table``` with ```faux-table```
  1. Search and replace ```isc.ddpTable``` with ```isc.fauxTable```
