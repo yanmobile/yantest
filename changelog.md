@@ -1,8 +1,11 @@
 
 # Core Changes
+### 04/14/2016
+[This PR](https://github.com/intersystems/hs-core-tools/pull/59) removes the "locale-" prefix from the i18n files. Please apply [these changes](https://github.com/intersystems/hs-core-tools/pull/59) to your app. 
+Please be sure to remove "locale-" from "locale-en_US.json" file.
+ 
 ### 04/13/2016
 [This PR](https://github.com/intersystems/hs-core-tools/pull/57) adds support for second level navigation. It also added ngAnnotate inject comments. Please apply [the changes](https://github.com/intersystems/hs-core-tools/pull/57) described here to your own projects.
-
 
 ### 04/11/2016
 #### upgrade notes:
