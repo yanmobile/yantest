@@ -1,0 +1,40 @@
+<div ng-if="fauxTblCtrl.config.title" class="grid-block">
+  <h3>{{fauxTblCtrl.config.title | translate}}</h3>
+</div>
+
+<div ng-if="fauxTblCtrl.data.length === 0" class="grid-block">
+  <p class="{{column.cssEmptyClass || 'empty-message'}}">
+    {{ (fauxTblCtrl.config.emptyText || "ISC_NO_ITEMS") | translate}}
+  </p>
+</div>
+
+<div ng-if="fauxTblCtrl.data.length > 0" class="vertical grid-block grid-table">
+
+  <!--thead-->
+  <div class="grid-block thead">
+    <div class="grid-block tr">
+      <div ng-repeat="column in fauxTblCtrl.config.columns"
+           ng-init="sortable = fauxTblCtrl.config.sortable && column.sortable !== false"
+           class="{{column.cssTHClass || 'grid-block th'}}"
+           ng-class="{'isc-sortable': sortable}">
+
+        <a ng-click="fauxTblCtrl.sort(column)" ng-if="sortable">{{column.key| translate}}
+          <i class="fa" ng-class="{'fa-sort':null == fauxTblCtrl.getSort(column), 'fa-sort-asc': 'asc' == fauxTblCtrl.getSort(column), 'fa-sort-desc': 'desc' == fauxTblCtrl.getSort(column)}"></i>
+        </a>
+        <a ng-if="!sortable">{{column.key| translate}}</a>
+      </div>
+    </div>
+  </div>
+
+  <!--tbody-->
+  <div class="grid-block tbody">
+    <div ng-repeat="row in fauxTblCtrl.data | filter:{} | orderBy:fauxTblCtrl.sortBy:fauxTblCtrl.sortDirection"
+         class="{{column.cssTRClass || 'grid-block tr'}}">
+      <div ng-repeat="column in fauxTblCtrl.config.columns"
+           class="{{column.cssTDClass || 'grid-block td'}}"
+           ng-include="column.templateUrl || 'isc.fauxTable/cells/cell.'+ (column.type || 'string') + '.html'">
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -1,6 +1,11 @@
 
 # Core Changes
 ### 04/14/2016
+[This PR](https://github.com/intersystems/hs-core-ui/pull/187) renames ddpTable to fauxTable. As an application developer and your application uses ddpTable, you'll need to do the following:
+ 1. Search and replace ```ddp-table``` with ```faux-table```
+ 1. Search and replace ```isc.ddpTable``` with ```isc.fauxTable```
+
+### 04/14/2016
 [This PR](https://github.com/intersystems/hs-core-tools/pull/59) removes the "locale-" prefix from the i18n files. Please apply [these changes](https://github.com/intersystems/hs-core-tools/pull/59) to your app. 
 Please be sure to remove "locale-" from "locale-en_US.json" file.
  
