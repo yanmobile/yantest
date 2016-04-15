@@ -3,7 +3,58 @@
 ### 04/14/2016
 [This PR](https://github.com/intersystems/hs-core-ui/pull/189)
 Updated the wallaby config for both components and common to support javascript libraries that need to be included during testing with "Wallaby".
-The files that were updated are "wallaby.config.common.js" and "wallaby.config.components.js"
+The files that were updated are
+1. "wallaby.config.common.js":
+  change from
+  ```javascript
+  var commonVendorJs      = (commonConfig.vendor.js || []).map(noInstrument);
+  ```
+  to
+  ```
+  var commonVendorJs      = (commonConfig.vendor.js || []).map(noInstrument);
+  var commonModuleVendorJs = (commonConfig.module.assets.vendor.js || []).map(noInstrument);
+  ```
+
+  and add referece, by changing from
+  ```javascript
+  .concat(commonVendorJs)
+  ```
+  to
+  ```
+  .concat(commonVendorJs)
+  .concat(commonModuleVendorJs)
+  ```
+
+2. "wallaby.config.components.js" : change from
+ ```javascript
+ var commonVendorJs      = (commonConfig.vendor.js || []).map(noInstrument);
+ ...
+ ...
+ ...
+ var componentsVendorJs      = (componentsConfig.vendor.js || []).map(noInstrument);
+ ```
+ to
+ ```javascript
+  var commonVendorJs      = (commonConfig.vendor.js || []).map(noInstrument);
+  var commonModuleVendorJs = (commonConfig.module.assets.vendor.js || []).map(noInstrument);
+  ...
+  ...
+  ...
+  var componentsVendorJs      = (componentsConfig.vendor.js || []).map(noInstrument);
+  var componentsModuleVendorJs = (componentsConfig.module.assets.vendor.js || []).map(noInstrument);
+  ```
+ and the reference change from
+ ```javascript
+       .concat(commonVendorJs)
+       .concat(componentsVendorJs)
+ ```
+ to
+ ```javascript
+       .concat(commonVendorJs)
+       .concat(componentsVendorJs)
+       .concat(commonModuleVendorJs)
+       .concat(componentsModuleVendorJs)
+ ```
 
 ### 04/14/2016
 [This PR](https://github.com/intersystems/hs-core-ui/pull/187) renames ddpTable to fauxTable. As an application developer and your application uses ddpTable, you'll need to do the following:
