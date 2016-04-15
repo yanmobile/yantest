@@ -67,11 +67,10 @@ slush hs:updateCore
 
 Override app.config.js:
 ```bash
-gulp serve --config <any valid directory>/app.config.js
-#please note that the file name has to be app.config.js since the tool is design
-#to override any file and need to correct basename to find the original file and
-#override it.
+gulp serve --config <any valid directory>/<anyFileName>.js
 ```
+The file can be located in any directory, and the file name is not important.
+
 
 ##FAQs
 * **This framework looks awesome, how do I create a fully functional application using this framework in a couple of minutes?**
