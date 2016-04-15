@@ -1,6 +1,50 @@
 
 # Core Changes
 ### 04/14/2016
+[This PR](https://github.com/intersystems/hs-core-ui/pull/189)
+Updated the wallaby config for the application to support javascript libraries that need to be included during testing with "Wallaby".
+1. "wallaby.config.app.js":
+  change from
+  ```javascript
+  var commonVendorJs      = (commonConfig.vendor.js || []).map(noInstrument);
+  ...
+  ...
+  var componentsVendorJs      = (componentsConfig.vendor.js || []).map(noInstrument);
+  ...
+  ...
+  var appVendorJs      = (appConfig.vendor.js || []).map(noInstrument);
+  ```
+  to
+  ```
+  var commonVendorJs      = (commonConfig.vendor.js || []).map(noInstrument);
+  var commonModuleVendorJs = (commonConfig.module.assets.vendor.js || []).map(noInstrument);
+  ...
+  ...
+  var componentsVendorJs      = (componentsConfig.vendor.js || []).map(noInstrument);
+  var componentsModuleVendorJs = (componentsConfig.module.assets.vendor.js || []).map(noInstrument);
+  ...
+  ...
+  var appVendorJs      = (appConfig.vendor.js || []).map(noInstrument);
+  var appModuleVendorJs = (appConfig.module.assets.vendor.js || []).map(noInstrument);
+  ```
+
+  and add referece, by changing from
+  ```javascript
+        .concat(commonVendorJs)
+        .concat(componentsVendorJs)
+        .concat(appVendorJs)
+  ```
+  to
+  ```
+        .concat(commonVendorJs)
+        .concat(componentsVendorJs)
+        .concat(appVendorJs)
+        .concat(commonModuleVendorJs)
+        .concat(componentsModuleVendorJs)
+        .concat(appModuleVendorJs)
+  ```
+
+### 04/14/2016
 [This PR](https://github.com/intersystems/hs-core-ui/pull/187) renames ddpTable to fauxTable. As an application developer and your application uses ddpTable, you'll need to do the following:
  1. Search and replace ```ddp-table``` with ```faux-table```
  1. Search and replace ```isc.ddpTable``` with ```isc.fauxTable```

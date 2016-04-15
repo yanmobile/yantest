@@ -5,6 +5,7 @@ module.exports                  = function () {
   var commonConfig = require('./gulp/common.json');
 
   var commonVendorJs      = (commonConfig.vendor.js || []).map(noInstrument);
+  var commonModuleVendorJs = (commonConfig.module.assets.vendor.js || []).map(noInstrument);
   var commonVendorMocks   = (commonConfig.vendor.mocks || []).map(noInstrument);
   var commonModuleMocks   = (commonConfig.module.mocks || []).map(noInstrument);
   var commonModuleModules = commonConfig.module.modules || [];
@@ -14,6 +15,7 @@ module.exports                  = function () {
   return {
     'files'        : []
       .concat(commonVendorJs)
+      .concat(commonModuleVendorJs)
       .concat(commonVendorMocks)
       .concat(commonModuleMocks)
       .concat(commonModuleModules)

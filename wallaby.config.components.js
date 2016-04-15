@@ -6,6 +6,7 @@ module.exports                  = function () {
   var componentsConfig = require('./gulp/components.json');
 
   var commonVendorJs      = (commonConfig.vendor.js || []).map(noInstrument);
+  var commonModuleVendorJs = (commonConfig.module.assets.vendor.js || []).map(noInstrument);
   var commonVendorMocks   = (commonConfig.vendor.mocks || []).map(noInstrument);
   var commonModuleModules = commonConfig.module.modules || [];
   var commonModuleJs      = commonConfig.module.js || [];
@@ -13,6 +14,7 @@ module.exports                  = function () {
   var commonModuleHtml    = commonConfig.module.html || [];
 
   var componentsVendorJs      = (componentsConfig.vendor.js || []).map(noInstrument);
+  var componentsModuleVendorJs = (componentsConfig.module.assets.vendor.js || []).map(noInstrument);
   var componentsVendorMocks   = (componentsConfig.vendor.mocks || []).map(noInstrument);
   var componentsModuleJs      = componentsConfig.module.js || [];
   var componentsModuleModules = componentsConfig.module.modules || [];
@@ -25,6 +27,8 @@ module.exports                  = function () {
     'files'        : []
       .concat(commonVendorJs)
       .concat(componentsVendorJs)
+      .concat(commonModuleVendorJs)
+      .concat(componentsModuleVendorJs)
       .concat(commonVendorMocks)
       .concat(componentsVendorMocks)
       .concat(commonModuleMocks)
