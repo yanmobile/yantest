@@ -5,7 +5,7 @@
 (function () {
   'use strict';
 
-  fdescribe('iscLodashFilter', function () {
+  describe('iscLodashFilter', function () {
     var scope,
         filter;
 
