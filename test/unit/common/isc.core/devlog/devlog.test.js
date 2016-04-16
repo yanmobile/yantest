@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  fdescribe('devlog', function () {
+  describe('devlog', function () {
     var $log;
     var devlog;
     var mockConfig;
