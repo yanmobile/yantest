@@ -10,7 +10,7 @@
 
     // setup devlog
     beforeEach(module('isc.core', function (devlogProvider, $provide) {
-      $provide.value('$log', console);
+      $provide.value('$log', mock$log);
       devlogProvider.loadConfig(customConfig);
     }));
 

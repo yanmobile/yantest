@@ -25,7 +25,7 @@
     beforeEach (module ('isc.directives'));
     // show $log statements
     beforeEach( module( function( $provide ){
-      $provide.value('$log', console);
+      $provide.value('$log', mock$log);
     }));
 
     beforeEach( inject( function( $rootScope, $window, iscRadioGroupHelper ){

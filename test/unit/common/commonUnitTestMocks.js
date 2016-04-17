@@ -21,6 +21,14 @@
 
 }());
 
+var mock$log = {
+  log: _.noop,
+  info: _.noop,
+  warn: _.noop,
+  error: _.noop,
+  debug: _.noop,
+  logFn: _.noop
+};
 
 var customConfig = {
   'baseUrl'        : 'http://hscommdev.iscinternal.com/public/api/v1',

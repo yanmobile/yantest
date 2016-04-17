@@ -22,7 +22,7 @@
     beforeEach(module('isc.core', 'isc.configuration', 'iscNavContainer', function (devlogProvider, iscCustomConfigServiceProvider, $provide) {
       devlogProvider.loadConfig(mockConfig);
       iscCustomConfigServiceProvider.loadConfig(mockConfig);
-      $provide.value('$log', console);
+      $provide.value('$log', mock$log);
     }));
 
     // this loads all the external templates used in directives etc
