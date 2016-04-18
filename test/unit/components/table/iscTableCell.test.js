@@ -58,6 +58,11 @@
         'mobile-class="isc-text-item">' +
         '</div>';
 
+    // show $log statements
+    beforeEach( module( function( $provide ){
+      $provide.value( '$log', mock$log );
+    } ) );
+
     beforeEach( module( 'isc.table' ) );
 
     // setup devlog
@@ -69,10 +74,6 @@
     // eg, everything in templates/**/*.html
     beforeEach( module( 'isc.templates' ) );
 
-    // show $log statements
-    beforeEach( module( function( $provide ){
-      $provide.value( '$log', console );
-    } ) );
 
     beforeEach( inject( function( $rootScope, $compile, $httpBackend, $state, $timeout ){
       rootScope = $rootScope;
