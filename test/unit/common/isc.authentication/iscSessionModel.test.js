@@ -26,7 +26,7 @@
 
     // show $log statements
     beforeEach(module('isc.authentication', function ($provide) {
-      $provide.value('$log', console);
+      $provide.value('$log', mock$log);
     }));
 
     beforeEach(inject(function ($rootScope, $httpBackend, $timeout, _$window_, _AUTH_EVENTS_, iscSessionModel) {

@@ -14,7 +14,7 @@
 
 
     beforeEach( module('isc.filters'), function( $provide ){
-      $provide.value('$log', console);
+      $provide.value('$log', mock$log);
     });
 
 
