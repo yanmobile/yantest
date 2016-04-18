@@ -265,13 +265,13 @@
       });
 
       it('should be able to interpolate multiple strings', function () {
-        var text = _.interpolate("I am {0}, but I like a {1} year old.", [85, 20]);
-        expect(text).toBe("I am 85, but I like a 20 year old.");
+        var text = _.interpolate("I am {0}, but I am like a {1} year old.", [85, 20]);
+        expect(text).toBe("I am 85, but I am like a 20 year old.");
       });
 
       it('should interpolate accept object param', function () {
-        var text = _.interpolate("I am {realAge}, but I like a {feelLikeAge} year old.", { realAge: 85, feelLikeAge: 20 });
-        expect(text).toBe("I am 85, but I like a 20 year old.");
+        var text = _.interpolate("I am {realAge}, but I am like a {feelLikeAge} year old.", { realAge: 85, feelLikeAge: 20 });
+        expect(text).toBe("I am 85, but I am like a 20 year old.");
       });
     });
 

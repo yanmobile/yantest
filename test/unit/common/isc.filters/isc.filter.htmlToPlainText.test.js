@@ -8,15 +8,10 @@
         filter;
 
     // setup devlog
-    beforeEach(module('isc.core', function (devlogProvider) {
+    beforeEach(module('isc.core', 'isc.filters', function (devlogProvider, $provide) {
+      $provide.value('$log', mock$log);
       devlogProvider.loadConfig(customConfig);
     }));
-
-
-    beforeEach( module('isc.filters'), function( $provide ){
-      $provide.value('$log', mock$log);
-    });
-
 
     beforeEach( inject( function( $rootScope, $injector ){
       scope = $rootScope.$new();
