@@ -16,7 +16,7 @@
 *WARNING* the following instructions will fail if these [prerequisites](#prerequisites) were not satisfied.
 
 ### For framework developers
-```
+```bash
     #clone repo && switch to folder
     git clone https://github.com/intersystems/hs-core-ui.git 
     cd hs-core-ui
@@ -25,7 +25,7 @@
     slush hs:install
 ```    
 ### For app developers
-```
+```bash
     #clone repo && setup upstream && push to destination repo && creat app specific code && install dependencies
     slush hs
     #once completed, make the necessary app specific changes then commit and push changes to origin master
