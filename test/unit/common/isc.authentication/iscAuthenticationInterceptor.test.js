@@ -1,48 +1,95 @@
-
-(function(){
+(function () {
   'use strict';
   //console.log( 'iscAuthenticationInterceptor Tests' );
 
-  describe('iscAuthenticationInterceptor', function(){
-    var rootScope,
-      q,
-      interceptor;
+  describe('iscAuthenticationInterceptor', function () {
+    var $rootScope;
+    var $q;
+    var AUTH_EVENTS;
+    var iscAuthenticationInterceptor;
 
-    // setup devlog
-    beforeEach(module('isc.core', function (devlogProvider) {
+    beforeEach(module('isc.core', 'isc.authentication', function (devlogProvider, $provide) {
       devlogProvider.loadConfig(customConfig);
-    }));
-
-    // show $log statements
-    beforeEach( module(  'isc.authentication', function( $provide ){
       $provide.value('$log', console);
     }));
 
-    beforeEach( inject( function( $rootScope, $q, iscAuthenticationInterceptor ){
-      rootScope = $rootScope; //NOTE when spying on $rootScope.$emit, you cant use $rootScope.$new()
-      q = $q;
-      interceptor = iscAuthenticationInterceptor;
-
+    // show $log statements
+    beforeEach(inject(function (_$rootScope_, _$q_, _iscAuthenticationInterceptor_, _AUTH_EVENTS_) {
+      $rootScope = _$rootScope_; //NOTE when spying on $rootScope.$emit, you cant use $rootScope.$new()
+      $q = _$q_;
+      AUTH_EVENTS = _AUTH_EVENTS_;
+      iscAuthenticationInterceptor = _iscAuthenticationInterceptor_;
 
     }));
 
-    // -------------------------
-    describe( 'responseError tests ', function(){
+    describe('response tests ', function () {
 
-      it( 'should have a function responseError', function(){
-        expect( angular.isFunction( interceptor.responseError )).toBe( true );
+      it('should have a function response', function () {
+        expect(angular.isFunction(iscAuthenticationInterceptor.response)).toBe(true);
       });
 
-      it( 'should do the right thing on responseError', function(){
+      it('should have broadcasted AUTH_EVENTS.sessionTimeoutReset', function () {
+        var response = {config: {url: ""}};
+
+        spyOn($rootScope, '$emit');
+
+        iscAuthenticationInterceptor.response(response);
+
+        expect($rootScope.$emit).toHaveBeenCalledWith(AUTH_EVENTS.sessionTimeoutReset, response);
+      });
+
+      it('should NOT have broadcasted AUTH_EVENTS.sessionTimeoutReset when config.bypassSessionReset', function () {
+        var response = {config: {bypassSessionReset: true, url: ""}};
+
+        spyOn($rootScope, '$emit');
+
+        iscAuthenticationInterceptor.response(response);
+
+        expect($rootScope.$emit).not.toHaveBeenCalled();
+      });
+    });
+
+    // -------------------------
+    describe('responseError tests ', function () {
+
+      it('should have a function responseError', function () {
+        expect(angular.isFunction(iscAuthenticationInterceptor.responseError)).toBe(true);
+      });
+
+      it('should have broadcasted AUTH_EVENTS.notAuthorized for non-specific error', function () {
         var response = {error: 'Oops'};
 
-        spyOn( rootScope, '$emit' );
-        spyOn( q, 'reject' );
+        spyOn($rootScope, '$emit');
+        spyOn($q, 'reject');
 
-        interceptor.responseError( response );
+        iscAuthenticationInterceptor.responseError(response);
 
-        expect( rootScope.$emit ).toHaveBeenCalled();
-        expect( q.reject ).toHaveBeenCalledWith( response );
+        expect($rootScope.$emit).toHaveBeenCalledWith(AUTH_EVENTS.notAuthorized, response);
+        expect($q.reject).toHaveBeenCalledWith(response);
+      });
+
+      it('should have broadcasted AUTH_EVENTS.sessionTimeout for 401', function () {
+        var response = {status: 401, error: 'Oops'};
+
+        spyOn($rootScope, '$emit');
+        spyOn($q, 'reject');
+
+        iscAuthenticationInterceptor.responseError(response);
+
+        expect($rootScope.$emit).toHaveBeenCalledWith(AUTH_EVENTS.sessionTimeout, response);
+        expect($q.reject).toHaveBeenCalledWith(response);
+      });
+
+      it('should NOT have broadcasted any event for 500', function () {
+        var response = {status: 500, error: 'Oops'};
+
+        spyOn($rootScope, '$emit');
+        spyOn($q, 'reject');
+
+        iscAuthenticationInterceptor.responseError(response);
+
+        expect($rootScope.$emit).not.toHaveBeenCalled();
+        expect($q.reject).toHaveBeenCalledWith(response);
       });
     });
 
