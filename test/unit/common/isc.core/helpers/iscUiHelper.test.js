@@ -10,12 +10,8 @@
         service;
 
     // show $log statements
-    beforeEach(module(function ($provide) {
+    beforeEach(module('isc.core', function ($provide, devlogProvider) {
       $provide.value('$log', mock$log);
-    }));
-
-    // setup devlog
-    beforeEach(module('isc.core', function (devlogProvider) {
       devlogProvider.loadConfig(customConfig);
     }));
 
@@ -39,7 +35,7 @@
           expected = tabObj.displayOrder;
           result = service.displayOrder( tabObj );
           expect( expected ).toBe( result );
-        })
+        });
 
       });
     });
@@ -52,23 +48,20 @@
       });
 
       it( 'should set the active tab state', function(){
-        var topTabs = mockConfig.topTabs;
-        var expected, result;
+        var topTabs = mockConfig.topTabs["*"];
 
         service.setTabActiveState( 'index.home', topTabs );
 
+        expect ( topTabs["index.home"].$$active ).toBe( true );
+
         _.forEach( topTabs, function( tab ){
-          if( tab.state === 'index.home' ){
-            expect ( tab.$$active ).toBe( true );
-          }
-          else{
+          if( tab.state !== 'index.home' ){
             expect ( tab.$$active ).toBe( false );
           }
-        })
+        });
       });
-    })
+    });
 
   });
 
 })();
-
