@@ -1,6 +1,6 @@
----
 # hs-core-ui
 
+---
 ## HealthShare UI Framework is intended to be used across multiple projects
 *NOTE*: hs-core-ui not a standalone project -- it only contains common framework code. To become a standalone project, it needs to be complemented with application specific code. see: [Getting started](#getting-started))
 
