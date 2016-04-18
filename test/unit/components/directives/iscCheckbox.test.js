@@ -12,6 +12,11 @@
 
     var html = '<isc-check-box data-ng-model="provider.isFavorite"></isc-check-box>';
 
+    // show $log statements
+    beforeEach( module(  function( $provide ){
+      $provide.value('$log', mock$log);
+    }));
+
     beforeEach (module ('isc.directives'));
 
     // this loads all the external templates used in directives etc
@@ -21,11 +26,6 @@
     // setup devlog
     beforeEach(module('isc.core', function (devlogProvider) {
       devlogProvider.loadConfig(customConfig);
-    }));
-
-    // show $log statements
-    beforeEach( module(  function( $provide ){
-      $provide.value('$log', mock$log);
     }));
 
     beforeEach( inject( function( $rootScope, $compile, $httpBackend  ){

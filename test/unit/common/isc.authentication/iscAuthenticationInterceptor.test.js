@@ -8,9 +8,11 @@
     var AUTH_EVENTS;
     var iscAuthenticationInterceptor;
 
+    // show $log statements
     beforeEach(module('isc.core', 'isc.authentication', function (devlogProvider, $provide) {
+
+      $provide.value('$log', mock$log);
       devlogProvider.loadConfig(customConfig);
-      $provide.value('$log', console);
     }));
 
     // show $log statements

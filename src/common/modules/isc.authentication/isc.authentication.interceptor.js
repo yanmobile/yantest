@@ -21,6 +21,7 @@
    * @returns {{response: response, responseError: responseError}}
      */
   function iscAuthenticationInterceptor(devlog, $rootScope, $q, AUTH_EVENTS) {//jshint ignore:line
+    var channel = devlog.channel('iscAuthenticationInterceptor');
 
     // ----------------------------
     // vars
@@ -50,7 +51,7 @@
        */
     function response(response) {//jshint ignore:line
       if (!response.config.cache && !endsWithExts(response.config.url, blacklistExts)) {
-        devlog.channel('iscAuthenticationInterceptor').debug('Resetting timeout for %s', response.config.url, response);
+        channel.debug('Resetting timeout for %s', response.config.url, response);
 
         // On any server response, assume session has been renewed
         if (!response.config.bypassSessionReset) {
@@ -70,17 +71,17 @@
 
       switch ( response.status ) {
         case 401:
-          devlog.channel('iscAuthenticationInterceptor').debug('...401');
+          channel.debug('...401');
           // this will happen if you just leave your computer on for a long time
           $rootScope.$emit(AUTH_EVENTS.sessionTimeout, response);
           break;
 
         case 500: // these must be handled individually per app
-          devlog.channel('iscAuthenticationInterceptor').debug('...500');
+          channel.debug('...500');
           break;
 
         default:
-          devlog.channel('iscAuthenticationInterceptor').debug('...default');
+          channel.debug('...default');
           $rootScope.$emit(AUTH_EVENTS.notAuthorized, response);
           break;
       }

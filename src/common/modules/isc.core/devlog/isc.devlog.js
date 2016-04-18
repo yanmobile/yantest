@@ -159,7 +159,6 @@
     }
 
     function logFn(method) {
-      console.log(method);
       var args = _.toArray(arguments);
       args.shift(); //remove the first parameter (method)
 

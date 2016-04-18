@@ -2,7 +2,6 @@
  * Created by hzou on 1/19/16.
  */
 
-//TODO: add encryption config
 (function () {
   'use strict';
 
@@ -14,17 +13,19 @@
    =               function                =
    ========================================*/
   function storage($window, devlog) {
+    var channel = devlog.channel('storage');
     var service = {
-      get   : get,
-      set   : set,
-      remove: remove
+      clear: clear,
+      get: get,
+      remove: remove,
+      set: set
     };
     return service;
 
     ////////////////
     function get(storageKey, entityPath) {
-      devlog.channel('storage').debug('get...');
-      devlog.channel('storage').debug("storageKey", storageKey, "entityPath", entityPath);
+      channel.logFn('get');
+      channel.debug("storageKey", storageKey, "entityPath", entityPath);
       var val;
       if (_.isNil(entityPath)) { //if no entityPath is supplied (only 1 parameter)
         val = getFromStorage(storageKey);
@@ -37,8 +38,8 @@
     }
 
     function set(storageKey, entityPath, value) {
-      devlog.channel('storage').debug('set...');
-      devlog.channel('storage').debug("storageKey", storageKey, "entityPath", entityPath, "value", value);
+      channel.logFn('set');
+      channel.debug("storageKey", storageKey, "entityPath", entityPath, "value", value);
 
       if (_.isNil(value)) {
         value = entityPath;
@@ -51,32 +52,40 @@
     }
 
     function remove(storageKey) {
-      devlog.channel('storage').debug('remove...');
-      devlog.channel('storage').debug("storageKey", storageKey);
+      channel.logFn('remove');
+      channel.debug("storageKey", storageKey);
       removeFromStorage(storageKey);
+    }
+
+    function clear() {
+      channel.logFn('clear');
+      $window.localStorage.clear();
     }
 
     /*========================================
      =                 private   =             =
      =======================================*/
     function getFromStorage(storageKey) {
+      channel.logFn('getFromStorage');
       var rawVal = $window.localStorage.getItem(storageKey);
       var value;
       try {
-        value = _.isNil(rawVal) ? null : JSON.parse(rawVal);
-      } catch ( ex ) {
-        value = null;
+        value = _.isNil(rawVal) ? undefined : JSON.parse(rawVal);
+      } catch (ex) {
+        value = undefined;
       }
 
       return value;
     }
 
     function saveToStorage(storageKey, value) {
+      channel.logFn('saveToStorage');
       var stringified = JSON.stringify(value);
       $window.localStorage.setItem(storageKey, stringified);
     }
 
     function removeFromStorage(storageKey) {
+      channel.logFn('removeFromStorage');
       $window.localStorage.removeItem(storageKey);
     }
   }

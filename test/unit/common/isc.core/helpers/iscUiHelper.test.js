@@ -9,6 +9,10 @@
     var scope,
         service;
 
+    // show $log statements
+    beforeEach(module(function ($provide) {
+      $provide.value('$log', mock$log);
+    }));
 
     // setup devlog
     beforeEach(module('isc.core', function (devlogProvider) {

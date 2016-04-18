@@ -17,11 +17,15 @@
         navbarCtrl;
 
 
+    // show $log statements
+    beforeEach( module( function( $provide ){
+      $provide.value( '$log', mock$log );
+    } ) );
+
     // setup devlog
-    beforeEach(module('isc.core', 'isc.configuration', 'iscNavContainer', function (devlogProvider, iscCustomConfigServiceProvider, $provide) {
+    beforeEach(module('isc.core', 'isc.configuration', 'iscNavContainer', function (devlogProvider, iscCustomConfigServiceProvider) {
       devlogProvider.loadConfig(mockConfig);
       iscCustomConfigServiceProvider.loadConfig(mockConfig);
-      $provide.value('$log', mock$log);
     }));
 
     beforeEach(inject(function (

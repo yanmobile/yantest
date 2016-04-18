@@ -13,8 +13,12 @@
 
     var html = '<input isc-autofocus>';
 
-    beforeEach (module ('isc.directives'));
+    // show $log statements
+    beforeEach (module (function ($provide) {
+      $provide.value ('$log', console);
+    }));
 
+    beforeEach (module ('isc.directives'));
 
     // this loads all the external templates used in directives etc
     // eg, everything in templates/**/*.html
@@ -25,10 +29,6 @@
       devlogProvider.loadConfig(customConfig);
     }));
 
-    // show $log statements
-    beforeEach (module (function ($provide) {
-      $provide.value ('$log', console);
-    }));
 
     beforeEach (inject (function ($rootScope, $compile, $timeout, $httpBackend) {
       rootScope = $rootScope;

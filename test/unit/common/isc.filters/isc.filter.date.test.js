@@ -6,15 +6,14 @@
     var scope,
         filter;
 
-
-    // setup devlog
-    beforeEach(module('isc.core', function (devlogProvider) {
-      devlogProvider.loadConfig(customConfig);
+    // show $log statements
+    beforeEach(module(function ($provide) {
+      $provide.value('$log', mock$log);
     }));
 
-    // show $log statements
-    beforeEach(module('isc.filters', function ($provide) {
-      $provide.value('$log', mock$log);
+    // setup devlog
+    beforeEach(module('isc.core', 'isc.filters', function (devlogProvider) {
+      devlogProvider.loadConfig(customConfig);
     }));
 
     beforeEach( inject( function( $rootScope, $injector ){
