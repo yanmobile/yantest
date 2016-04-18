@@ -4,26 +4,27 @@
 // This filter contains standards for Date display for consistency
 // for custom formatting, please refer to http://momentjs.com/docs/#/displaying/format/
 
-(function(){
+(function () {
   'use strict';
   // ----------------------------
   // injection
   // ----------------------------
-  angular.module( 'isc.filters' )
-    .filter( 'iscDate', iscDate );
+  angular.module('isc.filters')
+    .filter('iscDate', iscDate);
 
   /* @ngInject */
-  function iscDate( devlog, $filter ){
-    devlog.channel('iscDate').debug( 'iscDate LOADED');
+  function iscDate(devlog, $filter) {
+    var log = devlog.channel('iscDate');
+    log.debug('iscDate LOADED');
 
-    return function(date, format) {
+    return function (date, format) {
       // moment(undefined) is the current date
       // moment(null) and moment('') are Invalid Dates
       if (!date) {
         return '';
       }
-      if(!moment) {
-        devlog.channel('iscDate').error('Error: momentJS is not loaded as a global');
+      if (!moment) {
+        log.error('Error: momentJS is not loaded as a global');
         return '!momentJS';
       }
       if (!format) { // September 26, 1986 9:00 AM

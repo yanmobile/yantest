@@ -12,7 +12,9 @@
 
   /* @ngInject */
   function iscSessionStorageHelper(devlog, $window) {
-    devlog.channel('iscSessionStorageHelper').debug( 'iscSessionStorageHelper LOADED');
+    var log = devlog
+      .channel('iscSessionStorageHelper');
+      log.debug( 'iscSessionStorageHelper LOADED');
 
     // ----------------------------
     // vars
@@ -52,7 +54,7 @@
     // remove the user data so that the user
     // WONT stay logged in on page refresh
     function destroy() {
-      devlog.channel('iscSessionStorageHelper').debug( 'iscSessionStorageHelper.destroy');
+      log.debug( 'iscSessionStorageHelper.destroy');
       $window.sessionStorage.removeItem('loginResponse');
       $window.sessionStorage.removeItem('sessionTimeoutCounter');
       $window.sessionStorage.removeItem('showTimedOutAlert');
@@ -81,15 +83,15 @@
     function getSessionExpiresOn() {
       var max = getValFromSessionStorage('sessionExpiresOn', null);
       if (max) {
-        devlog.channel('iscSessionStorageHelper').debug( '...number: ' +  max );
+        log.debug( '...number: ' +  max );
         return new Date(max);
       }
-      devlog.channel('iscSessionStorageHelper').debug( '...nope: ' );
+      log.debug( '...nope: ' );
       return new Date();
     }
 
     function setSessionExpiresOn(val) {
-      devlog.channel('iscSessionStorageHelper').debug( 'iscSessionStorageHelper.setSessionExpiresOn:', val );
+      log.debug( 'iscSessionStorageHelper.setSessionExpiresOn:', val );
       setSessionStorageValue('sessionExpiresOn', val);
     }
 
@@ -108,16 +110,16 @@
     // ----------------------------
     function canParse(val) {
       var canParse = (!_.isEmpty(val) && val !== 'null' && val !== 'undefined');//jshint ignore:line
-      devlog.channel('iscSessionStorageHelper').debug( '...canParse: ' +  canParse );
+      log.debug( '...canParse: ' +  canParse );
       return canParse;
     }
 
     function getValFromSessionStorage(key, defaultVal) {
       var valStr = $window.sessionStorage.getItem(key);
-      devlog.channel('iscSessionStorageHelper').debug( '...valStr: ' +  valStr );
+      log.debug( '...valStr: ' +  valStr );
 
       if (helper.canParse(valStr)) {
-        devlog.channel('iscSessionStorageHelper').debug( '...TRYING TO PARSE: ' +  valStr );
+        log.debug( '...TRYING TO PARSE: ' +  valStr );
         return angular.fromJson(valStr);
       }
       return defaultVal;

@@ -1,137 +1,174 @@
 /**
- * Created by Ryan Jarvis on 5/20/2015.
+ * Created by Henry Zou on 4/17/2016.
  */
 (function () {
   'use strict';
 
+  var blacklist;
+  var whitelist;
+  var $logMethods;
+  var config;
+
   angular
     .module('isc.core')
-    .provider('devlog', function () {
-      var config;
-      return {
-        loadConfig: function loadConfig(configObj) {
-          config = configObj;
-        },
-        $get      : devlogService
-      };
+    .provider('devlog', devlog);
 
-      /* @ngInject */
-      function devlogService($log) {
-        var devlog = {};
+  /**
+   * @ngdoc provider
+   * @memberOf devlog
+   */
+  function devlog() {
 
-        // make devlog function as an extension of angular $log
-        ['log', 'info', 'warn', 'error', 'debug', 'logFn'].forEach(function (method) {
-          devlog[method] = function () {
-            var args = devlog.prefixArgs(arguments);
-            if (method !== 'logFn') {
-              $log[method].apply($log, args);
-            } else {
-              args.unshift("====");
-              args.push("() ====");
-              $log.log.apply($log, args);
-            }
-            devlog.clearChannelPrefix();
-          };
-        });
-        devlog.trace = function () {
-          console.trace();
-        };
+    return {
+      loadConfig: function loadConfig(configObj) {
+        config = configObj;
+        blacklist = config.devlogBlacklist;
+        whitelist = config.devlogWhitelist;
+      },
+      $get: devlogService
+    };
+  }
 
-        // null interface for channels that fail
-        var nullobj   = {};
-        nullobj.logFn = _.noop;
-        nullobj.log   = _.noop;
-        nullobj.info  = _.noop;
-        nullobj.warn  = _.noop;
-        nullobj.error = _.noop;
-        nullobj.debug = _.noop;
-        nullobj.trace = _.noop;
+  /**
+   * @ngdoc provider
+   * @memberOf devlog
+   * @param $log
+   * @returns {*}
+   */
+  function devlogService($log) {
+    $logMethods = _.keysIn($log);
+    var Log = getLogClass();
+    return _.extend({
+      channel: channel,
+      logFn: logFn
+    }, $log);
 
-        //channel acts as a filter for log messages by
-        //either passing them directly to $log interface if whitelisted
-        //or piping them to null interface if not
-        //
-        //we support any number of channels specified
-        //as a list of variable arguments
-        devlog.channel = function () {
-          //not recommended to slice on arguments directly
-          //prevents optimizations in JS engines
-          var args = [];
-          for ( var argIndex = 0; argIndex < arguments.length; argIndex++ ) {
-            args.push(arguments[argIndex]);
-          }
+    /**
+     * @ngdoc provider
+     * @memberOf devlog
+     * @description it takes a 'channel' string and returns _.noop or real logger
+     * @param channelName
+     * @returns {*}
+     */
+    function channel(channelName) {
+      // needs to be an instance because we want to preserve the channelName across multiple log calls
+      return new Log(channelName);
+    }
 
-          if (!config) {
-            $log.debug('WARNING No config in application, suppressing call to devlog');
-            console.trace();
-            return nullobj;
-          }
-          var whitelist = config.devlogWhitelist;
-          var blacklist = config.devlogBlacklist || [];
+    function getLogClass() {
 
-          //no whitelist present
-          //means suppress
-          if (!whitelist) {
-            return nullobj;
-          }
-
-          //no channel specified
-          //means send it directly through without prefixing
-          if (!args.length) {
-            return devlog;
-          }
-
-
-          //whittle channels down to approved ones
-          //if any, send through with prefixing
-          //otherwise suppress
-          var approved = [];
-          for ( var i = 0; i < args.length; i++ ) {
-            if (!_.includes(blacklist, args[i])) {
-              if (whitelist.indexOf(args[i]) >= 0) {
-                approved.push(args[i]);
-              } else if (whitelist.indexOf('*') >= 0 && whitelist.indexOf('!' + args[i]) < 0) {
-                approved.push(args[i]);
-              }
-            }
-          }
-          if (approved.length > 0) {
-            devlog.setChannelPrefix(approved);
-            return devlog;
-          }
-
-          return nullobj;
-
-        };
-
-        //internal use
-        devlog.channelPrefix = '';
-
-        //internal use
-        //generates a substring indicating the channels the messages belong to
-        //  surrounded by pipes (i.e. '|CHANNEL|')
-        //used to prefix the logger's output so a user can see the channel in the console
-        devlog.setChannelPrefix   = function (chans) {
-          devlog.channelPrefix = '|' + chans.join('|') + '| ';
-          devlog.channelPrefix = devlog.channelPrefix.toUpperCase();
-        };
-        devlog.clearChannelPrefix = function () {
-          devlog.channelPrefix = '';
-        };
-        devlog.prefixArgs         = function (msgParams) {
-          //msg_params is of type Arguments from function
-          var args = Array.prototype.slice.call(msgParams);
-          if (args[0] && (typeof args[0] === 'string' || args[0] instanceof String)) {
-            args[0] = devlog.channelPrefix + args[0];
-          } else {
-            args.unshift(devlog.channelPrefix);
-          }
-          return args;
-        };
-
-        return devlog;
-
+      function Log(channelName) {
+        var isAllowed = getIsAllowed(channelName, whitelist, blacklist);
+        $log.log('*** devlog channel allowed: ', channelName, ":", isAllowed ? "YES" : "NO", " ***");
+        this.channelName = channelName;
+        this.channelPrefix = (channelName ? "|" + channelName + "|" : '').toUpperCase();
+        if (isAllowed) {
+          _.extend(this, this.real);
+        } else {
+          _.extend(this, this.fake);
+        }
       }
-    });
-})();
 
+      Log.prototype.real = getRealLogger();
+      Log.prototype.fake = getNoOpLogger();
+
+      return Log;
+
+      /*========================================
+       =         private functions             =
+       ========================================*/
+
+      /**
+       * @memberOf devlog
+       * @description
+       *  checks whether the channel is allowed or not
+       * @param channelName
+       * @param whitelist
+       * @param blacklist
+       * @returns {boolean}
+       */
+      function getIsAllowed(channelName, whitelist, blacklist) {
+        var allowed = false;
+        if (_.includes(blacklist, channelName)) {
+          allowed = false;
+        } else if (_.isNil(whitelist)) {
+          allowed = false;
+        } else if (whitelist.length === 0) {
+          allowed = true;
+        } else if (_.isEqual(whitelist, ["*"]) || _.includes(whitelist, channelName)) {
+          allowed = true;
+        }
+
+        return allowed;
+      }
+
+      /**
+       * @memberOf devlog
+       * @description
+       *  Real log method it will log to console when invoked
+       * @param channel
+       * @returns {{dir: *, log: *, debug: *, info: *, warn: *, error: *, logFn: Function}}
+       */
+      function getRealLogger() {
+        var logger = getLogger(logMethod);
+
+        logger.logFn = logFn;
+
+        return logger;
+
+        //////////////////////////
+        function logMethod(method) {
+          return function () {
+            var args = _.toArray(arguments);
+            if (this.channelPrefix) {  //adds this.channelPrefix to be logged
+              args.unshift(this.channelPrefix);
+            }
+            $log[method].apply($log, args);
+          };
+        }
+      }
+
+      /**
+       * @memberOf devlog
+       * @description
+       *  Empty Logger performing an no-op when invoked
+       * @returns {{}}
+       */
+      function getNoOpLogger() {
+        var logger = getLogger();
+        logger.logFn = _.noop;
+        return logger;
+      }
+
+      /**
+       * @memberOf devlog
+       * @description iterates through all of $log's own properties and creates a new log object:
+       *  it will either return a _.noop object or real $log
+       * @param logFunc
+       * @returns {{}}
+       */
+      function getLogger(logFunc) {
+        var logger = {};
+
+        _.forEach($logMethods, function (method) {
+          logger[method] = logFunc ? logFunc(method) : _.noop;
+        });
+
+        return logger;
+      }
+    }
+
+    function logFn(method) {
+      console.log(method);
+      var args = _.toArray(arguments);
+      args.shift(); //remove the first parameter (method)
+
+      var messages = ["=====", method, "(" + args.join(', ') + ")", "====="];
+      if (this.channelName) {
+        messages.splice(1, 1, this.channelName + "." + method);
+      }
+      $log.log.apply($log, messages);
+    }
+  }
+
+})();

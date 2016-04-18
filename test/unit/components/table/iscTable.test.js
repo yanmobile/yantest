@@ -114,7 +114,7 @@
 
     // show $log statements
     beforeEach(module(function ($provide) {
-      $provide.value('$log', console);
+      $provide.value('$log', mock$log);
     }));
     // setup devlog
     beforeEach(module('isc.core', function (devlogProvider) {
@@ -153,7 +153,7 @@
 
       $rootScope.$digest();
       isolateScope = element.isolateScope();
-    };
+    }
 
     // -------------------------
     describe('setup tests ', function () {
