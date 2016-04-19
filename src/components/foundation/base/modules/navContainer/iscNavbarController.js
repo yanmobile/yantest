@@ -26,8 +26,9 @@
     iscCustomConfigService, iscCustomConfigHelper, iscUiHelper, iscSessionModel,
     AUTH_EVENTS
   ) {
+    var channel = devlog.channel('iscNavbarController');
 
-    devlog.channel('iscNavbarController').debug('iscNavbarController LOADED');
+    channel.debug('iscNavbarController LOADED');
 
     var self = this;
 
@@ -52,7 +53,7 @@
      * @memberOf iscNavbarController
      */
     function logout() {
-      devlog.channel('iscNavbarController').debug('iscNavbarController.logout');
+      channel.debug('iscNavbarController.logout');
       $rootScope.$emit(AUTH_EVENTS.logout);
     }
 
@@ -60,7 +61,7 @@
      * @memberOf iscNavbarController
      */
     function setShowRoles() {
-      devlog.channel('iscNavbarController').debug('iscNavbarController.isAuthenticated');
+      channel.debug('iscNavbarController.isAuthenticated');
       self.user      = iscSessionModel.getCurrentUser();
       self.userRoles = _.get(self.user, 'Roles', [self.user.userRole]);
       self.showRoles = self.userRoles.length > 1;
@@ -80,7 +81,7 @@
      * @param state
        */
     function setTabActiveState(state) {
-      devlog.channel('iscNavbarController').debug('iscNavbarController.setTabActiveState');
+      channel.debug('iscNavbarController.setTabActiveState');
       self.iscUiHelper.setTabActiveState(state, self.getTabs());
     }
 
@@ -99,14 +100,14 @@
 
     //
     $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
-      devlog.channel('iscNavbarController').debug('iscNavbarController.$stateChangeSuccess', arguments);
+      channel.debug('iscNavbarController.$stateChangeSuccess', arguments);
       self.setPageState(toState.name);
       setShowRoles();
     });
 
     // when you refresh the page, this will reset the active state of the selected tab
     $scope.$evalAsync(function () {
-      devlog.channel('iscNavbarController').debug('iscNavbarController setting page name to', $state.$current.name);
+      channel.debug('iscNavbarController setting page name to', $state.$current.name);
       self.setPageState($state.$current.name);
     });
 

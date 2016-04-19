@@ -35,7 +35,8 @@
    */
   /* @ngInject */
   function iscRadio(devlog, iscRadioGroupHelper) {
-    devlog.channel('iscRadio').debug('iscRadio LOADED');
+    var channel = devlog.channel('iscRadio');
+    channel.debug('iscRadio LOADED');
 
     // ----------------------------
     // vars

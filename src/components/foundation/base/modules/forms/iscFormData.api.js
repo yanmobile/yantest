@@ -16,6 +16,8 @@
      */
   /* @ngInject */
   function iscFormDataApi(devlog, apiHelper, iscCustomConfigService, iscHttpapi) {
+    var channel = devlog.channel('iscFormDataApi');
+
     var config       = iscCustomConfigService.getConfig(),
         moduleConfig = _.get(config, 'moduleApi', {});
 
@@ -37,7 +39,7 @@
      * @returns {*}
        */
     function get(id) {
-      devlog.channel('iscFormDataApi').debug('iscFormDataApi.get');
+      channel.debug('iscFormDataApi.get');
       return iscHttpapi.get([formDataUrl, id].join('/'));
     }
 
@@ -48,7 +50,7 @@
      * @returns {*}
        */
     function put(id, form) {
-      devlog.channel('iscFormDataApi').debug('iscFormDataApi.put');
+      channel.debug('iscFormDataApi.put');
       return iscHttpapi.put([formDataUrl, id].join('/'), form);
     }
 
@@ -58,7 +60,7 @@
      * @returns {*}
        */
     function post(form) {
-      devlog.channel('iscFormDataApi').debug('iscFormDataApi.post');
+      channel.debug('iscFormDataApi.post');
       return iscHttpapi.post(formDataUrl, form);
     }
 
@@ -68,7 +70,7 @@
      * @returns {*}
        */
     function deleteApi(id) {
-      devlog.channel('iscFormDataApi').debug('iscFormDataApi.delete');
+      channel.debug('iscFormDataApi.delete');
       return iscHttpapi.delete([formDataUrl, id].join('/'));
     }
 
@@ -77,7 +79,7 @@
      * @returns {*}
        */
     function list() {
-      devlog.channel('iscFormDataApi').debug('iscFormDataApi.list');
+      channel.debug('iscFormDataApi.list');
       return iscHttpapi.get(formDataUrl);
     }
 

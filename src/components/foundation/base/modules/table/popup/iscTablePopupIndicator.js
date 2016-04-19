@@ -22,7 +22,9 @@
    * @returns {{restrict: string, controller: controller, controllerAs: string}}
      */
   function iscTablePopupIndicator(devlog){
-    devlog.channel('iscTablePopupIndicator').debug( 'iscTablePopupIndicator LOADED');
+    var channel = devlog.channel('iscTablePopupIndicator');
+
+    channel.debug( 'iscTablePopupIndicator LOADED');
 
     // ----------------------------
     // vars

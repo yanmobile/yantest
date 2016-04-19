@@ -28,7 +28,8 @@
    * but if you need to call it in an outside function, this can be used
      */
   function iscRadioGroupHelper(devlog) {//jshint ignore:line
-    devlog.channel('iscRadioGroupHelper').debug('iscRadioGroupHelper LOADED');
+    var channel = devlog.channel('iscRadioGroupHelper');
+    channel.debug('iscRadioGroupHelper LOADED');
 
     // ----------------------------
     // vars
@@ -53,9 +54,9 @@
      * @param radioGroup
        */
     function radioSelect(selectedItem, radioGroup) {
-      devlog.channel('iscRadioGroupHelper').debug('iscRadioGroupHelper.radioSelect');
-      devlog.channel('iscRadioGroupHelper').debug('...selectedItem', selectedItem);
-      devlog.channel('iscRadioGroupHelper').debug('...radioGroup', radioGroup);
+      channel.debug('iscRadioGroupHelper.radioSelect');
+      channel.debug('...selectedItem', selectedItem);
+      channel.debug('...radioGroup', radioGroup);
 
       var currentState = !!selectedItem.$$selected;
       radioGroup.forEach(function (item) {

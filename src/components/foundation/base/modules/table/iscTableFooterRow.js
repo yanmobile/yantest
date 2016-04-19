@@ -20,7 +20,9 @@
    * @returns {{scope: boolean, restrict: string, controllerAs: string, compile: compile}}
      */
   function iscTableFooterRow( devlog, $state, $templateCache, $compile ){
-    devlog.channel('iscTableFooterRow').debug('iscTableFooterRow.LOADED');
+    var channel = devlog.channel('iscTableFooterRow');
+
+    channel.debug('iscTableFooterRow.LOADED');
 
     // ----------------------------
     // vars

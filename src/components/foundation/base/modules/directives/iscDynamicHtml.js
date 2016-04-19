@@ -23,7 +23,8 @@
    */
   /* @ngInject */
   function iscDynamicHtml( devlog, $compile, $templateCache ){//jshint ignore:line
-//    devlog.channel('iscDynamicHtml').debug( 'iscDynamicHtml LOADED');
+    var channel = devlog.channel('iscDynamicHtml');
+    channel.debug( 'iscDynamicHtml LOADED');
 
     // ----------------------------
     // vars
@@ -48,7 +49,7 @@
 
     function link( scope, elem, attr ){
       scope.$watch( attr.iscDynamicHtml, function( html ){
-        devlog.channel('iscDynamicHtml').debug( 'iscDynamicHtml', html );
+        channel.debug( 'iscDynamicHtml', html );
         elem.html( html );
         $compile( elem.contents() )( scope );
       });

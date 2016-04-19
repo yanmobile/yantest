@@ -16,6 +16,8 @@
      */
   /* @ngInject */
   function iscFormsApi(devlog, apiHelper, iscCustomConfigService, iscHttpapi) {
+    var channel = devlog.channel('iscFormsApi');
+
     var config       = iscCustomConfigService.getConfig(),
         moduleConfig = _.get(config, 'moduleApi', {});
 
@@ -42,7 +44,7 @@
      * @returns {*}
        */
     function listForms() {
-      devlog.channel('iscFormsApi').debug('iscFormsApi.listForms');
+      channel.debug('iscFormsApi.listForms');
       return iscHttpapi.get(formsUrl);
     }
 
@@ -52,7 +54,7 @@
      * @returns {*}
        */
     function getActiveForms(formType) {
-      devlog.channel('iscFormsApi').debug('iscFormsApi.getActiveForms');
+      channel.debug('iscFormsApi.getActiveForms');
       return iscHttpapi.get([statusUrl, formType].join('/'));
     }
 
@@ -63,7 +65,7 @@
      * @returns {*}
        */
     function setFormStatus(formType, formStatuses) {
-      devlog.channel('iscFormsApi').debug('iscFormsApi.setFormStatus');
+      channel.debug('iscFormsApi.setFormStatus');
       return iscHttpapi.put([formInfoUrl, formType].join('/'), formStatuses);
     }
 
@@ -73,7 +75,7 @@
      * @returns {*}
        */
     function getFormDefinition(formKey) {
-      devlog.channel('iscFormsApi').debug('iscFormsApi.getFormDefinition');
+      channel.debug('iscFormsApi.getFormDefinition');
       return iscHttpapi.get([formsUrl, formKey].join('/'));
     }
 
@@ -83,7 +85,7 @@
      * @returns {*}
        */
     function getUserScript(scriptName) {
-      devlog.channel('iscFormsApi').debug('iscFormsApi.getUserScript');
+      channel.debug('iscFormsApi.getUserScript');
       return iscHttpapi.get([scriptsUrl, scriptName].join('/'));
     }
 
@@ -93,7 +95,7 @@
      * @returns {*}
        */
     function getTemplate(templateName) {
-      devlog.channel('iscFormsApi').debug('iscFormsApi.getTemplate');
+      channel.debug('iscFormsApi.getTemplate');
       return iscHttpapi.get([templatesUrl, templateName].join('/'));
     }
   }

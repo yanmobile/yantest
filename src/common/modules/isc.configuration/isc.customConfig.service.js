@@ -51,7 +51,8 @@
      =                 SERVICE                =
      ========================================*/
     function iscCustomConfigService(devlog) {
-      devlog.channel('iscCustomConfigService').debug('iscCustomConfigService LOADED');
+      var channel = devlog.channel('iscCustomConfigService');
+      channel.debug('iscCustomConfigService LOADED');
 
       // ----------------------------
       // class factory
@@ -67,13 +68,13 @@
       // functions
       // ----------------------------
       function getConfig() {
-        devlog.channel('iscCustomConfigService').debug('iscCustomConfigService.getConfig');
-        devlog.channel('iscCustomConfigService').debug('...config ' + JSON.stringify(config));
+        channel.debug('iscCustomConfigService.getConfig');
+        channel.debug('...config ' + JSON.stringify(config));
         return config;
       }
 
       function getConfigSection(section, role) {
-        devlog.channel('iscCustomConfigService').debug('iscCustomConfigService.getConfigSection', section);
+        channel.debug('iscCustomConfigService.getConfigSection', section);
         var retObj;
         if (role) {
           retObj = _.get(config, [section, role].join('.'));

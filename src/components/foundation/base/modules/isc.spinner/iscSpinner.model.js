@@ -21,7 +21,9 @@
    * @returns {{addPendingReq: addPendingReq, subtractPendingReq: subtractPendingReq, getPendingReqs: getPendingReqs}}
      */
   function iscSpinnerModel(devlog) {
-    devlog.channel('iscSpinnerModel').debug('inside iscSpinnerModel');
+    var channel = devlog.channel('iscSpinnerModel');
+
+    channel.debug('inside iscSpinnerModel');
     var pendingReqs = {};
     var factory     = {
       addPendingReq     : addPendingReq,
@@ -35,7 +37,7 @@
      * @param url
        */
     function addPendingReq(url) {
-      devlog.channel('iscSpinnerModel').debug('adding url', url);
+      channel.debug('adding url', url);
       pendingReqs[url] = true;
     }
 
@@ -44,7 +46,7 @@
      * @param url
        */
     function subtractPendingReq(url) {
-      devlog.channel('iscSpinnerModel').debug('removing url', url);
+      channel.debug('removing url', url);
       delete pendingReqs[url];
     }
 

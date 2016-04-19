@@ -31,7 +31,8 @@
    */
   /* @ngInject */
   function iscCheckBox( devlog ){//jshint ignore:line
-//    devlog.channel('iscCheckBox').debug( 'iscCheckBox LOADED');
+    var channel = devlog.channel('iscCheckBox');
+    channel.debug( 'iscCheckBox LOADED');
 
     // ----------------------------
     // vars
@@ -42,7 +43,6 @@
     // ----------------------------
     var directive = {
       restrict: 'EA',
-      transclude: false,
       require: '?ngModel',
       scope: {
         onToggle: '&'
@@ -82,7 +82,7 @@
         scope.onToggle( {selected: scope.selected} );
 
         if( ngModelCtrl ){
-          devlog.channel('iscCheckBox').debug( 'iscCheckBox.$setViewValue');
+          channel.debug( 'iscCheckBox.$setViewValue');
           ngModelCtrl.$setViewValue( !ngModelCtrl.$viewValue );
         }
       };

@@ -37,11 +37,9 @@
    */
   /* @ngInject */
   function iscAutofocus (devlog, $timeout) {
-    devlog.channel('iscAutofocus').debug( 'iscAutofocus LOADED');
+    var channel = devlog.channel('iscAutofocus');
 
-    // ----------------------------
-    // vars
-    // ----------------------------
+    channel.debug( 'iscAutofocus LOADED');
 
     // ----------------------------
     // class factory

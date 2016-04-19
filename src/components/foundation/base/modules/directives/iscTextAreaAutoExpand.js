@@ -98,7 +98,8 @@
    */
   /* @ngInject */
   function iscTextAreaAutoExpand( devlog ){ //jshint ignore: line
-    devlog.channel('iscTextAreaAutoExpand').debug( 'iscTextAreaAutoExpand LOADED');
+    var channel = devlog.channel('iscTextAreaAutoExpand');
+    channel.debug( 'iscTextAreaAutoExpand LOADED');
 
     // ----------------------------
     // vars
@@ -160,10 +161,10 @@
         $shadow.html(val);
 
         var height = Math.max( $shadow[0].offsetHeight + threshold, minHeight );
-        devlog.channel('iscTextAreaAutoExpand').debug( '...$shadow[0].offsetHeight',$shadow[0].offsetHeight );
-        devlog.channel('iscTextAreaAutoExpand').debug( '...threshold',threshold );
-        devlog.channel('iscTextAreaAutoExpand').debug( '...minHeight',minHeight );
-        devlog.channel('iscTextAreaAutoExpand').debug( '...height',height );
+        channel.debug( '...$shadow[0].offsetHeight',$shadow[0].offsetHeight );
+        channel.debug( '...threshold',threshold );
+        channel.debug( '...minHeight',minHeight );
+        channel.debug( '...height',height );
 
         element.css('height', height + 'px');
       };
@@ -172,15 +173,15 @@
       update();
 
       scope.$watch( 'ngModelCtrl.$modelValue', function( oldval, newVal ){ // jshint ignore:line
-        devlog.channel('iscTextAreaAutoExpand').debug( '...ngModelCtrl.$viewValue',ngModelCtrl.$viewValue );
-        devlog.channel('iscTextAreaAutoExpand').debug( '...ngModelCtrl.$modelValue',ngModelCtrl.$modelValue );
+        channel.debug( '...ngModelCtrl.$viewValue',ngModelCtrl.$viewValue );
+        channel.debug( '...ngModelCtrl.$modelValue',ngModelCtrl.$modelValue );
         if( !!ngModelCtrl.$modelValue ){
           update();
         }
       });
 
       scope.$on('$destroy', function() {
-        devlog.channel('iscTextAreaAutoExpand').debug( '...$destroy' );
+        channel.debug( '...$destroy' );
         $shadow.remove();
       });
 

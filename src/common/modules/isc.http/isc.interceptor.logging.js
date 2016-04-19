@@ -13,6 +13,8 @@
 
   /* @ngInject */
   function iscLoggingInterceptor($q, devlog) {//jshint ignore:line
+    var channel = devlog.channel('iscLoggingInterceptor');
+
     // ----------------------------
     // factory class
     // ----------------------------
@@ -31,7 +33,7 @@
     function request(config) {//jshint ignore:line
       var htmlRegExp = /html$/;
       if (!htmlRegExp.test(config.url)) {
-        devlog.channel('iscLoggingInterceptor').debug('iscLoggingInterceptor request for %s', config.url, config.data || '');
+        channel.debug('iscLoggingInterceptor request for %s', config.url, config.data || '');
       }
       return config;
     }
@@ -39,13 +41,13 @@
     function response(response) {//jshint ignore:line
       //log everything that's an object and array
       if (_.isTypeOf(response.data, 'object') || _.isTypeOf(response.data, 'array')) {
-        devlog.channel('iscLoggingInterceptor').debug('iscLoggingInterceptor response for %s', response.config.url, response);
+        channel.debug('iscLoggingInterceptor response for %s', response.config.url, response);
       }
       return response;
     }
 
     function responseError(response) {
-      devlog.channel('iscLoggingInterceptor').debug('iscLoggingInterceptor responseError for ', response);
+      channel.debug('iscLoggingInterceptor responseError for ', response);
 
       // $q.reject is needed inorder to invoke the next responseError interceptor in the array
       return $q.reject(response);

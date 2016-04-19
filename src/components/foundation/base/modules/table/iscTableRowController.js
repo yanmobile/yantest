@@ -14,7 +14,8 @@
    * @memberOf isc.table
    * @param $scope
      */
-  function iscTableRowController($scope){
+  function iscTableRowController(devlog, $scope){
+    var channel = devlog.channel('iscTableRowController');
 
     // ----------------------------
     // vars

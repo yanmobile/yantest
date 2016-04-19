@@ -6,8 +6,9 @@
   'use strict';
 
   /* @ngInject */
-  function iscHtmlToPlainText( $log ){//jshint ignore:line
-//    devlog.channel('iscHtmlToPlainText').debug( 'iscHtmlToPlainText LOADED');
+  function iscHtmlToPlainText( devlog ){//jshint ignore:line
+    var channel = devlog.channel('iscHtmlToPlainText');
+    channel.debug( 'iscHtmlToPlainText LOADED');
 
 
     // ----------------------------

@@ -17,6 +17,8 @@
     AUTH_EVENTS,
     NAV_EVENTS
   ) {
+    var channel = devlog.channel('iscRouterDefaultEventService');
+
     var service = {
       registerDefaultEvents      : registerDefaultEvents,
       registerStateChangeStart   : registerStateChangeStart,
@@ -41,12 +43,12 @@
       // stateChange start
       $rootScope.$on('$stateChangeStart',
         function (event, toState, toParams, fromState, fromParams) {
-          devlog.channel('IscRouterDefaultEventService').debug('ischNavContainer.$stateChangeStart');
-          devlog.channel('IscRouterDefaultEventService').debug('...from: ' + fromState.name);
-          devlog.channel('IscRouterDefaultEventService').debug('.....to: ', toState.name);
+          channel.debug('ischNavContainer.$stateChangeStart');
+          channel.debug('...from: ', fromState.name);
+          channel.debug('.....to: ', toState.name);
 
-          devlog.channel('IscRouterDefaultEventService').debug('State change request received');
-          devlog.channel('IscRouterDefaultEventService').debug('Beginning state change from \'%s\' to \'%s\'', _.wrapText(fromState.name), _.wrapText(toState.name));
+          channel.debug('State change request received');
+          channel.debug('Beginning state change from \'%s\' to \'%s\'', _.wrapText(fromState.name), _.wrapText(toState.name));
 
           handleStateChangeStart(event, toState, toParams, fromState, fromParams);
         });
@@ -57,63 +59,63 @@
       // stateChange success
       $rootScope.$on('$stateChangeSuccess',
         function (event, toState, toParams, fromState, fromParams) {//jshint ignore:line
-          devlog.channel('IscRouterDefaultEventService').debug('ischNavContainer.$stateChangeSuccess', _.wrapText(toState.name));
+          channel.debug('ischNavContainer.$stateChangeSuccess', _.wrapText(toState.name));
         });
     }
 
     function registerStateChangeError() {
-      devlog.channel('IscRouterDefaultEventService').debug('registering $stateChangeError');
+      channel.debug('registering $stateChangeError');
       // ------------------------
       // stateChange error
       $rootScope.$on('$stateChangeError',
         function (event, toState, toParams, fromState, fromParams, error) {//jshint ignore:line
-          devlog.channel('IscRouterDefaultEventService').error('ischNavContainer.$stateChangeError', error);
+          channel.error('ischNavContainer.$stateChangeError', error);
         });
     }
 
     function registerStateChangeRejected() {
 
-      devlog.channel('IscRouterDefaultEventService').debug('registering $stateChangeRejected');
+      channel.debug('registering $stateChangeRejected');
       // ------------------------
       // stateChange $stateChangeRejected
       $rootScope.$on('$stateChangeRejected',
         function (event, toState, toParams, fromState, fromParams, error) {//jshint ignore:line
-          devlog.channel('IscRouterDefaultEventService').error('ischNavContainer.$stateChangeRejected');
-          devlog.channel('IscRouterDefaultEventService').error('.... to state', _.wrapText(toState.state, '=='));
+          channel.error('ischNavContainer.$stateChangeRejected');
+          channel.error('.... to state', _.wrapText(toState.state, '=='));
         });
     }
 
     function handleStateChangeStart(event, toState, toParams, fromState, fromParams) {//jshint ignore:line
-      devlog.channel('IscRouterDefaultEventService').debug('iscNavContainer.handleStateChangeStart');
+      channel.debug('iscNavContainer.handleStateChangeStart');
 
       // get the permissions for this state
       var isAuthorized = iscAuthorizationModel.isAuthorized(toState.name); // either your role is permitted or the state is whitelisted
       var isAuthenticated = iscSessionModel.isAuthenticated(); // you are logged in
 
-      devlog.channel('IscRouterDefaultEventService').debug('...isAuthorized', isAuthorized);
-      devlog.channel('IscRouterDefaultEventService').debug('...isAuthenticated', isAuthenticated);
+      channel.debug('...isAuthorized', isAuthorized);
+      channel.debug('...isAuthenticated', isAuthenticated);
 
       if (!isAuthorized) {
-        devlog.channel('IscRouterDefaultEventService').debug(toState.name + ' is not authorized');
+        channel.debug(toState.name + ' is not authorized');
         preventDefault(event, toState.name, {
           source: "iscRouterDefaultEventService.handleStateChangeStart",
           error : "User is not authorized to access " + _.wrapText(toState.name)
         });
 
         if (!isAuthenticated) {
-          devlog.channel('IscRouterDefaultEventService').debug('...not authenticated');
+          channel.debug('...not authenticated');
           $rootScope.$emit(NAV_EVENTS.goToBeforeLoginPage);
           $rootScope.$emit(AUTH_EVENTS.notAuthenticated);
         } else {
-          devlog.channel('IscRouterDefaultEventService').debug('... logged in, but not authorized');
+          channel.debug('... logged in, but not authorized');
           $rootScope.$emit(AUTH_EVENTS.notAuthorized);
         }
       }
     }
 
     function preventDefault(event, toStateName, error) {
-      devlog.channel('IscRouterDefaultEventService').debug('...preventDefault to', toStateName);
-      devlog.channel('IscRouterDefaultEventService').error('... ' + _.wrapText(toStateName) + ' is unauthorized. ', error);
+      channel.debug('...preventDefault to', toStateName);
+      channel.error('... ' + _.wrapText(toStateName) + ' is unauthorized. ', error);
       event.preventDefault();
     }
   }
