@@ -106,8 +106,8 @@ The file can be located in any directory, and the file name is not important.
 **Notes:**
   * This *config structure* applies to ```gulp/app.json```, ```gulp/components.json```, and ```gulp/common.json```
   * The paths must be relative to the root of the application
-  * Be sure to never reference files from another module or outside of its section *src/common*, *src/components*, and *src/app*.
-  * The order of these configuration files are as follows: 
+  * Be sure to never reference files from another module or outside of their perspective section: *src/common*, *src/components*, and *src/app*.
+  * The automation scripts will load the config sections in this orders: 
     1. gulp/common.json
     2. gulp/components.json
     3. gulp/app.json
