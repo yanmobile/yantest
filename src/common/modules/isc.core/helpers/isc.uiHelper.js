@@ -5,7 +5,8 @@
 (function () {
   'use strict';
 
-  angular.module('isc.core')
+  angular
+    .module('isc.core')
     .factory('iscUiHelper', iscUiHelper);
 
   function iscUiHelper(devlog) {//jshint ignore:line
@@ -33,13 +34,12 @@
       channel.debug('...allTabs', allTabs);
       _.forEach(allTabs, function (tab) {
         if (_.includes(state, tab.state)) {
-          tab.$$active = true;
+          tab.active = true;
         } else {
-          tab.$$active = false;
+          tab.active = false;
         }
       });
     }
-
 
   }// END CLASS
 
