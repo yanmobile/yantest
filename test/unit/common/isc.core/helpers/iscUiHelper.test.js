@@ -52,11 +52,11 @@
 
         service.setTabActiveState( 'index.home', topTabs );
 
-        expect ( topTabs["index.home"].$$active ).toBe( true );
+        expect ( topTabs["index.home"].active ).toBe( true );
 
         _.forEach( topTabs, function( tab ){
           if( tab.state !== 'index.home' ){
-            expect ( tab.$$active ).toBe( false );
+            expect ( tab.active ).toBe( false );
           }
         });
       });
