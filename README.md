@@ -97,7 +97,83 @@ The file can be located in any directory, and the file name is not important.
     |   |   |-- common
     |   |   |-- component
     |___|___|__ app     //application specific
-    
+   
+
+---
+###gulp configs
+**This framework is designed to virtually eliminate the need to write custom build automations. The automation scripts reads these three configuration files below.**
+
+**Notes:**
+  * This *config structure* applies to ```gulp/app.json```, ```gulp/components.json```, and ```gulp/common.json```
+  * The paths must be relative to the root of the application
+  * Be sure to never reference files from another module or outside of its section *src/common*, *src/components*, and *src/app*.
+  * The order of these configuration files are as follows: 
+    1. gulp/common.json
+    2. gulp/components.json
+    3. gulp/app.json
+
+```javascript
+{
+  "vendor" : {
+    "js" : [
+      // This is where we specify bower files
+      // Exceptions: If files need to be loaded after all 3 "vendor/js", be sure to place it in the "module/assets/vendor/js" section
+      // e.g., "src/common/bower_components/jquery/dist/jquery.js"
+    ],
+    "mocks" : [
+      // This is where we specify vendor mock files
+      // e.g., "src/common/bower_components/angular-mocks/angular-mocks.js"
+    ],
+    "fonts" : [
+      // This is where we specify vendor font files
+      // e.g., "src/components/foundation/base/bower_components/font-awesome/fonts/fontawesome-webfont.*"
+    ]
+  },
+  "module" : {
+    "modules": [
+      // This is where we specify our own module files
+      // Since the order of JS files matter, Angular modules must be loaded before they are referenced, this allows module definitions to be loaded before they are used      
+      // e.g., "src/components/foundation/base/modules/**/*.module.js"
+    ],
+    "js" : [
+      // This is where we specify our own js files
+      // They will be loaded after after the "module/modules" files
+      // e.g., "src/components/foundation/base/modules/**/*.js"
+    ],
+    "html" : [
+      // This is where we specify html files
+      // e.g., "src/components/foundation/base/modules/**/*.html",
+      // e.g., "src/components/foundation/base/assets/**/*.html"
+    ],
+    "assets" : {
+      "images" : [
+        // This is where we specify image files. 
+        // They'll compressed and moved into "www/images/"
+        // e.g., "src/components/foundation/base/assets/images/**/*",
+        // e.g., "src/components/foundation/base/assets/vendors/leaflet/images/**/*"
+      ],
+      "vendor" : {
+        "js" : [
+          // This is where we specify vendor files we've added to our source code
+          // These files will be loaded after "vendor/js"
+          // Exception: If files need to be loaded before all 3 "module/assets/vendor/js", be sure to place it in the "vendor/js" section
+          // e.g., "src/components/foundation/base/assets/vendors/n3-charts/build/LineChart.js",
+          // e.g., "src/components/foundation/base/assets/vendors/leaflet/leaflet.js"
+        ]
+      }
+    },
+    "mocks" : [
+      // This is where we specify our own mock files
+      // e.g., "test/unit/components/componentUnitTestMocks.js"
+    ],
+    "tests" : [
+      // This is where we specify the test files
+      // e.g., "test/unit/components/**/*.test.js"
+    ]
+  }
+}
+```
+        
 ---
 ###FAQs
 * **I am getting this error message ```slush: command not found```**
