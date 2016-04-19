@@ -27,7 +27,9 @@
      */
   /* @ngInject */
   function iscLanguageService (devlog, $window, $translate, iscCustomConfigService, iscSessionStorageHelper) {
-    devlog.channel('iscLanguageService').debug( 'iscLanguageService LOADED');
+    var channel = devlog.channel('iscLanguageService');
+    
+    channel.debug( 'iscLanguageService LOADED');
 
     // ----------------------------
     // vars

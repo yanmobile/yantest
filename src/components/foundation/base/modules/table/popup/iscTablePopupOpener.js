@@ -26,7 +26,8 @@
    * @returns {{restrict: string, link: link}}
      */
   function iscTablePopupOpener(devlog, $state, $templateCache, $compile){//jshint ignore:line
-    devlog.channel('iscTablePopupOpener').debug( 'iscTablePopupOpener LOADED');
+    var channel = devlog.channel('iscTablePopupOpener');
+    channel.debug( 'iscTablePopupOpener LOADED');
 
     // ----------------------------
     // vars

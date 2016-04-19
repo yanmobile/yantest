@@ -6,6 +6,7 @@
 
   /* @ngInject */
   function iscGlobals(devlog, $rootScope, $document) {//jshint ignore:line
+    var channel = devlog.channel('iscGlobals');
 
     // --------------------
     //$document.ready( function() {
@@ -103,12 +104,13 @@
     }
 
     function get(key) { // should be getSetting( key )
-      devlog.channel('iscGlobals').debug('iscGlobals.get');
-      devlog.channel('iscGlobals').debug('..settings: ' + JSON.stringify(settings));
+      channel.debug('iscGlobals.get');
+      channel.debug('..settings: ' + JSON.stringify(settings));
       return settings[key];
     }
 
     function set(key, value) { // should be changeSetting( key )
+      channel.debug('iscGlobals.set');
       settings[key] = value;
 
       $rootScope.$broadcast('globalStyles:changed', { key: key, value: settings[key] });
@@ -117,6 +119,7 @@
 
     // --------------------
     function getBrandColor(name) {
+      channel.debug('iscGlobals.getBrandColor');
       if (brandColors[name]) {
         return brandColors[name];
       }

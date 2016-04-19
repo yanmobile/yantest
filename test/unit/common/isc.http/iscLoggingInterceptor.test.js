@@ -2,8 +2,7 @@
   'use strict';
 
   describe('iscLoggingInterceptor test', function () {
-
-    var fakeDevLog;
+    var fakeChannel;
     var interceptor;
     var $rootScope; //needed for $q to resolve/reject
 
@@ -18,16 +17,16 @@
     }));
 
     beforeEach(module('isc.http', function ($provide) {
-      fakeDevLog = { channel: _.noop, debug: _.noop, logFn: _.noop };
+      fakeChannel = { debug: _.noop, logFn: _.noop };
+      var fakeDevLog = { channel: _.noop, debug: _.noop, logFn: _.noop };
       $provide.value('devlog', fakeDevLog);
-      spyOn(fakeDevLog, 'channel').and.returnValue(fakeDevLog);
+      spyOn(fakeDevLog, 'channel').and.returnValue(fakeChannel);
     }));
 
-    beforeEach(inject(function (_$rootScope_, iscLoggingInterceptor) {
-      interceptor = iscLoggingInterceptor;
+    beforeEach(inject(function (_$rootScope_, _iscLoggingInterceptor_) {
+      interceptor = _iscLoggingInterceptor_;
       $rootScope  = _$rootScope_;
     }));
-
 
     /**
      *  tests
@@ -44,18 +43,18 @@
     describe('outgoing requests', function () {
 
       it('should log when requesting *.html files', function () {
-        spyOn(fakeDevLog, 'debug');
+        spyOn(fakeChannel, 'debug');
 
         interceptor.request({ url: 'foo.json', data: 'myData' });
-        expect(fakeDevLog.channel).toHaveBeenCalled();
-        expect(fakeDevLog.debug.calls.mostRecent().args).toEqual(['iscLoggingInterceptor request for %s', 'foo.json', 'myData']);
+        expect(fakeChannel.debug.calls.mostRecent().args).toEqual(['iscLoggingInterceptor request for %s', 'foo.json', 'myData']);
       });
 
       it('should not log when requesting *.html files', function () {
-        spyOn(fakeDevLog, 'debug');
+        spyOn(fakeChannel, 'debug');
+
 
         interceptor.request({ url: 'foo.html' });
-        expect(fakeDevLog.channel).not.toHaveBeenCalledWith('iscLoggingInterceptor');
+        expect(fakeChannel.debug).not.toHaveBeenCalledWith('iscLoggingInterceptor');
       });
 
     });
@@ -63,7 +62,7 @@
     describe('incoming responses', function () {
 
       it('should return response', function () {
-        spyOn(fakeDevLog, 'debug');
+        spyOn(fakeChannel, 'debug');
 
         var response = { config: { url: 'foo.json', data: 'myData' }, data: {} };
 
@@ -72,47 +71,45 @@
       });
 
       it('should log when response.data is of type object', function () {
-        spyOn(fakeDevLog, 'debug');
+        spyOn(fakeChannel, 'debug');
 
         var response = { config: { url: 'foo.json', data: 'myData' }, data: {} };
 
         interceptor.response(response);
-        expect(fakeDevLog.channel).toHaveBeenCalled();
-        expect(fakeDevLog.debug.calls.mostRecent().args).toEqual(['iscLoggingInterceptor response for %s', 'foo.json', response]);
+        expect(fakeChannel.debug.calls.mostRecent().args).toEqual(['iscLoggingInterceptor response for %s', 'foo.json', response]);
       });
 
       it('should log when response.data is of type array', function () {
-        spyOn(fakeDevLog, 'debug');
+        spyOn(fakeChannel, 'debug');
 
         var response = { config: { url: 'foo.json', data: 'myData' }, data: [] };
 
         interceptor.response(response);
-        expect(fakeDevLog.channel).toHaveBeenCalled();
-        expect(fakeDevLog.debug.calls.mostRecent().args).toEqual(['iscLoggingInterceptor response for %s', 'foo.json', response]);
+        expect(fakeChannel.debug.calls.mostRecent().args).toEqual(['iscLoggingInterceptor response for %s', 'foo.json', response]);
       });
 
       it('should not log when response.data is not object or array', function () {
-        spyOn(fakeDevLog, 'debug');
+        spyOn(fakeChannel, 'debug');
 
         var response = { config: { url: 'foo.json', data: 'myData' }, data: '' };
         interceptor.response(response);
-        expect(fakeDevLog.channel).not.toHaveBeenCalledWith('iscLoggingInterceptor');
+        expect(fakeChannel.debug).not.toHaveBeenCalledWith('iscLoggingInterceptor');
 
         response = { config: { url: 'foo.json', data: 'myData' }, data: new Date() };
         interceptor.response(response);
-        expect(fakeDevLog.channel).not.toHaveBeenCalledWith('iscLoggingInterceptor');
+        expect(fakeChannel.debug).not.toHaveBeenCalledWith('iscLoggingInterceptor');
 
         response = { config: { url: 'foo.json', data: 'myData' }, data: 123 };
         interceptor.response(response);
-        expect(fakeDevLog.channel).not.toHaveBeenCalledWith('iscLoggingInterceptor');
+        expect(fakeChannel.debug).not.toHaveBeenCalledWith('iscLoggingInterceptor');
 
         response = { config: { url: 'foo.json', data: 'myData' }, data: new RegExp('foo') };
         interceptor.response(response);
-        expect(fakeDevLog.channel).not.toHaveBeenCalledWith('iscLoggingInterceptor');
+        expect(fakeChannel.debug).not.toHaveBeenCalledWith('iscLoggingInterceptor');
 
         response = { config: { url: 'foo.json', data: 'myData' }, data: false };
         interceptor.response(response);
-        expect(fakeDevLog.channel).not.toHaveBeenCalledWith('iscLoggingInterceptor');
+        expect(fakeChannel.debug).not.toHaveBeenCalledWith('iscLoggingInterceptor');
       });
 
     });
@@ -120,12 +117,11 @@
     describe('incoming error responses', function () {
 
       it('should log when response ', function () {
-        spyOn(fakeDevLog, 'debug');
+        spyOn(fakeChannel, 'debug');
 
         var response = { config: { url: 'foo.json', data: 'myData' }, data: 'myData' };
         interceptor.responseError(response);
-        expect(fakeDevLog.channel).toHaveBeenCalled();
-        expect(fakeDevLog.debug.calls.mostRecent().args).toEqual(['iscLoggingInterceptor responseError for ', response]);
+        expect(fakeChannel.debug.calls.mostRecent().args).toEqual(['iscLoggingInterceptor responseError for ', response]);
       });
 
       it('should return a rejected project', function () {

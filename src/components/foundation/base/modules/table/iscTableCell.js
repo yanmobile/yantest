@@ -19,7 +19,9 @@
    * @returns {{restrict: string, compile: compile}}
      */
   function iscTableCell( devlog, $state, $templateCache, $compile ){
-    devlog.channel('iscTableCell').debug('iscTableCell.LOADED');
+    var channel = devlog.channel('iscTableCell');
+
+    channel.debug('iscTableCell.LOADED');
 
     // ----------------------------
     // vars

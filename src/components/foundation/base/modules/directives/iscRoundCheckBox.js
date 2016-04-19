@@ -21,7 +21,8 @@
    */
   /* @ngInject */
   function iscRoundCheckBox( devlog ){//jshint ignore:line
-    devlog.channel('iscRoundCheckBox').debug( 'iscRoundCheckBox LOADED');
+    var channel = devlog.channel('iscRoundCheckBox');
+    channel.debug( 'iscRoundCheckBox LOADED');
 
     // ----------------------------
     // vars
@@ -64,7 +65,7 @@
         scope.onToggle( {selected: scope.selected} );
 
         if( ngModelCtrl ){
-          devlog.channel('iscRoundCheckBox').debug( 'iscRoundCheckBox.$setViewValue');
+          channel.debug( 'iscRoundCheckBox.$setViewValue');
           ngModelCtrl.$setViewValue( !ngModelCtrl.$viewValue );
         }
       };

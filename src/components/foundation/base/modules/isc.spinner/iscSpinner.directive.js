@@ -30,7 +30,8 @@
      * @param iscSpinnerModel
        */
     function iscSpinnerController(devlog, iscSpinnerModel) {
-      devlog.channel('iscSpinnerController').debug('inside iscSpinnerController');
+      var channel = devlog.channel('iscSpinnerController');
+      channel.debug('inside iscSpinnerController');
       var self       = this;
       self.isLoading = isLoding;
 

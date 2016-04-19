@@ -16,7 +16,8 @@
    * @param devlog
      */
   function error404Controller(devlog) {
-    devlog.channel('error404Controller').debug('error404Controller LOADED');
+    var channel = devlog.channel('devlog');
+    channel.debug('error404Controller LOADED');
 
     // ----------------------------
     // vars

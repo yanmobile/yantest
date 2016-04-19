@@ -22,7 +22,8 @@
    * @returns {{getTopNav: getTopNav, getVersionInfo: getVersionInfo, setVersionInfo: setVersionInfo, navigateToUserLandingPage: navigateToUserLandingPage}}
      */
   function iscNavContainerModel(devlog, $state, iscCustomConfigService, iscSessionModel) {
-    devlog.channel('iscNavContainerModel').debug('iscNavContainerModel LOADED');
+    var channel = devlog.channel('iscNavContainerModel');
+    channel.debug('iscNavContainerModel LOADED');
 
     // ----------------------------
     // vars
@@ -61,7 +62,7 @@
       if (!_.isNil(landingPage)) {
         $state.go(landingPage);
       } else {
-        devlog.channel('iscNavContainerModel').error('No landing page found for', _.wrapText(currentUserRole), 'role');
+        channel.error('No landing page found for', _.wrapText(currentUserRole), 'role');
       }
     }
 

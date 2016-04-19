@@ -13,7 +13,8 @@
     .factory('socket', socket);
 
   function socket(devlog, $rootScope) {
-    devlog.channel('socket').debug('socket LOADED');
+    var channel = devlog.channel('socket');
+    channel.debug('socket LOADED');
     var socket;
     return {
       connect: connect,
@@ -26,7 +27,7 @@
     }
 
     function on(eventName, callback) {
-      devlog.channel('socket').debug('on called');
+      channel.debug('on called');
       socket.on(eventName, function () {
         var args = arguments;
         $rootScope.$evalAsync(function () {
@@ -36,7 +37,7 @@
     }
 
     function emit(eventName, data, callback) {
-      devlog.channel('socket').debug('emit called');
+      channel.debug('emit called');
       socket.emit(eventName, data, function () {
         var args = arguments;
         $rootScope.$evalAsync(function () {

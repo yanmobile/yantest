@@ -20,7 +20,7 @@
    * @returns {{request: request, response: response, responseError: responseError}}
      */
   function httpLoaderInterceptor($q, iscSpinnerModel, devlog) {
-
+    var channel = devlog.channel('httpLoaderInterceptor');
     var factory = {
       request      : request,
       response     : response,
@@ -36,7 +36,7 @@
        */
     function request(config) {
       if (config.showLoader) {
-        devlog.channel('httpLoaderInterceptor').debug('adding url to loader ' + config.url);
+        channel.debug('adding url to loader ' + config.url);
         iscSpinnerModel.addPendingReq(config.url);
       }
       return config;
@@ -49,7 +49,7 @@
        */
     function response(res) {
       if (res.config.showLoader) {
-        devlog.channel('httpLoaderInterceptor').debug('moving url from loader ' + res.config.url);
+        channel.debug('moving url from loader ' + res.config.url);
         iscSpinnerModel.subtractPendingReq(res.config.url);
       }
       return res;
@@ -62,7 +62,7 @@
        */
     function responseError(res) {
       if (res.config.showLoader) {
-        devlog.channel('httpLoaderInterceptor').debug('moving url from loader ' + res.config.url);
+        channel.debug('moving url from loader ' + res.config.url);
         iscSpinnerModel.subtractPendingReq(res.config.url);
       }
       return $q.reject(res);

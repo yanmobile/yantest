@@ -22,7 +22,8 @@
    * @returns {{create: create, destroy: destroy, initSessionTimeout: initSessionTimeout, stopSessionTimeout: stopSessionTimeout, resetSessionTimeout: resetSessionTimeout, getCredentials: getCredentials, getCurrentUser: getCurrentUser, getCurrentUserRole: getCurrentUserRole, isAuthenticated: isAuthenticated, getFullName: getFullName, configure: configure}}
    */
   function iscSessionModel($q, $http, devlog, $rootScope, $interval, storage, iscSessionStorageHelper, AUTH_EVENTS) {
-    devlog.channel('iscSessionModel').debug('iscSessionModel LOADED');
+    var channel = devlog.channel('iscSessionModel');
+    channel.logFn('iscSessionModel');
 
     // ----------------------------
     // vars
@@ -94,7 +95,7 @@
      * @param isSessionNew
      */
     function create(sessionData, isSessionNew) {
-      devlog.channel('iscSessionModel').logFn('create');
+      channel.logFn('create');
       // $log.debug( '...sessionData: ' + JSON.stringify( sessionData  ));
 
       // store the login response for page refreshes
@@ -113,7 +114,7 @@
 
       $rootScope.$emit(AUTH_EVENTS.sessionChange);
       if (isSessionNew) {
-        devlog.channel('iscSessionModel').debug('...new ');
+        channel.debug('...new ');
         $rootScope.$emit(AUTH_EVENTS.loginSuccess);
       }
       else {
@@ -151,7 +152,7 @@
      * and returns information about the time remaining in this session.
      */
     function callPing(syncedOn) {
-      devlog.channel('iscSessionModel').logFn('callPing');
+      channel.logFn('callPing');
       sessionTimeout.syncedOn = syncedOn || sessionTimeout.syncedOn;
 
       var request = ping().then(_pingSuccess, _pingError)
@@ -165,7 +166,7 @@
       // On successful ping, re-sync the local counter with the ping response,
       // falling back to no change in the counter.
       function _pingSuccess(response) {
-        devlog.channel('iscSessionModel').logFn('_pingSuccess');
+        channel.logFn('_pingSuccess');
         var data                 = response.data;
         sessionTimeout.status    = 'active';
         sessionTimeout.syncedOn  = 'alive';
@@ -175,7 +176,7 @@
 
       // Assumes any error returning from a ping means no server response
       function _pingError() {
-        devlog.channel('iscSessionModel').logFn('_pingError');
+        channel.logFn('_pingError');
         // Flag this as no response received
         if (sessionTimeout.status === 'active') {
           sessionTimeout.status = 'no response';
@@ -185,7 +186,7 @@
 
 
     function destroy() {
-      devlog.channel('iscSessionModel').logFn('destroy');
+      channel.logFn('destroy');
 
       // create a session with null data
       currentUser = anonymousUser;
@@ -212,7 +213,7 @@
      * @param timeoutCounter
      */
     function initSessionTimeout() {
-      devlog.channel('iscSessionModel').logFn("initSessionTimeout");
+      channel.logFn("initSessionTimeout");
 
       var expiration = iscSessionStorageHelper.getSessionExpiresOn();
 
@@ -236,9 +237,9 @@
      * private
      */
     function doSessionTimeout() {
-      devlog.channel('iscSessionModel').logFn("doSessionTimeout");
+      channel.logFn("doSessionTimeout");
       if (timeoutInterval) {
-        devlog.channel('iscSessionModel').debug('...already there');
+        channel.debug('...already there');
         return;
       }
 
@@ -260,7 +261,7 @@
       }, 3000);
 
       function _checkForNoResponseAtMax() {
-        devlog.channel('iscSessionModel').logFn("_checkForNoResponseAtMax");
+        channel.logFn("_checkForNoResponseAtMax");
         // If the time with no response has reached its maximum, expire client session
         if (moment().isAfter(sessionTimeout.expireAt)) {
           _expireSession();
@@ -268,12 +269,12 @@
       }
 
       function _checkForWarnOrExpire(doPingFirst) {
-        devlog.channel('iscSessionModel').logFn("_checkForWarnOrExpire");
+        channel.logFn("_checkForWarnOrExpire");
         var now = new Date();
 
         // warn
         if (_.getRemainingTime(sessionTimeout.warnAt) <= 0 && _.getRemainingTime(sessionTimeout.expireAt) > 0) {
-          devlog.channel('iscSessionModel').debug('...expireAt ', sessionTimeout.expireAt);
+          channel.debug('...expireAt ', sessionTimeout.expireAt);
           if (doPingFirst && sessionTimeout.syncedOn !== 'warn') {
             callPing('warn').then(function () {
               _checkForWarnOrExpire(false);
@@ -286,7 +287,7 @@
 
         // expire/logout
         else if (sessionTimeout.expireAt - Date.now() < 0) {
-          devlog.channel('iscSessionModel').debug('...sessionTimeout.expireAt ' + sessionTimeout.expireAt);
+          channel.debug('...sessionTimeout.expireAt ' + sessionTimeout.expireAt);
 
           if (doPingFirst && sessionTimeout.syncedOn !== 'expire') {
             callPing('expire').then(function () {
@@ -300,7 +301,7 @@
       }
 
       function _expireSession() {
-        devlog.channel('iscSessionModel').logFn("_expireSession");
+        channel.logFn("_expireSession");
         $rootScope.$emit(AUTH_EVENTS.sessionTimeout);
         iscSessionStorageHelper.setShowTimedOutAlert(true);
         stopSessionTimeout();
@@ -311,18 +312,18 @@
      *
      */
     function stopSessionTimeout() {
-      devlog.channel('iscSessionModel').logFn("stopSessionTimeout");
+      channel.logFn("stopSessionTimeout");
       if (angular.isDefined(timeoutInterval)) {
-        devlog.channel('iscSessionModel').debug('...cancelling');
+        channel.debug('...cancelling');
         $interval.cancel(timeoutInterval);
         timeoutInterval = null;
       }
 
-      devlog.channel('iscSessionModel').debug('...timeoutInterval', timeoutInterval);
+      channel.debug('...timeoutInterval', timeoutInterval);
     }
 
     function resetSessionTimeout() {
-      devlog.channel('iscSessionModel').logFn("resetSessionTimeout");
+      channel.logFn("resetSessionTimeout");
       // Do not reset timer if we are still waiting on a server response to a ping call
       if (sessionTimeout.syncedOn !== 'no response') {
 
@@ -339,6 +340,7 @@
      * @returns {*}
      */
     function getCredentials() {
+      channel.logFn('getCredentials');
       return credentials;
     }
 
@@ -348,6 +350,7 @@
      * @returns {XMLList|XML}
      */
     function getCurrentUser() {
+      channel.logFn('getCurrentUser');
       return angular.copy(currentUser); // To prevent external modification
     }
 
@@ -356,8 +359,8 @@
      * @param user
      */
     function setCurrentUser(user) {
-      devlog.channel('iscSessionModel').debug('iscSessionModel.setCurrentUser');
-      devlog.channel('iscSessionModel').debug('...user: ' + angular.toJson(user));
+      channel.logFn('setCurrentUser');
+      channel.debug('...user: ' + angular.toJson(user));
       currentUser = angular.copy(user); // To prevent external modificiation
     }
 
@@ -367,6 +370,7 @@
      * @returns {*}
      */
     function getCurrentUserRole() {
+      channel.logFn('getCurrentUserRole');
       return _.get(currentUser, "userRole");
     }
 
@@ -376,7 +380,7 @@
      * @returns {boolean}
      */
     function isAuthenticated() {
-      //devlog.channel('iscSessionModel').debug('iscSessionModel.isAuthenticated', currentUser);
+      //channel.debug('iscSessionModel.isAuthenticated', currentUser);
       // '*' denotes anonymous user (AKA not authenticated)
       return _.get(currentUser, 'userRole', '*') !== '*';
     }
@@ -387,13 +391,14 @@
      * @returns {string}
      */
     function getFullName() {
-      devlog.channel('iscSessionModel').debug('iscSessionModel.getFullName');
+      channel.logFn('getFullName');
       return !!currentUser ? currentUser.FullName : '';
     }
 
     function _logTimer() {
-      devlog.channel('iscSessionModel').debug('...sessionTimeout.expireAt', sessionTimeout.expireAt, "(" + _.getRemainingTime(sessionTimeout.expireAt) + "s remaining)");
-      devlog.channel('iscSessionModel').debug('...sessionTimeout.warnAt', sessionTimeout.warnAt, "(" + _.getRemainingTime(sessionTimeout.warnAt) + "s remaining)");
+      channel.logFn('_logTimer');
+      channel.debug('...sessionTimeout.expireAt', sessionTimeout.expireAt, "(" + _.getRemainingTime(sessionTimeout.expireAt) + "s remaining)");
+      channel.debug('...sessionTimeout.warnAt', sessionTimeout.warnAt, "(" + _.getRemainingTime(sessionTimeout.warnAt) + "s remaining)");
     }
   }// END CLASS
 

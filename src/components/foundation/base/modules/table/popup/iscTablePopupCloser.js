@@ -23,7 +23,9 @@
    * @returns {{restrict: string, link: link}}
      */
   function iscTablePopupCloser(devlog, $global ) {
-    devlog.channel('iscTablePopupCloser').debug( 'iscTablePopupCloser LOADED');
+    var channel = devlog.channel('iscTablePopupCloser');
+
+    channel.debug( 'iscTablePopupCloser LOADED');
 
     // ----------------------------
     // vars

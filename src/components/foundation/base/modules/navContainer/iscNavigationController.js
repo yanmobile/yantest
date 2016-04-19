@@ -33,7 +33,8 @@
     iscCustomConfigHelper, iscUiHelper, iscLanguageService,
     AUTH_EVENTS, NAV_EVENTS
   ) {
-    devlog.channel('iscNavigationController').debug( 'iscNavigationController LOADED');
+    var channel = devlog.channel('iscNavigationController');
+    channel.debug( 'iscNavigationController LOADED');
 
     var self = this;
 
@@ -62,7 +63,7 @@
      * @memberOf iscNavigationController
      */
     self.hideAllPopups = function () {
-      devlog.channel('iscNavigationController').debug( 'iscNavigationController.hideAllPopups');
+      channel.debug( 'iscNavigationController.hideAllPopups');
       self.showModalBkgrnd  = false;
       self.showAlert        = false;
       self.alertShowing     = false;
@@ -77,7 +78,7 @@
      * @memberOf iscNavigationController
      */
     self.showAlertBox = function () {
-      devlog.channel('iscNavigationController').debug( 'iscNavigationController.showAlertBox');
+      channel.debug( 'iscNavigationController.showAlertBox');
       self.hideAllPopups(); // close any that are already up
       self.showAlert       = true;
       self.showModalBkgrnd = true;
@@ -114,7 +115,7 @@
      * @memberOf iscNavigationController
      */
     self.onContinueSession = function () {
-      devlog.channel('iscNavigationController').debug( 'iscNavigationController.onContinueSession');
+      channel.debug( 'iscNavigationController.onContinueSession');
       $rootScope.$emit(AUTH_EVENTS.sessionTimeoutReset);
     };
 
@@ -122,7 +123,7 @@
      * @memberOf iscNavigationController
      */
     self.onCancelSession = function () {
-      devlog.channel('iscNavigationController').debug( 'iscNavigationController.onCancelSession');
+      channel.debug( 'iscNavigationController.onCancelSession');
       $rootScope.$emit(AUTH_EVENTS.sessionTimeoutConfirm);
     };
 
@@ -133,8 +134,8 @@
      * @memberOf iscNavigationController
      */
     self.onLoad = function () {
-      devlog.channel('iscNavigationController').debug( 'iscNavigationController.onLoad');
-      devlog.channel('iscNavigationController').debug( '...alertShowing ', self.alertShowing );
+      channel.debug( 'iscNavigationController.onLoad');
+      channel.debug( '...alertShowing ', self.alertShowing );
 
       // When the session times out, we refresh the page to reset all model data
       // and set a localStorage var to show a warning:
@@ -142,10 +143,10 @@
       // Wrapped in a timeout to ensure the dom is loaded
       $timeout(function () {
         var showTimedOutAlert = !!iscSessionStorageHelper.getShowTimedOutAlert();
-        devlog.channel('iscNavigationController').debug( '...showTimedOutAlert',showTimedOutAlert);
+        channel.debug( '...showTimedOutAlert',showTimedOutAlert);
 
         if (showTimedOutAlert) {
-          devlog.channel('iscNavigationController').debug( '...showTimedOutAlert 2',showTimedOutAlert);
+          channel.debug( '...showTimedOutAlert 2',showTimedOutAlert);
           iscSessionStorageHelper.setShowTimedOutAlert(false);
         }
       }, 250);
@@ -176,43 +177,43 @@
     // listeners
     // --------------
     $scope.$on(AUTH_EVENTS.responseError, function (event, response) {
-      devlog.channel('iscNavigationController').debug( 'iscNavigationController.responseError' );
-      devlog.channel('iscNavigationController').debug( '...response' + JSON.stringify( response ));
+      channel.debug( 'iscNavigationController.responseError' );
+      channel.debug( '...response' + JSON.stringify( response ));
     });
 
     $scope.$on(AUTH_EVENTS.notAuthenticated, function (event, response) {
-//      devlog.channel('iscNavigationController').debug( 'iscNavigationController.loginError' );
+//      channel.debug( 'iscNavigationController.loginError' );
     });
 
     $scope.$on(AUTH_EVENTS.notAuthorized, function (event, response) {
-//      devlog.channel('iscNavigationController').debug( 'iscNavigationController.loginError' );
+//      channel.debug( 'iscNavigationController.loginError' );
     });
 
     $scope.$on(AUTH_EVENTS.sessionTimeoutWarning, function (event, response) {
-      devlog.channel('iscNavigationController').debug( 'iscNavigationController.sessionTimeoutWarning' );
-      devlog.channel('iscNavigationController').debug( '...self.alertShowing: ' + self.alertShowing );
+      channel.debug( 'iscNavigationController.sessionTimeoutWarning' );
+      channel.debug( '...self.alertShowing: ' + self.alertShowing );
 
       if (self.alertShowing) {
-        devlog.channel('iscNavigationController').debug( '...nope' );
+        channel.debug( '...nope' );
         return;
       }
-      devlog.channel('iscNavigationController').debug( '...yup' );
+      channel.debug( '...yup' );
       self.alertShowing = true;
     });
 
     $scope.$on(AUTH_EVENTS.sessionTimeout, function () {
-      devlog.channel('iscNavigationController').debug( 'ischNavContainer.sessionTimeout');
+      channel.debug( 'ischNavContainer.sessionTimeout');
       self.hideAllPopups();
       self.alertShowing = false;
     });
 
     $scope.$on(NAV_EVENTS.showSecondaryNav, function (event, response) {//jshint ignore:line
-      devlog.channel('iscNavigationController').debug( 'iscNavigationController.iscShowModal' );
+      channel.debug( 'iscNavigationController.iscShowModal' );
       self.showSecondaryNavbar();
     });
 
     $scope.$on(NAV_EVENTS.hideSecondaryNav, function (event, response) {//jshint ignore:line
-      devlog.channel('iscNavigationController').debug( 'iscNavigationController.iscHideModal' );
+      channel.debug( 'iscNavigationController.iscHideModal' );
       self.hideSecondaryNavbar();
     });
 

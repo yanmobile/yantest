@@ -12,7 +12,9 @@
 
   /* @ngInject */
   function iscHighlightFilter( devlog, $sce ){
-    devlog.channel('iscHighlightFilter').debug( 'iscHighlightFilter LOADED');
+    var channel = devlog.channel('iscHighlightFilter');
+
+    channel.debug( 'iscHighlightFilter LOADED');
 
     // ----------------------------
     // vars
@@ -31,10 +33,10 @@
 
 
     function setHighlight( text, phrase ) {
-      devlog.channel('iscHighlightFilter').debug('iscHighlight.setHighlight');
+      channel.debug('iscHighlight.setHighlight');
 
       if( phrase && text ){
-        devlog.channel('iscHighlightFilter').debug('...text', text);
+        channel.debug('...text', text);
 
         text = text.replace(new RegExp('(' + phrase + ')', 'gi'),
           '<span class="isc-highlighted">$1</span>');

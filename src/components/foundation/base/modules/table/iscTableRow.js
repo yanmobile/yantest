@@ -31,7 +31,9 @@
    * @returns {{scope: boolean, restrict: string, priority: number, controllerAs: string, controller: string, compile: compile}}
      */
   function iscTableRow( devlog, $state, $templateCache, $compile ){
-    devlog.channel('iscTableRow').debug('iscTableRow.LOADED');
+    var channel = devlog.channel('iscTableRow');
+
+    channel.debug('iscTableRow.LOADED');
 
     // ----------------------------
     // vars
