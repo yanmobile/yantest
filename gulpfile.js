@@ -4,7 +4,7 @@ var gulp = require('gulp');
 var _    = require('lodash');
 
 var plugins = {
-  chmod        : require('gulp-chmod'), //changes file permissions
+  chmod        : require('gulp-chmod'), //changes file permissions, used by imagemin
   concat       : require('gulp-concat'),  //concatenating multiple files into 1
   cssmin       : require('gulp-cssmin'),  //minifies css
   dateFormat   : require('dateformat'),
@@ -30,7 +30,6 @@ var plugins = {
   sourcemaps   : require('gulp-sourcemaps'),  //generate sourcemaps
   templateCache: require('gulp-angular-templatecache'),
   uglify       : require('gulp-uglify'),  //minify/uglify
-  wiredep      : require('wiredep'),  //used for injecting
   bytediff     : require('gulp-bytediff'),  //tells the file size before and after a gulp operation
   inject       : require('gulp-inject') // used for injecting scripts
 };
