@@ -23,13 +23,14 @@ function init(gulp, plugins, config, _) {
     var cwd = process.cwd();
     // It's not necessary to read the files (will speed up things), we're only after their paths:
     process.chdir(cwd + "/www");
-    var jsFiles = gulp.src(['js/*.js'], { read: false })
+    var jsFiles = gulp
+      .src(['js/*.js'], { read: false })
       .pipe(plugins.filelog());
     process.chdir(cwd);
 
     return gulp.src(['src/index.html'])
       .pipe(plugins.replace('<!-- inject:js -->', inject.join('\n')))
-      .pipe(plugins.inject(jsFiles))
+      .pipe(plugins.inject(jsFiles, { transform: removeLeadingSlash }))
       .pipe(gulp.dest(config.app.dest.folder));
   });
 
@@ -37,4 +38,9 @@ function init(gulp, plugins, config, _) {
     return gulp.src(['src/config.xml'])
       .pipe(gulp.dest(config.app.dest.folder));
   });
+
+  //used by gulp-inject to remove the leading "/"
+  function removeLeadingSlash(filepath, file, i, length) {
+    return ['<script src="', filepath.substr(1), '"></script>"'].join('');
+  }
 }
