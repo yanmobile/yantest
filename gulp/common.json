@@ -4,7 +4,6 @@
       "src/common/bower_components/jquery/dist/jquery.js",
       "src/common/bower_components/lodash/lodash.js",
       "src/common/bower_components/moment/moment.js",
-      "src/common/assets/plugins/progress-skylo/skylo.js",
       "src/common/bower_components/socket.io-client/socket.io.js",
       "src/common/bower_components/angular/angular.js",
       "src/common/bower_components/angular-animate/angular-animate.js",
