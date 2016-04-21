@@ -177,7 +177,7 @@ The file can be located in any directory, and the file name is not important.
 ---
 ###FAQs
 * **I am getting this error message ```slush: command not found```**
-  * Make sure your envoronment satisfies all of the [prerequisites] and [hs-core-tools] is installed
+  * Make sure your envoronment satisfies all of the [prerequisites](#prerequisites) and [hs-core-tools] is installed
   
 * **This framework looks awesome, how do I create a fully functional application using this framework in a couple of minutes?**
   * We highly recommend leveraging our [hs-core-tools] to fecilitate the creation of your new application.
@@ -406,3 +406,4 @@ less <filename>
 ```
 [hs-core-tools]: https://github.com/intersystems/hs-core-tools
 [changelog.md]: https://github.com/intersystems/hs-core-ui/blob/master/changelog.md
+[prerequisites][#prerequisites]
