@@ -1,5 +1,7 @@
 
 # Core Changes
+### 04/21/2016
+[[hs-core-ui PR 209](https://github.com/intersystems/hs-core-ui/pull/209) adds support for module specific scss files. In order for individual apps to take advantage of this feature, they need to be updated. The app specific changes can be found in [hs-core-tools PR 74](https://github.com/intersystems/hs-core-tools/pull/74). 
 ### 04/19/2016
 [hs-core-ui PR 198](https://github.com/intersystems/hs-core-ui/pull/198) removed ```$$``` from navbar's ```$$active``` property. This is a breaking change, and every app that is based of hs-core-ui need to be updated to be compatible; please make the same changes as [hs-core-tools PR 66](https://github.com/intersystems/hs-core-tools/pull/66).  
 
