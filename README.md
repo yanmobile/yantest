@@ -101,7 +101,7 @@ The file can be located in any directory, and the file name is not important.
 
 ---
 ###gulp configs
-**This framework is designed to virtually eliminate the need to write custom build automations. The automation scripts utilize these three configuration files below.**
+**This framework is designed to virtually eliminate the need to write custom automation tasks. The out-of-the-box automation tasks utilize these three configuration files: gulp/common.json, gulp/components.json, and gulp/app.json.**
 
 **Notes:**
   * This *config structure* applies to ```gulp/app.json```, ```gulp/components.json```, and ```gulp/common.json```
