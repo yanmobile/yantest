@@ -406,4 +406,3 @@ less <filename>
 ```
 [hs-core-tools]: https://github.com/intersystems/hs-core-tools
 [changelog.md]: https://github.com/intersystems/hs-core-ui/blob/master/changelog.md
-[prerequisites][#prerequisites]
