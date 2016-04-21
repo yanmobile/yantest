@@ -23,7 +23,8 @@ function init(gulp, plugins, config, _) {
     
       'src/app/assets/i18n/**/*'             : ['i18n'],
       'src/app/assets/images/**/*'           : ['images'],
-      'src/app/assets/sass/**/*'             : ['sass'],
+      'src/app/assets/sass/**/*.scss'        : ['sass'],
+      'src/app/modules/**/*.scss'            : ['sass'],
       'src/app/assets/mockData/**/*'         : ['mocks', 'scripts'],
       'src/app/assets/vendors/**/*'          : ['scripts'],
       'src/app/modules/**/*.js'              : ['test:app', 'jshint:app', 'scripts:app'],
