@@ -39,8 +39,8 @@
     background: transparent;
 
     li {
-      color: palette(type, light);
       line-height: 1;
+      margin-bottom: 0;
 
       a {
         color: palette(type, light);
@@ -160,6 +160,7 @@
 
       li {
         font-weight: $font-weight-semi-bold;
+        margin: 0;
 
         &.active {
           background: white;
@@ -217,6 +218,7 @@ nav {
     li {
       margin-left: 0;
       line-height: 2;
+      margin-bottom: 0;
 
       a {
         padding: 0.75rem 0.5rem;
@@ -228,4 +230,56 @@ nav {
       }
     }
   }
+}
+
+
+// Secondary Nav
+
+#sidebar, .sidebar {
+  background: $sidebar-background;
+
+  .menu-bar {
+    background: transparent;
+    width: 100%;
+
+    > li {
+      margin: 0;
+      color: $body-font-color;
+
+      > a {
+        color: isitlight($sidebar-background, $body-font-color, $light-text);
+        font-weight: $font-weight-normal;
+
+        &:hover {
+          //background: #ededed;
+          background: smartscale($sidebar-background, 4.5%);
+        }
+
+        &.active {
+          //background: #ededed;
+          background: $app-bar-link-active-background;
+          font-weight: $font-weight-semi-bold;
+        }
+      }
+    }
+  }
+
+  &.is-active {
+    box-shadow: $panel-shadow;
+  }
+}
+
+
+.menu-bar, .menu-group, .title-bar, .block-list, .action-sheet-container {
+  li {
+    margin: 0;
+
+    .fa {
+      margin: 0 0.3125rem;
+    }
+  }
+}
+
+@media only screen and (min-width: 53.6875em) {
+  .action-sheet::before {border-bottom-color: rgba(0, 0, 0, 0.10);}
 }

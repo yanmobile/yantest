@@ -1,6 +1,6 @@
 /* footer bar */
 .isc-footer {
-  background: $primary-color;
+  background: $footer-background;
   margin: 0;
   padding: 0 2rem;
   width: 100%;
@@ -13,18 +13,18 @@
     background: transparent;
 
     li {
-      color: palette(type, light);
-      color: palette(type, light);
+      color: $app-bar-link-color;
       line-height: 1;
+      margin: 0;
 
       &:first-of-type {
         margin-left: 0;
       }
 
       a, p {
-        color: palette(type, light);
+        color: $app-bar-link-color;
         margin: 0;
-        font-weight: 500;
+        font-weight: $font-weight-semi-bold;
         font-size: 0.75rem;
         padding: 1rem;
         line-height: 1;
@@ -36,8 +36,8 @@
 
       a {
         &:hover, &:focus, &:active {
-          color: palette(type, light);
-          background: smartscale($primary-color, 7%);
+          color: smartscale($app-bar-link-color, 7%);
+          background: transparent;
         }
       }
     }

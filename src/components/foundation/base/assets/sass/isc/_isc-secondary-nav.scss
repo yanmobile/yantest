@@ -28,7 +28,7 @@
     margin: 0 0 10px 10px;
     font-size: 13px;
     text-transform: uppercase;
-    color: $brand-primary-dark;
+    color: $header-font-color;
     font-weight: 900;
     letter-spacing: .5px;
     height: 100%;
@@ -38,7 +38,7 @@
   @media #{$desktop}{
     min-height: 400px;
     max-width: 300px;
-    background-color: $brand-secondary;
+    background-color: $neutral-one;
     border: 1px solid $app-border-color;
     padding: 10px;
   }
@@ -58,19 +58,19 @@
 .btn.secondary-nav {
   border-radius: 3px;
   background: none;
-  color: $nav-link;
+  color: $anchor-font-color;
   font-weight: 400;
   text-align: center;
   margin-left: auto !important;
   margin-right: auto !important;
-  background-color: $brand-secondary;
+  background-color: $secondary-nav-background;
   border: 1px solid $app-border-color;
 
   &:hover,
   &:focus {
     text-decoration: none;
-    color: darken( $nav-link, 20 );
-    background-color: darken( $brand-secondary, 20 );
+    color: darken( $anchor-font-color, 20 );
+    background-color: darken( $secondary-nav-background, 20 );
     border: 1px solid darken( $app-border-color, 12) !important;
   }
 }
@@ -109,7 +109,7 @@
 
   // slide up so the borders overlap
   margin-bottom: -1px;
-  background-color: $brand-secondary;
+  background-color: $secondary-nav-background;
   border: 1px solid $app-border-color;
 
   @media #{$desktop}{
@@ -125,12 +125,12 @@
   &.disabled:hover,
   &.disabled:focus {
     background-color: $gray-light;
-    color: lighten($nav-link, 25 );
+    color: lighten($anchor-font-color, 25 );
     cursor: $cursor-disabled;
 
     // Force color to inherit for custom content
     .list-group-item-heading {
-      color: $nav-link;
+      color: $anchor-font-color;
     }
     .list-group-item-text {
       color: $gray-light;
@@ -142,7 +142,7 @@
   &.active:hover,
   &.active:focus {
     z-index: 2; // Place active items above their siblings for proper border styling
-    color: $nav-link;
+    color: $anchor-font-color;
     font-weight: 600;
     background-color: $white;
 
@@ -154,10 +154,10 @@
     .side-nav-item-heading,
     .side-nav-item-heading > small,
     .side-nav-item-heading > .small {
-      color: $brand-link;
+      color: $anchor-font-color;
     }
     .side-nav-item-text {
-      color: $brand-link;
+      color: $body-font-color;
     }
   }
 }
@@ -175,7 +175,7 @@ a.isc-inbox-nav-item{
   // Hover state
   &.selected {
     text-decoration: none;
-    color: darken( $nav-link, 20 );
+    color: darken( $anchor-font-color, 20 );
     background-color: $white;
     border: 1px solid darken( $app-border-color, 12) !important;
     z-index: 10;
@@ -183,7 +183,7 @@ a.isc-inbox-nav-item{
 }
 
 a.isc-secondary-nav-item {
-  color: $nav-link;
+  color: $anchor-font-color;
   font-weight: 400;
   text-align: left;
   z-index: 1;
@@ -195,7 +195,7 @@ a.isc-secondary-nav-item {
   }
 
   .side-nav-item-heading {
-    color: $nav-link;
+    color: $anchor-font-color;
   }
 
   // Hover state
@@ -205,7 +205,7 @@ a.isc-secondary-nav-item {
   &:hover,
   &:focus {
     text-decoration: none;
-    color: darken( $nav-link, 20 );
+    color: darken( $anchor-font-color, 20 );
     background-color: $white;
     border: 1px solid darken( $app-border-color, 12) !important;
     z-index: 10;
@@ -243,7 +243,7 @@ a.isc-secondary-nav-item {
   text-align: left;
   z-index: $modal-z-index;
 
-  background-color: $brand-secondary ;
+  background-color: $secondary-nav-background ;
   border: 1px solid $app-border-color ;
 }
 
@@ -251,7 +251,6 @@ a.isc-secondary-nav-item {
 // nav dropdown for mobile pages
 .isc-secondary-nav-mobile-dropdown-wrapper{
   width: 100%;
-  //  border: 1px solid blueviolet;
 
 }
 
@@ -263,14 +262,12 @@ a.isc-secondary-nav-item {
 
   cursor: default;
   cursor: pointer;
-  //  border: 2px solid green;
 
   &:before{
-    //border: 1px solid $brand-page-title-color;
     float:left;
     margin-right: 5px;
     font-family: FontAwesome;
-    color: $brand-page-title-color;
+    color: $body-font-color;
     font-size: 30px;
     font-weight: 400;
     content: " \F107"; //&#xf107 unicode for fa-angle-down
@@ -285,27 +282,27 @@ a.isc-secondary-nav-item {
 
   cursor: default;
   cursor: pointer;
-  color: $brand-page-title-color;
+  color: $anchor-font-color;
 
   font-size: 24px;
   font-weight: 400;
 
   &:hover{
-    color: darken( $brand-primary-dark, 10 );
+    color: darken( $anchor-font-color, 10 );
   }
 }
 
-.isc-task-arrow{
+.isc-task-arrow {
   position: relative;
   top: 3px;
-  fill: $brand-primary-dark;
+  fill: $body-font-color;
 }
 
 
-.isc-task-arrow{
+.isc-task-arrow {
   position: relative;
   top: 3px;
-  fill: $brand-primary-dark;
+  fill: $body-font-color;
 }
 
 

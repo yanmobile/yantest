@@ -16,7 +16,7 @@
 html, body, p, label {font-family: $body-font-family, "Helvetica", Helvetica, Arial, sans-serif;}
 
 p {
-  font-weight: $font-weight-normal;
+  font-weight: $body-font-weight;
 
   &.error, &.alert {
     color: $alert-color;
@@ -41,20 +41,16 @@ p {
   }
 }
 
+small {
+  color: $subtext-color;
+}
+
 /* Links */
 a {
   &.inline {
     padding: 0.6rem 0;
     display: inline-block;
   }
-}
-
-/* help text */
-.help-text {
-  margin-top: -0.25rem;
-  font-size: 0.8125rem;
-  font-style: italic;
-  color: palette(type, primary);
 }
 
 /* Headers */
@@ -107,20 +103,37 @@ label, .form-label {
 
 /* Lists */
 
-//Ordered
 ol{
 
   li {
-    margin-left: 1rem;
+    margin-left: $list-ordered-side-margin;
+    margin-bottom: $list-margin-bottom;
+
+    ol, ul {
+      margin-top: $list-nested-margin;
+
+      li {
+        margin-bottom: $list-nested-margin;
+      }
+    }
   }
 }
 
-//Unordered
 ul {
-  // Indented List Items
-  &.indent {
-    li {
-      margin-left: 1rem;
+  li {
+    margin-left: $list-side-margin;
+    margin-bottom: $list-margin-bottom;
+
+    &.no-indent {
+      margin-left: 0;
+    }
+
+    ul, ol {
+      margin-top: $list-nested-margin;
+
+      li {
+        margin-bottom: $list-nested-margin;
+      }
     }
   }
 }
@@ -168,15 +181,8 @@ ul {
 .inline-list > li > * {display: inline-block;}
 
 /* hr */
-hr {margin-bottom: 1.5rem;}
+hr {margin-bottom: $hr-margin;}
 
-hr.strong {
-  border: solid #ccc;
-  border-width: 3px 0 0;
-  clear: both;
-  margin: 1.5rem 0 2.25rem 0;
-  height: 0;
-}
 
 /* Counter Badge */
 .counter-badge {
@@ -187,10 +193,9 @@ hr.strong {
   );
 
   @include badge-style(
-    $background: $primary-color,
-    $color: #fff
+    $background: $badge-background,
+    $color: isitlight($badge-background, $body-font-color, $light-text)
   );
-
   padding: 0.65rem;
   font-weight: $font-weight-semi-bold;
   border-radius: $global-radius;
@@ -200,55 +205,40 @@ hr.strong {
   &.alert {
     @include badge-style(
       $background: $alert-color,
-      $color: #fff
+      $color: isitlight($alert-color, $body-font-color, $light-text)
     );
   }
 
   &.success {
     @include badge-style(
       $background: $success-color,
-      $color: #fff
+      $color: isitlight($success-color, $body-font-color, $light-text)
     );
   }
 
   &.warning {
     @include badge-style(
       $background: $warning-color,
-      $color: #fff
+      $color: isitlight($warning-color, $body-font-color, $light-text)
     );
   }
 
-  &.dark {
+  &.info {
     @include badge-style(
-      $background: $dark-color,
-      $color: #fff
+      $background: $info-color,
+      $color: isitlight($info-color, $body-font-color, $light-text)
     );
   }
 }
 
 /* Icon Colors */
-
 i.fa {
-  //line-height: 1;
-
-  &.success {
-    color: $success-color;
-  }
-  &.alert {
-    color: $alert-color;
-  }
-  &.warning {
-    color: $warning-color;
-  }
-  &.info {
-    color: $info-color;
-  }
-  &.primary {
-    color: $primary-color;
-  }
-  &.secondary {
-    color: $secondary-color;
-  }
+  &.success {color: $success-color;}
+  &.alert {color: $alert-color;}
+  &.warning {color: $warning-color;}
+  &.info {color: $info-color;}
+  &.primary {color: $primary-color;}
+  &.secondary {color: $secondary-color;}
 }
 
 .fa-li {

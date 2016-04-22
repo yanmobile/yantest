@@ -10,10 +10,58 @@
    - Buttons containing svgs
 */
 
-button, a.button {
-  font-weight: 500;
+/* Button Mixins */
 
-  i.fa {
+// svg icons (as buttons)
+@mixin svg-icon($background: transparent, $color: $primary-color, $fill: $primary-color, $border: none, $padding: 0, $margin: 0, $height: 1.25rem, $width: 1.25rem) {
+  border: $border;
+  margin: $margin;
+  padding: $margin;
+  background: $background;
+  color: $color;
+  fill: $fill;
+  height: $height;
+  width: $width;
+
+  *, svg {
+    color: $color;
+    fill: $fill;
+    height: $height;
+    width: $width;
+  }
+
+  &:hover, &:focus, &:active {
+
+    * {
+      $fill: darken($fill, 8);
+      $color: darken($color, 8);
+      $background: transparent;
+      color: smartscale($color, 10%);
+      fill: smartscale($fill, 10%);
+      background: transparent;
+    }
+  }
+}
+
+
+button, a.button {
+  font-weight: $font-weight-semi-bold;
+
+  &.cancel {
+
+    @include button-style(
+      $background: $button-cancel-background,
+      $background-hover: auto, // generate dynamically
+      $color: auto,
+      $style: solid //solid or hollow
+    );
+
+    &.custom-disabled {
+      @include button-disabled;
+    }
+  }
+
+  .fa {
     vertical-align: middle;
     line-height: 1;
   }
@@ -21,69 +69,43 @@ button, a.button {
   &:focus {
     outline: none;
   }
-
-  /* Alternative Button Types Defined Here */
-  &.cancel, &.secondary {
-    border-radius: $button-radius;
-
-    // Foundation button style mixin
-    @include button-style(
-    $background: scale-color($secondary-color, $lightness: -5%),
-    $background-hover: auto, // "auto" to generate automatically
-    $color: auto,
-    $style: solid //solid or hollow
-  );
-    &.custom-disabled {
-      @include button-disabled;
-    }
-  }
 }
 
-/* Icon Buttons - No background, just clickable icon */
-// Drops margins and padding
+
 button, a.button {
 
   &.icon {
-    margin: 0;
-    padding: 0;
-    font-size: 1rem;
-    vertical-align: middle;
-    line-height: 1;
     background: transparent;
 
-    svg {
-      fill: $primary-color;
-      color: $primary-color;
-      width: 1rem;
-      height: 1rem;
-      vertical-align: middle;
-      line-height: 1;
-    }
+    @include svg-icon($height: 1.25rem, $width: 1.25rem, $color: $primary-color, $fill: $primary-color);
 
-    // Foundation button style mixin
-    @include button-style(
-      $background: transparent, // No Background
-      $background-hover: transparent, // No Background on hover
-      $color: $primary-color,
-      $style: solid // solid or hollow
-    );
-    &.disabled {
-      @include button-disabled;
-    }
+    @each $color in map-keys($theme-colors) {
+      &.#{$color} {
 
-    &:hover, &:focus, &:active {
-      color: darken($primary-color, 8);
+        $color-name: map-get($theme-colors, $color);
+        @include svg-icon($color: $color-name, $fill: $color-name);
 
-      svg {
-        fill: darken($primary-color, 8);
-        color: darken($primary-color, 8);
+        svg {
+          vertical-align: middle;
+          line-height: 1;
+
+          @include svg-icon(
+            $fill: $color-name
+          );
+          width: 1.25rem;
+          height: 1.25rem;
+        }
+
       }
-    }
 
-    &.alert {
+    }
+    // Clear icon, for filterable fields
+    &.clear {
       fill: $alert-color;
       color: $alert-color;
-      background: transparent;
+      padding: .5rem .125rem 0 .3125rem;
+      margin: 0 0 0 .3125rem;;
+      text-align: center;
 
       svg {
         fill: $alert-color;
@@ -92,93 +114,10 @@ button, a.button {
 
       &:hover, &:focus, &:active {
         color: darken($alert-color, 8);
-        background: transparent;
 
         svg {
           fill: darken($alert-color, 8);
           color: darken($alert-color, 8);
-        }
-      }
-    }
-
-    &.success {
-      fill: $success-color;
-      color: $success-color;
-      background: transparent;
-
-      svg {
-        fill: $success-color;
-        color: $success-color;
-      }
-
-      &:hover, &:focus, &:active {
-        color: darken($success-color, 8);
-        background: transparent;
-
-        svg {
-          fill: darken($success-color, 8);
-          color: darken($success-color, 8);
-        }
-      }
-    }
-
-    &.info {
-      fill: $info-color;
-      color: $info-color;
-      background: transparent;
-
-      svg {
-        fill: $info-color;
-        color: $info-color;
-      }
-
-      &:hover, &:focus, &:active {
-        color: darken($info-color, 8);
-        background: transparent;
-
-        svg {
-          fill: darken($info-color, 8);
-          color: darken($info-color, 8);
-        }
-      }
-    }
-
-    &.warning {
-      fill: $warning-color;
-      color: $warning-color;
-      background: transparent;
-
-      svg {
-        fill: $warning-color;
-        color: $warning-color;
-      }
-
-      &:hover, &:focus, &:active {
-        color: darken($warning-color, 8);
-        background: transparent;
-
-        svg {
-          fill: darken($warning-color, 8);
-          color: darken($warning-color, 8);
-        }
-      }
-    }
-
-    // Help Icon
-    &.help {
-      padding: 0.5rem;
-      text-align: center;
-
-      svg {
-        width: 1.5rem;
-        height: 1.5rem;
-      }
-
-      &:hover, &:focus, &:active {
-        color: darken($primary-color, 8);
-
-        svg {
-          fill: darken($primary-color, 8);
         }
       }
     }
@@ -203,57 +142,22 @@ button, a.button {
       }
     }
 
-    // Clear icon, for filterable fields
-    &.clear {
-      fill: $alert-color;
-      color: $alert-color;
-      padding: .5rem .125rem 0 .3125rem;
-      margin: 0 0 0 .3125rem;;
+    // Help Icon
+    &.help {
+      padding: 0.5rem;
       text-align: center;
 
       svg {
-        fill: $alert-color;
-        color: $alert-color;
+        width: 1.5rem;
+        height: 1.5rem;
       }
 
       &:hover, &:focus, &:active {
-        color: darken($alert-color, 8);
+        color: darken($info-color, 8);
 
         svg {
-          fill: darken($alert-color, 8);
-          color: darken($alert-color, 8);
+          fill: darken($info-color, 8);
         }
-      }
-    }
-  }
-}
-
-
-/*  Link Style Buttons, e.g. Add New Table Row (Plus) Buttons */
-// Retains margins and padding
-button {
-
-  &.link {
-    background: transparent;
-    color: $primary-color;
-    margin-bottom: 1rem;
-
-    svg {
-      fill: $primary-color;
-      width: 1.5rem;
-      height: 1.5rem;
-      display: inline-block;
-      vertical-align: middle;
-      padding-right: .3125rem;
-      padding-bottom: .3125rem;
-    }
-
-    &:hover, &:focus, &:active {
-      background: transparent;
-      color: darken($primary-color, 8);
-
-      svg {
-        fill: darken($primary-color, 8);
       }
     }
   }
@@ -267,21 +171,13 @@ input[type="submit"] {
   }
 }
 
-/* Hollow Buttons */
-//on Hover
-.button.hollow:hover, button.hollow:hover, .button.hollow:focus, button.hollow:focus {
-    border-color: $primary-color;
-    background: $gray-light;
-    color: $primary-color;
-}
-
-.button-group {
-  li {
-    margin: 0;
-  }
-}
 
 /* Prefixed/Postfixed Buttons */
+
+.button, button {
+  &.prefix {border-radius: $global-radius 0 0 $global-radius;}
+  &.postfix {border-radius: 0 $global-radius $global-radius 0;}
+}
 
 .prefix {
 
@@ -303,6 +199,33 @@ input[type="submit"] {
   }
 }
 
+/* Button Group */
+.button-group {
+  @extend %button-group;
+
+  > li {
+    flex: 0 0 auto;
+    margin: 0;
+
+    // Links become buttons
+    #{$child-selectors} {
+      @extend %button;
+      border-radius: 0;
+      font-size: inherit;
+      display: block;
+      margin: 0;
+    }
+    > input + label {
+      margin-left: 0;
+    }
+    // Add borders between items
+    &:not(:last-child) {
+      #{$child-selectors} {
+        border-right: 1px solid rgba(black, 0.21);
+      }
+    }
+  }
+}
 
 /* Button Utilities  */
 
