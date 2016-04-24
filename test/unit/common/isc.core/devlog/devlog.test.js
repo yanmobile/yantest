@@ -76,6 +76,9 @@
         });
 
         it('should have logFn on .channel()', function () {
+
+          mockConfig.devlogWhitelist = ['myChannel'];
+          devlogProvider.loadConfig(mockConfig);
           expect(devlog.logFn).toBeDefined();
           devlog.channel('myChannel').logFn('myFunc');
           var output = $log.log.logs[1].join(' ');
@@ -83,6 +86,8 @@
         });
 
         it('should be able to output additional params', function () {
+          mockConfig.devlogWhitelist = ['myChannel'];
+          devlogProvider.loadConfig(mockConfig);
           devlog.channel('myChannel').logFn('myFunc', 1, "name");
           var output = $log.log.logs[1].join(' ');
           expect(output).toBe("===== myChannel.myFunc (1, name) =====");
@@ -117,11 +122,22 @@
             devlog.channel().debug('This is a debug message');
             expect($log.debug.logs).toEqual([]);
           }
+        );     
+        it(
+          'should not go through - no whitelist present',
+          function () {
+
+            mockConfig.devlogWhitelist = [];
+            devlogProvider.loadConfig(mockConfig);
+            devlog.channel('myChannel').debug('This is a debug message');
+            expect($log.debug.logs).toEqual([]);
+          }
         );
         it(
           'should always go through - no whitelist entries',
           function () {
             mockConfig.devlogWhitelist = [];
+            devlogProvider.loadConfig(mockConfig);
             devlog.channel().debug('This is a debug message');
             expect($log.debug.logs[0][0]).toBe('This is a debug message');
           }
@@ -129,9 +145,8 @@
         it(
           'should always go through - with whitelist entries',
           function () {
-            mockConfig.devlogWhitelist = [];
-            mockConfig.devlogWhitelist.push('apple');
-            mockConfig.devlogWhitelist.push('banana');
+            mockConfig.devlogWhitelist = ['apple', 'banana'];
+            devlogProvider.loadConfig(mockConfig);
             devlog.channel().debug('This is a debug message');
             expect($log.debug.logs[0][0]).toBe('This is a debug message');
           }
@@ -154,9 +169,7 @@
         it(
           'should go through when whitelisted',
           function () {
-            mockConfig.devlogWhitelist = [];
-            mockConfig.devlogWhitelist.push('apple');
-            mockConfig.devlogWhitelist.push('banana');
+            mockConfig.devlogWhitelist = ['apple', 'banana'];
             devlogProvider.loadConfig(mockConfig);
             devlog.channel('banana').debug('This is a debug message');
             expect($log.debug.logs[0].join(' ')).toBe('|BANANA| This is a debug message');
@@ -165,9 +178,7 @@
         it(
           'should not go through when not whitelisted',
           function () {
-            mockConfig.devlogWhitelist = [];
-            mockConfig.devlogWhitelist.push('apple');
-            mockConfig.devlogWhitelist.push('banana');
+            mockConfig.devlogWhitelist = ['apple', 'banana'];
             devlogProvider.loadConfig(mockConfig);
             devlog.channel('cookie').debug('This is a debug message');
             expect($log.debug.logs).toEqual([]);
@@ -202,8 +213,8 @@
         it(
           'should not go through when none are whitelisted',
           function () {
-            mockConfig.devlogWhitelist.push('apple');
-            mockConfig.devlogWhitelist.push('banana');
+            mockConfig.devlogWhitelist = ['apple', 'banana'];
+            devlogProvider.loadConfig(mockConfig);
             devlog.channel('cookie', 'duck', 'eagle').debug('This is a debug message');
             expect($log.debug.logs).toEqual([]);
           }
@@ -215,8 +226,8 @@
       it(
         'should not go through when channel is blacklisted',
         function () {
-          mockConfig.devlogBlacklist.push('apple');
-          mockConfig.devlogWhitelist.push('apple');
+          mockConfig.devlogBlacklist = ['apple'];
+          mockConfig.devlogWhitelist = ['apple'];
           devlogProvider.loadConfig(mockConfig);
           devlog.channel('apple').debug('This is a debug message');
           expect($log.debug.logs).toEqual([]);
