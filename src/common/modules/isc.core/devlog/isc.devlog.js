@@ -21,11 +21,11 @@
 
     return {
       loadConfig: function loadConfig(configObj) {
-        config = configObj;
+        config    = configObj;
         blacklist = config.devlogBlacklist;
         whitelist = config.devlogWhitelist;
       },
-      $get: devlogService
+      $get      : devlogService
     };
   }
 
@@ -37,10 +37,10 @@
    */
   function devlogService($log) {
     $logMethods = _.keysIn($log);
-    var Log = getLogClass();
+    var Log     = getLogClass();
     return _.extend({
       channel: channel,
-      logFn: logFn
+      logFn  : logFn
     }, $log);
 
     /**
@@ -59,8 +59,10 @@
 
       function Log(channelName) {
         var isAllowed = getIsAllowed(channelName, whitelist, blacklist);
-        $log.log('*** devlog channel allowed: ', channelName, ":", isAllowed ? "YES" : "NO", " ***");
-        this.channelName = channelName;
+        if (isAllowed) {
+          $log.log('*** devlog channel allowed: ', channelName, ":", isAllowed ? "YES" : "NO", " ***");
+        }
+        this.channelName   = channelName;
         this.channelPrefix = (channelName ? "|" + channelName + "|" : '').toUpperCase();
         if (isAllowed) {
           _.extend(this, this.real);
@@ -93,12 +95,11 @@
           allowed = false;
         } else if (_.isNil(whitelist)) {
           allowed = false;
-        } else if (whitelist.length === 0) {
+        } else if (_.isNil(channelName)) {
           allowed = true;
         } else if (_.isEqual(whitelist, ["*"]) || _.includes(whitelist, channelName)) {
           allowed = true;
         }
-
         return allowed;
       }
 
@@ -135,7 +136,7 @@
        * @returns {{}}
        */
       function getNoOpLogger() {
-        var logger = getLogger();
+        var logger   = getLogger();
         logger.logFn = _.noop;
         return logger;
       }
