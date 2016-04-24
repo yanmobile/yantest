@@ -122,6 +122,16 @@
             devlog.channel().debug('This is a debug message');
             expect($log.debug.logs).toEqual([]);
           }
+        );     
+        it(
+          'should not go through - no whitelist present',
+          function () {
+
+            mockConfig.devlogWhitelist = [];
+            devlogProvider.loadConfig(mockConfig);
+            devlog.channel('myChannel').debug('This is a debug message');
+            expect($log.debug.logs).toEqual([]);
+          }
         );
         it(
           'should always go through - no whitelist entries',
