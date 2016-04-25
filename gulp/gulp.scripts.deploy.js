@@ -19,8 +19,7 @@ function init(gulp, plugins, config, _, util) {
     var configPaths = ["vendor.js",
       "module.assets.vendor.js",
       "module.modules",
-      "module.js"
-    ];
+      "module.js"];
 
     var jsSrc = [];
     _.forEach(configPaths, function (configPath) {
@@ -35,6 +34,9 @@ function init(gulp, plugins, config, _, util) {
     }
 
     jsSrc = _.flatten(jsSrc);
+    jsSrc
+      .concat(config.masterConfig.overrides.common)
+      .concat(config.masterConfig.overrides.components);
 
     return gulp.src(jsSrc)
       //.pipe(plugins.filelog())
@@ -42,7 +44,6 @@ function init(gulp, plugins, config, _, util) {
       .pipe(plugins.concat('app.min.js'))
       .pipe(plugins.uglify())
       .pipe(gulp.dest(plugins.path.join(config.app.dest.folder, 'js')));
-
 
   });
 

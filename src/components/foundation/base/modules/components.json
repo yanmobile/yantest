@@ -1,6 +1,6 @@
 {
-  "vendor" : {
-    "js" : [
+  "vendor"    : {
+    "js"    : [
       "src/components/foundation/base/bower_components/d3/d3.js",
       "src/components/foundation/base/bower_components/angular-utils-pagination/dirPagination.js",
       "src/components/foundation/base/bower_components/angucomplete-alt/angucomplete-alt.js",
@@ -16,32 +16,42 @@
       "src/components/foundation/base/bower_components/font-awesome/fonts/fontawesome-webfont.*"
     ]
   },
-  "module" : {
-    "modules": [
+  "module"    : {
+    "modules" : [
       "src/components/foundation/base/modules/**/*.module.js"
     ],
-    "js" : [
+    "js"      : [
       "src/components/foundation/base/modules/**/*.js"
     ],
-    "html" : [
+    "html"    : [
       "src/components/foundation/base/modules/**/*.html",
       "src/components/foundation/base/assets/**/*.html"
     ],
-    "assets" : {
+    "assets"  : {
       "images" : [
-        "src/components/foundation/base/assets/images/**/*"
+        "src/components/foundation/base/assets/images/**/*",
+        "src/components/foundation/base/assets/vendors/leaflet/images/**/*"
       ],
       "vendor" : {
         "js" : [
-          "src/components/foundation/base/assets/vendors/n3-charts/build/LineChart.js"
+          "src/components/foundation/base/assets/vendors/n3-charts/build/LineChart.js",
+          "src/components/foundation/base/assets/vendors/leaflet/leaflet.js"
         ]
       }
     },
-    "mocks" : [
-      "test/unit/components/componentUnitTestMocks.js"
+    "mocks"   : [
+      "test/unit/components/componentsUnitTestMocks.js"
     ],
-    "tests" : [
-      "test/unit/components/**/*Tests.js"
+    "tests"   : [
+      "test/unit/components/**/*.test.js"
     ]
+  },
+  "comments": "Since JS JS files can't be cascaded like css selectors or Angular's templateCache, if we want to override a lower level file, we must exclude them from the first.",
+  "comments": "The overrides below are a way to exclude base files by specifying glob patterns of files.",
+  "overrides" : {
+    "js" : {
+      "common"     : [],
+      "components" : []
+    }
   }
 }

@@ -34,14 +34,16 @@ var plugins = {
   inject       : require('gulp-inject') // used for injecting scripts
 };
 
-var configs = {
+var configs          = {
   common   : require('./gulp/common.json'),
   component: require('./gulp/components.json'),
   app      : readJson('./gulp/app.json', {})
 };
+configs.masterConfig = _.mergeWith(configs.common, configs.components, configs.app, concatArrays);
 
 var util = {
-  getArg: getArg
+  getArg  : getArg,
+  readJson: readJson
 };
 
 /*========================================
@@ -85,7 +87,7 @@ function getArg(key) {
 
 /**
  * Reads the json file and returns its content. If the file is not found, it will return defaults or {}
- * 
+ *
  * @param filePath
  * @returns {*}
  */
@@ -99,4 +101,16 @@ function readJson(filePath, defaults) {
     json = defaults || {};
   }
   return json;
+}
+
+/**
+ * Used by mergeWith to concat []s instead of replace the entire array
+ * @param a
+ * @param b
+ * @returns {*|string|Array.<T>}
+ */
+function concatArrays(a, b) {
+  if (_.isArray(a)) {
+    return a.concat(b);
+  }
 }

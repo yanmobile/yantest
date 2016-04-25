@@ -2,7 +2,6 @@
  * Created by hzou on 3/3/16.
  */
 
-
 module.exports = {
   init: init
 };
@@ -31,7 +30,8 @@ function init(gulp, plugins, config, _, util) {
 
   gulp.task('scripts:common', function () {
     var src = _.concat(config.common.module.modules,
-      config.common.module.js);
+      config.common.module.js,
+      config.masterConfig.overrides.js.common);
 
     return gulp.src(src)
       //.pipe(plugins.filelog())
@@ -48,7 +48,8 @@ function init(gulp, plugins, config, _, util) {
   gulp.task('scripts:components', function () {
     var src = _.concat(
       config.component.module.modules,
-      config.component.module.js);
+      config.component.module.js,
+      config.masterConfig.overrides.js.components);
 
     return gulp.src(src)
       //.pipe(plugins.filelog())
@@ -70,7 +71,6 @@ function init(gulp, plugins, config, _, util) {
       src.push(config.app.excludeConfig);
     }
 
-    // gulp.src(src.concat(["!src/app/modules/login/login.controller.js"]))
     return gulp.src(src)
       .pipe(plugins.sourcemaps.init())
       .pipe(plugins.concat('7.app.min.js', { newLine: ';' }))
