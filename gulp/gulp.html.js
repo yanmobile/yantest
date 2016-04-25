@@ -41,6 +41,6 @@ function init(gulp, plugins, config, _) {
 
   //used by gulp-inject to remove the leading "/"
   function removeLeadingSlash(filepath, file, i, length) {
-    return ['<script src="', filepath.substr(1), '"></script>"'].join('');
+    return ['<script src="', filepath.substr(1), '"></script>'].join('');
   }
 }
