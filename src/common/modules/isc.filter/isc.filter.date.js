@@ -13,7 +13,7 @@
     .filter('iscDate', iscDate);
 
   /* @ngInject */
-  function iscDate(devlog, $filter) {
+  function iscDate(devlog) {
     var log = devlog.channel('iscDate');
     log.debug('iscDate LOADED');
 

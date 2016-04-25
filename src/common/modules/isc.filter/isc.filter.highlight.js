@@ -2,40 +2,27 @@
  * Created by douglasgoodman on 12/8/14.
  */
 
-(function(){
+(function () {
   'use strict';
   // ----------------------------
   // injection
   // ----------------------------
-  angular.module( 'isc.filters' )
-    .filter( 'iscHighlight', iscHighlightFilter );
+  angular.module('isc.filters')
+    .filter('iscHighlight', iscHighlightFilter);
 
   /* @ngInject */
-  function iscHighlightFilter( devlog, $sce ){
+  function iscHighlightFilter(devlog, $sce) {
     var channel = devlog.channel('iscHighlightFilter');
-
-    channel.debug( 'iscHighlightFilter LOADED');
-
-    // ----------------------------
-    // vars
-    // ----------------------------
-
-
-    // ----------------------------
-    // class factory
-    // ----------------------------
+    channel.logFn('iscHighlightFilter');
 
     return setHighlight;
 
     // ----------------------------
     // functions
     // ----------------------------
-
-
-    function setHighlight( text, phrase ) {
-      channel.debug('iscHighlight.setHighlight');
-
-      if( phrase && text ){
+    function setHighlight(text, phrase) {
+      channel.logFn('setHighlight');
+      if (phrase && text) {
         channel.debug('...text', text);
 
         text = text.replace(new RegExp('(' + phrase + ')', 'gi'),

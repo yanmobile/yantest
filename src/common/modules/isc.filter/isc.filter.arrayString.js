@@ -10,19 +10,14 @@
   angular.module( 'isc.filters' )
     .filter( 'arrayString', iscArrayStringFilter );
 
-  /* @ngInject */
-  function iscArrayStringFilter( devlog, $filter ){//jshint ignore:line
+  /**
+   * @description if type is array, it does the same as array.join(", ")
+   * @param devlog
+   * @returns {getArrayString}
+   */
+  function iscArrayStringFilter( devlog ){//jshint ignore:line
     var channel = devlog.channel('iscArrayStringFilter');
     channel.debug( 'iscArrayStringFilter LOADED');
-
-    // ----------------------------
-    // vars
-    // ----------------------------
-
-
-    // ----------------------------
-    // class factory
-    // ----------------------------
 
     return getArrayString;
 
@@ -30,13 +25,18 @@
     // functions
     // ----------------------------
 
-
     function getArrayString( array ){
       channel.debug('iscArrayStringFilter.getArrayString');
       channel.debug('...array', array);
       channel.debug('...array', typeof array);
 
-      if( Object.prototype.toString.call( array ) !== '[object Array]' ){
+      //does the same as this?
+      // if( _.isTypeOf(array, "Array") ){
+      //   return array.sort().join(", ");
+      // }
+      // return '';
+      
+      if( !_.isTypeOf(array, "Array") ){
         return '';
       }
 

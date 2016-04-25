@@ -2,39 +2,30 @@
  * Created by douglasgoodman on 12/8/14.
  */
 
-(function(){
+(function () {
   'use strict';
 
-  /* @ngInject */
-  function iscHtmlToPlainText( devlog ){//jshint ignore:line
+  angular
+    .module('isc.filters')
+    .filter('iscHtmlToPlainText', iscHtmlToPlainText);
+
+
+  /**
+   * @description converts plain html to plain text by stripping html tags
+   *  if the param is non-string, it will convert the param to string and return it
+   * @param devlog
+   * @returns {convert}
+   */
+  function iscHtmlToPlainText(devlog) {
     var channel = devlog.channel('iscHtmlToPlainText');
-    channel.debug( 'iscHtmlToPlainText LOADED');
+    channel.debug('iscHtmlToPlainText LOADED');
 
-
-    // ----------------------------
-    // class factory
-    // ----------------------------
-
-    return convert;
-
-    // ----------------------------
-    // functions
-    // ----------------------------
-
-    /**
-     * returns plain text from an html string
-     */
-    function convert( text ){
-      return String( text ).replace(/<[^>]+>/gm, '');
-    }
+    return function convert(text) {
+      // * returns plain text from an html string
+      return String(text).replace(/<[^>]+>/gm, '');
+    };
 
 
   }//END CLASS
-
-  // ----------------------------
-  // injection
-  // ----------------------------
-  angular.module( 'isc.filters' )
-      .filter( 'iscHtmlToPlainText', iscHtmlToPlainText );
 
 })();
