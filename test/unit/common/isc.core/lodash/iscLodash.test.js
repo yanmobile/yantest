@@ -275,6 +275,30 @@
       });
     });
 
+    describe("primative and their Object types", function () {
+      it('should treat 5 and Number(5) the same', function () {
+        var primative = _.isTypeOf(5, "Number");
+        var object    = _.isTypeOf(Number(5), "Number");
+
+        expect(primative).toBe(object);
+      });
+      
+      it('should treat "hello" and String("hello") the same', function () {
+        var primative = _.isTypeOf("Hello", "String");
+        var object    = _.isTypeOf(String("Hello"), "String");
+
+        expect(primative).toBe(object);
+      });
+      
+      it('should treat "[]" and Array() the same', function () {
+        var primative = _.isTypeOf([], "Array");
+        var object    = _.isTypeOf(Array(), "Array");
+
+        expect(primative).toBe(object);
+      });
+      
+    });
+
   });
 })();
 
