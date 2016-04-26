@@ -1,322 +1,127 @@
-// --------------------------------------
-// secondary nav container
-// --------------------------------------
+// Secondary Navigation
+.secondary-nav {
+  background: $secondary-nav-background;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: $horizontal-container-padding;
+  padding-right: $horizontal-container-padding;
+  border-bottom: 1px solid darken($secondary-nav-background, 6);
 
-.secondary-nav-wrapper{
-  position: absolute !important;
-  top: -1000px;
-  z-index: $modal-z-index;
-  opacity:0;
-  visibility: hidden;
-}
-
-.isc-secondary-nav-container {
-  padding: 0 0;
-  margin: 0 -1;
-  width: 100%;
-  height: 100%;
-
-  hr{
-    height: 1px;
-    border: none;
-    color: $app-border-color;
-    background-color: $app-border-color;
+  @media #{$medium} {
+    padding-top: 0;
+    padding-bottom: 0;
+    padding-left: $horizontal-container-padding-small;
+    padding-right: $horizontal-container-padding-small;
   }
 
-  h1{
-    padding-top: 15px;
-    margin: 0 0 10px 10px;
-    font-size: 13px;
-    text-transform: uppercase;
-    color: $header-font-color;
-    font-weight: 900;
-    letter-spacing: .5px;
-    height: 100%;
-    width: 100%;
+  @media #{$small} {
+    padding-top: 0;
+    padding-bottom: 0;
+    padding-left: $horizontal-container-padding-small;
+    padding-right: $horizontal-container-padding-small;
   }
 
-  @media #{$desktop}{
-    min-height: 400px;
-    max-width: 300px;
-    background-color: $neutral-one;
-    border: 1px solid $app-border-color;
-    padding: 10px;
+  .menu-group {
+    margin: 0 auto;
+    flex: 0 1 auto;
   }
 
-  @media #{$mobile}{
-    //    height: auto;
-    //    width: auto;
-    background-color: transparent;
-    border: none;
-  }
-}
-
-// --------------------------------------
-// secondary nav buttons
-// --------------------------------------
-
-.btn.secondary-nav {
-  border-radius: 3px;
-  background: none;
-  color: $anchor-font-color;
-  font-weight: 400;
-  text-align: center;
-  margin-left: auto !important;
-  margin-right: auto !important;
-  background-color: $secondary-nav-background;
-  border: 1px solid $app-border-color;
-
-  &:hover,
-  &:focus {
-    text-decoration: none;
-    color: darken( $anchor-font-color, 20 );
-    background-color: darken( $secondary-nav-background, 20 );
-    border: 1px solid darken( $app-border-color, 12) !important;
-  }
-}
-
-.isc-dropdown-toggle{
-  &:focus {
-    outline: 0;
+  .menu-group, .menu-group-left, .menu-group-right {
+    background: transparent;
   }
 
-  max-width: 25px;
-  min-width: 25px;
-}
+  .menu-bar, .inline-list {
+    background: transparent;
 
-.dropdown-toggle:focus {
-  outline: 0;
-}
+    li {
+      font-weight: $font-weight-semi-bold;
+      margin: 0;
 
-// --------------------------------------
-// secondary nav items
-// --------------------------------------
+      &.active {
+        background: $secondary-nav-active-background;
+        color: isitlight($secondary-nav-background, $body-font-color, $light-text);
+      }
 
-// Individual list items
-// Use on `li`s or `div`s within the `.list-group` parent.
+      a {
+        padding: 0.75rem 1.5rem;
+        color: isitlight($secondary-nav-background, $body-font-color, $light-text);
 
-.isc-secondary-nav-item {
-  position: relative;
-  display: block;
-  padding: 0;
-  border: none !important;
-  margin-top: 0px;
-  text-decoration: none;
+        @media #{$small} {
+          font-size: 0.9735rem;
+        }
 
-  &:first-child{
-    margin-top: 20px;
-  }
+        &.active, &:active, &:focus {
+          background: $secondary-nav-active-background;
+        }
+        &:hover {
+          background: darken($secondary-nav-background, 6);
+        }
+      }
 
-  // slide up so the borders overlap
-  margin-bottom: -1px;
-  background-color: $secondary-nav-background;
-  border: 1px solid $app-border-color;
+      &.hamburger {
 
-  @media #{$desktop}{
-    padding: 10px 10px !important;
-  }
+        .fa {
+          margin: 0;
+        }
 
-  @media #{$mobile}{
-    padding: 10px 20px !important;
-  }
+        a {
+          font-size: $app-name-font-size;
+          padding-left: 0;
+          color: isitlight($secondary-nav-background, $body-font-color, $light-text);
 
-  // Disabled state
-  &.disabled,
-  &.disabled:hover,
-  &.disabled:focus {
-    background-color: $gray-light;
-    color: lighten($anchor-font-color, 25 );
-    cursor: $cursor-disabled;
+          &:hover {
+            background: transparent;
+            color: $accent-color;
+          }
+        }
+      }
 
-    // Force color to inherit for custom content
-    .list-group-item-heading {
-      color: $anchor-font-color;
-    }
-    .list-group-item-text {
-      color: $gray-light;
+      &:first-of-type {
+        margin-left: 0;
+      }
+
+      &:last-of-type {
+        margin-right: 0;
+      }
     }
   }
 
-  // Active class on item itself, not parent
-  &.active,
-  &.active:hover,
-  &.active:focus {
-    z-index: 2; // Place active items above their siblings for proper border styling
-    color: $anchor-font-color;
-    font-weight: 600;
-    background-color: $white;
+  .inline-list {
+    margin: 0;
+    line-height: 1;
+    text-align: center;
+  }
+}
 
-    z-index: 20;
+/* Secondary Mobile Menu */
+#secondary-mobile-nav {
+  background: $secondary-nav-background;
 
-    border: 1px solid darken( $app-border-color, 12) !important;
+  .menu-bar {
+    li {
+      border-bottom: 1px solid darken($secondary-nav-background, 10);
 
-    // Force color to inherit for custom content
-    .side-nav-item-heading,
-    .side-nav-item-heading > small,
-    .side-nav-item-heading > .small {
-      color: $anchor-font-color;
+      a {
+        padding: 1rem;
+        color: isitlight($secondary-nav-background, $body-font-color, $light-text);
+        font-weight: $font-weight-semi-bold;
+
+        &.close {
+          font-size: 1.5rem;
+          font-weight: $font-weight-normal;
+          display: block;
+          text-align: right;
+
+          &:hover {
+            color: $anchor-font-color-hover;
+            background: $secondary-nav-background;
+          }
+        }
+
+        &:hover {
+          color: isitlight($secondary-nav-background, $body-font-color, $light-text);
+        }
+      }
     }
-    .side-nav-item-text {
-      color: $body-font-color;
-    }
   }
-}
-
-/**
-should also apply to outbox, archived
-**/
-.isc-inbox-nav-item{
-  @extend .isc-secondary-nav-item;
-}
-
-a.isc-inbox-nav-item{
-  @extend a.isc-secondary-nav-item;
-
-  // Hover state
-  &.selected {
-    text-decoration: none;
-    color: darken( $anchor-font-color, 20 );
-    background-color: $white;
-    border: 1px solid darken( $app-border-color, 12) !important;
-    z-index: 10;
-  }
-}
-
-a.isc-secondary-nav-item {
-  color: $anchor-font-color;
-  font-weight: 400;
-  text-align: left;
-  z-index: 1;
-  cursor: default;
-  cursor: pointer;
-
-  &:first-child{
-    margin-top: 0 !important;
-  }
-
-  .side-nav-item-heading {
-    color: $anchor-font-color;
-  }
-
-  // Hover state
-  &.dropdown-toggle,
-  &.open,
-  &.active,
-  &:hover,
-  &:focus {
-    text-decoration: none;
-    color: darken( $anchor-font-color, 20 );
-    background-color: $white;
-    border: 1px solid darken( $app-border-color, 12) !important;
-    z-index: 10;
-  }
-}
-
-// --------------------------------------
-// secondary nav mobile styles
-// --------------------------------------
-
-.isc-secondary-nav-close{
-  color: $gray-40;
-  font-size: 20px;
-  text-align: right;
-  width: 100%;
-  padding: 10px 15px 0 0;
-
-  // Hover state
-  &:hover,
-  &:focus {
-    text-decoration: none;
-    color: $gray-70;
-  }
-}
-
-
-
-.secondary-nav-mobile-container {
-  min-height: 50%;
-  height: 100%;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  font-size: 14px;
-  text-align: left;
-  z-index: $modal-z-index;
-
-  background-color: $secondary-nav-background ;
-  border: 1px solid $app-border-color ;
-}
-
-
-// nav dropdown for mobile pages
-.isc-secondary-nav-mobile-dropdown-wrapper{
-  width: 100%;
-
-}
-
-.isc-secondary-nav-mobile-dropdown{
-  @include box-sizing( border-box );
-  overflow: hidden;
-  width: 100%;
-  max-width: 100%;
-
-  cursor: default;
-  cursor: pointer;
-
-  &:before{
-    float:left;
-    margin-right: 5px;
-    font-family: FontAwesome;
-    color: $body-font-color;
-    font-size: 30px;
-    font-weight: 400;
-    content: " \F107"; //&#xf107 unicode for fa-angle-down
-  }
-
-}
-
-.isc-secondary-nav-link {
-  display: inline-block;
-  max-width: 90%;
-  @include box-sizing( border-box );
-
-  cursor: default;
-  cursor: pointer;
-  color: $anchor-font-color;
-
-  font-size: 24px;
-  font-weight: 400;
-
-  &:hover{
-    color: darken( $anchor-font-color, 10 );
-  }
-}
-
-.isc-task-arrow {
-  position: relative;
-  top: 3px;
-  fill: $body-font-color;
-}
-
-
-.isc-task-arrow {
-  position: relative;
-  top: 3px;
-  fill: $body-font-color;
-}
-
-
-// ----------------------------------------
-// Custom content options
-// Extra classes for creating well-formatted content within `.list-group-item`s.
-// ----------------------------------------
-
-.side-nav-item-heading {
-  margin-top: 0;
-  margin-bottom: 5px;
-}
-.side-nav-item-text {
-  text-align: left;
-  margin-bottom: 0;
-  line-height: 1.3;
 }

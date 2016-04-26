@@ -1,116 +1,102 @@
-// --------------------------------------------------
-// Variables
-// --------------------------------------------------
+// BREAKPOINT VARIABLES
+/* -----------------------------------------
+ * Target Sizes or Devices or Both
+ * Sizes: Small, Medium, Large, xlarge, xxlarge
+ * Devices: Phone, Phablet, Tablet, Desktop
+----------------------------------------- */
+$breakpoints: (
+  'small': rem-calc(0),
+  'medium': rem-calc(859),
+  'large': rem-calc(1025),
+  'xlarge': rem-calc(1440),
+  'xxlarge': rem-calc(1920),
+) !default;
 
+$devices: (
+  'phone': rem-calc(320),
+  'phablet': rem-calc(414),
+  'tablet': rem-calc(768),
+  'desktop': rem-calc(1025),
+) !default;
 
-// --------------------------------------------------
-// OLD Media queries breakpoints
-// --------------------------------------------------
+/* MINIMUM */
 
-// Extra small screen
-$screen-xs-min:              0px !default;
+// Devices
+$screen-phone-min:  map-get($devices, 'phone') !default;
+$screen-phablet-min: map-get($devices, 'phablet') !default;
+$screen-tablet-min:  map-get($devices, 'tablet') !default;
+$screen-desktop-min: map-get($devices, 'desktop') !default;
 
-// Small screen / phone
-$screen-sm-min:              480px !default;
+// Breakpoints
+$small-min: map-get($breakpoints, 'small') !default;
+$medium-min: map-get($breakpoints, 'medium') !default;
+$large-min: map-get($breakpoints, 'large') !default;
+$xlarge-min: map-get($breakpoints, 'xlarge') !default;
+$xxlarge-min: map-get($breakpoints, 'xxlarge') !default;
 
-// Medium screen / phablet
-$screen-ph-min:              640px !default;
+/* MAXIMUM */
 
-// Medium screen / tablet
-$screen-md-min:              960px !default;
-
-// Large screen / desktop
-$screen-lg-min:              1200px !default;
-
-// Extra large screen / desktop
-$screen-xl-min:              1440px !default;
-
-// Extra large screen / desktop
-$screen-xxl-min:              1660px !default;
-
-// now deprecated
-$screen-xs-max:              ($screen-sm-min - 1) !default;
-$screen-sm-max:              ($screen-md-min - 1) !default;
-$screen-md-max:              ($screen-lg-min - 1) !default;
-
-// So media queries don't overlap when required, provide a maximum
-$screen-phone-min:   480px !default;
-$screen-phablet-min: 640px !default;
-$screen-tablet-min:  960px !default;
-$screen-desktop-min: 1200px !default;
-
+// Devices
 $screen-phone-max:   ($screen-phablet-min - 1) !default;
 $screen-phablet-max: ($screen-tablet-min - 1) !default;
 $screen-tablet-max:  ($screen-desktop-min - 1) !default;
-$screen-desktop-max:  ($screen-xl-min - 1) !default;
 
+// Breakpoints
+$small-max: ($medium-min - 1) !default;
+$medium-max: ($large-min - 1) !default;
+$medium-portrait-max: 1000px !default;
+$large-max: ($xlarge-min - 1) !default;
+$xlarge-max: ($xxlarge-min - 1) !default;
 
-//
-// usage:
-//
-//  @media #{$desktop} {
-//    background: red;
-//  }
-//
+$phone:     "only screen and (max-width: #{$screen-phone-max})";
+$phablet:   "only screen and (min-width: #{$screen-phablet-min}) and (max-width: #{$screen-phablet-max})";
+$tablet:    "only screen and (min-width: #{$screen-tablet-min}) and (max-width: #{$screen-tablet-max})";
+$desktop:   "only screen and (min-width: #{$screen-desktop-min})";
 
-//$media-phone:    "only screen and (max-width: #{$screen-phone-max})";
-//$media-phablet:  "only screen and (min-width: #{$screen-phablet-min}) and (max-width: #{$screen-phablet-max})";
-//$media-tablet:   "only screen and (min-width: #{$screen-tablet-min}) and (max-width: #{$screen-tablet-max})";
-//$media-desktop:  "only screen and (min-width: #{$screen-desktop-min})";
-//
-//// everything but desktop
-//$media-mobile:  "only screen and (max-width: #{$screen-tablet-max})";
-//
-//// tablet or bigger
-//$media-desk-tab:   "only screen and (min-width: #{$screen-tablet-min})";
-//
-//// below tablet
-//$media-desk-tab:   "only screen and (max-width: #{$screen-phablet-max})";
-//
-////  phablet or bigger
-//$media-phab-or-more:   "only screen and (min-width: #{$screen-phablet-min})";
-//
-//// below phablet
-//$media-below-phab:   "only screen and (max-width: #{$screen-phone-max})";
+$small:     "only screen and (max-width: #{$small-max})";
+$medium:    "only screen and (min-width: #{$medium-min}) and (max-width: #{$medium-max})";
+$large:     "only screen and (min-width: #{$large-min}) and (max-width: #{$large-max})";
+$xlarge:    "only screen and (min-width: #{$xlarge-min}) and (max-width: #{$xlarge-max})";
+$xxlarge:   "only screen and (min-width: #{$xxlarge-min})";
+$medium-portrait: "only screen and (min-width: #{$medium-min}) and (max-width: #{$medium-portrait-max})";
 
+// Medium Down
+$medium-down: "only screen and (max-width: #{$medium-max})";
+// Medium Up
+$medium-up:   "only screen and (min-width: #{$medium-min})";
+// Large Down
+$large-down:  "only screen and (max-width: #{$large-max})";
+// Large Up
+$large-up:    "only screen and (min-width: #{$large-min})";
+// Xlarge Down
+$xlarge-down: "only screen and (max-width: #{$xlarge-max})";
+// Xlarge Up
+$xlarge-up:   "only screen and (min-width: #{$xlarge-min})";
 
-$phone:    		  "only screen and (max-width: #{$screen-phone-max})";
-$phablet:  			"only screen and (min-width: #{$screen-phablet-min}) and (max-width: #{$screen-phablet-max})";
-$tablet:        "only screen and (min-width: #{$screen-tablet-min}) and (max-width: #{$screen-tablet-max})";
-$desktop:       "only screen and (min-width: #{$screen-desktop-min})";//1200
-$just-desktop:  "only screen and (min-width: #{$screen-desktop-min}) and (max-width: #{$screen-desktop-max})";//1200
-$xl-plus: 		  "only screen and (min-width: #{$screen-xl-min})";//1440
-$xxl-plus: 		  "only screen and (min-width: #{$screen-xxl-min})";//1660
-
-// tablet or bigger
-$tab-plus:  "only screen and (min-width: #{$screen-tablet-min})";
-
-// tablet or phablet
-$tab-phab:   "only screen and (min-width: #{$screen-phablet-min}) and (max-width: #{$screen-tablet-max})";
-
-// tablet or less
+// Tablet Up
+$tab-plus:     "only screen and (min-width: #{$screen-tablet-min})";
+// Phablet Up
+$phab-plus:    "only screen and (min-width: #{$screen-phablet-min})";
+// Tablet and phablet only
+$tab-phab:     "only screen and (min-width: #{$screen-phablet-min}) and (max-width: #{$screen-tablet-max})";
+// Tablet Down
 $tab-or-less:  "only screen and (max-width: #{$screen-tablet-max})";
-
-// everything but desktop
-$mobile:    "only screen and (max-width: #{$screen-tablet-max})";
-
-// phablet or larger
-$phab-plus: "only screen and (min-width: #{$screen-phablet-min})";
-
-// below phab size
-$below-phab: "only screen and (max-width: #{$screen-phone-max})";
-
-// phab size or below
+// Phablet Down
 $phab-or-less: "only screen and (max-width: #{$screen-phablet-max})";
+// Phone Down
+$below-phab:   "only screen and (max-width: #{$screen-phone-max})";
+// Everything but Desktop
+$mobile:       "only screen and (max-width: #{$medium-max})";
 
 
-// --------------------------------------------------
-// colors
-// --------------------------------------------------
-
-
-
-
+// THEME COLOR PALETTES
+/* -----------------------------------------
+* Primary Color
+* Neutral Color
+* Accent Color
+* States (Alert, Success, Warning, Info)
+* Typography Colors
+----------------------------------------- */
 
 /* Primary Pallete */
 $primary-color: #485163 !default;
@@ -164,8 +150,7 @@ $theme-colors: (
   subtext: #b0bbc1
 ) !default;
 
-
-/* --------- Grayscale Logic --------- */
+/* --- Grayscale Logic --- */
 $gray-10: darken( #fff, 10 );
 $gray-20: darken( #fff, 20 );
 $gray-30: darken( #fff, 30 );
@@ -176,68 +161,8 @@ $gray-70: darken( #fff, 70 );
 $gray-80: darken( #fff, 80 );
 $gray-90: darken( #fff, 90 );
 
-/* App Theme Settings */
-$body-background: #fff !default;
-$app-border-color: #ccc !default;
-$app-bar-link-color: $light-text !default;
 
-$logo-color: #fff !default;
-$logo-height: 100px !default;
-$logo-width: 230px !default;
-$logo-height-small: 45px !default;
-$logo-width-small: 45px !default;
-
-/* Top Nav */
-$top-nav-background: $primary-color !default;
-
-$app-bar-height: 64px !default;
-
-/* Secondary Nav */
-$secondary-nav-background: $neutral-color !default;
-
-$app-bar-link:       $light-text !default;
-$app-bar-link-active-background:  $primary-color !default;
-$app-bar-text:       $light-text !default;
-
-$button-cancel:   #ccc !default;
-$button-disabled: inherit !default;
-
-/* Sidebar */
-$footer-height:      54px !default;
-$sidebar-background: scale-color($neutral-color, $lightness: 28%) !default;
-
-/* Footer */
-$footer-height:      54px !default;
-$footer-background:  $primary-color !default;
-
-/* Main Content */
-
-$main-content-padding: 1.5rem 1.5rem;
-
-/* Need z-index Settings
--------------------------*/
-
-$zindex-app: 1;
-$modal-z-index: 2147483647;
-
-/* Need Table Settings
--------------------------*/
-$pencil-button-color: $success-color !default;
-$remove-button-color: $alert-color !default;
-$table-command-icon-width: 35px !default;
-
-/* Other?
--------------------------*/
-
-//$form-input-height: 45px !default;
-$placeholder-text-color: palettes(type, subtext) !default;
-
-
-/* --- Layout --- */
-
-$global-margin: 1rem !default;
-
-
+// MATERIAL SHADOW
 /* -----------------------------------------
 /* Material Box Shadow
 /* Derived From Google Material Design
@@ -309,14 +234,14 @@ $shadow-depths: (
   }
 }
 
-// Create a Shadow Mixin
+// Shadow Mixin
 @mixin shadow($shadow-depth) {
   $shadow-depth: map-get($shadow-depths, $shadow-depth);
   box-shadow: $shadow-depth;
 }
 
 
-// 18. MOTION UI - TO DO
+// TO DO - MOTION UI
 /* ------------------------------ */
 
 // Classes to use when triggering in/out animations
@@ -344,8 +269,6 @@ $motion-class-showhide-active: (
   in: "ng-hide-remove-active",
   out: "ng-hide-add-active",
 ) !default;
-
-
 
 // Set if movement-based transitions should also fade the element in and out
 $motion-slide-and-fade: false !default;
@@ -387,108 +310,18 @@ $motion-delay-short: 300ms !default;
 $motion-delay-long: 700ms !default;
 
 
-// OMITTED CONFIG SETTINGS
+// TO DO - COMPONENT SETTINGS
 /* ------------------------------ */
 
-// Default sets 1rem to be 16px
-// The default font-size is set to 100% of the browser style sheet (usually 16px)
-// for compatibility with browser-based text zoom or user-set defaults.
-// Since the typical default browser font-size is 16px, that makes the calculation for grid size.
-// If you want your base font-size to be different and not have it affect the grid breakpoints,
-// set $rem-base to $base-font-size and make sure $base-font-size is a px value.
-// $base-line-height is 24px while $base-font-size is 16px
-// $base-line-height is 24px while $base-font-size is 16px
+/* TO DO: z-index Map */
+$zindex-app: 1;
+$modal-z-index: 2147483647;
 
-/* OMIT */
-$rem-base: 16px;
-$base-font-size: 100%;
-$base-line-height: 1.6;
+/* TO DO: Table Settings */
+$pencil-button-color: $success-color !default;
+$remove-button-color: $alert-color !default;
+$table-command-icon-width: 35px !default;
 
-$global-radius: 3px !default;
-$global-padding: 1rem !default;
-
-/* Body & Paragraph <p> Font Settings
-----------------------------------------------*/
-$font-weight-extra-light: 200 !default;
-$font-weight-light: 300 !default;
-$font-weight-normal: 400 !default;
-$font-weight-semi-bold: 600 !default;
-$font-weight-bold: 700 !default;
-$font-weight-ultra-bold: 900 !default;
-
-$body-background: #fff;
-$body-antialiased: true; //OMIT
-$body-font-color: $dark-text !default;
-$paragraph-font-size: 1rem !default;
-$paragraph-line-height: 1.6 !default;
-$paragraph-font-family: inherit; //OMIT
-$paragraph-font-weight: $font-weight-normal; //OMIT
-$body-font-style: normal; //OMIT
-
-$paragraph-aside-font-size: $paragraph-font-size; //OMIT
-$paragraph-aside-line-height: $paragraph-line-height; //OMIT
-$paragraph-aside-font-style: $body-font-style; //OMIT
-$paragraph-text-rendering: optimizeLegibility; //OMIT
-
-
-/* Headers & Subheaders
----------------------------------------*/
-$header-text-rendering: optimizeLegibility; //OMIT
-
-/* Lists
-----------------------------------------------*/
-$list-font-family: $paragraph-font-family; //OMIT
-$list-font-size: $paragraph-font-size; //OMIT
-$list-line-height: $paragraph-line-height; //OMIT
-
-
-// 5. BUTTON
-/* ------------------------------ */
-$button-color: auto; //OMIT
-$button-radius: $global-radius; //OMIT
-$button-tag-selector: true; //OMIT
-
-
-// 8. ACTION SHEET
-/* ------------------------------ */
-$actionsheet-radius: $global-radius; //OMIT
-
-
-// 12. FORMS
-/* ------------------------------ */
-$form-fontsize: $paragraph-font-size; //OMIT
-
-/* Text Fields */
-$input-color: $body-font-color; //OMIT
-$input-background: $body-background !default;
-
-/* Select Menus */
-$select-color: $body-font-color; //OMIT
-$select-background: $input-background; //OMIT
-$select-arrow: true; //OMIT
-$select-arrow-color: $select-color; //OMIT
-
-/* Labels */
-$form-label-fontsize: $paragraph-font-size; //OMIT
-$form-label-color: $body-font-color; //OMIT
-
-/* Inline Labels */
-$inlinelabel-color: $body-font-color; //OMIT
-$inlinelabel-background: transparent; //OMIT
-$inlinelabel-border: none; //OMIT
-
-
-// 16. MODAL
-/* ------------------------------ */
-$modal-background: #fff; //OMIT
-$modal-border: 0; //OMIT
-$modal-radius: 0px; //OMIT
-$modal-shadow: $shadow-1dp; //OMIT
-
-$modal-overlay-class: 'modal-overlay'; //OMIT
-$modal-overlay-background: rgba(#333, 0.7); //OMIT
-
-
-// 20. OFF-CANVAS
-/* ------------------------------ */
-$offcanvas-frame-selector: '.grid-frame'; //OMIT
+/* TO DO: OTHER */
+$placeholder-text-color: palettes(type, subtext) !default; // Input Placeholder Text
+$global-margin: 1rem !default; // Layout
