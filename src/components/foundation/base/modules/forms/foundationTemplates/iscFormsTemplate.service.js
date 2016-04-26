@@ -204,6 +204,7 @@
 
           // Annotations
           var annotationsState   = $scope.formOptions.formState._annotations;
+          var annotationsConfig  = getAnnotationConfig();
           var annotationsContext = getAnnotationContext();
           var annotationsData    = getAnnotationData(annotationsContext);
           var annotationMetadata = {
@@ -238,6 +239,7 @@
 
             // Annotations state
             annotations       : {
+              config : annotationsConfig,
               context: annotationsContext,
               data   : annotationsData
             },
@@ -288,6 +290,10 @@
                 return $sce.trustAsHtml('<p>' + value + '</p>');
               }
             }
+          }
+
+          function getAnnotationConfig() {
+            return _.get(formlyRootCtrl, 'formDefinition.form.annotations', {});
           }
 
           function getAnnotationContext() {
