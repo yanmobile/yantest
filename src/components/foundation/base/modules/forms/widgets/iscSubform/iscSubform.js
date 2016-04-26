@@ -14,7 +14,7 @@
    * @param iscScrollContainerService
    * @param iscConfirmationService
    * @returns {{restrict: string, replace: boolean, controllerAs: string, scope: {model: string, options: string, formTitle: string, breadcrumbs: string, multiConfig: string, singleConfig: string}, bindToController: boolean, controller: controller, link: link, templateUrl: directive.templateUrl}}
-     */
+   */
   function iscSubform(FORMS_EVENTS, $q, $filter, iscScrollContainerService, iscConfirmationService) {//jshint ignore:line
 
     // ----------------------------
@@ -63,29 +63,33 @@
         ctrl: self
       });
 
-      self.onClick = onClick;
-
-      self.breadcrumbClick = breadcrumbClick;
-
-      self.formButtons = getFormButtons();
-
+      _.merge(self, {
+        onClick        : onClick,
+        breadcrumbClick: breadcrumbClick,
+        formButtons    : getFormButtons(),
+        showButton     : showButton
+      });
 
       function getFormButtons() {
-        var buttons = _.get(self, 'multiConfig.buttonConfig', {});
+        var buttons     = _.get(self, 'multiConfig.buttonConfig', {});
         var buttonArray = _.map(buttons, function (button, name) {
             return _.merge({}, button, {
-              name : name
+              name: name
             });
           }
         );
         return _.sortBy(buttonArray, 'order');
       }
 
+      function showButton(button) {
+        return _.isFunction(button.hide) ? !button.hide(self.multiConfig) : !button.hide
+      }
+
       function onClick(button) {
         var click      = button.onClick || function () { },
             afterClick = button.afterClick || function () { };
 
-        $q.when(click())
+        $q.when(click(self.multiConfig))
           .then(afterClick);
       }
 

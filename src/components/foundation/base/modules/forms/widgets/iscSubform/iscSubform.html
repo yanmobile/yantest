@@ -15,20 +15,17 @@
       <h2 class="form-title"><span>{{ subformCtrl.formTitle | translate }}</span></h2>
 
       <!--Page layout-->
-      <div ng-switch="subformCtrl.multiConfig.layout">
-        <div ng-switch-when="paged">
-          <div ng-include="'forms/widgets/iscForm/iscPagedForm.html'"></div>
-        </div>
-
-        <div ng-switch-default>
-          <div ng-include="'forms/widgets/iscForm/iscScrollingForm.html'"></div>
-        </div>
+      <div ng-if="subformCtrl.multiConfig.layout">
+        <div ng-include="'forms/pageLayouts/' + subformCtrl.multiConfig.layout + '.html'"></div>
+      </div>
+      <div ng-if="!subformCtrl.multiConfig.layout">
+        <div ng-include="'forms/pageLayouts/scrolling.html'"></div>
       </div>
 
       <!--Main form Buttons-->
       <div class="grid-block margin-top">
         <div ng-repeat="button in subformCtrl.formButtons track by button.name"
-             ng-if="!button.hide"
+             ng-if="subformCtrl.showButton(button)"
              class="grid-content collapse clearfix">
           <button type="{{button.name === 'submit' ? 'submit' : 'button'}}"
                   id="{{button.name + 'Button'}}"

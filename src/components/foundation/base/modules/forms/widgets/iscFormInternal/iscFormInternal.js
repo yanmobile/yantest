@@ -13,7 +13,7 @@
    * @param iscNotificationService
    * @param iscFormsValidationService
    * @returns {{restrict: string, replace: boolean, controllerAs: string, scope: {formDefinition: string, model: string, options: string, formConfig: string, validateFormApi: string, buttonConfig: string}, bindToController: boolean, controller: controller, templateUrl: directive.templateUrl}}
-     */
+   */
   function iscFormInternal($q,
                            iscCustomConfigService, iscNotificationService, iscFormsValidationService) {
     var directive = {
@@ -42,9 +42,9 @@
       var self = this;
 
       _.merge(self, {
-        forms           : [],
-        debugDisplay    : _.get(iscCustomConfigService.getConfig(), 'debugDisplay.forms', {}),
-        options         : {
+        forms       : [],
+        debugDisplay: _.get(iscCustomConfigService.getConfig(), 'debugDisplay.forms', {}),
+        options     : {
           formState: {
             _mode       : self.mode,
             _validation : {},
@@ -54,9 +54,9 @@
             _subforms   : self.formDefinition.subforms
           }
         },
-        childConfig     : {},
-        formConfig      : {},
-        buttonConfig    : {}
+        childConfig : {},
+        formConfig  : {},
+        buttonConfig: {}
       }, self);
 
       self.additionalModels = _.get(self.formConfig, 'additionalModels', {});
@@ -84,16 +84,13 @@
         iscNotificationService.init();
 
         watchPages();
-        _.defer(function () {
-          self.currentPage = _.head(self.pages);
-        }, 0);
       }
 
       /**
        * @memberOf iscFormInternal
        * @param mainFormErrors
        * @param subformErrors
-         */
+       */
       function showFailedValidation(mainFormErrors, subformErrors) {
         mainFormErrors = _.compact(mainFormErrors);
 
@@ -132,7 +129,7 @@
          * @memberOf iscFormInternal
          * @param error
          * @returns {string}
-           */
+         */
         function makeError(error) {
           return '<label class="error-message">In ' + error.label + ': ' + pluralize('record', error.records.length) + ' invalid.</label>';
         }
@@ -142,7 +139,7 @@
          * @param text
          * @param count
          * @returns {string}
-           */
+         */
         function pluralize(text, count) {
           return count + ' ' + text + (count > 1 ? 's are' : ' is');
         }
@@ -173,16 +170,27 @@
         });
 
         self.pages       = self.formDefinition.form.pages;
+        self.currentPage = _.head(self.pages);
         self.multiConfig = {
           pages          : self.pages,
           layout         : self.formDefinition.form.pageLayout,
           currentPage    : self.currentPage,
           selectablePages: [],
           forms          : self.forms,
-          buttonConfig   : self.buttonConfig || {}
+          buttonConfig   : self.buttonConfig || {},
+          selectPage     : selectPage
         };
 
         throttledFilter();
+      }
+
+      /**
+       * @memberOf iscFormInternal
+       * @param index - The index of the page to select/go to. Indexed from selectablePages, not all pages.
+       */
+      function selectPage(index) {
+        self.currentPage = self.multiConfig.selectablePages[index];
+        self.multiConfig.currentPage = self.currentPage;
       }
 
       /**
