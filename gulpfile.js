@@ -34,12 +34,30 @@ var plugins = {
   inject       : require('gulp-inject') // used for injecting scripts
 };
 
-var configs          = {
-  common   : require('./gulp/common.json'),
-  component: require('./gulp/components.json'),
-  app      : readJson('./gulp/app.json', {})
+var configs = {
+  app         : readJson('./gulp/app.json', {
+    editions: [{
+      "name": "base",
+      "path": "src/components/foundation/base/components.json"
+    }]
+  }),
+  component   : {}, //specified in app.json/editions
+  common      : require('./gulp/common.json'),
+  masterConfig: {} //aggregated config of app/components/common
 };
-configs.masterConfig = _.mergeWith(configs.common, configs.components, configs.app, concatArrays);
+
+if (configs.app.edition) {
+  var editionContent;
+  _.forEach(configs.app.edition, function (edition) {
+    if (!edition.path.startsWith("./")) {
+      edition.path = "./" + edition.path;
+    }
+    editionContent        = require(edition.path);
+    configs[edition.name] = editionContent;
+    _.mergeWith(configs.component, editionContent, concatArrays);
+  });
+}
+_.mergeWith(configs.masterConfig, configs.common, configs.component, configs.app, concatArrays);
 
 var util = {
   getArg  : getArg,

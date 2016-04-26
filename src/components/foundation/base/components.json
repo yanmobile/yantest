@@ -46,7 +46,7 @@
       "test/unit/components/**/*.test.js"
     ]
   },
-  "comments"  : "JavaScript files can't be overridden like css selector cascading or Angular's templateCache templates."
+  "comments"  : "JavaScript files can't be overridden like css selector cascading or Angular's templateCache templates.",
   "comments"  : "If we want to override lower level JS files, we must exclude them from the list.",
   "comments"  : "The overrides below are used to exclude base files by specifying glob patterns.",
   "overrides" : {

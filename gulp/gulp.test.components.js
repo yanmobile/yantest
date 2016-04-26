@@ -28,8 +28,8 @@ function init(gulp, plugins, config, _) {
   var componentsModuleHtml    = componentsConfig.module.html || [];
   var componentsModuleTests   = componentsConfig.module.tests || [];
 
-  var commonOverridesJs = componentsConfig.overrides.js.common || [];
-  var componentsOverridesJs = componentsConfig.overrides.js.components || [];
+  // var commonOverridesJs = componentsConfig.overrides.js.common || [];
+  // var componentsOverridesJs = componentsConfig.overrides.js.components || [];
 
   /*================================================
    =              Run unit tests                   =
@@ -53,10 +53,12 @@ function init(gulp, plugins, config, _) {
       .concat(componentsModuleMocks)
       .concat(commonModuleHtml)
       .concat(componentsModuleHtml)
-      .concat(componentsModuleTests)
-      .concat(commonOverridesJs)
-      .concat(componentsOverridesJs);
+      .concat(componentsModuleTests);
+    // TODO: implement edition testing 
+    // .concat(commonOverridesJs)
+    // .concat(componentsOverridesJs);
 
+    console.log('srcFiles:', srcFiles);
     var configPath = plugins.path.join(__dirname, "../test/karma.conf.components.js");
     return new Karma({
       configFile: configPath,
@@ -66,4 +68,3 @@ function init(gulp, plugins, config, _) {
 
   });
 }
-
