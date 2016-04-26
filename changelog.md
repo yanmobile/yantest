@@ -1,5 +1,8 @@
 
 # Core Changes
+### 04/26/2016
+[[hs-core-ui PR 213](https://github.com/intersystems/hs-core-ui/pull/213) adds support for compile time edition selection support; apps can now specify which edition to build for at compile time. The app specific changes can be found in [hs-core-tools PR 74](https://github.com/intersystems/hs-core-tools/pull/76/files?w=1). 
+
 ### 04/21/2016
 [[hs-core-ui PR 209](https://github.com/intersystems/hs-core-ui/pull/209) adds support for module specific scss files. In order for individual apps to take advantage of this feature, they need to be updated. The app specific changes can be found in [hs-core-tools PR 74](https://github.com/intersystems/hs-core-tools/pull/74). 
 ### 04/19/2016
