@@ -3,14 +3,10 @@
 .modal {
   overflow: visible;
 
-  .title-bar.primary {
+  .title-bar {
     font-size: 1.25rem;
     padding: 0.675rem 1rem;
     text-transform: capitalize;
-
-    .close-button {
-      top: 0.5rem;
-    }
   }
 
   //Force overflow visible
@@ -27,15 +23,16 @@
 //forms inside modals
 aside {
 
-  form, .form {
-    padding: 1rem;
-    border: none;
+  &.modal {
+    form, .form {
+      padding: 1rem;
+      border: none;
 
-    .controls {
-      margin-top: $global-margin;
+      .controls {
+        margin-top: $global-margin;
+      }
     }
   }
-
 }
 
 // Contain xlarge modal width
