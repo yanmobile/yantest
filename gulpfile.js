@@ -36,7 +36,7 @@ var plugins = {
 
 var configs = {
   app         : readJson('./gulp/app.json', {
-    editions: [{
+    edition: [{
       "name": "base",
       "path": "src/components/foundation/base/components.json"
     }]
@@ -46,17 +46,16 @@ var configs = {
   masterConfig: {} //aggregated config of app/components/common
 };
 
-if (configs.app.edition) {
+_.forEach(configs.app.edition, function (edition) {
   var editionContent;
-  _.forEach(configs.app.edition, function (edition) {
-    if (!edition.path.startsWith("./")) {
-      edition.path = "./" + edition.path;
-    }
-    editionContent        = require(edition.path);
-    configs[edition.name] = editionContent;
-    _.mergeWith(configs.component, editionContent, concatArrays);
-  });
-}
+  if (!edition.path.startsWith("./")) {
+    edition.path = "./" + edition.path;
+  }
+  editionContent        = require(edition.path);
+  configs[edition.name] = editionContent;
+  _.mergeWith(configs.component, editionContent, concatArrays);
+});
+
 _.mergeWith(configs.masterConfig, configs.common, configs.component, configs.app, concatArrays);
 
 var util = {

@@ -58,7 +58,6 @@ function init(gulp, plugins, config, _) {
     // .concat(commonOverridesJs)
     // .concat(componentsOverridesJs);
 
-    console.log('srcFiles:', srcFiles);
     var configPath = plugins.path.join(__dirname, "../test/karma.conf.components.js");
     return new Karma({
       configFile: configPath,
