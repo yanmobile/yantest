@@ -1,371 +1,327 @@
-// --------------------------------------------------
-// Variables
-// --------------------------------------------------
+// BREAKPOINT VARIABLES
+/* -----------------------------------------
+ * Target Sizes or Devices or Both
+ * Sizes: Small, Medium, Large, xlarge, xxlarge
+ * Devices: Phone, Phablet, Tablet, Desktop
+----------------------------------------- */
+$breakpoints: (
+  'small': rem-calc(0),
+  'medium': rem-calc(859),
+  'large': rem-calc(1025),
+  'xlarge': rem-calc(1440),
+  'xxlarge': rem-calc(1920),
+) !default;
 
+$devices: (
+  'phone': rem-calc(320),
+  'phablet': rem-calc(414),
+  'tablet': rem-calc(768),
+  'desktop': rem-calc(1025),
+) !default;
 
-// --------------------------------------------------
-// OLD Media queries breakpoints
-// --------------------------------------------------
+/* MINIMUM */
 
-// Extra small screen
-$screen-xs-min:              0px !default;
+// Devices
+$screen-phone-min:  map-get($devices, 'phone') !default;
+$screen-phablet-min: map-get($devices, 'phablet') !default;
+$screen-tablet-min:  map-get($devices, 'tablet') !default;
+$screen-desktop-min: map-get($devices, 'desktop') !default;
 
-// Small screen / phone
-$screen-sm-min:              480px !default;
+// Breakpoints
+$small-min: map-get($breakpoints, 'small') !default;
+$medium-min: map-get($breakpoints, 'medium') !default;
+$large-min: map-get($breakpoints, 'large') !default;
+$xlarge-min: map-get($breakpoints, 'xlarge') !default;
+$xxlarge-min: map-get($breakpoints, 'xxlarge') !default;
 
-// Medium screen / phablet
-$screen-ph-min:              640px !default;
+/* MAXIMUM */
 
-// Medium screen / tablet
-$screen-md-min:              960px !default;
-
-// Large screen / desktop
-$screen-lg-min:              1200px !default;
-
-// Extra large screen / desktop
-$screen-xl-min:              1440px !default;
-
-// Extra large screen / desktop
-$screen-xxl-min:              1660px !default;
-
-// now deprecated
-$screen-xs-max:              ($screen-sm-min - 1) !default;
-$screen-sm-max:              ($screen-md-min - 1) !default;
-$screen-md-max:              ($screen-lg-min - 1) !default;
-
-// So media queries don't overlap when required, provide a maximum
-$screen-phone-min:   480px !default;
-$screen-phablet-min: 640px !default;
-$screen-tablet-min:  960px !default;
-$screen-desktop-min: 1200px !default;
-
+// Devices
 $screen-phone-max:   ($screen-phablet-min - 1) !default;
 $screen-phablet-max: ($screen-tablet-min - 1) !default;
 $screen-tablet-max:  ($screen-desktop-min - 1) !default;
-$screen-desktop-max:  ($screen-xl-min - 1) !default;
 
+// Breakpoints
+$small-max: ($medium-min - 1) !default;
+$medium-max: ($large-min - 1) !default;
+$medium-portrait-max: 1000px !default;
+$large-max: ($xlarge-min - 1) !default;
+$xlarge-max: ($xxlarge-min - 1) !default;
 
-//
-// usage:
-//
-//  @media #{$desktop} {
-//    background: red;
-//  }
-//
+$phone:     "only screen and (max-width: #{$screen-phone-max})";
+$phablet:   "only screen and (min-width: #{$screen-phablet-min}) and (max-width: #{$screen-phablet-max})";
+$tablet:    "only screen and (min-width: #{$screen-tablet-min}) and (max-width: #{$screen-tablet-max})";
+$desktop:   "only screen and (min-width: #{$screen-desktop-min})";
 
-//$media-phone:    "only screen and (max-width: #{$screen-phone-max})";
-//$media-phablet:  "only screen and (min-width: #{$screen-phablet-min}) and (max-width: #{$screen-phablet-max})";
-//$media-tablet:   "only screen and (min-width: #{$screen-tablet-min}) and (max-width: #{$screen-tablet-max})";
-//$media-desktop:  "only screen and (min-width: #{$screen-desktop-min})";
-//
-//// everything but desktop
-//$media-mobile:  "only screen and (max-width: #{$screen-tablet-max})";
-//
-//// tablet or bigger
-//$media-desk-tab:   "only screen and (min-width: #{$screen-tablet-min})";
-//
-//// below tablet
-//$media-desk-tab:   "only screen and (max-width: #{$screen-phablet-max})";
-//
-////  phablet or bigger
-//$media-phab-or-more:   "only screen and (min-width: #{$screen-phablet-min})";
-//
-//// below phablet
-//$media-below-phab:   "only screen and (max-width: #{$screen-phone-max})";
+$small:     "only screen and (max-width: #{$small-max})";
+$medium:    "only screen and (min-width: #{$medium-min}) and (max-width: #{$medium-max})";
+$large:     "only screen and (min-width: #{$large-min}) and (max-width: #{$large-max})";
+$xlarge:    "only screen and (min-width: #{$xlarge-min}) and (max-width: #{$xlarge-max})";
+$xxlarge:   "only screen and (min-width: #{$xxlarge-min})";
+$medium-portrait: "only screen and (min-width: #{$medium-min}) and (max-width: #{$medium-portrait-max})";
 
+// Medium Down
+$medium-down: "only screen and (max-width: #{$medium-max})";
+// Medium Up
+$medium-up:   "only screen and (min-width: #{$medium-min})";
+// Large Down
+$large-down:  "only screen and (max-width: #{$large-max})";
+// Large Up
+$large-up:    "only screen and (min-width: #{$large-min})";
+// Xlarge Down
+$xlarge-down: "only screen and (max-width: #{$xlarge-max})";
+// Xlarge Up
+$xlarge-up:   "only screen and (min-width: #{$xlarge-min})";
 
-$phone:    		  "only screen and (max-width: #{$screen-phone-max})";
-$phablet:  			"only screen and (min-width: #{$screen-phablet-min}) and (max-width: #{$screen-phablet-max})";
-$tablet:        "only screen and (min-width: #{$screen-tablet-min}) and (max-width: #{$screen-tablet-max})";
-$desktop:       "only screen and (min-width: #{$screen-desktop-min})";//1200
-$just-desktop:  "only screen and (min-width: #{$screen-desktop-min}) and (max-width: #{$screen-desktop-max})";//1200
-$xl-plus: 		  "only screen and (min-width: #{$screen-xl-min})";//1440
-$xxl-plus: 		  "only screen and (min-width: #{$screen-xxl-min})";//1660
-
-// tablet or bigger
-$tab-plus:  "only screen and (min-width: #{$screen-tablet-min})";
-
-// tablet or phablet
-$tab-phab:   "only screen and (min-width: #{$screen-phablet-min}) and (max-width: #{$screen-tablet-max})";
-
-// tablet or less
+// Tablet Up
+$tab-plus:     "only screen and (min-width: #{$screen-tablet-min})";
+// Phablet Up
+$phab-plus:    "only screen and (min-width: #{$screen-phablet-min})";
+// Tablet and phablet only
+$tab-phab:     "only screen and (min-width: #{$screen-phablet-min}) and (max-width: #{$screen-tablet-max})";
+// Tablet Down
 $tab-or-less:  "only screen and (max-width: #{$screen-tablet-max})";
-
-// everything but desktop
-$mobile:    "only screen and (max-width: #{$screen-tablet-max})";
-
-// phablet or larger
-$phab-plus: "only screen and (min-width: #{$screen-phablet-min})";
-
-// below phab size
-$below-phab: "only screen and (max-width: #{$screen-phone-max})";
-
-// phab size or below
+// Phablet Down
 $phab-or-less: "only screen and (max-width: #{$screen-phablet-max})";
+// Phone Down
+$below-phab:   "only screen and (max-width: #{$screen-phone-max})";
+// Everything but Desktop
+$mobile:       "only screen and (max-width: #{$medium-max})";
 
 
-// --------------------------------------------------
-// colors
-// --------------------------------------------------
+// THEME COLOR PALETTES
+/* -----------------------------------------
+* Primary Color
+* Neutral Color
+* Accent Color
+* States (Alert, Success, Warning, Info)
+* Typography Colors
+----------------------------------------- */
 
-// -------------------------
-// Grays
+/* Primary Pallete */
+$primary-color: #485163 !default;
+$secondary-color: #a7b8d1 !default;
+$neutral-color: #ebebeb !default;
+$accent-color: #35b2ea !default;
 
-$black:            #000 !default;
-$white:            #ffffff !default; // #fff
+/* Neutral Shades */
+$neutral-two: #f1f1f1 !default;
+$neutral-three: #f8f8f8 !default;
+$neutral-splash: #eef1f6 !default;
+/* Neutral Pallete */
+$neutral-one: #ebebeb !default;
+$neutral-two: #f1f1f1 !default;
+$neutral-three: #f8f8f8 !default;
+$neutral-splash: #eef1f6 !default;
 
-$white-smoke:      darken( $white, 5 );
-$gray-darker:      lighten($black, 13.5%) !default; // #222
-//$gray-dark:        lighten($black, 20%) !default;   // #333
-//$gray:             lighten($black, 33.5%) !default; // #555
-//$gray-light:       lighten($black, 46.7%) !default; // #777
-$gray-lighter:     lighten($black, 93.5%) !default; // #eee
+/* Typography Pallete */
+$dark-text: #424242 !default;
+$light-text: #ffffff !default;
+$header-text: #546075 !default;
+$subtext-color: #b0bbc1 !default;
 
-$gray-10:          darken( $white, 10 );
-$gray-20:          darken( $white, 20 );
-$gray-30:          darken( $white, 30 );
-$gray-40:          darken( $white, 40 );
-$gray-50:          darken( $white, 50 );
-$gray-60:          darken( $white, 60 );
-$gray-70:          darken( $white, 70 );
-$gray-80:          darken( $white, 80 );
-$gray-90:          darken( $white, 90 );
+/* States Pallete */
+$success-color: #64B5AA !default;
+$alert-color: #db492c !default;
+$warning-color: #FB9B5F !default;
+$info-color: #B1D5E5 !default;
 
-// -------------------------
-// brand colors
+$dark-color: $dark-text !default;
 
-//--------------------------------------------
-//SOLID DARK
-//--------------------------------------------
-$brand-primary:         #5e4db7 !default;
-$brand-primary-dark:    darken( $brand-primary, 20% ) !default;
-$brand-secondary:       #f5f5f5;
-$brand-success:         #5cb85c !default;
-$brand-info:            #58656a !default;
-$brand-warning:         #f7f7c5 !default;
-$brand-danger:          #d9534f !default;
-$brand-link: #4aafca !default;
-$logo-color: $white;
+$theme-colors: (
+  success: $success-color,
+  warning: $warning-color,
+  alert: $alert-color,
+  dark: $dark-text,
+  info: $info-color,
+  primary: #485163,
+  primary-two: #8598b6,
+  secondary: #a7b8d1,
+  primary-four: #cfd7e6,
+  accent: #35b2ea,
+  neutral: #ebebeb,
+  neutral-two: #f1f1f1,
+  neutral-three: #f8f8f8,
+  neutral-splash: #eef1f6,
+  dark-text: $dark-text,
+  light-text: $light-text,
+  header-text: $header-text,
+  dark-color: $dark-text,
+  subtext: #b0bbc1
+) !default;
 
-$brand-page-title-color: $brand-primary;
-$brand-page-subtitle-color: $gray-dark;
-
-$nav-link:        #628080 !default;
-$nav-text:        #fdfbff !default;
-$button-primary:        $brand-primary !default;
-$button-primary-disabled: #bfddd7 !default;
-
-$app-border-color: darken( $brand-secondary, 10 );
-
-$app-border-drop-shadow: 0px 3px 8px 0px rgba(0,0,0,0.65);
-
-$tr-bkgrnd-light: $brand-secondary;
-$tr-bkgrnd-dark: $white;
-
-$top-nav-background: $brand-primary;
-$footer-background: $brand-primary;
-$side-nav-background: $brand-primary;
-
-
-// --------------------------------------------
-// SOLID LIGHT
-// --------------------------------------------
-//$brand-primary:         #b2e5dc !default;
-//$brand-primary-dark:    #25a992 !default;
-//$brand-secondary:       #f5f5f5;
-//$brand-success:         #5cb85c !default;
-//$brand-info:            #58656a !default;
-//$brand-warning:         #f7f7c5 !default;
-//$brand-danger:          #d9534f !default;
-//$brand-link:            #ca4000 !default;
-//$logo-color: darken( $brand-primary-dark, 10 );
-//
-//$nav-link:        #628080 !default;
-//$nav-text:        #090408 !default;
-//$button-primary:        $brand-primary-dark !default;
-//$button-primary-disabled: #bfddd7 !default;
-//
-//$brand-page-title-color: $brand-primary-dark;
-//$brand-page-subtitle-color: $gray-dark;
-//
-//$app-border-color: darken( $brand-secondary, 30 );
-//$app-border-drop-shadow: 0px 3px 8px 0px rgba(0,0,0,0.65);
-//
-//$tr-bkgrnd-light: $brand-secondary;
-//$tr-bkgrnd-dark: $white;
-//
-//$top-nav-background: $brand-primary;
-//$footer-background: $brand-primary;
-//$side-nav-background: $brand-primary;
+/* --- Grayscale Logic --- */
+$gray-10: darken( #fff, 10 );
+$gray-20: darken( #fff, 20 );
+$gray-30: darken( #fff, 30 );
+$gray-40: darken( #fff, 40 );
+$gray-50: darken( #fff, 50 );
+$gray-60: darken( #fff, 60 );
+$gray-70: darken( #fff, 70 );
+$gray-80: darken( #fff, 80 );
+$gray-90: darken( #fff, 90 );
 
 
-// --------------------------------------------
-// THEME SKY
-// --------------------------------------------
-//$brand-primary:         #019aba !default;
-//$brand-primary-dark:    #017fa0 !default;
-//$brand-secondary:       #f5f1e6;
-//$brand-success:         #5cb85c !default;
-//$brand-info:            #58656a !default;
-//$brand-warning:         #f7f7c5 !default;
-//$brand-danger:          #d9534f !default;
-//$brand-link:            #de750c !default;
-//$logo-color: $white;
-//
-//$nav-link:                   #5c7b7d !default;
-//$nav-text:                   #000400 !default;
-//$button-primary:             $brand-primary !default;
-//$button-primary-disabled:    #bfddd7 !default;
-//
-//$brand-page-title-color: $brand-primary;
-//$brand-page-subtitle-color: $gray-dark;
-//
-//$app-border-color: #dfe0db;
-//$app-border-drop-shadow: 0px 3px 8px 0px rgba(0,0,0,0.65);
-//
-//$tr-bkgrnd-dark: lighten( $brand-secondary, 5 );
-//$tr-bkgrnd-light: $white;
-//
-//$top-nav-background: url( ../assets/images/blue-clouds.jpg );
-//$footer-background: url( ../assets/images/blue-clouds-footer.jpg );
-//$side-nav-background: url( ../assets/images/blue-clouds.jpg );
+// MATERIAL SHADOW
+/* -----------------------------------------
+/* Material Box Shadow
+/* Derived From Google Material Design
+/* ---------------------------------------- */
 
-// --------------------------------------------------
-// application
-// --------------------------------------------------
+// ForInternal Use -  Customization Purposes
+$shadow-key-umbra-opacity:      0.18 !default;
+$shadow-key-penumbra-opacity:   0.14 !default;
+$shadow-ambient-shadow-opacity: 0.12 !default;
 
-$zindex-app: 1;
-$modal-z-index: 2147483647;
+// Shadow Depth Levels
+$shadow-1dp: 0px 1px 3px 0px rgba(0, 0, 0, $shadow-key-umbra-opacity), 0px 1px 1px 0px rgba(0, 0, 0, $shadow-key-penumbra-opacity), 0px 2px 1px -1px rgba(0, 0, 0, $shadow-ambient-shadow-opacity) !default;
+$shadow-2dp: 0px 1px 5px 0px rgba(0, 0, 0, $shadow-key-umbra-opacity), 0px 2px 2px 0px rgba(0, 0, 0, $shadow-key-penumbra-opacity), 0px 3px 1px -2px rgba(0, 0, 0, $shadow-ambient-shadow-opacity) !default;
+$shadow-3dp: 0px 1px 8px 0px rgba(0, 0, 0, $shadow-key-umbra-opacity), 0px 3px 4px 0px rgba(0, 0, 0, $shadow-key-penumbra-opacity), 0px 3px 3px -2px rgba(0, 0, 0, $shadow-ambient-shadow-opacity) !default;
+$shadow-4dp: 0px 2px 4px -1px rgba(0, 0, 0, $shadow-key-umbra-opacity), 0px 4px 5px 0px rgba(0, 0, 0, $shadow-key-penumbra-opacity), 0px 1px 10px 0px rgba(0, 0, 0, $shadow-ambient-shadow-opacity) !default;
+$shadow-5dp: 0px 3px 5px -1px rgba(0, 0, 0, $shadow-key-umbra-opacity), 0px 5px 8px 0px rgba(0, 0, 0, $shadow-key-penumbra-opacity), 0px 1px 14px 0px rgba(0, 0, 0, $shadow-ambient-shadow-opacity) !default;
+$shadow-6dp: 0px 3px 5px -1px rgba(0, 0, 0, $shadow-key-umbra-opacity), 0px 6px 10px 0px rgba(0, 0, 0, $shadow-key-penumbra-opacity), 0px 1px 18px 0px rgba(0, 0, 0, $shadow-ambient-shadow-opacity) !default;
+$shadow-7dp: 0px 4px 5px -2px rgba(0, 0, 0, $shadow-key-umbra-opacity), 0px 7px 10px 1px rgba(0, 0, 0, $shadow-key-penumbra-opacity), 0px 2px 16px 1px rgba(0, 0, 0, $shadow-ambient-shadow-opacity) !default;
+$shadow-8dp: 0px 5px 5px -3px rgba(0, 0, 0, $shadow-key-umbra-opacity), 0px 8px 10px 1px rgba(0, 0, 0, $shadow-key-penumbra-opacity), 0px 3px 14px 2px rgba(0, 0, 0, $shadow-ambient-shadow-opacity) !default;
+$shadow-9dp: 0px 5px 6px -3px rgba(0, 0, 0, $shadow-key-umbra-opacity), 0px 9px 12px 1px rgba(0, 0, 0, $shadow-key-penumbra-opacity), 0px 3px 16px 2px rgba(0, 0, 0, $shadow-ambient-shadow-opacity) !default;
+$shadow-10dp: 0px 6px 6px -3px rgba(0, 0, 0, $shadow-key-umbra-opacity), 0px 10px 14px 1px rgba(0, 0, 0, $shadow-key-penumbra-opacity), 0px 4px 18px 3px rgba(0, 0, 0, $shadow-ambient-shadow-opacity) !default;
+$shadow-11dp: 0px 6px 7px -4px rgba(0, 0, 0, $shadow-key-umbra-opacity), 0px 11px 15px 1px rgba(0, 0, 0, $shadow-key-penumbra-opacity), 0px 4px 20px 3px rgba(0, 0, 0, $shadow-ambient-shadow-opacity) !default;
+$shadow-12dp: 0px 7px 8px -4px rgba(0, 0, 0, $shadow-key-umbra-opacity), 0px 12px 17px 2px rgba(0, 0, 0, $shadow-key-penumbra-opacity), 0px 5px 22px 4px rgba(0, 0, 0, $shadow-ambient-shadow-opacity) !default;
+$shadow-13dp: 0px 7px 8px -4px rgba(0, 0, 0, $shadow-key-umbra-opacity), 0px 13px 19px 2px rgba(0, 0, 0, $shadow-key-penumbra-opacity), 0px 5px 24px 4px rgba(0, 0, 0, $shadow-ambient-shadow-opacity) !default;
+$shadow-14dp: 0px 7px 9px -4px rgba(0, 0, 0, $shadow-key-umbra-opacity), 0px 14px 21px 2px rgba(0, 0, 0, $shadow-key-penumbra-opacity), 0px 5px 26px 4px rgba(0, 0, 0, $shadow-ambient-shadow-opacity) !default;
+$shadow-15dp: 0px 8px 9px -5px rgba(0, 0, 0, $shadow-key-umbra-opacity), 0px 15px 22px 2px rgba(0, 0, 0, $shadow-key-penumbra-opacity), 0px 6px 28px 5px rgba(0, 0, 0, $shadow-ambient-shadow-opacity) !default;
+$shadow-16dp: 0px 8px 10px -5px rgba(0, 0, 0, $shadow-key-umbra-opacity), 0px 16px 24px 2px rgba(0, 0, 0, $shadow-key-penumbra-opacity), 0px 6px 30px 5px rgba(0, 0, 0, $shadow-ambient-shadow-opacity) !default;
+$shadow-17dp: 0px 8px 11px -5px rgba(0, 0, 0, $shadow-key-umbra-opacity), 0px 17px 26px 2px rgba(0, 0, 0, $shadow-key-penumbra-opacity), 0px 6px 32px 5px rgba(0, 0, 0, $shadow-ambient-shadow-opacity) !default;
+$shadow-18dp: 0px 9px 11px -5px rgba(0, 0, 0, $shadow-key-umbra-opacity), 0px 18px 28px 2px rgba(0, 0, 0, $shadow-key-penumbra-opacity), 0px 7px 34px 6px rgba(0, 0, 0, $shadow-ambient-shadow-opacity) !default;
+$shadow-19dp: 0px 9px 12px -6px rgba(0, 0, 0, $shadow-key-umbra-opacity), 0px 19px 29px 2px rgba(0, 0, 0, $shadow-key-penumbra-opacity), 0px 7px 36px 6px rgba(0, 0, 0, $shadow-ambient-shadow-opacity) !default;
+$shadow-20dp: 0px 10px 13px -6px rgba(0, 0, 0, $shadow-key-umbra-opacity), 0px 20px 31px 3px rgba(0, 0, 0, $shadow-key-penumbra-opacity), 0px 8px 38px 7px rgba(0, 0, 0, $shadow-ambient-shadow-opacity) !default;
+$shadow-21dp: 0px 10px 13px -6px rgba(0, 0, 0, $shadow-key-umbra-opacity), 0px 21px 33px 3px rgba(0, 0, 0, $shadow-key-penumbra-opacity), 0px 8px 40px 7px rgba(0, 0, 0, $shadow-ambient-shadow-opacity) !default;
+$shadow-22dp: 0px 10px 14px -6px rgba(0, 0, 0, $shadow-key-umbra-opacity), 0px 22px 35px 3px rgba(0, 0, 0, $shadow-key-penumbra-opacity), 0px 8px 42px 7px rgba(0, 0, 0, $shadow-ambient-shadow-opacity) !default;
+$shadow-23dp: 0px 11px 14px -7px rgba(0, 0, 0, $shadow-key-umbra-opacity), 0px 23px 36px 3px rgba(0, 0, 0, $shadow-key-penumbra-opacity), 0px 9px 44px 8px rgba(0, 0, 0, $shadow-ambient-shadow-opacity) !default;
+$shadow-24dp: 0px 11px 15px -7px rgba(0, 0, 0, $shadow-key-umbra-opacity), 0px 24px 38px 3px rgba(0, 0, 0, $shadow-key-penumbra-opacity), 0px 9px 46px 8px rgba(0, 0, 0, $shadow-ambient-shadow-opacity) !default;
 
-$isc-gutter: 50px;
-$isc-gutter-sm: 20px;
+// Shodow-Depth Map
+$shadow-depths: (
+  '1dp': $shadow-1dp,
+  '2dp': $shadow-2dp,
+  '3dp': $shadow-3dp,
+  '4dp': $shadow-4dp,
+  '5dp': $shadow-5dp,
+  '6dp': $shadow-6dp,
+  '7dp': $shadow-7dp,
+  '8dp': $shadow-8dp,
+  '9dp': $shadow-9dp,
+  '10dp': $shadow-10dp,
+  '11dp': $shadow-11dp,
+  '12dp': $shadow-12dp,
+  '13dp': $shadow-13dp,
+  '14dp': $shadow-14dp,
+  '15dp': $shadow-15dp,
+  '16dp': $shadow-16dp,
+  '17dp': $shadow-17dp,
+  '18dp': $shadow-18dp,
+  '19dp': $shadow-19dp,
+  '20dp': $shadow-20dp,
+  '21dp': $shadow-21dp,
+  '22dp': $shadow-22dp,
+  '23dp': $shadow-23dp,
+  '24dp': $shadow-24dp
+) !default;
 
-//** Disabled cursor for form controls and buttons.
-$cursor-disabled: not-allowed !default;
+// Structure CSS Class Rules
+@each $depth, $shadow-depth in $shadow-depths {
+  .shadow-#{$depth} {
+    box-shadow: $shadow-depth;
+  }
+}
 
-//** Global text color on `<body>`.
-$text-color:            $gray-dark !default;
-$body-font-size: 14px;
-$header-font-size: 18px;
-$subheader-font-size: 16px;
-
-$table-th-size: 14px;
-$table-td-size: 14px;
-
-// -------------------------
-// nav bar
-
-$isc-nav-item-spacing: 15px;
-
-$isc-side-nav-desktop-width: 285px;
-$isc-side-nav-media-width: 350px;
-$isc-side-nav-media-height: 350px;
-$isc-side-nav-width: $isc-side-nav-media-width;
-$isc-side-nav-height: $isc-side-nav-media-height;
-
-//total header height
-$app-top-nav-height-desktop: 150px;
-$app-top-nav-height-tablet: 75px;
-$app-top-nav-height-phone: 55px;
-
-// branded section height
-$app-header-height-desktop: 105px;
-$app-header-height-tablet: $app-top-nav-height-tablet;
-$app-header-height-phone: $app-top-nav-height-phone;
-
-$app-top-nav-logo-height: 100px;
-$app-top-nav-logo-height-sm: 45px;
-$app-top-nav-logo-width-sidebar: 230px;
-
-$app-sub-nav-height: $app-top-nav-height-desktop/4;
-
-// -------------------------
-// footer
-
-$app-footer-height:      54px;
-$app-footer-height-sm:   30px;
-
-// -------------------------
-// buttons
-$isc-button-font-size: $body-font-size;
-$isc-button-font-weight: 700;
-$isc-button-height: 45px;
-
-// -------------------------
-// isc-table
-$pencil-button-color: #61ab45;
-$remove-button-color: #e81d25;
-$table-command-icon-width: 35px;
-
-// -------------------------
-// general
-
-$form-input-height: 45px;
-
-$nav-font-size: 13px;
-$nav-section-title-size: 20px;
-
-$nav-select-width: 160px;
-$nav-select-height: 45px;
-
-$navbar-logo-height: 45px;
-$navbar-logo-height-sm: 25px;
-
-/* -------------------------
-/* New Variables
-/* ------------------------- */
-
-/* ---------------------------
-// Color Palette Variable Map
-// 1. Typography Swatches
-// 2. Theme Swatches
-------------------------- */
-
-$palettes: (
-  type: (
-    primary: #424242,
-    secondary: #5d686d,
-    tertiary: #8a9aa3,
-    light:  #ffffff
-  ),
-  zurb: (
-    secondary: $secondary-color,
-    info: $info-color,
-    gray: $gray,
-    gray-light: $gray-light,
-    gray-dark: $gray-dark
-  ),
-  theme: (
-    primary: #3c6f8a,
-    secondary: #63a6c9,
-    tertiary: #35b2ea,
-    neutral: #ebebeb
-  )
-);
-
-/* Palette Function
- * For each palette, map the swatches
- * and return the requested swatch type
- * Usage: color: palette(type, secondary);
- */
-@function palette($palette, $color: 'primary') {
-    @return map-get(map-get($palettes, $palette), $color);
+// Shadow Mixin
+@mixin shadow($shadow-depth) {
+  $shadow-depth: map-get($shadow-depths, $shadow-depth);
+  box-shadow: $shadow-depth;
 }
 
 
-$placeholder-text-color: lighten( palette(type, tertiary), 10% );
+// TO DO - MOTION UI
+/* ------------------------------ */
+
+// Classes to use when triggering in/out animations
+$motion-class: (
+  in: "ng-enter",
+  out: "ng-leave",
+) !default;
+
+$motion-class-active: (
+  in: "ng-enter-active",
+  out: "ng-leave-active",
+) !default;
+
+$motion-class-stagger: (
+  in: "ng-enter-stagger",
+  out: "ng-leave-stagger",
+) !default;
+
+$motion-class-showhide: (
+  in: "ng-hide-remove",
+  out: "ng-hide-add",
+) !default;
+
+$motion-class-showhide-active: (
+  in: "ng-hide-remove-active",
+  out: "ng-hide-add-active",
+) !default;
+
+// Set if movement-based transitions should also fade the element in and out
+$motion-slide-and-fade: false !default;
+$motion-hinge-and-fade: true !default;
+$motion-scale-and-fade: true !default;
+$motion-spin-and-fade: true !default;
+
+// Default speed for transitions and animations
+$motion-duration-default: 500ms !default;
+
+// Slow and fast modifiders
+$motion-duration-slow: 750ms !default;
+$motion-duration-fast: 250ms !default;
+$motion-stagger-duration-default: 150ms !default;
+$motion-stagger-duration-short: 50ms !default;
+$motion-stagger-duration-long: 300ms !default;
+
+// Default timing function for transitions and animations
+$motion-timing-default: ease !default;
+
+// Built-in and custom easing functions
+// Every item in this map becomes a CSS class
+$motion-timings: (
+  linear: linear,
+  ease: ease,
+  easeIn: ease-in,
+  easeOut: ease-out,
+  easeInOut: ease-in-out,
+  bounceIn: cubic-bezier(0.485, 0.155, 0.240, 1.245),
+  bounceOut: cubic-bezier(0.485, 0.155, 0.515, 0.845),
+  bounceInOut: cubic-bezier(0.760, -0.245, 0.240, 1.245),
+) !default;
+
+// Default delay for all transitions and animations
+$motion-delay-default: 0 !default;
+
+//Short and long delay modifiers
+$motion-delay-short: 300ms !default;
+$motion-delay-long: 700ms !default;
 
 
-/* --- Layout --- */
+// TO DO - COMPONENT SETTINGS
+/* ------------------------------ */
 
-$global-margin: 1rem;
+/* TO DO: z-index Map */
+$zindex-app: 1;
+$modal-z-index: 2147483647;
 
+/* TO DO: Table Settings */
+$pencil-button-color: $success-color !default;
+$remove-button-color: $alert-color !default;
+$table-command-icon-width: 35px !default;
 
-/* --- Text --- */
-
-// Font-Weight Values - Match values to chosen font family for optimal rendering
-$font-weight-normal: 400;
-$font-weight-light: 300;
-$font-weight-semi-bold: 500;
-$font-weight-bold: 600;
-$font-weight-extra-bold: 800;
+/* TO DO: OTHER */
+$placeholder-text-color: palettes(type, subtext) !default; // Input Placeholder Text
+$global-margin: 1rem !default; // Layout

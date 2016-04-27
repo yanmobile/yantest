@@ -1,45 +1,63 @@
 /* footer bar */
 .isc-footer {
-  background: $primary-color;
+  background: $footer-background;
   margin: 0;
-  padding: 0 2rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  padding-left: $horizontal-container-padding;
+  padding-right: $horizontal-container-padding;
   width: 100%;
 
   @media #{$medium-down} {
-    padding: 0 1rem;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+    padding-left: $horizontal-container-padding-small;
+    padding-right: $horizontal-container-padding-small;
   }
 
   .menu-bar {
     background: transparent;
 
     li {
-      color: palette(type, light);
-      color: palette(type, light);
+      color: $app-bar-link-color;
       line-height: 1;
+      margin: 0;
 
       &:first-of-type {
-        margin-left: 0;
+        a, p {
+          padding-left: 0;
+        }
+      }
+
+      &:last-of-type {
+        a, p {
+          padding-right: 0;
+        }
       }
 
       a, p {
-        color: palette(type, light);
+        color: $app-bar-link-color;
         margin: 0;
-        font-weight: 500;
+        font-weight: $font-weight-normal;
         font-size: 0.75rem;
-        padding: 1rem;
+        padding: 0.5rem 1rem;
         line-height: 1;
 
         @media #{$small} {
-          padding: 0.75rem 0.5rem;
+          padding: 0.5rem 0.5rem;
         }
       }
 
       a {
         &:hover, &:focus, &:active {
-          color: palette(type, light);
-          background: smartscale($primary-color, 7%);
+          color: $app-bar-link-hover-color;
+          background: transparent;
         }
       }
     }
+  }
+
+  .grid-container {
+    padding: 0;
   }
 }
