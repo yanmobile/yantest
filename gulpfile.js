@@ -34,8 +34,17 @@ var plugins = {
   inject       : require('gulp-inject') // used for injecting scripts
 };
 
+var util = {
+  getArg         : getArg,
+  readJson       : readJson,
+  fixRelativePath: fixRelativePath
+};
+
+var appjson = getArg("--appjson");
+appjson     = fixRelativePath(appjson);
+
 var configs = {
-  app         : readJson('./gulp/app.json', {
+  app         : readJson((appjson || './gulp/app.json'), {
     edition: [{
       "name": "base",
       "path": "src/components/foundation/base/components.json"
@@ -48,44 +57,43 @@ var configs = {
 
 _.forEach(configs.app.edition, function (edition) {
   var editionContent;
-  if (!edition.path.startsWith("./")) {
-    edition.path = "./" + edition.path;
-  }
+  edition.path          = fixRelativePath(edition.path);
   editionContent        = require(edition.path);
   configs[edition.name] = editionContent;
   _.mergeWith(configs.component, editionContent, concatArrays);
 });
 
+//masterConfig is a superset of common, component, and app
 _.mergeWith(configs.masterConfig, configs.common, configs.component, configs.app, concatArrays);
 
-var util = {
-  getArg  : getArg,
-  readJson: readJson
-};
 
 /*========================================
  =           gulp tasks                =
  ========================================*/
-
 gulp.task('default', ['clean'], function () {
   gulp.start('build');
 });
 
 initTasksInGulpFolder();
 
-
 /*========================================
  =                 funcs                 =
  ========================================*/
-
+/**
+ * @description
+ *  For each task inside "gulp/" folder, initialize/register the task
+ */
 function initTasksInGulpFolder() {
-  var tasks = require('require-dir')('./gulp/');
+  var tasksInGulpFolder = require('require-dir')('./gulp/');
 
-  _.forEach(tasks, function (task, name) {
+  _.forEach(tasksInGulpFolder, initTask);
+
+
+  function initTask(task, name) {
     if (typeof task.init === "function") {
       task.init(gulp, plugins, configs, _, util);
     }
-  });
+  }
 }
 
 /**
@@ -130,4 +138,19 @@ function concatArrays(a, b) {
   if (_.isArray(a)) {
     return a.concat(b);
   }
+}
+
+/**
+ * @describe if not absolute path and not relative path. e.g., foo/bar/app.config
+ *  prefix the path with "./" to make it relative. e.g., ./foo/bar/app.config
+ * @param path
+ * @returns {*}
+ */
+function fixRelativePath(path) {
+  var retPath = path;
+  if (path && !path.startsWith('/') && !path.startsWith('.')) {
+    //append "./" to make it "./foo/bar/app.config"
+    retPath = "./" + retPath;
+  }
+  return retPath;
 }
