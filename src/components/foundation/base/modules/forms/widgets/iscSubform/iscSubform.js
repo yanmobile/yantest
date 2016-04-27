@@ -82,7 +82,7 @@
       }
 
       function showButton(button) {
-        return _.isFunction(button.hide) ? !button.hide(self.multiConfig) : !button.hide
+        return _.isFunction(button.hide) ? !button.hide(self.multiConfig) : !button.hide;
       }
 
       function onClick(button) {
