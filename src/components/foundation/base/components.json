@@ -50,7 +50,15 @@
   "comments"  : "If we want to override lower level JS files, we must exclude them from the list.",
   "comments"  : "The overrides below are used to exclude base files by specifying glob patterns.",
   "overrides" : {
-    "js" : {
+    "js"   : {
+      "common"     : [],
+      "components" : []
+    },
+    "html" : {
+      "common"     : [],
+      "components" : []
+    },
+    "css"  : {
       "common"     : [],
       "components" : []
     }
