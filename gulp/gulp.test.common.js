@@ -1,6 +1,7 @@
 /**
  * Created by douglasgoodman on 1/16/15.
  */
+var Karma = require('karma').Server;
 
 module.exports = {
   init: init
@@ -9,7 +10,6 @@ module.exports = {
 function init(gulp, plugins, config, _) {
   'use strict';
 
-  var karma               = require('karma').Server;
   var commonVendorJs      = config.common.vendor.js || [];
   var commonVendorMocks   = config.common.vendor.mocks || [];
   var commonModuleModules = config.common.module.modules || [];
@@ -27,20 +27,19 @@ function init(gulp, plugins, config, _) {
   // --------------------------------
   gulp.task('test:common', function (done) {
 
-    var srcFiles = []
-      .concat(commonVendorJs)
-      .concat(commonModuleModules)
-      .concat(commonModuleJs)
-      .concat(commonVendorMocks)
-      .concat(commonModuleMocks)
-      .concat(commonModuleHtml)
-      .concat(commonModuleTests);
-
+    var srcFiles = _.concat(
+      commonVendorJs,
+      commonModuleModules,
+      commonModuleJs,
+      commonVendorMocks,
+      commonModuleMocks,
+      commonModuleHtml,
+      commonModuleTests);
     var configPath = plugins.path.join(__dirname, "../test/karma.conf.common.js");
-    return new karma({
+    return new Karma({
       configFile: configPath,
       files     : srcFiles,
-      singleRun: true
+      singleRun : true
     }, done).start();
 
   }); //end of gulp.task

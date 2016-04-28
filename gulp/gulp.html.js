@@ -30,7 +30,7 @@ function init(gulp, plugins, config, _) {
 
     return gulp.src(['src/index.html'])
       .pipe(plugins.replace('<!-- inject:js -->', inject.join('\n')))
-      .pipe(plugins.inject(jsFiles, { transform: removeLeadingSlash }))
+      .pipe(plugins.inject(jsFiles, { transform: createScriptHtml }))
       .pipe(gulp.dest(config.app.dest.folder));
   });
 
@@ -40,7 +40,7 @@ function init(gulp, plugins, config, _) {
   });
 
   //used by gulp-inject to remove the leading "/"
-  function removeLeadingSlash(filepath, file, i, length) {
+  function createScriptHtml(filepath, file, i, length) {
     return ['<script src="', filepath.substr(1), '"></script>'].join('');
   }
 }

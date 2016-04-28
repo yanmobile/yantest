@@ -34,39 +34,66 @@ var plugins = {
   inject       : require('gulp-inject') // used for injecting scripts
 };
 
-var configs = {
-  common   : require('./gulp/common.json'),
-  component: require('./gulp/components.json'),
-  app      : readJson('./gulp/app.json', {})
+var util = {
+  getArg         : getArg,
+  readJson       : readJson,
+  fixRelativePath: fixRelativePath
 };
 
-var util = {
-  getArg: getArg
+var appjson = getArg("--appjson");
+appjson     = fixRelativePath(appjson);
+
+var configs = {
+  app         : readJson((appjson || './gulp/app.json'), {
+    edition: [{
+      "name": "base",
+      "path": "src/components/foundation/base/components.json"
+    }]
+  }),
+  component   : {}, //specified in app.json/editions
+  common      : require('./gulp/common.json'),
+  masterConfig: {} //aggregated config of app/components/common
 };
+
+_.forEach(configs.app.edition, function (edition) {
+  var editionContent;
+  edition.path          = fixRelativePath(edition.path);
+  editionContent        = require(edition.path);
+  configs[edition.name] = editionContent;
+  _.mergeWith(configs.component, editionContent, concatArrays);
+});
+
+//masterConfig is a superset of common, component, and app
+_.mergeWith(configs.masterConfig, configs.common, configs.component, configs.app, concatArrays);
+
 
 /*========================================
  =           gulp tasks                =
  ========================================*/
-
 gulp.task('default', ['clean'], function () {
   gulp.start('build');
 });
 
 initTasksInGulpFolder();
 
-
 /*========================================
  =                 funcs                 =
  ========================================*/
-
+/**
+ * @description
+ *  For each task inside "gulp/" folder, initialize/register the task
+ */
 function initTasksInGulpFolder() {
-  var tasks = require('require-dir')('./gulp/');
+  var tasksInGulpFolder = require('require-dir')('./gulp/');
 
-  _.forEach(tasks, function (task, name) {
+  _.forEach(tasksInGulpFolder, initTask);
+
+
+  function initTask(task, name) {
     if (typeof task.init === "function") {
       task.init(gulp, plugins, configs, _, util);
     }
-  });
+  }
 }
 
 /**
@@ -85,7 +112,7 @@ function getArg(key) {
 
 /**
  * Reads the json file and returns its content. If the file is not found, it will return defaults or {}
- * 
+ *
  * @param filePath
  * @returns {*}
  */
@@ -99,4 +126,31 @@ function readJson(filePath, defaults) {
     json = defaults || {};
   }
   return json;
+}
+
+/**
+ * Used by mergeWith to concat []s instead of replace the entire array
+ * @param a
+ * @param b
+ * @returns {*|string|Array.<T>}
+ */
+function concatArrays(a, b) {
+  if (_.isArray(a)) {
+    return a.concat(b);
+  }
+}
+
+/**
+ * @describe if not absolute path and not relative path. e.g., foo/bar/app.config
+ *  prefix the path with "./" to make it relative. e.g., ./foo/bar/app.config
+ * @param path
+ * @returns {*}
+ */
+function fixRelativePath(path) {
+  var retPath = path;
+  if (path && !path.startsWith('/') && !path.startsWith('.')) {
+    //append "./" to make it "./foo/bar/app.config"
+    retPath = "./" + retPath;
+  }
+  return retPath;
 }

@@ -278,6 +278,23 @@ The file can be located in any directory, and the file name is not important.
   * resolve conflicts
   * stage and commit your resolved changes  ```git commit -am '<your message>'```
   * Assume your branch is called "my-feature-branch". Push your changes to your tracked server branch  ```git push origin <my-feature-branch> ```
+  
+* **How do I specify a different edition (US/UK)?**
+  * *note:* By default the code uses "base" edition, which is the US edition. Specific Edition config file will be merged with base edition. (using _.mergeWith() where it concatenates arrays)
+  * Add a new edition config object in the "edition" array of ```gulp/app.json``` configuration
+
+```javascript
+  "edition"       : [
+     {
+       "name" : "base",
+       "path" : "src/components/foundation/base/components.json"
+     },
+     {
+       "name" : "US",
+       "path" : "src/components/foundation/US/edition.json"
+     }
+   ]
+```   
 
 ---
 ###Git 101
