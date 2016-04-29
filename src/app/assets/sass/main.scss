@@ -1,0 +1,11 @@
+// import settings file
+@import "settings";
+
+// import isc common
+@import "../../../common/assets/sass/main";
+
+// import app css
+@import "app";
+
+// then custom css
+@import "custom";

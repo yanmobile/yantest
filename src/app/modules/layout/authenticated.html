@@ -1,0 +1,22 @@
+<div ng-controller="iscNavigationController as navCtrl" class="vertical grid-frame">
+
+  <!--modal background-->
+  <div class="isc-modal-bkgrnd"></div>
+
+  <!--main app-->
+  <div class="isc-app-content vertical grid-block">
+
+    <!--Responsive Top Navigation-->
+    <div class="isc-nav-bar"
+         ng-include="'navContainer/iscNavbar.html'">
+    </div>
+
+    <!--page content-->
+    <div class="grid-block" ui-view></div>
+  </div>
+
+  <!--footer-->
+  <div class="isc-footer grid-block shrink"
+       ng-include="'navContainer/iscFooter.html'"></div>
+
+</div>

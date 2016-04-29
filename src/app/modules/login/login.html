@@ -1,0 +1,49 @@
+<div class="section-block">
+
+  <div class="grid-block align-center">
+
+    <div class="vertical grid-block small-12 medium-8 large-5">
+
+      <div class="grid-block align-center">
+        <h1>
+          <div>{{'ISC_APP_NAME' | translate }}</div>
+        </h1>
+      </div>
+
+      <div class="grid-block">
+
+        <form class="login" ng-submit="loginCtrl.login()">
+
+          <isc-transclude template-url="login/loginFormItem.html" config-item-translation-key="Username">
+            <control-template>
+              <input type="text" placeholder="Username" ng-model="loginCtrl.credentials.username">
+            </control-template>
+          </isc-transclude>
+
+          <isc-transclude template-url="login/loginFormItem.html" config-item-translation-key="Password">
+            <control-template>
+              <input type="password" placeholder="Password" ng-model="loginCtrl.credentials.password">
+            </control-template>
+          </isc-transclude>
+
+          <div class="grid-block margin-top">
+            <div class="grid-block small-8 medium-8 large-8">
+              <div class="grid-content">
+                <a href="#" class="inline">Forgot Password</a>
+              </div>
+            </div>
+            <div class="grid-block small-4 medium-4 large-4">
+              <div class="grid-content clearfix">
+                <button type="submit" class="button flat float-right">Login</button>
+              </div>
+            </div>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
