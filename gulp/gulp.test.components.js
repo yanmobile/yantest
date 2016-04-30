@@ -1,6 +1,7 @@
 /**
  * Created by douglasgoodman on 1/16/15.
  */
+var Karma = require('karma').Server;
 
 module.exports = {
   init: init
@@ -8,8 +9,6 @@ module.exports = {
 
 function init(gulp, plugins, config, _) {
   'use strict';
-
-  var karma = require('karma').Server;
 
   var commonConfig     = config.common;
   var componentsConfig = config.component;
@@ -29,6 +28,9 @@ function init(gulp, plugins, config, _) {
   var componentsModuleHtml    = componentsConfig.module.html || [];
   var componentsModuleTests   = componentsConfig.module.tests || [];
 
+  // var commonOverridesJs = componentsConfig.overrides.js.common || [];
+  // var componentsOverridesJs = componentsConfig.overrides.js.components || [];
+
   /*================================================
    =              Run unit tests                   =
    ================================================*/
@@ -37,7 +39,6 @@ function init(gulp, plugins, config, _) {
   // run the common tests
   // --------------------------------
   gulp.task('test:components', function (done) {
-
 
     var srcFiles = []
       .concat(commonVendorJs)
@@ -53,9 +54,12 @@ function init(gulp, plugins, config, _) {
       .concat(commonModuleHtml)
       .concat(componentsModuleHtml)
       .concat(componentsModuleTests);
+    // TODO: implement edition testing 
+    // .concat(commonOverridesJs)
+    // .concat(componentsOverridesJs);
 
     var configPath = plugins.path.join(__dirname, "../test/karma.conf.components.js");
-    return new karma({
+    return new Karma({
       configFile: configPath,
       files     : srcFiles,
       singleRun : true
@@ -63,4 +67,3 @@ function init(gulp, plugins, config, _) {
 
   });
 }
-

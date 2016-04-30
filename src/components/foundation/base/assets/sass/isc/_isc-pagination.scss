@@ -20,7 +20,7 @@
       display: inline-block;
       vertical-align: middle;
       text-decoration: none;
-      color: $primary-color;
+      color: $button-background;
       font-weight: 300;
       font-size: 1rem;
       text-align: center;
@@ -48,9 +48,25 @@
   }
 }
 
-.isc-pagination-arrow {
-  display: inline;
-  vertical-align: middle;
-  margin-top: 0px;
-  fill: $primary-color;
+button, a.button, a {
+
+  &.pagination {
+    background: transparent;
+
+    svg {
+      display: inline;
+      vertical-align: middle;
+      margin-top: 0px;
+      fill: $button-background;
+
+      &:hover, &:active, &:focus {
+        background: transparent;
+
+        svg {
+          fill: smartscale($button-background, 10%);
+        }
+      }
+    }
+  }
+
 }

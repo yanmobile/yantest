@@ -1,33 +1,93 @@
+.isc-app-content {
+  height: 100%;
+  flex: 1 1 auto;
+}
+
 /* Page Architecture */
 
-.isc-page-content {
-  padding: 3rem 3rem 0 3rem;
-  overflow-x: hidden;
-  //max-width: $container-width;
-  margin: 0 auto;
-  //border: 1px solid red;
+// Full Width
+.isc-page {
+  padding-top: 2rem;
+  padding-bottom: 1rem;
+  width: 100%;
+  height: 100%;
+  flex: 1 0 auto;
 
-  @media #{$tab-or-less} {
-    padding: 3rem 1rem 0 1rem;
+  @media #{$large} {
+    padding-left: $horizontal-container-padding;
+    padding-right: $horizontal-container-padding;
   }
 
-  @media #{$tablet}{
-    padding: 3rem 1rem 0 1rem;
+  @media #{$xlarge} {
+    padding-left: $horizontal-container-padding;
+    padding-right: $horizontal-container-padding;
   }
 
-  @media #{$phablet}{
-    padding: 3rem 1rem 0 1rem;
+  @media #{$xxlarge} {
+    padding-left: 0;
+    padding-right: 0;
   }
 
-  @media #{$phone}{
-    padding: 3rem 1rem 0 1rem;
+  @media #{$medium-down} {
+    padding-left: $horizontal-container-padding-small;
+    padding-right: $horizontal-container-padding-small;
   }
+}
 
+// Sidebar Layout (sideNav.html)
+
+#main {
+  padding-top: 2rem;
+  padding-bottom: 1rem;
+  height: 100%;
+  //flex: 0 0 83.33333%;
+
+  .grid-container, .isc-page, .isc-page.grid-container {
+    padding: 0;
+    height: 100%;
+    flex: 0 0 83.33333%;
+
+    @media #{$xxlarge} {
+      margin-left: $horizontal-container-padding;
+      margin-right: $horizontal-container-padding;
+      flex: 0 0 83.33333%;
+      max-width: 83.33333%;
+    }
+
+    @media #{$xlarge} {
+      margin-left: $horizontal-container-padding;
+      margin-right: $horizontal-container-padding;
+      flex: 1 0 83.33333%;
+      max-width: 94%;
+    }
+
+    @media #{$large} {
+      margin-left: $horizontal-container-padding;
+      margin-right: $horizontal-container-padding;
+      flex: 1 0 83.33333%;
+      width: 100%;
+      max-width: 95%;
+    }
+
+    @media #{$medium} {
+      margin-left: $horizontal-container-padding-small;
+      margin-right: $horizontal-container-padding-small;
+      flex: 1 0 83.33333%;
+      width: 100%;
+    }
+
+    @media #{$small} {
+      margin-left: $horizontal-container-padding-small;
+      margin-right: $horizontal-container-padding-small;
+      flex: 1 0 83.33333%;
+      width: 100%;
+    }
+  }
 }
 
 /* Content Architecture */
 
-// Blocks of page content
+// Section Blocks of page content
 .section-block {
   @include grid-block;
   @include grid-size(expand);
@@ -52,24 +112,8 @@
   }
 }
 
-.content-block {
-  @include grid-content;
-  @include grid-size(expand);
-  @include grid-orient(vertical);
-  @include grid-wrap(false);
-  @include grid-align(center);
-  @include grid-order(0);
-  padding: 1rem 0 0 0;
-  margin-bottom: 2rem;
-  overflow: visible;
-  overflow-y: inherit;
-  display: -ms-flexbox;
-  -ms-flex-flow: column nowrap;
-  -ms-flex-align: stretch;
-
-  &.top {
-    padding-top: 0;
-  }
+.sub-section {
+  padding-top: 1.5rem;
 }
 
 // Form Sections (Major)
@@ -83,7 +127,7 @@
   padding: 1rem 0 1 0;
   margin-bottom: 2rem;
   overflow: visible;
-  overflow-y: inherit;
+  overflow-y: visible;
   display: -ms-flexbox;
   -ms-flex-flow: column nowrap;
   -ms-flex-align: stretch;
@@ -93,12 +137,8 @@
   }
 }
 
-.sub-section {
-  padding-top: 1.5rem;
-}
 
 .grid-content .grid-block {
   margin-left: 0;
   margin-right: 0;
-  //flex-wrap: inherit;
 }

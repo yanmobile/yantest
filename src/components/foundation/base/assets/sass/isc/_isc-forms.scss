@@ -14,9 +14,42 @@
    - Validation Styles
 */
 
+$form-outer-padding: 2rem !default;
+//padding: $form-padding; // 1.5rem !default but make sure you connect this to a variable!
+/* placeholder Mixin */
+
+@mixin isc-placeholder( $opacity, $size, $weight ) {
+
+  &::-webkit-input-placeholder {
+    opacity: $opacity;
+    font-size: $size;
+    font-weight: $weight;
+  }
+
+  &:-moz-placeholder {
+    opacity: $opacity;
+    font-size: $size;
+    font-weight: $weight;
+  }
+
+  &::-moz-placeholder {
+    opacity: $opacity;
+    font-size: $size;
+    font-weight: $weight;
+  }
+
+  &:-ms-input-placeholder {
+    opacity: $opacity;
+    font-size: $size;
+    font-weight: $weight;
+  }
+}
+
+
 /* Base Form Architecture */
 form, .isc-form {
   padding: 2rem 1rem;
+  padding: $form-outer-padding;
   margin-bottom: 1rem;
   border: 1px solid $app-border-color;
   width: 100%;
@@ -27,7 +60,16 @@ form, .isc-form {
 
   .grid-content, .grid-block {
     overflow: visible;
-    //overflow-y: inherit !important;
+  }
+
+  .form-title {
+    margin: 0 0 1.5rem 0;  // change to just "title"? // value should equal form padding
+  }
+
+  label {
+    &:not(.inline) {
+      display: block;
+    }
   }
 }
 
@@ -90,6 +132,7 @@ input[type="tel"], input[type="time"], input[type="url"], input[type="color"], t
   }
 }
 
+
 // Inputs wrapped in labels, paired with help text
 label {
 
@@ -125,7 +168,9 @@ input {
   }
 }
 
+
 /* Prefixed/Postfixed Inputs */
+
 .prefix {
 
   input, input[type="text"], input[type="password"], input[type="date"],
@@ -135,6 +180,12 @@ input {
     border-radius: 0 $global-radius $global-radius 0;
     border-left: none;
     box-shadow: none;
+  }
+
+  &.form-label {
+    background: $neutral-color;
+    border-radius: $global-radius 0 0 $global-radius;
+    border: 1px solid $app-border-color;
   }
 }
 
@@ -148,6 +199,17 @@ input {
     border-right: none;
     box-shadow: none;
   }
+  &.form-label {
+    background: $neutral-color;
+    border-radius: 0 $global-radius $global-radius 0;
+    border: 1px solid $app-border-color;
+  }
+}
+
+input {
+  &.prefix {border-radius: 0 $global-radius $global-radius 0;}
+  &.postfix {border-radius: $global-radius 0 0 $global-radius;}
+  &.prefix.postfix {border-radius: 0;}
 }
 
 // Inline Label Wrapper
@@ -171,9 +233,14 @@ select {
   }
 }
 
-/* Radios & Checkboxes */
-input[type="checkbox"] + label {
-  font-weight: $font-weight-semi-bold;
+//Labels for radios and checkboxes need to wrap
+input[type="checkbox"] + label, input[type="radio"] + label {
+  display: inline-block;
+  margin-left: 0.5rem;
+  margin-right: 1rem;
+  margin-bottom: 1rem;
+  vertical-align: baseline;
+  font-weight: $font-weight-normal;
 }
 
 .checkbox {
@@ -182,12 +249,17 @@ input[type="checkbox"] + label {
   }
 }
 
+
+
 input[type="radio"],
 input[type="checkbox"] {
   margin-bottom: 1rem;
-  width: auto;
-  height: auto;
+  width: 1.125rem;
+  height: 1.125rem;
+  box-sizing: border-box;
+  padding: 0;
 }
+
 
 /* Unordered Input Lists */
 ul.radio-list,

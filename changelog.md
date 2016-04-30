@@ -1,7 +1,19 @@
 
 # Core Changes
+### 04/29/2016
+[hs-core-tools PR 49](https://github.com/intersystems/hs-core-tools/pull/49)
+adding support to allow app.config override during a run of any gulp task. In order to achieve the expected behavior, a new entry
+has to be added in the file:
+gulp/app.json
+"excludeConfig" : "!src/app/modules/app.config.js"
+This change was made on 4/5/2016
+### 04/26/2016
+[hs-core-ui PR 213](https://github.com/intersystems/hs-core-ui/pull/213) adds support for compile time edition selection support; apps can now specify which edition to build for at compile time. The app specific changes can be found in [hs-core-tools PR 74](https://github.com/intersystems/hs-core-tools/pull/76/files?w=1). 
+[hs-core-ui PR 210](https://github.com/intersystems/hs-core-ui/pull/210) adds theming functionially. Make sure to update both core-ui and core-tools together in this update or your app will break. Please refer to core-tools PR 75 for app specific changes: [hs-core-tools PR 75](https://github.com/intersystems/hs-core-tools/pull/75). 
+
 ### 04/21/2016
-[[hs-core-ui PR 209](https://github.com/intersystems/hs-core-ui/pull/209) adds support for module specific scss files. In order for individual apps to take advantage of this feature, they need to be updated. The app specific changes can be found in [hs-core-tools PR 74](https://github.com/intersystems/hs-core-tools/pull/74). 
+[hs-core-ui PR 209](https://github.com/intersystems/hs-core-ui/pull/209) adds support for module specific scss files. In order for individual apps to take advantage of this feature, they need to be updated. The app specific changes can be found in [hs-core-tools PR 74](https://github.com/intersystems/hs-core-tools/pull/74).
+ 
 ### 04/19/2016
 [hs-core-ui PR 198](https://github.com/intersystems/hs-core-ui/pull/198) removed ```$$``` from navbar's ```$$active``` property. This is a breaking change, and every app that is based of hs-core-ui need to be updated to be compatible; please make the same changes as [hs-core-tools PR 66](https://github.com/intersystems/hs-core-tools/pull/66).  
 
@@ -55,9 +67,9 @@ Updated the wallaby config for the application to support javascript libraries t
  1. Search and replace ```isc.ddpTable``` with ```isc.fauxTable```
 
 ### 04/14/2016
-[This PR](https://github.com/intersystems/hs-core-tools/pull/59) removes the "locale-" prefix from the i18n files. Please apply [these changes](https://github.com/intersystems/hs-core-tools/pull/59) to your app. 
+[This PR](https://github.com/intersystems/hs-core-tools/pull/59) removes the "locale-" prefix from the i18n files. Please apply [these changes](https://github.com/intersystems/hs-core-tools/pull/59) to your app.
 Please be sure to remove "locale-" from "locale-en_US.json" file.
- 
+
 ### 04/13/2016
 [This PR](https://github.com/intersystems/hs-core-tools/pull/57) adds support for second level navigation. It also added ngAnnotate inject comments. Please apply [the changes](https://github.com/intersystems/hs-core-tools/pull/57) described here to your own projects.
 
@@ -99,7 +111,7 @@ Application developers will need to update the `config` phase of `app.module.js`
 ``` javascript
 _.defaults(appConfig, componentsConfig, coreConfig);
 ```
-See [here](https://github.com/intersystems/hs-core-tools/pull/50/files) for details. 
+See [here](https://github.com/intersystems/hs-core-tools/pull/50/files) for details.
 
 ### 04/04/2016
 #### upgrade notes:
@@ -140,7 +152,7 @@ In order to upgrade the framework to this framework version, each project needs 
 
 1. Remove gulp/watch.js file
 2. In src/app/modules/app.module.js file, change "isc.common" dependency to "isc.components"
-3. In src/app/modules/app.module.js file, add "isc.templates" as a dependency. 
+3. In src/app/modules/app.module.js file, add "isc.templates" as a dependency.
 4. In src/index.html file, add "```<script src="js/templates.min.js"></script>```" html tag after "```<script src="js/app.min.js"></script>```" tag
 
 ```   
@@ -148,14 +160,14 @@ In order to upgrade the framework to this framework version, each project needs 
     <!-- inject:js -->
     <script src="js/app.min.js"></script>
     <!-- end inject -->
-    
+
     //to    
     <!-- inject:js -->
     <script src="js/app.min.js"></script>
     <!-- end inject -->
     <script src="js/templates.min.js"></script>
 ```
-    
+
 5. In gulp/app.json file, separate "module/js" block into two blocks: "module/modules" and "module/js"
 
 ```
@@ -181,7 +193,6 @@ In order to upgrade the framework to this framework version, each project needs 
 -- added support for blacklist
 
 ### 02/14/2016
-**NOTE:** If you have copied iscNavContainer.html, you'll need to update the reference to match. 
+**NOTE:** If you have copied iscNavContainer.html, you'll need to update the reference to match.
 
 * Renaming "iscNavbarDesktop.html" to "iscNavbar.html"
-

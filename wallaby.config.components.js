@@ -57,7 +57,12 @@ module.exports                  = function () {
     'testFramework': 'jasmine'
   };
 
-  function noInstrument(file) {
-    return { pattern: file, instrument: false };
+  /**
+   * @description Used by WallabyJs to not run code analysis
+   * @param pattern
+   * @returns {{pattern: *, instrument: boolean}}
+   */
+  function noInstrument(pattern) {
+    return { pattern: pattern, instrument: false };
   }
 };

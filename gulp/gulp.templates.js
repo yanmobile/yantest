@@ -15,9 +15,11 @@ function init(gulp, plugins, config, _) {
       standalone: true
     };
 
-    var templates    = _.concat(config.common.module.html,
+    var templates = _.concat(config.common.module.html,
       config.component.module.html,
-      config.app.module.html);
+      config.app.module.html,
+      config.masterConfig.overrides.html.common,
+      config.masterConfig.overrides.html.components);
 
     return gulp
       .src(templates)
