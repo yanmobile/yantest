@@ -20,8 +20,8 @@
 
   /* @ngInject */
   angular
-      .module('isc.forms')
-      .factory('iscFormsTemplateService',iscFormsTemplateService);
+    .module('isc.forms')
+    .factory('iscFormsTemplateService', iscFormsTemplateService);
 
   /**
    * @ngdoc factory
@@ -30,7 +30,7 @@
    * @param $filter
    * @param $window
    * @param $sce
-   * @param appConfig
+   * @param iscCustomConfigService
    * @param formlyConfig
    * @param hsModelUtils
    * @returns {{isTypeRegistered: isTypeRegistered, getRegisteredType: getRegisteredType, registerWrapper: *, registerBaseType: registerBaseType, registerType: registerType, appendWrapper: appendWrapper}}
@@ -51,8 +51,12 @@
    *
    */
   /* @ngInject */
-  function iscFormsTemplateService($filter, $window, $sce, appConfig, formlyConfig, hsModelUtils) {
+  function iscFormsTemplateService($filter, $window, $sce, iscCustomConfigService, formlyConfig, hsModelUtils) {
     var baseType = '__iscFormsBase__';
+
+    var config           = iscCustomConfigService.getConfig(),
+        formsConfig      = _.get(config, 'forms', {}),
+        updateOnExcluded = formsConfig.updateOnExcluded;
 
     // YYYY-MM-DDThh:mm:ss.xxxZ   or
     // YYYY-MM-DD hh:mm:ss
@@ -84,14 +88,14 @@
         else if (field.key) {
           field.modelOptions = {
             // Set ng-model-options.updateOn:blur to limit excessive validation
-            //updateOn    : 'blur',
+            updateOn    : excludeUpdateOn(field.type) ? undefined : formsConfig.updateOn,
             // Debounce for UI responsiveness if updating on change
-            debounce    : 75,
+            debounce    : formsConfig.debounce,
             // Allow invalid so external validations can use the form model for evaluation
-            allowInvalid: true
+            allowInvalid: formsConfig.allowInvalid
           };
 
-          var validators = field.validators || (field.validators = {});
+          var validators          = field.validators || (field.validators = {});
           // Executes external/HS validation api
           validators.hsValidation = {
             expression: 'hsValidation.getError(options.key)',
@@ -100,6 +104,20 @@
         }
       });
       return fields;
+    }
+
+    /**
+     * @memberOf iscFormsTemplateService
+     * @param type - The formly type to check
+     * @returns {boolean} - Whether the given type should always use the default updateOn behavior
+     */
+    function excludeUpdateOn(type) {
+      if (_.includes(updateOnExcluded, type)) {
+        return true;
+      }
+      // If no match, check the type hierarchy above this type
+      var baseType = _.get(getRegisteredType(type), 'extends');
+      return !!baseType && excludeUpdateOn(baseType);
     }
 
     /**
@@ -134,40 +152,40 @@
 
           // Validation for external/HS api
           var removeWatch = $scope.$watch(
-              // Wait for formControl to be populated
-              function () {
-                return $scope.options.formControl;
-              },
-              // Configure a listener for that ngModel and drop the watch
-              function (ngModelController) {
-                if (ngModelController) {
-                  removeWatch();
-                  var formDef    = formlyRootCtrl.formDefinition,
-                  // Pull the hsValidation params from the form level
-                  // This may need to support field-level modules and recordNames in the future
-                      moduleName = formDef.hsValidationModule,
-                      recordName = formDef.hsValidationRecordName;
+            // Wait for formControl to be populated
+            function () {
+              return $scope.options.formControl;
+            },
+            // Configure a listener for that ngModel and drop the watch
+            function (ngModelController) {
+              if (ngModelController) {
+                removeWatch();
+                var formDef    = formlyRootCtrl.formDefinition,
+                    // Pull the hsValidation params from the form level
+                    // This may need to support field-level modules and recordNames in the future
+                    moduleName = formDef.hsValidationModule,
+                    recordName = formDef.hsValidationRecordName;
 
-                  _.extend(hsValidation, {
-                    module    : $window[moduleName],
-                    recordName: recordName
-                  });
+                _.extend(hsValidation, {
+                  module    : $window[moduleName],
+                  recordName: recordName
+                });
 
-                  if (hsValidation.module && hsValidation.recordName && ngModelController.$viewChangeListeners) {
-                    ngModelController.$viewChangeListeners.push(
-                        function () {
-                          hsModelUtils.validateRecord(
-                              hsValidation.module,
-                              // Currently passing the root form model
-                              // this may need to be scoped to subforms or sections
-                              $scope.formModel,
-                              hsValidation.recordName
-                          );
-                        }
-                    );
-                  }
+                if (hsValidation.module && hsValidation.recordName && ngModelController.$viewChangeListeners) {
+                  ngModelController.$viewChangeListeners.push(
+                    function () {
+                      hsModelUtils.validateRecord(
+                        hsValidation.module,
+                        // Currently passing the root form model
+                        // this may need to be scoped to subforms or sections
+                        $scope.formModel,
+                        hsValidation.recordName
+                      );
+                    }
+                  );
                 }
               }
+            }
           );
 
           // Validation show condition
@@ -191,9 +209,9 @@
             getError: function (spec) {
               if (hsValidation.module) {
                 hsValidation.$error = hsModelUtils.getError(
-                    hsValidation.module,
-                    // hsModelUtils.getError expects the root of the spec to be the recordName
-                    [hsValidation.recordName, spec].join('.')
+                  hsValidation.module,
+                  // hsModelUtils.getError expects the root of the spec to be the recordName
+                  [hsValidation.recordName, spec].join('.')
                 );
                 return !hsValidation.$error;
               }
@@ -276,7 +294,7 @@
               if (value && isoRE.test(value)) {
                 var mValue = moment(value);
                 if (mValue.isValid()) {
-                  return wrap($filter('iscDate')(mValue, _.get(appConfig, 'formats.date.shortDate', 'date')));
+                  return wrap($filter('iscDate')(mValue, _.get(config, 'formats.date.shortDate', 'date')));
                 }
               }
               return wrap(value);

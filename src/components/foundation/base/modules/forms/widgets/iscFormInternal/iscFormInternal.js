@@ -14,8 +14,7 @@
    * @param iscFormsValidationService
    * @returns {{restrict: string, replace: boolean, controllerAs: string, scope: {formDefinition: string, model: string, options: string, formConfig: string, validateFormApi: string, buttonConfig: string}, bindToController: boolean, controller: controller, templateUrl: directive.templateUrl}}
    */
-  function iscFormInternal($q,
-                           iscCustomConfigService, iscNotificationService, iscFormsValidationService) {
+  function iscFormInternal($q, iscCustomConfigService, iscNotificationService, iscFormsValidationService) {
     var directive = {
       restrict        : 'E',
       replace         : true,
@@ -51,7 +50,10 @@
             _annotations: {
               data: []
             },
-            _subforms   : self.formDefinition.subforms
+            _subforms   : self.formDefinition.subforms,
+            _model      : {
+              isDirty: false
+            }
           }
         },
         childConfig : {},
@@ -82,8 +84,72 @@
         // Initialize validation and notification components
         iscFormsValidationService.init(self.options);
         iscNotificationService.init();
-
+        initAutosaveConfig();
         watchPages();
+      }
+
+
+      /**
+       * @memberOf iscFormInternal
+       */
+      function initAutosaveConfig() {
+        var saveConfig  = _.get(self.formDefinition.form, 'autosave', {}),
+            formDataApi = _.get(self.formConfig, 'formDataApi', {}),
+            saveApi     = formDataApi.save || function () { },
+            wrapApi     = formDataApi.wrap || function (data) { return data; };
+
+        var callSaveApi = _.throttle(wrapAndSaveData, 500, {trailing: true});
+
+        // Set save trigger
+        switch (saveConfig.trigger) {
+          case 'modelChange':
+            watchModel(callSaveApi);
+            break;
+
+          case 'pageChange':
+            watchModel(dirtify);
+            watchPage();
+            break;
+
+          // default behavior is to only save when the form is submitted (post validation)
+        }
+
+        function dirtify() {
+          self.options.formState._model.isDirty = true;
+        }
+
+        function cleanify() {
+          self.options.formState._model.isDirty = false;
+        }
+
+        function wrapAndSaveData() {
+          var wrappedData = wrapApi(self.model, self.formDefinition.form);
+          return saveApi(wrappedData, self.options.formState._id);
+        }
+
+        function watchModel(action) {
+          $scope.$watch(
+            "formInternalCtrl.model",
+            function (newVal, oldVal) {
+              if (!angular.equals(newVal, oldVal)) { // avoids trigger during initial watch setup
+                action();
+              }
+            },
+            true
+          );
+        }
+
+        function watchPage() {
+          $scope.$watch(
+            "formInternalCtrl.currentPage",
+            function () {
+              if (self.options.formState._model.isDirty) {
+                callSaveApi();
+                cleanify();
+              }
+            }
+          );
+        }
       }
 
       /**
@@ -146,7 +212,7 @@
       }
 
 
-      //
+//
       /**
        * @memberOf iscFormInternal
        * @description
@@ -189,7 +255,7 @@
        * @param index - The index of the page to select/go to. Indexed from selectablePages, not all pages.
        */
       function selectPage(index) {
-        self.currentPage = self.multiConfig.selectablePages[index];
+        self.currentPage             = self.multiConfig.selectablePages[index];
         self.multiConfig.currentPage = self.currentPage;
       }
 
@@ -261,4 +327,5 @@
       }
     }
   }
-})();
+})
+();

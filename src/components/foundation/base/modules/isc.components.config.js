@@ -18,22 +18,35 @@
       'session'        : {
         'routeMemoryExpirationInMinutes': 15
       },
-      'moduleApi' : {
-        'forms' : {
-          'path'    : 'api/v1/forms'
+      'moduleApi'      : {
+        'forms'         : {
+          'path': 'api/v1/forms'
         },
-        'formData' : {
-          'path'    : 'api/v1/formData'
+        'formData'      : {
+          'path': 'api/v1/formData'
         },
-        'formInfo' : {
-          'path'    : 'api/v1/formInfo'
+        'formInfo'      : {
+          'path': 'api/v1/formInfo'
         },
         'formTemplates' : {
-          'path'    : 'api/v1/formTemplates'
+          'path': 'api/v1/formTemplates'
         },
-        'formCodeTables' : {
-          'path'    : 'api/v1/codeTables'
+        'formCodeTables': {
+          'path': 'api/v1/codeTables'
         }
+      },
+      'forms'          : {
+        'debounce'             : 75,
+        'allowInvalid'         : true,
+        'updateOn'             : 'change',
+        'updateOnExcluded': [
+          'checkbox',
+          'multiCheckbox',
+          'radio',
+          'select',
+          'dateComponents',
+          'dateComponentsPartial'
+        ]
       },
       'debugDisplay'   : {
         'forms': {
