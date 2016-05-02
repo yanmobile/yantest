@@ -16,7 +16,7 @@
    ========================================*/
   function getStates() {
     return {
-      'authenticated'    : {
+      'authenticated'  : {
         abstract   : true,
         url        : '/',
         state      : 'authenticated',
@@ -38,14 +38,14 @@
             });
           }
         },
-        templateUrl: 'layout/authenticated.html',
+        templateUrl: "layout/layout.html",
         controller : 'layoutController as layoutCtrl'
       },
       'unauthenticated': {
         abstract   : true,
         url        : '/',
         state      : 'unauthenticated',
-        templateUrl: 'layout/unauthenticated.html',
+        templateUrl: "layout/layout.html",
         controller : 'layoutController as layoutCtrl'
       }
     };

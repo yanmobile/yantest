@@ -25,6 +25,7 @@
         templateUrl   : 'login/login.html',
         translationKey: 'Login',
         controller    : 'loginController as loginCtrl',
+        layout        : "layout/tpls/blank.html",
         roles         : ['*'],
         landingPageFor: ['*']
       }
