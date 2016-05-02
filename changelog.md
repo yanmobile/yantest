@@ -1,6 +1,18 @@
 
 # Core Changes
 ### 05/02/2016
+Thanks to Doug’s advice, the framework has been enhanced to further ease the core update process (hs-core-ui and scaffold app code). We are introducing a new repo called ‘hs-core-app-scaffold’ to store the application specific boilerplate code. We have also updated the workflow to automatically bring individual application to the latest boilerplate app-specific code. Our current update workflow consists of update core and then manually applying individual changes described in hs-core-ui’s changelog.md file. The new workflow will automate all of that and leverages git workflow to perform conflict resolution. To use the new workflow, be sure to update your hs-core-tools and then run ```slush hs:updateCore```. ```slush hs:updateCore``` command will perform the following tasks:
+Checkout a new branch ```git checkout -b framework-update–<today> origin/master```
+Pull the latest of hs-core-ui ```git pull —no-edit upstream/master```
+Pull the latest app scaffold code ``` git pull —no-edit appstream/master```
+If there are no conflicts, push new branch to app repo ```git push origin framework-update-<today>```
+
+By leveraging git as the conflict resolution workflow, any future core update will only pull in the incremental changes.  This new workflow will also remove the need to keep a separate upgrade notes in changelog.md. The core team will continue to add changelog update notes for the next two weeks, then we may stop updating the changelog.md. Be sure your application is using the new workflow by then. If not, your core update experiences going forward may not be pleasant.
+
+https://github.com/intersystems/hs-core-ui/pull/220
+https://github.com/intersystems/hs-core-app-scaffold
+https://github.com/intersystems/hs-core-tools/pull/79
+
 Our application framework has been updated to automatically update app code when executing ```slush hs:updateCore```. Each application will add an additional git remote repo, appstream. When executing ```slush hs:updateCore```, *appstream* remote repo will automatically be added to your project. This is not a breaking change; individual applications does not need to do anything specific.
 
 ### 04/29/2016
