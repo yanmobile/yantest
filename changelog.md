@@ -1,5 +1,8 @@
 
 # Core Changes
+### 05/02/2016
+Our application framework has been updated to automatically update app code when executing ```slush hs:updateCore```. Each application will add an additional git remote repo, appstream. When executing ```slush hs:updateCore```, *appstream* remote repo will automatically be added to your project.
+
 ### 04/29/2016
 [hs-core-tools PR 49](https://github.com/intersystems/hs-core-tools/pull/49)
 adding support to allow app.config override during a run of any gulp task. In order to achieve the expected behavior, a new entry
@@ -7,8 +10,9 @@ has to be added in the file:
 gulp/app.json
 "excludeConfig" : "!src/app/modules/app.config.js"
 This change was made on 4/5/2016
+
 ### 04/26/2016
-[hs-core-ui PR 213](https://github.com/intersystems/hs-core-ui/pull/213) adds support for compile time edition selection support; apps can now specify which edition to build for at compile time. The app specific changes can be found in [hs-core-tools PR 74](https://github.com/intersystems/hs-core-tools/pull/76/files?w=1). 
+[hs-core-ui PR 213](https://github.com/intersystems/hs-core-ui/pull/213) adds support for compile time edition selection support; apps can now specify which edition to build for at compile time. The app specific changes can be found in [hs-core-tools PR 74](https://github.com/intersystems/hs-core-tools/pull/76/files?w=1).   
 [hs-core-ui PR 210](https://github.com/intersystems/hs-core-ui/pull/210) adds theming functionially. Make sure to update both core-ui and core-tools together in this update or your app will break. Please refer to core-tools PR 75 for app specific changes: [hs-core-tools PR 75](https://github.com/intersystems/hs-core-tools/pull/75). 
 
 ### 04/21/2016
