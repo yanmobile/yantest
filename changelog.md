@@ -1,7 +1,7 @@
 
 # Core Changes
 ### 05/02/2016
-Our application framework has been updated to automatically update app code when executing ```slush hs:updateCore```. Each application will add an additional git remote repo, appstream. When executing ```slush hs:updateCore```, *appstream* remote repo will automatically be added to your project.
+Our application framework has been updated to automatically update app code when executing ```slush hs:updateCore```. Each application will add an additional git remote repo, appstream. When executing ```slush hs:updateCore```, *appstream* remote repo will automatically be added to your project. This is not a breaking change; individual applications does not need to do anything specific.
 
 ### 04/29/2016
 [hs-core-tools PR 49](https://github.com/intersystems/hs-core-tools/pull/49)
