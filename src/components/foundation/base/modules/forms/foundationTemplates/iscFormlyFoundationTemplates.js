@@ -193,7 +193,7 @@
         // Date components [ DD / MM / YYYY ]
         iscFormsTemplateService.registerType({
           name          : 'dateComponentsPartial',
-          template      : 'forms/foundationTemplates/templates/dateComponentsPartial.html',
+          templateUrl   : 'forms/foundationTemplates/templates/dateComponentsPartial.html',
           wrapper       : ['templateLabel', 'templateHasError'],
           defaultOptions: {
             validators: {
