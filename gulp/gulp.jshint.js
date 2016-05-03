@@ -37,8 +37,6 @@ function init(gulp, plugins, config, _) {
   });
 
 
-  gulp.task('jshint', function () {
-    return plugins.seq("jshint:common", "jshint:components", "jshint:app");
-  });
+  gulp.task('jshint', ["jshint:common", "jshint:components", "jshint:app"]);
 
 }
