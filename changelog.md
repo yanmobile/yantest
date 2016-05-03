@@ -1,6 +1,9 @@
 
 # Core Changes
 ### 05/02/2016
+The framework has been updated to support dynamic layouts. Execute ```slush hs:updateCore``` to get the latest. Although manual updates are no longer supported, you can manually update the changes described in [this PR](https://github.com/intersystems/hs-core-app-scaffold/pull/2).
+
+### 05/02/2016
 Thanks to Doug’s advice, the framework has been enhanced to further ease the core update process (hs-core-ui and scaffold app code). We are introducing a new repo called ‘hs-core-app-scaffold’ to store the application specific boilerplate code. We have also updated the workflow to automatically bring individual application to the latest boilerplate app-specific code. Our current update workflow consists of update core and then manually applying individual changes described in hs-core-ui’s changelog.md file. The new workflow will automate all of that and leverages git workflow to perform conflict resolution. To use the new workflow, be sure to update your hs-core-tools and then run ```slush hs:updateCore```. ```slush hs:updateCore``` command will perform the following tasks:
 Checkout a new branch ```git checkout -b framework-update–<today> origin/master```
 Pull the latest of hs-core-ui ```git pull —no-edit upstream/master```
