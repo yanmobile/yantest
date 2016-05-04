@@ -18,13 +18,13 @@ var mockFormResponses = function (httpBackend) {
 
   // List forms
   httpBackend.when('GET', 'forms')
-    .respond(200, mockFormData.formStore);
+    .respond(200, mockFormStore.formStatus);
 
   // Get form status
   httpBackend.when('GET', /^formInfo\/status\/\w*$/)
     .respond(function response(method, url) {
       var formType = url.replace('formInfo/status/', '');
-      return [200, _.filter(mockFormData.formStore, {
+      return [200, _.filter(mockFormStore.formStatus, {
         formType: formType
       })]
     });
@@ -36,7 +36,7 @@ var mockFormResponses = function (httpBackend) {
           body     = JSON.parse(data);
 
       _.forEach(body, function (form) {
-        var formToUpdate = _.find(mockFormData.formStore, {formType: formType, formKey: form.formKey});
+        var formToUpdate = _.find(mockFormStore.formStatus, {formType: formType, formKey: form.formKey});
         if (formToUpdate) {
           formToUpdate.status = form.status;
         }
@@ -48,8 +48,13 @@ var mockFormResponses = function (httpBackend) {
   // Form Definition
   httpBackend.when('GET', /^forms\/\w*$/)
     .respond(function response(method, url) {
-      var formKey = url.replace('forms/', '');
-      return [200, mockFormData.formDefinitions[formKey]];
+      var formKey = url.replace('forms/', ''),
+          request = new XMLHttpRequest();
+
+      request.open('GET', [staticPath, formKey + '.json'].join('/'), false);
+      request.send(null);
+
+      return [request.status, request.response, {}];
     });
 
   // User Scripts
@@ -104,13 +109,13 @@ var mockFormResponses = function (httpBackend) {
   // Form Data
   // GET: list all
   httpBackend.when('GET', 'formData')
-    .respond(200, mockFormData.formData);
+    .respond(200, mockFormStore.formData);
 
   // GET: by id
   httpBackend.when('GET', /^formData\/\d*$/)
     .respond(function response(method, url) {
       var id   = parseInt(url.replace('formData/', '')),
-          form = _.find(mockFormData.formData, {id: id});
+          form = _.find(mockFormStore.formData, {id: id});
 
       return [200, form || {}];
     });
@@ -119,7 +124,7 @@ var mockFormResponses = function (httpBackend) {
   httpBackend.when('PUT', /^formData\/\d*$/)
     .respond(function response(method, url, data) {
       var id   = parseInt(url.replace('formData/', '')),
-          form = _.find(mockFormData.formData, {id: id}),
+          form = _.find(mockFormStore.formData, {id: id}),
           body = JSON.parse(data);
 
       _.mergeWith(form, body, function (dbRecord, formRecord) {
@@ -135,7 +140,7 @@ var mockFormResponses = function (httpBackend) {
   httpBackend.when('POST', 'formData')
     .respond(function response(method, url, data) {
       var body   = JSON.parse(data),
-          maxId  = _.maxBy(mockFormData.formData, function (form) {
+          maxId  = _.maxBy(mockFormStore.formData, function (form) {
             return Math.max(form.id);
           }),
           nextId = _.get(maxId, 'id', 0) + 1;
@@ -145,7 +150,7 @@ var mockFormResponses = function (httpBackend) {
         data: body
       };
 
-      mockFormData.formData.push(form);
+      mockFormStore.formData.push(form);
 
       return [200, form];
     });
@@ -154,15 +159,31 @@ var mockFormResponses = function (httpBackend) {
   httpBackend.when('DELETE', /^formData\/\d*$/)
     .respond(function response(method, url) {
       var id   = parseInt(url.replace('formData/', '')),
-          form = _.find(mockFormData.formData, {id: id});
-      _.remove(mockFormData.formData, form);
+          form = _.find(mockFormStore.formData, {id: id});
+      _.remove(mockFormStore.formData, form);
 
       return [200, form];
     });
+
+  // Public APIs for testing
+  // Zipcode
+  httpBackend.when('GET', /^http:\/\/api\.zippopotam\.us\/us\/\d*$/)
+    .respond(200, {
+      "post code": "02139",
+      "country": "United States",
+      "country abbreviation": "US",
+      "places": [{
+        "place name": "Cambridge",
+        "longitude": "-71.1042",
+        "state": "Massachusetts",
+        "state abbreviation": "MA",
+        "latitude": "42.3647"
+      }]
+    });
 };
 
-var mockFormData = {
-  formStore      : [
+var mockFormStore = {
+  formStatus: [
     {
       "formKey"    : "archive",
       "formName"   : "Archive Record",
@@ -196,7 +217,7 @@ var mockFormData = {
       "formName"   : "Sample Treatment Form",
       "formType"   : "treatment",
       "createdDate": "2016-02-25T23:42:14.041Z",
-      "status"     : "Inactive"
+      "status"     : "Active"
     },
     {
       "formKey"    : "hsModelUtilsValidationSample",
@@ -206,59 +227,7 @@ var mockFormData = {
       "status"     : "Inactive"
     }
   ],
-  formDefinitions: {
-    'intake' : {
-      'name'    : 'Sample Intake Form',
-      'formType': 'initial',
-      'pages'   : [
-        {
-          'name'  : 'Page 1',
-          'fields': [
-            {
-              'key'            : 'sampleField',
-              'type'           : 'input',
-              'templateOptions': {
-                'label'   : 'Here is a sample field',
-                'required': true
-              }
-            },
-            {
-              'className' : 'sample-field-group',
-              'fieldGroup': [
-                {
-                  'key'            : 'sampleEmbeddedField',
-                  'type'           : 'embeddedFormCollection',
-                  'templateOptions': {
-                    'label': 'Embedded Things'
-                  },
-                  'data'           : {
-                    'embeddedType' : 'embedMe',
-                    'embeddedLabel': 'Embedded Form'
-                  }
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    'embedMe': [
-      {
-        "className" : "grid-block",
-        "fieldGroup": [
-          {
-            "key"            : "aCheckbox",
-            "type"           : "checkbox",
-            "className"      : "grid-block small-6 medium-3 large-3",
-            "templateOptions": {
-              "label": "Check Me Out"
-            }
-          }
-        ]
-      }
-    ]
-  },
-  formData       : [
+  formData  : [
     {
       "formKey"    : "archive",
       "formName"   : "Archive Record",

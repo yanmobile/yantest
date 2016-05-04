@@ -42,7 +42,7 @@
         api.get(id).then(function (formData) {
           data = formData;
           expect(formData).toBeDefined();
-          expect(formData).toEqual(_.find(mockFormData.formData, {id: id}));
+          expect(formData).toEqual(_.find(mockFormStore.formData, {id: id}));
         });
         httpBackend.flush();
 
@@ -50,7 +50,7 @@
         api.get(id).then(function (formData) {
           expect(formData).not.toEqual(data);
           expect(formData).toBeDefined();
-          expect(formData).toEqual(_.find(mockFormData.formData, {id: id}));
+          expect(formData).toEqual(_.find(mockFormStore.formData, {id: id}));
         });
         httpBackend.flush();
       });
@@ -130,7 +130,7 @@
       it('should list all the forms', function () {
         api.list().then(function (response) {
           expect(response).toBeDefined();
-          expect(response).toEqual(mockFormData.formData);
+          expect(response).toEqual(mockFormStore.formData);
         });
         httpBackend.flush();
       });

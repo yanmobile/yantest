@@ -11,6 +11,11 @@
       "templateOptions": {
         "onFocus": "model.customControlFocused = true",
         "onBlur" : "model.customControlFocused = false"
+      },
+      "data" : {
+        "viewMode" : {
+          "template" : "<div></div>"
+        }
       }
     }
   }

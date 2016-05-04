@@ -41,7 +41,7 @@
       it('should get the list of forms', function () {
         api.listForms().then(function (forms) {
           expect(forms).toBeDefined();
-          expect(forms).toEqual(mockFormData.formStore);
+          expect(forms).toEqual(mockFormStore.formStatus);
         });
         httpBackend.flush();
       });
@@ -101,14 +101,18 @@
 
         api.getFormDefinition(formKey).then(function (formDef) {
           expect(formDef).toBeDefined();
-          expect(formDef).toEqual(mockFormData.formDefinitions[formKey]);
+          // Full forms are objects
+          expect(_.isObject(formDef)).toBe(true);
+          // with names
+          expect(formDef.name).toEqual('Sample Intake Form');
         });
         httpBackend.flush();
 
         formKey = 'embedMe';
         api.getFormDefinition(formKey).then(function (formDef) {
           expect(formDef).toBeDefined();
-          expect(formDef).toEqual(mockFormData.formDefinitions[formKey]);
+          // Embedded forms are arrays
+          expect(_.isArray(formDef)).toBe(true);
         });
         httpBackend.flush();
       });
@@ -158,7 +162,7 @@
   });
 
   function getFormStatuses(formType) {
-    return _.filter(mockFormData.formStore, {
+    return _.filter(mockFormStore.formStatus, {
       formType: formType
     });
   }

@@ -31,7 +31,19 @@ var mock$log = {
 };
 
 var customConfig = {
-  'baseUrl'        : 'http://hscommdev.iscinternal.com/public/api/v1',
+  'destroyScope': function(scope){
+    if(scope && scope.$destroy()){
+      scope.$destroy();
+      // $elem =  null;
+    }
+  },
+  'removeDom': function($elem){
+    if($elem){
+      $elem.remove();
+      // $elem =  null;
+    }
+  },
+  'cleanup': true,
   'devlogWhitelist': [],
   'devlogBlacklist': [],
   'landingPages'   : {},
@@ -39,6 +51,37 @@ var customConfig = {
     '*'    : ['index.login'],
     'user' : ['index.wellness.*', 'index.messages.*', 'index.library.*', 'index.calendar.*', 'index.myAccount.*'],
     'proxy': ['index.myAccount.*', 'index.messages', 'index.messages.inbox', 'index.messages.outbox', 'index.messages.refillPrescription']
+  },
+
+  'moduleApi'      : {
+    'forms'         : {
+      'path': 'forms'
+    },
+    'formData'      : {
+      'path': 'formData'
+    },
+    'formInfo'      : {
+      'path': 'formInfo'
+    },
+    'formTemplates' : {
+      'path': 'formTemplates'
+    },
+    'formCodeTables': {
+      'path': 'codeTables'
+    }
+  },
+  'forms'          : {
+    'debounce'             : 75,
+    'allowInvalid'         : true,
+    'updateOn'             : 'change',
+    'updateOnExcluded': [
+      'checkbox',
+      'multiCheckbox',
+      'radio',
+      'select',
+      'dateComponents',
+      'dateComponentsPartial'
+    ]
   },
 
   'userRoles': ['user', 'guest'],

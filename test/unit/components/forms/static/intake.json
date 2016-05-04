@@ -1,0 +1,66 @@
+{
+  "name"         : "Sample Intake Form",
+  "formType"     : "initial",
+  "dataModelInit": "loadPatient",
+  "pages"        : [
+    {
+      "name"  : "Page 1",
+      "fields": [
+        {
+          "key"            : "sampleField",
+          "type"           : "input",
+          "templateOptions": {
+            "label"   : "Here is a sample field",
+            "required": true
+          }
+        },
+        {
+          "key"            : "sampleCustomField",
+          "type"           : "customTemplate",
+          "templateOptions": {
+            "label"   : "Here is a sample custom field",
+            "required": true
+          },
+          "data" : {
+            "viewMode" : {
+              "template" : "<span></span>"
+            }
+          }
+        },
+        {
+          "className" : "sample-field-group",
+          "fieldGroup": [
+            {
+              "key"            : "sampleEmbeddedFullForm",
+              "type"           : "embeddedForm",
+              "templateOptions": {
+                "label": "Embedded Full Form"
+              },
+              "data"           : {
+                "embeddedType" : "embeddableFullForm",
+                "embeddedLabel": "Embedded Form",
+                "embeddedPage" : "First Page"
+              }
+            }
+          ]
+        },
+        {
+          "className" : "sample-field-group",
+          "fieldGroup": [
+            {
+              "key"            : "sampleEmbeddedSubform",
+              "type"           : "embeddedFormCollection",
+              "templateOptions": {
+                "label": "Embedded Subform"
+              },
+              "data"           : {
+                "embeddedType" : "embeddableSubform",
+                "embeddedLabel": "Embedded Subform"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

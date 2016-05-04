@@ -17,7 +17,7 @@
    * @param iscFormsTemplateService
    * @param iscFormsApi
    * @returns {{getForms, getActiveForm, getActiveForms, setFormStatus, getFormDefinition, getValidationDefinition}}
-     */
+   */
   function iscFormsModel($q, $templateCache, $window,
                          iscHttpapi, // needed for user script closures
                          iscFormsCodeTableApi, iscFormsTemplateService, iscFormsApi) {
@@ -56,7 +56,7 @@
      * @memberOf iscFormsModel
      * @param formType
      * @returns {*}
-       */
+     */
     function getCachedType(formType) {
       var cachedType = _.get(_typeCache, formType);
       if (!cachedType) {
@@ -91,26 +91,27 @@
 
 
       function filterResults(array) {
-        var filteredArray = limitToActive ? _.filter(array, { status: 'Active' }) : array;
+        var filteredArray = limitToActive ? _.filter(array, {status: 'Active'}) : array;
         return allowMultiple ? filteredArray : _.first(filteredArray);
       }
     }
 
     /**
      * @memberOf iscFormsModel
-     * @param formType
-     * @param formStatus
-     * @param formList
-       * @returns {*}
-       */
+     * @param {String} formType
+     * @param {Object} formStatus - formKey and status
+     * @param {Array} formList
+     * @returns {*}
+     */
     function setFormStatus(formType, formStatus, formList) {
       var cache               = getCachedType(formType),
           allowMultipleActive = _.includes(multipleActiveFormTypes, formType),
           formStatuses        = [formStatus];
 
       // If multiple forms of this type are not allowed,
+      // and we are setting a form to be active,
       // inactivate any currently active ones.
-      if (!allowMultipleActive) {
+      if (!allowMultipleActive && formStatus.status === 'Active') {
         var existingFormsToInactivate = _.filter(formList, {
             formType: formType,
             status  : 'Active'
@@ -130,7 +131,7 @@
       // Update the local cache, if it is populated
       if (cache.length) {
         _.forEach(formStatuses, function (form) {
-          _.find(cache, { formKey: form.formKey }).status = form.status;
+          _.find(cache, {formKey: form.formKey}).status = form.status;
         });
       }
 
@@ -142,7 +143,7 @@
      * @memberOf iscFormsModel
      * @param formKey
      * @returns {*}
-       */
+     */
     function getValidationDefinition(formKey) {
       var cachedValidation = _.get(_validationCache, formKey);
       var validations      = [];
@@ -153,15 +154,10 @@
         deferred.resolve(cachedValidation);
       }
       else {
-        getFormDefinition(formKey).then(function (form) {
-          if (_.isArray(form)) {
-            _getEmbeddedForms(form);
-          }
-          else {
-            _.forEach(form.pages, function (page) {
-              _getEmbeddedForms(page.fields);
-            });
-          }
+        getFormDefinition(formKey).then(function (formDefinition) {
+          _.forEach(formDefinition.form.pages, function (page) {
+            _getEmbeddedForms(page.fields, formDefinition.subforms);
+          });
 
           _validationCache[formKey] = validations;
           deferred.resolve(validations);
@@ -170,16 +166,16 @@
 
       return deferred.promise;
 
-      function _getEmbeddedForms(fields) {
+      function _getEmbeddedForms(fields, subforms) {
         _.forEach(fields, function (field) {
           if (field.fieldGroup) {
-            _getEmbeddedForms(field.fieldGroup);
+            _getEmbeddedForms(field.fieldGroup, subforms);
           }
           // If a collection, register it with the validation safety net
           else if (field.type === 'embeddedFormCollection') {
             validations.push({
               key   : field.key,
-              fields: field.templateOptions.fields
+              fields: subforms[_.get(field, 'data.embeddedType')] || []
             });
           }
         });
@@ -413,7 +409,7 @@
                               page = _.get(pages, embeddedPage);
                             }
                             else {
-                              page = _.find(pages, { name: embeddedPage });
+                              page = _.find(pages, {name: embeddedPage});
                             }
                           }
                           // If no page was provided, use the first one
@@ -592,8 +588,8 @@
        * @memberOf iscFormsModel
        * @param type
        * @returns {Array}
-         * @private
-         */
+       * @private
+       */
       function _getAncestors(type) {
         var stack    = [],
             template = iscFormsTemplateService.getRegisteredType(type);
@@ -664,7 +660,7 @@
      *  This is only ever evaluated on scripts returned from a trusted backend REST source
      * @param script
      * @returns {Object}
-       */
+     */
     function parseScript(script) {
       // Ignoring JSHint for eval()
       //
