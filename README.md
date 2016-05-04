@@ -170,6 +170,33 @@ The file can be located in any directory, and the file name is not important.
       // This is where we specify the test files
       // e.g., "test/unit/components/**/*.test.js"
     ]
+  },
+  "edition"       : [
+    {
+      "name" : "base",
+      "path" : "src/components/foundation/base/components.json"
+    },
+    // to specify another edition, add it to this edition array. For example the UK edition below.
+    // the framework will take the array of edition configurations and merge them to produce a single master components configuration
+    {
+      "name" : "UK",
+      "path" : "src/components/foundation/UK/components.json"
+    }
+  ],
+  "comments"      : "JavaScript files can't be overridden like css selector cascading or Angular's templateCache templates.",
+  "comments"      : "If we want to override lower level JS files, we must exclude them from the list.",
+  "comments"      : "The overrides below are used to exclude base files by specifying glob patterns.",
+  "comments"      : "e.g. ```common: ['!src/modules/isc.filters/myFilter.js']```",
+  "overrides"     : {
+    "js" : {
+      "common"     : [],
+      "components" : []
+    },
+  "comments"      : "Used to exclude files in common/component. e.g. ```common: ['!src/modules/isc.filters/myFilter.html']```",
+    "html" : {
+      "common"     : [],
+      "components" : []
+    }
   }
 }
 ```
@@ -199,6 +226,9 @@ The file can be located in any directory, and the file name is not important.
   
 * **How do I include a 3rd party css file in my application?**
   * The framework does not support *.css file extensions, you'll need to rename your *.css extension to *.scss (superset of css) and place your *.scss file in "src/app/assets/sass/" folder. Once your file is in the sass folder, add a reference to  "src/app/assets/sass/main.scss" file.
+  
+* **How do I include a module specific scss file?**
+  * This is a built-in functionality. Any scss file added to your module, matching this glob pattern ```src/app/modules/**/*.scss```, will automatically be compiled, concatenated, and shipped as part of your ```app.min.css```.
   
 * **How do I control what gets outputted in the console?**
   * Open up your "src/app/modules/app.config.js" file and add/remove channels in 'devlogWhitelist' and 'devlogBlacklist' arrays. Note: "\*" means all channels.
@@ -295,6 +325,15 @@ The file can be located in any directory, and the file name is not important.
      }
    ]
 ```   
+
+* **How do I add/exclude specific js in common or components?**
+  * add glob patterns to ```gulp/app.json -> overrides/js/[common/component]``` configuration
+ 
+* **How do I exclude specific html in common or components?**
+  * add glob patterns to ```gulp/app.json -> overrides/html/[common/component]``` configuration
+
+* **How do I exclude specific scss in common or components? (coming soon)**
+  * add glob patterns to ```gulp/app.json -> overrides/scss/[common/component]``` configuration
 
 ---
 ###Git 101
