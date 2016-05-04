@@ -32,6 +32,7 @@
     /**
      * @description
      *  it takes the second level $state name and kebab case the name
+     *  e.g. "authenticated.patientInfo.medications" => returns "patient-info"
      */
     function getSecondLevelStateName() {
       return _.kebabCase($state.next.name.split('.')[1] || '');
