@@ -165,19 +165,34 @@ var mockFormResponses = function (httpBackend) {
       return [200, form];
     });
 
+  // CodeTable API
+  httpBackend.when('GET', 'codeTables')
+    .respond(function response(method, url) {
+      var request = new XMLHttpRequest();
+
+      request.open('GET', [staticPath, 'codeTables', 'US_states.json'].join('/'), false);
+      request.send(null);
+
+      var response = {
+        "US_states" : JSON.parse(request.response)
+      };
+
+      return [request.status, response, {}];
+    });
+
   // Public APIs for testing
   // Zipcode
   httpBackend.when('GET', /^http:\/\/api\.zippopotam\.us\/us\/\d*$/)
     .respond(200, {
-      "post code": "02139",
-      "country": "United States",
+      "post code"           : "02139",
+      "country"             : "United States",
       "country abbreviation": "US",
-      "places": [{
-        "place name": "Cambridge",
-        "longitude": "-71.1042",
-        "state": "Massachusetts",
+      "places"              : [{
+        "place name"        : "Cambridge",
+        "longitude"         : "-71.1042",
+        "state"             : "Massachusetts",
         "state abbreviation": "MA",
-        "latitude": "42.3647"
+        "latitude"          : "42.3647"
       }]
     });
 };
