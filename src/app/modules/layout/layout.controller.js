@@ -16,10 +16,26 @@
     // vars
     // ----------------------------
     var self = this;
-    self.layout = $state.next.layout;
-    $rootScope.$on('$stateChangeStart', function (event, state, params) {
-      self.layout = state.layout;
+    _.merge(self, {
+      layout     : $state.next.layout,
+      layoutClass: getSecondLevelStateName()
     });
+
+    /**
+     * updates the layout and layoutClass based on the next state
+     */
+    $rootScope.$on('$stateChangeStart', function (event, state, params) {
+      self.layout      = state.layout;
+      self.layoutClass = getSecondLevelStateName();
+    });
+
+    /**
+     * @description
+     *  it takes the second level $state name and kebab case the name
+     */
+    function getSecondLevelStateName() {
+      return _.kebabCase($state.next.name.split('.')[1] || '');
+    }
   }// END CLASS
 
 })();
