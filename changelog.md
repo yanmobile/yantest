@@ -1,5 +1,8 @@
 
 # Core Changes
+### 05/04/2016
+The framework has made some performance optimizations for deployed applications in production. Simply set ```src/app/modules/app.config.js```'s ```production: true```. Execute ```slush hs:updateCore``` to get the latest. Although manual updates are no longer supported, you can manually update the changes described in [this PR](https://github.com/intersystems/hs-core-app-scaffold/pull/6).
+
 ### 05/03/2016
 The framework has been updated to support dynamic layout css class. Execute ```slush hs:updateCore``` to get the latest. Although manual updates are no longer supported, you can manually update the changes described in [this PR](https://github.com/intersystems/hs-core-app-scaffold/pull/3).
 
