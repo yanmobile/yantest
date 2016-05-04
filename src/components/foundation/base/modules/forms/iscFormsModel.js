@@ -16,10 +16,10 @@
    * @param iscFormsCodeTableApi
    * @param iscFormsTemplateService
    * @param iscFormsApi
-   * @returns {{getForms, getActiveForm, getActiveForms, setFormStatus: setFormStatus, getFormDefinition: getFormDefinition, getValidationDefinition: getValidationDefinition}}
+   * @returns {{getForms, getActiveForm, getActiveForms, setFormStatus, getFormDefinition, getValidationDefinition}}
      */
   function iscFormsModel($q, $templateCache, $window,
-                         iscHttpapi,
+                         iscHttpapi, // needed for user script closures
                          iscFormsCodeTableApi, iscFormsTemplateService, iscFormsApi) {
     var _typeCache          = {};
     var _formsCache         = {};
@@ -70,10 +70,9 @@
      * @memberOf iscFormsModel
      * @param config
      * @param formType
-     * @param formList
-       * @returns {*}
-       */
-    function getFormStatus(config, formType, formList) {
+     * @returns {*}
+     */
+    function getFormStatus(config, formType) {
       var allowMultiple = !!config.returnMultiple,
           limitToActive = !!config.limitToActive,
           cachedType    = getCachedType(formType);
@@ -83,7 +82,7 @@
       }
       else {
         var deferred = $q.defer();
-        iscFormsApi.getActiveForms(formType).then(function (results) {
+        iscFormsApi.getFormStatuses(formType).then(function (results) {
           _.set(_typeCache, formType, results);
           deferred.resolve(filterResults(results));
         });

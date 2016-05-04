@@ -27,7 +27,7 @@
      * @ngdoc factory
      * @memberOf isc.forms
      * @param $filter
-     * @param appConfig
+     * @param iscCustomConfigService
      * @param iscFormsTemplateService
      * @returns {{init: init}}
      * @description
@@ -47,7 +47,7 @@
      *    templateLabel<br />
      *    templateHasError
      */
-     function iscFormlyFoundationTemplates($filter, appConfig, iscFormsTemplateService) {
+     function iscFormlyFoundationTemplates($filter, iscCustomConfigService, iscFormsTemplateService) {
       var service = {
         init: init
       };
@@ -222,7 +222,7 @@
                     day   = parseInt(obj.day);
 
                 if (!isNaN(day) && !isNaN(month) && !isNaN(year)) {
-                  return $filter('iscDate')(new Date(year, month, day), _.get(appConfig, 'formats.date.shortDate', 'date'));
+                  return $filter('iscDate')(new Date(year, month, day), _.get(iscCustomConfigService.getConfig(), 'formats.date.shortDate', 'date'));
                 }
                 else if (!isNaN(month) && !isNaN(year)) {
                   return (month + 1) + '-' + year;
