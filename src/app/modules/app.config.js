@@ -14,6 +14,7 @@
    ========================================*/
   function getConfig() {
     return {
+      'production': false,
       'api': {
         'protocol': 'http',
         'hostname': 'localhost',
