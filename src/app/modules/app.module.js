@@ -15,7 +15,7 @@
     .run(run);
 
   function config(
-    $translateProvider, $httpProvider,
+    $translateProvider, $httpProvider, $compileProvider,
     devlogProvider, iscCustomConfigServiceProvider,
     coreConfig, componentsConfig, appConfig
   ) {
@@ -34,7 +34,10 @@
 
     $translateProvider.preferredLanguage('en_US');   
     $httpProvider.defaults.withCredentials = true;
-
+    
+    if(appConfig.production){
+      $compileProvider.debugInfoEnabled(false);
+    }
   }
 
   function run(
