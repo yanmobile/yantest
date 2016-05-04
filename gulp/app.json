@@ -48,17 +48,23 @@
   },
   "cordova"       : false,
   "excludeConfig" : "!src/app/modules/app.config.js",
-  "comments"      : "JavaScript files can't be overridden like css selector cascading or Angular's templateCache templates.",
-  "comments"      : "If we want to override lower level JS files, we must exclude them from the list.",
-  "comments"      : "The overrides below are used to exclude base files by specifying glob patterns.",
   "edition"       : [
     {
       "name" : "base",
       "path" : "src/components/foundation/base/components.json"
     }
   ],
+  "comments"      : "JavaScript files can't be overridden like css selector cascading or Angular's templateCache templates.",
+  "comments"      : "If we want to override lower level JS files, we must exclude them from the list.",
+  "comments"      : "The overrides below are used to exclude base files by specifying glob patterns.",
+  "comments"      : "e.g. ```common: ['!src/modules/isc.filters/myFilter.js']```",
   "overrides"     : {
     "js" : {
+      "common"     : [],
+      "components" : []
+    },
+  "comments"      : "Used to exclude files in common/component. e.g. ```common: ['!src/modules/isc.filters/myFilter.html']```",
+    "html" : {
       "common"     : [],
       "components" : []
     }
