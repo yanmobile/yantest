@@ -67,7 +67,7 @@
 
     describe('model.getActiveForm', function () {
       it('should get the current active form, for a formType with a singleton active member', function () {
-        var formType = 'initial';
+        var formType = 'closeout';
 
         // Returns an object
         model.getActiveForm(formType).then(function (response) {
@@ -98,24 +98,25 @@
             formToActivate      = {
               formKey: 'sample',
               status : 'Active'
-            };
+            },
+            formList;
 
         // Retrieve form list
         model.getForms(formType).then(function (response) {
-          var formList = response;
+          formList = response;
           expect(formList[0].formKey).toEqual(currentlyActiveForm);
           expect(response[0].status).toEqual('Active');
 
           // Activate a different form
-          model.setFormStatus(formType, formToActivate, formList);
-
-          // Expect the original form to be inactive now
-          model.getForms(formType).then(function (response) {
-            expect(response[0].formKey).toEqual(currentlyActiveForm);
-            expect(response[0].status).toEqual('Inactive');
+          model.setFormStatus(formType, formToActivate, formList).then(function () {
+            // Expect the original form to be inactive now
+            model.getForms(formType).then(function (response) {
+              expect(response[0].formKey).toEqual(currentlyActiveForm);
+              expect(response[0].status).toEqual('Inactive');
+            });
           });
+          httpBackend.flush();
         });
-        httpBackend.flush();
       });
     });
 

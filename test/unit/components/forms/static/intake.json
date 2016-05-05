@@ -4,29 +4,8 @@
   "dataModelInit": "loadPatient",
   "pages"        : [
     {
-      "name"  : "Page 1",
+      "name"  : "Page 1 - Embedded Forms and Collections",
       "fields": [
-        {
-          "key"            : "sampleField",
-          "type"           : "input",
-          "templateOptions": {
-            "label"   : "Here is a sample field",
-            "required": true
-          }
-        },
-        {
-          "key"            : "sampleCustomField",
-          "type"           : "customTemplate",
-          "templateOptions": {
-            "label"   : "Here is a sample custom field",
-            "required": true
-          },
-          "data" : {
-            "viewMode" : {
-              "template" : "<span></span>"
-            }
-          }
-        },
         {
           "className" : "sample-field-group",
           "fieldGroup": [
@@ -38,8 +17,19 @@
               },
               "data"           : {
                 "embeddedType" : "embeddableFullForm",
+                "embeddedLabel": "Embedded Form"
+              }
+            },
+            {
+              "key"            : "sampleEmbeddedFullForm",
+              "type"           : "embeddedForm",
+              "templateOptions": {
+                "label": "Embedded Full Form"
+              },
+              "data"           : {
+                "embeddedType" : "embeddableFullForm",
                 "embeddedLabel": "Embedded Form",
-                "embeddedPage" : "First Page"
+                "embeddedPage" : "Last Page"
               }
             }
           ]
@@ -59,6 +49,73 @@
               }
             }
           ]
+        }
+      ]
+    },
+    {
+      "name" : "Page 2 - Built-in Templates",
+      "fields" : [
+        {
+          "key" : "templates.instructions",
+          "type" : "instructions"
+        },
+        {
+          "key" : "templates.input",
+          "type" : "input"
+        },
+        {
+          "key" : "templates.checkbox",
+          "type" : "checkbox"
+        },
+        {
+          "key" : "templates.multiCheckbox",
+          "type" : "multiCheckbox"
+        },
+        {
+          "key" : "templates.radio",
+          "type" : "radio"
+        },
+        {
+          "key" : "templates.select",
+          "type" : "select"
+        },
+        {
+          "key" : "templates.textarea",
+          "type" : "textarea"
+        },
+        {
+          "key" : "templates.dateComponents",
+          "type" : "dateComponents"
+        },
+        {
+          "key" : "templates.dateComponentsPartial",
+          "type" : "dateComponentsPartial"
+        },
+        {
+          "key" : "templates.typeahead",
+          "type" : "typeahead"
+        },
+        {
+          "key" : "templates.typeaheadWithScript",
+          "type" : "typeaheadWithScript"
+        }
+      ]
+    },
+    {
+      "name" : "Page 3 - Custom backend templates",
+      "fields" : [
+        {
+          "key"            : "sampleCustomField",
+          "type"           : "customTemplate",
+          "templateOptions": {
+            "label"   : "Here is a sample custom field",
+            "required": true
+          },
+          "data" : {
+            "viewMode" : {
+              "template" : "<span></span>"
+            }
+          }
         }
       ]
     }

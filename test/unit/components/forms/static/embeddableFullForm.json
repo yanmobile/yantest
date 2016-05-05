@@ -1,5 +1,5 @@
 {
-  "name" : "Sample Embeddedable Full Form",
+  "name" : "Sample Embeddable Full Form",
   "pages": [
     {
       "name"  : "First Page",
@@ -11,6 +11,19 @@
             "label": "Check Me Out"
           },
           "defaultValue"   : false
+        }
+      ]
+    },
+    {
+      "name"  : "Last Page",
+      "fields": [
+        {
+          "key"            : "anotherCheckbox",
+          "type"           : "checkbox",
+          "templateOptions": {
+            "label": "Check Me Out Again"
+          },
+          "defaultValue"   : true
         }
       ]
     }
