@@ -38,8 +38,8 @@
 
     describe('api.loadAll', function () {
       it('should get the code tables from the API', function () {
-        api.loadAll().then(function (codeTables) {
-          console.log(codeTables);
+        api.loadAll().then(function (response) {
+          expect(response.US_states.length).toBe(50);
         });
         httpBackend.flush();
       });
