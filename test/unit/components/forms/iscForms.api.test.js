@@ -40,7 +40,6 @@
     describe('api.formList', function () {
       it('should get the list of forms', function () {
         api.listForms().then(function (forms) {
-          expect(forms).toBeDefined();
           expect(forms).toEqual(mockFormStore.formStatus);
         });
         httpBackend.flush();
@@ -51,16 +50,16 @@
       it('should get the form statuses of the given formType', function () {
         var formType    = 'initial',
             intakeForms = getFormStatuses(formType);
-        api.getFormStatuses(formType).then(function (forms) {
-          expect(forms).toEqual(intakeForms);
+        api.getFormStatuses(formType).then(function (response) {
+          expect(response).toEqual(intakeForms);
         });
         httpBackend.flush();
 
         formType           = 'treatment';
         var treatmentForms = getFormStatuses(formType);
-        api.getFormStatuses(formType).then(function (forms) {
-          expect(forms).toEqual(treatmentForms);
-          expect(forms).not.toEqual(intakeForms);
+        api.getFormStatuses(formType).then(function (response) {
+          expect(response).toEqual(treatmentForms);
+          expect(response).not.toEqual(intakeForms);
         });
         httpBackend.flush();
       });
@@ -72,9 +71,9 @@
             formKey  = 'intake';
 
         // Intake is currently active
-        api.getFormStatuses(formType).then(function (forms) {
-          expect(forms[0].status).toEqual('Active');   // intake
-          expect(forms[1].status).toEqual('Inactive'); // sample
+        api.getFormStatuses(formType).then(function (response) {
+          expect(response[0].status).toEqual('Active');   // intake
+          expect(response[1].status).toEqual('Inactive'); // sample
         });
 
         // Inactivate it
@@ -87,9 +86,9 @@
         httpBackend.flush();
 
         // Expect it to be inactive
-        api.getFormStatuses(formType).then(function (forms) {
-          expect(forms[0].status).toEqual('Inactive'); // intake
-          expect(forms[1].status).toEqual('Inactive'); // sample
+        api.getFormStatuses(formType).then(function (response) {
+          expect(response[0].status).toEqual('Inactive'); // intake
+          expect(response[1].status).toEqual('Inactive'); // sample
         });
         httpBackend.flush();
       });
@@ -99,20 +98,19 @@
       it('should get the form definition from the API', function () {
         var formKey = 'intake';
 
-        api.getFormDefinition(formKey).then(function (formDef) {
-          expect(formDef).toBeDefined();
+        api.getFormDefinition(formKey).then(function (response) {
           // Full forms are objects
-          expect(_.isObject(formDef)).toBe(true);
+          expect(_.isObject(response)).toBe(true);
           // with names
-          expect(formDef.name).toEqual('Sample Intake Form');
+          expect(response.name).toEqual('Sample Intake Form');
         });
         httpBackend.flush();
 
         formKey = 'embeddableSubform';
-        api.getFormDefinition(formKey).then(function (formDef) {
-          expect(formDef).toBeDefined();
+        api.getFormDefinition(formKey).then(function (response) {
+          expect(response).not.toBe('');
           // Embedded forms are arrays
-          expect(_.isArray(formDef)).toBe(true);
+          expect(_.isArray(response)).toBe(true);
         });
         httpBackend.flush();
       });
@@ -120,43 +118,37 @@
 
     describe('api.getUserScript', function () {
       it('should get a user script from the API', function () {
-        var result,
-            scriptName = 'loadPatient';
+        var scriptName = 'loadPatient';
 
-        result = api.getUserScript(scriptName).then(function (response) {
-          expect(response).toBeDefined();
+        api.getUserScript(scriptName).then(function (response) {
+          expect(response).not.toBe('');
         });
         httpBackend.flush();
-        expect(_.get(result, '$$state.value.status')).not.toBe(404);
       });
     });
 
     describe('api.getTemplate', function () {
       it('should get a custom template from the API', function () {
-        var result,
-            templateName = 'customTemplate',
+        var templateName = 'customTemplate',
             htmlName     = 'customTemplate.input.html';
 
         // html template
-        result = api.getTemplate(['html', templateName, htmlName].join('/')).then(function (response) {
-          expect(response).toBeDefined();
+        api.getTemplate(['html', templateName, htmlName].join('/')).then(function (response) {
+          expect(response).not.toBe('');
         });
         httpBackend.flush();
-        expect(_.get(result, '$$state.value.status')).not.toBe(404);
 
         // js script
-        result = api.getTemplate(['js', templateName].join('/')).then(function (response) {
-          expect(response).toBeDefined();
+        api.getTemplate(['js', templateName].join('/')).then(function (response) {
+          expect(response).not.toBe('');
         });
         httpBackend.flush();
-        expect(_.get(result, '$$state.value.status')).not.toBe(404);
 
         // css stylesheet
-        result = api.getTemplate(['css', templateName].join('/')).then(function (response) {
-          expect(response).toBeDefined();
+        api.getTemplate(['css', templateName].join('/')).then(function (response) {
+          expect(response).not.toBe('');
         });
         httpBackend.flush();
-        expect(_.get(result, '$$state.value.status')).not.toBe(404);
       });
     });
   });
