@@ -108,7 +108,7 @@
         });
         httpBackend.flush();
 
-        formKey = 'embedMe';
+        formKey = 'embeddableSubform';
         api.getFormDefinition(formKey).then(function (formDef) {
           expect(formDef).toBeDefined();
           // Embedded forms are arrays

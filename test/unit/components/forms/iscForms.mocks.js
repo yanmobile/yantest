@@ -54,7 +54,7 @@ var mockFormResponses = function (httpBackend) {
       request.open('GET', [staticPath, formKey + '.json'].join('/'), false);
       request.send(null);
 
-      return [request.status, request.response, {}];
+      return [200, request.response, {}];
     });
 
   // User Scripts
@@ -66,7 +66,7 @@ var mockFormResponses = function (httpBackend) {
       request.open('GET', [staticPath, 'userScripts', scriptName + '.js'].join('/'), false);
       request.send(null);
 
-      return [request.status, request.response, {}];
+      return [200, request.response, {}];
     });
 
   // Custom Templates
@@ -81,7 +81,7 @@ var mockFormResponses = function (httpBackend) {
       request.open('GET', [staticPath, templateName, htmlName].join('/'), false);
       request.send(null);
 
-      return [request.status, request.response, {}];
+      return [200, request.response, {}];
     });
 
   httpBackend.when('GET', /^formTemplates\/js\/\w*$/)
@@ -92,7 +92,7 @@ var mockFormResponses = function (httpBackend) {
       request.open('GET', [staticPath, templateName, 'script.js'].join('/'), false);
       request.send(null);
 
-      return [request.status, request.response, {}];
+      return [200, request.response, {}];
     });
 
   httpBackend.when('GET', /^formTemplates\/css\/\w*$/)
@@ -103,7 +103,7 @@ var mockFormResponses = function (httpBackend) {
       request.open('GET', [staticPath, templateName, 'stylesheet.css'].join('/'), false);
       request.send(null);
 
-      return [request.status, request.response, {}];
+      return [200, request.response, {}];
     });
 
   // Form Data
@@ -174,10 +174,10 @@ var mockFormResponses = function (httpBackend) {
       request.send(null);
 
       var response = {
-        "US_states" : JSON.parse(request.response)
+        "US_states": JSON.parse(request.response)
       };
 
-      return [request.status, response, {}];
+      return [200, response, {}];
     });
 
   // Public APIs for testing
