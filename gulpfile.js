@@ -85,7 +85,7 @@ initTasksInGulpFolder();
  */
 function initTasksInGulpFolder() {
   var tasksInGulpFolder = _.extend({}, require('require-dir')('./gulp/'), require('require-dir')('./gulp/custom/'));
-  console.log('tasksInGulpFolder:', tasksInGulpFolder);
+
   _.forEach(tasksInGulpFolder, initTask);
   function initTask(task, name) {
     if (typeof task.init === "function") {
