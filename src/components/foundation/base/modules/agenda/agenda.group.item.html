@@ -1,0 +1,9 @@
+<div class="grid-block">
+  <div class="grid-block medium-2 agenda-group-item-time">{{event.datetime | date:"h a"}}</div>
+  <div class="grid-block medium-10">
+    <span ng-repeat="(key, value) in event track by key" style="padding-right:2rem;">
+      <b>{{key}}:</b>
+      {{value}}
+    </span>
+  </div>
+</div>
