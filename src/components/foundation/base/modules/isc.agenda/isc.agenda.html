@@ -1,0 +1,13 @@
+<header class="grid-block agenda-header">{{agendaCtrl.config.title}}</header>
+<section ng-repeat="dayEvents in agendaCtrl.agenda | groupBy:agendaCtrl.config.groupBy track by $index"
+         class="block-list agenda-group">
+  <header ng-include="agendaCtrl.config.headerTemplateUrl || 'isc.agenda/isc.agenda.group.header.html'"
+          ng-init="date=dayEvents[0][agendaCtrl.config.groupBy]"
+          class="agenda-group-header"></header>
+  <ul>
+    <li ng-repeat="event in dayEvents track by $index"
+        ng-include="agendaCtrl.config.itemTemplateUrl || 'isc.agenda/isc.agenda.group.item.html'"
+        class="agenda-group-item"></li>
+  </ul>
+</section>
+

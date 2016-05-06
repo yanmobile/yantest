@@ -30,6 +30,14 @@ var mock$log = {
   logFn: _.noop
 };
 
+function cleanup(testSuite) {
+  _.forEach(testSuite, function (val, key) {
+    _.result(val, "remove");
+    _.result(val, "$destroy");
+    delete testSuite[key];
+  });
+}
+
 var customConfig = {
   'destroyScope': function(scope){
     if(scope && scope.$destroy()){
