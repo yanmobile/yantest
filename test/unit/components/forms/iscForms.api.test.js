@@ -2,8 +2,7 @@
   'use strict';
 
   describe('iscFormsApi', function () {
-    var api,
-        httpBackend;
+    var suite = {};
 
     beforeEach(module('formly', 'isc.http', 'isc.forms', 'isc.templates',
       function ($provide) {
@@ -14,35 +13,33 @@
     );
 
     beforeEach(inject(function (iscFormsApi, $httpBackend) {
-      api         = iscFormsApi;
-      httpBackend = $httpBackend;
+      suite.api         = iscFormsApi;
+      suite.httpBackend = $httpBackend;
 
-      mockFormResponses(httpBackend);
+      mockFormResponses(suite.httpBackend);
     }));
 
     afterEach(function () {
-      if (customConfig.cleanup) {
-        httpBackend = null;
-      }
+      cleanup(suite);
     });
 
     describe('iscFormApi', function () {
       it('should have revealed functions', function () {
-        expect(_.isFunction(api.listForms)).toBe(true);
-        expect(_.isFunction(api.getFormStatuses)).toBe(true);
-        expect(_.isFunction(api.setFormStatus)).toBe(true);
-        expect(_.isFunction(api.getFormDefinition)).toBe(true);
-        expect(_.isFunction(api.getUserScript)).toBe(true);
-        expect(_.isFunction(api.getTemplate)).toBe(true);
+        expect(_.isFunction(suite.api.listForms)).toBe(true);
+        expect(_.isFunction(suite.api.getFormStatuses)).toBe(true);
+        expect(_.isFunction(suite.api.setFormStatus)).toBe(true);
+        expect(_.isFunction(suite.api.getFormDefinition)).toBe(true);
+        expect(_.isFunction(suite.api.getUserScript)).toBe(true);
+        expect(_.isFunction(suite.api.getTemplate)).toBe(true);
       });
     });
 
     describe('api.formList', function () {
       it('should get the list of forms', function () {
-        api.listForms().then(function (forms) {
+        suite.api.listForms().then(function (forms) {
           expect(forms).toEqual(mockFormStore.formStatus);
         });
-        httpBackend.flush();
+        suite.httpBackend.flush();
       });
     });
 
@@ -50,18 +47,18 @@
       it('should get the form statuses of the given formType', function () {
         var formType    = 'initial',
             intakeForms = getFormStatuses(formType);
-        api.getFormStatuses(formType).then(function (response) {
+        suite.api.getFormStatuses(formType).then(function (response) {
           expect(response).toEqual(intakeForms);
         });
-        httpBackend.flush();
+        suite.httpBackend.flush();
 
         formType           = 'treatment';
         var treatmentForms = getFormStatuses(formType);
-        api.getFormStatuses(formType).then(function (response) {
+        suite.api.getFormStatuses(formType).then(function (response) {
           expect(response).toEqual(treatmentForms);
           expect(response).not.toEqual(intakeForms);
         });
-        httpBackend.flush();
+        suite.httpBackend.flush();
       });
     });
 
@@ -71,26 +68,26 @@
             formKey  = 'intake';
 
         // Intake is currently active
-        api.getFormStatuses(formType).then(function (response) {
+        suite.api.getFormStatuses(formType).then(function (response) {
           expect(response[0].status).toEqual('Active');   // intake
           expect(response[1].status).toEqual('Inactive'); // sample
         });
 
         // Inactivate it
-        api.setFormStatus(formType, [
+        suite.api.setFormStatus(formType, [
           {
             'formKey': formKey,
             'status' : 'Inactive'
           }
         ]);
-        httpBackend.flush();
+        suite.httpBackend.flush();
 
         // Expect it to be inactive
-        api.getFormStatuses(formType).then(function (response) {
+        suite.api.getFormStatuses(formType).then(function (response) {
           expect(response[0].status).toEqual('Inactive'); // intake
           expect(response[1].status).toEqual('Inactive'); // sample
         });
-        httpBackend.flush();
+        suite.httpBackend.flush();
       });
     });
 
@@ -98,21 +95,21 @@
       it('should get the form definition from the API', function () {
         var formKey = 'intake';
 
-        api.getFormDefinition(formKey).then(function (response) {
+        suite.api.getFormDefinition(formKey).then(function (response) {
           // Full forms are objects
           expect(_.isObject(response)).toBe(true);
           // with names
           expect(response.name).toEqual('Sample Intake Form');
         });
-        httpBackend.flush();
+        suite.httpBackend.flush();
 
         formKey = 'embeddableSubform';
-        api.getFormDefinition(formKey).then(function (response) {
+        suite.api.getFormDefinition(formKey).then(function (response) {
           expect(response).not.toBe('');
           // Embedded forms are arrays
           expect(_.isArray(response)).toBe(true);
         });
-        httpBackend.flush();
+        suite.httpBackend.flush();
       });
     });
 
@@ -120,10 +117,10 @@
       it('should get a user script from the API', function () {
         var scriptName = 'loadPatient';
 
-        api.getUserScript(scriptName).then(function (response) {
+        suite.api.getUserScript(scriptName).then(function (response) {
           expect(response).not.toBe('');
         });
-        httpBackend.flush();
+        suite.httpBackend.flush();
       });
     });
 
@@ -133,22 +130,22 @@
             htmlName     = 'customTemplate.input.html';
 
         // html template
-        api.getTemplate(['html', templateName, htmlName].join('/')).then(function (response) {
+        suite.api.getTemplate(['html', templateName, htmlName].join('/')).then(function (response) {
           expect(response).not.toBe('');
         });
-        httpBackend.flush();
+        suite.httpBackend.flush();
 
         // js script
-        api.getTemplate(['js', templateName].join('/')).then(function (response) {
+        suite.api.getTemplate(['js', templateName].join('/')).then(function (response) {
           expect(response).not.toBe('');
         });
-        httpBackend.flush();
+        suite.httpBackend.flush();
 
         // css stylesheet
-        api.getTemplate(['css', templateName].join('/')).then(function (response) {
+        suite.api.getTemplate(['css', templateName].join('/')).then(function (response) {
           expect(response).not.toBe('');
         });
-        httpBackend.flush();
+        suite.httpBackend.flush();
       });
     });
   });

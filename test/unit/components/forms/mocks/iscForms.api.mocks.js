@@ -161,11 +161,11 @@ var mockFormResponses = function (httpBackend) {
     .respond(function response(method, url) {
       var request = new XMLHttpRequest();
 
-      request.open('GET', [staticPath, 'codeTables', 'US_states.json'].join('/'), false);
+      request.open('GET', [staticPath, 'codeTables', 'usStates.json'].join('/'), false);
       request.send(null);
 
       var response = {
-        "US_states": JSON.parse(request.response)
+        "usStates": JSON.parse(request.response)
       };
 
       return [200, response, {}];

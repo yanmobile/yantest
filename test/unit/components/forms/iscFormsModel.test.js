@@ -2,11 +2,7 @@
   'use strict';
 
   describe('iscFormsModel', function () {
-    var model,
-        api,
-        dataApi,
-        httpBackend,
-        timeout;
+    var suite = {};
 
     beforeEach(module('formly', 'isc.http', 'isc.forms', 'isc.templates',
       function ($provide) {
@@ -18,29 +14,27 @@
 
     beforeEach(inject(function (iscFormsModel, iscFormsApi, iscFormDataApi,
                                 $httpBackend, $timeout) {
-      model       = iscFormsModel;
-      api         = iscFormsApi;
-      dataApi     = iscFormDataApi;
-      httpBackend = $httpBackend;
-      timeout     = $timeout;
+      suite.model       = iscFormsModel;
+      suite.api         = iscFormsApi;
+      suite.dataApi     = iscFormDataApi;
+      suite.httpBackend = $httpBackend;
+      suite.timeout     = $timeout;
 
-      mockFormResponses(httpBackend);
+      mockFormResponses(suite.httpBackend);
     }));
 
     afterEach(function () {
-      if (customConfig.cleanup) {
-        httpBackend = null;
-      }
+      cleanup(suite);
     });
 
     describe('iscFormsModel', function () {
       it('should have revealed functions', function () {
-        expect(_.isFunction(model.getForms)).toBe(true);
-        expect(_.isFunction(model.getActiveForm)).toBe(true);
-        expect(_.isFunction(model.getActiveForms)).toBe(true);
-        expect(_.isFunction(model.setFormStatus)).toBe(true);
-        expect(_.isFunction(model.getFormDefinition)).toBe(true);
-        expect(_.isFunction(model.getValidationDefinition)).toBe(true);
+        expect(_.isFunction(suite.model.getForms)).toBe(true);
+        expect(_.isFunction(suite.model.getActiveForm)).toBe(true);
+        expect(_.isFunction(suite.model.getActiveForms)).toBe(true);
+        expect(_.isFunction(suite.model.setFormStatus)).toBe(true);
+        expect(_.isFunction(suite.model.getFormDefinition)).toBe(true);
+        expect(_.isFunction(suite.model.getValidationDefinition)).toBe(true);
       });
     });
 
@@ -50,14 +44,14 @@
 
         // test API
         test();
-        httpBackend.flush();
+        suite.httpBackend.flush();
 
         // test local cache
         test();
-        timeout.flush();
+        suite.timeout.flush();
 
         function test() {
-          model.getForms(formType).then(function (response) {
+          suite.model.getForms(formType).then(function (response) {
             expect(_.isArray(response)).toBe(true);
             expect(response).toEqual(getFormStatuses(formType));
           });
@@ -70,11 +64,11 @@
         var formType = 'closeout';
 
         // Returns an object
-        model.getActiveForm(formType).then(function (response) {
+        suite.model.getActiveForm(formType).then(function (response) {
           expect(_.isObject(response)).toBe(true);
           expect(response).toEqual(getFormStatuses(formType, true)[0]);
         });
-        httpBackend.flush();
+        suite.httpBackend.flush();
       });
     });
 
@@ -82,12 +76,12 @@
       it('should get the current active forms, for a formType with multiple active members', function () {
         var formType = 'treatment';
 
-        model.getActiveForms(formType).then(function (response) {
+        suite.model.getActiveForms(formType).then(function (response) {
           expect(_.isArray(response)).toBe(true);
           expect(response.length).toBeGreaterThan(1);
           expect(response).toEqual(getFormStatuses(formType, true));
         });
-        httpBackend.flush();
+        suite.httpBackend.flush();
       });
     });
 
@@ -102,21 +96,21 @@
             formList;
 
         // Retrieve form list
-        model.getForms(formType).then(function (response) {
+        suite.model.getForms(formType).then(function (response) {
           formList = response;
           expect(formList[0].formKey).toEqual(currentlyActiveForm);
           expect(response[0].status).toEqual('Active');
 
           // Activate a different form
-          model.setFormStatus(formType, formToActivate, formList).then(function () {
+          suite.model.setFormStatus(formType, formToActivate, formList).then(function () {
             // Expect the original form to be inactive now
-            model.getForms(formType).then(function (response) {
+            suite.model.getForms(formType).then(function (response) {
               expect(response[0].formKey).toEqual(currentlyActiveForm);
               expect(response[0].status).toEqual('Inactive');
             });
           });
-          httpBackend.flush();
         });
+        suite.httpBackend.flush();
       });
     });
 
@@ -124,23 +118,22 @@
       it('should get the form definition', function () {
         var formKey    = 'intake',
             subformKey = 'embeddableSubform';
-
-        spyOn(api, 'getFormDefinition').and.callThrough();
-        spyOn(api, 'getUserScript').and.callThrough();
-        spyOn(api, 'getTemplate').and.callThrough();
+        spyOn(suite.api, 'getFormDefinition').and.callThrough();
+        spyOn(suite.api, 'getUserScript').and.callThrough();
+        spyOn(suite.api, 'getTemplate').and.callThrough();
 
         test('edit');
-        httpBackend.flush();
+        suite.httpBackend.flush();
 
         // definition is now cached
         test('view');
-        timeout.flush();
+        suite.timeout.flush();
 
         function test(mode) {
-          model.getFormDefinition(formKey, mode).then(function (response) {
-            expect(api.getFormDefinition).toHaveBeenCalled();
-            expect(api.getUserScript).toHaveBeenCalledWith("loadPatient");
-            expect(api.getTemplate).toHaveBeenCalledWith("js/customTemplate");
+          suite.model.getFormDefinition(formKey, mode).then(function (response) {
+            expect(suite.api.getFormDefinition).toHaveBeenCalled();
+            expect(suite.api.getUserScript).toHaveBeenCalledWith("loadPatient");
+            expect(suite.api.getTemplate).toHaveBeenCalledWith("js/customTemplate");
 
             var form     = response.form,
                 subforms = response.subforms;
@@ -160,13 +153,13 @@
         var formKey = 'intake';
 
         test(); // test initial API fetch
-        httpBackend.flush();
+        suite.httpBackend.flush();
 
         test(); // test cached version
-        timeout.flush();
+        suite.timeout.flush();
 
         function test() {
-          model.getValidationDefinition(formKey).then(function (response) {
+          suite.model.getValidationDefinition(formKey).then(function (response) {
             // There should be a list of subform fields keyed by the data model path of that collection field
             var collectionValidation = _.find(response, {
               key: 'sampleEmbeddedSubform'
