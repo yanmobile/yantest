@@ -40,7 +40,7 @@
       controller      : controller,
       controllerAs    : 'agendaCtrl',
       templateUrl     : function (elem, attrs) {
-        return attrs.templateUrl || 'agenda/agenda.html';
+        return attrs.templateUrl || 'isc.agenda/isc.agenda.html';
       }
     };
 
