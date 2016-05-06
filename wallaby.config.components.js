@@ -3,7 +3,7 @@ module.exports                  = function () {
   'use strict';
 
   var commonConfig     = require('./gulp/common.json');
-  var componentsConfig = require('./gulp/components.json');
+  var componentsConfig = require('./src/components/foundation/base/components.json');
 
   var commonVendorJs      = (commonConfig.vendor.js || []).map(noInstrument);
   var commonModuleVendorJs = (commonConfig.module.assets.vendor.js || []).map(noInstrument);
