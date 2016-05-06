@@ -61,10 +61,19 @@ slush hs:updateCore
 
 Override app.config.js (for specifying dev/deploy configurations):
 ```bash
+# for specifying runtime application config
 gulp serve --config <any valid directory>/<anyFileName>.js #only app specific
+gulp build --config <any valid directory>/<anyFileName>.js #only app specific
+gulp deploy --config <any valid directory>/<anyFileName>.js #only app specific
 ```
-The file can be located in any directory, and the file name is not important.
 
+Override gulp/app.json:
+```bash
+# for specifying compile time application config -- to specify editions or different platform targets (mobile, web)
+gulp serve --appjson path/to/app.json #only app specific
+gulp build --appjson path/to/app.json #only app specific
+gulp deploy --appjson path/to/app.json #only app specific
+```
 ---
 ###File structure
     
