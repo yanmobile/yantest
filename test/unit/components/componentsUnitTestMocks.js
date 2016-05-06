@@ -39,19 +39,6 @@ function cleanup(testSuite) {
 }
 
 var customConfig = {
-  'destroyScope': function(scope){
-    if(scope && scope.$destroy()){
-      scope.$destroy();
-      // $elem =  null;
-    }
-  },
-  'removeDom': function($elem){
-    if($elem){
-      $elem.remove();
-      // $elem =  null;
-    }
-  },
-  'cleanup': true,
   'devlogWhitelist': [],
   'devlogBlacklist': [],
   'landingPages'   : {},
