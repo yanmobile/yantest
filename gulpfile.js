@@ -84,11 +84,9 @@ initTasksInGulpFolder();
  *  For each task inside "gulp/" folder, initialize/register the task
  */
 function initTasksInGulpFolder() {
-  var tasksInGulpFolder = require('require-dir')('./gulp/');
+  var tasksInGulpFolder = _.extend({}, require('require-dir')('./gulp/'), require('require-dir')('./gulp/custom/'));
 
   _.forEach(tasksInGulpFolder, initTask);
-
-
   function initTask(task, name) {
     if (typeof task.init === "function") {
       task.init(gulp, plugins, configs, _, util);

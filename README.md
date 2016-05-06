@@ -344,6 +344,15 @@ gulp deploy --appjson path/to/app.json #only app specific
 * **How do I exclude specific scss in common or components? (coming soon)**
   * add glob patterns to ```gulp/app.json -> overrides/scss/[common/component]``` configuration
 
+* **How do I create custom gulp tasks**
+  * Custom gulp tasks should be created using the established format (exporting init()) and they should be saved in ```gulp/custom/``` directory
+
+* **How do I override built-in gulp tasks**
+  * There are two ways to override built-in gulp tasks
+    * **Method 1** Create new gulp tasks with the same **file names** matching the ones you wish to override and place them in ```gulp/custom/``` directory
+    * **Method 2** Create new gulp tasks with the same **task names** matching the ones you wish to override and place them in ```gulp/custom/``` directory
+    
+
 ---
 ###Git 101
 ```bash
