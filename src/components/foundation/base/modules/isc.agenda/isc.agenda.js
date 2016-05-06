@@ -32,7 +32,7 @@
 
     var directive = {
       restrict        : 'EA',
-      scope           : false,
+      scope           : {},
       bindToController: {
         "agenda": "=data",
         "config": "="
