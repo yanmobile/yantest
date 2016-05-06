@@ -34,8 +34,9 @@
       restrict        : 'EA',
       scope           : {},
       bindToController: {
-        "agenda": "=data",
-        "config": "="
+        "agenda" : "=data",
+        "config" : "=",
+        "options": "=?" //can be used to extend functionality when used with custom templateUrl
       },
       controller      : controller,
       controllerAs    : 'agendaCtrl',
