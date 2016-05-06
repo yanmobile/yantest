@@ -14,10 +14,8 @@
 
     // afterEach clean up
     afterEach(function () {
-      if (suite.element) {
-        suite.element.remove();
-        suite = null;
-      }
+      cleanup(suite);
+      suite = null;
     });
 
     // this loads all the external templates used in directives etc
