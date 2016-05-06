@@ -1,7 +1,8 @@
 'use strict';
 
-var gulp = require('gulp');
-var _    = require('lodash');
+var gulp       = require('gulp');
+var _          = require('lodash');
+var requiredir = require('require-dir');
 
 var plugins = {
   chmod        : require('gulp-chmod'), //changes file permissions, used by imagemin
@@ -84,7 +85,7 @@ initTasksInGulpFolder();
  *  For each task inside "gulp/" folder, initialize/register the task
  */
 function initTasksInGulpFolder() {
-  var tasksInGulpFolder = _.extend({}, require('require-dir')('./gulp/'), require('require-dir')('./gulp/custom/'));
+  var tasksInGulpFolder = _.extend({}, requiredir('./gulp/'), readdir('./gulp/custom/'));
 
   _.forEach(tasksInGulpFolder, initTask);
   function initTask(task, name) {
@@ -119,6 +120,7 @@ function readJson(filePath, defaults) {
   try {
     filePath = plugins.path.join(filePath);
     json     = plugins.fs.readFileSync(filePath, 'utf8');
+    //if it doesn't throw, the use JSON.parse()
     json     = JSON.parse(json);
   } catch ( ex ) {
     json = defaults || {};
@@ -126,6 +128,24 @@ function readJson(filePath, defaults) {
   return json;
 }
 
+/**
+ * Reads the folder and returns its content. If the folder is not found, it will return defaults or {}
+ *
+ * @param dirPath
+ * @returns {*}
+ */
+function readdir(dirPath, defaults) {
+  var json;
+  try {
+    dirPath = plugins.path.join(dirPath);
+    plugins.fs.readdirSync(dirPath);
+    //if it doesn't throw, the use requiredir
+    json = requiredir(dirPath);
+  } catch ( ex ) {
+    json = defaults || {};
+  }
+  return json;
+}
 /**
  * Used by mergeWith to concat []s instead of replace the entire array
  * @param a
