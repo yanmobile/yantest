@@ -4,7 +4,6 @@
   angular.module('isc.core')
     .directive('iscFormsTypeaheadBridge', iscFormsTypeaheadBridge);
 
-
   /**
    * @ngdoc directive
    * @memberOf isc.core

@@ -11,7 +11,6 @@
   angular.module('isc.directives')
     .provider('iscConfirmationService', iscConfirmationService);
 
-
   // to configure app-wide options in app.config block
   // IscConfirmationServiceProvider.setOptions({title: 'from app.js'});
   /**

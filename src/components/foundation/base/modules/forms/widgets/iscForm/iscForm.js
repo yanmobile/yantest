@@ -214,7 +214,6 @@
 
       init();
 
-
       // Private/helper functions
       var originalFormKey;
 
@@ -420,7 +419,6 @@
             populateAdditionalModels(self.formDefinition.form.dataModelInit);
           });
       }
-
 
       /**
        * @memberOf iscForm

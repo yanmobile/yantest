@@ -36,9 +36,9 @@
         }
       },
       'forms'          : {
-        'debounce'             : 75,
-        'allowInvalid'         : true,
-        'updateOn'             : 'change',
+        'debounce'        : 75,
+        'allowInvalid'    : true,
+        'updateOn'        : 'change',
         'updateOnExcluded': [
           'checkbox',
           'multiCheckbox',

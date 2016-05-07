@@ -9,7 +9,6 @@
     .module('isc.spinner')
     .config(config);
 
-
   function config($httpProvider) {
     //adding the spinner interceptor code handler
     $httpProvider.interceptors.push('httpLoaderInterceptor');

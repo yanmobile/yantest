@@ -154,7 +154,6 @@
 
     self.onLoad();
 
-
     // --------------
     // version info
     // --------------
@@ -172,7 +171,6 @@
       }
     );
 
-
     // --------------
     // listeners
     // --------------
@@ -182,11 +180,11 @@
     });
 
     $scope.$on(AUTH_EVENTS.notAuthenticated, function (event, response) {
-//      channel.debug( 'iscNavigationController.loginError' );
+      //      channel.debug( 'iscNavigationController.loginError' );
     });
 
     $scope.$on(AUTH_EVENTS.notAuthorized, function (event, response) {
-//      channel.debug( 'iscNavigationController.loginError' );
+      //      channel.debug( 'iscNavigationController.loginError' );
     });
 
     $scope.$on(AUTH_EVENTS.sessionTimeoutWarning, function (event, response) {
@@ -223,7 +221,5 @@
 
   }// END CLASS
 
-
 })();
-
 

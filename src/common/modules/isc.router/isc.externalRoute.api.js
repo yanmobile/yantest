@@ -48,8 +48,8 @@
             'nextState'  : stateName,
             'stateParams': stateParams || {},
             // Set an expiration if provided
-            'expiresOn'  : externalRequestExpirationInMinutes
-              ? moment().add(externalRequestExpirationInMinutes, 'minute').toISOString()
+            'expiresOn'  : externalRequestExpirationInMinutes ?
+              moment().add(externalRequestExpirationInMinutes, 'minute').toISOString()
               : undefined
           }
         );

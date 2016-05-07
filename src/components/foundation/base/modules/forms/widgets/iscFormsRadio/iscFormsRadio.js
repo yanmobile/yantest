@@ -4,7 +4,6 @@
   angular.module('isc.core')
     .directive('iscFormsRadio', iscFormsRadio);
 
-
   /**
    * @ngdoc directive
    * @memberOf isc.core
@@ -34,8 +33,8 @@
       controller      : controller,
       link            : link,
       templateUrl     : function (elem, attrs) {
-             return attrs.templateUrl || 'forms/widgets/iscFormsRadio/iscFormsRadio.html';
-          }
+        return attrs.templateUrl || 'forms/widgets/iscFormsRadio/iscFormsRadio.html';
+      }
     };
 
     return directive;

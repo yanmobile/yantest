@@ -5,13 +5,13 @@
   angular
     .module('isc.core')
     .factory('iscVersionApi',iscVersionApi);
-    /**
-     * @ngdoc factory
-     * @memberOf isc.core
-     * @param iscHttpapi
-     * @returns {{load: load, get: get}}
-     */
-    function iscVersionApi(iscHttpapi) {
+  /**
+   * @ngdoc factory
+   * @memberOf isc.core
+   * @param iscHttpapi
+   * @returns {{load: load, get: get}}
+   */
+  function iscVersionApi(iscHttpapi) {
       var _url = 'version.json';
 
       var _versionInfo;

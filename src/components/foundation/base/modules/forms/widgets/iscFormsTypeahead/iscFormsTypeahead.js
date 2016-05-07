@@ -25,8 +25,8 @@
         limitTo          : '=',
         minlength        : '=',
         bypassInputFilter: '=' // if truthy, result typeahead list filter is bypassed;
-                               // useful for dynamic typeahead lists that are produced
-                               // from an API call
+        // useful for dynamic typeahead lists that are produced
+        // from an API call
       },
       replace         : true,
       transclude      : true,

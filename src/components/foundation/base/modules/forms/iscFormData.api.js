@@ -4,7 +4,6 @@
   angular.module('isc.forms')
     .factory('iscFormDataApi', iscFormDataApi);
 
-
   /**
    * @ngdoc factory
    * @memberOf isc.forms

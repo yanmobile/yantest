@@ -14,7 +14,7 @@
  * if custom addTemplate is defined in tabeConfig, it will use rowTemplate instead of default template
  *** if rowType === 'add'
  */
-(function(){
+(function() {
   'use strict';
 
   angular.module( 'isc.table' )
@@ -30,7 +30,7 @@
    * @param $compile
    * @returns {{scope: boolean, restrict: string, priority: number, controllerAs: string, controller: string, compile: compile}}
      */
-  function iscTableRow( devlog, $state, $templateCache, $compile ){
+  function iscTableRow( devlog, $state, $templateCache, $compile ) {
     var channel = devlog.channel('iscTableRow');
 
     channel.debug('iscTableRow.LOADED');
@@ -55,18 +55,18 @@
 
     return directive;
 
-    function compile(){
+    function compile() {
 
       return {
         pre : pre,
         post: post
       };
 
-      function pre(scope, trElem, attrs, iscRowCtrl){
+      function pre(scope, trElem, attrs, iscRowCtrl) {
         var defaultTemplate = scope.iscTblCtrl.tableConfig.editable === 'popup' ? 'table/popup/iscTablePopupRow.html' : 'table/iscTableRow.html';
 
         var rowTemplate = _.get(scope, 'iscTblCtrl.tableConfig.rowTemplate', defaultTemplate);
-        if( rowTemplate ){
+        if ( rowTemplate ) {
           //for some reason the template doesn't like spaces nor comments
           var template = removeTemplateSpaces( $templateCache.get( rowTemplate ) );
           trElem.html( template );
@@ -74,9 +74,9 @@
         }
       }
 
-      function post( scope, elem, attr , iscRowCtrl){
+      function post( scope, elem, attr, iscRowCtrl) {
         iscRowCtrl.iscTblCtrl = scope.iscTblCtrl;
-        scope.$watch( 'dataItem', function( value ){
+        scope.$watch( 'dataItem', function( value ) {
           iscRowCtrl.dataItem = value;
         } );
       }

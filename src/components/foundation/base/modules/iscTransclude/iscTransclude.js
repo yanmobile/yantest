@@ -280,7 +280,6 @@
 
       }
 
-
       function getAttributeOverrides(attrs) {
         var propKey,
             firstChar,
@@ -303,7 +302,7 @@
             // expression
             else if (firstChar === '=') {
               propValue = scope.$parent.$eval(propValue);
-          }
+            }
 
             // treat else the same as '@', just without the need to remove '@' char
             retOverrides[propKey] = propValue;

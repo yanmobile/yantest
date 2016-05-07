@@ -8,8 +8,8 @@
   // injection
   // ----------------------------
 
-  angular.module ('iscNavContainer')
-      .factory ('iscLanguageService', iscLanguageService);
+  angular.module('iscNavContainer')
+      .factory('iscLanguageService', iscLanguageService);
 
   // --------------------
   // INPLEMENTATION DETAILS
@@ -28,7 +28,7 @@
   /* @ngInject */
   function iscLanguageService (devlog, $window, $translate, iscCustomConfigService, iscSessionStorageHelper) {
     var channel = devlog.channel('iscLanguageService');
-    
+
     channel.debug( 'iscLanguageService LOADED');
 
     // ----------------------------
@@ -44,11 +44,10 @@
     // class factory
     // ----------------------------
     var service = {
-      showDropDown: showDropDown,
-      getLanguages: getLanguages,
+      showDropDown       : showDropDown,
+      getLanguages       : getLanguages,
       getSelectedLanguage: getSelectedLanguage
     };
-
 
     return service;
 
@@ -61,7 +60,7 @@
        */
     function getLanguages () {
       if (!initIsDone) {
-        doInit ();
+        doInit();
       }
       return languages;
     }
@@ -72,7 +71,7 @@
        */
     function showDropDown () {
       if (!initIsDone) {
-        doInit ();
+        doInit();
       }
 
       return showLanguageDropDown;
@@ -84,7 +83,7 @@
        */
     function getSelectedLanguage () {
       if (!initIsDone) {
-        doInit ();
+        doInit();
       }
 
       return selectedLanguage;
@@ -95,14 +94,14 @@
      */
     function doInit () {
 
-      languages = iscCustomConfigService.getConfigSection ('languageList');
+      languages = iscCustomConfigService.getConfigSection('languageList');
 
       if (languages) {
 
         if (languages.length > 1) {
           showLanguageDropDown = true;
 
-          var currentLanguage = iscSessionStorageHelper.getValFromSessionStorage ('currentLanguage');
+          var currentLanguage = iscSessionStorageHelper.getValFromSessionStorage('currentLanguage');
 
           if (!!currentLanguage) {
             selectedLanguage = currentLanguage;
@@ -112,17 +111,17 @@
             var lang = $window.navigator.language || $window.navigator.userLanguage;
             selectedLanguage = languages[ 0 ];
 
-            _.forEach (languages, function (language) {
+            _.forEach(languages, function (language) {
 
-              var myFileName = language.fileName.toUpperCase ();
-              var myLang = lang.toUpperCase ();
+              var myFileName = language.fileName.toUpperCase();
+              var myLang = lang.toUpperCase();
 
               if (myFileName === myLang) {
                 selectedLanguage = language;
                 //console.log('selected full match ', selectedLanguage);
                 return false;
               }
-              else if (myFileName.indexOf (myLang) !== -1) {
+              else if (myFileName.indexOf(myLang) !== -1) {
                 selectedLanguage = language;
                 //console.log('selected partial match ', selectedLanguage);
                 return false;
@@ -130,7 +129,7 @@
             });
           }
 
-          $translate.use (selectedLanguage.fileName);
+          $translate.use(selectedLanguage.fileName);
 
           initIsDone = true;
         }
@@ -140,7 +139,4 @@
 
   }//END CLASS
 
-
-
-
-}) ();
+})();

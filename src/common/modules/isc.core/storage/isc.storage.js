@@ -15,10 +15,10 @@
   function storage($window, devlog) {
     var channel = devlog.channel('storage');
     var service = {
-      clear: clear,
-      get: get,
+      clear : clear,
+      get   : get,
       remove: remove,
-      set: set
+      set   : set
     };
     return service;
 

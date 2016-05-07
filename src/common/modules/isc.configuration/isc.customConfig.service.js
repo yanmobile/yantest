@@ -30,7 +30,6 @@
       $get              : iscCustomConfigService
     };
 
-
     function updateConfig(object, key) {
       if (key) {
         _.mergeWith(config[key], object, concatArrays);

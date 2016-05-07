@@ -9,7 +9,6 @@
   angular.module('isc.core')
     .directive('iscFormsDateComponents', iscFormsDateComponents);
 
-
   /**
    * @ngdoc directive
    * @memberOf isc.core
@@ -49,8 +48,8 @@
       controllerAs    : 'dateComponentsCtrl',
       controller      : controller,
       templateUrl     : function (elem, attrs) {
-            return attrs.templateUrl || 'forms/widgets/iscFormsDateComponents/iscFormsDateComponents.html';
-         }
+        return attrs.templateUrl || 'forms/widgets/iscFormsDateComponents/iscFormsDateComponents.html';
+      }
     };
 
     return directive;
@@ -112,7 +111,7 @@
         keys.DOWN
       ];
 
-      scope.numericKeys = [ // 0 through 9
+      scope.numericKeys = [// 0 through 9
         48, 49, 50, 51, 52, 53, 54, 55, 56, 57
       ];
 
@@ -201,7 +200,6 @@
         }
       }
 
-
       // Internal validation
       // Use onKeyPress to ensure numerics are enforced and avoid input flickering
       scope.checkInput = function (component, maxLength, event) {
@@ -272,7 +270,7 @@
               return baseSelection();
             }
           }
-            // Base selection handler for browsers that do not (Chrome)
+          // Base selection handler for browsers that do not (Chrome)
           catch (x) {
             return baseSelection();
           }
@@ -327,7 +325,6 @@
 
         return maxDay;
       };
-
 
       // Auto-tabbing day and month wire-up
       var $day   = elem.find('.date-components-day');

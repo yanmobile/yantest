@@ -74,7 +74,6 @@
 
       init();
 
-
       // Private/helper functions
       /**
        * @memberOf iscFormInternal
@@ -88,7 +87,6 @@
         watchPages();
       }
 
-
       /**
        * @memberOf iscFormInternal
        */
@@ -98,7 +96,7 @@
             saveApi     = formDataApi.save || function () { },
             wrapApi     = formDataApi.wrap || function (data) { return data; };
 
-        var callSaveApi = _.throttle(wrapAndSaveData, 500, {trailing: true});
+        var callSaveApi = _.throttle(wrapAndSaveData, 500, { trailing: true });
 
         // Set save trigger
         switch (saveConfig.trigger) {
@@ -211,8 +209,7 @@
         }
       }
 
-
-//
+      //
       /**
        * @memberOf iscFormInternal
        * @description

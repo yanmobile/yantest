@@ -52,8 +52,8 @@
               label         : field.templateOptions.label,
               model         : field.key + (
                 // For data stored as complex objects, get the list field property
-                doesFieldStoreObject(field)
-                  ? ('.' + _.get(field, 'data.displayField', 'name'))
+                doesFieldStoreObject(field) ?
+                  ('.' + _.get(field, 'data.displayField', 'name'))
                   : ''
               ),
               templateUrl   : _.get(field, 'data.tableCellTemplateUrl'),

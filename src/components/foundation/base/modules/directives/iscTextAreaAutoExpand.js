@@ -39,8 +39,7 @@
  * Usage: <textarea isc-text-area-autoExpand ng-model="someValue"></textarea>
  **/
 
-
-(function(){
+(function() {
   'use strict';
   // ----------------------------
   // injection
@@ -97,7 +96,7 @@
    *
    */
   /* @ngInject */
-  function iscTextAreaAutoExpand( devlog ){ //jshint ignore: line
+  function iscTextAreaAutoExpand( devlog ) { //jshint ignore: line
     var channel = devlog.channel('iscTextAreaAutoExpand');
     channel.debug( 'iscTextAreaAutoExpand LOADED');
 
@@ -111,8 +110,8 @@
     // ----------------------------
     var directive = {
       restrict: 'EA',
-      require: 'ngModel',
-      link: link
+      require : 'ngModel',
+      link    : link
     };
 
     return directive;
@@ -121,7 +120,7 @@
     // functions
     // ----------------------------
 
-    function link( scope, element, attr, ngModelCtrl ){
+    function link( scope, element, attr, ngModelCtrl ) {
 
       var minHeight = MIN_HEIGHT;
       var paddingLeft = element.css('paddingLeft');
@@ -129,14 +128,14 @@
       var threshold = Math.max( parseInt(element.css('paddingTop') || 0), 20 );
 
       var $shadow = angular.element('<div></div>').css({
-        position: 'absolute',
-        top: -10000,
-        left: -10000,
-        width: element[0].offsetWidth - parseInt(paddingLeft || 0) - parseInt(paddingRight || 0),
-        fontSize: element.css('fontSize'),
+        position  : 'absolute',
+        top       : -10000,
+        left      : -10000,
+        width     : element[0].offsetWidth - parseInt(paddingLeft || 0) - parseInt(paddingRight || 0),
+        fontSize  : element.css('fontSize'),
         fontFamily: element.css('fontFamily'),
         lineHeight: element.css('lineHeight'),
-        resize:     'none'
+        resize    :     'none'
       });
 
       angular.element(document.body).append($shadow); // jshint ignore:line
@@ -172,10 +171,10 @@
       element.bind('keyup keydown keypress change', update);
       update();
 
-      scope.$watch( 'ngModelCtrl.$modelValue', function( oldval, newVal ){ // jshint ignore:line
+      scope.$watch( 'ngModelCtrl.$modelValue', function( oldval, newVal ) { // jshint ignore:line
         channel.debug( '...ngModelCtrl.$viewValue',ngModelCtrl.$viewValue );
         channel.debug( '...ngModelCtrl.$modelValue',ngModelCtrl.$modelValue );
-        if( !!ngModelCtrl.$modelValue ){
+        if ( !!ngModelCtrl.$modelValue ) {
           update();
         }
       });
@@ -188,7 +187,5 @@
     }//END LINK
 
   }//END CLASS
-
-
 
 })();

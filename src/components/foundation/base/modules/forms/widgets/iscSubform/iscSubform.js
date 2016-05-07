@@ -117,7 +117,6 @@
         }
       }
 
-
       // Event listeners
       $scope.$on(FORMS_EVENTS.showSubform, function (event, subformParams) {
         var childName =

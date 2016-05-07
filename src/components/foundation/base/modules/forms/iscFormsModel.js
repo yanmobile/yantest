@@ -90,7 +90,6 @@
         return deferred.promise;
       }
 
-
       function filterResults(array) {
         var filteredArray = limitToActive ? _.filter(array, { status: 'Active' }) : array;
         return allowMultiple ? filteredArray : _.first(filteredArray);

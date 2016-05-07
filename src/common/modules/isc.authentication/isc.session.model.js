@@ -29,7 +29,7 @@
     // vars
     // ----------------------------
 
-    var anonymousUser = {userRole: '*', FullName: 'anonymous'};
+    var anonymousUser = { userRole: '*', FullName: 'anonymous' };
     var credentials   = null;
     var currentUser   = anonymousUser;
 
@@ -65,22 +65,22 @@
     // ----------------------------
 
     var model = {
-      create : create,
-      destroy: destroy,
+      create             : create,
+      destroy            : destroy,
 
       initSessionTimeout : initSessionTimeout,
       stopSessionTimeout : stopSessionTimeout,
       resetSessionTimeout: resetSessionTimeout,
 
-      getCredentials: getCredentials,
+      getCredentials     : getCredentials,
 
-      getCurrentUser    : getCurrentUser,
-      getCurrentUserRole: getCurrentUserRole,
+      getCurrentUser     : getCurrentUser,
+      getCurrentUserRole : getCurrentUserRole,
 
-      isAuthenticated: isAuthenticated,
-      getFullName    : getFullName,
+      isAuthenticated    : isAuthenticated,
+      getFullName        : getFullName,
 
-      configure: configure
+      configure          : configure
     };
 
     return model;
@@ -183,7 +183,6 @@
         }
       }
     }
-
 
     function destroy() {
       channel.logFn('destroy');
@@ -401,7 +400,6 @@
       channel.debug('...sessionTimeout.warnAt', sessionTimeout.warnAt, "(" + _.getRemainingTime(sessionTimeout.warnAt) + "s remaining)");
     }
   }// END CLASS
-
 
 })();
 
