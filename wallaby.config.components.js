@@ -1,29 +1,31 @@
 var angularTemplatePreprocessor = require('wallaby-ng-html2js-preprocessor');
-module.exports                  = function () {
+var _                           = require('lodash');
+
+module.exports = function () {
   'use strict';
 
   var commonConfig     = require('./gulp/common.json');
   var componentsConfig = require('./src/components/foundation/base/components.json');
 
-  var commonVendorJs      = (commonConfig.vendor.js || []).map(noInstrument);
+  var commonVendorJs       = (commonConfig.vendor.js || []).map(noInstrument);
   var commonModuleVendorJs = (commonConfig.module.assets.vendor.js || []).map(noInstrument);
-  var commonVendorMocks   = (commonConfig.vendor.mocks || []).map(noInstrument);
-  var commonModuleModules = commonConfig.module.modules || [];
-  var commonModuleJs      = commonConfig.module.js || [];
-  var commonModuleMocks   = (commonConfig.module.mocks || []).map(noInstrument);
-  var commonModuleHtml    = commonConfig.module.html || [];
+  var commonVendorMocks    = (commonConfig.vendor.mocks || []).map(noInstrument);
+  var commonModuleModules  = commonConfig.module.modules || [];
+  var commonModuleJs       = commonConfig.module.js || [];
+  var commonModuleMocks    = (commonConfig.module.mocks || []).map(noInstrument);
+  var commonModuleHtml     = commonConfig.module.html || [];
 
-  var componentsVendorJs      = (componentsConfig.vendor.js || []).map(noInstrument);
+  var componentsVendorJs       = (componentsConfig.vendor.js || []).map(noInstrument);
   var componentsModuleVendorJs = (componentsConfig.module.assets.vendor.js || []).map(noInstrument);
-  var componentsVendorMocks   = (componentsConfig.vendor.mocks || []).map(noInstrument);
-  var componentsModuleJs      = componentsConfig.module.js || [];
-  var componentsModuleModules = componentsConfig.module.modules || [];
-  var componentsModuleMocks   = (componentsConfig.module.mocks || []).map(noInstrument);
-  var componentsModuleTests   = componentsConfig.module.tests || [];
-  var componentsModuleHtml    = componentsConfig.module.html || [];
+  var componentsVendorMocks    = (componentsConfig.vendor.mocks || []).map(noInstrument);
+  var componentsModuleJs       = componentsConfig.module.js || [];
+  var componentsModuleModules  = componentsConfig.module.modules || [];
+  var componentsModuleMocks    = (componentsConfig.module.mocks || []).map(noInstrument);
+  var componentsModuleTests    = componentsConfig.module.tests || [];
+  var componentsModuleHtml     = componentsConfig.module.html || [];
 
   return {
-    basePath       : '..', // Ignored through gulp-karmaa
+    basePath       : '..', // Ignored through gulp-karma
     'files'        : []
       .concat(commonVendorJs)
       .concat(componentsVendorJs)
@@ -43,13 +45,13 @@ module.exports                  = function () {
     'preprocessors': {
       'src/common/modules/**/*.html'       : function (file) {
         return angularTemplatePreprocessor.transform(file, {
-          stripPrefix: 'src\/(app|common|components)\/.*\/?modules\/',
+          stripPrefix : 'src\/(app|common|components)\/.*\/?modules\/',
           'moduleName': 'isc.templates'
         });
       },
       'src/components/**/modules/**/*.html': function (file) {
         return angularTemplatePreprocessor.transform(file, {
-          stripPrefix: 'src\/(app|common|components)\/.*\/?modules\/',
+          stripPrefix : 'src\/(app|common|components)\/.*\/?modules\/',
           'moduleName': 'isc.templates'
         });
       }
@@ -63,6 +65,16 @@ module.exports                  = function () {
    * @returns {{pattern: *, instrument: boolean}}
    */
   function noInstrument(pattern) {
-    return { pattern: pattern, instrument: false };
+    if (_.isObject(pattern)) {
+      return _.merge(pattern, {
+        instrument: false
+      });
+    }
+    else {
+      return {
+        pattern   : pattern,
+        instrument: false
+      };
+    }
   }
 };

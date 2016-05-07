@@ -1,6 +1,6 @@
 // Mock API
 var mockFormResponses = function (httpBackend) {
-  var staticPath = '/test/unit/components/forms/static';
+  var staticPath = 'test/unit/components/forms/static';
 
   resetMockFormStore();
 
@@ -12,12 +12,9 @@ var mockFormResponses = function (httpBackend) {
   httpBackend.when('GET', /^formInfo\/status\/\w*$/)
     .respond(function response(method, url) {
       var formType = url.replace('formInfo/status/', '');
-      console.log(_.filter(mockFormStore.formStatus, {
-        formType: formType
-      }));
       return [200, _.filter(mockFormStore.formStatus, {
         formType: formType
-      })]
+      })];
     });
 
   // Update form status
@@ -40,24 +37,19 @@ var mockFormResponses = function (httpBackend) {
   httpBackend.when('GET', /^forms\/\w*$/)
     .respond(function response(method, url) {
       var formKey = url.replace('forms/', ''),
-          request = new XMLHttpRequest();
+          path    = [staticPath, formKey].join('/');
 
-      request.open('GET', [staticPath, formKey + '.json'].join('/'), false);
-      request.send(null);
-
-      return [200, request.response, {}];
+      return [200, getJSONFile(path), {}];
     });
 
   // User Scripts
   httpBackend.when('GET', /^formTemplates\/userScripts\/\w*$/)
     .respond(function response(method, url) {
       var scriptName = url.replace('formTemplates/userScripts/', ''),
-          request    = new XMLHttpRequest();
+          path       = [staticPath, 'userScripts', scriptName + '.js'].join('/');
 
-      request.open('GET', [staticPath, 'userScripts', scriptName + '.js'].join('/'), false);
-      request.send(null);
-
-      return [200, request.response, {}];
+      var file = getHTMLFile(path);
+      return [200, file, {}];
     });
 
   // Custom Templates
@@ -67,34 +59,25 @@ var mockFormResponses = function (httpBackend) {
           splitParams  = routeParams.split('/'),
           templateName = splitParams[0],
           htmlName     = splitParams[1],
-          request      = new XMLHttpRequest();
+          path         = [staticPath, templateName, htmlName].join('/');
 
-      request.open('GET', [staticPath, templateName, htmlName].join('/'), false);
-      request.send(null);
-
-      return [200, request.response, {}];
+      return [200, getHTMLFile(path), {}];
     });
 
   httpBackend.when('GET', /^formTemplates\/js\/\w*$/)
     .respond(function response(method, url) {
-      var templateName = url.replace('formTemplates/js', ''),
-          request      = new XMLHttpRequest();
+      var templateName = url.replace('formTemplates/js/', ''),
+          path         = [staticPath, templateName, 'script.js'].join('/');
 
-      request.open('GET', [staticPath, templateName, 'script.js'].join('/'), false);
-      request.send(null);
-
-      return [200, request.response, {}];
+      return [200, getHTMLFile(path), {}];
     });
 
   httpBackend.when('GET', /^formTemplates\/css\/\w*$/)
     .respond(function response(method, url) {
-      var templateName = url.replace('formTemplates/css', ''),
-          request      = new XMLHttpRequest();
+      var templateName = url.replace('formTemplates/css/', ''),
+          path         = [staticPath, templateName, 'stylesheet.css'].join('/');
 
-      request.open('GET', [staticPath, templateName, 'stylesheet.css'].join('/'), false);
-      request.send(null);
-
-      return [200, request.response, {}];
+      return [200, getHTMLFile(path), {}];
     });
 
   // Form Data
@@ -159,13 +142,11 @@ var mockFormResponses = function (httpBackend) {
   // CodeTable API
   httpBackend.when('GET', 'codeTables')
     .respond(function response(method, url) {
-      var request = new XMLHttpRequest();
-
-      request.open('GET', [staticPath, 'codeTables', 'usStates.json'].join('/'), false);
-      request.send(null);
+      var path = [staticPath, 'codeTables', 'usStates'].join('/'),
+          json = getJSONFile(path);
 
       var response = {
-        "usStates": JSON.parse(request.response)
+        "usStates": json
       };
 
       return [200, response, {}];
@@ -187,4 +168,38 @@ var mockFormResponses = function (httpBackend) {
       }]
     });
 };
+
+// JSON fixtures
+function getJSONFile(path) {
+  // For Karma, using fixtures
+  if (window.__json__) {
+    return window.__json__[path];
+  }
+  // For Wallaby, serving files
+  else {
+    var request = new XMLHttpRequest();
+
+    request.open('GET', path + '.json', false);
+    request.send(null);
+
+    return JSON.parse(request.response);
+  }
+}
+
+// HTML fixtures
+function getHTMLFile(path) {
+  // For Karma, using fixtures
+  if (window.__html__) {
+    return window.__html__[path];
+  }
+  // For Wallaby, serving files
+  else {
+    var request = new XMLHttpRequest();
+
+    request.open('GET', path, false);
+    request.send(null);
+
+    return request.response;
+  }
+}
 
