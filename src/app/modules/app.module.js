@@ -32,10 +32,10 @@
       suffix: '.json'
     });
 
-    $translateProvider.preferredLanguage('en_US');   
+    $translateProvider.preferredLanguage('en_US');
     $httpProvider.defaults.withCredentials = true;
-    
-    if(appConfig.production){
+
+    if (appConfig.production) {
       $compileProvider.debugInfoEnabled(false);
     }
   }
