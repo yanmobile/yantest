@@ -79,20 +79,27 @@
   "requireSpacesInConditionalExpression"   : true,
   "requireSpaceBeforeBlockStatements"      : true,
   "requireLineFeedAtFileEnd"               : true,
-  "disallowSpacesInsideObjectBrackets"     : "all",
+  "requireSpacesInsideObjectBrackets"      : "all",
   "disallowSpacesInsideArrayBrackets"      : "all",
-  "disallowSpacesInsideParentheses"        : true,
+  "disallowSpacesInsideParentheses"        : false,
+  "requireAlignedObjectValues"             : "all",
+  "disallowSpacesInCallExpression"         : true,
+  "requireObjectKeysOnNewLine"             : {
+    "allExcept" : [
+      "sameLine"
+    ]
+  },
   "jsDoc"                                  : {
     "checkAnnotations" : {
       "preset" : "jsdoc3",
       "extra"  : {
-        "ngdoc" : true,
-        "memberOf": true,
-        "description": true,
-        "restrict" : true,
-        "element" : true,
-        "scope" : true,
-        "namespace" : true
+        "ngdoc"       : true,
+        "memberOf"    : true,
+        "description" : true,
+        "restrict"    : true,
+        "element"     : true,
+        "scope"       : true,
+        "namespace"   : true
       }
     }
   },
