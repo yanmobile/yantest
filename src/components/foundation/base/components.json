@@ -40,7 +40,9 @@
       }
     },
     "mocks"   : [
-      "test/unit/components/componentsUnitTestMocks.js"
+      "test/unit/components/componentsUnitTestMocks.js",
+      "test/unit/components/**/*.mocks.js",
+      "test/unit/components/forms/static/**/*.*"
     ],
     "tests"   : [
       "test/unit/components/**/*.test.js"
