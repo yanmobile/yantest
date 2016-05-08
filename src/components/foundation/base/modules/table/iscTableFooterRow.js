@@ -2,12 +2,11 @@
  * Created by hzou on 08/03/15.
  */
 
-(function(){
+(function() {
   'use strict';
 
   angular.module( 'isc.table' )
     .directive( 'iscTableFooterRow', iscTableFooterRow );
-
 
   /* @ngInject */
   /**
@@ -19,7 +18,7 @@
    * @param $compile
    * @returns {{scope: boolean, restrict: string, controllerAs: string, compile: compile}}
      */
-  function iscTableFooterRow( devlog, $state, $templateCache, $compile ){
+  function iscTableFooterRow( devlog, $state, $templateCache, $compile ) {
     var channel = devlog.channel('iscTableFooterRow');
 
     channel.debug('iscTableFooterRow.LOADED');
@@ -44,16 +43,16 @@
     // ----------------------------
     // functions
     // ----------------------------
-    function compile(){
+    function compile() {
 
       return {
         pre: pre
       };
 
-      function pre( scope, trElem, attrs, iscRowCtrl ){ //jshint ignore:line
+      function pre( scope, trElem, attrs, iscRowCtrl ) { //jshint ignore:line
         var footerRowTemplate = _.get( scope, 'iscTblCtrl.tableConfig.footerRowTemplate' );
 
-        if( footerRowTemplate ){
+        if ( footerRowTemplate ) {
           //for some reason the template doesn't like spaces nor comments
           var template = $templateCache.get( footerRowTemplate );
 

@@ -5,9 +5,8 @@
 
 // opens zf-modal when inEditMode changes to 'popup'
 
-(function(){
+(function() {
   'use strict';
-
 
   // ----------------------------
   // injection
@@ -25,7 +24,7 @@
    * @param $compile
    * @returns {{restrict: string, link: link}}
      */
-  function iscTablePopupOpener(devlog, $state, $templateCache, $compile){//jshint ignore:line
+  function iscTablePopupOpener(devlog, $state, $templateCache, $compile) {//jshint ignore:line
     var channel = devlog.channel('iscTablePopupOpener');
     channel.debug( 'iscTablePopupOpener LOADED');
 
@@ -45,10 +44,10 @@
     // functions
     // ----------------------------
 
-    function link(scope, trElem, attrs, iscRowCtrl){
-      scope.$watch('iscRowCtrl.inEditMode', function(newVal, oldVal){
-        if(newVal !== oldVal){
-          if( newVal === 'popup' ){
+    function link(scope, trElem, attrs, iscRowCtrl) {
+      scope.$watch('iscRowCtrl.inEditMode', function(newVal, oldVal) {
+        if (newVal !== oldVal) {
+          if ( newVal === 'popup' ) {
             trElem.parent().find('[zf-modal]').scope().show();
           } else {
             trElem.parent().find('[zf-modal]').scope().hide();

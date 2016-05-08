@@ -6,15 +6,15 @@
     .module('isc.forms')
     .factory('iscFormsCodeTableApi', iscFormsCodeTableApi);
 
-    /**
-     * @ngdoc factory
-     * @memberOf isc.forms
-     * @param iscHttpapi
-     * @param apiHelper
-     * @param iscCustomConfigService
-     * @returns {{loadAll: loadAll, get: get}}
-     */
-    function iscFormsCodeTableApi(iscHttpapi, apiHelper, iscCustomConfigService) {
+  /**
+   * @ngdoc factory
+   * @memberOf isc.forms
+   * @param iscHttpapi
+   * @param apiHelper
+   * @param iscCustomConfigService
+   * @returns {{loadAll: loadAll, get: get}}
+   */
+  function iscFormsCodeTableApi(iscHttpapi, apiHelper, iscCustomConfigService) {
       var config       = iscCustomConfigService.getConfig(),
           moduleConfig = _.get(config, 'moduleApi', {});
 

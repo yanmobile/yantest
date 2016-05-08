@@ -18,6 +18,7 @@ var plugins = {
   imagemin     : require('gulp-imagemin'),  //used by pngCrush
   jscs         : require('gulp-jscs'),  //javascript coding styles
   jshint       : require('gulp-jshint'),  //js linting
+  stylish      : require('gulp-jscs-stylish'),  //js linting
   karma        : require('karma').server, //unit test runner
   mobilizer    : require('gulp-mobilizer'), //?
   ngAnnotate   : require('gulp-ng-annotate'), //adding ngAnnotate
@@ -38,6 +39,7 @@ var plugins = {
 var util = {
   getArg         : getArg,
   readJson       : readJson,
+  readdir        : readdir,
   fixRelativePath: fixRelativePath
 };
 
@@ -123,6 +125,7 @@ function readJson(filePath, defaults) {
     //if it doesn't throw, the use JSON.parse()
     json     = JSON.parse(json);
   } catch ( ex ) {
+    console.log('file not found:', ex);
     json = defaults || {};
   }
   return json;

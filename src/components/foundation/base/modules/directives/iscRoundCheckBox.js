@@ -2,7 +2,7 @@
  * Created by douglas goodman on 2/26/15.
  */
 
-(function(){
+(function() {
   'use strict';
   // ----------------------------
   // injection
@@ -20,7 +20,7 @@
    * @returns {{restrict: string, transclude: boolean, require: string, scope: {onToggle: string}, link: link, templateUrl: directive.templateUrl}}
    */
   /* @ngInject */
-  function iscRoundCheckBox( devlog ){//jshint ignore:line
+  function iscRoundCheckBox( devlog ) {//jshint ignore:line
     var channel = devlog.channel('iscRoundCheckBox');
     channel.debug( 'iscRoundCheckBox LOADED');
 
@@ -32,13 +32,13 @@
     // class factory
     // ----------------------------
     var directive = {
-      restrict: 'EA',
-      transclude: false,
-      require: '?ngModel',
-      scope: {
+      restrict   : 'EA',
+      transclude : false,
+      require    : '?ngModel',
+      scope      : {
         onToggle: '&'
       },
-      link: link,
+      link       : link,
       templateUrl: function (elem, attrs) {
         return attrs.templateUrl || 'svg/isc-rounded-checkbox.html';
       }
@@ -50,21 +50,21 @@
     // functions
     // ----------------------------
 
-    function link( scope, elem, attr, ngModelCtrl ){
+    function link( scope, elem, attr, ngModelCtrl ) {
 
       scope.selected = false;
 
-      if( ngModelCtrl ){
-        ngModelCtrl.$render = function(){
+      if ( ngModelCtrl ) {
+        ngModelCtrl.$render = function() {
           scope.selected = ngModelCtrl.$viewValue;
         };
       }
 
-      scope.toggleCheckBox = function(){
+      scope.toggleCheckBox = function() {
         scope.selected = !scope.selected;
-        scope.onToggle( {selected: scope.selected} );
+        scope.onToggle( { selected: scope.selected } );
 
-        if( ngModelCtrl ){
+        if ( ngModelCtrl ) {
           channel.debug( 'iscRoundCheckBox.$setViewValue');
           ngModelCtrl.$setViewValue( !ngModelCtrl.$viewValue );
         }
@@ -72,7 +72,5 @@
     }
 
   }//END CLASS
-
-
 
 })();

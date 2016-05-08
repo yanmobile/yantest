@@ -33,17 +33,16 @@
     var secondaryNavTasks;
     var versionInfo;
 
-
     // ----------------------------
     // class factory
     // ----------------------------
 
     var model = {
 
-      getTopNav: getTopNav,
+      getTopNav                : getTopNav,
 
-      getVersionInfo: getVersionInfo,
-      setVersionInfo: setVersionInfo,
+      getVersionInfo           : getVersionInfo,
+      setVersionInfo           : setVersionInfo,
 
       navigateToUserLandingPage: navigateToUserLandingPage
     };
@@ -81,7 +80,7 @@
 
         topNavArr[currentUserRole] = _.toArray(userTabs);
       }
-      
+
       return topNavArr[currentUserRole];
     }
 
@@ -101,7 +100,6 @@
       versionInfo = val;
     }
   }//END CLASS
-
 
 })();
 

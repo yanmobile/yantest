@@ -12,7 +12,6 @@
     .module('isc.authentication', ['isc.core', 'isc.configuration'])
     .run(run);
 
-
   function run(devlog, $rootScope, AUTH_EVENTS, $timeout, storage, iscSessionModel, iscSessionStorageHelper) {
     var channel = devlog.channel('isc.authentication');
     channel.debug('iscNavContainer.loadDataFromStoredSession');

@@ -4,7 +4,7 @@
   angular
     .module('isc.notification')
     .constant('NOTIFICATION', {
-      type : {
+      type     : {
         success: 'success',
         warning: 'warning',
         alert  : 'alert',

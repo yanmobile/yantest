@@ -6,14 +6,14 @@
     .module('isc.notification')
     .factory('iscNotificationService',iscNotificationService);
 
-    /**
-     * @ngdoc factory
-     * @memberOf isc.notification
-     * @param FoundationApi
-     * @param NOTIFICATION
-     * @returns {{init: init, setDefaults: setDefaults, registerFieldScope: registerFieldScope, getFieldScope: getFieldScope, showAlert, showWarning, showSuccess, showDark}}
-     */
-    function iscNotificationService(FoundationApi, NOTIFICATION) {
+  /**
+   * @ngdoc factory
+   * @memberOf isc.notification
+   * @param FoundationApi
+   * @param NOTIFICATION
+   * @returns {{init: init, setDefaults: setDefaults, registerFieldScope: registerFieldScope, getFieldScope: getFieldScope, showAlert, showWarning, showSuccess, showDark}}
+   */
+  function iscNotificationService(FoundationApi, NOTIFICATION) {
       var defaults = {};
 
       var fieldScope = {};
@@ -29,32 +29,32 @@
         registerFieldScope: registerFieldScope,
         getFieldScope     : getFieldScope,
 
-        showAlert  : showAlert,
-        showWarning: showWarning,
-        showSuccess: showSuccess,
-        showDark   : showDark
+        showAlert         : showAlert,
+        showWarning       : showWarning,
+        showSuccess       : showSuccess,
+        showDark          : showDark
       };
 
-        /**
-         * @memberOf iscNotificationService
-         */
+      /**
+       * @memberOf iscNotificationService
+       */
       function init() {
         fieldScope = {};
       }
 
-        /**
-         * @memberOf iscNotificationService
-         * @param scope
-         */
+      /**
+       * @memberOf iscNotificationService
+       * @param scope
+       */
       function registerFieldScope(scope) {
         fieldScope[scope.id] = scope;
       }
 
-        /**
-         * @memberOf iscNotificationService
-         * @param id
-         * @returns {*}
-         */
+      /**
+       * @memberOf iscNotificationService
+       * @param id
+       * @returns {*}
+       */
       function getFieldScope(id) {
         return _.get(fieldScope, id, {});
       }
@@ -91,8 +91,8 @@
             scrollTo : config.scrollTo,
 
             // form-specific notification properties
-            $error : config.$error,
-            options: config.options
+            $error   : config.$error,
+            options  : config.options
           }
         );
       }

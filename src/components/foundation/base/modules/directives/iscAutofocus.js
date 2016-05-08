@@ -19,9 +19,8 @@
   // injection
   // ----------------------------
 
-  angular.module ('isc.directives')
-    .directive ('iscAutofocus', iscAutofocus);
-
+  angular.module('isc.directives')
+    .directive('iscAutofocus', iscAutofocus);
 
   /**
    * @ngdoc directive
@@ -63,14 +62,12 @@
      * The method is the link method for the directive
        */
     function link (scope, elem, attr) {
-      $timeout (function () {
-        elem[ 0 ].focus ();
+      $timeout(function () {
+        elem[ 0 ].focus();
       });
 
     }//END LINK
 
   }//END CLASS
 
-
-
-}) ();
+})();

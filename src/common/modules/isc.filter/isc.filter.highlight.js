@@ -32,7 +32,6 @@
       return $sce.trustAsHtml(text);
     }
 
-
   }//END CLASS
 
 })();

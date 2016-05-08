@@ -14,31 +14,30 @@
   function iscSessionStorageHelper(devlog, $window) {
     var log = devlog
       .channel('iscSessionStorageHelper');
-      log.debug( 'iscSessionStorageHelper LOADED');
+    log.debug( 'iscSessionStorageHelper LOADED');
 
     // ----------------------------
     // vars
     // ----------------------------
-
 
     // ----------------------------
     // class factory
     // ----------------------------
 
     var helper = {
-      destroy: destroy,
+      destroy                 : destroy,
 
-      getLoginResponse: getLoginResponse,
-      setLoginResponse: setLoginResponse,
+      getLoginResponse        : getLoginResponse,
+      setLoginResponse        : setLoginResponse,
 
-      getConfig: getConfig,
-      setConfig: setConfig,
+      getConfig               : getConfig,
+      setConfig               : setConfig,
 
-      getSessionExpiresOn: getSessionExpiresOn,
-      setSessionExpiresOn: setSessionExpiresOn,
+      getSessionExpiresOn     : getSessionExpiresOn,
+      setSessionExpiresOn     : setSessionExpiresOn,
 
-      getShowTimedOutAlert: getShowTimedOutAlert,
-      setShowTimedOutAlert: setShowTimedOutAlert,
+      getShowTimedOutAlert    : getShowTimedOutAlert,
+      setShowTimedOutAlert    : setShowTimedOutAlert,
 
       canParse                : canParse,
       getValFromSessionStorage: getValFromSessionStorage,
@@ -130,9 +129,6 @@
       $window.sessionStorage.setItem(key, jsonStr);
     }
 
-
   }// END CLASS
-
-
 
 })();

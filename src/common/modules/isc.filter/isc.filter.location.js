@@ -2,7 +2,6 @@
  * Created by trevor hudson on 10/16/15.
  */
 
-
 (function () {
   'use strict';
   // 2.16.840.1.113883.3.86 is an InterSystems code that represents null

@@ -82,7 +82,6 @@
         data   : self.formState._annotations.data
       };
 
-
       self.dateFormat        = _.get(appConfig, 'formats.date.shortDate', 'date');
       self.annotationWrapper = 'forms/foundationTemplates/tableTemplates/annotation-indicator.html';
 
@@ -175,12 +174,10 @@
         onCollectionModified();
       };
 
-
       // Watches
       $scope.$watch(getValidation, function (value) {
         self.validationErrors = _.get(value, 'records');
       });
-
 
       // Private/helper functions
       /**
@@ -366,7 +363,5 @@
     }
 
   }//END CLASS
-
-
 
 })();

@@ -88,7 +88,6 @@
           break;
       }
 
-
       return $q.reject(response);
     }
 

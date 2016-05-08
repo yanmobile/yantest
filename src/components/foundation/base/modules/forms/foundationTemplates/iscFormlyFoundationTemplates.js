@@ -23,31 +23,31 @@
     .module('isc.forms')
     .factory('iscFormlyFoundationTemplates', iscFormlyFoundationTemplates);
 
-    /**
-     * @ngdoc factory
-     * @memberOf isc.forms
-     * @param $filter
-     * @param iscCustomConfigService
-     * @param iscFormsTemplateService
-     * @returns {{init: init}}
-     * @description
-     * Templates adapted from angular-formly-templates-foundation 1.0.0-beta.1
-     *  The foundation templates project itself does not work ootb with formly due to changes to api-check.
-     *  All api-check calls are omitted from the implementation below.
-     *
-     *  Templates adapted from formlyFoundation are:<br />
-     *    input<br />
-     *    checkbox<br />
-     *    multiCheckbox<br />
-     *    radio<br />
-     *    select<br />
-     *    textarea<br />
-     *
-     *  Wrappers adapted are:<br />
-     *    templateLabel<br />
-     *    templateHasError
-     */
-     function iscFormlyFoundationTemplates($filter, iscCustomConfigService, iscFormsTemplateService) {
+  /**
+   * @ngdoc factory
+   * @memberOf isc.forms
+   * @param $filter
+   * @param iscCustomConfigService
+   * @param iscFormsTemplateService
+   * @returns {{init: init}}
+   * @description
+   * Templates adapted from angular-formly-templates-foundation 1.0.0-beta.1
+   *  The foundation templates project itself does not work ootb with formly due to changes to api-check.
+   *  All api-check calls are omitted from the implementation below.
+   *
+   *  Templates adapted from formlyFoundation are:<br />
+   *    input<br />
+   *    checkbox<br />
+   *    multiCheckbox<br />
+   *    radio<br />
+   *    select<br />
+   *    textarea<br />
+   *
+   *  Wrappers adapted are:<br />
+   *    templateLabel<br />
+   *    templateHasError
+   */
+  function iscFormlyFoundationTemplates($filter, iscCustomConfigService, iscFormsTemplateService) {
       var service = {
         init: init
       };
@@ -70,7 +70,6 @@
             templateUrl: 'forms/foundationTemplates/wrappers/has-error.html'
           }
         ]);
-
 
         // Templates
         // Base type overrides
@@ -291,7 +290,6 @@
             );
           }
         });
-
 
         // Embedded form
         iscFormsTemplateService.registerType({

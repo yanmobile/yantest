@@ -40,14 +40,14 @@
     };
 
     var brandColors = {
-      'default': '#ecf0f1',
+      'default'     : '#ecf0f1',
 
-      'inverse': '#95a5a6',
-      'primary': '#3498db',
-      'success': '#2ecc71',
-      'warning': '#f1c40f',
-      'danger' : '#e74c3c',
-      'info'   : '#1abcaf',
+      'inverse'     : '#95a5a6',
+      'primary'     : '#3498db',
+      'success'     : '#2ecc71',
+      'warning'     : '#f1c40f',
+      'danger'      : '#e74c3c',
+      'info'        : '#1abcaf',
 
       'brown'       : '#c0392b',
       'indigo'      : '#9b59b6',
@@ -67,12 +67,12 @@
     // ----------------------------
 
     var service = {
-      values: values,
-      get   : get,
-      set   : set,
+      values       : values,
+      get          : get,
+      set          : set,
 
       getBrandColor: getBrandColor,
-      keyCode: {
+      keyCode      : {
         BACKSPACE: 8,
         COMMA    : 188,
         DELETE   : 46,
@@ -129,7 +129,6 @@
     }
 
   }// END CLASS
-
 
   // ----------------------------
   // inject

@@ -6,19 +6,18 @@
     .module('isc.forms')
     .factory('hsModelUtils', hsModelUtils);
 
-    /**
-     *
-     * @ngdoc factory
-     * @memberOf isc.forms
-     * @param $window
-     * @returns {{validateRecord: validateRecord, getError: getError}}
-     */
-     function hsModelUtils($window) {
+  /**
+   *
+   * @ngdoc factory
+   * @memberOf isc.forms
+   * @param $window
+   * @returns {{validateRecord: validateRecord, getError: getError}}
+   */
+  function hsModelUtils($window) {
       return {
         validateRecord: validateRecord,
         getError      : getError
       };
-
 
       /**
        * Wrapper for a proposed validation model that is executed on model change
@@ -38,7 +37,6 @@
        * recordName is a logical component of the data model: e.g., Patient, Address, Name, etc.
        */
       function validateRecord(module, record, recordName) {
-
 
         return $window.hsModelUtils.validateRecord(module, record, recordName).length;
       }
@@ -61,7 +59,6 @@
        * @memberOf hsModelUtils
        */
       function getError(module, spec) {
-
 
         return $window.hsModelUtils.getError(module, spec);
       }

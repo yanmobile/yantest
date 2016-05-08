@@ -6,13 +6,13 @@
     .module('isc.forms')
     .factory('iscFormsValidationService',iscFormsValidationService);
 
-    /**
-     * @ngdoc factory
-     * @memberOf isc.forms
-     * @param $q
-     * @param $timeout
-     * @returns {{init: init, getValidationObject: getValidationObject, registerCollection: registerCollection, validateForm: validateForm, validateCollections: validateCollections}}
-     */
+  /**
+   * @ngdoc factory
+   * @memberOf isc.forms
+   * @param $q
+   * @param $timeout
+   * @returns {{init: init, getValidationObject: getValidationObject, registerCollection: registerCollection, validateForm: validateForm, validateCollections: validateCollections}}
+   */
   function iscFormsValidationService($q, $timeout) {
       var options;
       var validation = {};
@@ -144,17 +144,17 @@
           return !validation.form;
         }
 
-          /**
-           * @description
-           * Waits until sleepTest evaluates to truthy, then resolves.
-           * Short-circuits and returns false if the maxWaitInMillis time is exceeded.
-           *
-           * Useful for waiting for longer-running third-party synchronous functions (such as form building) to complete.
-           * @memberOf iscFormsValidationService
-           * @param sleepTest {function}
-           * @param maxWait {number
-           * @returns {promise}
-           */
+        /**
+         * @description
+         * Waits until sleepTest evaluates to truthy, then resolves.
+         * Short-circuits and returns false if the maxWaitInMillis time is exceeded.
+         *
+         * Useful for waiting for longer-running third-party synchronous functions (such as form building) to complete.
+         * @memberOf iscFormsValidationService
+         * @param sleepTest {function}
+         * @param maxWait {number
+         * @returns {promise}
+         */
         function sleepUntil(sleepTest, maxWait) {
           maxWait = maxWait || maxWaitInMillis;
           return $timeout(function () {

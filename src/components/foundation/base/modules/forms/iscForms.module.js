@@ -18,7 +18,7 @@
         controller : 'iscFormsController as formsCtrl',
         roles      : ['*']
       },
-      'index.form': {
+      'index.form'      : {
         state      : 'index.form',
         url        : 'forms/:mode/:formType/:formKey?id&dataModelType&dataModelKey&dataModelId&useOriginalFormKey',
         templateUrl: 'forms/iscForms.html',

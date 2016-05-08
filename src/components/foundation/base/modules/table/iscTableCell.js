@@ -1,9 +1,8 @@
 /**
  * Created by Trevor Hudson on 06/02/15.
  */
-(function(){
+(function() {
   'use strict';
-
 
   angular.module( 'isc.table' )
     .directive( 'iscTableCell', iscTableCell );
@@ -18,7 +17,7 @@
    * @param $compile
    * @returns {{restrict: string, compile: compile}}
      */
-  function iscTableCell( devlog, $state, $templateCache, $compile ){
+  function iscTableCell( devlog, $state, $templateCache, $compile ) {
     var channel = devlog.channel('iscTableCell');
 
     channel.debug('iscTableCell.LOADED');
@@ -40,29 +39,29 @@
     // ----------------------------
     // functions
     // -----------
-    function compile(){
+    function compile() {
       return {
         pre : pre,
         post: post
       };
     }
 
-    function pre(scope, elem, attrs, iscRowCtrl){
+    function pre(scope, elem, attrs, iscRowCtrl) {
       var defaultTemplate = attrs.templateUrl;
-      if(!defaultTemplate) {
-       defaultTemplate = scope.iscTblCtrl.tableConfig.editable === 'popup' ? 'table/popup/iscTableReadOnlyCell.html' : 'table/iscTableCell.html';
+      if (!defaultTemplate) {
+        defaultTemplate = scope.iscTblCtrl.tableConfig.editable === 'popup' ? 'table/popup/iscTableReadOnlyCell.html' : 'table/iscTableCell.html';
       }
 
       var rowTemplate = _.get(scope, 'iscTblCtrl.tableConfig.rowTemplate', defaultTemplate);
 
-      if( rowTemplate ){
+      if ( rowTemplate ) {
         //for some reason the template doesn't like spaces nor comments
         var template = $templateCache.get(rowTemplate);
         var output = $compile(template)(scope);
         elem.html(output);
       }
     }
-    function post( scope, elem, attrs ){//jshint ignore:line
+    function post( scope, elem, attrs ) {//jshint ignore:line
 
       // ----------------------------
       // vars
@@ -83,11 +82,11 @@
       // functions
       // ----------------------------
 
-      function getTrClass( item ){
-        if( scope.column.className ){
+      function getTrClass( item ) {
+        if ( scope.column.className ) {
           return scope.column.className;
         }
-        else if( scope.column.classGetter ){
+        else if ( scope.column.classGetter ) {
           return scope.column.classGetter( item );
         }
         else {
@@ -99,20 +98,20 @@
        * @memberOf iscTableCell
        * @returns {*}
          */
-      function getDisplayText(){
+      function getDisplayText() {
 
         var cellData = _.get( scope.dataItem, scope.column.key );
         var defaultText = scope.column.default;
 
-        if( scope.column.textGetter ){
+        if ( scope.column.textGetter ) {
           return scope.column.textGetter( scope.iscRowCtrl.dataItem );
         }
 
         var retVal;
-        if( scope.notThere( cellData ) && scope.notThere( defaultText ) ){
+        if ( scope.notThere( cellData ) && scope.notThere( defaultText ) ) {
           retVal = '';
         }
-        else if( scope.notThere( cellData ) ){
+        else if ( scope.notThere( cellData ) ) {
           retVal = String( defaultText );
         }
         else {
@@ -127,7 +126,7 @@
        * @param val
        * @returns {boolean}
          */
-      function notThere( val ){
+      function notThere( val ) {
         return !val && val !== 0;
       }
 

@@ -6,7 +6,6 @@
 
   'use strict';
 
-
   angular.module('isc.error')
     .controller('error404Controller', error404Controller);
 
@@ -23,7 +22,6 @@
     // vars
     // ----------------------------
     var self = this;
-
 
   }// END CLASS
 

@@ -4,8 +4,6 @@
   angular.module('isc.notification')
     .directive('iscNotificationSet', iscNotificationSet);
 
-
-
   /**
    * @ngdoc directive
    * @memberOf isc.notification

@@ -234,37 +234,36 @@
 
             // formId will not be available for unsubmitted, new forms
             // Ensure they are up to date when submitting queued annotations
-            formId: parseInt(annotationsState.index)
+            formId   : parseInt(annotationsState.index)
           };
 
           // Inject utilities so they are available in FDN expressions
           _.extend($scope, {
             // Libraries
-            _     : _,
-            moment: moment,
+            _                  : _,
+            moment             : moment,
 
             // Utility properties
-            formModel       : formlyRootCtrl.model,
-            additionalModels: formlyRootCtrl.additionalModels,
-            mode            : formlyRootCtrl.mode,
+            formModel          : formlyRootCtrl.model,
+            additionalModels   : formlyRootCtrl.additionalModels,
+            mode               : formlyRootCtrl.mode,
 
             // Utility functions
             hasCustomValidator : hasCustomValidator,
             getDefaultViewValue: getDefaultViewValue,
 
             // HS validation
-            hsValidation: hsValidation,
+            hsValidation       : hsValidation,
 
             // Annotations state
-            annotations       : {
+            annotations        : {
               config : annotationsConfig,
               context: annotationsContext,
               data   : annotationsData
             },
-            allAnnotations    : formlyRootCtrl.options.formState._annotations.data,
-            annotationMetadata: annotationMetadata
+            allAnnotations     : formlyRootCtrl.options.formState._annotations.data,
+            annotationMetadata : annotationMetadata
           });
-
 
           // Helper functions
           function getFormlyRoot(scope) {

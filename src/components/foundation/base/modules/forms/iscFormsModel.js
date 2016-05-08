@@ -89,9 +89,8 @@
         return deferred.promise;
       }
 
-
       function filterResults(array) {
-        var filteredArray = limitToActive ? _.filter(array, {status: 'Active'}) : array;
+        var filteredArray = limitToActive ? _.filter(array, { status: 'Active' }) : array;
         return allowMultiple ? filteredArray : _.first(filteredArray);
       }
     }
@@ -131,7 +130,7 @@
       // Update the local cache, if it is populated
       if (cache.length) {
         _.forEach(formStatuses, function (form) {
-          _.find(cache, {formKey: form.formKey}).status = form.status;
+          _.find(cache, { formKey: form.formKey }).status = form.status;
         });
       }
 
@@ -409,7 +408,7 @@
                               page = _.get(pages, embeddedPage);
                             }
                             else {
-                              page = _.find(pages, {name: embeddedPage});
+                              page = _.find(pages, { name: embeddedPage });
                             }
                           }
                           // If no page was provided, use the first one

@@ -172,7 +172,7 @@
  *
  *
  */
-(function(){
+(function() {
   'use strict';
 
   angular.module( 'isc.table' )
@@ -185,7 +185,7 @@
    * @param devlog
    * @returns {{scope: {tableConfig: string, tableData: string, filterFunction: string, rowButtonCallback: string, backButtonCallback: string, tableName: string}, restrict: string, replace: boolean, templateUrl: directive.templateUrl, bindToController: boolean, link: link, controller: controller, controllerAs: string}}
      */
-  function iscTable( devlog ){ //jshint ignore:line
+  function iscTable( devlog ) { //jshint ignore:line
     var channel = devlog.channel('iscTable');
 
     channel.debug('iscTable.LOADED');
@@ -199,7 +199,7 @@
     // ----------------------------
 
     var directive = {
-      scope: {
+      scope           : {
         tableConfig       : '=',
         tableData         : '=',
         filterFunction    : '&?',
@@ -208,16 +208,16 @@
         tableName         : '@'
       },
 
-      restrict    : 'E',
-      replace     : true,
+      restrict        : 'E',
+      replace         : true,
 
-      templateUrl: function(elem, attrs){
+      templateUrl     : function(elem, attrs) {
         return attrs.templateUrl || 'table/iscTable.html';
       },
       bindToController: true,
-      link        : link,
-      controller  : controller,
-      controllerAs: 'iscTblCtrl'
+      link            : link,
+      controller      : controller,
+      controllerAs    : 'iscTblCtrl'
     };
 
     return directive;
@@ -248,10 +248,10 @@
       init();
 
       function init() {
-      self.rowsOnPage = self.tableConfig.rowsOnPage || 15;
-      self.currentPage = 1;
+        self.rowsOnPage = self.tableConfig.rowsOnPage || 15;
+        self.currentPage = 1;
 
-      $scope.$watch( function(){ return self.tableData; }, function(){
+        $scope.$watch( function() { return self.tableData; }, function() {
         channel.debug( 'iscTable.WATCH tableData');
         // set an array of the table row objects
         self.filteredRows = self.tableRows = self.tableConfig.key ? self.tableData[ self.tableConfig.key ] : self.tableData;
@@ -259,7 +259,7 @@
       });
 
         applyFilter();
-      self.sortField = {reverse: false};
+        self.sortField = { reverse: false };
       }
 
       /**
@@ -301,13 +301,13 @@
          */
       self.doFilter = function (item) {
         channel.debug( 'iscTable.doFilter', item );
-        var fitlerable = _.some( self.tableConfig.columns, function( column ){
+        var fitlerable = _.some( self.tableConfig.columns, function( column ) {
           return _.isFunction( column.filterFunction );
         });
 
         channel.debug( '...fitlerable', fitlerable );
-        if( fitlerable ){
-          return self.filterFunction({item: item});
+        if ( fitlerable ) {
+          return self.filterFunction({ item: item });
         }
         else {
           return true;
@@ -322,8 +322,8 @@
        * @param key
        * @returns {*}
          */
-      function getColumnByKey(key){
-        return _.find(self.tableConfig.columns, {key: key});
+      function getColumnByKey(key) {
+        return _.find(self.tableConfig.columns, { key: key });
       }
 
       /**
@@ -358,7 +358,7 @@
        * @returns {null|{isNew: boolean}|*}
          */
       function createRow() {
-        var dataItem = {isNew: true};
+        var dataItem = { isNew: true };
         self.tableConfig.columns.forEach(function (column) {
           if (column.defaultValue !== null) {
             dataItem[column.key] = column.defaultValue;
@@ -391,6 +391,5 @@
     }
 
   }// END CLASS
-
 
 })();
