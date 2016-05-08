@@ -15,7 +15,7 @@
   function getConfig() {
     return {
       'production': false,
-      'api': {
+      'api'       : {
         'protocol': 'http',
         'hostname': 'localhost',
         'port'    : 3030,

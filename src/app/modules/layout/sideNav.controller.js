@@ -5,8 +5,8 @@
 /**
  *
  * Add code like this to the state for which you want to add a second-level navigation
- * 
- * 
+ *
+ *
  function getStates() {
     return {
       'index.components'     : {
@@ -48,7 +48,6 @@
 (function () {
 
   'use strict';
-
 
   angular.module('layout')
     .controller('sideNavController', sideNavController);

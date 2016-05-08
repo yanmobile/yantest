@@ -1,4 +1,5 @@
 {
+  "modulePath"    : "src/app/modules/",
   "vendor"        : {
     "js"    : [],
     "mocks" : [],
@@ -59,12 +60,12 @@
   "comments"      : "The overrides below are used to exclude base files by specifying glob patterns.",
   "comments"      : "e.g. ```common: ['!src/modules/isc.filters/myFilter.js']```",
   "overrides"     : {
-    "js" : {
+    "js"       : {
       "common"     : [],
       "components" : []
     },
-  "comments"      : "Used to exclude files in common/component. e.g. ```common: ['!src/modules/isc.filters/myFilter.html']```",
-    "html" : {
+    "comments" : "Used to exclude files in common/component. e.g. ```common: ['!src/modules/isc.filters/myFilter.html']```",
+    "html"     : {
       "common"     : [],
       "components" : []
     }
