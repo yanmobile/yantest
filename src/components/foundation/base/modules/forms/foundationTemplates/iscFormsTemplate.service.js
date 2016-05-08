@@ -359,7 +359,8 @@
      */
     function registerType(type) {
       // Ensure all templates extend the base type for functionality
-      type.extends = type.extends || baseType;
+      type.extends     = type.extends || baseType;
+      type.overwriteOk = true;
       formlyConfig.setType(type);
     }
 

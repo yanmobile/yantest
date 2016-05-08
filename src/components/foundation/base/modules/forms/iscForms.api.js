@@ -12,7 +12,7 @@
    * @param iscCustomConfigService
    * @param iscHttpapi
    * @returns {{listForms: listForms, getActiveForms: getActiveForms, setFormStatus: setFormStatus, getFormDefinition: getFormDefinition, getUserScript: getUserScript, getTemplate: getTemplate}}
-     */
+   */
   /* @ngInject */
   function iscFormsApi(devlog, apiHelper, iscCustomConfigService, iscHttpapi) {
     var channel = devlog.channel('iscFormsApi');
@@ -29,7 +29,7 @@
 
     var api = {
       listForms        : listForms,
-      getActiveForms   : getActiveForms,
+      getFormStatuses  : getFormStatuses,
       setFormStatus    : setFormStatus,
       getFormDefinition: getFormDefinition,
       getUserScript    : getUserScript,
@@ -41,7 +41,7 @@
     /**
      * @memberOf iscFormsApi
      * @returns {*}
-       */
+     */
     function listForms() {
       channel.debug('iscFormsApi.listForms');
       return iscHttpapi.get(formsUrl);
@@ -51,8 +51,8 @@
      * @memberOf iscFormsApi
      * @param formType
      * @returns {*}
-       */
-    function getActiveForms(formType) {
+     */
+    function getFormStatuses(formType) {
       channel.debug('iscFormsApi.getActiveForms');
       return iscHttpapi.get([statusUrl, formType].join('/'));
     }
@@ -62,7 +62,7 @@
      * @param formType
      * @param formStatuses
      * @returns {*}
-       */
+     */
     function setFormStatus(formType, formStatuses) {
       channel.debug('iscFormsApi.setFormStatus');
       return iscHttpapi.put([formInfoUrl, formType].join('/'), formStatuses);
@@ -72,7 +72,7 @@
      * @memberOf iscFormsApi
      * @param formKey
      * @returns {*}
-       */
+     */
     function getFormDefinition(formKey) {
       channel.debug('iscFormsApi.getFormDefinition');
       return iscHttpapi.get([formsUrl, formKey].join('/'));
@@ -82,7 +82,7 @@
      * @memberOf iscFormsApi
      * @param scriptName
      * @returns {*}
-       */
+     */
     function getUserScript(scriptName) {
       channel.debug('iscFormsApi.getUserScript');
       return iscHttpapi.get([scriptsUrl, scriptName].join('/'));
@@ -92,7 +92,7 @@
      * @memberOf iscFormsApi
      * @param templateName
      * @returns {*}
-       */
+     */
     function getTemplate(templateName) {
       channel.debug('iscFormsApi.getTemplate');
       return iscHttpapi.get([templatesUrl, templateName].join('/'));
