@@ -10,12 +10,12 @@
     // show $log statements
     beforeEach(module('isc.core', function (_devlogProvider_) {
       devlogProvider = _devlogProvider_;
-      mockConfig = angular.copy(customConfig);
+      mockConfig     = angular.copy(customConfig);
       devlogProvider.loadConfig(mockConfig);
     }));
 
     beforeEach(inject(function (_$log_, _devlog_) {
-      $log = _$log_;
+      $log   = _$log_;
       devlog = _devlog_;
     }));
 
@@ -27,7 +27,7 @@
           var loops;
 
           var now = Date.now();
-          for (loops = 10000; loops >= 0; --loops) {
+          for ( loops = 10000; loops >= 0; --loops ) {
             devlog.debug('This is a debug message');
           }
           duration = Date.now() - now;
@@ -39,10 +39,10 @@
           var duration;
           var loops;
 
-          var now = Date.now();
+          var now                    = Date.now();
           mockConfig.devlogWhitelist = ['banana'];
-          var log = devlog.channel('banana');
-          for (loops = 10000; loops >= 0; --loops) {
+          var log                    = devlog.channel('banana');
+          for ( loops = 10000; loops >= 0; --loops ) {
             log.debug('This is white listed');
           }
           duration = Date.now() - now;
@@ -53,10 +53,10 @@
           var duration;
           var loops;
 
-          var now = Date.now();
+          var now                    = Date.now();
           mockConfig.devlogBlacklist = ['apple', 'banana'];
-          var log = devlog.channel('banana');
-          for (loops = 10000; loops >= 0; --loops) {
+          var log                    = devlog.channel('banana');
+          for ( loops = 10000; loops >= 0; --loops ) {
             log.debug('this is blacklisted');
           }
           duration = Date.now() - now;
@@ -103,8 +103,8 @@
         it(
           'should function as a wrapper to $log - object',
           function () {
-            devlog.debug({a: 1});
-            expect($log.debug.logs[0][0]).toEqual({a: 1});
+            devlog.debug({ a: 1 });
+            expect($log.debug.logs[0][0]).toEqual({ a: 1 });
           }
         );
       }
@@ -122,7 +122,7 @@
             devlog.channel().debug('This is a debug message');
             expect($log.debug.logs).toEqual([]);
           }
-        );     
+        );
         it(
           'should not go through - no whitelist present',
           function () {
@@ -229,10 +229,33 @@
           mockConfig.devlogBlacklist = ['apple'];
           mockConfig.devlogWhitelist = ['apple'];
           devlogProvider.loadConfig(mockConfig);
-          devlog.channel('apple').debug('This is a debug message');
-          expect($log.debug.logs).toEqual([]);
+          devlog.channel('apple').error('This is an error message');
+          expect($log.error.logs[0].join(' ')).toEqual('|APPLE| This is an error message');
         }
       );
+    });
+
+    describe('logging errors', function () {
+      it('should go through if channel blacklisted', function () {
+        mockConfig.devlogBlacklist = ['apple'];
+        devlogProvider.loadConfig(mockConfig);
+        devlog.channel('apple').error('This is an error message');
+        expect($log.error.logs[0].join(' ')).toEqual('|APPLE| This is an error message');
+      });
+
+      it('should go through if not whitelisted', function () {
+        mockConfig.devlogBlacklist = [];
+        devlogProvider.loadConfig(mockConfig);
+        devlog.channel('apple').error('This is an error message');
+        expect($log.error.logs[0].join(' ')).toEqual('|APPLE| This is an error message');
+      });
+
+      it('should go through if no channel defined', function () {
+        mockConfig.devlogBlacklist = [];
+        devlogProvider.loadConfig(mockConfig);
+        devlog.debug('This is a debug message');
+        expect($log.debug.logs[0]).toEqual(['This is a debug message']);
+      });
     });
   });
 

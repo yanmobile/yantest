@@ -117,16 +117,6 @@
 
         return logger;
 
-        //////////////////////////
-        function logMethod(method) {
-          return function () {
-            var args = _.toArray(arguments);
-            if (this.channelPrefix) {  //adds this.channelPrefix to be logged
-              args.unshift(this.channelPrefix);
-            }
-            $log[method].apply($log, args);
-          };
-        }
       }
 
       /**
@@ -155,6 +145,7 @@
           logger[method] = logFunc ? logFunc(method) : _.noop;
         });
 
+        logger.error = logMethod('error');
         return logger;
       }
     }
@@ -169,6 +160,22 @@
       }
       $log.log.apply($log, messages);
     }
+
+    /**
+     * produces real logger
+     * @param method
+     * @returns {Function}
+     */
+    function logMethod(method) {
+      return function () {
+        var args = _.toArray(arguments);
+        if (this.channelPrefix) {  //adds this.channelPrefix to be logged
+          args.unshift(this.channelPrefix);
+        }
+        $log[method].apply($log, args);
+      };
+    }
+
   }
 
 })();
