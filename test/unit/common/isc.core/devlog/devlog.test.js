@@ -229,8 +229,8 @@
           mockConfig.devlogBlacklist = ['apple'];
           mockConfig.devlogWhitelist = ['apple'];
           devlogProvider.loadConfig(mockConfig);
-          devlog.channel('apple').error('This is an error message');
-          expect($log.error.logs[0].join(' ')).toEqual('|APPLE| This is an error message');
+          devlog.channel('apple').debug('This is a debug message');
+          expect($log.debug.logs).toEqual([]);
         }
       );
     });
