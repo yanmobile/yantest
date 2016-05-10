@@ -30,10 +30,10 @@ function init(gulp, plugins, config, _, util) {
   gulp.task('jshint:app', function () {
     return gulp.src(_.concat(config.app.module.modules, config.app.module.js))
       .pipe(plugins.jshint())
-      .pipe(plugins.jscs({ fix: true }))// enforce style guide
+      .pipe(plugins.jscs())// enforce style guide
       .pipe(plugins.stylish.combineWithHintResults())   // combine with jshint results
-      .pipe(plugins.jshint.reporter('jshint-stylish'))
-      .pipe(gulp.dest(config.app.modulePath));
+      .pipe(plugins.jshint.reporter('jshint-stylish'));
+      // .pipe(gulp.dest(config.app.modulePath)); //this causes gulp watch to loop infinitely
   });
 
 
