@@ -23,14 +23,13 @@
    * @param iscNavContainerModel
    * @param iscCustomConfigHelper
    * @param iscUiHelper
-   * @param iscLanguageService
      * @param AUTH_EVENTS
      * @param NAV_EVENTS
      */
   function iscNavigationController(
     devlog, $rootScope, $timeout, $scope, $translate,
     iscSessionModel, iscSessionStorageHelper, iscNavContainerModel,
-    iscCustomConfigHelper, iscUiHelper, iscLanguageService,
+    iscCustomConfigHelper, iscUiHelper,
     AUTH_EVENTS, NAV_EVENTS
   ) {
     var channel = devlog.channel('iscNavigationController');
@@ -44,11 +43,7 @@
     self.sessionModel       = iscSessionModel;
     self.customConfigHelper = iscCustomConfigHelper;
     self.iscUiHelper        = iscUiHelper;
-
-    self.showLanguageDropDown = iscLanguageService.showDropDown();
-    self.languages            = iscLanguageService.getLanguages();
-    self.selectedLanguage     = iscLanguageService.getSelectedLanguage();
-
+    
     // --------------
     // nav bars and alerts
     // --------------
