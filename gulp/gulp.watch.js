@@ -2,7 +2,8 @@ module.exports = {
   init: init
 };
 
-var watch = require('gulp-watch');
+var watch   = require('gulp-watch');
+var plumber = require('gulp-plumber');
 
 function init(gulp, plugins, config, _) {
 
@@ -13,14 +14,14 @@ function init(gulp, plugins, config, _) {
       'src/common/modules/**/*.js'           : ['test:common', 'jshint:common', 'scripts:common'],
       'src/common/modules/**/*.html'         : ['templates'],
       'test/unit/common/**/*.js'             : ['test:common'],
-    
+
       'src/components/**/assets/images/**/*' : ['images'],
       'src/components/**/assets/sass/**/*'   : ['sass'],
       'src/components/**/assets/vendors/**/*': ['scripts'],
       'src/components/**/modules/**/*.js'    : ['test:components', 'jshint:components', 'scripts:components'],
       'src/components/**/modules/**/*.html'  : ['templates'],
       'test/unit/components/**/*.js'         : ['test:components'],
-    
+
       'src/app/assets/i18n/**/*'             : ['i18n'],
       'src/app/assets/images/**/*'           : ['images'],
       'src/app/assets/sass/**/*.scss'        : ['sass'],
@@ -38,9 +39,13 @@ function init(gulp, plugins, config, _) {
   gulp.task('watch', function () {
     _.forEach(watchlist, watchItem);
 
-    function watchItem(tasks, src) {
+    function watchItem(task, src) {
       return watch(src, function () {
-        return gulp.start(tasks);
+       gulp
+          .src(src)
+          .pipe(plumber())
+          .pipe(watch(src));
+        gulp.start(task);
       });
     }
   });
