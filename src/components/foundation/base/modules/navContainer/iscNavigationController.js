@@ -43,7 +43,7 @@
     self.sessionModel       = iscSessionModel;
     self.customConfigHelper = iscCustomConfigHelper;
     self.iscUiHelper        = iscUiHelper;
-    
+
     // --------------
     // nav bars and alerts
     // --------------
