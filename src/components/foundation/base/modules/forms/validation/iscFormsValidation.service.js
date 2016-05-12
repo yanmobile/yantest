@@ -1,4 +1,4 @@
-( function () {
+(function () {
   'use strict';
 
   /* @ngInject */
@@ -70,8 +70,8 @@
               if ( control.$setTouched ) {
                 control.$setTouched();
               }
-            } );
-          } );
+            });
+          });
           return {
             isValid: false,
             $error : form.$error
@@ -118,8 +118,8 @@
                 fields: collectionConfig.fields
               }
             );
-          } );
-        } );
+          });
+        });
 
         // Destroy any existing formly-form
         delete validation.form;
@@ -157,7 +157,7 @@
          */
         function sleepUntil( sleepTest, maxWait ) {
           maxWait = maxWait || maxWaitInMillis;
-          return $timeout( function () {
+          return $timeout(function () {
             if ( sleepTest() ) {
               return true;
             }
@@ -190,14 +190,14 @@
               // Update formState._validation
               _.forEach( options.formState._validation, function ( existingValidation ) {
                 delete options.formState._validation[existingValidation];
-              } );
+              });
               _.extend( options.formState._validation, validationErrors );
 
               // Resolve results
-              deferred.resolve( {
+              deferred.resolve({
                 isValid: _.isEmpty( validationErrors ),
                 errors : validationErrors
-              } );
+              });
             }
           }
 
@@ -223,7 +223,7 @@
             // Destroy the formly-form
             validation.renderForm = false;
             // Delay until the form has been unrendered
-            $timeout( function () {
+            $timeout(function () {
               delete validation.model;
               delete validation.fields;
               delete validation.form;
@@ -234,4 +234,4 @@
         }
       }
     }
-} )();
+})();

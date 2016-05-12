@@ -4,7 +4,7 @@
 // This filter contains standards for Date display for consistency
 // for custom formatting, please refer to http://momentjs.com/docs/#/displaying/format/
 
-( function () {
+(function() {
   'use strict';
   // ----------------------------
   // injection
@@ -17,7 +17,7 @@
     var log = devlog.channel( 'iscDate' );
     log.debug( 'iscDate LOADED' );
 
-    return function ( date, format ) {
+    return function( date, format ) {
       // moment(undefined) is the current date
       // moment(null) and moment('') are Invalid Dates
       if ( !date ) {
@@ -46,4 +46,4 @@
 
   }//END CLASS
 
-} )();
+})();

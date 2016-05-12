@@ -6,7 +6,7 @@
  * but if you need to call it in an outside function, this can be used
  */
 
-( function () {
+(function () {
   'use strict';
 
   // ----------------------------
@@ -59,13 +59,13 @@
       channel.debug( '...radioGroup', radioGroup );
 
       var currentState = !!selectedItem.$$selected;
-      radioGroup.forEach( function ( item ) {
+      radioGroup.forEach(function ( item ) {
         item.$$selected = false;
-      } );
+      });
 
       selectedItem.$$selected = !currentState;
     }
 
   }// END CLASS
 
-} )();
+})();

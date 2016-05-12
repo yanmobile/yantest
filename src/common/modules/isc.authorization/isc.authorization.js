@@ -2,7 +2,7 @@
  * Created by hzou on 12/30/15.
  */
 
-( function () {
+(function() {
   'use strict';
 
   angular
@@ -14,7 +14,7 @@
    ========================================*/
 
   function iscAuthorizationModel( devlog, iscSessionModel, iscCustomConfigService ) {
-    var channel = devlog.channel( 'isAuthorized' );
+    var channel          = devlog.channel( 'isAuthorized' );
     var authorizedRoutes = {};
 
     var service = {
@@ -63,11 +63,11 @@
       if ( !authorizedRoutes[userRole] ) {
         authorizedRoutes[userRole] = ( userRole === '*' ) ? {} : angular.copy( authorizedRoutes['*'] ); //get everything from anonymous
       }
-      permittedRoutes.forEach( function ( state ) {  //maps an array into object
+      permittedRoutes.forEach(function( state ) {  //maps an array into object
         if ( !_.get( authorizedRoutes[userRole], state ) ) {
-          _.set( authorizedRoutes[userRole], state, {} );
+          _.set( authorizedRoutes[userRole], state, {});
         }
-      } );
+      });
     }
 
     function getAuthorizedRoutes( currentUserRole ) {
@@ -124,12 +124,12 @@
       var tokens = stateToCheck.split( '.' );
       var path   = checkBlacklisted ? '!' : '';
 
-      return _.some( tokens, function ( token ) {
+      return _.some( tokens, function( token ) {
         path += token + '.';
         return _.get( authorizedUserRoutes, path + '*', false );
-      } );
+      });
     }
 
   }// END CLASS
 
-} )();
+})();

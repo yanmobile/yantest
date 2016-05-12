@@ -1,4 +1,4 @@
-( function () {
+(function () {
   'use strict';
 
   /* @ngInject */
@@ -9,6 +9,6 @@
       this.formConfig = {
         useOriginalFormKey : this.params.useOriginalFormKey
       };
-    } );
+    });
 
-} )();
+})();

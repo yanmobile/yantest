@@ -2,7 +2,7 @@
  * Created by Henry Zou 11/8/2015
  */
 
-( function () {
+(function() {
   'use strict';
 
   angular.module( 'isc.core' )
@@ -24,7 +24,7 @@
       BadGateway        : 502,
       ServiceUnavailable: 504,
       GatewayTimeout    : 505
-    } );
+    });
 
-} )();
+})();
 

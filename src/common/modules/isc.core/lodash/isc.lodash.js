@@ -5,7 +5,7 @@
  *
  */
 
-( function () {
+(function() {
   'use strict';
 
   var origGet      = _.get;
@@ -16,7 +16,7 @@
   var reFixJson    = /(['"])?([a-zA-Z0-9_]+)(['"])?:/g;
   //save the original _.get
 
-  _.mixin( {
+  _.mixin({
     isPresent       : isPresent,
     isNotPresent    : isNotPresent,
     getAge          : getAge,
@@ -28,7 +28,7 @@
     wrapText        : wrapText,
     interpolate     : interpolate,
     getRemainingTime: getRemainingTime
-  } );
+  });
 
   // Present is defined by not undefined and not null.
   function isPresent( obj ) {
@@ -91,9 +91,9 @@
   function nullifyObj( obj ) {
     //Confirm it's a real  object literal and not a 'fake' one like (array/function/date/etc)
     if ( isTypeOf( obj, 'Object' ) ) {
-      _.forOwn( obj, function ( value, key ) {
+      _.forOwn( obj, function( value, key ) {
         obj[key] = null;
-      } );
+      });
     }
   }
 
@@ -138,7 +138,7 @@
     var val = obj;
 
     if ( isTypeOf( path, 'string' ) && _.includes( path, ':' ) ) {
-      toPath( path ).forEach( function ( part ) {
+      toPath( path ).forEach(function( part ) {
         if ( _.includes( part, ':' ) ) {
           part     = part.replace( reFixJson, '"$2": ' );
           var json = JSON.parse( part );
@@ -146,7 +146,7 @@
         } else {
           val = origGet( val, part, defaultValue );
         }
-      } );
+      });
     } else {
       val = origGet( obj, path );
     }
@@ -158,10 +158,10 @@
 
     var results = [];
 
-    path.replace( rePropName, function ( match, number, quote, string ) {
+    path.replace( rePropName, function( match, number, quote, string ) {
       var parts = quote ? string.replace( reEscapeChar, '$1' ) : ( number || match );
       results.push( parts );
-    } );
+    });
     return results;
   }
 
@@ -185,7 +185,7 @@
   // => "I am 5
   function interpolate( template, scope ) {
     return template.replace( /{([^{}]*)}/g,
-      function ( a, b ) {
+      function( a, b ) {
         var r = scope[b];
         return typeof r === 'string' || typeof r === 'number' ? r : a;
       }
@@ -197,4 +197,4 @@
   }
 
   //END CLASS
-} )();
+})();

@@ -2,7 +2,7 @@
  * Created by dgoodman on 2/3/15.
  */
 
-( function () {
+(function () {
   'use strict';
 
   // ----------------------------
@@ -73,7 +73,7 @@
       var currentUserRole = iscSessionModel.getCurrentUserRole();
       if ( !topNavArr[currentUserRole] ) {
         var topTabs  = iscCustomConfigService.getConfigSection( 'topTabs' );
-        var userTabs = _.extend( {}, topTabs['*'] ); // include anonymous tabs
+        var userTabs = _.extend({}, topTabs['*'] ); // include anonymous tabs
         if ( currentUserRole !== '*' ) {
           _.extend( userTabs, topTabs[currentUserRole] );
         }
@@ -101,5 +101,5 @@
     }
   }//END CLASS
 
-} )();
+})();
 

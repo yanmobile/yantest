@@ -2,7 +2,7 @@
  * Created by hzou on 12/12/15.
  */
 
-( function () {
+(function () {
   'use strict';
   // ----------------------------
   // injection
@@ -61,4 +61,4 @@
 
   }//END CLASS
 
-} )();
+})();

@@ -5,7 +5,7 @@
 //SRC LINK: http://www.html5rocks.com/en/tutorials/frameworks/angular-websockets/
 //$evalAsync vs $apply: http://www.bennadel.com/blog/2605-scope-evalasync-vs-timeout-in-angularjs.htm
 
-( function () {
+(function() {
   'use strict';
 
   angular
@@ -23,29 +23,29 @@
     };
 
     function connect( uri ) {
-      socket = io.connect( uri, { 'forceNew': true } );
+      socket = io.connect( uri, { 'forceNew': true });
     }
 
     function on( eventName, callback ) {
       channel.debug( 'on called' );
-      socket.on( eventName, function () {
+      socket.on( eventName, function() {
         var args = arguments;
-        $rootScope.$evalAsync( function () {
+        $rootScope.$evalAsync(function() {
           callback.apply( socket, args );
-        } );
-      } );
+        });
+      });
     }
 
     function emit( eventName, data, callback ) {
       channel.debug( 'emit called' );
-      socket.emit( eventName, data, function () {
+      socket.emit( eventName, data, function() {
         var args = arguments;
-        $rootScope.$evalAsync( function () {
+        $rootScope.$evalAsync(function() {
           if ( callback ) {
             callback.apply( socket, args );
           }
-        } );
-      } );
+        });
+      });
     }
   }
-} )();
+})();

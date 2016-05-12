@@ -1,4 +1,4 @@
-( function () {
+(function () {
   'use strict';
 
   angular.module( 'isc.forms' )
@@ -42,7 +42,7 @@
 
       _.merge( self, {
         forms       : [],
-        debugDisplay: _.get( iscCustomConfigService.getConfig(), 'debugDisplay.forms', {} ),
+        debugDisplay: _.get( iscCustomConfigService.getConfig(), 'debugDisplay.forms', {}),
         options     : {
           formState: {
             _mode       : self.mode,
@@ -61,7 +61,7 @@
         buttonConfig: {}
       }, self );
 
-      self.additionalModels = _.get( self.formConfig, 'additionalModels', {} );
+      self.additionalModels = _.get( self.formConfig, 'additionalModels', {});
 
       // Object to hold data and structure for temporary form validation
       self.validation = iscFormsValidationService.getValidationObject();
@@ -91,12 +91,12 @@
        * @memberOf iscFormInternal
        */
       function initAutosaveConfig() {
-        var saveConfig  = _.get( self.formDefinition.form, 'autosave', {} ),
-            formDataApi = _.get( self.formConfig, 'formDataApi', {} ),
+        var saveConfig  = _.get( self.formDefinition.form, 'autosave', {}),
+            formDataApi = _.get( self.formConfig, 'formDataApi', {}),
             saveApi     = formDataApi.save || function () { },
             wrapApi     = formDataApi.wrap || function ( data ) { return data; };
 
-        var callSaveApi = _.throttle( wrapAndSaveData, 500, { trailing: true } );
+        var callSaveApi = _.throttle( wrapAndSaveData, 500, { trailing: true });
 
         // Set save trigger
         switch ( saveConfig.trigger ) {
@@ -172,13 +172,13 @@
                 options : fieldScope.options,
                 scrollTo: fieldScope.id
               };
-            } );
-          } );
-        } );
+            });
+          });
+        });
 
         _.forEach( alerts, function ( alert ) {
           iscNotificationService.showAlert( alert );
-        } );
+        });
 
         // Cascaded subform alerts
         _.forEach( subformErrors, function ( error, id ) {
@@ -187,7 +187,7 @@
             content : makeError( error )
           };
           iscNotificationService.showAlert( alert );
-        } );
+        });
 
         /**
          * @memberOf iscFormInternal
@@ -228,9 +228,9 @@
               function ( hidePage ) {
                 page._isHidden = hidePage;
                 throttledFilter();
-              } );
+              });
           }
-        } );
+        });
 
         self.pages       = self.formDefinition.form.pages;
         self.currentPage = _.head( self.pages );
@@ -262,7 +262,7 @@
       function filterPages() {
         self.multiConfig.selectablePages = _.filter( self.formDefinition.form.pages, function ( page ) {
           return !page._isHidden;
-        } );
+        });
       }
 
       /**
@@ -291,18 +291,18 @@
             containingFormIsValid = formValidation.isValid && containingFormIsValid;
             $error                = $error.concat( formValidation.$error );
           }
-        } );
+        });
 
         // Additional validation via api attribute
         if ( self.validateFormApi ) {
-          self.validateFormApi().then( function ( result ) {
+          self.validateFormApi().then(function ( result ) {
             if ( containingFormIsValid && result.isValid ) {
               submitForm();
             }
             else {
               showFailedValidation( $error, result.errors );
             }
-          } );
+          });
         }
         else {
           if ( containingFormIsValid ) {
@@ -315,7 +315,7 @@
        * @memberOf iscFormInternal
        */
       function submitForm() {
-        var submitConfig = _.get( self.buttonConfig, 'submit', {} ),
+        var submitConfig = _.get( self.buttonConfig, 'submit', {}),
             onSubmit     = submitConfig.onClick || function () { },
             afterSubmit  = submitConfig.afterClick || function () { };
 
@@ -324,5 +324,5 @@
       }
     }
   }
-} )
+})
 ();

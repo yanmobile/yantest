@@ -5,7 +5,7 @@
 
 // opens zf-modal when inEditMode changes to 'popup'
 
-( function() {
+(function() {
   'use strict';
 
   // ----------------------------
@@ -53,7 +53,7 @@
             trElem.parent().find( '[zf-modal]' ).scope().hide();
           }
         }
-      } );
+      });
     }
   }// END CLASS
-} )();
+})();

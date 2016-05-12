@@ -1,4 +1,4 @@
-( function () {
+(function () {
   'use strict';
 
   angular.module( 'isc.forms' )
@@ -18,7 +18,7 @@
     var channel = devlog.channel( 'iscFormsApi' );
 
     var config       = iscCustomConfigService.getConfig(),
-        moduleConfig = _.get( config, 'moduleApi', {} );
+        moduleConfig = _.get( config, 'moduleApi', {});
 
     var formsUrl     = apiHelper.getConfigUrl( moduleConfig.forms );
     var formInfoUrl  = apiHelper.getConfigUrl( moduleConfig.formInfo );
@@ -98,4 +98,4 @@
       return iscHttpapi.get( [templatesUrl, templateName].join( '/' ) );
     }
   }
-} )();
+})();

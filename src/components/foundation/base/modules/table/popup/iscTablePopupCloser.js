@@ -5,7 +5,7 @@
 
 // closes zf-modal when 'ESCAPE' key is pressed
 
-( function () {
+(function () {
   'use strict';
 
   // ----------------------------
@@ -53,8 +53,8 @@
             scope.iscRowCtrl.onCommand( 'cancelEdit' );
           }
         }
-      } );
+      });
     }
   }// END CLASS
 
-} )();
+})();

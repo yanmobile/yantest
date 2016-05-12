@@ -2,7 +2,7 @@
  * Created by douglasgoodman on 12/8/14.
  */
 
-( function() {
+(function() {
   'use strict';
   // ----------------------------
   // injection
@@ -43,18 +43,18 @@
       array.sort();
 
       var string = '';
-      var len = array.length;
-      array.forEach( function( item, idx ) {
+      var len    = array.length;
+      array.forEach(function( item, idx ) {
         string += item.toString();
         if ( idx < ( len - 1 ) ) {
           string += ', ';
         }
 
-      } );
+      });
 
       return string;
     }
 
   }//END CLASS
 
-} )();
+})();

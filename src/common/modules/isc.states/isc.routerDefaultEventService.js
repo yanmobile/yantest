@@ -2,7 +2,7 @@
  * Created by douglasgoodman on 11/24/14.
  */
 
-( function () {
+(function() {
   'use strict';
 
   angular
@@ -42,7 +42,7 @@
       // ------------------------
       // stateChange start
       $rootScope.$on( '$stateChangeStart',
-        function ( event, toState, toParams, fromState, fromParams ) {
+        function( event, toState, toParams, fromState, fromParams ) {
           channel.debug( 'ischNavContainer.$stateChangeStart' );
           channel.debug( '...from: ', fromState.name );
           channel.debug( '.....to: ', toState.name );
@@ -51,16 +51,16 @@
           channel.debug( 'Beginning state change from \'%s\' to \'%s\'', _.wrapText( fromState.name ), _.wrapText( toState.name ) );
 
           handleStateChangeStart( event, toState, toParams, fromState, fromParams );
-        } );
+        });
     }
 
     function registerStateChangeSuccess() {
       // ------------------------
       // stateChange success
       $rootScope.$on( '$stateChangeSuccess',
-        function ( event, toState, toParams, fromState, fromParams ) {//jshint ignore:line
+        function( event, toState, toParams, fromState, fromParams ) {//jshint ignore:line
           channel.debug( 'ischNavContainer.$stateChangeSuccess', _.wrapText( toState.name ) );
-        } );
+        });
     }
 
     function registerStateChangeError() {
@@ -68,9 +68,9 @@
       // ------------------------
       // stateChange error
       $rootScope.$on( '$stateChangeError',
-        function ( event, toState, toParams, fromState, fromParams, error ) {//jshint ignore:line
+        function( event, toState, toParams, fromState, fromParams, error ) {//jshint ignore:line
           channel.error( 'ischNavContainer.$stateChangeError', error );
-        } );
+        });
     }
 
     function registerStateChangeRejected() {
@@ -79,17 +79,17 @@
       // ------------------------
       // stateChange $stateChangeRejected
       $rootScope.$on( '$stateChangeRejected',
-        function ( event, toState, toParams, fromState, fromParams, error ) {//jshint ignore:line
+        function( event, toState, toParams, fromState, fromParams, error ) {//jshint ignore:line
           channel.error( 'ischNavContainer.$stateChangeRejected' );
           channel.error( '.... to state', _.wrapText( toState.state, '==' ) );
-        } );
+        });
     }
 
     function handleStateChangeStart( event, toState, toParams, fromState, fromParams ) {//jshint ignore:line
       channel.debug( 'iscNavContainer.handleStateChangeStart' );
 
       // get the permissions for this state
-      var isAuthorized = iscAuthorizationModel.isAuthorized( toState.name ); // either your role is permitted or the state is whitelisted
+      var isAuthorized    = iscAuthorizationModel.isAuthorized( toState.name ); // either your role is permitted or the state is whitelisted
       var isAuthenticated = iscSessionModel.isAuthenticated(); // you are logged in
 
       channel.debug( '...isAuthorized', isAuthorized );
@@ -100,7 +100,7 @@
         preventDefault( event, toState.name, {
           source: "iscRouterDefaultEventService.handleStateChangeStart",
           error : "User is not authorized to access " + _.wrapText( toState.name )
-        } );
+        });
 
         if ( !isAuthenticated ) {
           channel.debug( '...not authenticated' );
@@ -119,4 +119,4 @@
       event.preventDefault();
     }
   }
-} )();
+})();

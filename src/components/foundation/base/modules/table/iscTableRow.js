@@ -14,7 +14,7 @@
  * if custom addTemplate is defined in tabeConfig, it will use rowTemplate instead of default template
  *** if rowType === 'add'
  */
-( function() {
+(function() {
   'use strict';
 
   angular.module( 'isc.table' )
@@ -78,7 +78,7 @@
         iscRowCtrl.iscTblCtrl = scope.iscTblCtrl;
         scope.$watch( 'dataItem', function( value ) {
           iscRowCtrl.dataItem = value;
-        } );
+        });
       }
 
       /**
@@ -98,4 +98,4 @@
     }
   }
 
-} )();
+})();

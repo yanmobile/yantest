@@ -1,4 +1,4 @@
-( function () {
+(function () {
   'use strict';
 
   angular.module( 'isc.core' )
@@ -94,10 +94,10 @@
       // ----------------------------
 
       function blurControl( event ) {
-        $timeout( function () {
+        $timeout(function () {
           ctrl.controlHasFocus = false;
         }, 0 );
-        $timeout( function () {
+        $timeout(function () {
           if ( !ctrl.controlHasFocus ) {
             ctrl.showList = false;
             // The user is clearing the field
@@ -116,7 +116,7 @@
       }
 
       function focusControl( event ) {
-        $timeout( function () {
+        $timeout(function () {
           ctrl.controlHasFocus = ctrl.showList = true;
           // If no data has been entered, the script parameters for this control may have been set
           // by other controls, so update the list.
@@ -140,11 +140,11 @@
 
       function updateList( event ) {//jshint ignore:line
         if ( !ctrl.minlength || input.val().length >= ctrl.minlength ) {
-          scope.$apply( function () {
+          scope.$apply(function () {
             ctrl.selectedItem = null;
             ctrl.isDirty      = true;
             ctrl.inputVal     = input.val();
-          } );
+          });
         }
       }
 
@@ -172,4 +172,4 @@
     }
   }
 
-} )();
+})();

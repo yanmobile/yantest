@@ -2,7 +2,7 @@
  * Created by hzou on 12/8/15.
  */
 
-( function () {
+(function() {
   'use strict';
 
   /**
@@ -22,10 +22,10 @@
     if ( !_.isEmpty( storedLoginResponse ) ) {
       channel.debug( '...got storedLoginResponse: ', storedLoginResponse );
       iscSessionModel.create( storedLoginResponse, false );
-      $timeout( function () {
+      $timeout(function() {
         $rootScope.$emit( AUTH_EVENTS.sessionResumedSuccess );
-      } );
+      });
     }
   }
 
-} )();
+})();

@@ -2,7 +2,7 @@
  * Created by douglasgoodman on 11/19/14.
  */
 
-( function () {
+(function() {
   'use strict';
 
   angular
@@ -32,15 +32,15 @@
     function setTabActiveState( state, allTabs ) {
       channel.logFn( 'setTabActiveState' );
       channel.debug( '...allTabs', allTabs );
-      _.forEach( allTabs, function ( tab ) {
+      _.forEach( allTabs, function( tab ) {
         if ( _.includes( state, tab.state ) ) {
           tab.active = true;
         } else {
           tab.active = false;
         }
-      } );
+      });
     }
 
   }// END CLASS
 
-} )();
+})();

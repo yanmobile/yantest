@@ -1,7 +1,7 @@
 /**
  * Created by paul robbins on 12/11/15
  */
-( function () {
+(function() {
   'use strict';
 
   angular.module( 'isc.router' )
@@ -50,7 +50,7 @@
   function iscExternalRouteProvider( $windowProvider ) {
     var _stateKey = 'routeStack';
 
-    this.configure = function ( mappingFunction, externalRequestExpirationInMinutes ) {
+    this.configure = function( mappingFunction, externalRequestExpirationInMinutes ) {
       // Local window wrapper -- $window for tests
       var window = _getWindow();
 
@@ -66,13 +66,13 @@
 
         // Parse into name/value properties
         var queryParams = {};
-        _.forEach( queryStrings, function ( param ) {
+        _.forEach( queryStrings, function( param ) {
           var split = param.split( /=/ );
           // Note that empty query params such as ?param=&anotherParam= will split to empty string values.
           if ( split.length > 1 ) {
             _.set( queryParams, split[0], split[1] );
           }
-        } );
+        });
 
         // Process params through provided config function
         nextStateObject = mappingFunction( queryParams );
@@ -87,25 +87,25 @@
           stateParams = {};
         }
 
-        this.addRoute( {
+        this.addRoute({
           'nextState'  : nextState,
           'stateParams': stateParams,
           // Set an expiration -- if this state is later retrieved after it has expired, this state will be ignored
           'expiresOn'  : externalRequestExpirationInMinutes ?
             moment().add( externalRequestExpirationInMinutes, 'minute' ).toISOString()
             : undefined
-        } );
+        });
       }
     };
 
-    this.getNext = function () {
+    this.getNext = function() {
       var routeStack = _getStorage();
       var nextState  = routeStack.pop();
       _setStorage( routeStack );
       return nextState;
     };
 
-    this.addRoute = function ( route ) {
+    this.addRoute = function( route ) {
       var routeStack = _getStorage();
       routeStack.push( route );
       _setStorage( routeStack );
@@ -140,5 +140,5 @@
     }
 
   }
-} )();
+})();
 

@@ -1,4 +1,4 @@
-( function () {
+(function () {
   'use strict';
 
   /**
@@ -26,4 +26,4 @@
       iscScrollContainerService.registerScrollingContent( element );
     }
   }
-} )();
+})();

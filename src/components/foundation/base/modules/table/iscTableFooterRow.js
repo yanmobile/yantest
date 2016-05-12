@@ -2,7 +2,7 @@
  * Created by hzou on 08/03/15.
  */
 
-( function() {
+(function() {
   'use strict';
 
   angular.module( 'isc.table' )
@@ -63,4 +63,4 @@
     }
   }
 
-} )();
+})();

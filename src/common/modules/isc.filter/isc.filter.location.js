@@ -2,7 +2,7 @@
  * Created by trevor hudson on 10/16/15.
  */
 
-( function () {
+(function() {
   'use strict';
   // 2.16.840.1.113883.3.86 is an InterSystems code that represents null
   var iscNullValCode = 2.16;
@@ -16,7 +16,7 @@
   /* @ngInject */
   function iscLocation( $filter ) {
 
-    return function ( locationString, showMessage ) {
+    return function( locationString, showMessage ) {
 
       if ( !locationString ) {
         return '';
@@ -30,4 +30,4 @@
 
   }//END CLASS
 
-} )();
+})();

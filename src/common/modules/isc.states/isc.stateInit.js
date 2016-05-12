@@ -1,4 +1,4 @@
-( function () {
+(function() {
   'use strict';
 
   angular.module( 'isc.states' )
@@ -24,9 +24,9 @@
       if ( functions ) {
         if ( _.isArray( functions ) ) {
           var key = 0;
-          _.forEach( functions, function ( fn ) {
+          _.forEach( functions, function( fn ) {
             initFunctions[( key++ ).toString()] = fn;
-          } );
+          });
         }
         else if ( _.isObject( functions ) ) {
           initFunctions = functions;
@@ -42,23 +42,23 @@
       var promises    = {};
       var initPromise = $q.defer();
 
-      _.forEach( initFunctions, function ( fn, name ) {
+      _.forEach( initFunctions, function( fn, name ) {
         if ( _.isFunction( fn ) ) {
           var deferred   = $q.defer();
           promises[name] = deferred.promise;
-          fn().then( function ( results ) {
+          fn().then(function( results ) {
             deferred.resolve( results );
-          } );
+          });
         }
-      } );
+      });
 
-      $q.all( promises ).then( function ( results ) {
+      $q.all( promises ).then(function( results ) {
         initPromise.resolve( results );
-      } );
+      });
 
       return initPromise.promise;
     }
   }//END CLASS
 
-} )();
+})();
 

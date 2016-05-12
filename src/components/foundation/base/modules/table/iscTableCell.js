@@ -1,7 +1,7 @@
 /**
  * Created by Trevor Hudson on 06/02/15.
  */
-( function() {
+(function() {
   'use strict';
 
   angular.module( 'isc.table' )
@@ -133,4 +133,4 @@
     }
   }
 
-} )();
+})();

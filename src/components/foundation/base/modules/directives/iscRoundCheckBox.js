@@ -2,7 +2,7 @@
  * Created by douglas goodman on 2/26/15.
  */
 
-( function() {
+(function() {
   'use strict';
   // ----------------------------
   // injection
@@ -62,7 +62,7 @@
 
       scope.toggleCheckBox = function() {
         scope.selected = !scope.selected;
-        scope.onToggle( { selected: scope.selected } );
+        scope.onToggle({ selected: scope.selected });
 
         if ( ngModelCtrl ) {
           channel.debug( 'iscRoundCheckBox.$setViewValue' );
@@ -73,4 +73,4 @@
 
   }//END CLASS
 
-} )();
+})();

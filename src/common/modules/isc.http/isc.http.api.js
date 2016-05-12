@@ -13,7 +13,7 @@
  *
  * see Angular's $http doc: https://docs.angularjs.org/api/ng/service/$http#usage
  */
-( function () {
+(function() {
   'use strict';
 
   angular.module( 'isc.http' )
@@ -82,5 +82,5 @@
     }
 
   }
-} )();
+})();
 

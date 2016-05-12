@@ -1,7 +1,7 @@
 /**
  * Created by Henry Zou on 4/17/2016.
  */
-( function () {
+(function() {
   'use strict';
 
   var blacklist;
@@ -38,7 +38,7 @@
   function devlogService( $log ) {
     $logMethods = _.keysIn( $log );
     var Log     = getLogClass();
-    return _.extend( {
+    return _.extend({
       channel: channel,
       logFn  : logFn
     }, $log );
@@ -141,9 +141,9 @@
       function getLogger( logFunc ) {
         var logger = {};
 
-        _.forEach( $logMethods, function ( method ) {
+        _.forEach( $logMethods, function( method ) {
           logger[method] = logFunc ? logFunc( method ) : _.noop;
-        } );
+        });
 
         logger.error = logMethod( 'error' );
         return logger;
@@ -167,7 +167,7 @@
      * @returns {Function}
      */
     function logMethod( method ) {
-      return function () {
+      return function() {
         var args = _.toArray( arguments );
         if ( this.channelPrefix ) {  //adds this.channelPrefix to be logged
           args.unshift( this.channelPrefix );
@@ -178,4 +178,4 @@
 
   }
 
-} )();
+})();

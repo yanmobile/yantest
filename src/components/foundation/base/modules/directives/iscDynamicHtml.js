@@ -2,7 +2,7 @@
  * Created by douglas goodman on 3/7/15.
  */
 
-( function() {
+(function() {
   'use strict';
   // ----------------------------
   // injection
@@ -50,9 +50,9 @@
         channel.debug( 'iscDynamicHtml', html );
         elem.html( html );
         $compile( elem.contents() )( scope );
-      } );
+      });
     }
 
   }//END CLASS
 
-} )();
+})();

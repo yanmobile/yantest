@@ -1,4 +1,4 @@
-( function () {
+(function () {
   'use strict';
 
   /* @ngInject */
@@ -26,10 +26,10 @@
        * @returns {Promise}
        */
       function load() {
-        return iscHttpapi.get( _url ).then( function ( version ) {
+        return iscHttpapi.get( _url ).then(function ( version ) {
           _versionInfo = version;
           return version;
-        } );
+        });
       }
 
       /**
@@ -37,8 +37,8 @@
        * @returns {Object}
        */
       function get() {
-        return _.merge( {}, _versionInfo );
+        return _.merge({}, _versionInfo );
       }
     }
 
-} )();
+})();

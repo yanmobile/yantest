@@ -2,7 +2,7 @@
  * Created by Natan Aviezri on 5/5/2016, 7:43:36 AM.
  */
 
-( function () {
+(function () {
   'use strict';
 
   angular
@@ -56,4 +56,4 @@
 
   }//END CLASS
 
-} )();
+})();

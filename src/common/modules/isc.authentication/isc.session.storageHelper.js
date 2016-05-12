@@ -2,7 +2,7 @@
  * Created by douglasgoodman on 11/18/14.
  */
 
-( function () {
+(function() {
   'use strict';
   // ----------------------------
   // injection
@@ -62,7 +62,7 @@
 
     // ----------------------------
     function getLoginResponse() {
-      return getValFromSessionStorage( 'loginResponse', {} );
+      return getValFromSessionStorage( 'loginResponse', {});
     }
 
     function setLoginResponse( val ) {
@@ -71,7 +71,7 @@
 
     // ----------------------------
     function getConfig() {
-      return getValFromSessionStorage( 'config', {} );
+      return getValFromSessionStorage( 'config', {});
     }
 
     function setConfig( val ) {
@@ -82,7 +82,7 @@
     function getSessionExpiresOn() {
       var max = getValFromSessionStorage( 'sessionExpiresOn', null );
       if ( max ) {
-        log.debug( '...number: ' +  max );
+        log.debug( '...number: ' + max );
         return new Date( max );
       }
       log.debug( '...nope: ' );
@@ -109,16 +109,16 @@
     // ----------------------------
     function canParse( val ) {
       var canParse = ( !_.isEmpty( val ) && val !== 'null' && val !== 'undefined' );//jshint ignore:line
-      log.debug( '...canParse: ' +  canParse );
+      log.debug( '...canParse: ' + canParse );
       return canParse;
     }
 
     function getValFromSessionStorage( key, defaultVal ) {
       var valStr = $window.sessionStorage.getItem( key );
-      log.debug( '...valStr: ' +  valStr );
+      log.debug( '...valStr: ' + valStr );
 
       if ( helper.canParse( valStr ) ) {
-        log.debug( '...TRYING TO PARSE: ' +  valStr );
+        log.debug( '...TRYING TO PARSE: ' + valStr );
         return angular.fromJson( valStr );
       }
       return defaultVal;
@@ -131,4 +131,4 @@
 
   }// END CLASS
 
-} )();
+})();

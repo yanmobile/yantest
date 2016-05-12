@@ -1,7 +1,7 @@
 /**
  * Created by douglasgoodman on 12/9/14.
  */
-( function () {
+(function() {
   'use strict';
 
   // ----------------------------
@@ -19,7 +19,7 @@
    * @param $q
    * @param AUTH_EVENTS
    * @returns {{response: response, responseError: responseError}}
-     */
+   */
   function iscAuthenticationInterceptor( devlog, $rootScope, $q, AUTH_EVENTS ) {//jshint ignore:line
     var channel = devlog.channel( 'iscAuthenticationInterceptor' );
     channel.logFn( 'iscAuthenticationInterceptor' );
@@ -49,7 +49,7 @@
      *
      * @param response
      * @returns {Object} Returns the "Response" object
-       */
+     */
     function response( response ) {//jshint ignore:line
       channel.logFn( 'response' );
       if ( !response.config.cache && !endsWithExts( response.config.url, blacklistExts ) ) {
@@ -68,7 +68,7 @@
      *
      * @param response
      * @returns {Object} Returns the error handler with the response object pointer
-       */
+     */
     function responseError( response ) {
       channel.logFn( 'responseError' );
       switch ( response.status ) {
@@ -96,12 +96,12 @@
      * @param url
      * @param exts
      * @returns {*}
-       */
+     */
     function endsWithExts( url, exts ) {
       channel.logFn( 'endsWithExts' );
-      return _.some( exts, function ( ext ) {
+      return _.some( exts, function( ext ) {
         return _.endsWith( url, ext );
-      } );
+      });
     }
   }// END CLASS
-} )();
+})();

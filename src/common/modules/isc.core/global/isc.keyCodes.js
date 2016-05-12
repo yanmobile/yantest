@@ -2,7 +2,7 @@
  * Created by Henry Zou 11/8/2015
  */
 
-( function () {
+(function() {
   'use strict';
 
   angular.module( 'isc.core' )
@@ -23,7 +23,7 @@
       SPACE    : 32,
       TAB      : 9,
       UP       : 38
-    } );
+    });
 
-} )();
+})();
 

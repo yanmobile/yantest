@@ -1,7 +1,7 @@
 /**
  * Created by douglasgoodman on 11/21/14.
  */
-( function () {
+(function() {
   'use strict';
 
   /* @ngInject */
@@ -113,7 +113,7 @@
       channel.debug( 'iscGlobals.set' );
       settings[key] = value;
 
-      $rootScope.$broadcast( 'globalStyles:changed', { key: key, value: settings[key] } );
+      $rootScope.$broadcast( 'globalStyles:changed', { key: key, value: settings[key] });
       $rootScope.$broadcast( 'globalStyles:changed:' + key, settings[key] );
     }
 
@@ -137,4 +137,4 @@
   angular.module( 'isc.core' )
     .factory( '$global', iscGlobals );
 
-} )();
+})();

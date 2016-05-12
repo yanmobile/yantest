@@ -2,7 +2,7 @@
  * Created by douglasgoodman on 11/18/14.
  */
 
-( function () {
+(function() {
   'use strict';
 
   angular.module( 'isc.authentication' )
@@ -51,9 +51,9 @@
      *
      * @returns {promise} The promise object calls "resolve" with an empty object as a parameter
      */
-    var ping         = function () {
+    var ping         = function() {
       var deferred = $q.defer();
-      deferred.resolve( {} );
+      deferred.resolve({});
       return deferred.promise;
     };
     var sessionIdPath, expirationPath;
@@ -108,7 +108,7 @@
 
       // set the timeout
       sessionTimeout.maxAge = sessionData.SessionTimeout;
-      var initialExpiresOn = moment().add( sessionTimeout.maxAge, 'seconds' );
+      var initialExpiresOn  = moment().add( sessionTimeout.maxAge, 'seconds' );
       iscSessionStorageHelper.setSessionExpiresOn( initialExpiresOn );
       initSessionTimeout();
 
@@ -156,9 +156,9 @@
       sessionTimeout.syncedOn = syncedOn || sessionTimeout.syncedOn;
 
       var request = ping().then( _pingSuccess, _pingError )
-        .finally( function () {
+        .finally(function() {
           sessionTimeout.pingPromise = null;
-        } );
+        });
 
       sessionTimeout.pingPromise = request;
       return request;
@@ -243,7 +243,7 @@
       }
 
       // Checks to perform each tick
-      timeoutInterval = $interval( function () {
+      timeoutInterval = $interval(function() {
         _logTimer();
 
         if ( sessionTimeout.status === 'no response' ) {
@@ -275,9 +275,9 @@
         if ( _.getRemainingTime( sessionTimeout.warnAt ) <= 0 && _.getRemainingTime( sessionTimeout.expireAt ) > 0 ) {
           channel.debug( '...expireAt ', sessionTimeout.expireAt );
           if ( doPingFirst && sessionTimeout.syncedOn !== 'warn' ) {
-            callPing( 'warn' ).then( function () {
+            callPing( 'warn' ).then(function() {
               _checkForWarnOrExpire( false );
-            } );
+            });
           }
           else {
             $rootScope.$emit( AUTH_EVENTS.sessionTimeoutWarning );
@@ -289,9 +289,9 @@
           channel.debug( '...sessionTimeout.expireAt ' + sessionTimeout.expireAt );
 
           if ( doPingFirst && sessionTimeout.syncedOn !== 'expire' ) {
-            callPing( 'expire' ).then( function () {
+            callPing( 'expire' ).then(function() {
               _checkForWarnOrExpire( false );
-            } );
+            });
           }
           else {
             _expireSession();
@@ -401,5 +401,5 @@
     }
   }// END CLASS
 
-} )();
+})();
 

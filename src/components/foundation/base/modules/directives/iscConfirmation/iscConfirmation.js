@@ -2,7 +2,7 @@
  * Created by hzou on 9/16/15.
  */
 
-( function () {
+(function () {
   'use strict';
   // ----------------------------
   // injection
@@ -51,7 +51,7 @@
             modalScope.hide();
           }
         }
-      } );
+      });
     }
 
     // ----------------------------
@@ -64,4 +64,4 @@
 
   }//END CLASS
 
-} )();
+})();

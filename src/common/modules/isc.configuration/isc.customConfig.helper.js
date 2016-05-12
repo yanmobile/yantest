@@ -2,7 +2,7 @@
  * Created by douglasgoodman on 11/19/14.
  */
 
-( function () {
+(function() {
   'use strict';
 
   // ----------------------------
@@ -10,10 +10,10 @@
   // ----------------------------
 
   angular.module( 'isc.configuration' )
-      .factory( 'iscCustomConfigHelper', iscCustomConfigHelper );
+    .factory( 'iscCustomConfigHelper', iscCustomConfigHelper );
 
   /* @ngInject */
-  function iscCustomConfigHelper ( devlog, $state ) {
+  function iscCustomConfigHelper( devlog, $state ) {
     devlog.channel( 'iscCustomConfigHelper' ).debug( 'iscCustomConfigHelper LOADED' );
 
     // ----------------------------
@@ -35,14 +35,14 @@
     // ----------------------------
 
     // get the top level section's translation key from the state name
-    function getSectionTranslationKeyFromName ( stateName ) {
+    function getSectionTranslationKeyFromName( stateName ) {
       devlog.channel( 'iscCustomConfigHelper' ).debug(
-          'iscCustomConfigHelper.getSectionTranslationKeyFromName: ' + stateName );
+        'iscCustomConfigHelper.getSectionTranslationKeyFromName: ' + stateName );
 
       var arr         = stateName.split( '.' );
       var sectArr     = arr.splice( 0, 2 ); // the first two values are the section
       var sectionName = sectArr.join( '.' );
-      var state = $state.get( sectionName );
+      var state       = $state.get( sectionName );
 
       devlog.channel( 'iscCustomConfigHelper' ).debug( '...sectArr: ', sectArr );
       devlog.channel( 'iscCustomConfigHelper' ).debug( '...sectionName: ', sectionName );
@@ -53,4 +53,4 @@
 
   }// END CLASS
 
-} )();
+})();

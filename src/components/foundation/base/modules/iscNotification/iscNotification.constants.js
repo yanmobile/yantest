@@ -1,4 +1,4 @@
-( function () {
+(function () {
   'use strict';
 
   angular
@@ -18,5 +18,5 @@
         bottomMiddle: 'bottom-middle',
         bottomRight : 'bottom-right'
       }
-    } );
-} )();
+    });
+})();

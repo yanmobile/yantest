@@ -2,7 +2,7 @@
  * Created by douglasgoodman on 11/19/14.
  */
 
-( function () {
+(function() {
   'use strict';
 
   angular.module( 'isc.configuration' )
@@ -24,7 +24,7 @@
       addTopNavTab      : function addTopNavTab( topNavTab ) {
         updateConfig( topNavTab, 'topTabs' );
       },
-      setLandingPageFor : function ( role, state ) {
+      setLandingPageFor : function( role, state ) {
         updateConfig( _.makeObj( role, state ), 'landingPages' );
       },
       $get              : iscCustomConfigService
@@ -103,15 +103,15 @@
       // NOTE: This is an Big O(n^3) operation.
       // In practice this is Big O(n^2) operation, with very small # of items < 3.
       // The permissions argument is usually an object instead of an array
-      _.forEach( permissions, function ( permission ) {
-        _.forEach( permission, function ( roles, route ) {
-          _.forEach( roles, function ( role ) {
+      _.forEach( permissions, function( permission ) {
+        _.forEach( permission, function( roles, route ) {
+          _.forEach( roles, function( role ) {
             masterRoutes[role] = masterRoutes[role] || [];
             masterRoutes[role].push( route );
-          } );
-        } );
-      } );
+          });
+        });
+      });
       return masterRoutes;
     }
   }
-} )();
+})();

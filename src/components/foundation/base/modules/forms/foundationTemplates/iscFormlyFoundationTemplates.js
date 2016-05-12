@@ -1,4 +1,4 @@
-( function () {
+(function () {
   'use strict';
 
   /** Templates adapted from angular-formly-templates-foundation 1.0.0-beta.1
@@ -76,30 +76,30 @@
         iscFormsTemplateService.registerBaseType();
 
         // Instructions (static text)
-        iscFormsTemplateService.registerType( {
+        iscFormsTemplateService.registerType({
           name       : 'instructions',
           templateUrl: 'forms/foundationTemplates/templates/instructions.html'
-        } );
+        });
 
         // Input
-        iscFormsTemplateService.registerType( {
+        iscFormsTemplateService.registerType({
           name          : 'input',
           templateUrl   : 'forms/foundationTemplates/templates/input.html',
           wrapper       : ['templateLabel', 'templateHasError'],
           defaultOptions: {
             templateOptions: { type: 'text' }
           }
-        } );
+        });
 
         // Checkbox
-        iscFormsTemplateService.registerType( {
+        iscFormsTemplateService.registerType({
           name       : 'checkbox',
           templateUrl: 'forms/foundationTemplates/templates/checkbox.html',
           wrapper    : ['templateHasError']
-        } );
+        });
 
         // Multi-select checkboxes
-        iscFormsTemplateService.registerType( {
+        iscFormsTemplateService.registerType({
           name          : 'multiCheckbox',
           templateUrl   : 'forms/foundationTemplates/templates/multiCheckbox.html',
           wrapper       : ['templateLabel', 'templateHasError'],
@@ -121,7 +121,7 @@
               var valueProp = templateOptions.valueProp || 'value';
               angular.forEach( templateOptions.options, function ( v, index ) {
                 $scope.multiCheckbox.checked[index] = modelValue.indexOf( v[valueProp] ) !== -1;
-              } );
+              });
             }
 
             function setModel() {
@@ -130,42 +130,42 @@
                 if ( checkbox ) {
                   $scope.model[opts.key].push( templateOptions.options[index] );
                 }
-              } );
+              });
             }
           }
-        } );
+        });
 
         // Radio button
-        iscFormsTemplateService.registerType( {
+        iscFormsTemplateService.registerType({
           name       : 'radio',
           templateUrl: 'forms/foundationTemplates/templates/radio.html',
           wrapper    : ['templateLabel', 'templateHasError'],
           /*@ngInject*/
           controller : function ( $scope ) {
-            var data = _.get( $scope, 'options.data', {} );
+            var data = _.get( $scope, 'options.data', {});
 
             $scope.isObjectModel = _.get( data, 'isObject' );
           }
-        } );
+        });
 
         // Select/dropdown
-        iscFormsTemplateService.registerType( {
+        iscFormsTemplateService.registerType({
           name       : 'select',
           templateUrl: 'forms/foundationTemplates/templates/select.html',
           wrapper    : ['templateLabel', 'templateHasError'],
           /*@ngInject*/
           controller : function ( $scope ) {
-            var data           = _.get( $scope, 'options.data', {} );
+            var data           = _.get( $scope, 'options.data', {});
             $scope.displayProp = _.get( data, 'displayField', 'name' );
             $scope.valueProp   = _.get( data, 'valueField', 'value' );
             $scope.groupProp   = _.get( data, 'groupField', 'group' );
 
             $scope.isObjectModel = _.get( data, 'isObject' );
           }
-        } );
+        });
 
         // Textarea
-        iscFormsTemplateService.registerType( {
+        iscFormsTemplateService.registerType({
           name          : 'textarea',
           templateUrl   : 'forms/foundationTemplates/templates/textarea.html',
           wrapper       : ['templateLabel', 'templateHasError'],
@@ -175,10 +175,10 @@
               cols: { attribute: 'cols' }
             }
           }
-        } );
+        });
 
         // Date components [ DD / MM / YYYY ]
-        iscFormsTemplateService.registerType( {
+        iscFormsTemplateService.registerType({
           name          : 'dateComponents',
           templateUrl   : 'forms/foundationTemplates/templates/dateComponents.html',
           wrapper       : ['templateLabel', 'templateHasError'],
@@ -187,10 +187,10 @@
               tableCellTemplateUrl: 'shared/templates/cells/cell.date.html'
             }
           }
-        } );
+        });
 
         // Date components [ DD / MM / YYYY ]
-        iscFormsTemplateService.registerType( {
+        iscFormsTemplateService.registerType({
           name          : 'dateComponentsPartial',
           templateUrl   : 'forms/foundationTemplates/templates/dateComponentsPartial.html',
           wrapper       : ['templateLabel', 'templateHasError'],
@@ -215,7 +215,7 @@
               tableCellDisplay: function ( row, model ) {
                 // partialDate validator ensures we only have a day if we have a month,
                 // and only have a month if we have a year
-                var obj   = _.get( row, model, {} ),
+                var obj   = _.get( row, model, {}),
                     year  = parseInt( obj.year ),
                     month = parseInt( obj.month ) - 1, // months are 0-indexed in js dates and moment()
                     day   = parseInt( obj.day );
@@ -235,10 +235,10 @@
               }
             }
           }
-        } );
+        });
 
         // Typeahead (text input with lookup)
-        iscFormsTemplateService.registerType( {
+        iscFormsTemplateService.registerType({
           name       : 'typeahead',
           templateUrl: 'forms/foundationTemplates/templates/typeahead.html',
           wrapper    : ['templateLabel', 'templateHasError'],
@@ -250,7 +250,7 @@
 
             $scope.onSelect = function ( item ) {
               if ( _.isObject( item ) ) {
-                var copiedItem          = _.merge( {}, item );
+                var copiedItem          = _.merge({}, item );
                 $scope.model[key]       = copiedItem;
                 $scope.localModel.input = $scope.displayField ? copiedItem[$scope.displayField] : copiedItem;
               }
@@ -259,10 +259,10 @@
               }
             };
           }
-        } );
+        });
 
         // Typeahead with third-party user script support
-        iscFormsTemplateService.registerType( {
+        iscFormsTemplateService.registerType({
           name       : 'typeaheadWithScript',
           templateUrl: 'forms/foundationTemplates/templates/typeaheadWithScript.html',
           wrapper    : ['templateLabel', 'templateHasError'],
@@ -289,10 +289,10 @@
               }
             );
           }
-        } );
+        });
 
         // Embedded form
-        iscFormsTemplateService.registerType( {
+        iscFormsTemplateService.registerType({
           name       : 'embeddedForm',
           templateUrl: 'forms/foundationTemplates/templates/embeddedForm.html',
           wrapper    : ['templateLabel', 'templateHasError'],
@@ -301,16 +301,16 @@
             var templateOptions = $scope.to;
             var opts            = $scope.options;
 
-            $scope.efModel = $scope.model[opts.key] = ( $scope.model[opts.key] || {} );
+            $scope.efModel = $scope.model[opts.key] = ( $scope.model[opts.key] || {});
             $scope.efFields  = templateOptions.fields;
             $scope.efOptions = {
               formState: $scope.formState
             };
           }
-        } );
+        });
 
         // Embedded form collection
-        iscFormsTemplateService.registerType( {
+        iscFormsTemplateService.registerType({
           name       : 'embeddedFormCollection',
           templateUrl: 'forms/foundationTemplates/templates/embeddedFormCollection.html',
           wrapper    : ['templateLabel', 'templateHasError'],
@@ -320,18 +320,18 @@
               $scope.options.key, {
                 id   : $scope.id,
                 label: $scope.to.label
-              } );
+              });
           }
-        } );
+        });
 
         // Embedded Form Listener
         // This field will not be rendered in the DOM, but will listen for FORMS_EVENTS
         // This is useful for communication in embedded subforms
-        iscFormsTemplateService.registerType( {
+        iscFormsTemplateService.registerType({
           name       : 'embeddedFormListener',
           templateUrl: 'forms/foundationTemplates/templates/embeddedFormListener.html'
-        } );
+        });
       }
 
     }
-} )();
+})();

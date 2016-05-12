@@ -1,4 +1,4 @@
-( function () {
+(function () {
   'use strict';
 
   angular.module( 'isc.directives' )
@@ -37,11 +37,11 @@
         if ( target ) {
           element.on( 'click', function () {
             $uiViewScroll( target );
-          } );
+          });
         }
       }
 
     }
   }// END CLASS
 
-} )();
+})();

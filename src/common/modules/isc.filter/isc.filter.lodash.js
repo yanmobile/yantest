@@ -7,7 +7,7 @@
  *
  */
 
-( function () {
+(function() {
   'use strict';
   // ----------------------------
   // injection
@@ -28,7 +28,7 @@
    */
   function lodash() {
 
-    return function ( value, lodashFunc ) {
+    return function( value, lodashFunc ) {
       var retVal = value;
       if ( value ) {
         var args = _.toArray( arguments );
@@ -44,4 +44,4 @@
 
   }//END CLASS
 
-} )();
+})();
