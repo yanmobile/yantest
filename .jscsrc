@@ -84,6 +84,7 @@
   "disallowSpacesInsideParentheses"        : false,
   "requireAlignedObjectValues"             : "all",
   "disallowSpacesInCallExpression"         : true,
+  "requireSpacesInsideParentheses"         : "all",
   "requireObjectKeysOnNewLine"             : {
     "allExcept" : [
       "sameLine"
