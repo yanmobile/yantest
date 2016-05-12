@@ -2,7 +2,7 @@
  * Created by hzou on 12/8/15.
  */
 
-(function () {
+( function () {
   'use strict';
 
   /**
@@ -13,8 +13,8 @@
    * Please click the "source" link on the header to see the constants
    */
   angular
-    .module('isc.authentication')
-    .constant('AUTH_EVENTS', {
+    .module( 'isc.authentication' )
+    .constant( 'AUTH_EVENTS', {
       loginError           : 'iscLoginError',
       loginSuccess         : 'iscLoginSuccess',
       loginFailed          : 'iscLoginFailed',
@@ -30,6 +30,6 @@
       sessionTimeoutConfirm: 'iscSessionTimeoutConfirm',
       sessionTimeoutWarning: 'iscSessionTimeoutWarning',
       sessionTimeoutReset  : 'iscSessionTimeoutReset'
-    });
+    } );
 
-})();
+} )();

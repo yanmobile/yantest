@@ -2,7 +2,7 @@
  * Created by douglasgoodman on 12/8/14.
  */
 
-(function() {
+( function() {
   'use strict';
   // ----------------------------
   // injection
@@ -16,8 +16,8 @@
    * @returns {getArrayString}
    */
   function iscArrayStringFilter( devlog ) {//jshint ignore:line
-    var channel = devlog.channel('iscArrayStringFilter');
-    channel.debug( 'iscArrayStringFilter LOADED');
+    var channel = devlog.channel( 'iscArrayStringFilter' );
+    channel.debug( 'iscArrayStringFilter LOADED' );
 
     return getArrayString;
 
@@ -26,9 +26,9 @@
     // ----------------------------
 
     function getArrayString( array ) {
-      channel.debug('iscArrayStringFilter.getArrayString');
-      channel.debug('...array', array);
-      channel.debug('...array', typeof array);
+      channel.debug( 'iscArrayStringFilter.getArrayString' );
+      channel.debug( '...array', array );
+      channel.debug( '...array', typeof array );
 
       //does the same as this?
       // if( _.isTypeOf(array, "Array") ){
@@ -36,7 +36,7 @@
       // }
       // return '';
 
-      if ( !_.isTypeOf(array, "Array") ) {
+      if ( !_.isTypeOf( array, "Array" ) ) {
         return '';
       }
 
@@ -46,15 +46,15 @@
       var len = array.length;
       array.forEach( function( item, idx ) {
         string += item.toString();
-        if ( idx < (len - 1) ) {
+        if ( idx < ( len - 1 ) ) {
           string += ', ';
         }
 
-      });
+      } );
 
       return string;
     }
 
   }//END CLASS
 
-})();
+} )();

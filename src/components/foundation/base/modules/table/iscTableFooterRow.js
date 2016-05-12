@@ -2,7 +2,7 @@
  * Created by hzou on 08/03/15.
  */
 
-(function() {
+( function() {
   'use strict';
 
   angular.module( 'isc.table' )
@@ -19,9 +19,9 @@
    * @returns {{scope: boolean, restrict: string, controllerAs: string, compile: compile}}
      */
   function iscTableFooterRow( devlog, $state, $templateCache, $compile ) {
-    var channel = devlog.channel('iscTableFooterRow');
+    var channel = devlog.channel( 'iscTableFooterRow' );
 
-    channel.debug('iscTableFooterRow.LOADED');
+    channel.debug( 'iscTableFooterRow.LOADED' );
 
     // ----------------------------
     // vars
@@ -63,4 +63,4 @@
     }
   }
 
-})();
+} )();

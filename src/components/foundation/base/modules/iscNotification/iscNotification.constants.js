@@ -1,9 +1,9 @@
-(function () {
+( function () {
   'use strict';
 
   angular
-    .module('isc.notification')
-    .constant('NOTIFICATION', {
+    .module( 'isc.notification' )
+    .constant( 'NOTIFICATION', {
       type     : {
         success: 'success',
         warning: 'warning',
@@ -18,5 +18,5 @@
         bottomMiddle: 'bottom-middle',
         bottomRight : 'bottom-right'
       }
-    });
-})();
+    } );
+} )();

@@ -5,7 +5,7 @@
  *
  */
 
-(function () {
+( function () {
   'use strict';
 
   var origGet      = _.get;
@@ -16,7 +16,7 @@
   var reFixJson    = /(['"])?([a-zA-Z0-9_]+)(['"])?:/g;
   //save the original _.get
 
-  _.mixin({
+  _.mixin( {
     isPresent       : isPresent,
     isNotPresent    : isNotPresent,
     getAge          : getAge,
@@ -28,28 +28,28 @@
     wrapText        : wrapText,
     interpolate     : interpolate,
     getRemainingTime: getRemainingTime
-  });
+  } );
 
   // Present is defined by not undefined and not null.
-  function isPresent(obj) {
-    console.warn('[deprecated] _.isPresent(), use _.isNil() instead.');
-    return !_.isNil(obj);
+  function isPresent( obj ) {
+    console.warn( '[deprecated] _.isPresent(), use _.isNil() instead.' );
+    return !_.isNil( obj );
   }
 
   // Present is defined by not undefined and not null.
-  function isNotPresent(obj) {
-    console.warn('[deprecated] _.isNotPresent(), use !_.isNil() instead.');
-    return _.isNil(obj);
+  function isNotPresent( obj ) {
+    console.warn( '[deprecated] _.isNotPresent(), use !_.isNil() instead.' );
+    return _.isNil( obj );
   }
 
-  function getAge(dob, format) {
-    return moment().diff(moment(dob, format), 'year');
+  function getAge( dob, format ) {
+    return moment().diff( moment( dob, format ), 'year' );
   }
 
   var MS_IN_DAY = 86400000;
 
-  function areSameDate(date1, date2) {
-    return Math.abs(new Date(date1) - new Date(date2)) < MS_IN_DAY;
+  function areSameDate( date1, date2 ) {
+    return Math.abs( new Date( date1 ) - new Date( date2 ) ) < MS_IN_DAY;
   }
 
   /**
@@ -75,25 +75,25 @@
    * RegExp:
    * ==> '[object RegExp]'
    */
-  function isTypeOf(obj, type) {
-    if (typeof type !== 'string') {
+  function isTypeOf( obj, type ) {
+    if ( typeof type !== 'string' ) {
       return false;
     }
 
     var typeStartIndex = 8;
-    var typeOfString   = Object.prototype.toString.call(obj);
+    var typeOfString   = Object.prototype.toString.call( obj );
     var typeLength     = typeOfString.length - 9;
-    var typeToken      = typeOfString.substr(typeStartIndex, typeLength);
+    var typeToken      = typeOfString.substr( typeStartIndex, typeLength );
     return typeToken.toLowerCase() === type.toLowerCase();
   }
 
   //set object's own internal properties to null
-  function nullifyObj(obj) {
+  function nullifyObj( obj ) {
     //Confirm it's a real  object literal and not a 'fake' one like (array/function/date/etc)
-    if (isTypeOf(obj, 'Object')) {
-      _.forOwn(obj, function (value, key) {
+    if ( isTypeOf( obj, 'Object' ) ) {
+      _.forOwn( obj, function ( value, key ) {
         obj[key] = null;
-      });
+      } );
     }
   }
 
@@ -134,44 +134,44 @@
    _.get(object, 'a[{code: 11}]', 'default');
    // → {'code': 11, 'b': 'c'}
   **/
-  function advancedGet(obj, path, defaultValue) {
+  function advancedGet( obj, path, defaultValue ) {
     var val = obj;
 
-    if (isTypeOf(path, 'string') && _.includes(path, ':')) {
-      toPath(path).forEach(function (part) {
-        if (_.includes(part, ':')) {
-          part     = part.replace(reFixJson, '"$2": ');
-          var json = JSON.parse(part);
-          val      = _.find(val, json);
+    if ( isTypeOf( path, 'string' ) && _.includes( path, ':' ) ) {
+      toPath( path ).forEach( function ( part ) {
+        if ( _.includes( part, ':' ) ) {
+          part     = part.replace( reFixJson, '"$2": ' );
+          var json = JSON.parse( part );
+          val      = _.find( val, json );
         } else {
-          val = origGet(val, part, defaultValue);
+          val = origGet( val, part, defaultValue );
         }
-      });
+      } );
     } else {
-      val = origGet(obj, path);
+      val = origGet( obj, path );
     }
 
-    return !_.isNil(val) ? val : defaultValue;
+    return !_.isNil( val ) ? val : defaultValue;
   }
 
-  function toPath(path) {
+  function toPath( path ) {
 
     var results = [];
 
-    path.replace(rePropName, function (match, number, quote, string) {
-      var parts = quote ? string.replace(reEscapeChar, '$1') : (number || match);
-      results.push(parts);
-    });
+    path.replace( rePropName, function ( match, number, quote, string ) {
+      var parts = quote ? string.replace( reEscapeChar, '$1' ) : ( number || match );
+      results.push( parts );
+    } );
     return results;
   }
 
-  function makeObj(key, value) {
+  function makeObj( key, value ) {
     var obj  = {};
     obj[key] = value;
     return obj;
   }
 
-  function wrapText(val, wrapWith) {
+  function wrapText( val, wrapWith ) {
     wrapWith = wrapWith || '"';
 
     return wrapWith + val + wrapWith;
@@ -183,18 +183,18 @@
   // => "I am 5
   // _.interpolate("I am {0}", [5])
   // => "I am 5
-  function interpolate(template, scope) {
-    return template.replace(/{([^{}]*)}/g,
-      function (a, b) {
+  function interpolate( template, scope ) {
+    return template.replace( /{([^{}]*)}/g,
+      function ( a, b ) {
         var r = scope[b];
         return typeof r === 'string' || typeof r === 'number' ? r : a;
       }
     );
   }
 
-  function getRemainingTime(time) {
-    return (moment(time) - Date.now()) / 1000;
+  function getRemainingTime( time ) {
+    return ( moment( time ) - Date.now() ) / 1000;
   }
 
   //END CLASS
-})();
+} )();

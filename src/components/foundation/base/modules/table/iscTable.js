@@ -172,7 +172,7 @@
  *
  *
  */
-(function() {
+( function() {
   'use strict';
 
   angular.module( 'isc.table' )
@@ -186,9 +186,9 @@
    * @returns {{scope: {tableConfig: string, tableData: string, filterFunction: string, rowButtonCallback: string, backButtonCallback: string, tableName: string}, restrict: string, replace: boolean, templateUrl: directive.templateUrl, bindToController: boolean, link: link, controller: controller, controllerAs: string}}
      */
   function iscTable( devlog ) { //jshint ignore:line
-    var channel = devlog.channel('iscTable');
+    var channel = devlog.channel( 'iscTable' );
 
-    channel.debug('iscTable.LOADED');
+    channel.debug( 'iscTable.LOADED' );
 
     // ----------------------------
     // vars
@@ -211,7 +211,7 @@
       restrict        : 'E',
       replace         : true,
 
-      templateUrl     : function(elem, attrs) {
+      templateUrl     : function( elem, attrs ) {
         return attrs.templateUrl || 'table/iscTable.html';
       },
       bindToController: true,
@@ -252,11 +252,11 @@
         self.currentPage = 1;
 
         $scope.$watch( function() { return self.tableData; }, function() {
-        channel.debug( 'iscTable.WATCH tableData');
+        channel.debug( 'iscTable.WATCH tableData' );
         // set an array of the table row objects
         self.filteredRows = self.tableRows = self.tableConfig.key ? self.tableData[ self.tableConfig.key ] : self.tableData;
-        channel.debug( '...tableRows',self.tableRows);
-      });
+        channel.debug( '...tableRows',self.tableRows );
+      } );
 
         applyFilter();
         self.sortField = { reverse: false };
@@ -267,8 +267,8 @@
        */
       function applyFilter() {
         var rows = self.tableRows;
-        if (self.tableConfig.sortable) {
-          rows = $filter('orderBy')(rows, self.sortField.name, self.sortField.reverse);
+        if ( self.tableConfig.sortable ) {
+          rows = $filter( 'orderBy' )( rows, self.sortField.name, self.sortField.reverse );
         }
         self.filteredRows = rows;
       }
@@ -277,8 +277,8 @@
        * @memberOf iscTable
        * @param column
          */
-      self.sortColumn = function (column) {
-        if ( (column.columnClick === 'sort' || !column.columnClick) && self.sortField.name === column.key) {
+      self.sortColumn = function ( column ) {
+        if ( ( column.columnClick === 'sort' || !column.columnClick ) && self.sortField.name === column.key ) {
           self.sortField.reverse = !self.sortField.reverse;
         }
 
@@ -290,7 +290,7 @@
        * @memberOf iscTable
        * @param newPageNumber
          */
-      self.changePage = function (newPageNumber) {
+      self.changePage = function ( newPageNumber ) {
         self.currentPage = newPageNumber;
       };
 
@@ -299,15 +299,15 @@
        * @param item
        * @returns {*}
          */
-      self.doFilter = function (item) {
+      self.doFilter = function ( item ) {
         channel.debug( 'iscTable.doFilter', item );
         var fitlerable = _.some( self.tableConfig.columns, function( column ) {
           return _.isFunction( column.filterFunction );
-        });
+        } );
 
         channel.debug( '...fitlerable', fitlerable );
         if ( fitlerable ) {
-          return self.filterFunction({ item: item });
+          return self.filterFunction( { item: item } );
         }
         else {
           return true;
@@ -322,24 +322,24 @@
        * @param key
        * @returns {*}
          */
-      function getColumnByKey(key) {
-        return _.find(self.tableConfig.columns, { key: key });
+      function getColumnByKey( key ) {
+        return _.find( self.tableConfig.columns, { key: key } );
       }
 
       /**
        * @memberOf iscTable
        * @param row
          */
-      function deleteRow(row) {
-        _.remove(self.tableRows, row);
+      function deleteRow( row ) {
+        _.remove( self.tableRows, row );
       }
 
       /**
        * @memberOf iscTable
        * @param row
          */
-      function addRow(row) {
-        self.tableRows.push(row);
+      function addRow( row ) {
+        self.tableRows.push( row );
         self.dataItem = null;
       }
 
@@ -348,8 +348,8 @@
        * @param row
        * @param oldRow
          */
-      function updateRow(row, oldRow) {
-        angular.extend(oldRow, row);
+      function updateRow( row, oldRow ) {
+        angular.extend( oldRow, row );
         self.dataItem = null;
       }
 
@@ -359,11 +359,11 @@
          */
       function createRow() {
         var dataItem = { isNew: true };
-        self.tableConfig.columns.forEach(function (column) {
-          if (column.defaultValue !== null) {
+        self.tableConfig.columns.forEach( function ( column ) {
+          if ( column.defaultValue !== null ) {
             dataItem[column.key] = column.defaultValue;
           }
-        });
+        } );
         self.dataItem = dataItem;
         return self.dataItem;
       }
@@ -372,7 +372,7 @@
        * @memberOf iscTable
        * @param row
          */
-      function editRow(row) {
+      function editRow( row ) {
         self.dataItem = row;
       }
 
@@ -392,4 +392,4 @@
 
   }// END CLASS
 
-})();
+} )();

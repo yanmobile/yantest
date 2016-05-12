@@ -2,7 +2,7 @@
  * Created by douglas goodman on 2/26/15.
  */
 
-(function() {
+( function() {
   'use strict';
   // ----------------------------
   // injection
@@ -21,8 +21,8 @@
    */
   /* @ngInject */
   function iscRoundCheckBox( devlog ) {//jshint ignore:line
-    var channel = devlog.channel('iscRoundCheckBox');
-    channel.debug( 'iscRoundCheckBox LOADED');
+    var channel = devlog.channel( 'iscRoundCheckBox' );
+    channel.debug( 'iscRoundCheckBox LOADED' );
 
     // ----------------------------
     // vars
@@ -39,7 +39,7 @@
         onToggle: '&'
       },
       link       : link,
-      templateUrl: function (elem, attrs) {
+      templateUrl: function ( elem, attrs ) {
         return attrs.templateUrl || 'svg/isc-rounded-checkbox.html';
       }
     };
@@ -65,7 +65,7 @@
         scope.onToggle( { selected: scope.selected } );
 
         if ( ngModelCtrl ) {
-          channel.debug( 'iscRoundCheckBox.$setViewValue');
+          channel.debug( 'iscRoundCheckBox.$setViewValue' );
           ngModelCtrl.$setViewValue( !ngModelCtrl.$viewValue );
         }
       };
@@ -73,4 +73,4 @@
 
   }//END CLASS
 
-})();
+} )();

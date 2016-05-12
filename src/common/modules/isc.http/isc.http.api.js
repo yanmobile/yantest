@@ -13,14 +13,14 @@
  *
  * see Angular's $http doc: https://docs.angularjs.org/api/ng/service/$http#usage
  */
-(function () {
+( function () {
   'use strict';
 
-  angular.module('isc.http')
-    .factory('iscHttpapi', iscHttpapi);
+  angular.module( 'isc.http' )
+    .factory( 'iscHttpapi', iscHttpapi );
 
   /* @ngInject */
-  function iscHttpapi($http) {
+  function iscHttpapi( $http ) {
 
     return {
       get   : get,
@@ -32,33 +32,33 @@
     /**
      * Methods: get(url, [config]);
      */
-    function get(url, config) {
-      var partialReturnedResponseData = _.partial(returnResponseData, config);
-      return $http.get(url, config).then(partialReturnedResponseData);
+    function get( url, config ) {
+      var partialReturnedResponseData = _.partial( returnResponseData, config );
+      return $http.get( url, config ).then( partialReturnedResponseData );
     }
 
     /**
      * Methods: put(url, data, [config]);
      */
-    function put(url, data, config) {
-      var partialReturnedResponseData = _.partial(returnResponseData, config);
-      return $http.put(url, data, config).then(partialReturnedResponseData);
+    function put( url, data, config ) {
+      var partialReturnedResponseData = _.partial( returnResponseData, config );
+      return $http.put( url, data, config ).then( partialReturnedResponseData );
     }
 
     /**
      * Methods: post(url, data, [config]);
      */
-    function post(url, data, config) {
-      var partialReturnedResponseData = _.partial(returnResponseData, config);
-      return $http.post(url, data, config).then(partialReturnedResponseData);
+    function post( url, data, config ) {
+      var partialReturnedResponseData = _.partial( returnResponseData, config );
+      return $http.post( url, data, config ).then( partialReturnedResponseData );
     }
 
     /**
      * Methods: delete(url, [config]);
      */
-    function deleteApi(url, config) {
-      var partialReturnedResponseData = _.partial(returnResponseData, config);
-      return $http.delete(url, config).then(partialReturnedResponseData);
+    function deleteApi( url, config ) {
+      var partialReturnedResponseData = _.partial( returnResponseData, config );
+      return $http.delete( url, config ).then( partialReturnedResponseData );
     }
 
     /**
@@ -70,10 +70,10 @@
      * @param response
      * @returns {*} - response.data
      */
-    function returnResponseData(config, response) {
+    function returnResponseData( config, response ) {
       config = config || {};
 
-      if (config.responseAsObject) {
+      if ( config.responseAsObject ) {
         return response;
       } else {
         return response.data;
@@ -82,5 +82,5 @@
     }
 
   }
-})();
+} )();
 

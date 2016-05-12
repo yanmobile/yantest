@@ -1,11 +1,11 @@
 /**
  * Created by paul robbins on 12/11/15
  */
-(function () {
+( function () {
   'use strict';
 
-  angular.module('isc.router')
-    .provider('iscExternalRoute', iscExternalRouteProvider);
+  angular.module( 'isc.router' )
+    .provider( 'iscExternalRoute', iscExternalRouteProvider );
 
   /**
    * This provider allows routing into a state within the application,
@@ -47,68 +47,68 @@
    */
 
   /* @ngInject */
-  function iscExternalRouteProvider($windowProvider) {
+  function iscExternalRouteProvider( $windowProvider ) {
     var _stateKey = 'routeStack';
 
-    this.configure = function (mappingFunction, externalRequestExpirationInMinutes) {
+    this.configure = function ( mappingFunction, externalRequestExpirationInMinutes ) {
       // Local window wrapper -- $window for tests
       var window = _getWindow();
 
       // Get raw location hash
-      var hash = window.location.hash.replace(/#/, ''),
+      var hash = window.location.hash.replace( /#/, '' ),
           nextStateObject;
 
       // If the hash fragment starts with ?, then it is url query params for the application
       // Direct Angular ui-routes are handled by iscExternalRouteApi.persistCurrentState
-      if (_.startsWith(hash, '?') && _.isFunction(mappingFunction)) {
+      if ( _.startsWith( hash, '?' ) && _.isFunction( mappingFunction ) ) {
         // Parse into query strings
-        var queryStrings = _.compact(hash.split(/[\?&]/g));
+        var queryStrings = _.compact( hash.split( /[\?&]/g ) );
 
         // Parse into name/value properties
         var queryParams = {};
-        _.forEach(queryStrings, function (param) {
-          var split = param.split(/=/);
+        _.forEach( queryStrings, function ( param ) {
+          var split = param.split( /=/ );
           // Note that empty query params such as ?param=&anotherParam= will split to empty string values.
-          if (split.length > 1) {
-            _.set(queryParams, split[0], split[1]);
+          if ( split.length > 1 ) {
+            _.set( queryParams, split[0], split[1] );
           }
-        });
+        } );
 
         // Process params through provided config function
-        nextStateObject = mappingFunction(queryParams);
+        nextStateObject = mappingFunction( queryParams );
       }
 
       // If a next state was returned (a nextState string is minimally required), store desired state in session
       // This will be returned during app.run with iscExternalRouteApi.getNextState()
-      if (_.isObject(nextStateObject) && nextStateObject.nextState) {
+      if ( _.isObject( nextStateObject ) && nextStateObject.nextState ) {
         var nextState   = nextStateObject.nextState,
             stateParams = nextStateObject.stateParams;
-        if (!_.isObject(stateParams)) {
+        if ( !_.isObject( stateParams ) ) {
           stateParams = {};
         }
 
-        this.addRoute({
+        this.addRoute( {
           'nextState'  : nextState,
           'stateParams': stateParams,
           // Set an expiration -- if this state is later retrieved after it has expired, this state will be ignored
           'expiresOn'  : externalRequestExpirationInMinutes ?
-            moment().add(externalRequestExpirationInMinutes, 'minute').toISOString()
+            moment().add( externalRequestExpirationInMinutes, 'minute' ).toISOString()
             : undefined
-        });
+        } );
       }
     };
 
     this.getNext = function () {
       var routeStack = _getStorage();
       var nextState  = routeStack.pop();
-      _setStorage(routeStack);
+      _setStorage( routeStack );
       return nextState;
     };
 
-    this.addRoute = function (route) {
+    this.addRoute = function ( route ) {
       var routeStack = _getStorage();
-      routeStack.push(route);
-      _setStorage(routeStack);
+      routeStack.push( route );
+      _setStorage( routeStack );
       return true;
     };
 
@@ -127,18 +127,18 @@
 
     function _getStorage() {
       var window     = _getWindow();
-      var routeStack = JSON.parse(window.sessionStorage.getItem(_stateKey));
-      if (!routeStack || !_.isArray(routeStack)) {
+      var routeStack = JSON.parse( window.sessionStorage.getItem( _stateKey ) );
+      if ( !routeStack || !_.isArray( routeStack ) ) {
         routeStack = [];
-        _setStorage([]);
+        _setStorage( [] );
       }
       return routeStack;
     }
 
-    function _setStorage(value) {
-      _getWindow().sessionStorage.setItem(_stateKey, JSON.stringify(value));
+    function _setStorage( value ) {
+      _getWindow().sessionStorage.setItem( _stateKey, JSON.stringify( value ) );
     }
 
   }
-})();
+} )();
 

@@ -39,7 +39,7 @@
  * Usage: <textarea isc-text-area-autoExpand ng-model="someValue"></textarea>
  **/
 
-(function() {
+( function() {
   'use strict';
   // ----------------------------
   // injection
@@ -97,8 +97,8 @@
    */
   /* @ngInject */
   function iscTextAreaAutoExpand( devlog ) { //jshint ignore: line
-    var channel = devlog.channel('iscTextAreaAutoExpand');
-    channel.debug( 'iscTextAreaAutoExpand LOADED');
+    var channel = devlog.channel( 'iscTextAreaAutoExpand' );
+    channel.debug( 'iscTextAreaAutoExpand LOADED' );
 
     // ----------------------------
     // vars
@@ -123,41 +123,41 @@
     function link( scope, element, attr, ngModelCtrl ) {
 
       var minHeight = MIN_HEIGHT;
-      var paddingLeft = element.css('paddingLeft');
-      var paddingRight = element.css('paddingRight');
-      var threshold = Math.max( parseInt(element.css('paddingTop') || 0), 20 );
+      var paddingLeft = element.css( 'paddingLeft' );
+      var paddingRight = element.css( 'paddingRight' );
+      var threshold = Math.max( parseInt( element.css( 'paddingTop' ) || 0 ), 20 );
 
-      var $shadow = angular.element('<div></div>').css({
+      var $shadow = angular.element( '<div></div>' ).css( {
         position  : 'absolute',
         top       : -10000,
         left      : -10000,
-        width     : element[0].offsetWidth - parseInt(paddingLeft || 0) - parseInt(paddingRight || 0),
-        fontSize  : element.css('fontSize'),
-        fontFamily: element.css('fontFamily'),
-        lineHeight: element.css('lineHeight'),
+        width     : element[0].offsetWidth - parseInt( paddingLeft || 0 ) - parseInt( paddingRight || 0 ),
+        fontSize  : element.css( 'fontSize' ),
+        fontFamily: element.css( 'fontFamily' ),
+        lineHeight: element.css( 'lineHeight' ),
         resize    :     'none'
-      });
+      } );
 
-      angular.element(document.body).append($shadow); // jshint ignore:line
+      angular.element( document.body ).append( $shadow ); // jshint ignore:line
 
       var update = function() {
-        var times = function(string, number) {
-          for (var i = 0, r = ''; i < number; i++) {
+        var times = function( string, number ) {
+          for ( var i = 0, r = ''; i < number; i++ ) {
             r += string;
           }
           return r;
         };
 
-        var val = element.val().replace(/</g, '&lt;')
-          .replace(/>/g, '&gt;')
-          .replace(/&/g, '&amp;')
-          .replace(/\n$/, '<br/>&nbsp;')
-          .replace(/\n/g, '<br/>')
-          .replace(/\s{2,}/g, function(space) {
-            return times('&nbsp;', space.length - 1) + ' ';
-          });
+        var val = element.val().replace( /</g, '&lt;' )
+          .replace( />/g, '&gt;' )
+          .replace( /&/g, '&amp;' )
+          .replace( /\n$/, '<br/>&nbsp;' )
+          .replace( /\n/g, '<br/>' )
+          .replace( /\s{2,}/g, function( space ) {
+            return times( '&nbsp;', space.length - 1 ) + ' ';
+          } );
 
-        $shadow.html(val);
+        $shadow.html( val );
 
         var height = Math.max( $shadow[0].offsetHeight + threshold, minHeight );
         channel.debug( '...$shadow[0].offsetHeight',$shadow[0].offsetHeight );
@@ -165,10 +165,10 @@
         channel.debug( '...minHeight',minHeight );
         channel.debug( '...height',height );
 
-        element.css('height', height + 'px');
+        element.css( 'height', height + 'px' );
       };
 
-      element.bind('keyup keydown keypress change', update);
+      element.bind( 'keyup keydown keypress change', update );
       update();
 
       scope.$watch( 'ngModelCtrl.$modelValue', function( oldval, newVal ) { // jshint ignore:line
@@ -177,15 +177,15 @@
         if ( !!ngModelCtrl.$modelValue ) {
           update();
         }
-      });
+      } );
 
-      scope.$on('$destroy', function() {
+      scope.$on( '$destroy', function() {
         channel.debug( '...$destroy' );
         $shadow.remove();
-      });
+      } );
 
     }//END LINK
 
   }//END CLASS
 
-})();
+} )();

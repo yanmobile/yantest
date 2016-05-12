@@ -1,8 +1,8 @@
-(function () {
+( function () {
   'use strict';
 
-  angular.module('isc.notification')
-    .directive('iscNotificationSet', iscNotificationSet);
+  angular.module( 'isc.notification' )
+    .directive( 'iscNotificationSet', iscNotificationSet );
 
   /**
    * @ngdoc directive
@@ -21,7 +21,7 @@
     var directive = {
       restrict        : 'E',
       replace         : true,
-      templateUrl     : function (elem, attrs) {
+      templateUrl     : function ( elem, attrs ) {
         return attrs.templateUrl || 'iscNotification/iscNotificationSet.html';
       }
     };
@@ -34,4 +34,4 @@
 
   }//END CLASS
 
-})();
+} )();

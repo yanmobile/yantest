@@ -1,8 +1,8 @@
-(function () {
+( function () {
   'use strict';
 
-  angular.module('isc.forms')
-    .factory('iscFormDataApi', iscFormDataApi);
+  angular.module( 'isc.forms' )
+    .factory( 'iscFormDataApi', iscFormDataApi );
 
   /**
    * @ngdoc factory
@@ -14,13 +14,13 @@
    * @returns {{get: get, put: put, post: post, delete: deleteApi, list: list}}
      */
   /* @ngInject */
-  function iscFormDataApi(devlog, apiHelper, iscCustomConfigService, iscHttpapi) {
-    var channel = devlog.channel('iscFormDataApi');
+  function iscFormDataApi( devlog, apiHelper, iscCustomConfigService, iscHttpapi ) {
+    var channel = devlog.channel( 'iscFormDataApi' );
 
     var config       = iscCustomConfigService.getConfig(),
-        moduleConfig = _.get(config, 'moduleApi', {});
+        moduleConfig = _.get( config, 'moduleApi', {} );
 
-    var formDataUrl = apiHelper.getConfigUrl(moduleConfig.formData);
+    var formDataUrl = apiHelper.getConfigUrl( moduleConfig.formData );
 
     var api = {
       get   : get,
@@ -37,9 +37,9 @@
      * @param id
      * @returns {*}
        */
-    function get(id) {
-      channel.debug('iscFormDataApi.get');
-      return iscHttpapi.get([formDataUrl, id].join('/'));
+    function get( id ) {
+      channel.debug( 'iscFormDataApi.get' );
+      return iscHttpapi.get( [formDataUrl, id].join( '/' ) );
     }
 
     /**
@@ -48,9 +48,9 @@
      * @param form
      * @returns {*}
        */
-    function put(id, form) {
-      channel.debug('iscFormDataApi.put');
-      return iscHttpapi.put([formDataUrl, id].join('/'), form);
+    function put( id, form ) {
+      channel.debug( 'iscFormDataApi.put' );
+      return iscHttpapi.put( [formDataUrl, id].join( '/' ), form );
     }
 
     /**
@@ -58,9 +58,9 @@
      * @param form
      * @returns {*}
        */
-    function post(form) {
-      channel.debug('iscFormDataApi.post');
-      return iscHttpapi.post(formDataUrl, form);
+    function post( form ) {
+      channel.debug( 'iscFormDataApi.post' );
+      return iscHttpapi.post( formDataUrl, form );
     }
 
     /**
@@ -68,9 +68,9 @@
      * @param id
      * @returns {*}
        */
-    function deleteApi(id) {
-      channel.debug('iscFormDataApi.delete');
-      return iscHttpapi.delete([formDataUrl, id].join('/'));
+    function deleteApi( id ) {
+      channel.debug( 'iscFormDataApi.delete' );
+      return iscHttpapi.delete( [formDataUrl, id].join( '/' ) );
     }
 
     /**
@@ -78,9 +78,9 @@
      * @returns {*}
        */
     function list() {
-      channel.debug('iscFormDataApi.list');
-      return iscHttpapi.get(formDataUrl);
+      channel.debug( 'iscFormDataApi.list' );
+      return iscHttpapi.get( formDataUrl );
     }
 
   }
-})();
+} )();

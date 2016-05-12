@@ -1,9 +1,9 @@
-(function () {
+( function () {
   'use strict';
 
   angular
-    .module('iscNavContainer')
-    .factory('iscScrollContainerService', iscScrollContainerService);
+    .module( 'iscNavContainer' )
+    .factory( 'iscScrollContainerService', iscScrollContainerService );
 
   /* @ngInject */
   /**
@@ -26,9 +26,9 @@
      * Registers the given jq element as a scroll container which can be manipulated by this service.
      * @param {jQueryElement} $element
      */
-    function registerScrollingContent($element) {
-      if (!_.includes(scrollingContent, $element)) {
-        scrollingContent.push($element);
+    function registerScrollingContent( $element ) {
+      if ( !_.includes( scrollingContent, $element ) ) {
+        scrollingContent.push( $element );
       }
     }
 
@@ -39,10 +39,10 @@
      * @param {number|String=} index
      * @returns {*}
      */
-    function getCurrentScrollPosition(index) {
-      var contentIndex = getContentIndex(index);
+    function getCurrentScrollPosition( index ) {
+      var contentIndex = getContentIndex( index );
 
-      if (contentIndex !== undefined) {
+      if ( contentIndex !== undefined ) {
         return scrollingContent[contentIndex].scrollTop();
       }
       else {
@@ -58,36 +58,36 @@
      * @param {number=} duration - The animation duration in millis
      * @param {number|String=} index
      */
-    function setCurrentScrollPosition(position, duration, index) {
-      var contentIndex   = getContentIndex(index),
-          scrollPosition = parseInt(position || 0);
+    function setCurrentScrollPosition( position, duration, index ) {
+      var contentIndex   = getContentIndex( index ),
+          scrollPosition = parseInt( position || 0 );
 
-      if (contentIndex !== undefined && !isNaN(scrollPosition)) {
-        if (duration) {
-          scrollingContent[contentIndex].animate({
+      if ( contentIndex !== undefined && !isNaN( scrollPosition ) ) {
+        if ( duration ) {
+          scrollingContent[contentIndex].animate( {
             scrollTop: position
-          }, duration);
+          }, duration );
         }
         else {
-          scrollingContent[contentIndex].scrollTop(position);
+          scrollingContent[contentIndex].scrollTop( position );
         }
       }
     }
 
     // Private/helper functions
-    function getContentIndex(index) {
+    function getContentIndex( index ) {
       var contentLength = scrollingContent.length;
-      if (contentLength) {
+      if ( contentLength ) {
         var maxLength = contentLength - 1;
-        if (index === undefined || index === 'first') {
+        if ( index === undefined || index === 'first' ) {
           return 0;
         }
-        else if (index === 'last') {
+        else if ( index === 'last' ) {
           return maxLength;
         }
         else {
-          var parsedIndex = parseInt(index);
-          if (!isNaN(parsedIndex) && parsedIndex >= 0 && parsedIndex <= maxLength) {
+          var parsedIndex = parseInt( index );
+          if ( !isNaN( parsedIndex ) && parsedIndex >= 0 && parsedIndex <= maxLength ) {
             return parsedIndex;
           }
         }
@@ -96,4 +96,4 @@
     }
   }
 
-})();
+} )();

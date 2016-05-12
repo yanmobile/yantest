@@ -2,10 +2,10 @@
  * Created by douglasgoodman on 11/21/14.
  */
 
-(function () {
+( function () {
   'use strict';
 
-  angular.module('isc.components',
+  angular.module( 'isc.components',
     [
       'isc.common',
       // third party modules
@@ -23,6 +23,6 @@
       'isc.spinner',
       'iscNavContainer',
       'isc.error'
-    ]);
+    ] );
 
-})();
+} )();

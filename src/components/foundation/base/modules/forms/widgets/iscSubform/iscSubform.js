@@ -1,8 +1,8 @@
-(function () {
+( function () {
   'use strict';
 
-  angular.module('isc.forms')
-    .directive('iscSubform', iscSubform);
+  angular.module( 'isc.forms' )
+    .directive( 'iscSubform', iscSubform );
 
   /* @ngInject */
   /**
@@ -15,7 +15,7 @@
    * @param iscConfirmationService
    * @returns {{restrict: string, replace: boolean, controllerAs: string, scope: {model: string, options: string, formTitle: string, breadcrumbs: string, multiConfig: string, singleConfig: string}, bindToController: boolean, controller: controller, link: link, templateUrl: directive.templateUrl}}
    */
-  function iscSubform(FORMS_EVENTS, $q, $filter, iscScrollContainerService, iscConfirmationService) {//jshint ignore:line
+  function iscSubform( FORMS_EVENTS, $q, $filter, iscScrollContainerService, iscConfirmationService ) {//jshint ignore:line
 
     // ----------------------------
     // vars
@@ -39,7 +39,7 @@
       bindToController: true,
       controller      : controller,
       link            : link,
-      templateUrl     : function (elem, attrs) {
+      templateUrl     : function ( elem, attrs ) {
         return attrs.templateUrl || 'forms/widgets/iscSubform/iscSubform.html';
       }
     };
@@ -50,7 +50,7 @@
     // functions
     // ----------------------------
     /* @ngInject */
-    function controller($scope) {
+    function controller( $scope ) {
       var self = this;
       var currentScrollPos;
 
@@ -58,56 +58,56 @@
       self.childConfig = {
         breadcrumbs: self.breadcrumbs
       };
-      self.breadcrumbs.push({
+      self.breadcrumbs.push( {
         name: self.formTitle,
         ctrl: self
-      });
+      } );
 
-      _.merge(self, {
+      _.merge( self, {
         onClick        : onClick,
         breadcrumbClick: breadcrumbClick,
         formButtons    : getFormButtons(),
         showButton     : showButton
-      });
+      } );
 
       function getFormButtons() {
-        var buttons     = _.get(self, 'multiConfig.buttonConfig', {});
-        var buttonArray = _.map(buttons, function (button, name) {
-            return _.merge({}, button, {
+        var buttons     = _.get( self, 'multiConfig.buttonConfig', {} );
+        var buttonArray = _.map( buttons, function ( button, name ) {
+            return _.merge( {}, button, {
               name: name
-            });
+            } );
           }
         );
-        return _.sortBy(buttonArray, 'order');
+        return _.sortBy( buttonArray, 'order' );
       }
 
-      function showButton(button) {
-        return _.isFunction(button.hide) ? !button.hide(self.multiConfig) : !button.hide;
+      function showButton( button ) {
+        return _.isFunction( button.hide ) ? !button.hide( self.multiConfig ) : !button.hide;
       }
 
-      function onClick(button) {
+      function onClick( button ) {
         var click      = button.onClick || function () { },
             afterClick = button.afterClick || function () { };
 
-        $q.when(click(self.multiConfig))
-          .then(afterClick);
+        $q.when( click( self.multiConfig ) )
+          .then( afterClick );
       }
 
-      function breadcrumbClick(index, onCancel) {
+      function breadcrumbClick( index, onCancel ) {
         var dirtyBreadcrumb;
 
-        for (var i = index; i < self.breadcrumbs.length; i++) {
+        for ( var i = index; i < self.breadcrumbs.length; i++ ) {
           var breadcrumb = self.breadcrumbs[i];
-          if (_.get(breadcrumb, 'subform.form.$dirty')) {
+          if ( _.get( breadcrumb, 'subform.form.$dirty' ) ) {
             dirtyBreadcrumb = breadcrumb;
             break;
           }
         }
 
-        if (dirtyBreadcrumb) {
+        if ( dirtyBreadcrumb ) {
           iscConfirmationService
-            .show(dirtyBreadcrumb.childName + ' ' + $filter('translate')('contains unsaved data. Proceed?'))
-            .then(onYes);
+            .show( dirtyBreadcrumb.childName + ' ' + $filter( 'translate' )( 'contains unsaved data. Proceed?' ) )
+            .then( onYes );
         }
         else {
           onYes();
@@ -118,10 +118,10 @@
       }
 
       // Event listeners
-      $scope.$on(FORMS_EVENTS.showSubform, function (event, subformParams) {
+      $scope.$on( FORMS_EVENTS.showSubform, function ( event, subformParams ) {
         var childName =
-              $filter('translate')(subformParams.isNew ? 'Add' : 'Edit') + ' ' +
-              $filter('translate')(subformParams.itemLabel);
+              $filter( 'translate' )( subformParams.isNew ? 'Add' : 'Edit' ) + ' ' +
+              $filter( 'translate' )( subformParams.itemLabel );
 
         self.childConfig.isNew      = subformParams.isNew;
         self.childConfig.itemLabel  = subformParams.itemLabel;
@@ -135,7 +135,7 @@
         self.childConfig.renderForm = true;
 
         _.extend(
-          _.last(self.breadcrumbs),
+          _.last( self.breadcrumbs ),
           {
             onCancel : subformParams.onCancel,
             subform  : subformParams.subform,
@@ -147,34 +147,34 @@
 
         // Prevent this event from cascading up to parents
         event.stopPropagation();
-      });
+      } );
 
-      $scope.$on(FORMS_EVENTS.hideSubform, function (event) {
+      $scope.$on( FORMS_EVENTS.hideSubform, function ( event ) {
         self.childConfig.renderForm = false;
 
-        _.defer(function () {
+        _.defer( function () {
           delete self.childConfig.subform;
-        }, 0);
+        }, 0 );
 
-        _.delay(function () {
-          iscScrollContainerService.setCurrentScrollPosition(currentScrollPos, 150);
-        }, 600);
+        _.delay( function () {
+          iscScrollContainerService.setCurrentScrollPosition( currentScrollPos, 150 );
+        }, 600 );
 
         // Prevent this event from cascading up to parents
         event.stopPropagation();
 
         // Return to parent breadcrumb state
         var breadcrumb = self.breadcrumbs.pop();
-        while (breadcrumb && breadcrumb.ctrl !== self) {
+        while ( breadcrumb && breadcrumb.ctrl !== self ) {
           breadcrumb = self.breadcrumbs.pop();
         }
-        self.breadcrumbs.push(breadcrumb);
-      });
+        self.breadcrumbs.push( breadcrumb );
+      } );
 
     }
 
-    function link(scope, element, attrs) {
-      iscScrollContainerService.setCurrentScrollPosition(0);
+    function link( scope, element, attrs ) {
+      iscScrollContainerService.setCurrentScrollPosition( 0 );
     }
 
   }//END CLASS
@@ -183,4 +183,4 @@
   // injection
   // ----------------------------
 
-})();
+} )();

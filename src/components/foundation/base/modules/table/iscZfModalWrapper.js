@@ -24,7 +24,7 @@
 
  */
 
-(function () {
+( function () {
   'use strict';
 
   angular.module( 'isc.table' )
@@ -81,16 +81,16 @@
       _.defer( function () {
         // If a wrapper element was specified,
         var wrapperName = attrs.wrapperName;
-        if (wrapperName) {
+        if ( wrapperName ) {
           // get the offset of that wrapper from the top,
           var offset = attrs.wrapperOffset;
-          var top    = $( '[name="' + wrapperName + '"]' ).offset().top + (+offset);
+          var top    = $( '[name="' + wrapperName + '"]' ).offset().top + ( +offset );
           // and set it on the zf-modal.
           element.find( '[zf-modal]' ).css( { 'top': top } );
         }
 
         // If the modal should be scrollable, adjust the modal's aside element to scroll.
-        if (attrs.scrollableModal) {
+        if ( attrs.scrollableModal ) {
           var aside = element.find( 'aside' ).first();
 
           var currentOverflow = aside.css( 'overflow-y' );
@@ -108,4 +108,4 @@
 
   }//END CLASS
 
-})();
+} )();

@@ -1,7 +1,7 @@
 /**
  * copied from: https://gist.github.com/deanapeterson/b93b48fd8c258861f26b
  */
-(function () {
+( function () {
   'use strict';
 
   /**
@@ -11,14 +11,14 @@
    */
 
   angular
-    .module('isc.states')
-    .config(stateChangeRejected);
+    .module( 'isc.states' )
+    .config( stateChangeRejected );
 
-  function stateChangeRejected($provide) {
-    $provide.decorator('$state', decorateTransitionTo);
+  function stateChangeRejected( $provide ) {
+    $provide.decorator( '$state', decorateTransitionTo );
 
     /* @ngInject */
-    function decorateTransitionTo($delegate, $rootScope) { //$delegate === $state
+    function decorateTransitionTo( $delegate, $rootScope ) { //$delegate === $state
       var nativeTransitionTo = $delegate.transitionTo; //transfer reference
 
       $delegate.transitionTo = transitionToWrapper;// replace with wrapper
@@ -26,23 +26,23 @@
       return $delegate;
 
       function transitionToWrapper() {
-        var args    = [].slice.call(arguments);
-        var promise = nativeTransitionTo.apply(this, args);//call original transitionTo, capture promise
+        var args    = [].slice.call( arguments );
+        var promise = nativeTransitionTo.apply( this, args );//call original transitionTo, capture promise
 
-        promise['catch'](onStateRejection);	//add handler for rejection
+        promise['catch']( onStateRejection );	//add handler for rejection
         $delegate.$promise = promise;		//add $promise to default $state object
 
         return promise;
 
-        function onStateRejection(error) {
-          var toState  = $delegate.get(args[0]);
+        function onStateRejection( error ) {
+          var toState  = $delegate.get( args[0] );
           var toParams = args[1];
 
-          $rootScope.$emit('$stateChangeRejected', toState, toParams, $delegate.current, $delegate.params, error);
+          $rootScope.$emit( '$stateChangeRejected', toState, toParams, $delegate.current, $delegate.params, error );
 
           return error;
         }
       }
     }
   }
-}());
+}() );

@@ -1,9 +1,9 @@
-(function () {
+( function () {
   'use strict';
 
   angular
-    .module('isc.spinner')
-    .directive('iscSpinner', iscSpinner);
+    .module( 'isc.spinner' )
+    .directive( 'iscSpinner', iscSpinner );
 
   /**
    * @ngdoc directive
@@ -16,7 +16,7 @@
       controller      : iscSpinnerController,
       controllerAs    : 'spinnerCtrl',
       restrict        : 'EA',
-      templateUrl     : function (elem, attrs) {
+      templateUrl     : function ( elem, attrs ) {
         return attrs.templateUrl || 'isc.spinner/iscSpinner.html';
       }
     };
@@ -29,9 +29,9 @@
      * @param devlog
      * @param iscSpinnerModel
        */
-    function iscSpinnerController(devlog, iscSpinnerModel) {
-      var channel = devlog.channel('iscSpinnerController');
-      channel.debug('inside iscSpinnerController');
+    function iscSpinnerController( devlog, iscSpinnerModel ) {
+      var channel = devlog.channel( 'iscSpinnerController' );
+      channel.debug( 'inside iscSpinnerController' );
       var self       = this;
       self.isLoading = isLoding;
 
@@ -41,5 +41,5 @@
     }
   }
 
-})();
+} )();
 

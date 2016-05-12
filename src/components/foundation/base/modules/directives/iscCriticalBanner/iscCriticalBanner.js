@@ -2,14 +2,14 @@
  * Created by hzou on 12/12/15.
  */
 
-(function () {
+( function () {
   'use strict';
   // ----------------------------
   // injection
   // ----------------------------
 
-  angular.module('isc.directives')
-    .directive('iscCriticalBanner', iscCriticalBanner);
+  angular.module( 'isc.directives' )
+    .directive( 'iscCriticalBanner', iscCriticalBanner );
 
   /* @ngInject */
   /**
@@ -45,7 +45,7 @@
       controller      : controller,
       controllerAs    : 'iscBannerCtrl',
       bindToController: true,
-      templateUrl     : function (elem, attrs) {
+      templateUrl     : function ( elem, attrs ) {
         return attrs.templateUrl || 'directives/iscCriticalBanner/iscCriticalBanner.html';
       }
     };
@@ -61,4 +61,4 @@
 
   }//END CLASS
 
-})();
+} )();

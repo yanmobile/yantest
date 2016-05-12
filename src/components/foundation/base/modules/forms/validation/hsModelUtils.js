@@ -1,10 +1,10 @@
-(function () {
+( function () {
   'use strict';
 
   /* @ngInject */
   angular
-    .module('isc.forms')
-    .factory('hsModelUtils', hsModelUtils);
+    .module( 'isc.forms' )
+    .factory( 'hsModelUtils', hsModelUtils );
 
   /**
    *
@@ -13,7 +13,7 @@
    * @param $window
    * @returns {{validateRecord: validateRecord, getError: getError}}
    */
-  function hsModelUtils($window) {
+  function hsModelUtils( $window ) {
       return {
         validateRecord: validateRecord,
         getError      : getError
@@ -36,9 +36,9 @@
 
        * recordName is a logical component of the data model: e.g., Patient, Address, Name, etc.
        */
-      function validateRecord(module, record, recordName) {
+      function validateRecord( module, record, recordName ) {
 
-        return $window.hsModelUtils.validateRecord(module, record, recordName).length;
+        return $window.hsModelUtils.validateRecord( module, record, recordName ).length;
       }
 
       /**
@@ -58,9 +58,9 @@
        * @param spec
        * @memberOf hsModelUtils
        */
-      function getError(module, spec) {
+      function getError( module, spec ) {
 
-        return $window.hsModelUtils.getError(module, spec);
+        return $window.hsModelUtils.getError( module, spec );
       }
     }
-})();
+} )();

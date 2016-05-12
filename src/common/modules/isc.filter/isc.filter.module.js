@@ -5,10 +5,10 @@
 /**
  * @namespace isc.filters
  */
-(function () {
+( function () {
   'use strict';
 
   angular
-    .module('isc.filters', ['isc.core']);
+    .module( 'isc.filters', ['isc.core'] );
 
-})();
+} )();

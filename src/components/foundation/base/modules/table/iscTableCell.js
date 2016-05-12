@@ -1,7 +1,7 @@
 /**
  * Created by Trevor Hudson on 06/02/15.
  */
-(function() {
+( function() {
   'use strict';
 
   angular.module( 'isc.table' )
@@ -18,9 +18,9 @@
    * @returns {{restrict: string, compile: compile}}
      */
   function iscTableCell( devlog, $state, $templateCache, $compile ) {
-    var channel = devlog.channel('iscTableCell');
+    var channel = devlog.channel( 'iscTableCell' );
 
-    channel.debug('iscTableCell.LOADED');
+    channel.debug( 'iscTableCell.LOADED' );
 
     // ----------------------------
     // vars
@@ -46,19 +46,19 @@
       };
     }
 
-    function pre(scope, elem, attrs, iscRowCtrl) {
+    function pre( scope, elem, attrs, iscRowCtrl ) {
       var defaultTemplate = attrs.templateUrl;
-      if (!defaultTemplate) {
+      if ( !defaultTemplate ) {
         defaultTemplate = scope.iscTblCtrl.tableConfig.editable === 'popup' ? 'table/popup/iscTableReadOnlyCell.html' : 'table/iscTableCell.html';
       }
 
-      var rowTemplate = _.get(scope, 'iscTblCtrl.tableConfig.rowTemplate', defaultTemplate);
+      var rowTemplate = _.get( scope, 'iscTblCtrl.tableConfig.rowTemplate', defaultTemplate );
 
       if ( rowTemplate ) {
         //for some reason the template doesn't like spaces nor comments
-        var template = $templateCache.get(rowTemplate);
-        var output = $compile(template)(scope);
-        elem.html(output);
+        var template = $templateCache.get( rowTemplate );
+        var output = $compile( template )( scope );
+        elem.html( output );
       }
     }
     function post( scope, elem, attrs ) {//jshint ignore:line
@@ -133,4 +133,4 @@
     }
   }
 
-})();
+} )();

@@ -14,7 +14,7 @@
  * if custom addTemplate is defined in tabeConfig, it will use rowTemplate instead of default template
  *** if rowType === 'add'
  */
-(function() {
+( function() {
   'use strict';
 
   angular.module( 'isc.table' )
@@ -31,9 +31,9 @@
    * @returns {{scope: boolean, restrict: string, priority: number, controllerAs: string, controller: string, compile: compile}}
      */
   function iscTableRow( devlog, $state, $templateCache, $compile ) {
-    var channel = devlog.channel('iscTableRow');
+    var channel = devlog.channel( 'iscTableRow' );
 
-    channel.debug('iscTableRow.LOADED');
+    channel.debug( 'iscTableRow.LOADED' );
 
     // ----------------------------
     // vars
@@ -62,10 +62,10 @@
         post: post
       };
 
-      function pre(scope, trElem, attrs, iscRowCtrl) {
+      function pre( scope, trElem, attrs, iscRowCtrl ) {
         var defaultTemplate = scope.iscTblCtrl.tableConfig.editable === 'popup' ? 'table/popup/iscTablePopupRow.html' : 'table/iscTableRow.html';
 
-        var rowTemplate = _.get(scope, 'iscTblCtrl.tableConfig.rowTemplate', defaultTemplate);
+        var rowTemplate = _.get( scope, 'iscTblCtrl.tableConfig.rowTemplate', defaultTemplate );
         if ( rowTemplate ) {
           //for some reason the template doesn't like spaces nor comments
           var template = removeTemplateSpaces( $templateCache.get( rowTemplate ) );
@@ -74,7 +74,7 @@
         }
       }
 
-      function post( scope, elem, attr, iscRowCtrl) {
+      function post( scope, elem, attr, iscRowCtrl ) {
         iscRowCtrl.iscTblCtrl = scope.iscTblCtrl;
         scope.$watch( 'dataItem', function( value ) {
           iscRowCtrl.dataItem = value;
@@ -86,16 +86,16 @@
        * @param templateStr
        * @returns {*}
          */
-      function removeTemplateSpaces(templateStr) {
+      function removeTemplateSpaces( templateStr ) {
         return templateStr
-            .replace(/\r?\n|\r/g, ' ')  //replace newline with space
+            .replace( /\r?\n|\r/g, ' ' )  //replace newline with space
           //jshint ignore:start
-            .replace(/\>[ \t]+\</g, '\>\<')// remove space between elements/tags
+            .replace( /\>[ \t]+\</g, '\>\<' )// remove space between elements/tags
           //jshint ignore:end
-            .replace(/\s{2,}/g, ' '); //replace 2+ spaces with 1 space
+            .replace( /\s{2,}/g, ' ' ); //replace 2+ spaces with 1 space
       }
 
     }
   }
 
-})();
+} )();

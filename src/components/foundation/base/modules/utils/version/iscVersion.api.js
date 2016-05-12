@@ -1,17 +1,17 @@
-(function () {
+( function () {
   'use strict';
 
   /* @ngInject */
   angular
-    .module('isc.core')
-    .factory('iscVersionApi',iscVersionApi);
+    .module( 'isc.core' )
+    .factory( 'iscVersionApi',iscVersionApi );
   /**
    * @ngdoc factory
    * @memberOf isc.core
    * @param iscHttpapi
    * @returns {{load: load, get: get}}
    */
-  function iscVersionApi(iscHttpapi) {
+  function iscVersionApi( iscHttpapi ) {
       var _url = 'version.json';
 
       var _versionInfo;
@@ -26,10 +26,10 @@
        * @returns {Promise}
        */
       function load() {
-        return iscHttpapi.get(_url).then(function (version) {
+        return iscHttpapi.get( _url ).then( function ( version ) {
           _versionInfo = version;
           return version;
-        });
+        } );
       }
 
       /**
@@ -37,8 +37,8 @@
        * @returns {Object}
        */
       function get() {
-        return _.merge({}, _versionInfo);
+        return _.merge( {}, _versionInfo );
       }
     }
 
-})();
+} )();
