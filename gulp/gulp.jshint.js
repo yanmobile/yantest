@@ -12,19 +12,17 @@ function init(gulp, plugins, config, _, util) {
   gulp.task('jshint:common', function () {
     return gulp.src(_.concat(config.common.module.modules, config.common.module.js))
       .pipe(plugins.jshint())
-      .pipe(plugins.jscs({ fix: true }))// enforce style guide
+      .pipe(plugins.jscs())// enforce style guide
       .pipe(plugins.stylish.combineWithHintResults())   // combine with jshint results
-      .pipe(plugins.jshint.reporter('jshint-stylish'))
-      .pipe(gulp.dest(config.common.modulePath));
+      .pipe(plugins.jshint.reporter('jshint-stylish'));
   });
 
   gulp.task('jshint:components', function () {
     return gulp.src(_.concat(config.component.module.modules, config.component.module.js))
       .pipe(plugins.jshint())
-      .pipe(plugins.jscs({ fix: true }))// enforce style guide
+      .pipe(plugins.jscs())// enforce style guide
       .pipe(plugins.stylish.combineWithHintResults())   // combine with jshint results
-      .pipe(plugins.jshint.reporter('jshint-stylish'))
-      .pipe(gulp.dest(config.component.modulePath));
+      .pipe(plugins.jshint.reporter('jshint-stylish'));
   });
 
   gulp.task('jshint:app', function () {
@@ -33,7 +31,6 @@ function init(gulp, plugins, config, _, util) {
       .pipe(plugins.jscs())// enforce style guide
       .pipe(plugins.stylish.combineWithHintResults())   // combine with jshint results
       .pipe(plugins.jshint.reporter('jshint-stylish'));
-      // .pipe(gulp.dest(config.app.modulePath)); //this causes gulp watch to loop infinitely
   });
 
 
