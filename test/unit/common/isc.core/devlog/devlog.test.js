@@ -157,6 +157,14 @@
     describe(
       'channel usage with one channel',
       function () {
+        it('should keep the passed in channel casing', function () {
+          var expected               = "|baNanA|";
+          mockConfig.devlogWhitelist = ["*"];
+          devlogProvider.loadConfig(mockConfig);
+          devlog.channel('baNanA').debug('This is an error message');
+          expect($log.debug.logs[0][0]).toBe(expected);
+        });
+
         it(
           'should not go through with no whitelist present',
           function () {
@@ -172,7 +180,7 @@
             mockConfig.devlogWhitelist = ['apple', 'banana'];
             devlogProvider.loadConfig(mockConfig);
             devlog.channel('banana').debug('This is a debug message');
-            expect($log.debug.logs[0].join(' ')).toBe('|BANANA| This is a debug message');
+            expect($log.debug.logs[0].join(' ')).toBe('|banana| This is a debug message');
           }
         );
         it(
@@ -240,14 +248,14 @@
         mockConfig.devlogBlacklist = ['apple'];
         devlogProvider.loadConfig(mockConfig);
         devlog.channel('apple').error('This is an error message');
-        expect($log.error.logs[0].join(' ')).toEqual('|APPLE| This is an error message');
+        expect($log.error.logs[0].join(' ')).toEqual('|apple| This is an error message');
       });
 
       it('should go through if not whitelisted', function () {
         mockConfig.devlogBlacklist = [];
         devlogProvider.loadConfig(mockConfig);
         devlog.channel('apple').error('This is an error message');
-        expect($log.error.logs[0].join(' ')).toEqual('|APPLE| This is an error message');
+        expect($log.error.logs[0].join(' ')).toEqual('|apple| This is an error message');
       });
 
       it('should go through if no channel defined', function () {
