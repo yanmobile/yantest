@@ -13,7 +13,7 @@
    * Please click the "source" link on the header to see the constants
    */
   angular
-   .module('isc.authentication')
+    .module('isc.authentication')
     .constant('AUTH_EVENTS', {
       loginError           : 'iscLoginError',
       loginSuccess         : 'iscLoginSuccess',
@@ -22,7 +22,7 @@
       logoutSuccess        : 'iscLogoutSuccess',
       notAuthenticated     : 'iscNotAuthenticated',
       notAuthorized        : 'iscNotAuthorized',
-      openSortOptions      : 'iscOpenSortOptions',
+      notFound             : 'iscNotFound',
       responseError        : 'iscResponseError',
       sessionChange        : 'iscSessionChange', //gets fired when "iscSessionResumedSuccess", "iscSessionTimeout", "iscLogout"
       sessionResumedSuccess: 'iscSessionResumedSuccess',
