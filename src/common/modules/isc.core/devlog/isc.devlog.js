@@ -63,7 +63,7 @@
           $log.log('*** devlog channel allowed: ', channelName, ":", isAllowed ? "YES" : "NO", " ***");
         }
         this.channelName   = channelName;
-        this.channelPrefix = (channelName ? "|" + channelName + "|" : '').toUpperCase();
+        this.channelPrefix = (channelName ? "|" + channelName + "|" : '');
         if (isAllowed) {
           _.extend(this, this.real);
         } else {
