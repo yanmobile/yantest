@@ -46,7 +46,7 @@
         spyOn($rootScope, '$emit');
         var response = { status: statusCode.Unauthorized, config: {} };
         interceptor.responseError(response);
-        expect($rootScope.$emit).toHaveBeenCalledWith(AUTH_EVENTS.sessionTimeout, response);
+        expect($rootScope.$emit).toHaveBeenCalledWith(AUTH_EVENTS.notAuthenticated, response);
 
       });
     });
@@ -56,7 +56,7 @@
         spyOn($rootScope, '$emit');
         var response = { status: statusCode.Forbidden, config: {} };
         interceptor.responseError(response);
-        expect($rootScope.$emit).toHaveBeenCalledWith(AUTH_EVENTS.notAuthenticated, response);
+        expect($rootScope.$emit).toHaveBeenCalledWith(AUTH_EVENTS.notAuthorized, response);
 
       });
     });
