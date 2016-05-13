@@ -2,7 +2,7 @@
  * Created by hzou on 12/8/15.
  */
 
-(function () {
+(function() {
   'use strict';
 
   /**
@@ -10,6 +10,6 @@
    * But not the business logic of what needs to be updated and when
    */
   angular
-    .module('isc.configuration', ['isc.core']);
+    .module( 'isc.configuration', ['isc.core'] );
 
 })();

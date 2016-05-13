@@ -13,14 +13,14 @@
  * License: MIT
  */
 
-(function () {
+(function() {
   'use strict';
   // ----------------------------
   // injection
   // ----------------------------
 
-  angular.module('isc.directives')
-    .directive('iscAutofocus', iscAutofocus);
+  angular.module( 'isc.directives' )
+    .directive( 'iscAutofocus', iscAutofocus );
 
   /**
    * @ngdoc directive
@@ -35,10 +35,10 @@
    * This directive for auto-focus on the elements which its attached to.
    */
   /* @ngInject */
-  function iscAutofocus (devlog, $timeout) {
-    var channel = devlog.channel('iscAutofocus');
+  function iscAutofocus( devlog, $timeout ) {
+    var channel = devlog.channel( 'iscAutofocus' );
 
-    channel.debug( 'iscAutofocus LOADED');
+    channel.debug( 'iscAutofocus LOADED' );
 
     // ----------------------------
     // class factory
@@ -60,11 +60,11 @@
      * @param attr
      * @description
      * The method is the link method for the directive
-       */
-    function link (scope, elem, attr) {
-      $timeout(function () {
-        elem[ 0 ].focus();
-      });
+     */
+    function link( scope, elem, attr ) {
+      $timeout( function() {
+        elem[0].focus();
+      } );
 
     }//END LINK
 

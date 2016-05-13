@@ -2,19 +2,19 @@
  * Created by hzou on 12/30/15.
  */
 
-(function () {
+(function() {
   'use strict';
 
   angular
-    .module('isc.authorization')
-    .factory('iscAuthorizationModel', iscAuthorizationModel);
+    .module( 'isc.authorization' )
+    .factory( 'iscAuthorizationModel', iscAuthorizationModel );
 
   /*========================================
    =                 FACTORY                =
    ========================================*/
 
-  function iscAuthorizationModel(devlog, iscSessionModel, iscCustomConfigService) {
-    var channel = devlog.channel('isAuthorized');
+  function iscAuthorizationModel( devlog, iscSessionModel, iscCustomConfigService ) {
+    var channel          = devlog.channel( 'isAuthorized' );
     var authorizedRoutes = {};
 
     var service = {
@@ -22,19 +22,19 @@
     };
     return service;
 
-    function isAuthorized(stateToCheck) {
-      channel.debug('iscAuthorizationModel.isAuthorized..');
+    function isAuthorized( stateToCheck ) {
+      channel.debug( 'iscAuthorizationModel.isAuthorized..' );
       var currentUserRole      = iscSessionModel.getCurrentUserRole();
-      var authorizedUserRoutes = getAuthorizedRoutes(currentUserRole);
+      var authorizedUserRoutes = getAuthorizedRoutes( currentUserRole );
       stateToCheck             = stateToCheck || '';
       var isPermitted;
-      if (isBlackListed(stateToCheck, authorizedUserRoutes)) {
+      if ( isBlackListed( stateToCheck, authorizedUserRoutes ) ) {
         isPermitted = false;
       } else {
-        isPermitted = isWhiteListed(stateToCheck, authorizedUserRoutes);
+        isPermitted = isWhiteListed( stateToCheck, authorizedUserRoutes );
       }
 
-      channel.debug('is user authorized for', stateToCheck, '=>', !!isPermitted);
+      channel.debug( 'is user authorized for', stateToCheck, '=>', !!isPermitted );
       return !!isPermitted;
     }
 
@@ -55,44 +55,44 @@
      * @param permittedRoutes
      * @returns {{}}
      */
-    function mapAuthorizedUserRoute(userRole) {
-      channel.debug('iscAuthorizationModel.mapAuthorizedUserRoute for', userRole);
-      var rolePermissions = iscCustomConfigService.getConfigSection('rolePermissions');
+    function mapAuthorizedUserRoute( userRole ) {
+      channel.debug( 'iscAuthorizationModel.mapAuthorizedUserRoute for', userRole );
+      var rolePermissions = iscCustomConfigService.getConfigSection( 'rolePermissions' );
       var permittedRoutes = rolePermissions[userRole] || [];
 
-      if (!authorizedRoutes[userRole]) {
-        authorizedRoutes[userRole] = (userRole === '*') ? {} : angular.copy(authorizedRoutes['*']); //get everything from anonymous
+      if ( !authorizedRoutes[userRole] ) {
+        authorizedRoutes[userRole] = ( userRole === '*' ) ? {} : angular.copy( authorizedRoutes['*'] ); //get everything from anonymous
       }
-      permittedRoutes.forEach(function (state) {  //maps an array into object
-        if (!_.get(authorizedRoutes[userRole], state)) {
-          _.set(authorizedRoutes[userRole], state, {});
+      permittedRoutes.forEach( function( state ) {  //maps an array into object
+        if ( !_.get( authorizedRoutes[userRole], state ) ) {
+          _.set( authorizedRoutes[userRole], state, {} );
         }
-      });
+      } );
     }
 
-    function getAuthorizedRoutes(currentUserRole) {
-      channel.debug('iscAuthorizationModel.getAuthorizedRoutes..');
+    function getAuthorizedRoutes( currentUserRole ) {
+      channel.debug( 'iscAuthorizationModel.getAuthorizedRoutes..' );
 
-      if (!authorizedRoutes['*']) { //anonymous user routes
-        mapAuthorizedUserRoute('*');
+      if ( !authorizedRoutes['*'] ) { //anonymous user routes
+        mapAuthorizedUserRoute( '*' );
       }
-      if (!authorizedRoutes[currentUserRole]) {
-        mapAuthorizedUserRoute(currentUserRole);
+      if ( !authorizedRoutes[currentUserRole] ) {
+        mapAuthorizedUserRoute( currentUserRole );
       }
 
       return authorizedRoutes[currentUserRole];
     }
 
-    function isBlackListed(stateToCheck, authorizedUserRoutes) {
-      channel.debug('iscAuthorizationModel.isBlackListed..');
-      var blacklisted = authorizedUserRoutes['!*'] || _.get(authorizedUserRoutes, '!' + stateToCheck, false);
-      return blacklisted || hasWildCardMatch(stateToCheck, authorizedUserRoutes, true);
+    function isBlackListed( stateToCheck, authorizedUserRoutes ) {
+      channel.debug( 'iscAuthorizationModel.isBlackListed..' );
+      var blacklisted = authorizedUserRoutes['!*'] || _.get( authorizedUserRoutes, '!' + stateToCheck, false );
+      return blacklisted || hasWildCardMatch( stateToCheck, authorizedUserRoutes, true );
     }
 
-    function isWhiteListed(stateToCheck, authorizedUserRoutes) {
-      channel.debug('iscAuthorizationModel.isWhiteListed..');
-      var blacklisted = authorizedUserRoutes['*'] || _.get(authorizedUserRoutes, stateToCheck, false);
-      return blacklisted || hasWildCardMatch(stateToCheck, authorizedUserRoutes, false);
+    function isWhiteListed( stateToCheck, authorizedUserRoutes ) {
+      channel.debug( 'iscAuthorizationModel.isWhiteListed..' );
+      var blacklisted = authorizedUserRoutes['*'] || _.get( authorizedUserRoutes, stateToCheck, false );
+      return blacklisted || hasWildCardMatch( stateToCheck, authorizedUserRoutes, false );
     }
 
     /**
@@ -119,15 +119,15 @@
      * @param checkBlacklisted -- indicate whether this is to check against black list or white list
      * @returns {boolean} -- indicates if there's matching found
      */
-    function hasWildCardMatch(stateToCheck, authorizedUserRoutes, checkBlacklisted) {
-      channel.debug('iscAuthorizationModel.hasWildCardMatch..');
-      var tokens = stateToCheck.split('.');
+    function hasWildCardMatch( stateToCheck, authorizedUserRoutes, checkBlacklisted ) {
+      channel.debug( 'iscAuthorizationModel.hasWildCardMatch..' );
+      var tokens = stateToCheck.split( '.' );
       var path   = checkBlacklisted ? '!' : '';
 
-      return _.some(tokens, function (token) {
+      return _.some( tokens, function( token ) {
         path += token + '.';
-        return _.get(authorizedUserRoutes, path + '*', false);
-      });
+        return _.get( authorizedUserRoutes, path + '*', false );
+      } );
     }
 
   }// END CLASS

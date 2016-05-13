@@ -95,11 +95,13 @@
 <div ng-if="iscTblCtrl.tableConfig.editable && column.type === 'commands'" class="isc-table-columm-commands">
   <span ng-if="!iscRowCtrl.inEditMode">
 
-    <button class="isc-table-command-edit-icon" ng-disabled="iscTblCtrl.dataItem" ng-click="iscRowCtrl.onCommand('edit', $event, column.commands.edit.callback)">
+    <button class="isc-table-command-edit-icon" ng-disabled="iscTblCtrl.dataItem"
+            ng-click="iscRowCtrl.onCommand('edit', $event, column.commands.edit.callback)">
       <span ng-include="'svg/isc-table-edit-icon.html'"></span>
     </button>
 
-    <button class="isc-table-command-remove-icon" ng-disabled="iscTblCtrl.dataItem" ng-click="iscRowCtrl.onCommand('remove', $event, column.commands.remove.callback)">
+    <button class="isc-table-command-remove-icon" ng-disabled="iscTblCtrl.dataItem"
+            ng-click="iscRowCtrl.onCommand('remove', $event, column.commands.remove.callback)">
       <span ng-include="'svg/isc-table-remove-icon.html'"></span>
     </button>
   </span>

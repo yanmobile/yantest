@@ -2,11 +2,11 @@
  * Created by Henry Zou 11/8/2015
  */
 
-(function () {
+(function() {
   'use strict';
 
-  angular.module('isc.core')
-    .constant('keyCode', {
+  angular.module( 'isc.core' )
+    .constant( 'keyCode', {
       BACKSPACE: 8,
       COMMA    : 188,
       DELETE   : 46,
@@ -23,7 +23,7 @@
       SPACE    : 32,
       TAB      : 9,
       UP       : 38
-    });
+    } );
 
 })();
 

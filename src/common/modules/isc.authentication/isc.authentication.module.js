@@ -2,29 +2,29 @@
  * Created by hzou on 12/8/15.
  */
 
-(function () {
+(function() {
   'use strict';
 
   /**
    * @namespace core-ui-authentication
    */
   angular
-    .module('isc.authentication', ['isc.core', 'isc.configuration'])
-    .run(run);
+    .module( 'isc.authentication', ['isc.core', 'isc.configuration'] )
+    .run( run );
 
-  function run(devlog, $rootScope, AUTH_EVENTS, $timeout, storage, iscSessionModel, iscSessionStorageHelper) {
-    var channel = devlog.channel('isc.authentication');
-    channel.debug('iscNavContainer.loadDataFromStoredSession');
+  function run( devlog, $rootScope, AUTH_EVENTS, $timeout, storage, iscSessionModel, iscSessionStorageHelper ) {
+    var channel = devlog.channel( 'isc.authentication' );
+    channel.debug( 'iscNavContainer.loadDataFromStoredSession' );
 
     // NOTE - set the login response and create the session BEFORE calling initSessionTimeout
     // since the warning for sessionTimeout time is predicate on setting the sessionTimeout time first
-    var storedLoginResponse = storage.get('loginResponse');
-    if (!_.isEmpty(storedLoginResponse)) {
-      channel.debug('...got storedLoginResponse: ', storedLoginResponse);
-      iscSessionModel.create(storedLoginResponse, false);
-      $timeout(function () {
-        $rootScope.$emit(AUTH_EVENTS.sessionResumedSuccess);
-      });
+    var storedLoginResponse = storage.get( 'loginResponse' );
+    if ( !_.isEmpty( storedLoginResponse ) ) {
+      channel.debug( '...got storedLoginResponse: ', storedLoginResponse );
+      iscSessionModel.create( storedLoginResponse, false );
+      $timeout( function() {
+        $rootScope.$emit( AUTH_EVENTS.sessionResumedSuccess );
+      } );
     }
   }
 

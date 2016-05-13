@@ -7,13 +7,13 @@
  *
  */
 
-(function () {
+(function() {
   'use strict';
   // ----------------------------
   // injection
   // ----------------------------
-  angular.module('isc.filters')
-    .filter('lodash', lodash);
+  angular.module( 'isc.filters' )
+    .filter( 'lodash', lodash );
 
   /* @ngInject */
   /**
@@ -28,14 +28,14 @@
    */
   function lodash() {
 
-    return function (value, lodashFunc) {
+    return function( value, lodashFunc ) {
       var retVal = value;
-      if (value) {
-        var args = _.toArray(arguments);
-        args.splice(1, 1); //remove lodashFunc;
+      if ( value ) {
+        var args = _.toArray( arguments );
+        args.splice( 1, 1 ); //remove lodashFunc;
         var func = _[lodashFunc];
-        if (_.isFunction(func)) {
-          retVal = func.apply(func, args);
+        if ( _.isFunction( func ) ) {
+          retVal = func.apply( func, args );
         }
       }
 

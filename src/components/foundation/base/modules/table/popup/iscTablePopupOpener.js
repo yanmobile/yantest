@@ -11,8 +11,8 @@
   // ----------------------------
   // injection
   // ----------------------------
-  angular.module('isc.table')
-    .directive('iscTablePopupOpener', iscTablePopupOpener);
+  angular.module( 'isc.table' )
+    .directive( 'iscTablePopupOpener', iscTablePopupOpener );
 
   /* @ngInject */
   /**
@@ -23,10 +23,10 @@
    * @param $templateCache
    * @param $compile
    * @returns {{restrict: string, link: link}}
-     */
-  function iscTablePopupOpener(devlog, $state, $templateCache, $compile) {//jshint ignore:line
-    var channel = devlog.channel('iscTablePopupOpener');
-    channel.debug( 'iscTablePopupOpener LOADED');
+   */
+  function iscTablePopupOpener( devlog, $state, $templateCache, $compile ) {//jshint ignore:line
+    var channel = devlog.channel( 'iscTablePopupOpener' );
+    channel.debug( 'iscTablePopupOpener LOADED' );
 
     // ----------------------------
     // vars
@@ -36,24 +36,24 @@
     // class factory
     // ----------------------------
     return {
-      restrict    : 'A',
-      link        : link
+      restrict: 'A',
+      link    : link
     };
 
     // ----------------------------
     // functions
     // ----------------------------
 
-    function link(scope, trElem, attrs, iscRowCtrl) {
-      scope.$watch('iscRowCtrl.inEditMode', function(newVal, oldVal) {
-        if (newVal !== oldVal) {
+    function link( scope, trElem, attrs, iscRowCtrl ) {
+      scope.$watch( 'iscRowCtrl.inEditMode', function( newVal, oldVal ) {
+        if ( newVal !== oldVal ) {
           if ( newVal === 'popup' ) {
-            trElem.parent().find('[zf-modal]').scope().show();
+            trElem.parent().find( '[zf-modal]' ).scope().show();
           } else {
-            trElem.parent().find('[zf-modal]').scope().hide();
+            trElem.parent().find( '[zf-modal]' ).scope().hide();
           }
         }
-      });
+      } );
     }
   }// END CLASS
 })();

@@ -1,8 +1,8 @@
-(function () {
+(function() {
   'use strict';
 
-  angular.module('isc.forms')
-    .factory('iscFormsApi', iscFormsApi);
+  angular.module( 'isc.forms' )
+    .factory( 'iscFormsApi', iscFormsApi );
 
   /**
    * @ngdoc factory
@@ -14,18 +14,18 @@
    * @returns {{listForms: listForms, getActiveForms: getActiveForms, setFormStatus: setFormStatus, getFormDefinition: getFormDefinition, getUserScript: getUserScript, getTemplate: getTemplate}}
    */
   /* @ngInject */
-  function iscFormsApi(devlog, apiHelper, iscCustomConfigService, iscHttpapi) {
-    var channel = devlog.channel('iscFormsApi');
+  function iscFormsApi( devlog, apiHelper, iscCustomConfigService, iscHttpapi ) {
+    var channel = devlog.channel( 'iscFormsApi' );
 
     var config       = iscCustomConfigService.getConfig(),
-        moduleConfig = _.get(config, 'moduleApi', {});
+        moduleConfig = _.get( config, 'moduleApi', {} );
 
-    var formsUrl     = apiHelper.getConfigUrl(moduleConfig.forms);
-    var formInfoUrl  = apiHelper.getConfigUrl(moduleConfig.formInfo);
-    var templatesUrl = apiHelper.getConfigUrl(moduleConfig.formTemplates);
+    var formsUrl     = apiHelper.getConfigUrl( moduleConfig.forms );
+    var formInfoUrl  = apiHelper.getConfigUrl( moduleConfig.formInfo );
+    var templatesUrl = apiHelper.getConfigUrl( moduleConfig.formTemplates );
 
-    var statusUrl  = [formInfoUrl, 'status'].join('/');
-    var scriptsUrl = [templatesUrl, 'userScripts'].join('/');
+    var statusUrl  = [formInfoUrl, 'status'].join( '/' );
+    var scriptsUrl = [templatesUrl, 'userScripts'].join( '/' );
 
     var api = {
       listForms        : listForms,
@@ -43,8 +43,8 @@
      * @returns {*}
      */
     function listForms() {
-      channel.debug('iscFormsApi.listForms');
-      return iscHttpapi.get(formsUrl);
+      channel.debug( 'iscFormsApi.listForms' );
+      return iscHttpapi.get( formsUrl );
     }
 
     /**
@@ -52,9 +52,9 @@
      * @param formType
      * @returns {*}
      */
-    function getFormStatuses(formType) {
-      channel.debug('iscFormsApi.getActiveForms');
-      return iscHttpapi.get([statusUrl, formType].join('/'));
+    function getFormStatuses( formType ) {
+      channel.debug( 'iscFormsApi.getActiveForms' );
+      return iscHttpapi.get( [statusUrl, formType].join( '/' ) );
     }
 
     /**
@@ -63,9 +63,9 @@
      * @param formStatuses
      * @returns {*}
      */
-    function setFormStatus(formType, formStatuses) {
-      channel.debug('iscFormsApi.setFormStatus');
-      return iscHttpapi.put([formInfoUrl, formType].join('/'), formStatuses);
+    function setFormStatus( formType, formStatuses ) {
+      channel.debug( 'iscFormsApi.setFormStatus' );
+      return iscHttpapi.put( [formInfoUrl, formType].join( '/' ), formStatuses );
     }
 
     /**
@@ -73,9 +73,9 @@
      * @param formKey
      * @returns {*}
      */
-    function getFormDefinition(formKey) {
-      channel.debug('iscFormsApi.getFormDefinition');
-      return iscHttpapi.get([formsUrl, formKey].join('/'));
+    function getFormDefinition( formKey ) {
+      channel.debug( 'iscFormsApi.getFormDefinition' );
+      return iscHttpapi.get( [formsUrl, formKey].join( '/' ) );
     }
 
     /**
@@ -83,9 +83,9 @@
      * @param scriptName
      * @returns {*}
      */
-    function getUserScript(scriptName) {
-      channel.debug('iscFormsApi.getUserScript');
-      return iscHttpapi.get([scriptsUrl, scriptName].join('/'));
+    function getUserScript( scriptName ) {
+      channel.debug( 'iscFormsApi.getUserScript' );
+      return iscHttpapi.get( [scriptsUrl, scriptName].join( '/' ) );
     }
 
     /**
@@ -93,9 +93,9 @@
      * @param templateName
      * @returns {*}
      */
-    function getTemplate(templateName) {
-      channel.debug('iscFormsApi.getTemplate');
-      return iscHttpapi.get([templatesUrl, templateName].join('/'));
+    function getTemplate( templateName ) {
+      channel.debug( 'iscFormsApi.getTemplate' );
+      return iscHttpapi.get( [templatesUrl, templateName].join( '/' ) );
     }
   }
 })();

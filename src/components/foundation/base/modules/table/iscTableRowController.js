@@ -5,17 +5,17 @@
 (function() {
   'use strict';
 
-  angular.module('isc.table')
-    .controller('iscTableRowController', iscTableRowController);
+  angular.module( 'isc.table' )
+    .controller( 'iscTableRowController', iscTableRowController );
 
   /* @ngInject */
   /**
    * @ngdoc controller
    * @memberOf isc.table
    * @param $scope
-     */
-  function iscTableRowController(devlog, $scope) {
-    var channel = devlog.channel('iscTableRowController');
+   */
+  function iscTableRowController( devlog, $scope ) {
+    var channel = devlog.channel( 'iscTableRowController' );
 
     // ----------------------------
     // vars
@@ -23,7 +23,7 @@
 
     var self          = this;
     self.inEditMode   = false;
-    self.editModeData = angular.copy(self.dataItem);
+    self.editModeData = angular.copy( self.dataItem );
 
     self.editModeCommands = {};
 
@@ -38,58 +38,58 @@
      * @param commandName
      * @param event
      * @param domCallback
-       */
-    function onCommand(commandName, event, domCallback) {
-      var rest = _.toArray(arguments);
-      rest     = _.slice(rest, 3);
-      rest.unshift(self);
-      rest.unshift(event);  //end result => event, self, [rest]
+     */
+    function onCommand( commandName, event, domCallback ) {
+      var rest = _.toArray( arguments );
+      rest     = _.slice( rest, 3 );
+      rest.unshift( self );
+      rest.unshift( event );  //end result => event, self, [rest]
 
-      var callback = getCommandCallback(commandName, domCallback);
-      switch ( commandName ){
+      var callback = getCommandCallback( commandName, domCallback );
+      switch ( commandName ) {
         case 'create':
-          if ( angular.isFunction(callback) ) {
-            callback.apply(self, rest);
+          if ( angular.isFunction( callback ) ) {
+            callback.apply( self, rest );
           } else {
-            defaultCreateCallback.apply(self, rest);
+            defaultCreateCallback.apply( self, rest );
           }
 
           break;
         case 'edit':
-          if ( angular.isFunction(callback) ) {
-            callback.apply(self, rest);
+          if ( angular.isFunction( callback ) ) {
+            callback.apply( self, rest );
           } else {
-            defaultEditCallback.apply(self, rest);
+            defaultEditCallback.apply( self, rest );
           }
           break;
 
         case 'remove':
-          if ( angular.isFunction(callback) ) {
-            callback.apply(self, rest);
+          if ( angular.isFunction( callback ) ) {
+            callback.apply( self, rest );
           } else {
-            defaultRemoveCallback.apply(self, rest);
+            defaultRemoveCallback.apply( self, rest );
           }
           break;
 
         case 'save':
-          if ( angular.isFunction(callback) ) {
-            callback.apply(self, rest);
+          if ( angular.isFunction( callback ) ) {
+            callback.apply( self, rest );
           } else {
-            defaultSaveCallback.apply(self, rest);
+            defaultSaveCallback.apply( self, rest );
           }
           break;
 
         case 'cancelEdit':
-          if ( angular.isFunction(callback) ) {
-            callback.apply(self, rest);
+          if ( angular.isFunction( callback ) ) {
+            callback.apply( self, rest );
           } else {
-            defaultCancelEditCallback.apply(self, rest);
+            defaultCancelEditCallback.apply( self, rest );
           }
           break;
 
         default:
-          if ( angular.isFunction(callback) ) {
-            callback.apply(self, rest);
+          if ( angular.isFunction( callback ) ) {
+            callback.apply( self, rest );
           } //else do nothing
       }
       /**
@@ -97,12 +97,12 @@
        * @param command
        * @param domCallback
        * @returns {*}
-         */
-      function getCommandCallback(command, domCallback) {
+       */
+      function getCommandCallback( command, domCallback ) {
         var callback       = domCallback;
-        var commandsColumn = _.find(self.iscTblCtrl.tableConfig.columns, { type: 'commands' });
-        if ( _.isNil(callback) && commandsColumn ) {
-          callback = _.get(commandsColumn, 'commands.' + command + '.callback');
+        var commandsColumn = _.find( self.iscTblCtrl.tableConfig.columns, { type: 'commands' } );
+        if ( _.isNil( callback ) && commandsColumn ) {
+          callback = _.get( commandsColumn, 'commands.' + command + '.callback' );
 
         }
         return callback;
@@ -115,18 +115,18 @@
      * @description
      * This approach is the pessimistic approach, UI/model is only updated/refreshed
      * when api calls are successful. The changes are wrapped in the 'then' blocks.
-       */
+     */
     function defaultRemoveCallback( event ) {
-      var apicall = _.get(self, 'iscTblCtrl.tableConfig.api.remove', angular.noop);
-      apicall(self.dataItem).then(function() {
-        self.iscTblCtrl.deleteRow(self.dataItem);
-      });
+      var apicall = _.get( self, 'iscTblCtrl.tableConfig.api.remove', angular.noop );
+      apicall( self.dataItem ).then( function() {
+        self.iscTblCtrl.deleteRow( self.dataItem );
+      } );
     }
 
     /**
      * @memberOf iscTableRowController
      * @param event
-       */
+     */
     function defaultCancelEditCallback( event ) {
       self.editModeData = {};
       self.inEditMode   = false;
@@ -136,11 +136,11 @@
     /**
      * @memberOf iscTableRowController
      * @param event
-       */
+     */
     function defaultCreateCallback( event ) {
-      if (_.isNil(self.iscTblCtrl.dataItem)) {
+      if ( _.isNil( self.iscTblCtrl.dataItem ) ) {
         $scope.dataItem = self.dataItem = self.iscTblCtrl.createRow();
-        self.editModeData = angular.copy(self.dataItem);
+        self.editModeData = angular.copy( self.dataItem );
         self.inEditMode   = self.iscTblCtrl.tableConfig.editable === true ? 'inline' : self.iscTblCtrl.tableConfig.editable;
       }
     }
@@ -148,46 +148,46 @@
     /**
      * @memberOf iscTableRowController
      * @param event
-       */
+     */
     function defaultEditCallback( event ) {
-      if (_.isNil(self.iscTblCtrl.dataItem)) {
-        self.editModeData = angular.copy(self.dataItem);
+      if ( _.isNil( self.iscTblCtrl.dataItem ) ) {
+        self.editModeData = angular.copy( self.dataItem );
         self.inEditMode   = self.iscTblCtrl.tableConfig.editable === true ? 'inline' : self.iscTblCtrl.tableConfig.editable;
-        self.iscTblCtrl.editRow(self.dataItem);
+        self.iscTblCtrl.editRow( self.dataItem );
       }
     }
 
     /**
      * @memberOf iscTableRowController
      * @param event
-       */
+     */
     function defaultSaveCallback( event ) {
       var apicall;
 
-      if ( angular.equals(self.editModeData, self.dataItem) ) {
+      if ( angular.equals( self.editModeData, self.dataItem ) ) {
         self.editModeData = {};
         self.inEditMode   = false;
         self.iscTblCtrl.cancelEdit();
       }
       else if ( self.dataItem.isNew ) {
-        _.set(self, 'editModeData.isNew', false);
+        _.set( self, 'editModeData.isNew', false );
 
-        apicall = _.get(self, 'iscTblCtrl.tableConfig.api.create', angular.noop);
-        apicall(self.editModeData).then(function() {
-          self.iscTblCtrl.addRow(self.editModeData);
+        apicall = _.get( self, 'iscTblCtrl.tableConfig.api.create', angular.noop );
+        apicall( self.editModeData ).then( function() {
+          self.iscTblCtrl.addRow( self.editModeData );
 
           self.editModeData = {};
           self.inEditMode   = false;
-        });
+        } );
       }
       else {
-        apicall = _.get(self, 'iscTblCtrl.tableConfig.api.update', angular.noop);
-        apicall(self.editModeData, self.dataItem).then(function() {
-          self.iscTblCtrl.updateRow(self.editModeData, self.dataItem);
+        apicall = _.get( self, 'iscTblCtrl.tableConfig.api.update', angular.noop );
+        apicall( self.editModeData, self.dataItem ).then( function() {
+          self.iscTblCtrl.updateRow( self.editModeData, self.dataItem );
 
           self.editModeData = {};
           self.inEditMode   = false;
-        });
+        } );
       }
     }
   }

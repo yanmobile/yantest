@@ -2,11 +2,11 @@
  * Created by hzou on 1/13/16.
  */
 
-(function () {
+(function() {
   'use strict';
 
-  angular.module('isc.fauxTable')
-    .directive('fauxTable', fauxTable);
+  angular.module( 'isc.fauxTable' )
+    .directive( 'fauxTable', fauxTable );
 
   /**
    * @ngdoc directive
@@ -28,7 +28,7 @@
    *   ]
    * }
    * @returns {{restrict: string, controller: controller, controllerAs: string, bindToController: {config: string, data: string}, scope: boolean, templateUrl: directive.templateUrl}}
-     */
+   */
   function fauxTable() {//jshint ignore:line
 
     // ----------------------------
@@ -43,7 +43,7 @@
         data  : '='
       },
       scope           : true,
-      templateUrl     : function (elem, attrs) {
+      templateUrl     : function( elem, attrs ) {
         return attrs.templateUrl || 'isc.fauxTable/fauxTable.html';
       }
     };
@@ -56,10 +56,10 @@
     function controller() {
       var self = this;
 
-      angular.extend(self, {
+      angular.extend( self, {
         sort   : sort,
         getSort: getSort
-      });
+      } );
 
       /*========================================
        =                 private               =
@@ -71,8 +71,8 @@
        * @param column
        *
        */
-      function sort(column) {
-        if (self.sortBy !== column.model) {
+      function sort( column ) {
+        if ( self.sortBy !== column.model ) {
           self.sortBy        = column.model;
           self.sortDirection = false;
         } else { //asc => desc
@@ -85,9 +85,9 @@
        * @param column
        * @return null = not sorted, 'asc' = ascending, 'desc' = descending
        */
-      function getSort(column) {
+      function getSort( column ) {
         var sortState = null;
-        if (self.sortBy === column.model) {
+        if ( self.sortBy === column.model ) {
           sortState = self.sortDirection ? 'asc' : 'desc';
         }
         return sortState;

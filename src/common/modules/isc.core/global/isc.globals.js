@@ -1,12 +1,12 @@
 /**
  * Created by douglasgoodman on 11/21/14.
  */
-(function () {
+(function() {
   'use strict';
 
   /* @ngInject */
-  function iscGlobals(devlog, $rootScope, $document) {//jshint ignore:line
-    var channel = devlog.channel('iscGlobals');
+  function iscGlobals( devlog, $rootScope, $document ) {//jshint ignore:line
+    var channel = devlog.channel( 'iscGlobals' );
 
     // --------------------
     //$document.ready( function() {
@@ -103,24 +103,24 @@
       return settings;
     }
 
-    function get(key) { // should be getSetting( key )
-      channel.debug('iscGlobals.get');
-      channel.debug('..settings: ' + JSON.stringify(settings));
+    function get( key ) { // should be getSetting( key )
+      channel.debug( 'iscGlobals.get' );
+      channel.debug( '..settings: ' + JSON.stringify( settings ) );
       return settings[key];
     }
 
-    function set(key, value) { // should be changeSetting( key )
-      channel.debug('iscGlobals.set');
+    function set( key, value ) { // should be changeSetting( key )
+      channel.debug( 'iscGlobals.set' );
       settings[key] = value;
 
-      $rootScope.$broadcast('globalStyles:changed', { key: key, value: settings[key] });
-      $rootScope.$broadcast('globalStyles:changed:' + key, settings[key]);
+      $rootScope.$broadcast( 'globalStyles:changed', { key: key, value: settings[key] } );
+      $rootScope.$broadcast( 'globalStyles:changed:' + key, settings[key] );
     }
 
     // --------------------
-    function getBrandColor(name) {
-      channel.debug('iscGlobals.getBrandColor');
-      if (brandColors[name]) {
+    function getBrandColor( name ) {
+      channel.debug( 'iscGlobals.getBrandColor' );
+      if ( brandColors[name] ) {
         return brandColors[name];
       }
       else {
@@ -134,7 +134,7 @@
   // inject
   // ----------------------------
 
-  angular.module('isc.core')
-    .factory('$global', iscGlobals);
+  angular.module( 'isc.core' )
+    .factory( '$global', iscGlobals );
 
 })();
