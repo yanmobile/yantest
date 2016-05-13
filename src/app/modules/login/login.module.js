@@ -2,20 +2,20 @@
  * Created by  on 1/5/2016, 3:56:02 PM.
  */
 
-(function () {
+( function () {
 
   'use strict';
 
   angular
-    .module('login', ['ui.router', 'isc.common'])
+    .module( 'login', ['ui.router', 'isc.common'] )
 
     /* @ngInject */
-    .config(function (iscStateProvider, $urlRouterProvider) {
-      $urlRouterProvider.when('', '/login');
-      $urlRouterProvider.when('/', '/login');
+    .config( function ( iscStateProvider, $urlRouterProvider ) {
+      $urlRouterProvider.when( '', '/login' );
+      $urlRouterProvider.when( '/', '/login' );
 
-      iscStateProvider.state(getStates());
-    });
+      iscStateProvider.state( getStates() );
+    } );
 
   function getStates() {
     return {
@@ -31,4 +31,4 @@
       }
     };
   }
-})();
+} )();

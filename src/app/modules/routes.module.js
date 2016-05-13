@@ -2,12 +2,12 @@
  * Created by thudson on 3/24/16.
  */
 
-(function () {
+( function() {
   'use strict';
   angular
-    .module('routes', [
+    .module( 'routes', [
       'home',
       'layout',
       'login'
-    ]);
-})();
+    ] );
+} )();
