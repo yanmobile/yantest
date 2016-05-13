@@ -84,10 +84,10 @@
   "disallowSpacesInsideParentheses"        : false,
   "requireAlignedObjectValues"             : "all",
   "disallowSpacesInCallExpression"         : true,
-  "disallowSpacesInsideParentheses": {  "only": [ "function"] },
+  "disallowSpacesInsideParentheses": {  "only": [ "function", "{", "}"] },
   "requireSpacesInsideParentheses"         : {
     "all"    : true,
-    "except" : ["function"]
+    "except" : ["function", "{", "}"]
   },
   "requireObjectKeysOnNewLine"             : {
     "allExcept" : [

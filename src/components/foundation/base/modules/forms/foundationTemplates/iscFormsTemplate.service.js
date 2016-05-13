@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   /**
@@ -55,7 +55,7 @@
     var baseType = '__iscFormsBase__';
 
     var config           = iscCustomConfigService.getConfig(),
-        formsConfig      = _.get( config, 'forms', {} ),
+        formsConfig      = _.get( config, 'forms', {}),
         updateOnExcluded = formsConfig.updateOnExcluded;
 
     // YYYY-MM-DDThh:mm:ss.xxxZ   or
@@ -81,7 +81,7 @@
      * @returns {*}
      */
     function addDataModelDependencies( fields ) {
-      _.forEach( fields, function ( field ) {
+      _.forEach( fields, function( field ) {
         if ( field.fieldGroup ) {
           addDataModelDependencies( field.fieldGroup );
         }
@@ -95,14 +95,14 @@
             allowInvalid: formsConfig.allowInvalid
           };
 
-          var validators          = field.validators || ( field.validators = {} );
+          var validators          = field.validators || ( field.validators = {});
           // Executes external/HS validation api
           validators.hsValidation = {
             expression: 'hsValidation.getError(options.key)',
             message   : 'hsValidation.$error.text'
           };
         }
-      } );
+      });
       return fields;
     }
 
@@ -143,9 +143,9 @@
      */
     function registerBaseType() {
       // Base type overrides
-      formlyConfig.setType( {
+      formlyConfig.setType({
         name      : baseType,
-        controller: /* @ngInject */ function ( $scope, iscNotificationService ) {
+        controller: /* @ngInject */ function( $scope, iscNotificationService ) {
           iscNotificationService.registerFieldScope( $scope );
 
           var formlyRootCtrl = getFormlyRoot( $scope );
@@ -153,11 +153,11 @@
           // Validation for external/HS api
           var removeWatch = $scope.$watch(
             // Wait for formControl to be populated
-            function () {
+            function() {
               return $scope.options.formControl;
             },
             // Configure a listener for that ngModel and drop the watch
-            function ( ngModelController ) {
+            function( ngModelController ) {
               if ( ngModelController ) {
                 removeWatch();
                 var formDef    = formlyRootCtrl.formDefinition,
@@ -169,11 +169,11 @@
                 _.extend( hsValidation, {
                   module    : $window[moduleName],
                   recordName: recordName
-                } );
+                });
 
                 if ( hsValidation.module && hsValidation.recordName && ngModelController.$viewChangeListeners ) {
                   ngModelController.$viewChangeListeners.push(
-                    function () {
+                    function() {
                       hsModelUtils.validateRecord(
                         hsValidation.module,
                         // Currently passing the root form model
@@ -206,7 +206,7 @@
 
           // External/HS validation
           var hsValidation = {
-            getError: function ( spec ) {
+            getError: function( spec ) {
               if ( hsValidation.module ) {
                 hsValidation.$error = hsModelUtils.getError(
                   hsValidation.module,
@@ -263,7 +263,7 @@
             },
             allAnnotations     : formlyRootCtrl.options.formState._annotations.data,
             annotationMetadata : annotationMetadata
-          } );
+          });
 
           // Helper functions
           function getFormlyRoot( scope ) {
@@ -310,7 +310,7 @@
           }
 
           function getAnnotationConfig() {
-            return _.get( formlyRootCtrl, 'formDefinition.form.annotations', {} );
+            return _.get( formlyRootCtrl, 'formDefinition.form.annotations', {});
           }
 
           function getAnnotationContext() {
@@ -318,7 +318,7 @@
             if ( annotationsState.context ) {
               // This means it has a containing context for the parent
               // Contexts are nested instances of the same object type
-              var container = _.merge( {}, annotationsState.context );
+              var container = _.merge({}, annotationsState.context );
               while ( container.context !== undefined ) {
                 container = container.context;
               }
@@ -350,7 +350,7 @@
             return $filter( 'iscFormsContext' )( annotationsState.data, context );
           }
         }
-      } );
+      });
     }
 
     /**
@@ -380,4 +380,4 @@
     }
 
   }
-} )();
+})();

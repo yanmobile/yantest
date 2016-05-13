@@ -16,4 +16,4 @@
   angular
     .module( 'isc.directives', ['isc.core', 'pascalprecht.translate'] );
 
-} )();
+})();

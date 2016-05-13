@@ -3,7 +3,7 @@
  *
  */
 
-(function () {
+(function() {
   'use strict';
 
   angular.module( 'isc.core' )
@@ -23,10 +23,12 @@
    *   <isc-form-date-components
    *      ng-model='ctrl.model.data.dob' >
    *   </isc-form-date-components>
-     */
+   */
   /* @ngInject */
-  function iscFormsDateComponents( $global, $window, $document,
-                                  devlog, iscCustomConfigService ) {//jshint ignore:line
+  function iscFormsDateComponents(
+    $global, $window, $document,
+    devlog, iscCustomConfigService
+  ) {//jshint ignore:line
 
     // ----------------------------
     // vars
@@ -47,7 +49,7 @@
       },
       controllerAs    : 'dateComponentsCtrl',
       controller      : controller,
-      templateUrl     : function ( elem, attrs ) {
+      templateUrl     : function( elem, attrs ) {
         return attrs.templateUrl || 'forms/widgets/iscFormsDateComponents/iscFormsDateComponents.html';
       }
     };
@@ -65,8 +67,8 @@
      * @param scope
      * @param elem
      * @param attrs
-       * @param ngModel
-       */
+     * @param ngModel
+     */
     function link( scope, elem, attrs, ngModel ) {
       var modelAsObject     = scope.dateComponentsCtrl.modelAsObject,
           // Partial dates only make sense if stored as an object
@@ -74,10 +76,10 @@
 
       // Disable each component input if the control's disabled attribute is set
       scope.$watch(
-        function () {
+        function() {
           return attrs.disabled;
         },
-        function ( value ) {
+        function( value ) {
           scope.disabled = value;
 
           // If disabling, clear inputs
@@ -122,7 +124,7 @@
       };
 
       // Initialize scope.date for component controls
-      ngModel.$render = function () {
+      ngModel.$render = function() {
         var model = ngModel.$viewValue;
         if ( model ) {
           if ( modelAsObject ) {
@@ -133,7 +135,7 @@
             if ( mDate.isValid() ) {
               scope.date.day   = mDate.get( 'date' );
               scope.date.month = mDate.get( 'month' ) + 1; // moment.get('month') is zero-based
-              scope.date.year = mDate.get( 'year' );
+              scope.date.year  = mDate.get( 'year' );
             }
           }
         }
@@ -192,7 +194,7 @@
 
         function clearNgModel() {
           if ( modelAsObject ) {
-            ngModel.$setViewValue( {} );
+            ngModel.$setViewValue({});
           }
           else {
             ngModel.$setViewValue( '' );
@@ -202,7 +204,7 @@
 
       // Internal validation
       // Use onKeyPress to ensure numerics are enforced and avoid input flickering
-      scope.checkInput = function ( component, maxLength, event ) {
+      scope.checkInput = function( component, maxLength, event ) {
         var $e  = $( event.target ),
             key = event.charCode ? event.charCode : event.keyCode ? event.keyCode : 0;
 
@@ -287,7 +289,7 @@
       };
 
       // Sets the maximum value for the day component, based on the month component and leap year status
-      scope.getMaxDay = function () {
+      scope.getMaxDay = function() {
         var date = scope.date;
 
         var monthsWith31Days = [1, 3, 5, 7, 8, 10, 12];
@@ -318,7 +320,7 @@
           // Defer to allow models to update;
           // otherwise day may be undefined (invalid) if it exceeds the max
           // after a month update.
-          _.defer(function () {
+          _.defer(function() {
             date.day = Math.min( currentDay, maxDay );
           }, 0 );
         }
@@ -335,18 +337,18 @@
         if ( this.value.length === 2 ) {
           $day.focus();
         }
-      } );
+      });
 
       $day.on( 'input', function onChange() {
         if ( this.value.length === 2 ) {
           $year.focus();
         }
-      } );
+      });
 
       $year.on( 'blur', function onBlur() {
         ngModel.$setTouched();
-      } );
+      });
     }
 
   }//END CLASS
-} )();
+})();

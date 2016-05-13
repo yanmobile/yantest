@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   /* @ngInject */
@@ -18,9 +18,11 @@
    * @param iscFormsApi
    * @returns {{getForms, getActiveForm, getActiveForms, setFormStatus, getFormDefinition, getValidationDefinition}}
    */
-  function iscFormsModel( $q, $templateCache, $window,
-                         iscHttpapi, // needed for user script closures
-                         iscFormsCodeTableApi, iscFormsTemplateService, iscFormsApi ) {
+  function iscFormsModel(
+    $q, $templateCache, $window,
+    iscHttpapi, // needed for user script closures
+    iscFormsCodeTableApi, iscFormsTemplateService, iscFormsApi
+  ) {
     var _typeCache          = {};
     var _formsCache         = {};
     var _viewModeFormsCache = {};
@@ -33,15 +35,15 @@
     var getForms       = _.partial( getFormStatus, {
       returnMultiple: true,
       limitToActive : false
-    } );
+    });
     var getActiveForm  = _.partial( getFormStatus, {
       returnMultiple: false,
       limitToActive : true
-    } );
+    });
     var getActiveForms = _.partial( getFormStatus, {
       returnMultiple: true,
       limitToActive : true
-    } );
+    });
 
     return {
       getForms               : getForms,
@@ -82,15 +84,15 @@
       }
       else {
         var deferred = $q.defer();
-        iscFormsApi.getFormStatuses( formType ).then(function ( results ) {
+        iscFormsApi.getFormStatuses( formType ).then(function( results ) {
           _.set( _typeCache, formType, results );
           deferred.resolve( filterResults( results ) );
-        } );
+        });
         return deferred.promise;
       }
 
       function filterResults( array ) {
-        var filteredArray = limitToActive ? _.filter( array, { status: 'Active' } ) : array;
+        var filteredArray = limitToActive ? _.filter( array, { status: 'Active' }) : array;
         return allowMultiple ? filteredArray : _.first( filteredArray );
       }
     }
@@ -116,22 +118,22 @@
             status  : 'Active'
           }
         );
-        _.forEach( existingFormsToInactivate, function ( form ) {
+        _.forEach( existingFormsToInactivate, function( form ) {
           if ( form.formKey !== formStatus.formKey ) {
             form.status = 'Inactive';
-            formStatuses.push( {
+            formStatuses.push({
               formKey: form.formKey,
               status : 'Inactive'
-            } );
+            });
           }
-        } );
+        });
       }
 
       // Update the local cache, if it is populated
       if ( cache.length ) {
-        _.forEach( formStatuses, function ( form ) {
-          _.find( cache, { formKey: form.formKey } ).status = form.status;
-        } );
+        _.forEach( formStatuses, function( form ) {
+          _.find( cache, { formKey: form.formKey }).status = form.status;
+        });
       }
 
       // Submit to REST api
@@ -153,31 +155,31 @@
         deferred.resolve( cachedValidation );
       }
       else {
-        getFormDefinition( formKey ).then(function ( formDefinition ) {
-          _.forEach( formDefinition.form.pages, function ( page ) {
+        getFormDefinition( formKey ).then(function( formDefinition ) {
+          _.forEach( formDefinition.form.pages, function( page ) {
             _getEmbeddedForms( page.fields, formDefinition.subforms );
-          } );
+          });
 
           _validationCache[formKey] = validations;
           deferred.resolve( validations );
-        } );
+        });
       }
 
       return deferred.promise;
 
       function _getEmbeddedForms( fields, subforms ) {
-        _.forEach( fields, function ( field ) {
+        _.forEach( fields, function( field ) {
           if ( field.fieldGroup ) {
             _getEmbeddedForms( field.fieldGroup, subforms );
           }
           // If a collection, register it with the validation safety net
           else if ( field.type === 'embeddedFormCollection' ) {
-            validations.push( {
+            validations.push({
               key   : field.key,
               fields: subforms[_.get( field, 'data.embeddedType' )] || []
-            } );
+            });
           }
-        } );
+        });
       }
     }
 
@@ -210,7 +212,7 @@
 
       // Otherwise, fetch the form template and resolve the form in a promise
       else {
-        iscFormsApi.getFormDefinition( formKey ).then(function ( responseData ) {
+        iscFormsApi.getFormDefinition( formKey ).then(function( responseData ) {
           var primaryPromises   = [],
               secondaryPromises = [],
               form              = responseData,
@@ -221,27 +223,27 @@
             primaryPromises = primaryPromises.concat( _processFields( form ) );
           }
           else {
-            _.forEach( form.pages, function ( page ) {
+            _.forEach( form.pages, function( page ) {
               primaryPromises = primaryPromises.concat( _processFields( page.fields ) );
-            } );
+            });
           }
 
           // If an FDN-specified dataModelInit function is indicated, fetch this as a user script
           if ( form.dataModelInit ) {
             var scriptPromise = iscFormsApi.getUserScript( form.dataModelInit )
-              .then(function ( response ) {
+              .then(function( response ) {
                 var script         = parseScript( response );
-                form.dataModelInit = (function ( iscHttpapi ) {
+                form.dataModelInit = (function( iscHttpapi ) {
                   return script;
-                } )();
+                })();
                 return true;
-              } );
+              });
             primaryPromises.push( scriptPromise );
           }
 
           // After all necessary template calls have completed, return the form
-          $q.all( primaryPromises ).then(function () {
-            $q.all( secondaryPromises ).then(function () {
+          $q.all( primaryPromises ).then(function() {
+            $q.all( secondaryPromises ).then(function() {
               var editMode = {
                 form    : form,
                 subforms: subforms
@@ -252,14 +254,14 @@
 
               // Make a deep copy for the view mode version
               var viewMode = {
-                form    : angular.merge( {}, form ),
+                form    : angular.merge({}, form ),
                 subforms: subforms
               };
 
               // Replace templates in the view mode with readonly versions
-              _.forEach( viewMode.form.pages, function ( page ) {
+              _.forEach( viewMode.form.pages, function( page ) {
                 replaceTemplates( page.fields );
-              } );
+              });
 
               // Cache it separately
               _.set( _viewModeFormsCache, formKey, viewMode );
@@ -273,8 +275,8 @@
                 default:
                   deferred.resolve( editMode );
               }
-            } );
-          } );
+            });
+          });
 
           /**
            * @memberOf iscFormsModel
@@ -286,13 +288,13 @@
            */
           function _processFields( fields ) {
             var fieldPromises = [];
-            _.forEach( fields, function ( field ) {
-              var expProps    = _.get( field, 'expressionProperties', {} ),
+            _.forEach( fields, function( field ) {
+              var expProps    = _.get( field, 'expressionProperties', {}),
                   label       = _.get( field, 'templateOptions.label' ),
                   type        = _.get( field, 'type' ),
                   extendsType = _.get( field, 'extends' ),
                   fieldGroup  = _.get( field, 'fieldGroup' ),
-                  data        = _.get( field, 'data', {} );
+                  data        = _.get( field, 'data', {});
 
               // A field group does not have its own type, but contains fields in the fieldGroup array
               if ( fieldGroup ) {
@@ -346,23 +348,23 @@
                   _getCustomTemplate( type );
                 }
               }
-            } );
+            });
             return fieldPromises;
 
             function _processUserScript( field, scriptName ) {
               var scriptPromise = iscFormsApi.getUserScript( scriptName )
-                .then(function ( response ) {
+                .then(function( response ) {
                   var script = parseScript( response ),
                       getApi = script.api.get;
                   // Expose iscHttpapi to api getter function
                   if ( getApi ) {
-                    script.api.get = (function ( iscHttpapi ) {
+                    script.api.get = (function( iscHttpapi ) {
                       return getApi;
-                    } )();
+                    })();
                   }
                   _.set( field, 'data.userModel', script );
                   return true;
-                } );
+                });
               primaryPromises.push( scriptPromise );
             }
 
@@ -385,7 +387,7 @@
                   fieldPromises.push(
                     // Fetch the embedded type
                     getFormDefinition( embeddedType, mode, subforms )
-                      .then(function ( embeddedForm ) {
+                      .then(function( embeddedForm ) {
                         var fields = [],
                             form   = embeddedForm.form;
 
@@ -408,7 +410,7 @@
                               page = _.get( pages, embeddedPage );
                             }
                             else {
-                              page = _.find( pages, { name: embeddedPage } );
+                              page = _.find( pages, { name: embeddedPage });
                             }
                           }
                           // If no page was provided, use the first one
@@ -424,9 +426,9 @@
 
                         if ( isCollection ) {
                           // Push a subform listener into the fields list
-                          fields.push( {
+                          fields.push({
                             'type': 'embeddedFormListener'
-                          } );
+                          });
 
                           // Update the subforms hash table
                           subforms[embeddedType] = fields;
@@ -437,7 +439,7 @@
                           // Update the fields in this embedded form from the looked-up form
                           _.set( field, 'templateOptions.fields', fields );
                         }
-                      } )
+                      })
                   );
                 }
 
@@ -455,10 +457,10 @@
            */
           function _getCustomTemplate( templateName ) {
             var scriptPromise = iscFormsApi.getTemplate( "js/" + templateName )
-              .then(function ( response ) {
+              .then(function( response ) {
                 _processScript( response );
                 return true;
-              } );
+              });
             primaryPromises.push( scriptPromise );
 
             /**
@@ -496,10 +498,10 @@
               if ( templateHtml ) {
                 if ( !$templateCache.get( templateHtml ) ) {
                   var htmlPromise = iscFormsApi.getTemplate( 'html/' + templateName + '/' + templateHtml )
-                    .then(function ( templateMarkup ) {
+                    .then(function( templateMarkup ) {
                       $templateCache.put( templateHtml, templateMarkup );
                       return true;
-                    } );
+                    });
                   secondaryPromises.push( htmlPromise );
                 }
               }
@@ -515,7 +517,7 @@
              */
             function _injectCss() {
               var cssPromise = iscFormsApi.getTemplate( 'css/' + templateName ).then(
-                function ( stylesheet ) {
+                function( stylesheet ) {
                   // Stylesheet is optional and not specified by the FDN,
                   // so the only way to find out if there is one is to ask for it.
                   // Expect the server to send a 204 (not 404) if no stylesheet was found.
@@ -549,7 +551,7 @@
               }
             }
           }
-        } );
+        });
 
         return deferred.promise;
       }
@@ -565,12 +567,12 @@
      * @param {Array} fields
      */
     function forceDataInheritance( fields ) {
-      _.forEach( fields, function ( field ) {
+      _.forEach( fields, function( field ) {
         if ( field.fieldGroup ) {
           forceDataInheritance( field.fieldGroup );
         }
         else if ( field.type ) {
-          var data              = _.get( field, 'data', {} );
+          var data              = _.get( field, 'data', {});
           var ancestorDataStack = _.compact( _getAncestors( field.type ) ),
               ancestorData;
 
@@ -581,7 +583,7 @@
 
           _.set( field, 'data', data );
         }
-      } );
+      });
 
       /**
        * @memberOf iscFormsModel
@@ -614,12 +616,12 @@
      * @param fields
      */
     function replaceTemplates( fields ) {
-      _.forEach( fields, function ( field ) {
+      _.forEach( fields, function( field ) {
         if ( field.fieldGroup ) {
           replaceTemplates( field.fieldGroup );
         }
         else {
-          var data            = _.get( field, 'data.viewMode', {} ),
+          var data            = _.get( field, 'data.viewMode', {}),
               viewTemplate    = data.template,
               viewTemplateUrl = data.templateUrl;
           if ( viewTemplate ) {
@@ -650,7 +652,7 @@
             }
           }
         }
-      } );
+      });
     }
 
     /**
@@ -666,4 +668,4 @@
       return eval( script ); // jshint ignore:line
     }
   }
-} )();
+})();

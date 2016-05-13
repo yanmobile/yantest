@@ -4,7 +4,7 @@
  * To be used with iscTransclude
  */
 
-(function () {
+(function() {
   'use strict';
   // ----------------------------
   // injection
@@ -18,12 +18,12 @@
    * @memberOf isc.directives
    * @param $compile
    * @returns {{priority: number, compile: compile}}
-     */
+   */
   /* @ngInject */
   function ngTransclude( $compile ) {
     return {
       priority: 1,
-      compile : function ( elem, attrs ) {
+      compile : function( elem, attrs ) {
         //original is used as the default
         var originalTemplateEl;
         if ( attrs.iscTransclude ) {
@@ -31,7 +31,7 @@
         }
 
         //elem contains ALL transcluded element within the parent directive with 'transclude: true'
-        return function ( scope, elem, attrs ) {
+        return function( scope, elem, attrs ) {
           if ( attrs.iscTransclude ) {
             //removes non-maching transcluded elements
             elem.children().not( attrs.iscTransclude ).remove();
@@ -47,4 +47,4 @@
     };
   }//END CLASS
 
-} )();
+})();

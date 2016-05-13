@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   /**
@@ -6,7 +6,7 @@
    * This is useful for tabular representation of data
    */
   angular.module( 'isc.forms' )
-      .filter( 'iscFormsFlattenedFields', iscFormsFlattenedFields );
+    .filter( 'iscFormsFlattenedFields', iscFormsFlattenedFields );
   /**
    * @ngdoc filter
    * @memberOf isc.forms
@@ -15,7 +15,7 @@
    */
   /* @ngInject */
   function iscFormsFlattenedFields( $filter ) {
-    return function ( fields, annotationState ) {
+    return function( fields, annotationState ) {
       var flattenedFields = flattenFields( fields, annotationState );
       return flattenedFields;
     };
@@ -25,12 +25,12 @@
      * @param fields
      * @param annotationState
      * @returns {Array}
-       */
+     */
     function flattenFields( fields, annotationState ) {
       var fieldArray = [];
-      _.forEach( fields, function ( field ) {
+      _.forEach( fields, function( field ) {
         fieldArray = fieldArray.concat( getFields( field, annotationState ) );
-      } );
+      });
       return fieldArray;
     }
 
@@ -39,7 +39,7 @@
      * @param field
      * @param annotationState
      * @returns {*}
-       */
+     */
     function getFields( field, annotationState ) {
       if ( field.fieldGroup ) {
         return flattenFields( field.fieldGroup, annotationState );
@@ -73,7 +73,7 @@
      * @param field
      * @param annotationState
      * @returns {hasAnnotations}
-       */
+     */
     function hasAnnotations( field, annotationState ) {
       var key     = field.key,
           context = annotationState.context,
@@ -86,7 +86,7 @@
       };
 
       function getContext( index ) {
-        var localContext = _.merge( {}, context ),
+        var localContext = _.merge({}, context ),
             endContext   = localContext;
         while ( endContext.context !== undefined ) {
           endContext = endContext.context;
@@ -104,7 +104,7 @@
      * @memberOf iscFormsFlattenedFields
      * @param field
      * @returns {*}
-       */
+     */
     function doesFieldStoreObject( field ) {
       return _.get( field, 'data.isObject' ) || _.get( field, 'data.displayField' );
     }
@@ -113,10 +113,10 @@
      * @memberOf iscFormsFlattenedFields
      * @param field
      * @returns {{}}
-       */
+     */
     function getCustomDisplayOptions( field ) {
       var options = {},
-          data    = _.get( field, 'data', {} );
+          data    = _.get( field, 'data', {});
 
       if ( data.tableCellType ) {
         options.type = data.tableCellType;
@@ -131,4 +131,4 @@
 
   }
 
-} )();
+})();

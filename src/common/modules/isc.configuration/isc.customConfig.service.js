@@ -108,10 +108,10 @@
           _.forEach( roles, function( role ) {
             masterRoutes[role] = masterRoutes[role] || [];
             masterRoutes[role].push( route );
-          } );
-        } );
-      } );
+          });
+        });
+      });
       return masterRoutes;
     }
   }
-} )();
+})();

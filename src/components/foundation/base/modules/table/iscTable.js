@@ -184,7 +184,7 @@
    * @memberOf isc.table
    * @param devlog
    * @returns {{scope: {tableConfig: string, tableData: string, filterFunction: string, rowButtonCallback: string, backButtonCallback: string, tableName: string}, restrict: string, replace: boolean, templateUrl: directive.templateUrl, bindToController: boolean, link: link, controller: controller, controllerAs: string}}
-     */
+   */
   function iscTable( devlog ) { //jshint ignore:line
     var channel = devlog.channel( 'iscTable' );
 
@@ -232,31 +232,33 @@
 
       var self = this;
       if ( _.isString( self.tableName ) && self.tableName.length > 0 ) {
-        $scope.$parent[ self.tableName ] = self;
+        $scope.$parent[self.tableName] = self;
       }
 
       self.refresh   = init;
-      self.addRow = addRow;
+      self.addRow    = addRow;
       self.updateRow = updateRow;
 
-      self.deleteRow = deleteRow;
-      self.createRow = createRow;
-      self.editRow = editRow;
-      self.cancelEdit = cancelEdit;
+      self.deleteRow      = deleteRow;
+      self.createRow      = createRow;
+      self.editRow        = editRow;
+      self.cancelEdit     = cancelEdit;
       self.getColumnByKey = getColumnByKey;
 
       init();
 
       function init() {
-        self.rowsOnPage = self.tableConfig.rowsOnPage || 15;
+        self.rowsOnPage  = self.tableConfig.rowsOnPage || 15;
         self.currentPage = 1;
 
-        $scope.$watch(function() { return self.tableData; }, function() {
-        channel.debug( 'iscTable.WATCH tableData' );
-        // set an array of the table row objects
-        self.filteredRows = self.tableRows = self.tableConfig.key ? self.tableData[ self.tableConfig.key ] : self.tableData;
-        channel.debug( '...tableRows',self.tableRows );
-      } );
+        $scope.$watch(function() {
+          return self.tableData;
+        }, function() {
+          channel.debug( 'iscTable.WATCH tableData' );
+          // set an array of the table row objects
+          self.filteredRows = self.tableRows = self.tableConfig.key ? self.tableData[self.tableConfig.key] : self.tableData;
+          channel.debug( '...tableRows', self.tableRows );
+        });
 
         applyFilter();
         self.sortField = { reverse: false };
@@ -276,8 +278,8 @@
       /**
        * @memberOf iscTable
        * @param column
-         */
-      self.sortColumn = function ( column ) {
+       */
+      self.sortColumn = function( column ) {
         if ( ( column.columnClick === 'sort' || !column.columnClick ) && self.sortField.name === column.key ) {
           self.sortField.reverse = !self.sortField.reverse;
         }
@@ -289,8 +291,8 @@
       /**
        * @memberOf iscTable
        * @param newPageNumber
-         */
-      self.changePage = function ( newPageNumber ) {
+       */
+      self.changePage = function( newPageNumber ) {
         self.currentPage = newPageNumber;
       };
 
@@ -298,16 +300,16 @@
        * @memberOf iscTable
        * @param item
        * @returns {*}
-         */
-      self.doFilter = function ( item ) {
+       */
+      self.doFilter = function( item ) {
         channel.debug( 'iscTable.doFilter', item );
         var fitlerable = _.some( self.tableConfig.columns, function( column ) {
           return _.isFunction( column.filterFunction );
-        } );
+        });
 
         channel.debug( '...fitlerable', fitlerable );
         if ( fitlerable ) {
-          return self.filterFunction( { item: item } );
+          return self.filterFunction({ item: item });
         }
         else {
           return true;
@@ -321,15 +323,15 @@
        * @memberOf iscTable
        * @param key
        * @returns {*}
-         */
+       */
       function getColumnByKey( key ) {
-        return _.find( self.tableConfig.columns, { key: key } );
+        return _.find( self.tableConfig.columns, { key: key });
       }
 
       /**
        * @memberOf iscTable
        * @param row
-         */
+       */
       function deleteRow( row ) {
         _.remove( self.tableRows, row );
       }
@@ -337,7 +339,7 @@
       /**
        * @memberOf iscTable
        * @param row
-         */
+       */
       function addRow( row ) {
         self.tableRows.push( row );
         self.dataItem = null;
@@ -347,7 +349,7 @@
        * @memberOf iscTable
        * @param row
        * @param oldRow
-         */
+       */
       function updateRow( row, oldRow ) {
         angular.extend( oldRow, row );
         self.dataItem = null;
@@ -356,14 +358,14 @@
       /**
        * @memberOf iscTable
        * @returns {null|{isNew: boolean}|*}
-         */
+       */
       function createRow() {
         var dataItem = { isNew: true };
-        self.tableConfig.columns.forEach(function ( column ) {
+        self.tableConfig.columns.forEach(function( column ) {
           if ( column.defaultValue !== null ) {
             dataItem[column.key] = column.defaultValue;
           }
-        } );
+        });
         self.dataItem = dataItem;
         return self.dataItem;
       }
@@ -371,7 +373,7 @@
       /**
        * @memberOf iscTable
        * @param row
-         */
+       */
       function editRow( row ) {
         self.dataItem = row;
       }
@@ -385,11 +387,11 @@
 
     }// END CTRL
 
-    function link ( scope, elem, attr ) {
+    function link( scope, elem, attr ) {
       scope.hasBackButton = !_.isUndefined( attr.backButtonCallback );
       // $log.debug('hasBackButton', scope.hasBackButton);
     }
 
   }// END CLASS
 
-} )();
+})();

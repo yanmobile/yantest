@@ -16,7 +16,7 @@
   var reFixJson    = /(['"])?([a-zA-Z0-9_]+)(['"])?:/g;
   //save the original _.get
 
-  _.mixin( {
+  _.mixin({
     isPresent       : isPresent,
     isNotPresent    : isNotPresent,
     getAge          : getAge,
@@ -28,7 +28,7 @@
     wrapText        : wrapText,
     interpolate     : interpolate,
     getRemainingTime: getRemainingTime
-  } );
+  });
 
   // Present is defined by not undefined and not null.
   function isPresent( obj ) {
@@ -93,7 +93,7 @@
     if ( isTypeOf( obj, 'Object' ) ) {
       _.forOwn( obj, function( value, key ) {
         obj[key] = null;
-      } );
+      });
     }
   }
 
@@ -146,7 +146,7 @@
         } else {
           val = origGet( val, part, defaultValue );
         }
-      } );
+      });
     } else {
       val = origGet( obj, path );
     }
@@ -161,7 +161,7 @@
     path.replace( rePropName, function( match, number, quote, string ) {
       var parts = quote ? string.replace( reEscapeChar, '$1' ) : ( number || match );
       results.push( parts );
-    } );
+    });
     return results;
   }
 
@@ -197,4 +197,4 @@
   }
 
   //END CLASS
-} )();
+})();

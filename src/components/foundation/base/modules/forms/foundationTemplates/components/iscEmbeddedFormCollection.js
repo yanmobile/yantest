@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   // ----------------------------
@@ -6,7 +6,7 @@
   // ----------------------------
 
   angular.module( 'isc.forms' )
-      .directive( 'iscEmbeddedFormCollection', iscEmbeddedFormCollection );
+    .directive( 'iscEmbeddedFormCollection', iscEmbeddedFormCollection );
   /**
    * @ngdoc directive
    * @memberOf isc.forms
@@ -23,9 +23,11 @@
    * @returns {{restrict: string, replace: boolean, require: string, controllerAs: string, scope: {id: string, formState: string, options: string, annotations: string}, bindToController: boolean, controller: controller, link: link, templateUrl: string}}
    */
   /* @ngInject */
-  function iscEmbeddedFormCollection( $filter, FoundationApi, appConfig, FORMS_EVENTS,
-                                     iscFormsTemplateService, iscFormsValidationService,
-                                     iscScrollContainerService ) {//jshint ignore:line
+  function iscEmbeddedFormCollection(
+    $filter, FoundationApi, appConfig, FORMS_EVENTS,
+    iscFormsTemplateService, iscFormsValidationService,
+    iscScrollContainerService
+  ) {//jshint ignore:line
 
     // ----------------------------
     // vars
@@ -48,7 +50,7 @@
       bindToController: true,
       controller      : controller,
       link            : link,
-      templateUrl     : function ( elem, attrs ) {
+      templateUrl     : function( elem, attrs ) {
         return attrs.templateUrl || 'forms/foundationTemplates/components/iscEmbeddedFormCollection.html';
       }
 
@@ -72,7 +74,7 @@
 
       // Inherit formState for subform
       self.subformOptions = {
-        formState: _.extend( {}, self.formState )
+        formState: _.extend({}, self.formState )
       };
       self.subform        = {};
 
@@ -102,17 +104,17 @@
 
       // Flatten field groups down for table header and cell iteration
       var type    = _.get( opts, 'data.embeddedType' );
-      self.fields = angular.merge( {}, subforms[type] );
+      self.fields = angular.merge({}, subforms[type] );
       mergeBuiltInTemplates( self.fields );
 
       createTableFields();
 
       // Callbacks
-      self.hasValidationError = function ( row ) {
+      self.hasValidationError = function( row ) {
         return _.includes( self.validationErrors, row );
       };
 
-      self.newForm = function () {
+      self.newForm = function() {
         self.isNew = true;
 
         self.editModel = {};
@@ -124,7 +126,7 @@
         _.defer( updateModel );
       };
 
-      self.editForm = function ( row ) {
+      self.editForm = function( row ) {
         var index = _.indexOf( self.collectionModel, row );
 
         self.isNew     = false;
@@ -139,12 +141,12 @@
         _.defer( updateModelWithValidation );
       };
 
-      self.cancel = function () {
+      self.cancel = function() {
         self.subformOptions.formState._validation.$submitted = false;
         hideSubform();
       };
 
-      self.saveForm = function () {
+      self.saveForm = function() {
         self.subformOptions.formState._validation.$submitted = true;
 
         var isSubformValid = iscFormsValidationService.validateForm( self.subform.form ).isValid;
@@ -167,7 +169,7 @@
         // TODO - show message if invalid? (iscFormModel.validate will touch each control during validation)
       };
 
-      self.removeForm = function ( row ) {
+      self.removeForm = function( row ) {
         var index = _.indexOf( self.collectionModel, row );
 
         self.collectionModel.splice( index, 1 );
@@ -175,15 +177,15 @@
       };
 
       // Watches
-      $scope.$watch( getValidation, function ( value ) {
+      $scope.$watch( getValidation, function( value ) {
         self.validationErrors = _.get( value, 'records' );
-      } );
+      });
 
       // Private/helper functions
       /**
        * @memberOf iscEmbeddedFormCollection
        * @returns {*}
-         */
+       */
       function getValidation() {
         return self.formState._validation[self.id];
       }
@@ -196,7 +198,7 @@
 
         // Table configuration
         // Fields
-        var tableColumns = _.map( self.flattenedFields, function ( field ) {
+        var tableColumns = _.map( self.flattenedFields, function( field ) {
           return {
             key             : field.label,
             model           : field.model,
@@ -207,7 +209,7 @@
             type            : field.type,
             dateFormat      : self.dateFormat
           };
-        } );
+        });
 
         // Actions
         if ( self.mode !== 'view' ) {
@@ -246,7 +248,7 @@
        * @param fields
        */
       function mergeBuiltInTemplates( fields ) {
-        _.forEach( fields, function ( field ) {
+        _.forEach( fields, function( field ) {
           var type = _.get( field, 'type', '' );
           if ( type && !type.startsWith( 'embeddedForm' ) ) {
             // Recurse for fieldGroups
@@ -261,7 +263,7 @@
             }
 
           }
-        } );
+        });
       }
 
       /**
@@ -307,7 +309,7 @@
 
         switch ( editAs ) {
           case 'modal':
-            _.defer(function () {
+            _.defer(function() {
               // When self.renderForm is set to true, the formly-form will be created and added to the DOM.
               // This will regenerate self.subform for validation of the subform.
               self.renderForm = true;
@@ -327,7 +329,7 @@
               onCancel : self.cancel,
               onSubmit : self.saveForm,
               scrollPos: iscScrollContainerService.getCurrentScrollPosition()
-            } );
+            });
         }
       }
 
@@ -339,7 +341,7 @@
 
         switch ( editAs ) {
           case 'modal':
-            _.defer(function () {
+            _.defer(function() {
               self.renderForm = false;
             }, 0 );
             FoundationApi.publish( self.modalName, 'close' );
@@ -357,11 +359,11 @@
       scope.efCollectionCtrl.ngModelCtrl = ngModelCtrl;
 
       // Initialize model value for collection rows in $render
-      ngModelCtrl.$render = function () {
+      ngModelCtrl.$render = function() {
         scope.efCollectionCtrl.collectionModel = ngModelCtrl.$modelValue || [];
       };
     }
 
   }//END CLASS
 
-} )();
+})();

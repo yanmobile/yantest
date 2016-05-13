@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   angular.module( 'isc.core' )
@@ -9,7 +9,7 @@
    * @memberOf isc.core
    * @param $timeout
    * @returns {{restrict: string, scope: {onSelect: string, apiSelect: string, listData: string, listField: string, limitTo: string, minlength: string, bypassInputFilter: string}, replace: boolean, transclude: boolean, link: link, controller: controller, controllerAs: string, bindToController: boolean, templateUrl: templateUrl}}
-     */
+   */
   function iscFormsTypeahead( $timeout ) {
     var UP_ARROW_KEY_CODE   = 38;
     var DOWN_ARROW_KEY_CODE = 40;
@@ -34,7 +34,7 @@
       controller      : controller,
       controllerAs    : 'typeaheadCtrl',
       bindToController: true,
-      templateUrl     : function ( elem, attrs ) {
+      templateUrl     : function( elem, attrs ) {
         return attrs.templateUrl || 'forms/widgets/iscFormsTypeahead/iscFormsTypeahead.html';
       }
     };
@@ -43,9 +43,9 @@
       var self = this;
 
       self.controlHasFocus = false;
-      self.showList = true;
+      self.showList        = true;
 
-      self.select = function ( item ) {
+      self.select = function( item ) {
         callSelect( self.onSelect );
         callSelect( self.apiSelect );
 
@@ -61,14 +61,14 @@
         }
       };
 
-      self.getFilteredList = function () {
+      self.getFilteredList = function() {
         return self.bypassInputFilter ? self.listData : $filter( 'filter' )( self.listData, self.inputVal );
       };
     }
 
     function link( scope, elem, attr, ctrl ) {
-      var input = elem.find( 'input' );
-      var list  = elem.find( '.isc-typeahead-list' );
+      var input   = elem.find( 'input' );
+      var list    = elem.find( '.isc-typeahead-list' );
       var currVal = "";
 
       input.on( 'input', updateList );
@@ -83,7 +83,7 @@
       input.on( 'focus', focusControl );
       list.on( 'focus', 'li', focusControl );
 
-      ctrl.focusInput = function () {
+      ctrl.focusInput = function() {
         input.focus();
       };
 
@@ -94,10 +94,10 @@
       // ----------------------------
 
       function blurControl( event ) {
-        $timeout(function () {
+        $timeout(function() {
           ctrl.controlHasFocus = false;
         }, 0 );
-        $timeout(function () {
+        $timeout(function() {
           if ( !ctrl.controlHasFocus ) {
             ctrl.showList = false;
             // The user is clearing the field
@@ -116,7 +116,7 @@
       }
 
       function focusControl( event ) {
-        $timeout(function () {
+        $timeout(function() {
           ctrl.controlHasFocus = ctrl.showList = true;
           // If no data has been entered, the script parameters for this control may have been set
           // by other controls, so update the list.
@@ -140,11 +140,11 @@
 
       function updateList( event ) {//jshint ignore:line
         if ( !ctrl.minlength || input.val().length >= ctrl.minlength ) {
-          scope.$apply(function () {
+          scope.$apply(function() {
             ctrl.selectedItem = null;
             ctrl.isDirty      = true;
             ctrl.inputVal     = input.val();
-          } );
+          });
         }
       }
 
@@ -172,4 +172,4 @@
     }
   }
 
-} )();
+})();

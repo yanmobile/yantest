@@ -13,7 +13,7 @@
  * License: MIT
  */
 
-(function () {
+(function() {
   'use strict';
   // ----------------------------
   // injection
@@ -35,7 +35,7 @@
    * This directive for auto-focus on the elements which its attached to.
    */
   /* @ngInject */
-  function iscAutofocus ( devlog, $timeout ) {
+  function iscAutofocus( devlog, $timeout ) {
     var channel = devlog.channel( 'iscAutofocus' );
 
     channel.debug( 'iscAutofocus LOADED' );
@@ -60,14 +60,14 @@
      * @param attr
      * @description
      * The method is the link method for the directive
-       */
-    function link ( scope, elem, attr ) {
-      $timeout(function () {
-        elem[ 0 ].focus();
-      } );
+     */
+    function link( scope, elem, attr ) {
+      $timeout(function() {
+        elem[0].focus();
+      });
 
     }//END LINK
 
   }//END CLASS
 
-} )();
+})();

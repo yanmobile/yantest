@@ -8,4 +8,4 @@
   angular
     .module( 'isc.http', ['isc.configuration', 'isc.authentication', 'isc.core'] );
 
-} )();
+})();

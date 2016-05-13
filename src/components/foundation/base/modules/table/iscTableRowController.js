@@ -13,7 +13,7 @@
    * @ngdoc controller
    * @memberOf isc.table
    * @param $scope
-     */
+   */
   function iscTableRowController( devlog, $scope ) {
     var channel = devlog.channel( 'iscTableRowController' );
 
@@ -38,7 +38,7 @@
      * @param commandName
      * @param event
      * @param domCallback
-       */
+     */
     function onCommand( commandName, event, domCallback ) {
       var rest = _.toArray( arguments );
       rest     = _.slice( rest, 3 );
@@ -46,7 +46,7 @@
       rest.unshift( event );  //end result => event, self, [rest]
 
       var callback = getCommandCallback( commandName, domCallback );
-      switch ( commandName ){
+      switch ( commandName ) {
         case 'create':
           if ( angular.isFunction( callback ) ) {
             callback.apply( self, rest );
@@ -97,10 +97,10 @@
        * @param command
        * @param domCallback
        * @returns {*}
-         */
+       */
       function getCommandCallback( command, domCallback ) {
         var callback       = domCallback;
-        var commandsColumn = _.find( self.iscTblCtrl.tableConfig.columns, { type: 'commands' } );
+        var commandsColumn = _.find( self.iscTblCtrl.tableConfig.columns, { type: 'commands' });
         if ( _.isNil( callback ) && commandsColumn ) {
           callback = _.get( commandsColumn, 'commands.' + command + '.callback' );
 
@@ -115,18 +115,18 @@
      * @description
      * This approach is the pessimistic approach, UI/model is only updated/refreshed
      * when api calls are successful. The changes are wrapped in the 'then' blocks.
-       */
+     */
     function defaultRemoveCallback( event ) {
       var apicall = _.get( self, 'iscTblCtrl.tableConfig.api.remove', angular.noop );
       apicall( self.dataItem ).then(function() {
         self.iscTblCtrl.deleteRow( self.dataItem );
-      } );
+      });
     }
 
     /**
      * @memberOf iscTableRowController
      * @param event
-       */
+     */
     function defaultCancelEditCallback( event ) {
       self.editModeData = {};
       self.inEditMode   = false;
@@ -136,7 +136,7 @@
     /**
      * @memberOf iscTableRowController
      * @param event
-       */
+     */
     function defaultCreateCallback( event ) {
       if ( _.isNil( self.iscTblCtrl.dataItem ) ) {
         $scope.dataItem = self.dataItem = self.iscTblCtrl.createRow();
@@ -148,7 +148,7 @@
     /**
      * @memberOf iscTableRowController
      * @param event
-       */
+     */
     function defaultEditCallback( event ) {
       if ( _.isNil( self.iscTblCtrl.dataItem ) ) {
         self.editModeData = angular.copy( self.dataItem );
@@ -160,7 +160,7 @@
     /**
      * @memberOf iscTableRowController
      * @param event
-       */
+     */
     function defaultSaveCallback( event ) {
       var apicall;
 
@@ -178,7 +178,7 @@
 
           self.editModeData = {};
           self.inEditMode   = false;
-        } );
+        });
       }
       else {
         apicall = _.get( self, 'iscTblCtrl.tableConfig.api.update', angular.noop );
@@ -187,9 +187,9 @@
 
           self.editModeData = {};
           self.inEditMode   = false;
-        } );
+        });
       }
     }
   }
 
-} )();
+})();

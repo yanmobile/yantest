@@ -63,7 +63,7 @@
             config.roles.forEach(function( role ) {
               var addTopTab = _.makeObj( role, _.makeObj( state, config ) );
               iscCustomConfigServiceProvider.addTopNavTab( addTopTab );
-            } );
+            });
           }
         }
 
@@ -72,7 +72,7 @@
           if ( landingPageRoles.length > 0 ) {
             _.forEach( landingPageRoles, function( role ) {
               iscCustomConfigServiceProvider.setLandingPageFor( role, config.state );
-            } );
+            });
           }
         }
 
@@ -80,9 +80,9 @@
         // state management
         // ----------------------------
         $stateProvider.state( state, config );
-      } );
+      });
     }
   }
 
-} )();
+})();
 

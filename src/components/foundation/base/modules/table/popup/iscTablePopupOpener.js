@@ -23,7 +23,7 @@
    * @param $templateCache
    * @param $compile
    * @returns {{restrict: string, link: link}}
-     */
+   */
   function iscTablePopupOpener( devlog, $state, $templateCache, $compile ) {//jshint ignore:line
     var channel = devlog.channel( 'iscTablePopupOpener' );
     channel.debug( 'iscTablePopupOpener LOADED' );
@@ -36,8 +36,8 @@
     // class factory
     // ----------------------------
     return {
-      restrict    : 'A',
-      link        : link
+      restrict: 'A',
+      link    : link
     };
 
     // ----------------------------
@@ -53,7 +53,7 @@
             trElem.parent().find( '[zf-modal]' ).scope().hide();
           }
         }
-      } );
+      });
     }
   }// END CLASS
-} )();
+})();

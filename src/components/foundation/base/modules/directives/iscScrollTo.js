@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   angular.module( 'isc.directives' )
@@ -35,13 +35,13 @@
       if ( name ) {
         var target = $( '[name="' + name + '"]' );
         if ( target ) {
-          element.on( 'click', function () {
+          element.on( 'click', function() {
             $uiViewScroll( target );
-          } );
+          });
         }
       }
 
     }
   }// END CLASS
 
-} )();
+})();

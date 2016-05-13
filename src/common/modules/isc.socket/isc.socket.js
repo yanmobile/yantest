@@ -23,7 +23,7 @@
     };
 
     function connect( uri ) {
-      socket = io.connect( uri, { 'forceNew': true } );
+      socket = io.connect( uri, { 'forceNew': true });
     }
 
     function on( eventName, callback ) {
@@ -32,8 +32,8 @@
         var args = arguments;
         $rootScope.$evalAsync(function() {
           callback.apply( socket, args );
-        } );
-      } );
+        });
+      });
     }
 
     function emit( eventName, data, callback ) {
@@ -44,8 +44,8 @@
           if ( callback ) {
             callback.apply( socket, args );
           }
-        } );
-      } );
+        });
+      });
     }
   }
-} )();
+})();

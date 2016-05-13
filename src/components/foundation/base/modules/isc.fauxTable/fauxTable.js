@@ -2,7 +2,7 @@
  * Created by hzou on 1/13/16.
  */
 
-(function () {
+(function() {
   'use strict';
 
   angular.module( 'isc.fauxTable' )
@@ -28,7 +28,7 @@
    *   ]
    * }
    * @returns {{restrict: string, controller: controller, controllerAs: string, bindToController: {config: string, data: string}, scope: boolean, templateUrl: directive.templateUrl}}
-     */
+   */
   function fauxTable() {//jshint ignore:line
 
     // ----------------------------
@@ -43,7 +43,7 @@
         data  : '='
       },
       scope           : true,
-      templateUrl     : function ( elem, attrs ) {
+      templateUrl     : function( elem, attrs ) {
         return attrs.templateUrl || 'isc.fauxTable/fauxTable.html';
       }
     };
@@ -59,7 +59,7 @@
       angular.extend( self, {
         sort   : sort,
         getSort: getSort
-      } );
+      });
 
       /*========================================
        =                 private               =
@@ -96,4 +96,4 @@
 
   }//END CLASS
 
-} )();
+})();

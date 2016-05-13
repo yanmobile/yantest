@@ -29,7 +29,7 @@
    * @param $templateCache
    * @param $compile
    * @returns {{scope: boolean, restrict: string, priority: number, controllerAs: string, controller: string, compile: compile}}
-     */
+   */
   function iscTableRow( devlog, $state, $templateCache, $compile ) {
     var channel = devlog.channel( 'iscTableRow' );
 
@@ -78,24 +78,24 @@
         iscRowCtrl.iscTblCtrl = scope.iscTblCtrl;
         scope.$watch( 'dataItem', function( value ) {
           iscRowCtrl.dataItem = value;
-        } );
+        });
       }
 
       /**
        * @memberOf iscTableRow
        * @param templateStr
        * @returns {*}
-         */
+       */
       function removeTemplateSpaces( templateStr ) {
         return templateStr
-            .replace( /\r?\n|\r/g, ' ' )  //replace newline with space
+          .replace( /\r?\n|\r/g, ' ' )  //replace newline with space
           //jshint ignore:start
-            .replace( /\>[ \t]+\</g, '\>\<' )// remove space between elements/tags
+          .replace( /\>[ \t]+\</g, '\>\<' )// remove space between elements/tags
           //jshint ignore:end
-            .replace( /\s{2,}/g, ' ' ); //replace 2+ spaces with 1 space
+          .replace( /\s{2,}/g, ' ' ); //replace 2+ spaces with 1 space
       }
 
     }
   }
 
-} )();
+})();

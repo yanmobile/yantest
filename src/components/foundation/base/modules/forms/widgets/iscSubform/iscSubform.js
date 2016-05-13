@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   angular.module( 'isc.forms' )
@@ -39,7 +39,7 @@
       bindToController: true,
       controller      : controller,
       link            : link,
-      templateUrl     : function ( elem, attrs ) {
+      templateUrl     : function( elem, attrs ) {
         return attrs.templateUrl || 'forms/widgets/iscSubform/iscSubform.html';
       }
     };
@@ -58,24 +58,24 @@
       self.childConfig = {
         breadcrumbs: self.breadcrumbs
       };
-      self.breadcrumbs.push( {
+      self.breadcrumbs.push({
         name: self.formTitle,
         ctrl: self
-      } );
+      });
 
       _.merge( self, {
         onClick        : onClick,
         breadcrumbClick: breadcrumbClick,
         formButtons    : getFormButtons(),
         showButton     : showButton
-      } );
+      });
 
       function getFormButtons() {
-        var buttons     = _.get( self, 'multiConfig.buttonConfig', {} );
-        var buttonArray = _.map( buttons, function ( button, name ) {
-            return _.merge( {}, button, {
+        var buttons     = _.get( self, 'multiConfig.buttonConfig', {});
+        var buttonArray = _.map( buttons, function( button, name ) {
+            return _.merge({}, button, {
               name: name
-            } );
+            });
           }
         );
         return _.sortBy( buttonArray, 'order' );
@@ -86,8 +86,10 @@
       }
 
       function onClick( button ) {
-        var click      = button.onClick || function () { },
-            afterClick = button.afterClick || function () { };
+        var click      = button.onClick || function() {
+              },
+            afterClick = button.afterClick || function() {
+              };
 
         $q.when( click( self.multiConfig ) )
           .then( afterClick );
@@ -118,7 +120,7 @@
       }
 
       // Event listeners
-      $scope.$on( FORMS_EVENTS.showSubform, function ( event, subformParams ) {
+      $scope.$on( FORMS_EVENTS.showSubform, function( event, subformParams ) {
         var childName =
               $filter( 'translate' )( subformParams.isNew ? 'Add' : 'Edit' ) + ' ' +
               $filter( 'translate' )( subformParams.itemLabel );
@@ -147,16 +149,16 @@
 
         // Prevent this event from cascading up to parents
         event.stopPropagation();
-      } );
+      });
 
-      $scope.$on( FORMS_EVENTS.hideSubform, function ( event ) {
+      $scope.$on( FORMS_EVENTS.hideSubform, function( event ) {
         self.childConfig.renderForm = false;
 
-        _.defer(function () {
+        _.defer(function() {
           delete self.childConfig.subform;
         }, 0 );
 
-        _.delay(function () {
+        _.delay(function() {
           iscScrollContainerService.setCurrentScrollPosition( currentScrollPos, 150 );
         }, 600 );
 
@@ -169,7 +171,7 @@
           breadcrumb = self.breadcrumbs.pop();
         }
         self.breadcrumbs.push( breadcrumb );
-      } );
+      });
 
     }
 
@@ -183,4 +185,4 @@
   // injection
   // ----------------------------
 
-} )();
+})();

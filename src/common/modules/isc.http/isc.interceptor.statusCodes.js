@@ -56,12 +56,12 @@
       }
 
       function getDialogPromise( code ) {
-        return iscConfirmationService.show( {
+        return iscConfirmationService.show({
           title        : 'StatusCode_' + code + '_title',
           message      : 'StatusCode_' + code + '_message',
           btnCancelText: false, //hides the cancel (reject) button
           btnOkText    : 'StatusCode_ok_btn'
-        } );
+        });
       }
 
       // $q.reject is needed in order to invoke the next responseError interceptor in the array
@@ -69,4 +69,4 @@
     }
   }// END CLASS
 
-} )();
+})();

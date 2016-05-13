@@ -51,7 +51,7 @@
           channel.debug( 'Beginning state change from \'%s\' to \'%s\'', _.wrapText( fromState.name ), _.wrapText( toState.name ) );
 
           handleStateChangeStart( event, toState, toParams, fromState, fromParams );
-        } );
+        });
     }
 
     function registerStateChangeSuccess() {
@@ -60,7 +60,7 @@
       $rootScope.$on( '$stateChangeSuccess',
         function( event, toState, toParams, fromState, fromParams ) {//jshint ignore:line
           channel.debug( 'ischNavContainer.$stateChangeSuccess', _.wrapText( toState.name ) );
-        } );
+        });
     }
 
     function registerStateChangeError() {
@@ -70,7 +70,7 @@
       $rootScope.$on( '$stateChangeError',
         function( event, toState, toParams, fromState, fromParams, error ) {//jshint ignore:line
           channel.error( 'ischNavContainer.$stateChangeError', error );
-        } );
+        });
     }
 
     function registerStateChangeRejected() {
@@ -82,7 +82,7 @@
         function( event, toState, toParams, fromState, fromParams, error ) {//jshint ignore:line
           channel.error( 'ischNavContainer.$stateChangeRejected' );
           channel.error( '.... to state', _.wrapText( toState.state, '==' ) );
-        } );
+        });
     }
 
     function handleStateChangeStart( event, toState, toParams, fromState, fromParams ) {//jshint ignore:line
@@ -100,7 +100,7 @@
         preventDefault( event, toState.name, {
           source: "iscRouterDefaultEventService.handleStateChangeStart",
           error : "User is not authorized to access " + _.wrapText( toState.name )
-        } );
+        });
 
         if ( !isAuthenticated ) {
           channel.debug( '...not authenticated' );
@@ -119,4 +119,4 @@
       event.preventDefault();
     }
   }
-} )();
+})();

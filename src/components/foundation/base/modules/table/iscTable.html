@@ -1,7 +1,8 @@
 <div class="isc-table">
   <!--title-->
   <h1 ng-if="iscTblCtrl.tableData[ iscTblCtrl.tableConfig.title ] || iscTblCtrl.tableConfig.title | translate"
-    class="{{iscTblCtrl.tableConfig.titleClass}}">{{ iscTblCtrl.tableData[ iscTblCtrl.tableConfig.title ] || iscTblCtrl.tableConfig.title | translate }}</h1>
+      class="{{iscTblCtrl.tableConfig.titleClass}}">{{ iscTblCtrl.tableData[ iscTblCtrl.tableConfig.title ] || iscTblCtrl.tableConfig.title |
+    translate }}</h1>
 
   <!--back button for wellness workflows -->
   <button ng-if="hasBackButton"
@@ -12,9 +13,11 @@
   </button>
 
   <!--subtitles-->
-  <h2 ng-if="iscTblCtrl.tableConfig.subtitle">{{ iscTblCtrl.tableData[ iscTblCtrl.tableConfig.subtitle ] || iscTblCtrl.tableConfig.subtitle | translate }}</h2>
+  <h2 ng-if="iscTblCtrl.tableConfig.subtitle">{{ iscTblCtrl.tableData[ iscTblCtrl.tableConfig.subtitle ] || iscTblCtrl.tableConfig.subtitle |
+    translate }}</h2>
 
-  <h3 ng-if="iscTblCtrl.tableConfig.subsubtitle">{{ iscTblCtrl.tableData[ iscTblCtrl.tableConfig.subsubtitle ] || iscTblCtrl.tableConfig.subsubtitle | translate }}</h3>
+  <h3 ng-if="iscTblCtrl.tableConfig.subsubtitle">{{ iscTblCtrl.tableData[ iscTblCtrl.tableConfig.subsubtitle ] || iscTblCtrl.tableConfig.subsubtitle |
+    translate }}</h3>
   <!--desktop and tablet-->
   <table class="{{iscTblCtrl.tableConfig.tableClass}}">
     <!--header-->
@@ -28,7 +31,7 @@
     </tr>
 
     <!-- Data column headers-->
-    <tr >
+    <tr>
       <th ng-repeat="column in iscTblCtrl.tableConfig.columns track by $index">
 
         <span ng-if="column.columnClick === 'none'">  {{column.title | translate}} </span>

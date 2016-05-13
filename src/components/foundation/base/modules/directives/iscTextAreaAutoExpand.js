@@ -122,12 +122,12 @@
 
     function link( scope, element, attr, ngModelCtrl ) {
 
-      var minHeight = MIN_HEIGHT;
-      var paddingLeft = element.css( 'paddingLeft' );
+      var minHeight    = MIN_HEIGHT;
+      var paddingLeft  = element.css( 'paddingLeft' );
       var paddingRight = element.css( 'paddingRight' );
-      var threshold = Math.max( parseInt( element.css( 'paddingTop' ) || 0 ), 20 );
+      var threshold    = Math.max( parseInt( element.css( 'paddingTop' ) || 0 ), 20 );
 
-      var $shadow = angular.element( '<div></div>' ).css( {
+      var $shadow = angular.element( '<div></div>' ).css({
         position  : 'absolute',
         top       : -10000,
         left      : -10000,
@@ -135,8 +135,8 @@
         fontSize  : element.css( 'fontSize' ),
         fontFamily: element.css( 'fontFamily' ),
         lineHeight: element.css( 'lineHeight' ),
-        resize    :     'none'
-      } );
+        resize    : 'none'
+      });
 
       angular.element( document.body ).append( $shadow ); // jshint ignore:line
 
@@ -155,15 +155,15 @@
           .replace( /\n/g, '<br/>' )
           .replace( /\s{2,}/g, function( space ) {
             return times( '&nbsp;', space.length - 1 ) + ' ';
-          } );
+          });
 
         $shadow.html( val );
 
         var height = Math.max( $shadow[0].offsetHeight + threshold, minHeight );
-        channel.debug( '...$shadow[0].offsetHeight',$shadow[0].offsetHeight );
-        channel.debug( '...threshold',threshold );
-        channel.debug( '...minHeight',minHeight );
-        channel.debug( '...height',height );
+        channel.debug( '...$shadow[0].offsetHeight', $shadow[0].offsetHeight );
+        channel.debug( '...threshold', threshold );
+        channel.debug( '...minHeight', minHeight );
+        channel.debug( '...height', height );
 
         element.css( 'height', height + 'px' );
       };
@@ -172,20 +172,20 @@
       update();
 
       scope.$watch( 'ngModelCtrl.$modelValue', function( oldval, newVal ) { // jshint ignore:line
-        channel.debug( '...ngModelCtrl.$viewValue',ngModelCtrl.$viewValue );
-        channel.debug( '...ngModelCtrl.$modelValue',ngModelCtrl.$modelValue );
+        channel.debug( '...ngModelCtrl.$viewValue', ngModelCtrl.$viewValue );
+        channel.debug( '...ngModelCtrl.$modelValue', ngModelCtrl.$modelValue );
         if ( !!ngModelCtrl.$modelValue ) {
           update();
         }
-      } );
+      });
 
       scope.$on( '$destroy', function() {
         channel.debug( '...$destroy' );
         $shadow.remove();
-      } );
+      });
 
     }//END LINK
 
   }//END CLASS
 
-} )();
+})();

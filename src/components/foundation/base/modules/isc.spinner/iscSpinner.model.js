@@ -7,7 +7,7 @@
 
 
  */
-(function () {
+(function() {
   'use strict';
 
   angular
@@ -19,7 +19,7 @@
    * @memberOf isc.spinner
    * @param devlog
    * @returns {{addPendingReq: addPendingReq, subtractPendingReq: subtractPendingReq, getPendingReqs: getPendingReqs}}
-     */
+   */
   function iscSpinnerModel( devlog ) {
     var channel = devlog.channel( 'iscSpinnerModel' );
 
@@ -35,7 +35,7 @@
     /**
      * @memberOf iscSpinnerModel
      * @param url
-       */
+     */
     function addPendingReq( url ) {
       channel.debug( 'adding url', url );
       pendingReqs[url] = true;
@@ -44,7 +44,7 @@
     /**
      * @memberOf iscSpinnerModel
      * @param url
-       */
+     */
     function subtractPendingReq( url ) {
       channel.debug( 'removing url', url );
       delete pendingReqs[url];
@@ -53,11 +53,11 @@
     /**
      * @memberOf iscSpinnerModel
      * @returns {Number}
-       */
+     */
     function getPendingReqs() {
       return _.keys( pendingReqs ).length;
     }
   }
 
-} )();
+})();
 

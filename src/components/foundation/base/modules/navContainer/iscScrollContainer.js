@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   /**
@@ -14,7 +14,7 @@
    * @memberOf iscNavContainer
    * @param iscScrollContainerService
    * @returns {{restrict: string, link: link}}
-     */
+   */
   function iscScrollContainer( iscScrollContainerService ) {
     var directive = {
       restrict: 'EA',
@@ -26,4 +26,4 @@
       iscScrollContainerService.registerScrollingContent( element );
     }
   }
-} )();
+})();

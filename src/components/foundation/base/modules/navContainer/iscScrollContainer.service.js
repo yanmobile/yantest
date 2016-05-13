@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   angular
@@ -10,7 +10,7 @@
    * @ngdoc factory
    * @memberOf iscNavContainer
    * @returns {{registerScrollingContent: registerScrollingContent, getCurrentScrollPosition: iscScrollContainerService.getCurrentScrollPosition, setCurrentScrollPosition: setCurrentScrollPosition}}
-     */
+   */
   function iscScrollContainerService() {
     var scrollingContent = [];
 
@@ -64,7 +64,7 @@
 
       if ( contentIndex !== undefined && !isNaN( scrollPosition ) ) {
         if ( duration ) {
-          scrollingContent[contentIndex].animate( {
+          scrollingContent[contentIndex].animate({
             scrollTop: position
           }, duration );
         }
@@ -96,4 +96,4 @@
     }
   }
 
-} )();
+})();

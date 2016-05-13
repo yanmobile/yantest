@@ -62,7 +62,7 @@
 
     // ----------------------------
     function getLoginResponse() {
-      return getValFromSessionStorage( 'loginResponse', {} );
+      return getValFromSessionStorage( 'loginResponse', {});
     }
 
     function setLoginResponse( val ) {
@@ -71,7 +71,7 @@
 
     // ----------------------------
     function getConfig() {
-      return getValFromSessionStorage( 'config', {} );
+      return getValFromSessionStorage( 'config', {});
     }
 
     function setConfig( val ) {
@@ -131,4 +131,4 @@
 
   }// END CLASS
 
-} )();
+})();

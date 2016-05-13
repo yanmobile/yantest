@@ -2,16 +2,16 @@
  * Created by Henry Zou on 3/16/2016, 3:07:35 PM.
  */
 
-(function () {
+(function() {
   'use strict';
 
   angular
     .module( 'isc.error', ['ui.router', 'isc.common'] )
 
-    .config(function ( $stateProvider, iscStateProvider, $urlRouterProvider ) {
+    .config(function( $stateProvider, iscStateProvider, $urlRouterProvider ) {
       $urlRouterProvider.otherwise( '/404' );
       iscStateProvider.state( getStates() );
-    } );
+    });
 
   function getStates() {
     return {
@@ -25,4 +25,4 @@
       }
     };
   }
-} )();
+})();

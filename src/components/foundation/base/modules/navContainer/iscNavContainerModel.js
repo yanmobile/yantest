@@ -2,7 +2,7 @@
  * Created by dgoodman on 2/3/15.
  */
 
-(function () {
+(function() {
   'use strict';
 
   // ----------------------------
@@ -20,7 +20,7 @@
    * @param iscCustomConfigService
    * @param iscSessionModel
    * @returns {{getTopNav: getTopNav, getVersionInfo: getVersionInfo, setVersionInfo: setVersionInfo, navigateToUserLandingPage: navigateToUserLandingPage}}
-     */
+   */
   function iscNavContainerModel( devlog, $state, iscCustomConfigService, iscSessionModel ) {
     var channel = devlog.channel( 'iscNavContainerModel' );
     channel.debug( 'iscNavContainerModel LOADED' );
@@ -68,12 +68,12 @@
     /**
      * @memberOf iscNavContainerModel
      * @returns {*}
-       */
+     */
     function getTopNav() {
       var currentUserRole = iscSessionModel.getCurrentUserRole();
       if ( !topNavArr[currentUserRole] ) {
         var topTabs  = iscCustomConfigService.getConfigSection( 'topTabs' );
-        var userTabs = _.extend( {}, topTabs['*'] ); // include anonymous tabs
+        var userTabs = _.extend({}, topTabs['*'] ); // include anonymous tabs
         if ( currentUserRole !== '*' ) {
           _.extend( userTabs, topTabs[currentUserRole] );
         }
@@ -87,7 +87,7 @@
     /**
      * @memberOf iscNavContainerModel
      * @returns {*}
-       */
+     */
     function getVersionInfo() {
       return versionInfo;
     }
@@ -95,11 +95,11 @@
     /**
      * @memberOf iscNavContainerModel
      * @param val
-       */
+     */
     function setVersionInfo( val ) {
       versionInfo = val;
     }
   }//END CLASS
 
-} )();
+})();
 

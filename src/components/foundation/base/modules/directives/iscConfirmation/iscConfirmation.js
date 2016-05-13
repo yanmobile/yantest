@@ -2,7 +2,7 @@
  * Created by hzou on 9/16/15.
  */
 
-(function () {
+(function() {
   'use strict';
   // ----------------------------
   // injection
@@ -17,7 +17,7 @@
    * @name iscConfirmation
    * @restrict 'E'
    * @returns {{restrict: string, link: link, controller: controller, controllerAs: string, templateUrl: directive.templateUrl}}
-     */
+   */
   function iscConfirmation() {//jshint ignore:line
 
     // ----------------------------
@@ -32,7 +32,7 @@
       link        : link,
       controller  : controller,
       controllerAs: 'iscConfirmCtrl',
-      templateUrl : function ( elem, attrs ) {
+      templateUrl : function( elem, attrs ) {
         return attrs.templateUrl || 'directives/iscConfirmation/iscConfirmation.html';
       }
     };
@@ -43,7 +43,7 @@
     // link
     function link( $scope, elem, attrs, iscConfirmCtrl ) {
       var modalScope = elem.find( '[zf-modal]' ).scope();
-      $scope.$watch( 'iscConfirmCtrl.service.isOpen', function ( newVal, oldVal ) {
+      $scope.$watch( 'iscConfirmCtrl.service.isOpen', function( newVal, oldVal ) {
         if ( newVal !== oldVal ) {
           if ( newVal === true ) {
             modalScope.show();
@@ -51,7 +51,7 @@
             modalScope.hide();
           }
         }
-      } );
+      });
     }
 
     // ----------------------------
@@ -64,4 +64,4 @@
 
   }//END CLASS
 
-} )();
+})();

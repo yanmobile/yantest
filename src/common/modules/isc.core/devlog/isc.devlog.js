@@ -38,7 +38,7 @@
   function devlogService( $log ) {
     $logMethods = _.keysIn( $log );
     var Log     = getLogClass();
-    return _.extend( {
+    return _.extend({
       channel: channel,
       logFn  : logFn
     }, $log );
@@ -143,7 +143,7 @@
 
         _.forEach( $logMethods, function( method ) {
           logger[method] = logFunc ? logFunc( method ) : _.noop;
-        } );
+        });
 
         logger.error = logMethod( 'error' );
         return logger;
@@ -178,4 +178,4 @@
 
   }
 
-} )();
+})();

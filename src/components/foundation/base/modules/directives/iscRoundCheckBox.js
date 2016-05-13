@@ -39,7 +39,7 @@
         onToggle: '&'
       },
       link       : link,
-      templateUrl: function ( elem, attrs ) {
+      templateUrl: function( elem, attrs ) {
         return attrs.templateUrl || 'svg/isc-rounded-checkbox.html';
       }
     };
@@ -62,7 +62,7 @@
 
       scope.toggleCheckBox = function() {
         scope.selected = !scope.selected;
-        scope.onToggle( { selected: scope.selected } );
+        scope.onToggle({ selected: scope.selected });
 
         if ( ngModelCtrl ) {
           channel.debug( 'iscRoundCheckBox.$setViewValue' );
@@ -73,4 +73,4 @@
 
   }//END CLASS
 
-} )();
+})();

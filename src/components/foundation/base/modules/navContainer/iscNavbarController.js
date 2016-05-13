@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   // ------------------------------------------
@@ -19,8 +19,8 @@
    * @param iscCustomConfigHelper
    * @param iscUiHelper
    * @param iscSessionModel
-     * @param AUTH_EVENTS
-     */
+   * @param AUTH_EVENTS
+   */
   function iscNavbarController(
     devlog, $scope, $state, $rootScope, iscNavContainerModel,
     iscCustomConfigService, iscCustomConfigHelper, iscUiHelper, iscSessionModel,
@@ -45,7 +45,7 @@
 
       setPageState         : setPageState,
       setTabActiveState    : setTabActiveState
-    } );
+    });
 
     setShowRoles();
 
@@ -70,7 +70,7 @@
     /**
      * @memberOf iscNavbarController
      * @param name
-       */
+     */
     function setPageState( name ) {
       self.setTabActiveState( name, self.getTabs() );
       self.sectionTranslationKey = iscCustomConfigHelper.getSectionTranslationKeyFromName( name );
@@ -79,7 +79,7 @@
     /**
      * @memberOf iscNavbarController
      * @param state
-       */
+     */
     function setTabActiveState( state ) {
       channel.debug( 'iscNavbarController.setTabActiveState' );
       self.iscUiHelper.setTabActiveState( state, self.getTabs() );
@@ -90,28 +90,28 @@
     // -----------------------------
 
     //
-    $rootScope.$on( AUTH_EVENTS.sessionChange, function () {
+    $rootScope.$on( AUTH_EVENTS.sessionChange, function() {
       self.isAuthenticated = iscSessionModel.isAuthenticated();
-    } );
+    });
 
-    $rootScope.$on( AUTH_EVENTS.sessionResumedSuccess, function () {
+    $rootScope.$on( AUTH_EVENTS.sessionResumedSuccess, function() {
       self.isAuthenticated = iscSessionModel.isAuthenticated();
-    } );
+    });
 
     //
-    $rootScope.$on( '$stateChangeSuccess', function ( event, toState, toParams, fromState, fromParams ) {
+    $rootScope.$on( '$stateChangeSuccess', function( event, toState, toParams, fromState, fromParams ) {
       channel.debug( 'iscNavbarController.$stateChangeSuccess', arguments );
       self.setPageState( toState.name );
       setShowRoles();
-    } );
+    });
 
     // when you refresh the page, this will reset the active state of the selected tab
-    $scope.$evalAsync(function () {
+    $scope.$evalAsync(function() {
       channel.debug( 'iscNavbarController setting page name to', $state.$current.name );
       self.setPageState( $state.$current.name );
-    } );
+    });
 
   } // END CLASS
 
-} )();
+})();
 

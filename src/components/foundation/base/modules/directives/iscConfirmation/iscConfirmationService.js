@@ -2,7 +2,7 @@
  * Created by hzou on 9/16/15.
  */
 
-(function () {
+(function() {
   'use strict';
   // ----------------------------
   // injection
@@ -18,7 +18,7 @@
    * @memberOf directives
    * @name iscConfirmationService
    * @returns {{setOptions: setOptions, $get: iscConfirmationServiceFactory}}
-     */
+   */
   function iscConfirmationService() {//jshint ignore:line
 
     var defaultOptions = getDefaultOptions();
@@ -36,7 +36,7 @@
      * @param options
      * @returns {Object}
      *
-       */
+     */
     function setOptions( options ) {
       return _.extend( defaultOptions, options );
     }
@@ -45,7 +45,7 @@
      * @memberOf iscConfirmationService
      * @param $q
      * @returns {{isOpen: boolean, show: show, hide: hide, resolve: resolve, reject: reject}}
-       */
+     */
     function iscConfirmationServiceFactory( $q ) {
 
       var deferred;
@@ -64,7 +64,7 @@
        * @memberOf iscConfirmationService
        * @param message
        * @returns {*}
-         */
+       */
       function show( message ) {
         deferred = $q.defer();
 
@@ -91,7 +91,7 @@
       /**
        * @memberOf iscConfirmationService
        * @param data
-         */
+       */
       function resolve( data ) {
         model.isOpen = false;
         deferred.resolve( data || true );
@@ -100,7 +100,7 @@
       /**
        * @memberOf iscConfirmationService
        * @param data
-         */
+       */
       function reject( data ) {
         model.isOpen = false;
         deferred.reject( data || true );
@@ -110,7 +110,7 @@
     /**
      * @memberOf iscConfirmationService
      * @returns {{title: string, message: string, btnOkText: string, btnCancelText: string}}
-       */
+     */
     function getDefaultOptions() {
       return {
         title        : 'ISC_CONFIRM_DEFAULT_TITLE',
@@ -121,4 +121,4 @@
     }
   }//END CLASS
 
-} )();
+})();

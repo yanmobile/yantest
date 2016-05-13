@@ -106,7 +106,7 @@
  </isc-transclude>
  */
 
-(function () {
+(function() {
   'use strict';
   // ----------------------------
   // injection
@@ -226,7 +226,7 @@
    *
    * @param $parse
    * @returns {{restrict: string, transclude: boolean, scope: boolean, compile: compile, controller: directive.controller, controllerAs: string, templateUrl: directive.templateUrl}}
-     */
+   */
   function iscTransclude( $parse ) {
 
     // ----------------------------
@@ -241,10 +241,10 @@
       transclude  : true,
       scope       : true,
       compile     : compile,
-      controller  : function () {
+      controller  : function() {
       },
       controllerAs: 'iscTranscludeCtrl',
-      templateUrl : function ( element, attrs ) {
+      templateUrl : function( element, attrs ) {
         return attrs.templateUrl || 'iscTransclude/iscGridFormItem.html';
       }
     };
@@ -268,9 +268,9 @@
       function updateConfig( config, oldConfig ) {
 
         if ( _.isString( config ) ) {
-          iscTranscludeCtrl.config = angular.copy( scope.$eval( config ) || {} );
+          iscTranscludeCtrl.config = angular.copy( scope.$eval( config ) || {});
         } else {
-          iscTranscludeCtrl.config = angular.copy( config || {} );
+          iscTranscludeCtrl.config = angular.copy( config || {});
         }
 
         config = iscTranscludeCtrl.config;
@@ -284,7 +284,7 @@
         var propKey,
             firstChar,
             retOverrides = {};
-        _.forOwn( attrs, function ( propValue, propName ) {
+        _.forOwn( attrs, function( propValue, propName ) {
           if ( _.startsWith( propName, configItemKey ) ) {
 
             propKey = _.camelCase( propName.substr( configItemKey.length ) );
@@ -307,7 +307,7 @@
             // treat else the same as '@', just without the need to remove '@' char
             retOverrides[propKey] = propValue;
           }
-        } );
+        });
 
         return retOverrides;
       }
@@ -316,4 +316,4 @@
 
   }//END CLASS
 
-} )();
+})();

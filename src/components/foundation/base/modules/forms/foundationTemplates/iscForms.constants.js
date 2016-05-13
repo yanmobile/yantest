@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   angular
@@ -8,6 +8,6 @@
       setFormModel  : 'iscFormsSetFormModel',
       showSubform   : 'iscFormsShowSubform',
       hideSubform   : 'iscFormsHideSubform'
-    } );
+    });
 
-} )();
+})();

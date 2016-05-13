@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   angular.module( 'isc.forms' )
@@ -29,7 +29,7 @@
       },
       bindToController: true,
       controller      : controller,
-      templateUrl     : function ( elem, attrs ) {
+      templateUrl     : function( elem, attrs ) {
         return attrs.templateUrl || 'forms/widgets/iscFormInternal/iscFormInternal.html';
       }
     };
@@ -42,7 +42,7 @@
 
       _.merge( self, {
         forms       : [],
-        debugDisplay: _.get( iscCustomConfigService.getConfig(), 'debugDisplay.forms', {} ),
+        debugDisplay: _.get( iscCustomConfigService.getConfig(), 'debugDisplay.forms', {}),
         options     : {
           formState: {
             _mode       : self.mode,
@@ -61,7 +61,7 @@
         buttonConfig: {}
       }, self );
 
-      self.additionalModels = _.get( self.formConfig, 'additionalModels', {} );
+      self.additionalModels = _.get( self.formConfig, 'additionalModels', {});
 
       // Object to hold data and structure for temporary form validation
       self.validation = iscFormsValidationService.getValidationObject();
@@ -91,12 +91,15 @@
        * @memberOf iscFormInternal
        */
       function initAutosaveConfig() {
-        var saveConfig  = _.get( self.formDefinition.form, 'autosave', {} ),
-            formDataApi = _.get( self.formConfig, 'formDataApi', {} ),
-            saveApi     = formDataApi.save || function () { },
-            wrapApi     = formDataApi.wrap || function ( data ) { return data; };
+        var saveConfig  = _.get( self.formDefinition.form, 'autosave', {}),
+            formDataApi = _.get( self.formConfig, 'formDataApi', {}),
+            saveApi     = formDataApi.save || function() {
+              },
+            wrapApi     = formDataApi.wrap || function( data ) {
+                return data;
+              };
 
-        var callSaveApi = _.throttle( wrapAndSaveData, 500, { trailing: true } );
+        var callSaveApi = _.throttle( wrapAndSaveData, 500, { trailing: true });
 
         // Set save trigger
         switch ( saveConfig.trigger ) {
@@ -128,7 +131,7 @@
         function watchModel( action ) {
           $scope.$watch(
             "formInternalCtrl.model",
-            function ( newVal, oldVal ) {
+            function( newVal, oldVal ) {
               if ( !angular.equals( newVal, oldVal ) ) { // avoids trigger during initial watch setup
                 action();
               }
@@ -140,7 +143,7 @@
         function watchPage() {
           $scope.$watch(
             "formInternalCtrl.currentPage",
-            function () {
+            function() {
               if ( self.options.formState._model.isDirty ) {
                 callSaveApi();
                 cleanify();
@@ -163,31 +166,31 @@
         // can use ng-messages, but each notification has its own ng-messages collection.
         var alerts = {};
 
-        _.forEach( mainFormErrors, function ( error ) {
-          _.forEach( error, function ( errorType ) {
-            _.forEach( errorType, function ( errorInstance ) {
+        _.forEach( mainFormErrors, function( error ) {
+          _.forEach( error, function( errorType ) {
+            _.forEach( errorType, function( errorInstance ) {
               var fieldScope        = iscNotificationService.getFieldScope( errorInstance.$name );
               alerts[fieldScope.id] = {
                 $error  : error,
                 options : fieldScope.options,
                 scrollTo: fieldScope.id
               };
-            } );
-          } );
-        } );
+            });
+          });
+        });
 
-        _.forEach( alerts, function ( alert ) {
+        _.forEach( alerts, function( alert ) {
           iscNotificationService.showAlert( alert );
-        } );
+        });
 
         // Cascaded subform alerts
-        _.forEach( subformErrors, function ( error, id ) {
+        _.forEach( subformErrors, function( error, id ) {
           var alert = {
             scrollTo: id,
             content : makeError( error )
           };
           iscNotificationService.showAlert( alert );
-        } );
+        });
 
         /**
          * @memberOf iscFormInternal
@@ -218,19 +221,19 @@
       function watchPages() {
         // Throttle for initial load or large model changes
         var throttledFilter = _.throttle( filterPages, 100 );
-        _.forEach( self.formDefinition.form.pages, function ( page ) {
+        _.forEach( self.formDefinition.form.pages, function( page ) {
           var hideExp = page.hideExpression;
           if ( hideExp ) {
             $scope.$watch(
-              function () {
+              function() {
                 return $scope.$eval( hideExp, self );
               },
-              function ( hidePage ) {
+              function( hidePage ) {
                 page._isHidden = hidePage;
                 throttledFilter();
-              } );
+              });
           }
-        } );
+        });
 
         self.pages       = self.formDefinition.form.pages;
         self.currentPage = _.head( self.pages );
@@ -260,9 +263,9 @@
        * @memberOf iscFormInternal
        */
       function filterPages() {
-        self.multiConfig.selectablePages = _.filter( self.formDefinition.form.pages, function ( page ) {
+        self.multiConfig.selectablePages = _.filter( self.formDefinition.form.pages, function( page ) {
           return !page._isHidden;
-        } );
+        });
       }
 
       /**
@@ -282,7 +285,7 @@
         var containingFormIsValid = true,
             $error                = [],
             index                 = 0;
-        _.forEach( self.pages, function ( page ) {
+        _.forEach( self.pages, function( page ) {
           // Force each form (page) to validate if it is not hidden
           // Forms are generated by formly by index
           var form = self.forms[index++];
@@ -291,18 +294,18 @@
             containingFormIsValid = formValidation.isValid && containingFormIsValid;
             $error                = $error.concat( formValidation.$error );
           }
-        } );
+        });
 
         // Additional validation via api attribute
         if ( self.validateFormApi ) {
-          self.validateFormApi().then(function ( result ) {
+          self.validateFormApi().then(function( result ) {
             if ( containingFormIsValid && result.isValid ) {
               submitForm();
             }
             else {
               showFailedValidation( $error, result.errors );
             }
-          } );
+          });
         }
         else {
           if ( containingFormIsValid ) {
@@ -315,14 +318,16 @@
        * @memberOf iscFormInternal
        */
       function submitForm() {
-        var submitConfig = _.get( self.buttonConfig, 'submit', {} ),
-            onSubmit     = submitConfig.onClick || function () { },
-            afterSubmit  = submitConfig.afterClick || function () { };
+        var submitConfig = _.get( self.buttonConfig, 'submit', {}),
+            onSubmit     = submitConfig.onClick || function() {
+              },
+            afterSubmit  = submitConfig.afterClick || function() {
+              };
 
         $q.when( onSubmit() )
           .then( afterSubmit );
       }
     }
   }
-} )
+})
 ();

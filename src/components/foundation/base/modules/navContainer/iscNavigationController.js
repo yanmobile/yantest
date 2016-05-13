@@ -1,7 +1,7 @@
 /**
  * Created by douglasgoodman on 11/21/14.
  */
-(function () {
+(function() {
   'use strict';
   // --------------
   // inject
@@ -23,9 +23,9 @@
    * @param iscNavContainerModel
    * @param iscCustomConfigHelper
    * @param iscUiHelper
-     * @param AUTH_EVENTS
-     * @param NAV_EVENTS
-     */
+   * @param AUTH_EVENTS
+   * @param NAV_EVENTS
+   */
   function iscNavigationController(
     devlog, $rootScope, $timeout, $scope, $translate,
     iscSessionModel, iscSessionStorageHelper, iscNavContainerModel,
@@ -57,7 +57,7 @@
     /**
      * @memberOf iscNavigationController
      */
-    self.hideAllPopups = function () {
+    self.hideAllPopups = function() {
       channel.debug( 'iscNavigationController.hideAllPopups' );
       self.showModalBkgrnd  = false;
       self.showAlert        = false;
@@ -72,7 +72,7 @@
     /**
      * @memberOf iscNavigationController
      */
-    self.showAlertBox = function () {
+    self.showAlertBox = function() {
       channel.debug( 'iscNavigationController.showAlertBox' );
       self.hideAllPopups(); // close any that are already up
       self.showAlert       = true;
@@ -83,7 +83,7 @@
     /**
      * @memberOf iscNavigationController
      */
-    self.hideAlertBox = function () {
+    self.hideAlertBox = function() {
       self.showAlert       = false;
       self.showModalBkgrnd = false;
       self.alertShowing    = false;
@@ -92,8 +92,8 @@
     /**
      * @memberOf iscNavigationController
      * @param val
-       */
-    self.onSelectLanguage = function ( val ) {
+     */
+    self.onSelectLanguage = function( val ) {
       iscSessionStorageHelper.setSessionStorageValue( 'currentLanguage', val );
       $translate.use( val.fileName );
     };
@@ -109,7 +109,7 @@
     /**
      * @memberOf iscNavigationController
      */
-    self.onContinueSession = function () {
+    self.onContinueSession = function() {
       channel.debug( 'iscNavigationController.onContinueSession' );
       $rootScope.$emit( AUTH_EVENTS.sessionTimeoutReset );
     };
@@ -117,7 +117,7 @@
     /**
      * @memberOf iscNavigationController
      */
-    self.onCancelSession = function () {
+    self.onCancelSession = function() {
       channel.debug( 'iscNavigationController.onCancelSession' );
       $rootScope.$emit( AUTH_EVENTS.sessionTimeoutConfirm );
     };
@@ -128,7 +128,7 @@
     /**
      * @memberOf iscNavigationController
      */
-    self.onLoad = function () {
+    self.onLoad = function() {
       channel.debug( 'iscNavigationController.onLoad' );
       channel.debug( '...alertShowing ', self.alertShowing );
 
@@ -136,12 +136,12 @@
       // and set a localStorage var to show a warning:
       // This looks for the localStorage var and triggers the warning popup
       // Wrapped in a timeout to ensure the dom is loaded
-      $timeout(function () {
+      $timeout(function() {
         var showTimedOutAlert = !!iscSessionStorageHelper.getShowTimedOutAlert();
-        channel.debug( '...showTimedOutAlert',showTimedOutAlert );
+        channel.debug( '...showTimedOutAlert', showTimedOutAlert );
 
         if ( showTimedOutAlert ) {
-          channel.debug( '...showTimedOutAlert 2',showTimedOutAlert );
+          channel.debug( '...showTimedOutAlert 2', showTimedOutAlert );
           iscSessionStorageHelper.setShowTimedOutAlert( false );
         }
       }, 250 );
@@ -155,10 +155,10 @@
     self.versionInfo = {};
 
     var removeWatch = $scope.$watch(
-      function () {
+      function() {
         return iscNavContainerModel.getVersionInfo();
       },
-      function ( newVal ) {
+      function( newVal ) {
         if ( newVal ) {
           angular.merge( self.versionInfo, newVal );
           removeWatch();
@@ -169,20 +169,20 @@
     // --------------
     // listeners
     // --------------
-    $scope.$on( AUTH_EVENTS.responseError, function ( event, response ) {
+    $scope.$on( AUTH_EVENTS.responseError, function( event, response ) {
       channel.debug( 'iscNavigationController.responseError' );
       channel.debug( '...response' + JSON.stringify( response ) );
-    } );
+    });
 
-    $scope.$on( AUTH_EVENTS.notAuthenticated, function ( event, response ) {
+    $scope.$on( AUTH_EVENTS.notAuthenticated, function( event, response ) {
       //      channel.debug( 'iscNavigationController.loginError' );
-    } );
+    });
 
-    $scope.$on( AUTH_EVENTS.notAuthorized, function ( event, response ) {
+    $scope.$on( AUTH_EVENTS.notAuthorized, function( event, response ) {
       //      channel.debug( 'iscNavigationController.loginError' );
-    } );
+    });
 
-    $scope.$on( AUTH_EVENTS.sessionTimeoutWarning, function ( event, response ) {
+    $scope.$on( AUTH_EVENTS.sessionTimeoutWarning, function( event, response ) {
       channel.debug( 'iscNavigationController.sessionTimeoutWarning' );
       channel.debug( '...self.alertShowing: ' + self.alertShowing );
 
@@ -192,29 +192,29 @@
       }
       channel.debug( '...yup' );
       self.alertShowing = true;
-    } );
+    });
 
-    $scope.$on( AUTH_EVENTS.sessionTimeout, function () {
+    $scope.$on( AUTH_EVENTS.sessionTimeout, function() {
       channel.debug( 'ischNavContainer.sessionTimeout' );
       self.hideAllPopups();
       self.alertShowing = false;
-    } );
+    });
 
-    $scope.$on( NAV_EVENTS.showSecondaryNav, function ( event, response ) {//jshint ignore:line
+    $scope.$on( NAV_EVENTS.showSecondaryNav, function( event, response ) {//jshint ignore:line
       channel.debug( 'iscNavigationController.iscShowModal' );
       self.showSecondaryNavbar();
-    } );
+    });
 
-    $scope.$on( NAV_EVENTS.hideSecondaryNav, function ( event, response ) {//jshint ignore:line
+    $scope.$on( NAV_EVENTS.hideSecondaryNav, function( event, response ) {//jshint ignore:line
       channel.debug( 'iscNavigationController.iscHideModal' );
       self.hideSecondaryNavbar();
-    } );
+    });
 
-    $rootScope.$on( NAV_EVENTS.hideSideNavBar, function () {
+    $rootScope.$on( NAV_EVENTS.hideSideNavBar, function() {
       self.hideSideNavbar();
-    } );
+    });
 
   }// END CLASS
 
-} )();
+})();
 
