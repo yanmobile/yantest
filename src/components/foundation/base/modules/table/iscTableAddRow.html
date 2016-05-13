@@ -5,7 +5,7 @@
     ng-class="{'isc-table-td-commands' : column.type === 'commands'}"></td>
 
 <!-- add button -->
-<td ng-if="!iscRowCtrl.inEditMode"  colspan="{{iscTblCtrl.tableConfig.columns.length}}">
+<td ng-if="!iscRowCtrl.inEditMode" colspan="{{iscTblCtrl.tableConfig.columns.length}}">
   <div class="add-button-wrapper">
     <button class="isc-btn-link" ng-click="iscRowCtrl.onCommand('create', $event, column.commands.create.callback)">
       <span ng-include="'svg/isc-plus-box.html'"></span>

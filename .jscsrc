@@ -84,6 +84,7 @@
   "disallowSpacesInsideParentheses"        : false,
   "requireAlignedObjectValues"             : "all",
   "disallowSpacesInCallExpression"         : true,
+  //  "requireSpacesInsideParentheses"         : "all", //bug in Webstorm preventing this from working for IIFEs
   "requireObjectKeysOnNewLine"             : {
     "allExcept" : [
       "sameLine"

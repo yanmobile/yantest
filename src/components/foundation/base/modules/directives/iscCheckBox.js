@@ -2,7 +2,7 @@
  * Created by douglas goodman on 2/26/15.
  */
 
- // ******* NOTE: The ng-model you put on this element has to reference a property of a property on scope, not a property on scope **********
+// ******* NOTE: The ng-model you put on this element has to reference a property of a property on scope, not a property on scope **********
 
 (function() {
   'use strict';
@@ -31,8 +31,8 @@
    */
   /* @ngInject */
   function iscCheckBox( devlog ) {//jshint ignore:line
-    var channel = devlog.channel('iscCheckBox');
-    channel.debug( 'iscCheckBox LOADED');
+    var channel = devlog.channel( 'iscCheckBox' );
+    channel.debug( 'iscCheckBox LOADED' );
 
     // ----------------------------
     // vars
@@ -48,7 +48,7 @@
         onToggle: '&'
       },
       link       : link,
-      templateUrl: function (elem, attrs) {
+      templateUrl: function( elem, attrs ) {
         return attrs.templateUrl || 'svg/isc-checkbox.html';
       }
     };
@@ -66,7 +66,7 @@
      * @param ngModelCtrl
      * @description
      * This is the link function for the directive, it accepts a ngModel controller
-       */
+     */
     function link( scope, elem, attr, ngModelCtrl ) {
 
       scope.selected = false;
@@ -82,7 +82,7 @@
         scope.onToggle( { selected: scope.selected } );
 
         if ( ngModelCtrl ) {
-          channel.debug( 'iscCheckBox.$setViewValue');
+          channel.debug( 'iscCheckBox.$setViewValue' );
           ngModelCtrl.$setViewValue( !ngModelCtrl.$viewValue );
         }
       };

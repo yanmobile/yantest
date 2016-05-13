@@ -23,8 +23,8 @@
    */
   /* @ngInject */
   function iscDynamicHtml( devlog, $compile, $templateCache ) {//jshint ignore:line
-    var channel = devlog.channel('iscDynamicHtml');
-    channel.debug( 'iscDynamicHtml LOADED');
+    var channel = devlog.channel( 'iscDynamicHtml' );
+    channel.debug( 'iscDynamicHtml LOADED' );
 
     // ----------------------------
     // vars
@@ -50,7 +50,7 @@
         channel.debug( 'iscDynamicHtml', html );
         elem.html( html );
         $compile( elem.contents() )( scope );
-      });
+      } );
     }
 
   }//END CLASS

@@ -2,10 +2,10 @@
  * Created by hzou on 12/8/15.
  */
 
-(function () {
+(function() {
   'use strict';
 
   angular
-    .module('isc.http', ['isc.configuration', 'isc.authentication', 'isc.core']);
+    .module( 'isc.http', ['isc.configuration', 'isc.authentication', 'isc.core'] );
 
 })();

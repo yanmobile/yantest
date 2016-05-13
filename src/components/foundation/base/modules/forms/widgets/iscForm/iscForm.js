@@ -1,8 +1,8 @@
-(function () {
+(function() {
   'use strict';
 
-  angular.module('isc.forms')
-    .directive('iscForm', iscForm);
+  angular.module( 'isc.forms' )
+    .directive( 'iscForm', iscForm );
 
   /**
    * @ngdoc directive
@@ -139,9 +139,9 @@
 
    */
   /* @ngInject */
-  function iscForm($stateParams, $q, $window,
-                   iscSessionModel, iscNavContainerModel,
-                   iscFormsModel, iscFormsValidationService, iscFormDataApi) {//jshint ignore:line
+  function iscForm( $stateParams, $q, $window,
+    iscSessionModel, iscNavContainerModel,
+    iscFormsModel, iscFormsValidationService, iscFormDataApi ) {//jshint ignore:line
     var directive = {
       restrict        : 'E',
       replace         : true,
@@ -157,7 +157,7 @@
       },
       bindToController: true,
       controller      : controller,
-      templateUrl     : function (elem, attrs) {
+      templateUrl     : function( elem, attrs ) {
         return attrs.templateUrl || 'forms/widgets/iscForm/iscForm.html';
       }
     };
@@ -172,17 +172,17 @@
 
       var defaultFormConfig   = getFormDefaults();
       self.formConfig         = self.formConfig || {};
-      self.internalFormConfig = _.defaultsDeep(self.formConfig, defaultFormConfig);
+      self.internalFormConfig = _.defaultsDeep( self.formConfig, defaultFormConfig );
 
       var defaultButtonConfig   = getButtonDefaults();
       self.buttonConfig         = self.buttonConfig || {};
-      self.internalButtonConfig = _.defaultsDeep(self.buttonConfig, defaultButtonConfig);
+      self.internalButtonConfig = _.defaultsDeep( self.buttonConfig, defaultButtonConfig );
 
       // Ensure id is either numeric or undefined (if passed directly from a route param, it could be a string)
-      var parsedId    = parseInt(self.id);
-      self.formDataId = _.isNaN(parsedId) ? undefined : parsedId;
+      var parsedId    = parseInt( self.id );
+      self.formDataId = _.isNaN( parsedId ) ? undefined : parsedId;
 
-      _.merge(self, {
+      _.merge( self, {
         localFormKey          : self.formKey,
         formDefinition        : {},
         internalFormDefinition: {},
@@ -194,22 +194,25 @@
             _id  : self.formDataId
           }
         }
-      });
+      } );
 
       // Empty stubs for annotations, to remove dependency
       /**
        * @memberOf iscForm
        * @returns {*}
        */
-      function emptyAnnotationData() { return $q.when([]); }
+      function emptyAnnotationData() {
+        return $q.when( [] );
+      }
 
       /**
        * @memberOf iscForm
        */
-      function emptyFunction() { }
+      function emptyFunction() {
+      }
 
-      self.validateFormApi = function () {
-        return iscFormsValidationService.validateCollections(self.model, self.validationDefinition);
+      self.validateFormApi = function() {
+        return iscFormsValidationService.validateCollections( self.model, self.validationDefinition );
       };
 
       init();
@@ -244,7 +247,7 @@
           additionalModels: {}
         };
 
-        function wrapDefault(formData, formDefinition) {
+        function wrapDefault( formData, formDefinition ) {
           // Wrap data with additional information and metadata
           return {
             formDefinition  : formDefinition,
@@ -261,42 +264,42 @@
           };
         }
 
-        function unwrapDefault(responseData) {
-          return _.get(responseData, 'data', {});
+        function unwrapDefault( responseData ) {
+          return _.get( responseData, 'data', {} );
         }
 
-        function loadDefault(id) {
-          if (id !== undefined) {
-            return iscFormDataApi.get(id).then(function (formData) {
+        function loadDefault( id ) {
+          if ( id !== undefined ) {
+            return iscFormDataApi.get( id ).then( function( formData ) {
               originalFormKey = formData.formKey;
 
               // Option to force using the formKey saved in the form previously
-              if (!self.localFormKey && self.formConfig.useOriginalFormKey) {
+              if ( !self.localFormKey && self.formConfig.useOriginalFormKey ) {
                 self.localFormKey = originalFormKey;
               }
               return formData;
-            });
+            } );
           }
           else {
-            return $q.when({});
+            return $q.when( {} );
           }
         }
 
-        function saveDefault(formData, id) {
+        function saveDefault( formData, id ) {
           var annotationsApi = self.formConfig.annotationsApi;
 
-          if (id !== undefined) {
-            return iscFormDataApi.put(id, formData).then(function (form) {
-              annotationsApi.processAnnotationQueue(form.id);
+          if ( id !== undefined ) {
+            return iscFormDataApi.put( id, formData ).then( function( form ) {
+              annotationsApi.processAnnotationQueue( form.id );
               return form;
-            });
+            } );
           }
           else {
-            return iscFormDataApi.post(formData).then(function (form) {
+            return iscFormDataApi.post( formData ).then( function( form ) {
               self.formDataId = self.options.formState._id = form.id;
-              annotationsApi.processAnnotationQueue(form.id);
+              annotationsApi.processAnnotationQueue( form.id );
               return form;
-            });
+            } );
           }
         }
       }
@@ -328,8 +331,8 @@
           var formDataApi = self.formConfig.formDataApi;
 
           // Default api for submitting a form is to submit to iscFormDataApi
-          var wrappedData = formDataApi.wrap(self.model, self.formDefinition.form);
-          return formDataApi.save(wrappedData, self.formDataId);
+          var wrappedData = formDataApi.wrap( self.model, self.formDefinition.form );
+          return formDataApi.save( wrappedData, self.formDataId );
         }
 
         /**
@@ -354,11 +357,11 @@
       function init() {
         // Resolve default formKey if not provided,
         // and if not using formKey previously persisted with form
-        if (!self.localFormKey && !(self.formDataId && self.formConfig.useOriginalFormKey)) {
-          iscFormsModel.getActiveForm(self.formType).then(function (form) {
+        if ( !self.localFormKey && !( self.formDataId && self.formConfig.useOriginalFormKey ) ) {
+          iscFormsModel.getActiveForm( self.formType ).then( function( form ) {
             self.localFormKey = form.formKey;
             getFormData();
-          });
+          } );
         }
         else {
           getFormData();
@@ -374,14 +377,14 @@
 
         config.annotationsApi.initAnnotationQueue();
         getAnnotationData()
-          .then(function () {
-            return formDataApi.load(self.formDataId)
-              .then(function (formData) {
-                self.model = formDataApi.unwrap(formData) || {};
+          .then( function() {
+            return formDataApi.load( self.formDataId )
+              .then( function( formData ) {
+                self.model = formDataApi.unwrap( formData ) || {};
                 return formData;
-              });
-          })
-          .then(getFormDefinition);
+              } );
+          } )
+          .then( getFormDefinition );
       }
 
       /**
@@ -389,19 +392,19 @@
        * @returns {*}
        */
       function getAnnotationData() {
-        var getApi = _.get(self.formConfig, 'annotationsApi.getFormAnnotations');
+        var getApi = _.get( self.formConfig, 'annotationsApi.getFormAnnotations' );
 
-        if (getApi && _.isFunction(getApi)) {
-          return getApi(self.formDataId).then(function (annotations) {
+        if ( getApi && _.isFunction( getApi ) ) {
+          return getApi( self.formDataId ).then( function( annotations ) {
             self.options.formState._annotations = {
               index: self.formDataId,
               data : annotations
             };
             return annotations;
-          });
+          } );
         }
         else {
-          $q.when([]);
+          $q.when( [] );
         }
       }
 
@@ -409,15 +412,15 @@
        * @memberOf iscForm
        */
       function getFormDefinition() {
-        iscFormsModel.getFormDefinition(self.localFormKey, self.mode)
-          .then(function (formDefinition) {
+        iscFormsModel.getFormDefinition( self.localFormKey, self.mode )
+          .then( function( formDefinition ) {
             self.formDefinition                = formDefinition;
             self.options.formState._validateOn = formDefinition.validateOn;
 
             reconcileModelWithFormDefinition();
 
-            populateAdditionalModels(self.formDefinition.form.dataModelInit);
-          });
+            populateAdditionalModels( self.formDefinition.form.dataModelInit );
+          } );
       }
 
       /**
@@ -428,7 +431,7 @@
        * it does not contain properties that are not supported by the new definition.
        */
       function reconcileModelWithFormDefinition() {
-        if (originalFormKey && originalFormKey !== self.localFormKey) {
+        if ( originalFormKey && originalFormKey !== self.localFormKey ) {
           var form = self.formDefinition.form,
               data = self.model;
 
@@ -445,61 +448,61 @@
         function _mergeFormAndData() {
           var model = {};
 
-          _.forEach(form.pages, function (page) {
-            _processFields(page.fields);
-          });
+          _.forEach( form.pages, function( page ) {
+            _processFields( page.fields );
+          } );
 
           return model;
 
-          function _processFields(fields, parentPath, isCollection) {
-            _.forEach(fields, function (field) {
+          function _processFields( fields, parentPath, isCollection ) {
+            _.forEach( fields, function( field ) {
               // Field groups are just arrays of fields
-              if (field.fieldGroup) {
-                _processFields(field.fieldGroup, parentPath, isCollection);
+              if ( field.fieldGroup ) {
+                _processFields( field.fieldGroup, parentPath, isCollection );
               }
               else {
-                if (field.key) {
+                if ( field.key ) {
                   var key            = field.key,
-                      fullPath       = (parentPath ? parentPath + '.' : '') + key;
+                      fullPath       = ( parentPath ? parentPath + '.' : '' ) + key;
                   // templateOptions.fields is populated with subform fields for embedded forms
-                  var embeddedFields = _.get(field, 'templateOptions.fields'),
+                  var embeddedFields = _.get( field, 'templateOptions.fields' ),
                       isEfCollection = field.type === 'embeddedFormCollection' || field.extends === 'embeddedFormCollection';
 
-                  if (embeddedFields) {
+                  if ( embeddedFields ) {
                     // If a collection, initialize the size of the new array to match data's size of this collection
-                    if (isEfCollection) {
-                      var sourceCollectionSize = _.get(data, fullPath, []).length;
-                      if (sourceCollectionSize) {
-                        _.set(model, fullPath, new Array(sourceCollectionSize));
-                        _.fill(model[fullPath], {});
+                    if ( isEfCollection ) {
+                      var sourceCollectionSize = _.get( data, fullPath, [] ).length;
+                      if ( sourceCollectionSize ) {
+                        _.set( model, fullPath, new Array( sourceCollectionSize ) );
+                        _.fill( model[fullPath], {} );
                       }
                     }
-                    _processFields(embeddedFields, fullPath, isEfCollection);
+                    _processFields( embeddedFields, fullPath, isEfCollection );
                   }
                   else {
                     // If saving a collection, iterate all items in data and save this verified property
-                    if (isCollection) {
-                      var sourceData = _.get(data, parentPath, []);
+                    if ( isCollection ) {
+                      var sourceData = _.get( data, parentPath, [] );
 
-                      _.forEach(sourceData, function (item, index) {
-                        var indexedKey = [parentPath, '[', index, ']', '.', key].join(''),
-                            value      = _.get(data, indexedKey);
-                        if (value !== undefined) {
-                          _.set(model, indexedKey, value);
+                      _.forEach( sourceData, function( item, index ) {
+                        var indexedKey = [parentPath, '[', index, ']', '.', key].join( '' ),
+                            value      = _.get( data, indexedKey );
+                        if ( value !== undefined ) {
+                          _.set( model, indexedKey, value );
                         }
-                      });
+                      } );
                     }
                     else {
-                      var value = _.get(data, key);
+                      var value = _.get( data, key );
 
-                      if (value !== undefined) {
-                        _.set(model, key, value);
+                      if ( value !== undefined ) {
+                        _.set( model, key, value );
                       }
                     }
                   }
                 }
               }
-            });
+            } );
           }
         }
       }
@@ -510,15 +513,15 @@
        * @description
        * If provided, call init function/expression to populate additional dynamic data models, such as patients
        */
-      function populateAdditionalModels(fdnScript) {
-        evalScript(fdnScript);
-        evalScript(self.formConfig.additionalModelInit);
+      function populateAdditionalModels( fdnScript ) {
+        evalScript( fdnScript );
+        evalScript( self.formConfig.additionalModelInit );
 
         getValidationDefinition();
 
-        function evalScript(script) {
-          if (script && _.isFunction(script)) {
-            script(self.formConfig.additionalModels, $stateParams);
+        function evalScript( script ) {
+          if ( script && _.isFunction( script ) ) {
+            script( self.formConfig.additionalModels, $stateParams );
           }
         }
       }
@@ -527,11 +530,11 @@
        * @memberOf iscForm
        */
       function getValidationDefinition() {
-        iscFormsModel.getValidationDefinition(self.localFormKey)
-          .then(function (validationDefinition) {
+        iscFormsModel.getValidationDefinition( self.localFormKey )
+          .then( function( validationDefinition ) {
             self.validationDefinition = validationDefinition;
             self.showInternal         = true;
-          });
+          } );
       }
     }
   }

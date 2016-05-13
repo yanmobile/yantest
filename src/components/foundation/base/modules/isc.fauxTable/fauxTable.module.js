@@ -1,6 +1,6 @@
-(function () {
+(function() {
   'use strict';
 
-  angular.module('isc.fauxTable', []);
+  angular.module( 'isc.fauxTable', [] );
 
 })();

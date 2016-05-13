@@ -2,7 +2,7 @@
  * Created by hzou on 12/8/15.
  */
 
-(function () {
+(function() {
   'use strict';
   /**
    * @namespace directives
@@ -14,6 +14,6 @@
    *
    */
   angular
-    .module('isc.directives', ['isc.core', 'pascalprecht.translate']);
+    .module( 'isc.directives', ['isc.core', 'pascalprecht.translate'] );
 
 })();

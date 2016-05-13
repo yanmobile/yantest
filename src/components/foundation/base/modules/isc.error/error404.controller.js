@@ -2,21 +2,21 @@
  * Created by Henry Zou on 3/16/2016, 3:07:35 PM.
  */
 
-(function () {
+(function() {
 
   'use strict';
 
-  angular.module('isc.error')
-    .controller('error404Controller', error404Controller);
+  angular.module( 'isc.error' )
+    .controller( 'error404Controller', error404Controller );
 
   /**
    * @ngdoc controller
    * @memberOf isc.error
    * @param devlog
-     */
-  function error404Controller(devlog) {
-    var channel = devlog.channel('devlog');
-    channel.debug('error404Controller LOADED');
+   */
+  function error404Controller( devlog ) {
+    var channel = devlog.channel( 'devlog' );
+    channel.debug( 'error404Controller LOADED' );
 
     // ----------------------------
     // vars
