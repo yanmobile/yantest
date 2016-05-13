@@ -1,107 +1,72 @@
 /**
- * Created by douglasgoodman on 12/9/14.
+ * Created by Henry Zou on 11/23/14.
  */
 ( function() {
   'use strict';
 
-  // ----------------------------
-  // injection
-  // ----------------------------
-  angular.module( 'isc.authentication' )
-    .factory( 'iscAuthenticationInterceptor', iscAuthenticationInterceptor );
+  angular.module( 'isc.http' )
+    .factory( 'iscStatusCodesInterceptor', iscStatusCodesInterceptor );
 
   /* @ngInject */
-  /**
-   * @memberof core-ui-authentication
-   * @ngdoc factory
-   * @param devlog
-   * @param $rootScope
-   * @param $q
-   * @param AUTH_EVENTS
-   * @returns {{response: response, responseError: responseError}}
-   */
-  function iscAuthenticationInterceptor( devlog, $rootScope, $q, AUTH_EVENTS ) {//jshint ignore:line
-    var channel = devlog.channel( 'iscAuthenticationInterceptor' );
-    channel.logFn( 'iscAuthenticationInterceptor' );
-
-    // ----------------------------
-    // vars
-    // ----------------------------
-    //TODO: make this configurable
-    var blacklistExts = ['.html', '.json'];
-
+  function iscStatusCodesInterceptor( $q, $rootScope, AUTH_EVENTS, statusCode, iscConfirmationService ) {//jshint ignore:line
     // ----------------------------
     // factory class
     // ----------------------------
 
     var factory = {
-      response     : response,
-      responseError: responseError
+      responseError         : responseError,
+      iscConfirmationService: iscConfirmationService
     };
 
     return factory;
 
-    // ----------------------------
-    // functions
-    // ----------------------------
-
     /**
+     * Usage: prevents 404 default
+     *    $http(getUrl, { preventDefault: [404] })
      *
-     * @param response
-     * @returns {Object} Returns the "Response" object
+     * Usage:  prevents defaults for all status codes
+     *    $http(getUrl, { preventDefault: true })
+     *
+     * @param {any} response
+     *  Can contain preventDefault with value of true or [ codes ]
+     * @returns {Promise}
+     *  Promises is the callback for dialog dismissal
      */
-    function response( response ) {//jshint ignore:line
-      channel.logFn( 'response' );
-      if ( !response.config.cache && !endsWithExts( response.config.url, blacklistExts ) ) {
-        channel.debug( 'Resetting timeout for %s', response.config.url, response );
+    function responseError( response ) {
 
-        // On any server response, assume session has been renewed
-        if ( !response.config.bypassSessionReset ) {
-          $rootScope.$emit( AUTH_EVENTS.sessionTimeoutReset, response );
+      var preventDefault = response.config.preventDefault;
+      preventDefault     = preventDefault || [];
+
+      if ( preventDefault !== true && !_.includes( preventDefault, response.status ) ) {
+        switch ( response.status ) {
+          case statusCode.Unauthorized:
+            // this will happen if you just leave your computer on for a long time
+            $rootScope.$emit( AUTH_EVENTS.notAuthenticated, response );
+            break;
+          case statusCode.Forbidden:
+            //display not-authorized modal
+            $rootScope.$emit( AUTH_EVENTS.notAuthorized, response );
+            break;
+          case statusCode.NotFound:
+            response.dialogPromise = getDialogPromise( response.status );
+            break;
+          default:
+            response.dialogPromise = getDialogPromise( 'generic' );
         }
       }
 
-      return response;
-    }
-
-    /**
-     *
-     * @param response
-     * @returns {Object} Returns the error handler with the response object pointer
-     */
-    function responseError( response ) {
-      channel.logFn( 'responseError' );
-      switch ( response.status ) {
-        case 401:
-          channel.debug( '...401' );
-          // this will happen if you just leave your computer on for a long time
-          $rootScope.$emit( AUTH_EVENTS.sessionTimeout, response );
-          break;
-
-        case 500: // these must be handled individually per app
-          channel.debug( '...500' );
-          break;
-
-        default:
-          channel.debug( '...default' );
-          $rootScope.$emit( AUTH_EVENTS.notAuthorized, response );
-          break;
+      function getDialogPromise( code ) {
+        return iscConfirmationService.show( {
+          title        : 'StatusCode_' + code + '_title',
+          message      : 'StatusCode_' + code + '_message',
+          btnCancelText: false, //hides the cancel (reject) button
+          btnOkText    : 'StatusCode_ok_btn'
+        } );
       }
 
+      // $q.reject is needed in order to invoke the next responseError interceptor in the array
       return $q.reject( response );
     }
-
-    /**
-     *
-     * @param url
-     * @param exts
-     * @returns {*}
-     */
-    function endsWithExts( url, exts ) {
-      channel.logFn( 'endsWithExts' );
-      return _.some( exts, function( ext ) {
-        return _.endsWith( url, ext );
-      } );
-    }
   }// END CLASS
+
 } )();
