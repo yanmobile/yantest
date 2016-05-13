@@ -101,7 +101,7 @@
       channel.logFn( 'endsWithExts' );
       return _.some( exts, function( ext ) {
         return _.endsWith( url, ext );
-      });
+      } );
     }
   }// END CLASS
 })();

@@ -29,10 +29,10 @@
       registerFieldScope: registerFieldScope,
       getFieldScope     : getFieldScope,
 
-      showAlert         : showAlert,
-      showWarning       : showWarning,
-      showSuccess       : showSuccess,
-      showDark          : showDark
+      showAlert  : showAlert,
+      showWarning: showWarning,
+      showSuccess: showSuccess,
+      showDark   : showDark
     };
 
     /**
@@ -56,7 +56,7 @@
      * @returns {*}
      */
     function getFieldScope( id ) {
-      return _.get( fieldScope, id, {});
+      return _.get( fieldScope, id, {} );
     }
 
     /**
@@ -91,8 +91,8 @@
           scrollTo : config.scrollTo,
 
           // form-specific notification properties
-          $error   : config.$error,
-          options  : config.options
+          $error : config.$error,
+          options: config.options
         }
       );
     }

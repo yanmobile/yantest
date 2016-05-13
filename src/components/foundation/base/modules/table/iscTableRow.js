@@ -78,7 +78,7 @@
         iscRowCtrl.iscTblCtrl = scope.iscTblCtrl;
         scope.$watch( 'dataItem', function( value ) {
           iscRowCtrl.dataItem = value;
-        });
+        } );
       }
 
       /**

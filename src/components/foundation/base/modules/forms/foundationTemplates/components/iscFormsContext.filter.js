@@ -39,14 +39,14 @@
             dataItem.key === thisContext.key &&
             dataItem.contextId === thisContext.contextId;
         }
-      });
+      } );
 
       // Get linked conversations by annotation ID
       var annotationsIds = _.map( filteredData, 'id' );
       filteredData       = filteredData.concat( _.filter( data, function( item ) {
         return item.context.type === 'message' &&
           _.includes( annotationsIds, item.context.contextId );
-      }) );
+      } ) );
 
       return filteredData;
     };

@@ -100,7 +100,7 @@
        */
       function getCommandCallback( command, domCallback ) {
         var callback       = domCallback;
-        var commandsColumn = _.find( self.iscTblCtrl.tableConfig.columns, { type: 'commands' });
+        var commandsColumn = _.find( self.iscTblCtrl.tableConfig.columns, { type: 'commands' } );
         if ( _.isNil( callback ) && commandsColumn ) {
           callback = _.get( commandsColumn, 'commands.' + command + '.callback' );
 
@@ -118,9 +118,9 @@
      */
     function defaultRemoveCallback( event ) {
       var apicall = _.get( self, 'iscTblCtrl.tableConfig.api.remove', angular.noop );
-      apicall( self.dataItem ).then(function() {
+      apicall( self.dataItem ).then( function() {
         self.iscTblCtrl.deleteRow( self.dataItem );
-      });
+      } );
     }
 
     /**
@@ -173,21 +173,21 @@
         _.set( self, 'editModeData.isNew', false );
 
         apicall = _.get( self, 'iscTblCtrl.tableConfig.api.create', angular.noop );
-        apicall( self.editModeData ).then(function() {
+        apicall( self.editModeData ).then( function() {
           self.iscTblCtrl.addRow( self.editModeData );
 
           self.editModeData = {};
           self.inEditMode   = false;
-        });
+        } );
       }
       else {
         apicall = _.get( self, 'iscTblCtrl.tableConfig.api.update', angular.noop );
-        apicall( self.editModeData, self.dataItem ).then(function() {
+        apicall( self.editModeData, self.dataItem ).then( function() {
           self.iscTblCtrl.updateRow( self.editModeData, self.dataItem );
 
           self.editModeData = {};
           self.inEditMode   = false;
-        });
+        } );
       }
     }
   }

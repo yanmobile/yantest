@@ -30,7 +30,7 @@
       var fieldArray = [];
       _.forEach( fields, function( field ) {
         fieldArray = fieldArray.concat( getFields( field, annotationState ) );
-      });
+      } );
       return fieldArray;
     }
 
@@ -86,7 +86,7 @@
       };
 
       function getContext( index ) {
-        var localContext = _.merge({}, context ),
+        var localContext = _.merge( {}, context ),
             endContext   = localContext;
         while ( endContext.context !== undefined ) {
           endContext = endContext.context;
@@ -116,7 +116,7 @@
      */
     function getCustomDisplayOptions( field ) {
       var options = {},
-          data    = _.get( field, 'data', {});
+          data    = _.get( field, 'data', {} );
 
       if ( data.tableCellType ) {
         options.type = data.tableCellType;

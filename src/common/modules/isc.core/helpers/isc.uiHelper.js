@@ -38,7 +38,7 @@
         } else {
           tab.active = false;
         }
-      });
+      } );
     }
 
   }// END CLASS

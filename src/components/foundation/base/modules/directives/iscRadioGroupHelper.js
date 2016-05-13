@@ -59,9 +59,9 @@
       channel.debug( '...radioGroup', radioGroup );
 
       var currentState = !!selectedItem.$$selected;
-      radioGroup.forEach(function( item ) {
+      radioGroup.forEach( function( item ) {
         item.$$selected = false;
-      });
+      } );
 
       selectedItem.$$selected = !currentState;
     }

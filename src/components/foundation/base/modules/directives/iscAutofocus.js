@@ -62,9 +62,9 @@
      * The method is the link method for the directive
      */
     function link( scope, elem, attr ) {
-      $timeout(function() {
+      $timeout( function() {
         elem[0].focus();
-      });
+      } );
 
     }//END LINK
 

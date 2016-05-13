@@ -139,11 +139,9 @@
 
    */
   /* @ngInject */
-  function iscForm(
-    $stateParams, $q, $window,
+  function iscForm( $stateParams, $q, $window,
     iscSessionModel, iscNavContainerModel,
-    iscFormsModel, iscFormsValidationService, iscFormDataApi
-  ) {//jshint ignore:line
+    iscFormsModel, iscFormsValidationService, iscFormDataApi ) {//jshint ignore:line
     var directive = {
       restrict        : 'E',
       replace         : true,
@@ -196,7 +194,7 @@
             _id  : self.formDataId
           }
         }
-      });
+      } );
 
       // Empty stubs for annotations, to remove dependency
       /**
@@ -267,12 +265,12 @@
         }
 
         function unwrapDefault( responseData ) {
-          return _.get( responseData, 'data', {});
+          return _.get( responseData, 'data', {} );
         }
 
         function loadDefault( id ) {
           if ( id !== undefined ) {
-            return iscFormDataApi.get( id ).then(function( formData ) {
+            return iscFormDataApi.get( id ).then( function( formData ) {
               originalFormKey = formData.formKey;
 
               // Option to force using the formKey saved in the form previously
@@ -280,10 +278,10 @@
                 self.localFormKey = originalFormKey;
               }
               return formData;
-            });
+            } );
           }
           else {
-            return $q.when({});
+            return $q.when( {} );
           }
         }
 
@@ -291,17 +289,17 @@
           var annotationsApi = self.formConfig.annotationsApi;
 
           if ( id !== undefined ) {
-            return iscFormDataApi.put( id, formData ).then(function( form ) {
+            return iscFormDataApi.put( id, formData ).then( function( form ) {
               annotationsApi.processAnnotationQueue( form.id );
               return form;
-            });
+            } );
           }
           else {
-            return iscFormDataApi.post( formData ).then(function( form ) {
+            return iscFormDataApi.post( formData ).then( function( form ) {
               self.formDataId = self.options.formState._id = form.id;
               annotationsApi.processAnnotationQueue( form.id );
               return form;
-            });
+            } );
           }
         }
       }
@@ -360,10 +358,10 @@
         // Resolve default formKey if not provided,
         // and if not using formKey previously persisted with form
         if ( !self.localFormKey && !( self.formDataId && self.formConfig.useOriginalFormKey ) ) {
-          iscFormsModel.getActiveForm( self.formType ).then(function( form ) {
+          iscFormsModel.getActiveForm( self.formType ).then( function( form ) {
             self.localFormKey = form.formKey;
             getFormData();
-          });
+          } );
         }
         else {
           getFormData();
@@ -379,13 +377,13 @@
 
         config.annotationsApi.initAnnotationQueue();
         getAnnotationData()
-          .then(function() {
+          .then( function() {
             return formDataApi.load( self.formDataId )
-              .then(function( formData ) {
+              .then( function( formData ) {
                 self.model = formDataApi.unwrap( formData ) || {};
                 return formData;
-              });
-          })
+              } );
+          } )
           .then( getFormDefinition );
       }
 
@@ -397,13 +395,13 @@
         var getApi = _.get( self.formConfig, 'annotationsApi.getFormAnnotations' );
 
         if ( getApi && _.isFunction( getApi ) ) {
-          return getApi( self.formDataId ).then(function( annotations ) {
+          return getApi( self.formDataId ).then( function( annotations ) {
             self.options.formState._annotations = {
               index: self.formDataId,
               data : annotations
             };
             return annotations;
-          });
+          } );
         }
         else {
           $q.when( [] );
@@ -415,14 +413,14 @@
        */
       function getFormDefinition() {
         iscFormsModel.getFormDefinition( self.localFormKey, self.mode )
-          .then(function( formDefinition ) {
+          .then( function( formDefinition ) {
             self.formDefinition                = formDefinition;
             self.options.formState._validateOn = formDefinition.validateOn;
 
             reconcileModelWithFormDefinition();
 
             populateAdditionalModels( self.formDefinition.form.dataModelInit );
-          });
+          } );
       }
 
       /**
@@ -452,7 +450,7 @@
 
           _.forEach( form.pages, function( page ) {
             _processFields( page.fields );
-          });
+          } );
 
           return model;
 
@@ -476,7 +474,7 @@
                       var sourceCollectionSize = _.get( data, fullPath, [] ).length;
                       if ( sourceCollectionSize ) {
                         _.set( model, fullPath, new Array( sourceCollectionSize ) );
-                        _.fill( model[fullPath], {});
+                        _.fill( model[fullPath], {} );
                       }
                     }
                     _processFields( embeddedFields, fullPath, isEfCollection );
@@ -492,7 +490,7 @@
                         if ( value !== undefined ) {
                           _.set( model, indexedKey, value );
                         }
-                      });
+                      } );
                     }
                     else {
                       var value = _.get( data, key );
@@ -504,7 +502,7 @@
                   }
                 }
               }
-            });
+            } );
           }
         }
       }
@@ -533,10 +531,10 @@
        */
       function getValidationDefinition() {
         iscFormsModel.getValidationDefinition( self.localFormKey )
-          .then(function( validationDefinition ) {
+          .then( function( validationDefinition ) {
             self.validationDefinition = validationDefinition;
             self.showInternal         = true;
-          });
+          } );
       }
     }
   }

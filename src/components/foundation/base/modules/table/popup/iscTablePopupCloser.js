@@ -53,7 +53,7 @@
             scope.iscRowCtrl.onCommand( 'cancelEdit' );
           }
         }
-      });
+      } );
     }
   }// END CLASS
 

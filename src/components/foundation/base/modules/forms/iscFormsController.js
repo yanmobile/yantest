@@ -9,6 +9,6 @@
       this.formConfig = {
         useOriginalFormKey: this.params.useOriginalFormKey
       };
-    });
+    } );
 
 })();

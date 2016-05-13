@@ -23,29 +23,29 @@
     };
 
     function connect( uri ) {
-      socket = io.connect( uri, { 'forceNew': true });
+      socket = io.connect( uri, { 'forceNew': true } );
     }
 
     function on( eventName, callback ) {
       channel.debug( 'on called' );
       socket.on( eventName, function() {
         var args = arguments;
-        $rootScope.$evalAsync(function() {
+        $rootScope.$evalAsync( function() {
           callback.apply( socket, args );
-        });
-      });
+        } );
+      } );
     }
 
     function emit( eventName, data, callback ) {
       channel.debug( 'emit called' );
       socket.emit( eventName, data, function() {
         var args = arguments;
-        $rootScope.$evalAsync(function() {
+        $rootScope.$evalAsync( function() {
           if ( callback ) {
             callback.apply( socket, args );
           }
-        });
-      });
+        } );
+      } );
     }
   }
 })();

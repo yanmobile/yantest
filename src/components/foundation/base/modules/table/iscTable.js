@@ -199,7 +199,7 @@
     // ----------------------------
 
     var directive = {
-      scope           : {
+      scope: {
         tableConfig       : '=',
         tableData         : '=',
         filterFunction    : '&?',
@@ -208,8 +208,8 @@
         tableName         : '@'
       },
 
-      restrict        : 'E',
-      replace         : true,
+      restrict: 'E',
+      replace : true,
 
       templateUrl     : function( elem, attrs ) {
         return attrs.templateUrl || 'table/iscTable.html';
@@ -251,14 +251,14 @@
         self.rowsOnPage  = self.tableConfig.rowsOnPage || 15;
         self.currentPage = 1;
 
-        $scope.$watch(function() {
+        $scope.$watch( function() {
           return self.tableData;
         }, function() {
           channel.debug( 'iscTable.WATCH tableData' );
           // set an array of the table row objects
           self.filteredRows = self.tableRows = self.tableConfig.key ? self.tableData[self.tableConfig.key] : self.tableData;
           channel.debug( '...tableRows', self.tableRows );
-        });
+        } );
 
         applyFilter();
         self.sortField = { reverse: false };
@@ -305,11 +305,11 @@
         channel.debug( 'iscTable.doFilter', item );
         var fitlerable = _.some( self.tableConfig.columns, function( column ) {
           return _.isFunction( column.filterFunction );
-        });
+        } );
 
         channel.debug( '...fitlerable', fitlerable );
         if ( fitlerable ) {
-          return self.filterFunction({ item: item });
+          return self.filterFunction( { item: item } );
         }
         else {
           return true;
@@ -325,7 +325,7 @@
        * @returns {*}
        */
       function getColumnByKey( key ) {
-        return _.find( self.tableConfig.columns, { key: key });
+        return _.find( self.tableConfig.columns, { key: key } );
       }
 
       /**
@@ -361,11 +361,11 @@
        */
       function createRow() {
         var dataItem = { isNew: true };
-        self.tableConfig.columns.forEach(function( column ) {
+        self.tableConfig.columns.forEach( function( column ) {
           if ( column.defaultValue !== null ) {
             dataItem[column.key] = column.defaultValue;
           }
-        });
+        } );
         self.dataItem = dataItem;
         return self.dataItem;
       }

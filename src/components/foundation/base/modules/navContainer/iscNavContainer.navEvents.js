@@ -12,5 +12,5 @@
       goToBeforeLoginPage   : 'iscGoToBeforeLoginPage',
       modalBackgroundClicked: 'iscModalBackgroundClicked',
       hideSideNavBar        : 'iscHideSideNavBar'
-    });
+    } );
 })();

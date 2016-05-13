@@ -21,11 +21,9 @@
    * @param iscSessionModel
    * @param AUTH_EVENTS
    */
-  function iscNavbarController(
-    devlog, $scope, $state, $rootScope, iscNavContainerModel,
+  function iscNavbarController( devlog, $scope, $state, $rootScope, iscNavContainerModel,
     iscCustomConfigService, iscCustomConfigHelper, iscUiHelper, iscSessionModel,
-    AUTH_EVENTS
-  ) {
+    AUTH_EVENTS ) {
     var channel = devlog.channel( 'iscNavbarController' );
 
     channel.debug( 'iscNavbarController LOADED' );
@@ -33,19 +31,19 @@
     var self = this;
 
     angular.extend( self, {
-      iscUiHelper          : iscUiHelper,
-      configService        : iscCustomConfigService,
-      sessionModel         : iscSessionModel,
+      iscUiHelper  : iscUiHelper,
+      configService: iscCustomConfigService,
+      sessionModel : iscSessionModel,
 
       sectionTranslationKey: '',
 
-      getTabs              : iscNavContainerModel.getTopNav,
-      userRoles            : [],
-      logout               : logout,
+      getTabs  : iscNavContainerModel.getTopNav,
+      userRoles: [],
+      logout   : logout,
 
-      setPageState         : setPageState,
-      setTabActiveState    : setTabActiveState
-    });
+      setPageState     : setPageState,
+      setTabActiveState: setTabActiveState
+    } );
 
     setShowRoles();
 
@@ -92,24 +90,24 @@
     //
     $rootScope.$on( AUTH_EVENTS.sessionChange, function() {
       self.isAuthenticated = iscSessionModel.isAuthenticated();
-    });
+    } );
 
     $rootScope.$on( AUTH_EVENTS.sessionResumedSuccess, function() {
       self.isAuthenticated = iscSessionModel.isAuthenticated();
-    });
+    } );
 
     //
     $rootScope.$on( '$stateChangeSuccess', function( event, toState, toParams, fromState, fromParams ) {
       channel.debug( 'iscNavbarController.$stateChangeSuccess', arguments );
       self.setPageState( toState.name );
       setShowRoles();
-    });
+    } );
 
     // when you refresh the page, this will reset the active state of the selected tab
-    $scope.$evalAsync(function() {
+    $scope.$evalAsync( function() {
       channel.debug( 'iscNavbarController setting page name to', $state.$current.name );
       self.setPageState( $state.$current.name );
-    });
+    } );
 
   } // END CLASS
 

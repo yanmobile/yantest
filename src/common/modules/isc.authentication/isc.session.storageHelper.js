@@ -25,19 +25,19 @@
     // ----------------------------
 
     var helper = {
-      destroy                 : destroy,
+      destroy: destroy,
 
-      getLoginResponse        : getLoginResponse,
-      setLoginResponse        : setLoginResponse,
+      getLoginResponse: getLoginResponse,
+      setLoginResponse: setLoginResponse,
 
-      getConfig               : getConfig,
-      setConfig               : setConfig,
+      getConfig: getConfig,
+      setConfig: setConfig,
 
-      getSessionExpiresOn     : getSessionExpiresOn,
-      setSessionExpiresOn     : setSessionExpiresOn,
+      getSessionExpiresOn: getSessionExpiresOn,
+      setSessionExpiresOn: setSessionExpiresOn,
 
-      getShowTimedOutAlert    : getShowTimedOutAlert,
-      setShowTimedOutAlert    : setShowTimedOutAlert,
+      getShowTimedOutAlert: getShowTimedOutAlert,
+      setShowTimedOutAlert: setShowTimedOutAlert,
 
       canParse                : canParse,
       getValFromSessionStorage: getValFromSessionStorage,
@@ -62,7 +62,7 @@
 
     // ----------------------------
     function getLoginResponse() {
-      return getValFromSessionStorage( 'loginResponse', {});
+      return getValFromSessionStorage( 'loginResponse', {} );
     }
 
     function setLoginResponse( val ) {
@@ -71,7 +71,7 @@
 
     // ----------------------------
     function getConfig() {
-      return getValFromSessionStorage( 'config', {});
+      return getValFromSessionStorage( 'config', {} );
     }
 
     function setConfig( val ) {

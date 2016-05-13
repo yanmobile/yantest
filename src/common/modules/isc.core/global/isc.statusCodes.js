@@ -24,7 +24,7 @@
       BadGateway        : 502,
       ServiceUnavailable: 504,
       GatewayTimeout    : 505
-    });
+    } );
 
 })();
 

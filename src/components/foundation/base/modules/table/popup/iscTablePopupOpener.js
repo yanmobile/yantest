@@ -53,7 +53,7 @@
             trElem.parent().find( '[zf-modal]' ).scope().hide();
           }
         }
-      });
+      } );
     }
   }// END CLASS
 })();

@@ -18,5 +18,5 @@
         bottomMiddle: 'bottom-middle',
         bottomRight : 'bottom-right'
       }
-    });
+    } );
 })();

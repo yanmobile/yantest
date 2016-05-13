@@ -44,13 +44,13 @@
 
       var string = '';
       var len    = array.length;
-      array.forEach(function( item, idx ) {
+      array.forEach( function( item, idx ) {
         string += item.toString();
         if ( idx < ( len - 1 ) ) {
           string += ', ';
         }
 
-      });
+      } );
 
       return string;
     }

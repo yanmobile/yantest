@@ -37,7 +37,7 @@
         if ( target ) {
           element.on( 'click', function() {
             $uiViewScroll( target );
-          });
+          } );
         }
       }
 

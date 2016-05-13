@@ -30,6 +30,6 @@
       sessionTimeoutConfirm: 'iscSessionTimeoutConfirm',
       sessionTimeoutWarning: 'iscSessionTimeoutWarning',
       sessionTimeoutReset  : 'iscSessionTimeoutReset'
-    });
+    } );
 
 })();

@@ -127,7 +127,7 @@
       var paddingRight = element.css( 'paddingRight' );
       var threshold    = Math.max( parseInt( element.css( 'paddingTop' ) || 0 ), 20 );
 
-      var $shadow = angular.element( '<div></div>' ).css({
+      var $shadow = angular.element( '<div></div>' ).css( {
         position  : 'absolute',
         top       : -10000,
         left      : -10000,
@@ -136,7 +136,7 @@
         fontFamily: element.css( 'fontFamily' ),
         lineHeight: element.css( 'lineHeight' ),
         resize    : 'none'
-      });
+      } );
 
       angular.element( document.body ).append( $shadow ); // jshint ignore:line
 
@@ -155,7 +155,7 @@
           .replace( /\n/g, '<br/>' )
           .replace( /\s{2,}/g, function( space ) {
             return times( '&nbsp;', space.length - 1 ) + ' ';
-          });
+          } );
 
         $shadow.html( val );
 
@@ -177,12 +177,12 @@
         if ( !!ngModelCtrl.$modelValue ) {
           update();
         }
-      });
+      } );
 
       scope.$on( '$destroy', function() {
         channel.debug( '...$destroy' );
         $shadow.remove();
-      });
+      } );
 
     }//END LINK
 

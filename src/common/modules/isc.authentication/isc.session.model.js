@@ -53,7 +53,7 @@
      */
     var ping         = function() {
       var deferred = $q.defer();
-      deferred.resolve({});
+      deferred.resolve( {} );
       return deferred.promise;
     };
     var sessionIdPath, expirationPath;
@@ -65,22 +65,22 @@
     // ----------------------------
 
     var model = {
-      create             : create,
-      destroy            : destroy,
+      create : create,
+      destroy: destroy,
 
       initSessionTimeout : initSessionTimeout,
       stopSessionTimeout : stopSessionTimeout,
       resetSessionTimeout: resetSessionTimeout,
 
-      getCredentials     : getCredentials,
+      getCredentials: getCredentials,
 
-      getCurrentUser     : getCurrentUser,
-      getCurrentUserRole : getCurrentUserRole,
+      getCurrentUser    : getCurrentUser,
+      getCurrentUserRole: getCurrentUserRole,
 
-      isAuthenticated    : isAuthenticated,
-      getFullName        : getFullName,
+      isAuthenticated: isAuthenticated,
+      getFullName    : getFullName,
 
-      configure          : configure
+      configure: configure
     };
 
     return model;
@@ -156,9 +156,9 @@
       sessionTimeout.syncedOn = syncedOn || sessionTimeout.syncedOn;
 
       var request = ping().then( _pingSuccess, _pingError )
-        .finally(function() {
+        .finally( function() {
           sessionTimeout.pingPromise = null;
-        });
+        } );
 
       sessionTimeout.pingPromise = request;
       return request;
@@ -243,7 +243,7 @@
       }
 
       // Checks to perform each tick
-      timeoutInterval = $interval(function() {
+      timeoutInterval = $interval( function() {
         _logTimer();
 
         if ( sessionTimeout.status === 'no response' ) {
@@ -275,9 +275,9 @@
         if ( _.getRemainingTime( sessionTimeout.warnAt ) <= 0 && _.getRemainingTime( sessionTimeout.expireAt ) > 0 ) {
           channel.debug( '...expireAt ', sessionTimeout.expireAt );
           if ( doPingFirst && sessionTimeout.syncedOn !== 'warn' ) {
-            callPing( 'warn' ).then(function() {
+            callPing( 'warn' ).then( function() {
               _checkForWarnOrExpire( false );
-            });
+            } );
           }
           else {
             $rootScope.$emit( AUTH_EVENTS.sessionTimeoutWarning );
@@ -289,9 +289,9 @@
           channel.debug( '...sessionTimeout.expireAt ' + sessionTimeout.expireAt );
 
           if ( doPingFirst && sessionTimeout.syncedOn !== 'expire' ) {
-            callPing( 'expire' ).then(function() {
+            callPing( 'expire' ).then( function() {
               _checkForWarnOrExpire( false );
-            });
+            } );
           }
           else {
             _expireSession();

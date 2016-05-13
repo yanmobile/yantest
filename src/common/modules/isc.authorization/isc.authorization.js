@@ -63,11 +63,11 @@
       if ( !authorizedRoutes[userRole] ) {
         authorizedRoutes[userRole] = ( userRole === '*' ) ? {} : angular.copy( authorizedRoutes['*'] ); //get everything from anonymous
       }
-      permittedRoutes.forEach(function( state ) {  //maps an array into object
+      permittedRoutes.forEach( function( state ) {  //maps an array into object
         if ( !_.get( authorizedRoutes[userRole], state ) ) {
-          _.set( authorizedRoutes[userRole], state, {});
+          _.set( authorizedRoutes[userRole], state, {} );
         }
-      });
+      } );
     }
 
     function getAuthorizedRoutes( currentUserRole ) {
@@ -127,7 +127,7 @@
       return _.some( tokens, function( token ) {
         path += token + '.';
         return _.get( authorizedUserRoutes, path + '*', false );
-      });
+      } );
     }
 
   }// END CLASS

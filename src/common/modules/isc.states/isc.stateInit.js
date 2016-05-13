@@ -26,7 +26,7 @@
           var key = 0;
           _.forEach( functions, function( fn ) {
             initFunctions[( key++ ).toString()] = fn;
-          });
+          } );
         }
         else if ( _.isObject( functions ) ) {
           initFunctions = functions;
@@ -46,15 +46,15 @@
         if ( _.isFunction( fn ) ) {
           var deferred   = $q.defer();
           promises[name] = deferred.promise;
-          fn().then(function( results ) {
+          fn().then( function( results ) {
             deferred.resolve( results );
-          });
+          } );
         }
-      });
+      } );
 
-      $q.all( promises ).then(function( results ) {
+      $q.all( promises ).then( function( results ) {
         initPromise.resolve( results );
-      });
+      } );
 
       return initPromise.promise;
     }

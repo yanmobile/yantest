@@ -50,7 +50,7 @@
         channel.debug( 'iscDynamicHtml', html );
         elem.html( html );
         $compile( elem.contents() )( scope );
-      });
+      } );
     }
 
   }//END CLASS

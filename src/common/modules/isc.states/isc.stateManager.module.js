@@ -22,9 +22,9 @@
       $rootScope.$on( '$stateChangeStart', function( event, state, params ) {
         $delegate.next     = state;
         $delegate.toParams = params;
-      });
+      } );
       return $delegate;
-    });
+    } );
   }
 
 })();

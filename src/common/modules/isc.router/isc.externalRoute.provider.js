@@ -72,7 +72,7 @@
           if ( split.length > 1 ) {
             _.set( queryParams, split[0], split[1] );
           }
-        });
+        } );
 
         // Process params through provided config function
         nextStateObject = mappingFunction( queryParams );
@@ -87,14 +87,14 @@
           stateParams = {};
         }
 
-        this.addRoute({
+        this.addRoute( {
           'nextState'  : nextState,
           'stateParams': stateParams,
           // Set an expiration -- if this state is later retrieved after it has expired, this state will be ignored
           'expiresOn'  : externalRequestExpirationInMinutes ?
             moment().add( externalRequestExpirationInMinutes, 'minute' ).toISOString()
             : undefined
-        });
+        } );
       }
     };
 

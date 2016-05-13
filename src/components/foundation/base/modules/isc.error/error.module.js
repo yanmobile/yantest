@@ -8,10 +8,10 @@
   angular
     .module( 'isc.error', ['ui.router', 'isc.common'] )
 
-    .config(function( $stateProvider, iscStateProvider, $urlRouterProvider ) {
+    .config( function( $stateProvider, iscStateProvider, $urlRouterProvider ) {
       $urlRouterProvider.otherwise( '/404' );
       iscStateProvider.state( getStates() );
-    });
+    } );
 
   function getStates() {
     return {

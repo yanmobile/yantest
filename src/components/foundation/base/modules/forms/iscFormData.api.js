@@ -18,7 +18,7 @@
     var channel = devlog.channel( 'iscFormDataApi' );
 
     var config       = iscCustomConfigService.getConfig(),
-        moduleConfig = _.get( config, 'moduleApi', {});
+        moduleConfig = _.get( config, 'moduleApi', {} );
 
     var formDataUrl = apiHelper.getConfigUrl( moduleConfig.formData );
 

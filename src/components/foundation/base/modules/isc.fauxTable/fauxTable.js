@@ -59,7 +59,7 @@
       angular.extend( self, {
         sort   : sort,
         getSort: getSort
-      });
+      } );
 
       /*========================================
        =                 private               =

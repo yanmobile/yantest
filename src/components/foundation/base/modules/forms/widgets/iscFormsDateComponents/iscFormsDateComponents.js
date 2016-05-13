@@ -25,10 +25,8 @@
    *   </isc-form-date-components>
    */
   /* @ngInject */
-  function iscFormsDateComponents(
-    $global, $window, $document,
-    devlog, iscCustomConfigService
-  ) {//jshint ignore:line
+  function iscFormsDateComponents( $global, $window, $document,
+    devlog, iscCustomConfigService ) {//jshint ignore:line
 
     // ----------------------------
     // vars
@@ -194,7 +192,7 @@
 
         function clearNgModel() {
           if ( modelAsObject ) {
-            ngModel.$setViewValue({});
+            ngModel.$setViewValue( {} );
           }
           else {
             ngModel.$setViewValue( '' );
@@ -272,7 +270,7 @@
               return baseSelection();
             }
           }
-          // Base selection handler for browsers that do not (Chrome)
+            // Base selection handler for browsers that do not (Chrome)
           catch ( x ) {
             return baseSelection();
           }
@@ -320,7 +318,7 @@
           // Defer to allow models to update;
           // otherwise day may be undefined (invalid) if it exceeds the max
           // after a month update.
-          _.defer(function() {
+          _.defer( function() {
             date.day = Math.min( currentDay, maxDay );
           }, 0 );
         }
@@ -337,17 +335,17 @@
         if ( this.value.length === 2 ) {
           $day.focus();
         }
-      });
+      } );
 
       $day.on( 'input', function onChange() {
         if ( this.value.length === 2 ) {
           $year.focus();
         }
-      });
+      } );
 
       $year.on( 'blur', function onBlur() {
         ngModel.$setTouched();
-      });
+      } );
     }
 
   }//END CLASS
