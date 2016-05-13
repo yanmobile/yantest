@@ -11,7 +11,7 @@
     .config(function ( $stateProvider, iscStateProvider, $urlRouterProvider ) {
       $urlRouterProvider.otherwise( '/404' );
       iscStateProvider.state( getStates() );
-    });
+    } );
 
   function getStates() {
     return {
@@ -25,4 +25,4 @@
       }
     };
   }
-})();
+} )();

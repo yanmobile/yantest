@@ -47,14 +47,14 @@
 
       scope.$on( FORMS_EVENTS.resetFormModel, function () {
         resetModel();
-      });
+      } );
 
       scope.$on( FORMS_EVENTS.setFormModel, function ( event, model, resetAfter ) {
         ngModelCtrl.$setViewValue( model );
         if ( resetAfter ) {
           resetModel();
         }
-      });
+      } );
 
       function resetModel() {
         form.$setUntouched();
@@ -64,4 +64,4 @@
 
   }//END CLASS
 
-})();
+} )();

@@ -53,7 +53,7 @@
      */
     var ping         = function() {
       var deferred = $q.defer();
-      deferred.resolve({});
+      deferred.resolve( {} );
       return deferred.promise;
     };
     var sessionIdPath, expirationPath;
@@ -158,7 +158,7 @@
       var request = ping().then( _pingSuccess, _pingError )
         .finally(function() {
           sessionTimeout.pingPromise = null;
-        });
+        } );
 
       sessionTimeout.pingPromise = request;
       return request;
@@ -277,7 +277,7 @@
           if ( doPingFirst && sessionTimeout.syncedOn !== 'warn' ) {
             callPing( 'warn' ).then(function() {
               _checkForWarnOrExpire( false );
-            });
+            } );
           }
           else {
             $rootScope.$emit( AUTH_EVENTS.sessionTimeoutWarning );
@@ -291,7 +291,7 @@
           if ( doPingFirst && sessionTimeout.syncedOn !== 'expire' ) {
             callPing( 'expire' ).then(function() {
               _checkForWarnOrExpire( false );
-            });
+            } );
           }
           else {
             _expireSession();
@@ -401,5 +401,5 @@
     }
   }// END CLASS
 
-})();
+} )();
 

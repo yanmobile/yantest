@@ -12,4 +12,4 @@
     'isc.authentication',
     'isc.states'] );
 
-})();
+} )();

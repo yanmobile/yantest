@@ -172,15 +172,15 @@
     $scope.$on( AUTH_EVENTS.responseError, function ( event, response ) {
       channel.debug( 'iscNavigationController.responseError' );
       channel.debug( '...response' + JSON.stringify( response ) );
-    });
+    } );
 
     $scope.$on( AUTH_EVENTS.notAuthenticated, function ( event, response ) {
       //      channel.debug( 'iscNavigationController.loginError' );
-    });
+    } );
 
     $scope.$on( AUTH_EVENTS.notAuthorized, function ( event, response ) {
       //      channel.debug( 'iscNavigationController.loginError' );
-    });
+    } );
 
     $scope.$on( AUTH_EVENTS.sessionTimeoutWarning, function ( event, response ) {
       channel.debug( 'iscNavigationController.sessionTimeoutWarning' );
@@ -192,29 +192,29 @@
       }
       channel.debug( '...yup' );
       self.alertShowing = true;
-    });
+    } );
 
     $scope.$on( AUTH_EVENTS.sessionTimeout, function () {
       channel.debug( 'ischNavContainer.sessionTimeout' );
       self.hideAllPopups();
       self.alertShowing = false;
-    });
+    } );
 
     $scope.$on( NAV_EVENTS.showSecondaryNav, function ( event, response ) {//jshint ignore:line
       channel.debug( 'iscNavigationController.iscShowModal' );
       self.showSecondaryNavbar();
-    });
+    } );
 
     $scope.$on( NAV_EVENTS.hideSecondaryNav, function ( event, response ) {//jshint ignore:line
       channel.debug( 'iscNavigationController.iscHideModal' );
       self.hideSecondaryNavbar();
-    });
+    } );
 
     $rootScope.$on( NAV_EVENTS.hideSideNavBar, function () {
       self.hideSideNavbar();
-    });
+    } );
 
   }// END CLASS
 
-})();
+} )();
 

@@ -194,7 +194,7 @@
             _id  : self.formDataId
           }
         }
-      });
+      } );
 
       // Empty stubs for annotations, to remove dependency
       /**
@@ -262,7 +262,7 @@
         }
 
         function unwrapDefault( responseData ) {
-          return _.get( responseData, 'data', {});
+          return _.get( responseData, 'data', {} );
         }
 
         function loadDefault( id ) {
@@ -275,10 +275,10 @@
                 self.localFormKey = originalFormKey;
               }
               return formData;
-            });
+            } );
           }
           else {
-            return $q.when({});
+            return $q.when( {} );
           }
         }
 
@@ -289,14 +289,14 @@
             return iscFormDataApi.put( id, formData ).then(function ( form ) {
               annotationsApi.processAnnotationQueue( form.id );
               return form;
-            });
+            } );
           }
           else {
             return iscFormDataApi.post( formData ).then(function ( form ) {
               self.formDataId = self.options.formState._id = form.id;
               annotationsApi.processAnnotationQueue( form.id );
               return form;
-            });
+            } );
           }
         }
       }
@@ -358,7 +358,7 @@
           iscFormsModel.getActiveForm( self.formType ).then(function ( form ) {
             self.localFormKey = form.formKey;
             getFormData();
-          });
+          } );
         }
         else {
           getFormData();
@@ -379,8 +379,8 @@
               .then(function ( formData ) {
                 self.model = formDataApi.unwrap( formData ) || {};
                 return formData;
-              });
-          })
+              } );
+          } )
           .then( getFormDefinition );
       }
 
@@ -398,7 +398,7 @@
               data : annotations
             };
             return annotations;
-          });
+          } );
         }
         else {
           $q.when( [] );
@@ -417,7 +417,7 @@
             reconcileModelWithFormDefinition();
 
             populateAdditionalModels( self.formDefinition.form.dataModelInit );
-          });
+          } );
       }
 
       /**
@@ -447,7 +447,7 @@
 
           _.forEach( form.pages, function ( page ) {
             _processFields( page.fields );
-          });
+          } );
 
           return model;
 
@@ -471,7 +471,7 @@
                       var sourceCollectionSize = _.get( data, fullPath, [] ).length;
                       if ( sourceCollectionSize ) {
                         _.set( model, fullPath, new Array( sourceCollectionSize ) );
-                        _.fill( model[fullPath], {});
+                        _.fill( model[fullPath], {} );
                       }
                     }
                     _processFields( embeddedFields, fullPath, isEfCollection );
@@ -487,7 +487,7 @@
                         if ( value !== undefined ) {
                           _.set( model, indexedKey, value );
                         }
-                      });
+                      } );
                     }
                     else {
                       var value = _.get( data, key );
@@ -499,7 +499,7 @@
                   }
                 }
               }
-            });
+            } );
           }
         }
       }
@@ -531,8 +531,8 @@
           .then(function ( validationDefinition ) {
             self.validationDefinition = validationDefinition;
             self.showInternal         = true;
-          });
+          } );
       }
     }
   }
-})();
+} )();

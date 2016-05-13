@@ -3,11 +3,11 @@
   angular.module( 'isc.forms', ['ui.router', 'isc.states'] )
     .config(function ( iscStateProvider ) {
       iscStateProvider.state( getTopNavTabs() );
-    })
+    } )
 
     .run(function ( iscFormlyFoundationTemplates ) {
       iscFormlyFoundationTemplates.init();
-    });
+    } );
 
   function getTopNavTabs() {
     return {
@@ -27,4 +27,4 @@
       }
     };
   }
-})();
+} )();

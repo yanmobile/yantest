@@ -30,14 +30,14 @@
           if ( api.threshold( model, input ) ) {
             api.get( model, input ).then(function ( results ) {
               self.apiResults = api.resultsFilter( results );
-            });
+            } );
           }
         }
         else {
           if ( !api.minlength || _.get( input, 'length', 0 ) >= api.minlength ) {
             api.get( model, input ).then(function ( results ) {
               self.apiResults = api.resultsFilter( results );
-            });
+            } );
           }
         }
       };
@@ -51,4 +51,4 @@
 
   }// END CLASS
 
-})();
+} )();

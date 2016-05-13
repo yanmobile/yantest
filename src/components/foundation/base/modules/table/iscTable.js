@@ -256,7 +256,7 @@
         // set an array of the table row objects
         self.filteredRows = self.tableRows = self.tableConfig.key ? self.tableData[ self.tableConfig.key ] : self.tableData;
         channel.debug( '...tableRows',self.tableRows );
-      });
+      } );
 
         applyFilter();
         self.sortField = { reverse: false };
@@ -303,11 +303,11 @@
         channel.debug( 'iscTable.doFilter', item );
         var fitlerable = _.some( self.tableConfig.columns, function( column ) {
           return _.isFunction( column.filterFunction );
-        });
+        } );
 
         channel.debug( '...fitlerable', fitlerable );
         if ( fitlerable ) {
-          return self.filterFunction({ item: item });
+          return self.filterFunction( { item: item } );
         }
         else {
           return true;
@@ -323,7 +323,7 @@
        * @returns {*}
          */
       function getColumnByKey( key ) {
-        return _.find( self.tableConfig.columns, { key: key });
+        return _.find( self.tableConfig.columns, { key: key } );
       }
 
       /**
@@ -363,7 +363,7 @@
           if ( column.defaultValue !== null ) {
             dataItem[column.key] = column.defaultValue;
           }
-        });
+        } );
         self.dataItem = dataItem;
         return self.dataItem;
       }
@@ -392,4 +392,4 @@
 
   }// END CLASS
 
-})();
+} )();

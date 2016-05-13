@@ -26,7 +26,7 @@
           var key = 0;
           _.forEach( functions, function( fn ) {
             initFunctions[( key++ ).toString()] = fn;
-          });
+          } );
         }
         else if ( _.isObject( functions ) ) {
           initFunctions = functions;
@@ -48,17 +48,17 @@
           promises[name] = deferred.promise;
           fn().then(function( results ) {
             deferred.resolve( results );
-          });
+          } );
         }
-      });
+      } );
 
       $q.all( promises ).then(function( results ) {
         initPromise.resolve( results );
-      });
+      } );
 
       return initPromise.promise;
     }
   }//END CLASS
 
-})();
+} )();
 

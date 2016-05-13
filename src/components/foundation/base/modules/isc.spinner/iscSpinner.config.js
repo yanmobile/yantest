@@ -14,5 +14,5 @@
     $httpProvider.interceptors.push( 'httpLoaderInterceptor' );
   }
 
-})();
+} )();
 

@@ -56,7 +56,7 @@
        * @returns {*}
        */
       function getFieldScope( id ) {
-        return _.get( fieldScope, id, {});
+        return _.get( fieldScope, id, {} );
       }
 
       /**
@@ -97,4 +97,4 @@
         );
       }
     }
-})();
+} )();

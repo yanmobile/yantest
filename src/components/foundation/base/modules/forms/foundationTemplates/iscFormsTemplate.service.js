@@ -55,7 +55,7 @@
     var baseType = '__iscFormsBase__';
 
     var config           = iscCustomConfigService.getConfig(),
-        formsConfig      = _.get( config, 'forms', {}),
+        formsConfig      = _.get( config, 'forms', {} ),
         updateOnExcluded = formsConfig.updateOnExcluded;
 
     // YYYY-MM-DDThh:mm:ss.xxxZ   or
@@ -95,14 +95,14 @@
             allowInvalid: formsConfig.allowInvalid
           };
 
-          var validators          = field.validators || ( field.validators = {});
+          var validators          = field.validators || ( field.validators = {} );
           // Executes external/HS validation api
           validators.hsValidation = {
             expression: 'hsValidation.getError(options.key)',
             message   : 'hsValidation.$error.text'
           };
         }
-      });
+      } );
       return fields;
     }
 
@@ -143,7 +143,7 @@
      */
     function registerBaseType() {
       // Base type overrides
-      formlyConfig.setType({
+      formlyConfig.setType( {
         name      : baseType,
         controller: /* @ngInject */ function ( $scope, iscNotificationService ) {
           iscNotificationService.registerFieldScope( $scope );
@@ -169,7 +169,7 @@
                 _.extend( hsValidation, {
                   module    : $window[moduleName],
                   recordName: recordName
-                });
+                } );
 
                 if ( hsValidation.module && hsValidation.recordName && ngModelController.$viewChangeListeners ) {
                   ngModelController.$viewChangeListeners.push(
@@ -263,7 +263,7 @@
             },
             allAnnotations     : formlyRootCtrl.options.formState._annotations.data,
             annotationMetadata : annotationMetadata
-          });
+          } );
 
           // Helper functions
           function getFormlyRoot( scope ) {
@@ -310,7 +310,7 @@
           }
 
           function getAnnotationConfig() {
-            return _.get( formlyRootCtrl, 'formDefinition.form.annotations', {});
+            return _.get( formlyRootCtrl, 'formDefinition.form.annotations', {} );
           }
 
           function getAnnotationContext() {
@@ -318,7 +318,7 @@
             if ( annotationsState.context ) {
               // This means it has a containing context for the parent
               // Contexts are nested instances of the same object type
-              var container = _.merge({}, annotationsState.context );
+              var container = _.merge( {}, annotationsState.context );
               while ( container.context !== undefined ) {
                 container = container.context;
               }
@@ -350,7 +350,7 @@
             return $filter( 'iscFormsContext' )( annotationsState.data, context );
           }
         }
-      });
+      } );
     }
 
     /**
@@ -380,4 +380,4 @@
     }
 
   }
-})();
+} )();

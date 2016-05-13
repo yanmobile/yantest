@@ -33,15 +33,15 @@
     var getForms       = _.partial( getFormStatus, {
       returnMultiple: true,
       limitToActive : false
-    });
+    } );
     var getActiveForm  = _.partial( getFormStatus, {
       returnMultiple: false,
       limitToActive : true
-    });
+    } );
     var getActiveForms = _.partial( getFormStatus, {
       returnMultiple: true,
       limitToActive : true
-    });
+    } );
 
     return {
       getForms               : getForms,
@@ -85,12 +85,12 @@
         iscFormsApi.getFormStatuses( formType ).then(function ( results ) {
           _.set( _typeCache, formType, results );
           deferred.resolve( filterResults( results ) );
-        });
+        } );
         return deferred.promise;
       }
 
       function filterResults( array ) {
-        var filteredArray = limitToActive ? _.filter( array, { status: 'Active' }) : array;
+        var filteredArray = limitToActive ? _.filter( array, { status: 'Active' } ) : array;
         return allowMultiple ? filteredArray : _.first( filteredArray );
       }
     }
@@ -119,19 +119,19 @@
         _.forEach( existingFormsToInactivate, function ( form ) {
           if ( form.formKey !== formStatus.formKey ) {
             form.status = 'Inactive';
-            formStatuses.push({
+            formStatuses.push( {
               formKey: form.formKey,
               status : 'Inactive'
-            });
+            } );
           }
-        });
+        } );
       }
 
       // Update the local cache, if it is populated
       if ( cache.length ) {
         _.forEach( formStatuses, function ( form ) {
-          _.find( cache, { formKey: form.formKey }).status = form.status;
-        });
+          _.find( cache, { formKey: form.formKey } ).status = form.status;
+        } );
       }
 
       // Submit to REST api
@@ -156,11 +156,11 @@
         getFormDefinition( formKey ).then(function ( formDefinition ) {
           _.forEach( formDefinition.form.pages, function ( page ) {
             _getEmbeddedForms( page.fields, formDefinition.subforms );
-          });
+          } );
 
           _validationCache[formKey] = validations;
           deferred.resolve( validations );
-        });
+        } );
       }
 
       return deferred.promise;
@@ -172,12 +172,12 @@
           }
           // If a collection, register it with the validation safety net
           else if ( field.type === 'embeddedFormCollection' ) {
-            validations.push({
+            validations.push( {
               key   : field.key,
               fields: subforms[_.get( field, 'data.embeddedType' )] || []
-            });
+            } );
           }
-        });
+        } );
       }
     }
 
@@ -223,7 +223,7 @@
           else {
             _.forEach( form.pages, function ( page ) {
               primaryPromises = primaryPromises.concat( _processFields( page.fields ) );
-            });
+            } );
           }
 
           // If an FDN-specified dataModelInit function is indicated, fetch this as a user script
@@ -233,9 +233,9 @@
                 var script         = parseScript( response );
                 form.dataModelInit = (function ( iscHttpapi ) {
                   return script;
-                })();
+                } )();
                 return true;
-              });
+              } );
             primaryPromises.push( scriptPromise );
           }
 
@@ -252,14 +252,14 @@
 
               // Make a deep copy for the view mode version
               var viewMode = {
-                form    : angular.merge({}, form ),
+                form    : angular.merge( {}, form ),
                 subforms: subforms
               };
 
               // Replace templates in the view mode with readonly versions
               _.forEach( viewMode.form.pages, function ( page ) {
                 replaceTemplates( page.fields );
-              });
+              } );
 
               // Cache it separately
               _.set( _viewModeFormsCache, formKey, viewMode );
@@ -273,8 +273,8 @@
                 default:
                   deferred.resolve( editMode );
               }
-            });
-          });
+            } );
+          } );
 
           /**
            * @memberOf iscFormsModel
@@ -287,12 +287,12 @@
           function _processFields( fields ) {
             var fieldPromises = [];
             _.forEach( fields, function ( field ) {
-              var expProps    = _.get( field, 'expressionProperties', {}),
+              var expProps    = _.get( field, 'expressionProperties', {} ),
                   label       = _.get( field, 'templateOptions.label' ),
                   type        = _.get( field, 'type' ),
                   extendsType = _.get( field, 'extends' ),
                   fieldGroup  = _.get( field, 'fieldGroup' ),
-                  data        = _.get( field, 'data', {});
+                  data        = _.get( field, 'data', {} );
 
               // A field group does not have its own type, but contains fields in the fieldGroup array
               if ( fieldGroup ) {
@@ -346,7 +346,7 @@
                   _getCustomTemplate( type );
                 }
               }
-            });
+            } );
             return fieldPromises;
 
             function _processUserScript( field, scriptName ) {
@@ -358,11 +358,11 @@
                   if ( getApi ) {
                     script.api.get = (function ( iscHttpapi ) {
                       return getApi;
-                    })();
+                    } )();
                   }
                   _.set( field, 'data.userModel', script );
                   return true;
-                });
+                } );
               primaryPromises.push( scriptPromise );
             }
 
@@ -408,7 +408,7 @@
                               page = _.get( pages, embeddedPage );
                             }
                             else {
-                              page = _.find( pages, { name: embeddedPage });
+                              page = _.find( pages, { name: embeddedPage } );
                             }
                           }
                           // If no page was provided, use the first one
@@ -424,9 +424,9 @@
 
                         if ( isCollection ) {
                           // Push a subform listener into the fields list
-                          fields.push({
+                          fields.push( {
                             'type': 'embeddedFormListener'
-                          });
+                          } );
 
                           // Update the subforms hash table
                           subforms[embeddedType] = fields;
@@ -437,7 +437,7 @@
                           // Update the fields in this embedded form from the looked-up form
                           _.set( field, 'templateOptions.fields', fields );
                         }
-                      })
+                      } )
                   );
                 }
 
@@ -458,7 +458,7 @@
               .then(function ( response ) {
                 _processScript( response );
                 return true;
-              });
+              } );
             primaryPromises.push( scriptPromise );
 
             /**
@@ -499,7 +499,7 @@
                     .then(function ( templateMarkup ) {
                       $templateCache.put( templateHtml, templateMarkup );
                       return true;
-                    });
+                    } );
                   secondaryPromises.push( htmlPromise );
                 }
               }
@@ -549,7 +549,7 @@
               }
             }
           }
-        });
+        } );
 
         return deferred.promise;
       }
@@ -570,7 +570,7 @@
           forceDataInheritance( field.fieldGroup );
         }
         else if ( field.type ) {
-          var data              = _.get( field, 'data', {});
+          var data              = _.get( field, 'data', {} );
           var ancestorDataStack = _.compact( _getAncestors( field.type ) ),
               ancestorData;
 
@@ -581,7 +581,7 @@
 
           _.set( field, 'data', data );
         }
-      });
+      } );
 
       /**
        * @memberOf iscFormsModel
@@ -619,7 +619,7 @@
           replaceTemplates( field.fieldGroup );
         }
         else {
-          var data            = _.get( field, 'data.viewMode', {}),
+          var data            = _.get( field, 'data.viewMode', {} ),
               viewTemplate    = data.template,
               viewTemplateUrl = data.templateUrl;
           if ( viewTemplate ) {
@@ -650,7 +650,7 @@
             }
           }
         }
-      });
+      } );
     }
 
     /**
@@ -666,4 +666,4 @@
       return eval( script ); // jshint ignore:line
     }
   }
-})();
+} )();

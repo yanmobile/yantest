@@ -26,4 +26,4 @@
       iscScrollContainerService.registerScrollingContent( element );
     }
   }
-})();
+} )();

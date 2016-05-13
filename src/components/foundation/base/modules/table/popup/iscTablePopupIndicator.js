@@ -46,8 +46,8 @@
     function controller( $scope ) {
       var self      = this;
       self.inPopup  = true;
-      self.commands = ( _.find( $scope.iscTblCtrl.tableConfig.columns, { type: 'commands' }) || {}).commands;
+      self.commands = ( _.find( $scope.iscTblCtrl.tableConfig.columns, { type: 'commands' } ) || {} ).commands;
     }
   }// END CLASS
 
-})();
+} )();

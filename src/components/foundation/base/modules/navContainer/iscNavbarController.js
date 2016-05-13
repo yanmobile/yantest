@@ -45,7 +45,7 @@
 
       setPageState         : setPageState,
       setTabActiveState    : setTabActiveState
-    });
+    } );
 
     setShowRoles();
 
@@ -92,26 +92,26 @@
     //
     $rootScope.$on( AUTH_EVENTS.sessionChange, function () {
       self.isAuthenticated = iscSessionModel.isAuthenticated();
-    });
+    } );
 
     $rootScope.$on( AUTH_EVENTS.sessionResumedSuccess, function () {
       self.isAuthenticated = iscSessionModel.isAuthenticated();
-    });
+    } );
 
     //
     $rootScope.$on( '$stateChangeSuccess', function ( event, toState, toParams, fromState, fromParams ) {
       channel.debug( 'iscNavbarController.$stateChangeSuccess', arguments );
       self.setPageState( toState.name );
       setShowRoles();
-    });
+    } );
 
     // when you refresh the page, this will reset the active state of the selected tab
     $scope.$evalAsync(function () {
       channel.debug( 'iscNavbarController setting page name to', $state.$current.name );
       self.setPageState( $state.$current.name );
-    });
+    } );
 
   } // END CLASS
 
-})();
+} )();
 

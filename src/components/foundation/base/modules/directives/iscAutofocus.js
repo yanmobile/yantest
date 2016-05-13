@@ -64,10 +64,10 @@
     function link ( scope, elem, attr ) {
       $timeout(function () {
         elem[ 0 ].focus();
-      });
+      } );
 
     }//END LINK
 
   }//END CLASS
 
-})();
+} )();

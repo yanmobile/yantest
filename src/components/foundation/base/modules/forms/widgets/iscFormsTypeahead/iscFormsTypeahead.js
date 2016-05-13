@@ -144,7 +144,7 @@
             ctrl.selectedItem = null;
             ctrl.isDirty      = true;
             ctrl.inputVal     = input.val();
-          });
+          } );
         }
       }
 
@@ -172,4 +172,4 @@
     }
   }
 
-})();
+} )();

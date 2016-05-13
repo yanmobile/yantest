@@ -64,7 +64,7 @@
 
       if ( contentIndex !== undefined && !isNaN( scrollPosition ) ) {
         if ( duration ) {
-          scrollingContent[contentIndex].animate({
+          scrollingContent[contentIndex].animate( {
             scrollTop: position
           }, duration );
         }
@@ -96,4 +96,4 @@
     }
   }
 
-})();
+} )();

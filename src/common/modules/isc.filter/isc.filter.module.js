@@ -11,4 +11,4 @@
   angular
     .module( 'isc.filters', ['isc.core'] );
 
-})();
+} )();

@@ -50,11 +50,11 @@
           string += ', ';
         }
 
-      });
+      } );
 
       return string;
     }
 
   }//END CLASS
 
-})();
+} )();

@@ -66,5 +66,5 @@
       return $q.reject( res );
     }
   }
-})();
+} )();
 

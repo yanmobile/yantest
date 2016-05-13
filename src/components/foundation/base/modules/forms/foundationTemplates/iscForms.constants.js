@@ -8,6 +8,6 @@
       setFormModel  : 'iscFormsSetFormModel',
       showSubform   : 'iscFormsShowSubform',
       hideSubform   : 'iscFormsHideSubform'
-    });
+    } );
 
-})();
+} )();

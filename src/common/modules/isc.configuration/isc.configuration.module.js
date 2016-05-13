@@ -12,4 +12,4 @@
   angular
     .module( 'isc.configuration', ['isc.core'] );
 
-})();
+} )();

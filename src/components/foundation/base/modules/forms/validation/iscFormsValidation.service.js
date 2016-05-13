@@ -70,8 +70,8 @@
               if ( control.$setTouched ) {
                 control.$setTouched();
               }
-            });
-          });
+            } );
+          } );
           return {
             isValid: false,
             $error : form.$error
@@ -118,8 +118,8 @@
                 fields: collectionConfig.fields
               }
             );
-          });
-        });
+          } );
+        } );
 
         // Destroy any existing formly-form
         delete validation.form;
@@ -190,14 +190,14 @@
               // Update formState._validation
               _.forEach( options.formState._validation, function ( existingValidation ) {
                 delete options.formState._validation[existingValidation];
-              });
+              } );
               _.extend( options.formState._validation, validationErrors );
 
               // Resolve results
-              deferred.resolve({
+              deferred.resolve( {
                 isValid: _.isEmpty( validationErrors ),
                 errors : validationErrors
-              });
+              } );
             }
           }
 
@@ -234,4 +234,4 @@
         }
       }
     }
-})();
+} )();

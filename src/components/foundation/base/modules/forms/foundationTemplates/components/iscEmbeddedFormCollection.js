@@ -72,7 +72,7 @@
 
       // Inherit formState for subform
       self.subformOptions = {
-        formState: _.extend({}, self.formState )
+        formState: _.extend( {}, self.formState )
       };
       self.subform        = {};
 
@@ -102,7 +102,7 @@
 
       // Flatten field groups down for table header and cell iteration
       var type    = _.get( opts, 'data.embeddedType' );
-      self.fields = angular.merge({}, subforms[type] );
+      self.fields = angular.merge( {}, subforms[type] );
       mergeBuiltInTemplates( self.fields );
 
       createTableFields();
@@ -177,7 +177,7 @@
       // Watches
       $scope.$watch( getValidation, function ( value ) {
         self.validationErrors = _.get( value, 'records' );
-      });
+      } );
 
       // Private/helper functions
       /**
@@ -207,7 +207,7 @@
             type            : field.type,
             dateFormat      : self.dateFormat
           };
-        });
+        } );
 
         // Actions
         if ( self.mode !== 'view' ) {
@@ -261,7 +261,7 @@
             }
 
           }
-        });
+        } );
       }
 
       /**
@@ -327,7 +327,7 @@
               onCancel : self.cancel,
               onSubmit : self.saveForm,
               scrollPos: iscScrollContainerService.getCurrentScrollPosition()
-            });
+            } );
         }
       }
 
@@ -364,4 +364,4 @@
 
   }//END CLASS
 
-})();
+} )();

@@ -61,11 +61,11 @@
       var currentState = !!selectedItem.$$selected;
       radioGroup.forEach(function ( item ) {
         item.$$selected = false;
-      });
+      } );
 
       selectedItem.$$selected = !currentState;
     }
 
   }// END CLASS
 
-})();
+} )();

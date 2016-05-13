@@ -4,4 +4,4 @@
   angular
     .module( 'isc.router', ['isc.core'] );
 
-})();
+} )();

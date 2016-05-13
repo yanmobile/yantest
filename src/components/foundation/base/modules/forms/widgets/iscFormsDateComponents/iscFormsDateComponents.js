@@ -192,7 +192,7 @@
 
         function clearNgModel() {
           if ( modelAsObject ) {
-            ngModel.$setViewValue({});
+            ngModel.$setViewValue( {} );
           }
           else {
             ngModel.$setViewValue( '' );
@@ -335,18 +335,18 @@
         if ( this.value.length === 2 ) {
           $day.focus();
         }
-      });
+      } );
 
       $day.on( 'input', function onChange() {
         if ( this.value.length === 2 ) {
           $year.focus();
         }
-      });
+      } );
 
       $year.on( 'blur', function onBlur() {
         ngModel.$setTouched();
-      });
+      } );
     }
 
   }//END CLASS
-})();
+} )();

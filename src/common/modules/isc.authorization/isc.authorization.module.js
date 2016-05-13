@@ -7,4 +7,4 @@
 
   angular.module( 'isc.authorization', ['isc.authentication'] );
 
-})();
+} )();

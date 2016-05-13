@@ -100,7 +100,7 @@
          */
       function getCommandCallback( command, domCallback ) {
         var callback       = domCallback;
-        var commandsColumn = _.find( self.iscTblCtrl.tableConfig.columns, { type: 'commands' });
+        var commandsColumn = _.find( self.iscTblCtrl.tableConfig.columns, { type: 'commands' } );
         if ( _.isNil( callback ) && commandsColumn ) {
           callback = _.get( commandsColumn, 'commands.' + command + '.callback' );
 
@@ -120,7 +120,7 @@
       var apicall = _.get( self, 'iscTblCtrl.tableConfig.api.remove', angular.noop );
       apicall( self.dataItem ).then(function() {
         self.iscTblCtrl.deleteRow( self.dataItem );
-      });
+      } );
     }
 
     /**
@@ -178,7 +178,7 @@
 
           self.editModeData = {};
           self.inEditMode   = false;
-        });
+        } );
       }
       else {
         apicall = _.get( self, 'iscTblCtrl.tableConfig.api.update', angular.noop );
@@ -187,9 +187,9 @@
 
           self.editModeData = {};
           self.inEditMode   = false;
-        });
+        } );
       }
     }
   }
 
-})();
+} )();

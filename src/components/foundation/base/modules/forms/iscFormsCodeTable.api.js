@@ -16,7 +16,7 @@
    */
   function iscFormsCodeTableApi( iscHttpapi, apiHelper, iscCustomConfigService ) {
       var config       = iscCustomConfigService.getConfig(),
-          moduleConfig = _.get( config, 'moduleApi', {});
+          moduleConfig = _.get( config, 'moduleApi', {} );
 
       var codeTableUrl = apiHelper.getConfigUrl( moduleConfig.formCodeTables );
 
@@ -39,7 +39,7 @@
         return iscHttpapi.get( codeTableUrl ).then(function ( codeTables ) {
           codeTableCache = codeTables;
           return codeTables;
-        });
+        } );
       }
 
       /**
@@ -54,4 +54,4 @@
       }
     }
 
-})();
+} )();

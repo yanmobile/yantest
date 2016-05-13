@@ -24,8 +24,8 @@
       iscSessionModel.create( storedLoginResponse, false );
       $timeout(function() {
         $rootScope.$emit( AUTH_EVENTS.sessionResumedSuccess );
-      });
+      } );
     }
   }
 
-})();
+} )();

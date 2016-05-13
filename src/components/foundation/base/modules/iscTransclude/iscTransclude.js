@@ -268,9 +268,9 @@
       function updateConfig( config, oldConfig ) {
 
         if ( _.isString( config ) ) {
-          iscTranscludeCtrl.config = angular.copy( scope.$eval( config ) || {});
+          iscTranscludeCtrl.config = angular.copy( scope.$eval( config ) || {} );
         } else {
-          iscTranscludeCtrl.config = angular.copy( config || {});
+          iscTranscludeCtrl.config = angular.copy( config || {} );
         }
 
         config = iscTranscludeCtrl.config;
@@ -307,7 +307,7 @@
             // treat else the same as '@', just without the need to remove '@' char
             retOverrides[propKey] = propValue;
           }
-        });
+        } );
 
         return retOverrides;
       }
@@ -316,4 +316,4 @@
 
   }//END CLASS
 
-})();
+} )();

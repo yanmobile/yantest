@@ -37,11 +37,11 @@
         if ( target ) {
           element.on( 'click', function () {
             $uiViewScroll( target );
-          });
+          } );
         }
       }
 
     }
   }// END CLASS
 
-})();
+} )();
