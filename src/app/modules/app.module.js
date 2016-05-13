@@ -2,7 +2,7 @@
  * Created by hzou on 12/8/15.
  */
 
-( function () {
+( function() {
   'use strict';
   angular
     .module( 'app', [
@@ -14,11 +14,9 @@
     .config( config )
     .run( run );
 
-  function config(
-    $translateProvider, $httpProvider, $compileProvider,
+  function config( $translateProvider, $httpProvider, $compileProvider,
     devlogProvider, iscCustomConfigServiceProvider,
-    coreConfig, componentsConfig, appConfig
-  ) {
+    coreConfig, componentsConfig, appConfig ) {
     _.defaults( appConfig, componentsConfig, coreConfig );
 
     iscCustomConfigServiceProvider.loadConfig( appConfig );
@@ -40,10 +38,8 @@
     }
   }
 
-  function run(
-    devlog, iscNavContainerModel, $rootScope, $state, iscConfirmationService, iscSessionModel, AUTH_EVENTS,
-    loginApi, iscRouterDefaultEventService, appConfig, iscExternalRouteApi, iscStateInit, iscVersionApi, $window
-  ) {
+  function run( devlog, iscNavContainerModel, $rootScope, $state, iscConfirmationService, iscSessionModel, AUTH_EVENTS,
+    loginApi, iscRouterDefaultEventService, appConfig, iscExternalRouteApi, iscStateInit, iscVersionApi, $window ) {
     var log = devlog.channel( 'app.module' );
 
     //register default state event handlers
@@ -51,22 +47,22 @@
 
     // Configure session persistence
     iscSessionModel.configure( {
-      'ping'             : loginApi.ping,
-      'sessionIdPath'    : 'sessionInfo.id',
-      'expirationPath'   : 'sessionInfo.expiresOn',
-      'noResponseMaxAge' : 150
+      'ping'            : loginApi.ping,
+      'sessionIdPath'   : 'sessionInfo.id',
+      'expirationPath'  : 'sessionInfo.expiresOn',
+      'noResponseMaxAge': 150
     } );
 
     iscStateInit.config( {
       'initFunctions': {
-        'versionInfo'    : iscVersionApi.load //grab version info for the footer
+        'versionInfo': iscVersionApi.load //grab version info for the footer
       }
     } );
 
     // ------------------------
     // $viewContentLoaded
     $rootScope.$on( '$viewContentLoaded',
-      function ( event, toState, toParams, fromState, fromParams ) {
+      function( event, toState, toParams, fromState, fromParams ) {
         log.debug( 'AUTH_EVENTS.$viewContentLoaded...' );
         angular.element( '[ui-view]' ).parent().scrollTop( 0 );
       }
@@ -74,7 +70,7 @@
 
     // ------------------------
     // loginSuccess event - after logging in with a new session
-    $rootScope.$on( AUTH_EVENTS.loginSuccess, function () {
+    $rootScope.$on( AUTH_EVENTS.loginSuccess, function() {
       // Handle initial state routing
       var initialState = iscExternalRouteApi.getNextState();
       if ( initialState ) {
@@ -84,43 +80,50 @@
 
     // ------------------------
     // sessionTimeoutConfirm event - when you click 'Log out' on the dialog
-    $rootScope.$on( AUTH_EVENTS.sessionTimeoutConfirm, function () {
+    $rootScope.$on( AUTH_EVENTS.sessionTimeoutConfirm, function() {
       log.debug( 'AUTH_EVENTS.sessionTimeoutConfirm...' );
       iscSessionModel.destroy();
     } );
 
-    $rootScope.$on( AUTH_EVENTS.notAuthenticated, function () {
+    $rootScope.$on( AUTH_EVENTS.notAuthenticated, function() {
       log.debug( 'AUTH_EVENTS.notAuthenticated...' );
-      $state.go( 'unauthenticated.login' );
+      loginApi
+        .logout()
+        .finally( function() {
+          iscSessionModel.destroy();
+          $state.go( 'unauthenticated.login' );
+        } );
     } );
 
     // ----------------------
     // session logout
-    $rootScope.$on( AUTH_EVENTS.logout, function () {
+    $rootScope.$on( AUTH_EVENTS.logout, function() {
       log.debug( 'AUTH_EVENTS.logout...' );
       loginApi.logout().then( iscSessionModel.destroy );
     } );
 
     // ------------------------
     // sessionTimeoutWarning event - issued when session timeout hits warnThreshold
-    $rootScope.$on( AUTH_EVENTS.sessionTimeoutWarning, function () {
+    $rootScope.$on( AUTH_EVENTS.sessionTimeoutWarning, function() {
       log.debug( 'AUTH_EVENTS.sessionTimeoutWarning...' );
       iscConfirmationService
         .show( 'Session is about to expire. Continue working?' )
         .then( _onYes, _onNo );
 
       function _onYes() {
+        log.debug( '_onYes...' );
         iscSessionModel.resetSessionTimeout();
       }
 
       function _onNo() {
+        log.debug( '_onNo...' );
         iscSessionModel.destroy();
       }
     } );
 
     // ------------------------
     // sessionTimeout event
-    $rootScope.$on( AUTH_EVENTS.sessionTimeout, function () {
+    $rootScope.$on( AUTH_EVENTS.sessionTimeout, function() {
       log.debug( 'AUTH_EVENTS.sessionTimeout...' );
       var state  = $state.current,
           params = $state.params;
@@ -142,7 +145,7 @@
 
     // ------------------------
     // user session changed
-    $rootScope.$on( 'iscSessionChange', function () {
+    $rootScope.$on( 'iscSessionChange', function() {
       log.debug( 'iscNavbarController.iscSessionChange..' );
       _.defer( iscNavContainerModel.navigateToUserLandingPage, 0 );
     } );
