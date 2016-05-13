@@ -270,7 +270,7 @@
               return baseSelection();
             }
           }
-            // Base selection handler for browsers that do not (Chrome)
+          // Base selection handler for browsers that do not (Chrome)
           catch ( x ) {
             return baseSelection();
           }

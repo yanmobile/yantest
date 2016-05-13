@@ -199,7 +199,7 @@
     // ----------------------------
 
     var directive = {
-      scope: {
+      scope           : {
         tableConfig       : '=',
         tableData         : '=',
         filterFunction    : '&?',
@@ -208,8 +208,8 @@
         tableName         : '@'
       },
 
-      restrict: 'E',
-      replace : true,
+      restrict        : 'E',
+      replace         : true,
 
       templateUrl     : function( elem, attrs ) {
         return attrs.templateUrl || 'table/iscTable.html';

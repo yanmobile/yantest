@@ -31,18 +31,18 @@
     var self = this;
 
     angular.extend( self, {
-      iscUiHelper  : iscUiHelper,
-      configService: iscCustomConfigService,
-      sessionModel : iscSessionModel,
+      iscUiHelper          : iscUiHelper,
+      configService        : iscCustomConfigService,
+      sessionModel         : iscSessionModel,
 
       sectionTranslationKey: '',
 
-      getTabs  : iscNavContainerModel.getTopNav,
-      userRoles: [],
-      logout   : logout,
+      getTabs              : iscNavContainerModel.getTopNav,
+      userRoles            : [],
+      logout               : logout,
 
-      setPageState     : setPageState,
-      setTabActiveState: setTabActiveState
+      setPageState         : setPageState,
+      setTabActiveState    : setTabActiveState
     } );
 
     setShowRoles();

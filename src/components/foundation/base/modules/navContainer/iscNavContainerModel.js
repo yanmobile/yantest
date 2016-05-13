@@ -39,10 +39,10 @@
 
     var model = {
 
-      getTopNav: getTopNav,
+      getTopNav                : getTopNav,
 
-      getVersionInfo: getVersionInfo,
-      setVersionInfo: setVersionInfo,
+      getVersionInfo           : getVersionInfo,
+      setVersionInfo           : setVersionInfo,
 
       navigateToUserLandingPage: navigateToUserLandingPage
     };
