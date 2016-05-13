@@ -1,7 +1,7 @@
 /**
  * Created by douglasgoodman on 12/9/14.
  */
-(function() {
+( function() {
   'use strict';
 
   // ----------------------------
@@ -104,4 +104,4 @@
       } );
     }
   }// END CLASS
-})();
+} )();

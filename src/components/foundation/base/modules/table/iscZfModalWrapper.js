@@ -24,7 +24,7 @@
 
  */
 
-(function() {
+( function() {
   'use strict';
 
   angular.module( 'isc.table' )
@@ -108,4 +108,4 @@
 
   }//END CLASS
 
-})();
+} )();

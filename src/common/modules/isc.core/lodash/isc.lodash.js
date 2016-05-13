@@ -5,7 +5,7 @@
  *
  */
 
-(function() {
+( function() {
   'use strict';
 
   var origGet      = _.get;
@@ -197,4 +197,4 @@
   }
 
   //END CLASS
-})();
+} )();

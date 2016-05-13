@@ -2,7 +2,7 @@
  * Created by Henry Zou 11/8/2015
  */
 
-(function() {
+( function() {
   'use strict';
 
   angular.module( 'isc.core' )
@@ -26,5 +26,5 @@
       GatewayTimeout    : 505
     } );
 
-})();
+} )();
 

@@ -4,7 +4,7 @@
 
 // ******* NOTE: The ng-model you put on this element has to reference a property of a property on scope, not a property on scope **********
 
-(function() {
+( function() {
   'use strict';
   // ----------------------------
   // injection
@@ -90,4 +90,4 @@
 
   }//END CLASS
 
-})();
+} )();

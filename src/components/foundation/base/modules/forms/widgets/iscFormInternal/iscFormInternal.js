@@ -1,4 +1,4 @@
-(function() {
+( function() {
   'use strict';
 
   angular.module( 'isc.forms' )
@@ -329,5 +329,5 @@
       }
     }
   }
-})
+} )
 ();

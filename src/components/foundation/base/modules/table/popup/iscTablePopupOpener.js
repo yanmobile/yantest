@@ -5,7 +5,7 @@
 
 // opens zf-modal when inEditMode changes to 'popup'
 
-(function() {
+( function() {
   'use strict';
 
   // ----------------------------
@@ -56,4 +56,4 @@
       } );
     }
   }// END CLASS
-})();
+} )();

@@ -2,7 +2,7 @@
  * Created by Henry Zou on 11/21/15.
  */
 
-(function() {
+( function() {
   'use strict';
 
   // ----------------------------
@@ -54,4 +54,4 @@
     }
   }// END CLASS
 
-})();
+} )();

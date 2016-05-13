@@ -1,7 +1,7 @@
 /**
  * Created by paul robbins on 12/11/15
  */
-(function() {
+( function() {
   'use strict';
 
   angular.module( 'isc.router' )
@@ -140,5 +140,5 @@
     }
 
   }
-})();
+} )();
 

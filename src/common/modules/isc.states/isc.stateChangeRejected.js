@@ -1,7 +1,7 @@
 /**
  * copied from: https://gist.github.com/deanapeterson/b93b48fd8c258861f26b
  */
-(function() {
+( function() {
   'use strict';
 
   /**

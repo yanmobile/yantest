@@ -4,7 +4,7 @@
  * To be used with iscTransclude
  */
 
-(function() {
+( function() {
   'use strict';
   // ----------------------------
   // injection
@@ -47,4 +47,4 @@
     };
   }//END CLASS
 
-})();
+} )();

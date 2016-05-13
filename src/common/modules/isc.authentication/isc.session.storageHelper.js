@@ -2,7 +2,7 @@
  * Created by douglasgoodman on 11/18/14.
  */
 
-(function() {
+( function() {
   'use strict';
   // ----------------------------
   // injection
@@ -131,4 +131,4 @@
 
   }// END CLASS
 
-})();
+} )();

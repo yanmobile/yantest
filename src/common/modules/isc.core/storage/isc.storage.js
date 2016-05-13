@@ -2,7 +2,7 @@
  * Created by hzou on 1/19/16.
  */
 
-(function() {
+( function() {
   'use strict';
 
   angular
@@ -90,4 +90,4 @@
     }
   }
 
-})();
+} )();
