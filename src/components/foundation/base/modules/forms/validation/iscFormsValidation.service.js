@@ -1,4 +1,4 @@
-(function() {
+( function() {
   'use strict';
 
   /* @ngInject */
@@ -234,4 +234,4 @@
       }
     }
   }
-})();
+} )();

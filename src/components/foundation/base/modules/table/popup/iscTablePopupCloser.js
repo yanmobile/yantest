@@ -5,7 +5,7 @@
 
 // closes zf-modal when 'ESCAPE' key is pressed
 
-(function() {
+( function() {
   'use strict';
 
   // ----------------------------
@@ -57,4 +57,4 @@
     }
   }// END CLASS
 
-})();
+} )();

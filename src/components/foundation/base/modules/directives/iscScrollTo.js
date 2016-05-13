@@ -1,4 +1,4 @@
-(function() {
+( function() {
   'use strict';
 
   angular.module( 'isc.directives' )
@@ -44,4 +44,4 @@
     }
   }// END CLASS
 
-})();
+} )();

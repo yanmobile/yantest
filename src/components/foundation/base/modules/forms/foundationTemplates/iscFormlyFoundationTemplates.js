@@ -1,4 +1,4 @@
-(function() {
+( function() {
   'use strict';
 
   /** Templates adapted from angular-formly-templates-foundation 1.0.0-beta.1
@@ -301,7 +301,7 @@
           var templateOptions = $scope.to;
           var opts            = $scope.options;
 
-          $scope.efModel = $scope.model[opts.key] = ( $scope.model[opts.key] || {});
+          $scope.efModel = $scope.model[opts.key] = ( $scope.model[opts.key] || {} );
           $scope.efFields  = templateOptions.fields;
           $scope.efOptions = {
             formState: $scope.formState
@@ -334,4 +334,4 @@
     }
 
   }
-})();
+} )();

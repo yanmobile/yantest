@@ -1,4 +1,4 @@
-(function() {
+( function() {
   'use strict';
 
   /* @ngInject */
@@ -63,4 +63,4 @@
       return $window.hsModelUtils.getError( module, spec );
     }
   }
-})();
+} )();

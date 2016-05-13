@@ -1,4 +1,4 @@
-(function() {
+( function() {
   'use strict';
 
   angular.module( 'isc.states' )
@@ -60,5 +60,5 @@
     }
   }//END CLASS
 
-})();
+} )();
 

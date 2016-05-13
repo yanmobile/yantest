@@ -1,4 +1,4 @@
-(function() {
+( function() {
   'use strict';
 
   /**
@@ -95,7 +95,7 @@
             allowInvalid: formsConfig.allowInvalid
           };
 
-          var validators          = field.validators || ( field.validators = {});
+          var validators          = field.validators || ( field.validators = {} );
           // Executes external/HS validation api
           validators.hsValidation = {
             expression: 'hsValidation.getError(options.key)',
@@ -380,4 +380,4 @@
     }
 
   }
-})();
+} )();

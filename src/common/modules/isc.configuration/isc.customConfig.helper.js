@@ -2,7 +2,7 @@
  * Created by douglasgoodman on 11/19/14.
  */
 
-(function() {
+( function() {
   'use strict';
 
   // ----------------------------
@@ -53,4 +53,4 @@
 
   }// END CLASS
 
-})();
+} )();

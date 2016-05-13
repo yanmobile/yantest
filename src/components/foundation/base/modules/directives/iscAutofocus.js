@@ -13,7 +13,7 @@
  * License: MIT
  */
 
-(function() {
+( function() {
   'use strict';
   // ----------------------------
   // injection
@@ -70,4 +70,4 @@
 
   }//END CLASS
 
-})();
+} )();

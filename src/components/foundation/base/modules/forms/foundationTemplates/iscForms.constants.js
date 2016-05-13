@@ -1,4 +1,4 @@
-(function() {
+( function() {
   'use strict';
 
   angular
@@ -10,4 +10,4 @@
       hideSubform   : 'iscFormsHideSubform'
     } );
 
-})();
+} )();

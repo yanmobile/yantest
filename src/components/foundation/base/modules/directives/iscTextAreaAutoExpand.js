@@ -39,7 +39,7 @@
  * Usage: <textarea isc-text-area-autoExpand ng-model="someValue"></textarea>
  **/
 
-(function() {
+( function() {
   'use strict';
   // ----------------------------
   // injection
@@ -188,4 +188,4 @@
 
   }//END CLASS
 
-})();
+} )();

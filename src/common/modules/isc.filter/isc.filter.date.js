@@ -4,7 +4,7 @@
 // This filter contains standards for Date display for consistency
 // for custom formatting, please refer to http://momentjs.com/docs/#/displaying/format/
 
-(function() {
+( function() {
   'use strict';
   // ----------------------------
   // injection
@@ -46,4 +46,4 @@
 
   }//END CLASS
 
-})();
+} )();

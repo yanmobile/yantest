@@ -2,7 +2,7 @@
  * Created by hzou on 1/13/16.
  */
 
-(function() {
+( function() {
   'use strict';
 
   angular.module( 'isc.fauxTable' )
@@ -96,4 +96,4 @@
 
   }//END CLASS
 
-})();
+} )();

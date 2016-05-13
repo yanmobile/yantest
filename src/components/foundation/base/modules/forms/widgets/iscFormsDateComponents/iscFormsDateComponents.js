@@ -3,7 +3,7 @@
  *
  */
 
-(function() {
+( function() {
   'use strict';
 
   angular.module( 'isc.core' )
@@ -349,4 +349,4 @@
     }
 
   }//END CLASS
-})();
+} )();

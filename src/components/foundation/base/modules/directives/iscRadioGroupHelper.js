@@ -6,7 +6,7 @@
  * but if you need to call it in an outside function, this can be used
  */
 
-(function() {
+( function() {
   'use strict';
 
   // ----------------------------
@@ -68,4 +68,4 @@
 
   }// END CLASS
 
-})();
+} )();

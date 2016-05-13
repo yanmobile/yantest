@@ -5,7 +5,7 @@
 //SRC LINK: http://www.html5rocks.com/en/tutorials/frameworks/angular-websockets/
 //$evalAsync vs $apply: http://www.bennadel.com/blog/2605-scope-evalasync-vs-timeout-in-angularjs.htm
 
-(function() {
+( function() {
   'use strict';
 
   angular
@@ -48,4 +48,4 @@
       } );
     }
   }
-})();
+} )();

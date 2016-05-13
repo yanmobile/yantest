@@ -4,10 +4,10 @@
 
 //SRC LINK: http://www.html5rocks.com/en/tutorials/frameworks/angular-websockets/
 
-(function() {
+( function() {
   'use strict';
 
   angular
     .module( 'isc.socket', [] );
 
-})();
+} )();

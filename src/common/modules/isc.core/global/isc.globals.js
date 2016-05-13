@@ -1,7 +1,7 @@
 /**
  * Created by douglasgoodman on 11/21/14.
  */
-(function() {
+( function() {
   'use strict';
 
   /* @ngInject */
@@ -137,4 +137,4 @@
   angular.module( 'isc.core' )
     .factory( '$global', iscGlobals );
 
-})();
+} )();

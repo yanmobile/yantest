@@ -1,4 +1,4 @@
-(function() {
+( function() {
   'use strict';
 
   /**
@@ -131,4 +131,4 @@
 
   }
 
-})();
+} )();

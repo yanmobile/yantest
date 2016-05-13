@@ -2,7 +2,7 @@
  * Created by douglasgoodman on 11/18/14.
  */
 
-(function() {
+( function() {
   'use strict';
 
   angular.module( 'isc.authentication' )
@@ -401,5 +401,5 @@
     }
   }// END CLASS
 
-})();
+} )();
 

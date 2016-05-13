@@ -1,7 +1,7 @@
 /**
  * Created by Henry Zou on 11/23/14.
  */
-(function() {
+( function() {
   'use strict';
 
   angular.module( 'isc.http' )
@@ -69,4 +69,4 @@
     }
   }// END CLASS
 
-})();
+} )();

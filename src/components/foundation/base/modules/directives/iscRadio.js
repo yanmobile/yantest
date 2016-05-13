@@ -9,7 +9,7 @@
  * <isc-radio radio-item="scope.selectedItem" radio-group="myRadioGroup" ng-click="onRadioSelect( scope.selectedItem )><isc-radio>
  */
 
-(function() {
+( function() {
   'use strict';
   // ----------------------------
   // injection
@@ -73,4 +73,4 @@
 
   }//END CLASS
 
-})();
+} )();

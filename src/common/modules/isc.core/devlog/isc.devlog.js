@@ -1,7 +1,7 @@
 /**
  * Created by Henry Zou on 4/17/2016.
  */
-(function() {
+( function() {
   'use strict';
 
   var blacklist;
@@ -178,4 +178,4 @@
 
   }
 
-})();
+} )();
