@@ -45,27 +45,27 @@
       }
     };
  */
-(function () {
+( function () {
 
   'use strict';
 
-  angular.module('layout')
-    .controller('sideNavController', sideNavController);
+  angular.module( 'layout' )
+    .controller( 'sideNavController', sideNavController );
 
-  function sideNavController($state, devlog, secondLevel) {
-    var log = devlog.channel('sideNavController');
-    log.debug('sideNavController LOADED');
+  function sideNavController( $state, devlog, secondLevel ) {
+    var log = devlog.channel( 'sideNavController' );
+    log.debug( 'sideNavController LOADED' );
 
     // ----------------------------
     // vars
     // ----------------------------
     var self      = this;
-    log.log('$state.current', $state.current);
-    log.log('$state.current.name', $state.current.name);
-    log.log('secondLevel', secondLevel);
+    log.log( '$state.current', $state.current );
+    log.log( '$state.current.name', $state.current.name );
+    log.log( 'secondLevel', secondLevel );
 
     self.navItems = secondLevel;
 
   }// END CLASS
 
-})();
+} )();

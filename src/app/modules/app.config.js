@@ -2,12 +2,12 @@
  * Created by hzou on 12/11/15.
  */
 
-(function () {
+( function () {
   'use strict';
 
   angular
-    .module('app')
-    .constant('appConfig', getConfig());
+    .module( 'app' )
+    .constant( 'appConfig', getConfig() );
 
   /*========================================
    =              app config               =
@@ -24,4 +24,4 @@
     };
   }
 
-})();
+} )();

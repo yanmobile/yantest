@@ -2,14 +2,14 @@
  * Created by hzou on 1/7/16.
  */
 
-(function () {
+( function () {
   'use strict';
 
   angular
-    .module('app')
-    .factory('apiHelper', apiHelper);
+    .module( 'app' )
+    .factory( 'apiHelper', apiHelper );
 
-  function apiHelper(appConfig) {
+  function apiHelper( appConfig ) {
     var service = {
       getUrl      : getUrl,
       getConfigUrl: getConfigUrl,
@@ -19,11 +19,11 @@
 
     ////////////////
 
-    function getUrl(url) {
+    function getUrl( url ) {
       var retUrl = [appConfig.api.protocol + ":/",
         appConfig.api.hostname + ":" + appConfig.api.port,
         appConfig.api.path,
-        url].join('/');
+        url].join( '/' );
       return retUrl;
     }
 
@@ -33,19 +33,19 @@
      * @param {Object} configProp - The configuration property to use when constructing the url.
      * @returns {string} The absolute url destination
      */
-    function getConfigUrl(configProp) {
-      var apiProp = _.merge({}, appConfig.api, configProp);
+    function getConfigUrl( configProp ) {
+      var apiProp = _.merge( {}, appConfig.api, configProp );
       return [apiProp.protocol + ":/",
         apiProp.hostname + ":" + apiProp.port,
-        apiProp.path].join('/');
+        apiProp.path].join( '/' );
     }
 
     function getWsUri() {
       var retUrl = ["ws:/",
-        appConfig.api.hostname + ":" + appConfig.api.port].join('/');
+        appConfig.api.hostname + ":" + appConfig.api.port].join( '/' );
       return retUrl;
     }
   }
 
-})();
+} )();
 
