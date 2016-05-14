@@ -3,7 +3,7 @@
 
   var url = '/fake/url';
 
-  describe('iscStatusCodesInterceptor test', function () {
+  describe('iscAuthenticationInterceptor test', function () {
 
     var fakeConfirmationService;
     var interceptor;
@@ -24,8 +24,8 @@
       $provide.value('iscConfirmationService', fakeConfirmationService);
     }));
 
-    beforeEach(inject(function (iscStatusCodesInterceptor, _$rootScope_, _AUTH_EVENTS_, _statusCode_) {
-      interceptor = iscStatusCodesInterceptor;
+    beforeEach(inject(function (iscAuthenticationInterceptor, _$rootScope_, _AUTH_EVENTS_, _statusCode_) {
+      interceptor = iscAuthenticationInterceptor;
       $rootScope  = _$rootScope_;
       AUTH_EVENTS = _AUTH_EVENTS_;
       statusCode  = _statusCode_;

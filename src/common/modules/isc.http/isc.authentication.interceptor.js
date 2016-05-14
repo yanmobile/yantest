@@ -5,10 +5,10 @@
   'use strict';
 
   angular.module( 'isc.http' )
-    .factory( 'iscStatusCodesInterceptor', iscStatusCodesInterceptor );
+    .factory( 'iscAuthenticationInterceptor', iscAuthenticationInterceptor );
 
   /* @ngInject */
-  function iscStatusCodesInterceptor( $q, $rootScope, AUTH_EVENTS, statusCode, iscConfirmationService ) {//jshint ignore:line
+  function iscAuthenticationInterceptor( $q, $rootScope, AUTH_EVENTS, statusCode, iscConfirmationService ) {//jshint ignore:line
     // ----------------------------
     // factory class
     // ----------------------------
