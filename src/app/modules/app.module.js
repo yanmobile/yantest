@@ -65,12 +65,22 @@
       function( event, toState, toParams, fromState, fromParams ) {
         log.debug( 'AUTH_EVENTS.$viewContentLoaded...' );
         angular.element( '[ui-view]' ).parent().scrollTop( 0 );
+      } );
+
+    // ------------------------
+    // destroy session when the route resolve is rejected because of user's notAuthenticated
+    $rootScope.$on( '$stateChangeRejected', function( event, toState, toParams, fromState, fromParams, error ) {//jshint ignore:line
+      log.debug( '$stateChangeRejected...' );
+
+      if ( error.code === AUTH_EVENTS.notAuthenticated ) {
+        destroySession();
       }
-    );
+    } );
 
     // ------------------------
     // loginSuccess event - after logging in with a new session
     $rootScope.$on( AUTH_EVENTS.loginSuccess, function() {
+      log.debug( 'AUTH_EVENTS.loginSuccess...' );
       // Handle initial state routing
       var initialState = iscExternalRouteApi.getNextState();
       if ( initialState ) {
@@ -89,17 +99,14 @@
       log.debug( 'AUTH_EVENTS.notAuthenticated...' );
       loginApi
         .logout()
-        .finally( function() {
-          iscSessionModel.destroy();
-          $state.go( 'unauthenticated.login' );
-        } );
+        .finally( destroySession );
     } );
 
     // ----------------------
     // session logout
     $rootScope.$on( AUTH_EVENTS.logout, function() {
       log.debug( 'AUTH_EVENTS.logout...' );
-      loginApi.logout().then( iscSessionModel.destroy );
+      loginApi.logout().then( destroySession );
     } );
 
     // ------------------------
@@ -129,7 +136,7 @@
           params = $state.params;
       iscExternalRouteApi.persistCurrentState( state, params, appConfig.session.routeMemoryExpirationInMinutes );
       iscConfirmationService.hide();
-      iscSessionModel.destroy();
+      destroySession();
     } );
 
     // ------------------------
@@ -149,6 +156,16 @@
       log.debug( 'iscNavbarController.iscSessionChange..' );
       _.defer( iscNavContainerModel.navigateToUserLandingPage, 0 );
     } );
+
+    /**
+     * @description     destroys the session and takes the user to the landing page
+     */
+    function destroySession() {
+      log.debug( 'destroySession..' );
+      iscSessionModel.destroy();
+      _.defer( iscNavContainerModel.navigateToUserLandingPage, 0 );
+
+    }
   }
 
 } )();
