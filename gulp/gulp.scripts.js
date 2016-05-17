@@ -73,8 +73,8 @@ function init(gulp, plugins, config, _, util) {
 
     return gulp.src(src)
       .pipe(plugins.sourcemaps.init())
-      .pipe(plugins.concat('7.app.min.js', { newLine: ';' }))
       .pipe(plugins.ngAnnotate())
+      .pipe(plugins.concat('7.app.min.js', { newLine: ';' }))
       // .pipe(plugins.bytediff.start())
       // .pipe(plugins.uglify())
       // .pipe(plugins.bytediff.stop())
