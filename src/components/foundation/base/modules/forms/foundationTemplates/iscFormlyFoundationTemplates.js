@@ -184,7 +184,7 @@
         wrapper       : ['templateLabel', 'templateHasError'],
         defaultOptions: {
           data: {
-            tableCellTemplateUrl: 'shared/templates/cells/cell.date.html'
+            tableCellTemplateUrl: 'forms/foundationTemplates/tableTemplates/cell.date.html'
           }
         }
       } );
