@@ -1,0 +1,7 @@
+This is where you put the custom gulp tasks.
+
+Existing gulp tasks can be overriden in two ways:
+1. Entire file
+   - Simply create a new file in this folder with the same name as the one you wish to override
+2. Single Task
+   - To override a single task, create a new gulp task with the same task name as the one you wish to override and place it in this folder
