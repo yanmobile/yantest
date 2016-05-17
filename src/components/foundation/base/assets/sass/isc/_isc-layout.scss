@@ -7,8 +7,8 @@
 
 // Full Width
 .isc-page {
-  padding-top: 2rem;
-  padding-bottom: 1rem;
+  padding-top: $vertical-container-padding;
+  padding-bottom: $vertical-container-padding;
   width: 100%;
   height: 100%;
   flex: 1 0 auto;
@@ -37,50 +37,36 @@
 // Sidebar Layout (sideNav.html)
 
 #main {
-  padding-top: 2rem;
-  padding-bottom: 1rem;
+  padding-top: $vertical-container-padding;
+  padding-bottom: $vertical-container-padding;
   height: 100%;
-  //flex: 0 0 83.33333%;
 
-  .grid-container, .isc-page, .isc-page.grid-container {
-    padding: 0;
+  .isc-page {
     height: 100%;
-    flex: 0 0 83.33333%;
 
     @media #{$xxlarge} {
-      margin-left: $horizontal-container-padding;
-      margin-right: $horizontal-container-padding;
-      flex: 0 0 83.33333%;
-      max-width: 83.33333%;
+      padding-left: $horizontal-container-padding;
+      padding-right: $horizontal-container-padding;
     }
 
     @media #{$xlarge} {
-      margin-left: $horizontal-container-padding;
-      margin-right: $horizontal-container-padding;
-      flex: 1 0 83.33333%;
-      max-width: 94%;
+      padding-left: $horizontal-container-padding;
+      padding-right: $horizontal-container-padding;
     }
 
     @media #{$large} {
-      margin-left: $horizontal-container-padding;
-      margin-right: $horizontal-container-padding;
-      flex: 1 0 83.33333%;
-      width: 100%;
-      max-width: 95%;
+      padding-left: $horizontal-container-padding;
+      padding-right: $horizontal-container-padding;
     }
 
     @media #{$medium} {
-      margin-left: $horizontal-container-padding-small;
-      margin-right: $horizontal-container-padding-small;
-      flex: 1 0 83.33333%;
-      width: 100%;
+      padding-left: $horizontal-container-padding-small;
+      padding-right: $horizontal-container-padding-small;
     }
 
     @media #{$small} {
-      margin-left: $horizontal-container-padding-small;
-      margin-right: $horizontal-container-padding-small;
-      flex: 1 0 83.33333%;
-      width: 100%;
+      padding-left: $horizontal-container-padding-small;
+      padding-right: $horizontal-container-padding-small;
     }
   }
 }
