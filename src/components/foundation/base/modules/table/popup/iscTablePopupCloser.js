@@ -5,7 +5,7 @@
 
 // closes zf-modal when 'ESCAPE' key is pressed
 
-(function () {
+( function() {
   'use strict';
 
   // ----------------------------
@@ -21,11 +21,11 @@
    * @param devlog
    * @param $global
    * @returns {{restrict: string, link: link}}
-     */
-  function iscTablePopupCloser(devlog, $global ) {
-    var channel = devlog.channel('iscTablePopupCloser');
+   */
+  function iscTablePopupCloser( devlog, $global ) {
+    var channel = devlog.channel( 'iscTablePopupCloser' );
 
-    channel.debug( 'iscTablePopupCloser LOADED');
+    channel.debug( 'iscTablePopupCloser LOADED' );
 
     // ----------------------------
     // vars
@@ -44,7 +44,7 @@
     // ----------------------------
 
     function link( scope, trElem, attrs ) {
-      trElem.on( 'keydown', function (event) {
+      trElem.on( 'keydown', function( event ) {
         if ( event.keyCode === $global.keyCode.ESCAPE ) {
           var $target = $( event.target );
           if ( $target.is( ':input' ) ) {
@@ -57,4 +57,4 @@
     }
   }// END CLASS
 
-})();
+} )();

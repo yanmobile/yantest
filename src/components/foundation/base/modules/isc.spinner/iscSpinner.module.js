@@ -2,11 +2,11 @@
  * Created by hzou on 1/2/16.
  */
 
-(function () {
+( function() {
   'use strict';
 
   angular
-    .module('isc.spinner', []);
+    .module( 'isc.spinner', [] );
 
-})();
+} )();
 

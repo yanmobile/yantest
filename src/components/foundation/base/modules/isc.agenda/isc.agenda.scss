@@ -1,0 +1,23 @@
+agenda { //directive
+  display        : flex;
+  flex-direction : column;
+  .agenda-header {
+    font-size       : 2rem;
+    fong-weight     : 700;
+    justify-content : center;
+  }
+  .agenda-group { //each day as group. it can also be week or whatever grouping the developer defines
+    .agenda-group-header { //header for each group
+      font-size : 1.5rem;
+    }
+
+    .agenda-group-item {
+      padding : 1rem;
+
+      .agenda-group-item-time {
+        font-size       : 1.25rem;
+        justify-content : center;
+      }
+    }
+  }
+}

@@ -2,12 +2,12 @@
  * Created by hzou on 12/11/15.
  */
 
-(function () {
+( function() {
   'use strict';
 
   angular
-    .module('isc.common')
-    .constant('componentsConfig', getConfig());
+    .module( 'isc.common' )
+    .constant( 'componentsConfig', getConfig() );
 
   /*========================================
    =                 config                =
@@ -36,9 +36,9 @@
         }
       },
       'forms'          : {
-        'debounce'             : 75,
-        'allowInvalid'         : true,
-        'updateOn'             : 'change',
+        'debounce'        : 75,
+        'allowInvalid'    : true,
+        'updateOn'        : 'change',
         'updateOnExcluded': [
           'checkbox',
           'multiCheckbox',
@@ -70,4 +70,4 @@
     };
   }
 
-})();
+} )();

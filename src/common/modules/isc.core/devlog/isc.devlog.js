@@ -1,7 +1,7 @@
 /**
  * Created by Henry Zou on 4/17/2016.
  */
-(function () {
+( function() {
   'use strict';
 
   var blacklist;
@@ -10,8 +10,8 @@
   var config;
 
   angular
-    .module('isc.core')
-    .provider('devlog', devlog);
+    .module( 'isc.core' )
+    .provider( 'devlog', devlog );
 
   /**
    * @ngdoc provider
@@ -20,7 +20,7 @@
   function devlog() {
 
     return {
-      loadConfig: function loadConfig(configObj) {
+      loadConfig: function loadConfig( configObj ) {
         config    = configObj;
         blacklist = config.devlogBlacklist;
         whitelist = config.devlogWhitelist;
@@ -35,13 +35,13 @@
    * @param $log
    * @returns {*}
    */
-  function devlogService($log) {
-    $logMethods = _.keysIn($log);
+  function devlogService( $log ) {
+    $logMethods = _.keysIn( $log );
     var Log     = getLogClass();
-    return _.extend({
+    return _.extend( {
       channel: channel,
       logFn  : logFn
-    }, $log);
+    }, $log );
 
     /**
      * @ngdoc provider
@@ -50,24 +50,24 @@
      * @param channelName
      * @returns {*}
      */
-    function channel(channelName) {
+    function channel( channelName ) {
       // needs to be an instance because we want to preserve the channelName across multiple log calls
-      return new Log(channelName);
+      return new Log( channelName );
     }
 
     function getLogClass() {
 
-      function Log(channelName) {
-        var isAllowed = getIsAllowed(channelName, whitelist, blacklist);
-        if (isAllowed) {
-          $log.log('*** devlog channel allowed: ', channelName, ":", isAllowed ? "YES" : "NO", " ***");
+      function Log( channelName ) {
+        var isAllowed = getIsAllowed( channelName, whitelist, blacklist );
+        if ( isAllowed ) {
+          $log.log( '*** devlog channel allowed: ', channelName, ":", isAllowed ? "YES" : "NO", " ***" );
         }
         this.channelName   = channelName;
-        this.channelPrefix = (channelName ? "|" + channelName + "|" : '').toUpperCase();
-        if (isAllowed) {
-          _.extend(this, this.real);
+        this.channelPrefix = ( channelName ? "|" + channelName + "|" : '' );
+        if ( isAllowed ) {
+          _.extend( this, this.real );
         } else {
-          _.extend(this, this.fake);
+          _.extend( this, this.fake );
         }
       }
 
@@ -89,15 +89,15 @@
        * @param blacklist
        * @returns {boolean}
        */
-      function getIsAllowed(channelName, whitelist, blacklist) {
+      function getIsAllowed( channelName, whitelist, blacklist ) {
         var allowed = false;
-        if (_.includes(blacklist, channelName)) {
+        if ( _.includes( blacklist, channelName ) ) {
           allowed = false;
-        } else if (_.isNil(whitelist)) {
+        } else if ( _.isNil( whitelist ) ) {
           allowed = false;
-        } else if (_.isNil(channelName)) {
+        } else if ( _.isNil( channelName ) ) {
           allowed = true;
-        } else if (_.isEqual(whitelist, ["*"]) || _.includes(whitelist, channelName)) {
+        } else if ( _.isEqual( whitelist, ["*"] ) || _.includes( whitelist, channelName ) ) {
           allowed = true;
         }
         return allowed;
@@ -111,22 +111,12 @@
        * @returns {{dir: *, log: *, debug: *, info: *, warn: *, error: *, logFn: Function}}
        */
       function getRealLogger() {
-        var logger = getLogger(logMethod);
+        var logger = getLogger( logMethod );
 
         logger.logFn = logFn;
 
         return logger;
 
-        //////////////////////////
-        function logMethod(method) {
-          return function () {
-            var args = _.toArray(arguments);
-            if (this.channelPrefix) {  //adds this.channelPrefix to be logged
-              args.unshift(this.channelPrefix);
-            }
-            $log[method].apply($log, args);
-          };
-        }
       }
 
       /**
@@ -148,27 +138,44 @@
        * @param logFunc
        * @returns {{}}
        */
-      function getLogger(logFunc) {
+      function getLogger( logFunc ) {
         var logger = {};
 
-        _.forEach($logMethods, function (method) {
-          logger[method] = logFunc ? logFunc(method) : _.noop;
-        });
+        _.forEach( $logMethods, function( method ) {
+          logger[method] = logFunc ? logFunc( method ) : _.noop;
+        } );
 
+        logger.error = logMethod( 'error' );
         return logger;
       }
     }
 
-    function logFn(method) {
-      var args = _.toArray(arguments);
+    function logFn( method ) {
+      var args = _.toArray( arguments );
       args.shift(); //remove the first parameter (method)
 
-      var messages = ["=====", method, "(" + args.join(', ') + ")", "====="];
-      if (this.channelName) {
-        messages.splice(1, 1, this.channelName + "." + method);
+      var messages = ["=====", method, "(" + args.join( ', ' ) + ")", "====="];
+      if ( this.channelName ) {
+        messages.splice( 1, 1, this.channelName + "." + method );
       }
-      $log.log.apply($log, messages);
+      $log.log.apply( $log, messages );
     }
+
+    /**
+     * produces real logger
+     * @param method
+     * @returns {Function}
+     */
+    function logMethod( method ) {
+      return function() {
+        var args = _.toArray( arguments );
+        if ( this.channelPrefix ) {  //adds this.channelPrefix to be logged
+          args.unshift( this.channelPrefix );
+        }
+        $log[method].apply( $log, args );
+      };
+    }
+
   }
 
-})();
+} )();

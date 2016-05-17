@@ -1,9 +1,8 @@
 /**
  * Created by Trevor Hudson on 06/02/15.
  */
-(function(){
+( function() {
   'use strict';
-
 
   angular.module( 'isc.table' )
     .directive( 'iscTableCell', iscTableCell );
@@ -17,11 +16,11 @@
    * @param $templateCache
    * @param $compile
    * @returns {{restrict: string, compile: compile}}
-     */
-  function iscTableCell( devlog, $state, $templateCache, $compile ){
-    var channel = devlog.channel('iscTableCell');
+   */
+  function iscTableCell( devlog, $state, $templateCache, $compile ) {
+    var channel = devlog.channel( 'iscTableCell' );
 
-    channel.debug('iscTableCell.LOADED');
+    channel.debug( 'iscTableCell.LOADED' );
 
     // ----------------------------
     // vars
@@ -32,37 +31,38 @@
     // ----------------------------
 
     var directive = {
-      restrict   : 'A',
-      compile    : compile
+      restrict: 'A',
+      compile : compile
     };
     return directive;
 
     // ----------------------------
     // functions
     // -----------
-    function compile(){
+    function compile() {
       return {
         pre : pre,
         post: post
       };
     }
 
-    function pre(scope, elem, attrs, iscRowCtrl){
+    function pre( scope, elem, attrs, iscRowCtrl ) {
       var defaultTemplate = attrs.templateUrl;
-      if(!defaultTemplate) {
-       defaultTemplate = scope.iscTblCtrl.tableConfig.editable === 'popup' ? 'table/popup/iscTableReadOnlyCell.html' : 'table/iscTableCell.html';
+      if ( !defaultTemplate ) {
+        defaultTemplate = scope.iscTblCtrl.tableConfig.editable === 'popup' ? 'table/popup/iscTableReadOnlyCell.html' : 'table/iscTableCell.html';
       }
 
-      var rowTemplate = _.get(scope, 'iscTblCtrl.tableConfig.rowTemplate', defaultTemplate);
+      var rowTemplate = _.get( scope, 'iscTblCtrl.tableConfig.rowTemplate', defaultTemplate );
 
-      if( rowTemplate ){
+      if ( rowTemplate ) {
         //for some reason the template doesn't like spaces nor comments
-        var template = $templateCache.get(rowTemplate);
-        var output = $compile(template)(scope);
-        elem.html(output);
+        var template = $templateCache.get( rowTemplate );
+        var output   = $compile( template )( scope );
+        elem.html( output );
       }
     }
-    function post( scope, elem, attrs ){//jshint ignore:line
+
+    function post( scope, elem, attrs ) {//jshint ignore:line
 
       // ----------------------------
       // vars
@@ -74,7 +74,7 @@
       scope.mobileClass = scope.$eval( attrs.mobileClass );
 
       scope.state       = $state.current.name;
-      var cellData      = scope.dataItem[ scope.column.key ];
+      var cellData      = scope.dataItem[scope.column.key];
       var defaultText   = scope.column.default;
       scope.displayText = getDisplayText( cellData, defaultText ); //getDisplayText( scope.dataItem[ column.key ], column.default );
       scope.displayUnit = scope.dataItem[scope.column.unit];
@@ -83,11 +83,11 @@
       // functions
       // ----------------------------
 
-      function getTrClass( item ){
-        if( scope.column.className ){
+      function getTrClass( item ) {
+        if ( scope.column.className ) {
           return scope.column.className;
         }
-        else if( scope.column.classGetter ){
+        else if ( scope.column.classGetter ) {
           return scope.column.classGetter( item );
         }
         else {
@@ -98,21 +98,21 @@
       /**
        * @memberOf iscTableCell
        * @returns {*}
-         */
-      function getDisplayText(){
+       */
+      function getDisplayText() {
 
-        var cellData = _.get( scope.dataItem, scope.column.key );
+        var cellData    = _.get( scope.dataItem, scope.column.key );
         var defaultText = scope.column.default;
 
-        if( scope.column.textGetter ){
+        if ( scope.column.textGetter ) {
           return scope.column.textGetter( scope.iscRowCtrl.dataItem );
         }
 
         var retVal;
-        if( scope.notThere( cellData ) && scope.notThere( defaultText ) ){
+        if ( scope.notThere( cellData ) && scope.notThere( defaultText ) ) {
           retVal = '';
         }
-        else if( scope.notThere( cellData ) ){
+        else if ( scope.notThere( cellData ) ) {
           retVal = String( defaultText );
         }
         else {
@@ -126,12 +126,12 @@
        * @memberOf iscTableCell
        * @param val
        * @returns {boolean}
-         */
-      function notThere( val ){
+       */
+      function notThere( val ) {
         return !val && val !== 0;
       }
 
     }
   }
 
-})();
+} )();

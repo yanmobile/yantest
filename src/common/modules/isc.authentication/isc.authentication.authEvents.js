@@ -2,19 +2,19 @@
  * Created by hzou on 12/8/15.
  */
 
-(function () {
+( function() {
   'use strict';
 
-    /**
-     * @memberof core-ui-authentication
-     * @ngdoc constant
-     * @name AUTH_EVENTS
-     * @description
-     * Please click the "source" link on the header to see the constants
-     */
+  /**
+   * @memberof core-ui-authentication
+   * @ngdoc constant
+   * @name AUTH_EVENTS
+   * @description
+   * Please click the "source" link on the header to see the constants
+   */
   angular
-    .module('isc.authentication')
-    .constant('AUTH_EVENTS', {
+    .module( 'isc.authentication' )
+    .constant( 'AUTH_EVENTS', {
       loginError           : 'iscLoginError',
       loginSuccess         : 'iscLoginSuccess',
       loginFailed          : 'iscLoginFailed',
@@ -22,7 +22,7 @@
       logoutSuccess        : 'iscLogoutSuccess',
       notAuthenticated     : 'iscNotAuthenticated',
       notAuthorized        : 'iscNotAuthorized',
-      openSortOptions      : 'iscOpenSortOptions',
+      notFound             : 'iscNotFound',
       responseError        : 'iscResponseError',
       sessionChange        : 'iscSessionChange', //gets fired when "iscSessionResumedSuccess", "iscSessionTimeout", "iscLogout"
       sessionResumedSuccess: 'iscSessionResumedSuccess',
@@ -30,6 +30,6 @@
       sessionTimeoutConfirm: 'iscSessionTimeoutConfirm',
       sessionTimeoutWarning: 'iscSessionTimeoutWarning',
       sessionTimeoutReset  : 'iscSessionTimeoutReset'
-    });
+    } );
 
-})();
+} )();

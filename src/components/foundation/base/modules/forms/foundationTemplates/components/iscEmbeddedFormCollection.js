@@ -1,12 +1,12 @@
-(function () {
+( function() {
   'use strict';
 
   // ----------------------------
   // injection
   // ----------------------------
 
-  angular.module('isc.forms')
-      .directive('iscEmbeddedFormCollection', iscEmbeddedFormCollection);
+  angular.module( 'isc.forms' )
+    .directive( 'iscEmbeddedFormCollection', iscEmbeddedFormCollection );
   /**
    * @ngdoc directive
    * @memberOf isc.forms
@@ -23,9 +23,9 @@
    * @returns {{restrict: string, replace: boolean, require: string, controllerAs: string, scope: {id: string, formState: string, options: string, annotations: string}, bindToController: boolean, controller: controller, link: link, templateUrl: string}}
    */
   /* @ngInject */
-  function iscEmbeddedFormCollection($filter, FoundationApi, appConfig, FORMS_EVENTS,
-                                     iscFormsTemplateService, iscFormsValidationService,
-                                     iscScrollContainerService) {//jshint ignore:line
+  function iscEmbeddedFormCollection( $filter, FoundationApi, appConfig, FORMS_EVENTS,
+    iscFormsTemplateService, iscFormsValidationService,
+    iscScrollContainerService ) {//jshint ignore:line
 
     // ----------------------------
     // vars
@@ -48,7 +48,7 @@
       bindToController: true,
       controller      : controller,
       link            : link,
-      templateUrl     : function (elem, attrs) {
+      templateUrl     : function( elem, attrs ) {
         return attrs.templateUrl || 'forms/foundationTemplates/components/iscEmbeddedFormCollection.html';
       }
 
@@ -60,19 +60,19 @@
     // functions
     // ----------------------------
     /* @ngInject */
-    function controller($scope) {
+    function controller( $scope ) {
       var self = this;
 
       var opts            = self.options,
           templateOptions = opts.templateOptions,
           key             = opts.key,
-          editAs          = _.get(opts, 'data.collections.editAs'),
-          viewAs          = _.get(opts, 'data.collections.viewAs'),
+          editAs          = _.get( opts, 'data.collections.editAs' ),
+          viewAs          = _.get( opts, 'data.collections.viewAs' ),
           subforms        = self.formState._subforms;
 
       // Inherit formState for subform
       self.subformOptions = {
-        formState: _.extend({}, self.formState)
+        formState: _.extend( {}, self.formState )
       };
       self.subform        = {};
 
@@ -82,8 +82,7 @@
         data   : self.formState._annotations.data
       };
 
-
-      self.dateFormat        = _.get(appConfig, 'formats.date.shortDate', 'date');
+      self.dateFormat        = _.get( appConfig, 'formats.date.shortDate', 'date' );
       self.annotationWrapper = 'forms/foundationTemplates/tableTemplates/annotation-indicator.html';
 
       self.isNew      = false;
@@ -99,21 +98,21 @@
       self.editModel = {};
 
       // The (singular) label for each subform instance
-      self.label = _.get(opts, 'data.embeddedLabel', templateOptions.label);
+      self.label = _.get( opts, 'data.embeddedLabel', templateOptions.label );
 
       // Flatten field groups down for table header and cell iteration
-      var type    = _.get(opts, 'data.embeddedType');
-      self.fields = angular.merge({}, subforms[type]);
-      mergeBuiltInTemplates(self.fields);
+      var type    = _.get( opts, 'data.embeddedType' );
+      self.fields = angular.merge( {}, subforms[type] );
+      mergeBuiltInTemplates( self.fields );
 
       createTableFields();
 
       // Callbacks
-      self.hasValidationError = function (row) {
-        return _.includes(self.validationErrors, row);
+      self.hasValidationError = function( row ) {
+        return _.includes( self.validationErrors, row );
       };
 
-      self.newForm = function () {
+      self.newForm = function() {
         self.isNew = true;
 
         self.editModel = {};
@@ -122,43 +121,43 @@
         showSubform();
         // Defer the update until the formly-form has finished being initialized;
         // otherwise a race condition can prevent the broadcast message from being heard
-        _.defer(updateModel);
+        _.defer( updateModel );
       };
 
-      self.editForm = function (row) {
-        var index = _.indexOf(self.collectionModel, row);
+      self.editForm = function( row ) {
+        var index = _.indexOf( self.collectionModel, row );
 
         self.isNew     = false;
         self.editIndex = index;
-        setAnnotationContext(index);
+        setAnnotationContext( index );
 
         self.editModel = {};
-        _.merge(self.editModel, self.collectionModel[index]);
+        _.merge( self.editModel, self.collectionModel[index] );
         showSubform();
         // Defer the update until the formly-form has finished being initialized;
         // otherwise a race condition can prevent the broadcast message from being heard
-        _.defer(updateModelWithValidation);
+        _.defer( updateModelWithValidation );
       };
 
-      self.cancel = function () {
+      self.cancel = function() {
         self.subformOptions.formState._validation.$submitted = false;
         hideSubform();
       };
 
-      self.saveForm = function () {
+      self.saveForm = function() {
         self.subformOptions.formState._validation.$submitted = true;
 
-        var isSubformValid = iscFormsValidationService.validateForm(self.subform.form).isValid;
+        var isSubformValid = iscFormsValidationService.validateForm( self.subform.form ).isValid;
 
         // If this subform is valid, save the data and return
-        if (isSubformValid) {
-          if (self.isNew) {
-            self.collectionModel.push(self.editModel);
+        if ( isSubformValid ) {
+          if ( self.isNew ) {
+            self.collectionModel.push( self.editModel );
           }
           else {
             var model = self.collectionModel[self.editIndex];
-            _.merge(model, self.editModel);
-            _.remove(self.validationErrors, model);
+            _.merge( model, self.editModel );
+            _.remove( self.validationErrors, model );
           }
           self.editIndex = undefined;
           hideSubform();
@@ -168,25 +167,23 @@
         // TODO - show message if invalid? (iscFormModel.validate will touch each control during validation)
       };
 
-      self.removeForm = function (row) {
-        var index = _.indexOf(self.collectionModel, row);
+      self.removeForm = function( row ) {
+        var index = _.indexOf( self.collectionModel, row );
 
-        self.collectionModel.splice(index, 1);
+        self.collectionModel.splice( index, 1 );
         onCollectionModified();
       };
 
-
       // Watches
-      $scope.$watch(getValidation, function (value) {
-        self.validationErrors = _.get(value, 'records');
-      });
-
+      $scope.$watch( getValidation, function( value ) {
+        self.validationErrors = _.get( value, 'records' );
+      } );
 
       // Private/helper functions
       /**
        * @memberOf iscEmbeddedFormCollection
        * @returns {*}
-         */
+       */
       function getValidation() {
         return self.formState._validation[self.id];
       }
@@ -195,11 +192,11 @@
        * @memberOf iscEmbeddedFormCollection
        */
       function createTableFields() {
-        self.flattenedFields = $filter('iscFormsFlattenedFields')(self.fields, self.subformOptions.formState._annotations);
+        self.flattenedFields = $filter( 'iscFormsFlattenedFields' )( self.fields, self.subformOptions.formState._annotations );
 
         // Table configuration
         // Fields
-        var tableColumns = _.map(self.flattenedFields, function (field) {
+        var tableColumns = _.map( self.flattenedFields, function( field ) {
           return {
             key             : field.label,
             model           : field.model,
@@ -210,10 +207,10 @@
             type            : field.type,
             dateFormat      : self.dateFormat
           };
-        });
+        } );
 
         // Actions
-        if (self.mode !== 'view') {
+        if ( self.mode !== 'view' ) {
           tableColumns.push(
             {
               key        : 'Actions',
@@ -226,7 +223,7 @@
         self.tableConfig = {
           sortable : true,
           columns  : tableColumns,
-          emptyText: _.get(self.options, 'data.emptyCollectionMessage')
+          emptyText: _.get( self.options, 'data.emptyCollectionMessage' )
         };
       }
 
@@ -236,7 +233,7 @@
        * Sets the context on the subform so that field controls in that subform can use the annotation system.
        * @param {number=} index - The index of the row being edited. If for a new row, leave undefined.
        */
-      function setAnnotationContext(index) {
+      function setAnnotationContext( index ) {
         self.subformOptions.formState._annotations.index = index === undefined ? self.collectionModel.length : index;
       }
 
@@ -248,23 +245,23 @@
        * and we may need properties defined as defaultOptions in those templates to render them in the collection.
        * @param fields
        */
-      function mergeBuiltInTemplates(fields) {
-        _.forEach(fields, function (field) {
-          var type = _.get(field, 'type', '');
-          if (type && !type.startsWith('embeddedForm')) {
+      function mergeBuiltInTemplates( fields ) {
+        _.forEach( fields, function( field ) {
+          var type = _.get( field, 'type', '' );
+          if ( type && !type.startsWith( 'embeddedForm' ) ) {
             // Recurse for fieldGroups
-            if (field.fieldGroup) {
-              mergeBuiltInTemplates(field.fieldGroup);
+            if ( field.fieldGroup ) {
+              mergeBuiltInTemplates( field.fieldGroup );
             }
             else {
-              var options = _.get(iscFormsTemplateService.getRegisteredType(field.type), 'defaultOptions');
-              if (options) {
-                angular.merge(field, options, field);
+              var options = _.get( iscFormsTemplateService.getRegisteredType( field.type ), 'defaultOptions' );
+              if ( options ) {
+                angular.merge( field, options, field );
               }
             }
 
           }
-        });
+        } );
       }
 
       /**
@@ -273,7 +270,7 @@
       function onCollectionModified() {
         self.subformOptions.formState._validation.$submitted = false;
 
-        self.ngModelCtrl.$setViewValue(self.collectionModel);
+        self.ngModelCtrl.$setViewValue( self.collectionModel );
         self.ngModelCtrl.$setTouched();
         self.ngModelCtrl.$validate();
       }
@@ -283,8 +280,8 @@
        */
       function updateModelWithValidation() {
         // Broadcast down to the subform listener to set the model
-        $scope.$broadcast(FORMS_EVENTS.setFormModel, self.editModel, false);
-        iscFormsValidationService.validateForm(self.subform.form);
+        $scope.$broadcast( FORMS_EVENTS.setFormModel, self.editModel, false );
+        iscFormsValidationService.validateForm( self.subform.form );
       }
 
       /**
@@ -292,7 +289,7 @@
        */
       function updateModel() {
         // Broadcast down to the subform listener to set the model
-        $scope.$broadcast(FORMS_EVENTS.setFormModel, self.editModel, true);
+        $scope.$broadcast( FORMS_EVENTS.setFormModel, self.editModel, true );
       }
 
       /**
@@ -308,19 +305,19 @@
         // but before the next time self.renderForm is set to true.
         delete self.subform.form;
 
-        switch (editAs) {
+        switch ( editAs ) {
           case 'modal':
-            _.defer(function () {
+            _.defer( function() {
               // When self.renderForm is set to true, the formly-form will be created and added to the DOM.
               // This will regenerate self.subform for validation of the subform.
               self.renderForm = true;
 
-              FoundationApi.publish(self.modalName, 'open');
-            }, 0);
+              FoundationApi.publish( self.modalName, 'open' );
+            }, 0 );
             break;
 
           default:
-            $scope.$emit(FORMS_EVENTS.showSubform, {
+            $scope.$emit( FORMS_EVENTS.showSubform, {
               isNew    : self.isNew,
               itemLabel: self.label,
               model    : self.editModel,
@@ -330,7 +327,7 @@
               onCancel : self.cancel,
               onSubmit : self.saveForm,
               scrollPos: iscScrollContainerService.getCurrentScrollPosition()
-            });
+            } );
         }
       }
 
@@ -340,33 +337,31 @@
       function hideSubform() {
         // Defer to avoid a flicker while Foundation catches up
 
-        switch (editAs) {
+        switch ( editAs ) {
           case 'modal':
-            _.defer(function () {
+            _.defer( function() {
               self.renderForm = false;
-            }, 0);
-            FoundationApi.publish(self.modalName, 'close');
+            }, 0 );
+            FoundationApi.publish( self.modalName, 'close' );
             break;
 
           default:
-            $scope.$emit(FORMS_EVENTS.hideSubform);
+            $scope.$emit( FORMS_EVENTS.hideSubform );
         }
 
       }
     }
 
-    function link(scope, el, attrs, ngModelCtrl) {
+    function link( scope, el, attrs, ngModelCtrl ) {
       // Hold reference to ngModelCtrl in main controller
       scope.efCollectionCtrl.ngModelCtrl = ngModelCtrl;
 
       // Initialize model value for collection rows in $render
-      ngModelCtrl.$render = function () {
+      ngModelCtrl.$render = function() {
         scope.efCollectionCtrl.collectionModel = ngModelCtrl.$modelValue || [];
       };
     }
 
   }//END CLASS
 
-
-
-})();
+} )();

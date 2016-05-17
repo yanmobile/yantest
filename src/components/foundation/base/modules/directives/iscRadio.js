@@ -9,14 +9,14 @@
  * <isc-radio radio-item="scope.selectedItem" radio-group="myRadioGroup" ng-click="onRadioSelect( scope.selectedItem )><isc-radio>
  */
 
-(function () {
+( function() {
   'use strict';
   // ----------------------------
   // injection
   // ----------------------------
 
-  angular.module('isc.directives')
-    .directive('iscRadio', iscRadio);
+  angular.module( 'isc.directives' )
+    .directive( 'iscRadio', iscRadio );
   /**
    * @ngdoc directive
    * @memberOf directives
@@ -34,9 +34,9 @@
    *
    */
   /* @ngInject */
-  function iscRadio(devlog, iscRadioGroupHelper) {
-    var channel = devlog.channel('iscRadio');
-    channel.debug('iscRadio LOADED');
+  function iscRadio( devlog, iscRadioGroupHelper ) {
+    var channel = devlog.channel( 'iscRadio' );
+    channel.debug( 'iscRadio LOADED' );
 
     // ----------------------------
     // vars
@@ -53,7 +53,7 @@
         radioItem : '='
       },
       link       : link,
-      templateUrl: function (elem, attrs) {
+      templateUrl: function( elem, attrs ) {
         return attrs.templateUrl || 'svg/isc-radio.html';
       }
     };
@@ -64,15 +64,13 @@
     // functions
     // ----------------------------
 
-    function link(scope, elem, attr) {//jshint ignore:line
+    function link( scope, elem, attr ) {//jshint ignore:line
 
-      scope.toggle = function () {
-        iscRadioGroupHelper.radioSelect(scope.radioItem, scope.radioGroup);
+      scope.toggle = function() {
+        iscRadioGroupHelper.radioSelect( scope.radioItem, scope.radioGroup );
       };
     }
 
   }//END CLASS
 
-
-
-})();
+} )();

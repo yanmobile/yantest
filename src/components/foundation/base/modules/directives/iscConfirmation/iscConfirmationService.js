@@ -2,15 +2,14 @@
  * Created by hzou on 9/16/15.
  */
 
-(function () {
+( function() {
   'use strict';
   // ----------------------------
   // injection
   // ----------------------------
 
-  angular.module('isc.directives')
-    .provider('iscConfirmationService', iscConfirmationService);
-
+  angular.module( 'isc.directives' )
+    .provider( 'iscConfirmationService', iscConfirmationService );
 
   // to configure app-wide options in app.config block
   // IscConfirmationServiceProvider.setOptions({title: 'from app.js'});
@@ -19,7 +18,7 @@
    * @memberOf directives
    * @name iscConfirmationService
    * @returns {{setOptions: setOptions, $get: iscConfirmationServiceFactory}}
-     */
+   */
   function iscConfirmationService() {//jshint ignore:line
 
     var defaultOptions = getDefaultOptions();
@@ -37,17 +36,17 @@
      * @param options
      * @returns {Object}
      *
-       */
-    function setOptions(options) {
-      return _.extend(defaultOptions, options);
+     */
+    function setOptions( options ) {
+      return _.extend( defaultOptions, options );
     }
 
     /**
      * @memberOf iscConfirmationService
      * @param $q
      * @returns {{isOpen: boolean, show: show, hide: hide, resolve: resolve, reject: reject}}
-       */
-    function iscConfirmationServiceFactory($q) {
+     */
+    function iscConfirmationServiceFactory( $q ) {
 
       var deferred;
 
@@ -65,17 +64,17 @@
        * @memberOf iscConfirmationService
        * @param message
        * @returns {*}
-         */
-      function show(message) {
+       */
+      function show( message ) {
         deferred = $q.defer();
 
-        model.options = angular.copy(defaultOptions);
-        if (_.isObject(message)) {
-          _.extend(model.options, message);
-        } else if (_.isString(message)) {
+        model.options = angular.copy( defaultOptions );
+        if ( _.isObject( message ) ) {
+          _.extend( model.options, message );
+        } else if ( _.isString( message ) ) {
           model.options.message = message;
         }
-        if (model.isOpen) {
+        if ( model.isOpen ) {
           model.isOpen = false;
         }
         model.isOpen = true;
@@ -92,26 +91,26 @@
       /**
        * @memberOf iscConfirmationService
        * @param data
-         */
-      function resolve(data) {
+       */
+      function resolve( data ) {
         model.isOpen = false;
-        deferred.resolve(data || true);
+        deferred.resolve( data || true );
       }
 
       /**
        * @memberOf iscConfirmationService
        * @param data
-         */
-      function reject(data) {
+       */
+      function reject( data ) {
         model.isOpen = false;
-        deferred.reject(data || true);
+        deferred.reject( data || true );
       }
     }
 
     /**
      * @memberOf iscConfirmationService
      * @returns {{title: string, message: string, btnOkText: string, btnCancelText: string}}
-       */
+     */
     function getDefaultOptions() {
       return {
         title        : 'ISC_CONFIRM_DEFAULT_TITLE',
@@ -122,4 +121,4 @@
     }
   }//END CLASS
 
-})();
+} )();

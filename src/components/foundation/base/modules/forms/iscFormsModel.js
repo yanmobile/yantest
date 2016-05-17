@@ -1,10 +1,10 @@
-(function () {
+( function() {
   'use strict';
 
   /* @ngInject */
   angular
-    .module('isc.forms')
-    .factory('iscFormsModel', iscFormsModel);
+    .module( 'isc.forms' )
+    .factory( 'iscFormsModel', iscFormsModel );
 
   /**
    * @ngdoc factory
@@ -16,11 +16,11 @@
    * @param iscFormsCodeTableApi
    * @param iscFormsTemplateService
    * @param iscFormsApi
-   * @returns {{getForms, getActiveForm, getActiveForms, setFormStatus: setFormStatus, getFormDefinition: getFormDefinition, getValidationDefinition: getValidationDefinition}}
-     */
-  function iscFormsModel($q, $templateCache, $window,
-                         iscHttpapi,
-                         iscFormsCodeTableApi, iscFormsTemplateService, iscFormsApi) {
+   * @returns {{getForms, getActiveForm, getActiveForms, setFormStatus, getFormDefinition, getValidationDefinition}}
+   */
+  function iscFormsModel( $q, $templateCache, $window,
+    iscHttpapi, // needed for user script closures
+    iscFormsCodeTableApi, iscFormsTemplateService, iscFormsApi ) {
     var _typeCache          = {};
     var _formsCache         = {};
     var _viewModeFormsCache = {};
@@ -30,18 +30,18 @@
     var viewModePrefix          = '__viewMode__';
     var multipleActiveFormTypes = [];
 
-    var getForms       = _.partial(getFormStatus, {
+    var getForms       = _.partial( getFormStatus, {
       returnMultiple: true,
       limitToActive : false
-    });
-    var getActiveForm  = _.partial(getFormStatus, {
+    } );
+    var getActiveForm  = _.partial( getFormStatus, {
       returnMultiple: false,
       limitToActive : true
-    });
-    var getActiveForms = _.partial(getFormStatus, {
+    } );
+    var getActiveForms = _.partial( getFormStatus, {
       returnMultiple: true,
       limitToActive : true
-    });
+    } );
 
     return {
       getForms               : getForms,
@@ -56,12 +56,12 @@
      * @memberOf iscFormsModel
      * @param formType
      * @returns {*}
-       */
-    function getCachedType(formType) {
-      var cachedType = _.get(_typeCache, formType);
-      if (!cachedType) {
+     */
+    function getCachedType( formType ) {
+      var cachedType = _.get( _typeCache, formType );
+      if ( !cachedType ) {
         cachedType = [];
-        _.set(_typeCache, formType, cachedType);
+        _.set( _typeCache, formType, cachedType );
       }
       return cachedType;
     }
@@ -70,120 +70,114 @@
      * @memberOf iscFormsModel
      * @param config
      * @param formType
-     * @param formList
-       * @returns {*}
-       */
-    function getFormStatus(config, formType, formList) {
+     * @returns {*}
+     */
+    function getFormStatus( config, formType ) {
       var allowMultiple = !!config.returnMultiple,
           limitToActive = !!config.limitToActive,
-          cachedType    = getCachedType(formType);
+          cachedType    = getCachedType( formType );
 
-      if (cachedType.length) {
-        return $q.when(filterResults(cachedType));
+      if ( cachedType.length ) {
+        return $q.when( filterResults( cachedType ) );
       }
       else {
         var deferred = $q.defer();
-        iscFormsApi.getActiveForms(formType).then(function (results) {
-          _.set(_typeCache, formType, results);
-          deferred.resolve(filterResults(results));
-        });
+        iscFormsApi.getFormStatuses( formType ).then( function( results ) {
+          _.set( _typeCache, formType, results );
+          deferred.resolve( filterResults( results ) );
+        } );
         return deferred.promise;
       }
 
-
-      function filterResults(array) {
-        var filteredArray = limitToActive ? _.filter(array, { status: 'Active' }) : array;
-        return allowMultiple ? filteredArray : _.first(filteredArray);
+      function filterResults( array ) {
+        var filteredArray = limitToActive ? _.filter( array, { status: 'Active' } ) : array;
+        return allowMultiple ? filteredArray : _.first( filteredArray );
       }
     }
 
     /**
      * @memberOf iscFormsModel
-     * @param formType
-     * @param formStatus
-     * @param formList
-       * @returns {*}
-       */
-    function setFormStatus(formType, formStatus, formList) {
-      var cache               = getCachedType(formType),
-          allowMultipleActive = _.includes(multipleActiveFormTypes, formType),
+     * @param {String} formType
+     * @param {Object} formStatus - formKey and status
+     * @param {Array} formList
+     * @returns {*}
+     */
+    function setFormStatus( formType, formStatus, formList ) {
+      var cache               = getCachedType( formType ),
+          allowMultipleActive = _.includes( multipleActiveFormTypes, formType ),
           formStatuses        = [formStatus];
 
       // If multiple forms of this type are not allowed,
+      // and we are setting a form to be active,
       // inactivate any currently active ones.
-      if (!allowMultipleActive) {
-        var existingFormsToInactivate = _.filter(formList, {
+      if ( !allowMultipleActive && formStatus.status === 'Active' ) {
+        var existingFormsToInactivate = _.filter( formList, {
             formType: formType,
             status  : 'Active'
           }
         );
-        _.forEach(existingFormsToInactivate, function (form) {
-          if (form.formKey !== formStatus.formKey) {
+        _.forEach( existingFormsToInactivate, function( form ) {
+          if ( form.formKey !== formStatus.formKey ) {
             form.status = 'Inactive';
-            formStatuses.push({
+            formStatuses.push( {
               formKey: form.formKey,
               status : 'Inactive'
-            });
+            } );
           }
-        });
+        } );
       }
 
       // Update the local cache, if it is populated
-      if (cache.length) {
-        _.forEach(formStatuses, function (form) {
-          _.find(cache, { formKey: form.formKey }).status = form.status;
-        });
+      if ( cache.length ) {
+        _.forEach( formStatuses, function( form ) {
+          _.find( cache, { formKey: form.formKey } ).status = form.status;
+        } );
       }
 
       // Submit to REST api
-      return iscFormsApi.setFormStatus(formType, formStatuses);
+      return iscFormsApi.setFormStatus( formType, formStatuses );
     }
 
     /**
      * @memberOf iscFormsModel
      * @param formKey
      * @returns {*}
-       */
-    function getValidationDefinition(formKey) {
-      var cachedValidation = _.get(_validationCache, formKey);
+     */
+    function getValidationDefinition( formKey ) {
+      var cachedValidation = _.get( _validationCache, formKey );
       var validations      = [];
 
       var deferred = $q.defer();
 
-      if (cachedValidation) {
-        deferred.resolve(cachedValidation);
+      if ( cachedValidation ) {
+        deferred.resolve( cachedValidation );
       }
       else {
-        getFormDefinition(formKey).then(function (form) {
-          if (_.isArray(form)) {
-            _getEmbeddedForms(form);
-          }
-          else {
-            _.forEach(form.pages, function (page) {
-              _getEmbeddedForms(page.fields);
-            });
-          }
+        getFormDefinition( formKey ).then( function( formDefinition ) {
+          _.forEach( formDefinition.form.pages, function( page ) {
+            _getEmbeddedForms( page.fields, formDefinition.subforms );
+          } );
 
           _validationCache[formKey] = validations;
-          deferred.resolve(validations);
-        });
+          deferred.resolve( validations );
+        } );
       }
 
       return deferred.promise;
 
-      function _getEmbeddedForms(fields) {
-        _.forEach(fields, function (field) {
-          if (field.fieldGroup) {
-            _getEmbeddedForms(field.fieldGroup);
+      function _getEmbeddedForms( fields, subforms ) {
+        _.forEach( fields, function( field ) {
+          if ( field.fieldGroup ) {
+            _getEmbeddedForms( field.fieldGroup, subforms );
           }
           // If a collection, register it with the validation safety net
-          else if (field.type === 'embeddedFormCollection') {
-            validations.push({
+          else if ( field.type === 'embeddedFormCollection' ) {
+            validations.push( {
               key   : field.key,
-              fields: field.templateOptions.fields
-            });
+              fields: subforms[_.get( field, 'data.embeddedType' )] || []
+            } );
           }
-        });
+        } );
       }
     }
 
@@ -196,91 +190,91 @@
      * @param {=Object} subformDefinitions
      * @returns {Object}
      */
-    function getFormDefinition(formKey, mode, subformDefinitions) {
+    function getFormDefinition( formKey, mode, subformDefinitions ) {
       // If form is already cached, return the cached form in a promise
       var cachedForm;
-      switch (mode) {
+      switch ( mode ) {
         case 'view':
-          cachedForm = _.get(_viewModeFormsCache, formKey);
+          cachedForm = _.get( _viewModeFormsCache, formKey );
           break;
 
         default:
-          cachedForm = _.get(_formsCache, formKey);
+          cachedForm = _.get( _formsCache, formKey );
       }
       var deferred = $q.defer();
 
-      if (cachedForm) {
-        deferred.resolve(cachedForm);
+      if ( cachedForm ) {
+        deferred.resolve( cachedForm );
         return deferred.promise;
       }
 
       // Otherwise, fetch the form template and resolve the form in a promise
       else {
-        iscFormsApi.getFormDefinition(formKey).then(function (responseData) {
+        iscFormsApi.getFormDefinition( formKey ).then( function( responseData ) {
           var primaryPromises   = [],
               secondaryPromises = [],
               form              = responseData,
               subforms          = subformDefinitions || {};
 
           // Subform-only definitions are a bare array
-          if (_.isArray(form)) {
-            primaryPromises = primaryPromises.concat(_processFields(form));
+          if ( _.isArray( form ) ) {
+            primaryPromises = primaryPromises.concat( _processFields( form ) );
           }
           else {
-            _.forEach(form.pages, function (page) {
-              primaryPromises = primaryPromises.concat(_processFields(page.fields));
-            });
+            _.forEach( form.pages, function( page ) {
+              primaryPromises = primaryPromises.concat( _processFields( page.fields ) );
+            } );
           }
 
           // If an FDN-specified dataModelInit function is indicated, fetch this as a user script
-          if (form.dataModelInit) {
-            var scriptPromise = iscFormsApi.getUserScript(form.dataModelInit)
-              .then(function (response) {
-                var script         = parseScript(response);
-                form.dataModelInit = (function (iscHttpapi) {
+          if ( form.dataModelInit ) {
+            var scriptPromise = iscFormsApi.getUserScript( form.dataModelInit )
+              .then( function( response ) {
+                var script         = parseScript( response );
+                form.dataModelInit = ( function( iscHttpapi ) {
                   return script;
-                })();
+                } )();
                 return true;
-              });
-            primaryPromises.push(scriptPromise);
+              } );
+            primaryPromises.push( scriptPromise );
           }
 
           // After all necessary template calls have completed, return the form
-          $q.all(primaryPromises).then(function () {
-            $q.all(secondaryPromises).then(function () {
+          $q.all( primaryPromises ).then( function() {
+            $q.all( secondaryPromises ).then( function() {
               var editMode = {
                 form    : form,
                 subforms: subforms
               };
 
               // Cache the editable version
-              _.set(_formsCache, formKey, editMode);
+              _.set( _formsCache, formKey, editMode );
 
               // Make a deep copy for the view mode version
               var viewMode = {
-                form    : angular.merge({}, form),
+                form    : angular.merge( {}, form ),
                 subforms: subforms
               };
 
               // Replace templates in the view mode with readonly versions
-              _.forEach(viewMode.form.pages, function (page) {
-                replaceTemplates(page.fields);
-              });
+              _.forEach( viewMode.form.pages, function( page ) {
+                replaceTemplates( page.fields );
+              } );
 
               // Cache it separately
-              _.set(_viewModeFormsCache, formKey, viewMode);
+              _.set( _viewModeFormsCache, formKey, viewMode );
 
               // Resolve the requested version
-              switch (mode) {
+              switch ( mode ) {
                 case 'view':
-                  deferred.resolve(viewMode);
+                  deferred.resolve( viewMode );
                   break;
 
                 default:
-                  deferred.resolve(editMode);
+                  deferred.resolve( editMode );
               }
-            });
-          });
+            } );
+          } );
 
           /**
            * @memberOf iscFormsModel
@@ -290,114 +284,114 @@
            * @returns {Array}
            * @private
            */
-          function _processFields(fields) {
+          function _processFields( fields ) {
             var fieldPromises = [];
-            _.forEach(fields, function (field) {
-              var expProps    = _.get(field, 'expressionProperties', {}),
-                  label       = _.get(field, 'templateOptions.label'),
-                  type        = _.get(field, 'type'),
-                  extendsType = _.get(field, 'extends'),
-                  fieldGroup  = _.get(field, 'fieldGroup'),
-                  data        = _.get(field, 'data', {});
+            _.forEach( fields, function( field ) {
+              var expProps    = _.get( field, 'expressionProperties', {} ),
+                  label       = _.get( field, 'templateOptions.label' ),
+                  type        = _.get( field, 'type' ),
+                  extendsType = _.get( field, 'extends' ),
+                  fieldGroup  = _.get( field, 'fieldGroup' ),
+                  data        = _.get( field, 'data', {} );
 
               // A field group does not have its own type, but contains fields in the fieldGroup array
-              if (fieldGroup) {
-                fieldPromises = fieldPromises.concat(_processFields(fieldGroup));
+              if ( fieldGroup ) {
+                fieldPromises = fieldPromises.concat( _processFields( fieldGroup ) );
               }
 
               // If type has not been specified, this is arbitrary html written into a template tag, so skip it.
-              if (!type) {
+              if ( !type ) {
                 return true;
               }
 
               // If this is a nested form, recurse the process for its child fields
-              if (type === 'embeddedForm' || type === 'embeddedFormCollection' ||
-                extendsType === 'embeddedForm' || extendsType === 'embeddedFormCollection') {
-                _processEmbeddedForm(field, data);
+              if ( type === 'embeddedForm' || type === 'embeddedFormCollection' ||
+                extendsType === 'embeddedForm' || extendsType === 'embeddedFormCollection' ) {
+                _processEmbeddedForm( field, data );
               }
 
               else {
                 // If a user script is provided, this needs to be loaded and parsed
-                if (data.userScript) {
-                  _processUserScript(field, data.userScript);
+                if ( data.userScript ) {
+                  _processUserScript( field, data.userScript );
                 }
 
                 // Create a translated expression property for each label
                 var expLabel = expProps['templateOptions.label'];
-                if (label && !expLabel) {
+                if ( label && !expLabel ) {
                   expLabel = expProps['templateOptions.label'] = '"' + label + '"';
                 }
-                if (expLabel && !_.isFunction(expLabel)) {
+                if ( expLabel && !_.isFunction( expLabel ) ) {
                   expProps['templateOptions.label'] += ' | translate';
                 }
-                _.set(field, 'expressionProperties', expProps);
+                _.set( field, 'expressionProperties', expProps );
 
                 // If this field uses a code table, look it up and push it into the field's options
-                if (data.codeTable) {
+                if ( data.codeTable ) {
                   // Include any custom options for this field that have been explicitly entered
-                  var explicitOptions = _.get(field, 'templateOptions.options', []);
-                  _.set(field, 'templateOptions.options',
-                    [].concat(explicitOptions).concat(iscFormsCodeTableApi.get(data.codeTable))
+                  var explicitOptions = _.get( field, 'templateOptions.options', [] );
+                  _.set( field, 'templateOptions.options',
+                    [].concat( explicitOptions ).concat( iscFormsCodeTableApi.get( data.codeTable ) )
                   );
                 }
 
                 // If data.isObject is not set, infer object/primitive mode based on first option in options list
-                var options = _.get(field, 'templateOptions.options', []);
-                if (data.isObject === undefined && options) {
-                  _.set(field, 'data.isObject', _.isObject(_.head(options)));
+                var options = _.get( field, 'templateOptions.options', [] );
+                if ( data.isObject === undefined && options ) {
+                  _.set( field, 'data.isObject', _.isObject( _.head( options ) ) );
                 }
 
                 // If the type is not already registered, load it and register it with formly
-                if (!iscFormsTemplateService.isTypeRegistered(type)) {
-                  _getCustomTemplate(type);
+                if ( !iscFormsTemplateService.isTypeRegistered( type ) ) {
+                  _getCustomTemplate( type );
                 }
               }
-            });
+            } );
             return fieldPromises;
 
-            function _processUserScript(field, scriptName) {
-              var scriptPromise = iscFormsApi.getUserScript(scriptName)
-                .then(function (response) {
-                  var script = parseScript(response),
+            function _processUserScript( field, scriptName ) {
+              var scriptPromise = iscFormsApi.getUserScript( scriptName )
+                .then( function( response ) {
+                  var script = parseScript( response ),
                       getApi = script.api.get;
                   // Expose iscHttpapi to api getter function
-                  if (getApi) {
-                    script.api.get = (function (iscHttpapi) {
+                  if ( getApi ) {
+                    script.api.get = ( function( iscHttpapi ) {
                       return getApi;
-                    })();
+                    } )();
                   }
-                  _.set(field, 'data.userModel', script);
+                  _.set( field, 'data.userModel', script );
                   return true;
-                });
-              primaryPromises.push(scriptPromise);
+                } );
+              primaryPromises.push( scriptPromise );
             }
 
             /**
              * Processes an embeddedForm or embeddedFormCollection
              * @private
              */
-            function _processEmbeddedForm(field, data) {
+            function _processEmbeddedForm( field, data ) {
               var embeddedType = data.embeddedType,
                   embeddedPage = data.embeddedPage,
                   isCollection = field.type === 'embeddedFormCollection' || field.extends === 'embeddedFormCollection';
 
               // If a linked type, look up that type and import the fields []
-              if (embeddedType) {
-                if (subforms[embeddedType] === undefined) {
-                  if (isCollection) {
+              if ( embeddedType ) {
+                if ( subforms[embeddedType] === undefined ) {
+                  if ( isCollection ) {
                     subforms[embeddedType] = [];
                   }
 
                   fieldPromises.push(
                     // Fetch the embedded type
-                    getFormDefinition(embeddedType, mode, subforms)
-                      .then(function (embeddedForm) {
+                    getFormDefinition( embeddedType, mode, subforms )
+                      .then( function( embeddedForm ) {
                         var fields = [],
                             form   = embeddedForm.form;
 
                         // If this is a bare array of fields (subform-only definition),
                         // then the response form is only the fields [] for this form.
-                        if (_.isArray(form)) {
+                        if ( _.isArray( form ) ) {
                           fields = form;
                         }
 
@@ -409,30 +403,30 @@
                               page;
 
                           // Page lookup can be either a 0-based index or a page name
-                          if (embeddedPage) {
-                            if (_.isNumber(embeddedPage)) {
-                              page = _.get(pages, embeddedPage);
+                          if ( embeddedPage ) {
+                            if ( _.isNumber( embeddedPage ) ) {
+                              page = _.get( pages, embeddedPage );
                             }
                             else {
-                              page = _.find(pages, { name: embeddedPage });
+                              page = _.find( pages, { name: embeddedPage } );
                             }
                           }
                           // If no page was provided, use the first one
                           else {
-                            page = _.get(pages, '0');
+                            page = _.get( pages, '0' );
                           }
 
-                          fields = _.get(page, 'fields', []);
+                          fields = _.get( page, 'fields', [] );
                         }
 
                         // Force inheritance of the data property
-                        forceDataInheritance(fields);
+                        forceDataInheritance( fields );
 
-                        if (isCollection) {
+                        if ( isCollection ) {
                           // Push a subform listener into the fields list
-                          fields.push({
+                          fields.push( {
                             'type': 'embeddedFormListener'
-                          });
+                          } );
 
                           // Update the subforms hash table
                           subforms[embeddedType] = fields;
@@ -441,13 +435,13 @@
                         // A non-collection embedded form is inlined in the parent form
                         else {
                           // Update the fields in this embedded form from the looked-up form
-                          _.set(field, 'templateOptions.fields', fields);
+                          _.set( field, 'templateOptions.fields', fields );
                         }
-                      })
+                      } )
                   );
                 }
 
-                fieldPromises = fieldPromises.concat(_processFields(_.get(field, 'templateOptions.fields')));
+                fieldPromises = fieldPromises.concat( _processFields( _.get( field, 'templateOptions.fields' ) ) );
               }
             }
           }
@@ -459,13 +453,13 @@
            * @param templateName
            * @private
            */
-          function _getCustomTemplate(templateName) {
-            var scriptPromise = iscFormsApi.getTemplate("js/" + templateName)
-              .then(function (response) {
-                _processScript(response);
+          function _getCustomTemplate( templateName ) {
+            var scriptPromise = iscFormsApi.getTemplate( "js/" + templateName )
+              .then( function( response ) {
+                _processScript( response );
                 return true;
-              });
-            primaryPromises.push(scriptPromise);
+              } );
+            primaryPromises.push( scriptPromise );
 
             /**
              * @memberOf iscFormsModel
@@ -474,16 +468,16 @@
              * @returns {Object}
              * @private
              */
-            function _processScript(response) {
-              var template = parseScript(response);
+            function _processScript( response ) {
+              var template = parseScript( response );
 
-              _injectHtml(template);
+              _injectHtml( template );
               _injectCss();
 
               // TODO - load other assets such as images?
 
               // Register with formly
-              iscFormsTemplateService.registerType(template);
+              iscFormsTemplateService.registerType( template );
 
               return template;
             }
@@ -494,19 +488,19 @@
              * Fetches html for the template and puts it in the $templateCache.
              * @private
              */
-            function _injectHtml(template) {
+            function _injectHtml( template ) {
               var templateHtml = template.templateUrl;
 
               // If a templateUrl is specified in the custom template,
               // and it has not been loaded yet, load and cache it now.
-              if (templateHtml) {
-                if (!$templateCache.get(templateHtml)) {
-                  var htmlPromise = iscFormsApi.getTemplate('html/' + templateName + '/' + templateHtml)
-                    .then(function (templateMarkup) {
-                      $templateCache.put(templateHtml, templateMarkup);
+              if ( templateHtml ) {
+                if ( !$templateCache.get( templateHtml ) ) {
+                  var htmlPromise = iscFormsApi.getTemplate( 'html/' + templateName + '/' + templateHtml )
+                    .then( function( templateMarkup ) {
+                      $templateCache.put( templateHtml, templateMarkup );
                       return true;
-                    });
-                  secondaryPromises.push(htmlPromise);
+                    } );
+                  secondaryPromises.push( htmlPromise );
                 }
               }
             }
@@ -520,22 +514,22 @@
              * @private
              */
             function _injectCss() {
-              var cssPromise = iscFormsApi.getTemplate('css/' + templateName).then(
-                function (stylesheet) {
+              var cssPromise = iscFormsApi.getTemplate( 'css/' + templateName ).then(
+                function( stylesheet ) {
                   // Stylesheet is optional and not specified by the FDN,
                   // so the only way to find out if there is one is to ask for it.
                   // Expect the server to send a 204 (not 404) if no stylesheet was found.
-                  if (stylesheet) {
-                    _stylesheetLoaded(stylesheet);
+                  if ( stylesheet ) {
+                    _stylesheetLoaded( stylesheet );
                   }
-                }, _stylesheetNotFound);
+                }, _stylesheetNotFound );
 
-              secondaryPromises.push(cssPromise);
+              secondaryPromises.push( cssPromise );
 
-              function _stylesheetLoaded(stylesheet) {
-                if (!angular.element('style#' + templateName).length) {
-                  var style = _createStyle(templateName, stylesheet);
-                  angular.element('head').append(style);
+              function _stylesheetLoaded( stylesheet ) {
+                if ( !angular.element( 'style#' + templateName ).length ) {
+                  var style = _createStyle( templateName, stylesheet );
+                  angular.element( 'head' ).append( style );
                 }
                 return true;
               }
@@ -547,15 +541,15 @@
               }
 
               // Creates the style element
-              function _createStyle(id, styles) {
-                var style       = $window.document.createElement('style');
+              function _createStyle( id, styles ) {
+                var style       = $window.document.createElement( 'style' );
                 style.id        = id;
                 style.innerHTML = styles;
                 return style;
               }
             }
           }
-        });
+        } );
 
         return deferred.promise;
       }
@@ -570,43 +564,43 @@
      *
      * @param {Array} fields
      */
-    function forceDataInheritance(fields) {
-      _.forEach(fields, function (field) {
-        if (field.fieldGroup) {
-          forceDataInheritance(field.fieldGroup);
+    function forceDataInheritance( fields ) {
+      _.forEach( fields, function( field ) {
+        if ( field.fieldGroup ) {
+          forceDataInheritance( field.fieldGroup );
         }
-        else if (field.type) {
-          var data              = _.get(field, 'data', {});
-          var ancestorDataStack = _.compact(_getAncestors(field.type)),
+        else if ( field.type ) {
+          var data              = _.get( field, 'data', {} );
+          var ancestorDataStack = _.compact( _getAncestors( field.type ) ),
               ancestorData;
 
-          while ((ancestorData = ancestorDataStack.pop()) !== undefined) {
+          while ( ( ancestorData = ancestorDataStack.pop() ) !== undefined ) {
             // Prefer the most local data to ancestral data
-            _.merge(data, ancestorData, data);
+            _.merge( data, ancestorData, data );
           }
 
-          _.set(field, 'data', data);
+          _.set( field, 'data', data );
         }
-      });
+      } );
 
       /**
        * @memberOf iscFormsModel
        * @param type
        * @returns {Array}
-         * @private
-         */
-      function _getAncestors(type) {
+       * @private
+       */
+      function _getAncestors( type ) {
         var stack    = [],
-            template = iscFormsTemplateService.getRegisteredType(type);
-        if (template) {
+            template = iscFormsTemplateService.getRegisteredType( type );
+        if ( template ) {
           // If this ancestor has a data property, push it onto the stack
-          var data = _.get(template, 'defaultOptions.data');
-          if (data) {
-            stack.push(data);
+          var data = _.get( template, 'defaultOptions.data' );
+          if ( data ) {
+            stack.push( data );
           }
           // If this ancestor has more ancestors, recurse through them
-          if (template.extends) {
-            stack = stack.concat(_getAncestors(template.extends));
+          if ( template.extends ) {
+            stack = stack.concat( _getAncestors( template.extends ) );
           }
         }
         return stack;
@@ -619,29 +613,29 @@
      * Replaces the templates for each field in fields with its viewMode version.
      * @param fields
      */
-    function replaceTemplates(fields) {
-      _.forEach(fields, function (field) {
-        if (field.fieldGroup) {
-          replaceTemplates(field.fieldGroup);
+    function replaceTemplates( fields ) {
+      _.forEach( fields, function( field ) {
+        if ( field.fieldGroup ) {
+          replaceTemplates( field.fieldGroup );
         }
         else {
-          var data            = _.get(field, 'data.viewMode', {}),
+          var data            = _.get( field, 'data.viewMode', {} ),
               viewTemplate    = data.template,
               viewTemplateUrl = data.templateUrl;
-          if (viewTemplate) {
+          if ( viewTemplate ) {
             field.template = viewTemplate;
           }
-          else if (viewTemplateUrl) {
+          else if ( viewTemplateUrl ) {
             field.templateUrl = viewTemplateUrl;
           }
           else {
             // Collections handle view mode on their own.
             // field.key is the data path into the model, so if this is not present,
             // there is no model (e.g., an "instructions" template or arbitrary html).
-            if (field.type && field.type !== 'embeddedFormCollection' && field.key) {
+            if ( field.type && field.type !== 'embeddedFormCollection' && field.key ) {
               var viewModeType   = viewModePrefix + field.type;
-              var registeredType = iscFormsTemplateService.getRegisteredType(viewModeType);
-              if (!registeredType) {
+              var registeredType = iscFormsTemplateService.getRegisteredType( viewModeType );
+              if ( !registeredType ) {
                 iscFormsTemplateService.registerType(
                   {
                     'name'       : viewModeType,
@@ -656,7 +650,7 @@
             }
           }
         }
-      });
+      } );
     }
 
     /**
@@ -665,11 +659,11 @@
      *  This is only ever evaluated on scripts returned from a trusted backend REST source
      * @param script
      * @returns {Object}
-       */
-    function parseScript(script) {
+     */
+    function parseScript( script ) {
       // Ignoring JSHint for eval()
       //
-      return eval(script); // jshint ignore:line
+      return eval( script ); // jshint ignore:line
     }
   }
-})();
+} )();

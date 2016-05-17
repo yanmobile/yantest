@@ -2,7 +2,7 @@
  * Created by douglas goodman on 3/7/15.
  */
 
-(function(){
+( function() {
   'use strict';
   // ----------------------------
   // injection
@@ -22,23 +22,21 @@
    * this directive allows to inject html dynamcally
    */
   /* @ngInject */
-  function iscDynamicHtml( devlog, $compile, $templateCache ){//jshint ignore:line
-    var channel = devlog.channel('iscDynamicHtml');
-    channel.debug( 'iscDynamicHtml LOADED');
+  function iscDynamicHtml( devlog, $compile, $templateCache ) {//jshint ignore:line
+    var channel = devlog.channel( 'iscDynamicHtml' );
+    channel.debug( 'iscDynamicHtml LOADED' );
 
     // ----------------------------
     // vars
     // ----------------------------
-
-
 
     // ----------------------------
     // class factory
     // ----------------------------
     var directive = {
       restrict: 'EA',
-      replace: true,
-      link: link
+      replace : true,
+      link    : link
     };
 
     return directive;
@@ -47,17 +45,14 @@
     // functions
     // ----------------------------
 
-    function link( scope, elem, attr ){
-      scope.$watch( attr.iscDynamicHtml, function( html ){
+    function link( scope, elem, attr ) {
+      scope.$watch( attr.iscDynamicHtml, function( html ) {
         channel.debug( 'iscDynamicHtml', html );
         elem.html( html );
         $compile( elem.contents() )( scope );
-      });
+      } );
     }
-
 
   }//END CLASS
 
-
-
-})();
+} )();

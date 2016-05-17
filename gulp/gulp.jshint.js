@@ -7,38 +7,33 @@ module.exports = {
   init: init
 };
 
-function init(gulp, plugins, config, _) {
+function init(gulp, plugins, config, _, util) {
 
   gulp.task('jshint:common', function () {
     return gulp.src(_.concat(config.common.module.modules, config.common.module.js))
       .pipe(plugins.jshint())
-      .pipe(plugins.jshint.reporter('jshint-stylish'))
-      .pipe(plugins.jscs({ fix: true }))
-      .pipe(plugins.jscs.reporter())
-      .pipe(plugins.size());
+      .pipe(plugins.jscs())// enforce style guide
+      .pipe(plugins.stylish.combineWithHintResults())   // combine with jshint results
+      .pipe(plugins.jshint.reporter('jshint-stylish'));
   });
 
   gulp.task('jshint:components', function () {
     return gulp.src(_.concat(config.component.module.modules, config.component.module.js))
       .pipe(plugins.jshint())
-      .pipe(plugins.jshint.reporter('jshint-stylish'))
-      .pipe(plugins.jscs({ fix: true }))
-      .pipe(plugins.jscs.reporter())
-      .pipe(plugins.size());
+      .pipe(plugins.jscs())// enforce style guide
+      .pipe(plugins.stylish.combineWithHintResults())   // combine with jshint results
+      .pipe(plugins.jshint.reporter('jshint-stylish'));
   });
 
   gulp.task('jshint:app', function () {
     return gulp.src(_.concat(config.app.module.modules, config.app.module.js))
       .pipe(plugins.jshint())
-      .pipe(plugins.jshint.reporter('jshint-stylish'))
-      .pipe(plugins.jscs({ fix: true }))
-      .pipe(plugins.jscs.reporter())
-      .pipe(plugins.size());
+      .pipe(plugins.jscs())// enforce style guide
+      .pipe(plugins.stylish.combineWithHintResults())   // combine with jshint results
+      .pipe(plugins.jshint.reporter('jshint-stylish'));
   });
 
 
-  gulp.task('jshint', function () {
-    return plugins.seq("jshint:common", "jshint:components", "jshint:app");
-  });
+  gulp.task('jshint', ["jshint:common", "jshint:components", "jshint:app"]);
 
 }

@@ -19,7 +19,8 @@
            ng-class="{'isc-sortable': sortable}">
 
         <a ng-click="fauxTblCtrl.sort(column)" ng-if="sortable">{{column.key| translate}}
-          <i class="fa" ng-class="{'fa-sort':null == fauxTblCtrl.getSort(column), 'fa-sort-asc': 'asc' == fauxTblCtrl.getSort(column), 'fa-sort-desc': 'desc' == fauxTblCtrl.getSort(column)}"></i>
+          <i class="fa"
+             ng-class="{'fa-sort':null == fauxTblCtrl.getSort(column), 'fa-sort-asc': 'asc' == fauxTblCtrl.getSort(column), 'fa-sort-desc': 'desc' == fauxTblCtrl.getSort(column)}"></i>
         </a>
         <a ng-if="!sortable">{{column.key| translate}}</a>
       </div>

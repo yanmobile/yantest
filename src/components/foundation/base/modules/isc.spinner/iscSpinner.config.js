@@ -2,18 +2,17 @@
  * Created by hzou on 1/2/16.
  */
 
-(function () {
+( function() {
   'use strict';
 
   angular
-    .module('isc.spinner')
-    .config(config);
+    .module( 'isc.spinner' )
+    .config( config );
 
-
-  function config($httpProvider) {
+  function config( $httpProvider ) {
     //adding the spinner interceptor code handler
-    $httpProvider.interceptors.push('httpLoaderInterceptor');
+    $httpProvider.interceptors.push( 'httpLoaderInterceptor' );
   }
 
-})();
+} )();
 

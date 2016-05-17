@@ -1,7 +1,7 @@
-(function () {
+( function() {
   'use strict';
 
   angular
-    .module('isc.router', ['isc.core']);
+    .module( 'isc.router', ['isc.core'] );
 
-})();
+} )();

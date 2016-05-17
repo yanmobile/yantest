@@ -2,15 +2,15 @@
  * Created by douglasgoodman on 11/24/14.
  */
 
-(function () {
+( function() {
   'use strict';
 
-  angular.module('iscNavContainer')
-    .constant('NAV_EVENTS', {
+  angular.module( 'iscNavContainer' )
+    .constant( 'NAV_EVENTS', {
       showSecondaryNav      : 'iscShowSecondaryNav',
       hideSecondaryNav      : 'iscHideSecondaryNav',
       goToBeforeLoginPage   : 'iscGoToBeforeLoginPage',
       modalBackgroundClicked: 'iscModalBackgroundClicked',
       hideSideNavBar        : 'iscHideSideNavBar'
-    });
-})();
+    } );
+} )();

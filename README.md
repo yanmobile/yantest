@@ -61,10 +61,19 @@ slush hs:updateCore
 
 Override app.config.js (for specifying dev/deploy configurations):
 ```bash
+# for specifying runtime application config
 gulp serve --config <any valid directory>/<anyFileName>.js #only app specific
+gulp build --config <any valid directory>/<anyFileName>.js #only app specific
+gulp deploy --config <any valid directory>/<anyFileName>.js #only app specific
 ```
-The file can be located in any directory, and the file name is not important.
 
+Override gulp/app.json:
+```bash
+# for specifying compile time application config -- to specify editions or different platform targets (mobile, web)
+gulp serve --appjson path/to/app.json #only app specific
+gulp build --appjson path/to/app.json #only app specific
+gulp deploy --appjson path/to/app.json #only app specific
+```
 ---
 ###File structure
     
@@ -170,6 +179,33 @@ The file can be located in any directory, and the file name is not important.
       // This is where we specify the test files
       // e.g., "test/unit/components/**/*.test.js"
     ]
+  },
+  "edition"       : [
+    {
+      "name" : "base",
+      "path" : "src/components/foundation/base/components.json"
+    },
+    // to specify another edition, add it to this edition array. For example the UK edition below.
+    // the framework will take the array of edition configurations and merge them to produce a single master components configuration
+    {
+      "name" : "UK",
+      "path" : "src/components/foundation/UK/components.json"
+    }
+  ],
+  "comments"      : "JavaScript files can't be overridden like css selector cascading or Angular's templateCache templates.",
+  "comments"      : "If we want to override lower level JS files, we must exclude them from the list.",
+  "comments"      : "The overrides below are used to exclude base files by specifying glob patterns.",
+  "comments"      : "e.g. ```common: ['!src/modules/isc.filters/myFilter.js']```",
+  "overrides"     : {
+    "js" : {
+      "common"     : [],
+      "components" : []
+    },
+  "comments"      : "Used to exclude files in common/component. e.g. ```common: ['!src/modules/isc.filters/myFilter.html']```",
+    "html" : {
+      "common"     : [],
+      "components" : []
+    }
   }
 }
 ```
@@ -177,10 +213,10 @@ The file can be located in any directory, and the file name is not important.
 ---
 ###FAQs
 * **I am getting this error message ```slush: command not found```**
-  * Make sure your envoronment satisfies all of the [prerequisites](#prerequisites) and [hs-core-tools] is installed
+  * Make sure your environment satisfies all of the [prerequisites](#prerequisites) and [hs-core-tools] is installed
   
 * **This framework looks awesome, how do I create a fully functional application using this framework in a couple of minutes?**
-  * We highly recommend leveraging our [hs-core-tools] to fecilitate the creation of your new application.
+  * We highly recommend leveraging our [hs-core-tools] to facilitate the creation of your new application.
    
 * **What are the differences between "src/app", "src/common" and "src/components"**
   * "src/common" is framework code and should only be updated directly by framework developers. It defines system wide behaviors such as session management, state authorization, page configuration, and etc.
@@ -188,17 +224,20 @@ The file can be located in any directory, and the file name is not important.
   * "src/app" is application code should only be updated by application developers.  It contains application specific logic and pages.
   
 * **I want to include a new bower package to my application, where should I install it?**
-  * Application specific bower pakages should be installed under "src/app/" folder (don't install it in "src/common" and "src/components")
+  * Application specific bower packages should be installed under "src/app/" folder (don't install it in "src/common" and "src/components")
    
 * **Now that I have bower package successfully installed in "src/app/" folder, how do I add it to the application?**
   * We use Gulp to automate build tasks. Application specific gulp configuration can be found at "gulp/app.json". You'll need to specify the file path of your bower package in "vendor.js" json property which is line 3 of "gulp/app.json" file.
   
-* **How do I add a new javascript package which is not avaiable through bower?**
+* **How do I add a new javascript package which is not available through bower?**
   * You'll need to paste your non-bower library js files in "src/app/assets/vendors/" folder. If this folder doesn't exist, create one.
   * You'll have to reference your js file in "gulp/app.json" configuration file under this key path: "module.assets.vendor.js" array.
   
 * **How do I include a 3rd party css file in my application?**
   * The framework does not support *.css file extensions, you'll need to rename your *.css extension to *.scss (superset of css) and place your *.scss file in "src/app/assets/sass/" folder. Once your file is in the sass folder, add a reference to  "src/app/assets/sass/main.scss" file.
+  
+* **How do I include a module specific scss file?**
+  * This is a built-in functionality. Any scss file added to your module, matching this glob pattern ```src/app/modules/**/*.scss```, will automatically be compiled, concatenated, and shipped as part of your ```app.min.css```.
   
 * **How do I control what gets outputted in the console?**
   * Open up your "src/app/modules/app.config.js" file and add/remove channels in 'devlogWhitelist' and 'devlogBlacklist' arrays. Note: "\*" means all channels.
@@ -216,7 +255,7 @@ The file can be located in any directory, and the file name is not important.
         * Once you have all the source code, commit the changes (if needed). 
     * Push the changes to upstream (not origin)  ```git push upstream <branch> ```
     * Create a Pull Request
-  * **Scenario 2**: The code I want to promote to framework are commited but contains non-feature code
+  * **Scenario 2**: The code I want to promote to framework are committed but contains non-feature code
     * Create a new branch off upstream master ```git checkout -b <branch> upstream/master```
     * Cherry-pick the feature commits. For each of your commits in reverse chronological order (oldest first) 
         * ```git cherry-pick --no-ff --no-commit <commit-hash>```
@@ -225,7 +264,7 @@ The file can be located in any directory, and the file name is not important.
         * Once you have all the source code, commit the changes
     * Push the changes to upstream (not origin)  ```git push upstream <branch>``
     * Create a Pull Request`
-  * **Scenario 3**: The code I want to promote to framework have not been commited
+  * **Scenario 3**: The code I want to promote to framework have not been committed
     * Stash your changes ```git stash save "<message>"```
     * Create a new branch off upstream master ```git checkout -b <branch> upstream/master```
     * Apply your stashed changes ```git stash apply```
@@ -233,7 +272,7 @@ The file can be located in any directory, and the file name is not important.
     * Once you have all the source code, commit the changes
     * Push the changes to upstream (not origin)  ```git push upstream <branch> ```
     * Create a Pull Request
-  * **Scenario 4**: The code I want to promote to framework are commited, and I can't easily isolate the commits. But the good news is, the code is all in my <localBranch>
+  * **Scenario 4**: The code I want to promote to framework are committed, and I can't easily isolate the commits. But the good news is, the code is all in my <localBranch>
     * Create a new branch off upstream master ```git checkout -b <branch> upstream/master```
     * Merge your <localBranch> into your <branch> without fast-forward and commit, which allows you to pick the changes you want ```git merge --no-ff --no-commit <localBranch>```
     * Remove the files/changes you don't want to promote to the framework
@@ -243,17 +282,17 @@ The file can be located in any directory, and the file name is not important.
     
 * **I have an existing application and my framework is out of date. How can I upgrade my application's framework (cool slush way)?**
   1. Update your ```hs-core-tools``` by executing ```slush hs:update```
-  1. Ensure you have a local git remote upstream is pointing to "https://github.com/intersystems/hs-core-ui.git"
-    1. execute ```git remote -v``` to ensure your project has a remote ```upstream``` mapping
-    1. if "upstream" doesn't exist, run ```slush hs:addUpstream```
-  1. execute slush hs:updateCore
+  1. execute ```slush hs:updateCore```
   1. create a PR to merge this to your project's master branch
-  2. Follow [changelog.md] instruction for post update changes
+  1. Follow [changelog.md] instruction for post update changes
   
 * **I have an existing application and my framework is out of date. How can I upgrade my application's framework (the old fashion way)?**
-  1. Ensure you have a local git remote upstream is pointing to "https://github.com/intersystems/hs-core-ui.git"
+  1. Ensure you have a local git remote ```upstream``` is pointing to "https://github.com/intersystems/hs-core-ui.git"
     1. execute ```git remote -v``` to check existing git remote repo mappings
-    2. if "upstream" doesn't exist, add it by executing ```git remote add upstream https://github.com/intersystems/hs-core-ui.git```
+    1. if "upstream" doesn't exist, add it by executing ```git remote add upstream https://github.com/intersystems/hs-core-ui.git```
+  1. Ensure you have a local git remote ```appstream``` is pointing to "https://github.com/intersystems/hs-core-app-scaffold.git"
+    1. execute ```git remote -v``` to check existing git remote repo mappings
+    1. if "appstream" doesn't exist, add it by executing ```git remote add appstream https://github.com/intersystems/hs-core-app-scaffold.git```
   2. create a new branch off remote master ```git checkout -b framework-update origin/master```
   3. pull the framework into your branch ```git pull upstream master```
   4. resolve conflicts (if any) and commit
@@ -295,6 +334,24 @@ The file can be located in any directory, and the file name is not important.
      }
    ]
 ```   
+
+* **How do I add/exclude specific js in common or components?**
+  * add glob patterns to ```gulp/app.json -> overrides/js/[common/component]``` configuration
+ 
+* **How do I exclude specific html in common or components?**
+  * add glob patterns to ```gulp/app.json -> overrides/html/[common/component]``` configuration
+
+* **How do I exclude specific scss in common or components? (coming soon)**
+  * add glob patterns to ```gulp/app.json -> overrides/scss/[common/component]``` configuration
+
+* **How do I create custom gulp tasks**
+  * Custom gulp tasks should be created using the established format (exporting init()) and they should be saved in ```gulp/custom/``` directory
+
+* **How do I override built-in gulp tasks**
+  * There are two ways to override built-in gulp tasks
+    * **Method 1** Create new gulp tasks with the same **file names** matching the ones you wish to override and place them in ```gulp/custom/``` directory
+    * **Method 2** Create new gulp tasks with the same **task names** matching the ones you wish to override and place them in ```gulp/custom/``` directory
+    
 
 ---
 ###Git 101

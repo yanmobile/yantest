@@ -5,14 +5,14 @@
 
 // this directive is used for care team's health & social care contacts
 
-(function(){
+( function() {
   'use strict';
 
   // ----------------------------
   // injection
   // ----------------------------
-  angular.module('isc.table')
-    .directive('iscTablePopupIndicator', iscTablePopupIndicator);
+  angular.module( 'isc.table' )
+    .directive( 'iscTablePopupIndicator', iscTablePopupIndicator );
 
   /* @ngInject */
   /**
@@ -20,11 +20,11 @@
    * @memberOf isc.table
    * @param devlog
    * @returns {{restrict: string, controller: controller, controllerAs: string}}
-     */
-  function iscTablePopupIndicator(devlog){
-    var channel = devlog.channel('iscTablePopupIndicator');
+   */
+  function iscTablePopupIndicator( devlog ) {
+    var channel = devlog.channel( 'iscTablePopupIndicator' );
 
-    channel.debug( 'iscTablePopupIndicator LOADED');
+    channel.debug( 'iscTablePopupIndicator LOADED' );
 
     // ----------------------------
     // vars
@@ -43,11 +43,11 @@
     // functions
     // ----------------------------
     /* @ngInject */
-    function controller($scope){
+    function controller( $scope ) {
       var self      = this;
       self.inPopup  = true;
-      self.commands = (_.find($scope.iscTblCtrl.tableConfig.columns, { type: 'commands' }) || {}).commands;
+      self.commands = ( _.find( $scope.iscTblCtrl.tableConfig.columns, { type: 'commands' } ) || {} ).commands;
     }
   }// END CLASS
 
-})();
+} )();

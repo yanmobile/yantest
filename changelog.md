@@ -1,5 +1,29 @@
 
 # Core Changes
+### 05/04/2016
+The framework has made some performance optimizations for deployed applications in production. Simply set ```src/app/modules/app.config.js```'s ```production: true```. Execute ```slush hs:updateCore``` to get the latest. Although manual updates are no longer supported, you can manually update the changes described in [this PR](https://github.com/intersystems/hs-core-app-scaffold/pull/6).
+
+### 05/03/2016
+The framework has been updated to support dynamic layout css class. Execute ```slush hs:updateCore``` to get the latest. Although manual updates are no longer supported, you can manually update the changes described in [this PR](https://github.com/intersystems/hs-core-app-scaffold/pull/3).
+
+### 05/02/2016
+The framework has been updated to support dynamic layouts. Execute ```slush hs:updateCore``` to get the latest. Although manual updates are no longer supported, you can manually update the changes described in [this PR](https://github.com/intersystems/hs-core-app-scaffold/pull/2).
+
+### 05/02/2016
+Thanks to Doug’s advice, the framework has been enhanced to further ease the core update process (hs-core-ui and scaffold app code). We are introducing a new repo called ‘hs-core-app-scaffold’ to store the application specific boilerplate code. We have also updated the workflow to automatically bring individual application to the latest boilerplate app-specific code. Our current update workflow consists of update core and then manually applying individual changes described in hs-core-ui’s changelog.md file. The new workflow will automate all of that and leverages git workflow to perform conflict resolution. To use the new workflow, be sure to update your hs-core-tools and then run ```slush hs:updateCore```. ```slush hs:updateCore``` command will perform the following tasks:
+Checkout a new branch ```git checkout -b framework-update–<today> origin/master```
+Pull the latest of hs-core-ui ```git pull —no-edit upstream master```
+Pull the latest app scaffold code ``` git pull —no-edit appstream master```
+If there are no conflicts, push new branch to app repo ```git push origin framework-update-<today>```
+
+By leveraging git as the conflict resolution workflow, any future core update will only pull in the incremental changes.  This new workflow will also remove the need to keep a separate upgrade notes in changelog.md. The core team will continue to add changelog update notes for the next two weeks, then we may stop updating the changelog.md. Be sure your application is using the new workflow by then. If not, your core update experiences going forward may not be pleasant.
+
+https://github.com/intersystems/hs-core-ui/pull/220  
+https://github.com/intersystems/hs-core-app-scaffold  
+https://github.com/intersystems/hs-core-tools/pull/79  
+
+Our application framework has been updated to automatically update app code when executing ```slush hs:updateCore```. Each application will add an additional git remote repo, appstream. When executing ```slush hs:updateCore```, *appstream* remote repo will automatically be added to your project. This is not a breaking change; individual applications does not need to do anything specific.
+
 ### 04/29/2016
 [hs-core-tools PR 49](https://github.com/intersystems/hs-core-tools/pull/49)
 adding support to allow app.config override during a run of any gulp task. In order to achieve the expected behavior, a new entry
@@ -7,8 +31,9 @@ has to be added in the file:
 gulp/app.json
 "excludeConfig" : "!src/app/modules/app.config.js"
 This change was made on 4/5/2016
+
 ### 04/26/2016
-[hs-core-ui PR 213](https://github.com/intersystems/hs-core-ui/pull/213) adds support for compile time edition selection support; apps can now specify which edition to build for at compile time. The app specific changes can be found in [hs-core-tools PR 74](https://github.com/intersystems/hs-core-tools/pull/76/files?w=1). 
+[hs-core-ui PR 213](https://github.com/intersystems/hs-core-ui/pull/213) adds support for compile time edition selection support; apps can now specify which edition to build for at compile time. The app specific changes can be found in [hs-core-tools PR 74](https://github.com/intersystems/hs-core-tools/pull/76/files?w=1).   
 [hs-core-ui PR 210](https://github.com/intersystems/hs-core-ui/pull/210) adds theming functionially. Make sure to update both core-ui and core-tools together in this update or your app will break. Please refer to core-tools PR 75 for app specific changes: [hs-core-tools PR 75](https://github.com/intersystems/hs-core-tools/pull/75). 
 
 ### 04/21/2016
