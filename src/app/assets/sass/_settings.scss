@@ -26,6 +26,7 @@
 //  21. Popup
 //  22. Tabs
 //  23. Title Bar
+//  24. Tooltips
 
 @import "../../../components/foundation/base/bower_components/foundation-apps/scss/helpers/functions";
 @import "../../../components/foundation/base/assets/sass/isc/isc-variables";
@@ -529,3 +530,13 @@ $titlebar-background: $primary-color;
 $titlebar-color: isitlight($titlebar-background, $body-font-color, $light-text);
 $titlebar-border: 1px solid $app-border-color;
 $titlebar-padding: $global-padding;
+
+
+// 24. TOOLTIPS
+/* ------------------------------ */
+$tooltip-background: $primary-color;
+$tooltip-border: 1px solid smartscale($tooltip-background, 10%);
+$tooltip-font-size: 0.875rem;
+$tooltip-radius: $global-radius;
+$tooltip-line-height: $paragraph-line-height;
+$tooltip-padding: 0.5rem 0.625rem;
