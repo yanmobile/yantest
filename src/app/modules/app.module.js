@@ -136,7 +136,8 @@
 
       function _onNo() {
         log.debug( '_onNo...' );
-        iscSessionModel.destroy();
+        $window.sessionStorage.setItem( 'isManualLogOut', true );
+        destroySession();
       }
     } );
 
