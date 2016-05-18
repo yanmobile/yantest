@@ -2,15 +2,15 @@
  * Created by hzou on 12/13/15.
  */
 
-(function () {
+( function() {
 
   'use strict';
 
   angular
-    .module('home', ['ui.router', 'isc.common'])
-    .config(function (iscStateProvider, $urlRouterProvider) {
-      iscStateProvider.state(getStates());
-    });
+    .module( 'home', ['ui.router', 'isc.common'] )
+    .config( function( iscStateProvider, $urlRouterProvider ) {
+      iscStateProvider.state( getStates() );
+    } );
 
   /**
    * @description this is where module specific states are defined.
@@ -32,4 +32,4 @@
       }
     };
   }
-})();
+} )();
