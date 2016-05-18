@@ -21,7 +21,7 @@
    * @param iscSessionModel
    * @returns {{getTopNav: getTopNav, getVersionInfo: getVersionInfo, setVersionInfo: setVersionInfo, navigateToUserLandingPage: navigateToUserLandingPage}}
    */
-  function iscNavContainerModel( devlog, $state, iscCustomConfigService, iscSessionModel ) {
+  function iscNavContainerModel( devlog, $state, iscCustomConfigService, iscSessionModel, $window, $timeout ) {
     var channel = devlog.channel( 'iscNavContainerModel' );
     channel.debug( 'iscNavContainerModel LOADED' );
 
@@ -55,11 +55,20 @@
     /**
      * @memberOf iscNavContainerModel
      */
-    function navigateToUserLandingPage() {
+    function navigateToUserLandingPage( reload ) {
       var currentUserRole = iscSessionModel.getCurrentUserRole();
       var landingPage     = iscCustomConfigService.getConfigSection( 'landingPages' )[currentUserRole];
       if ( !_.isNil( landingPage ) ) {
+        var currentState = $state.current.state;
         $state.go( landingPage );
+        // do a full page reload if `reload` flag is passed in
+        // or if user role is anonymous ("*") and is going to the user's landing page
+        if ( reload || ( currentState !== landingPage && currentUserRole === "*" ) ) {
+          $window.sessionStorage.setItem( 'isAutoLogOut', true );
+          $timeout( function() {
+            $window.location.reload();
+          }, 0 );
+        }
       } else {
         channel.error( 'No landing page found for', _.wrapText( currentUserRole ), 'role' );
       }
