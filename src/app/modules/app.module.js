@@ -39,7 +39,8 @@
   }
 
   function run( devlog, iscNavContainerModel, $rootScope, $state, iscConfirmationService, iscSessionModel, AUTH_EVENTS,
-    loginApi, iscRouterDefaultEventService, appConfig, iscExternalRouteApi, iscStateInit, iscVersionApi, $window ) {
+    loginApi, iscRouterDefaultEventService, appConfig, iscExternalRouteApi, iscStateInit, iscVersionApi, $window, $timeout,
+    iscCustomConfigService, FoundationApi ) {
     var log = devlog.channel( 'app.module' );
 
     //register default state event handlers
@@ -58,6 +59,16 @@
         'versionInfo': iscVersionApi.load //grab version info for the footer
       }
     } );
+
+    var isAutoLogOut   = $window.sessionStorage.getItem( 'isAutoLogOut' );
+    var isManualLogOut = $window.sessionStorage.getItem( 'isManualLogOut' );
+    if ( !Boolean( isManualLogOut ) && Boolean( isAutoLogOut ) ) {
+      $timeout( function() {
+        FoundationApi.publish( 'main-notifications', { title: 'Session Expired', content: 'Your were automatically logged out.' } );
+      } );
+    }
+    $window.sessionStorage.removeItem( 'isAutoLogOut' );
+    $window.sessionStorage.removeItem( 'isManualLogOut' );
 
     // ------------------------
     // $viewContentLoaded
@@ -106,6 +117,7 @@
     // session logout
     $rootScope.$on( AUTH_EVENTS.logout, function() {
       log.debug( 'AUTH_EVENTS.logout...' );
+      $window.sessionStorage.setItem( 'isManualLogOut', true );
       loginApi.logout().then( destroySession );
     } );
 
@@ -142,7 +154,7 @@
     // ------------------------
     // login failed
     $rootScope.$on( AUTH_EVENTS.loginFailed, function loginFailedHandler() {
-      $window.alert( 'Temporarily: login failed. please use {bchilds:test} OR {cperkins:test}' );
+      FoundationApi.publish( 'main-notifications', { title: 'Login Failed', content: 'Please check your username and password and try again' } );
     } );
 
     $rootScope.$on( AUTH_EVENTS.sessionTimeoutReset, function resetTimeout() {
