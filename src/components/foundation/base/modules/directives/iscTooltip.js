@@ -17,7 +17,7 @@
    *
    * @returns {{restrict: string, link: link, scope: boolean, bindToController: {config: string}, controller: directive.controller, controllerAs: string}}
    */
-  function iscTooltip() {//jshint ignore:line
+  function iscTooltip( $timeout ) {//jshint ignore:line
     var defaultConfig = { animation: 'grow', touchDevices: true, maxWidth: 900 };
     var directive     = {
       restrict        : 'A',
@@ -38,7 +38,12 @@
     // functions
     // ----------------------------
     function link( scope, elem, attrs, iscTooltipCtrl ) {
-      elem.tooltipster( iscTooltipCtrl.config || defaultConfig );
+
+      // $timeout is needed in order to ensure the order of events
+      $timeout( function() {
+        // The directive needs to initialize jQuery's tooltip after Angular has interpolated the title
+        elem.tooltipster( iscTooltipCtrl.config || defaultConfig );
+      }, 0 );
     }
 
   }//END CLASS
