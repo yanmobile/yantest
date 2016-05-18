@@ -2,7 +2,7 @@
  * Created by  on 1/5/2016, 3:56:02 PM.
  */
 
-( function () {
+( function() {
   'use strict';
 
   angular.module( 'login' )
@@ -25,7 +25,7 @@
     // ----------------------------
 
     function init() {
-      loginApi.status().then( function ( data ) {
+      loginApi.status().then( function( data ) {
         _loginSuccess( data );
       } );
     }

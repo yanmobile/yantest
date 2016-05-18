@@ -2,7 +2,7 @@
  * Created by hzou on 2/8/2016, 8:57:49 AM.
  */
 
-( function () {
+( function() {
   'use strict';
 
   angular.module( 'layout' )
@@ -24,7 +24,7 @@
     /**
      * updates the layout and layoutClass based on the next state
      */
-    $rootScope.$on( '$stateChangeStart', function ( event, state, params ) {
+    $rootScope.$on( '$stateChangeStart', function( event, state, params ) {
       self.layout      = state.layout;
       self.layoutClass = getSecondLevelStateName();
     } );

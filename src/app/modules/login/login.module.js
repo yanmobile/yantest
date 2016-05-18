@@ -2,7 +2,7 @@
  * Created by  on 1/5/2016, 3:56:02 PM.
  */
 
-( function () {
+( function() {
 
   'use strict';
 
@@ -10,7 +10,7 @@
     .module( 'login', ['ui.router', 'isc.common'] )
 
     /* @ngInject */
-    .config( function ( iscStateProvider, $urlRouterProvider ) {
+    .config( function( iscStateProvider, $urlRouterProvider ) {
       $urlRouterProvider.when( '', '/login' );
       $urlRouterProvider.when( '/', '/login' );
 

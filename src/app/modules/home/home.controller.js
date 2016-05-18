@@ -2,17 +2,17 @@
  * Created by hzou on 12/13/15.
  */
 
-(function () {
+( function() {
   'use strict';
 
   angular
-    .module('home')
-    .controller('homeController', homeController);
+    .module( 'home' )
+    .controller( 'homeController', homeController );
 
   /* @ngInject */
-  function homeController(devlog) {
-    var log = devlog.channel('homeController');
-    log.debug('homeController LOADED');
+  function homeController( devlog ) {
+    var log = devlog.channel( 'homeController' );
+    log.debug( 'homeController LOADED' );
 
     // ----------------------------
     // vars
@@ -25,4 +25,4 @@
   // injection
   // ----------------------------
 
-})();
+} )();
