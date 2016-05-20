@@ -105,3 +105,11 @@ $icons: (
     content: quote($icon);
   }
 }
+
+/* Hide For Print Mixin */
+@mixin no-print {
+
+  @media #{$print}{
+    display: none;
+  }
+}
