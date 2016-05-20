@@ -64,7 +64,7 @@
     var isManualLogOut = $window.sessionStorage.getItem( 'isManualLogOut' );
     if ( !Boolean( isManualLogOut ) && Boolean( isAutoLogOut ) ) {
       $timeout( function() {
-        FoundationApi.publish( 'main-notifications', { title: 'Session Expired', content: 'Your were automatically logged out.' } );
+        FoundationApi.publish( 'main-notifications', { title: 'Session Expired', content: 'You were automatically logged out.' } );
       } );
     }
     $window.sessionStorage.removeItem( 'isAutoLogOut' );
@@ -165,8 +165,8 @@
 
     // ------------------------
     // user session changed
-    $rootScope.$on( 'iscSessionChange', function() {
-      log.debug( 'iscNavbarController.iscSessionChange..' );
+    $rootScope.$on( AUTH_EVENTS.sessionChange, function() {
+      log.debug( 'AUTH_EVENTS.sessionChange..' );
       _.defer( iscNavContainerModel.navigateToUserLandingPage, 0 );
     } );
 
