@@ -157,3 +157,10 @@
   border: 2px solid yellow !important;
   padding: 0.125rem;
 }
+
+/* Hide For Print Class */
+.no-print {
+  @media #{$print}{
+    display: none;
+  }
+}

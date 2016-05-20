@@ -1,3 +1,10 @@
+/* Allow Multi-Page Printing */
+.grid-frame {
+  @media #{$print}{
+    height: 100%;
+  }
+}
+
 .isc-app-content {
   height: 100%;
   flex: 1 1 auto;

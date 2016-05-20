@@ -87,7 +87,8 @@ $phab-or-less: "only screen and (max-width: #{$screen-phablet-max})";
 $below-phab:   "only screen and (max-width: #{$screen-phone-max})";
 // Everything but Desktop
 $mobile:       "only screen and (max-width: #{$medium-max})";
-
+//Print
+$print:  "only print";
 
 // THEME COLOR PALETTES
 /* -----------------------------------------
