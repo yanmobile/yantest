@@ -100,8 +100,12 @@
 
       // store the login response for page refreshes
       storage.set( 'loginResponse', sessionData );
-      storage.set( 'jwt', sessionData.jwt );
-      $http.defaults.headers.common.jwt = sessionData.jwt;
+
+      var jwt = _.get( sessionData, 'jwt' );
+      if ( jwt ) {
+        storage.set( 'jwt', jwt );
+        $http.defaults.headers.common.jwt = jwt;
+      }
 
       credentials = {}; // for now we arent using credentials
       setCurrentUser( sessionData.UserData );
