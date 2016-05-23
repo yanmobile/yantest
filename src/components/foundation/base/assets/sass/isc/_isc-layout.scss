@@ -12,7 +12,7 @@
 
 /* Page Architecture */
 
-// Full Width
+/* Built-In Page Padding */
 .isc-page {
   padding-top: $vertical-container-padding;
   padding-bottom: $vertical-container-padding;
@@ -31,52 +31,22 @@
   }
 
   @media #{$xxlarge} {
-    padding-left: 0;
-    padding-right: 0;
+    padding-left: $horizontal-container-padding;
+    padding-right: $horizontal-container-padding;
   }
 
   @media #{$medium-down} {
     padding-left: $horizontal-container-padding-small;
     padding-right: $horizontal-container-padding-small;
   }
-}
 
-// Sidebar Layout (sideNav.html)
-
-#main {
-  padding-top: $vertical-container-padding;
-  padding-bottom: $vertical-container-padding;
-  height: 100%;
-
-  .isc-page {
-    height: 100%;
-
-    @media #{$xxlarge} {
-      padding-left: $horizontal-container-padding;
-      padding-right: $horizontal-container-padding;
-    }
-
-    @media #{$xlarge} {
-      padding-left: $horizontal-container-padding;
-      padding-right: $horizontal-container-padding;
-    }
-
-    @media #{$large} {
-      padding-left: $horizontal-container-padding;
-      padding-right: $horizontal-container-padding;
-    }
-
-    @media #{$medium} {
-      padding-left: $horizontal-container-padding-small;
-      padding-right: $horizontal-container-padding-small;
-    }
-
-    @media #{$small} {
-      padding-left: $horizontal-container-padding-small;
-      padding-right: $horizontal-container-padding-small;
-    }
+  @media #{$small} {
+    padding-left: $horizontal-container-padding-small;
+    padding-right: $horizontal-container-padding-small;
   }
 }
+
+#main {height: 100%;}
 
 /* Content Architecture */
 
