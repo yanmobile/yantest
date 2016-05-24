@@ -43,6 +43,10 @@
 
         a {
           color: isitlight($secondary-nav-active-background, $body-font-color, $light-text);
+
+          &:hover {
+            background:$secondary-nav-active-background;
+          }
         }
       }
 
@@ -54,12 +58,9 @@
           font-size: 0.9735rem;
         }
 
-        &.active, &:active, &:focus {
+        &.active, &:active, &:focus, &:hover {
           background: $secondary-nav-active-background;
           color: isitlight($secondary-nav-active-background, $body-font-color, $light-text);
-        }
-        &:hover {
-          background: darken($secondary-nav-background, 6);
         }
       }
 
