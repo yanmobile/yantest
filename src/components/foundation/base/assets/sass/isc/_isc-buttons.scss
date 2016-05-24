@@ -46,6 +46,15 @@
 
 button, a.button {
   font-weight: $font-weight-semi-bold;
+  color: isitlight($button-background, $body-font-color, $light-text);
+
+  &.secondary, &.success, &.warning, &.alert, &.info, &.dark, &.cancel {
+    color: isitlight($button-background, $body-font-color, $light-text);
+
+    &:hover, &:focus, &:active {
+      color: isitlight($button-background, $body-font-color, $light-text);
+    }
+  }
 
   &.cancel {
 
@@ -216,7 +225,7 @@ input[type="submit"] {
       margin: 0;
     }
     > input + label {
-      margin-left: 0;
+      margin: 0;
     }
     // Add borders between items
     &:not(:last-child) {
