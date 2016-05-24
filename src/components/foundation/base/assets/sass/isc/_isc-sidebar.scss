@@ -28,7 +28,7 @@
 
         &.active {
           background: $sidebar-active-background;
-          color: isitlight($sidebar-background, $body-font-color, $light-text);
+          color: isitlight($sidebar-active-background, $body-font-color, $light-text);
           font-weight: $font-weight-semi-bold;
         }
       }
