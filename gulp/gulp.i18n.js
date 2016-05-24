@@ -13,6 +13,11 @@ var mergeJson = require( 'gulp-merge-json' );
 
 function init( gulp, plugins, config, _ ) {
 
+  /**
+   * @description handles i18n source files. This will merge all i18n files with the same name into 1 output file to be consumed by the application.
+   * 
+   * This is the order of file overrides: App overrides Components which overrides Common => _.merge({}, common, components, app);
+   */
   gulp.task( 'i18n', function( done ) {
     var commonI18n     = _.get( config, "common.module.assets.i18nDir" );
     var componentsI18n = _.get( config, "component.module.assets.i18nDir" );
@@ -24,7 +29,7 @@ function init( gulp, plugins, config, _ ) {
     var appI18nFiles        = readdirSync( appI18n );
 
     // unique files
-    var uniqI18nFiles = _.chain( commonI18nFiles ).concat( componentsI18nFiles, appI18nFiles ).uniq().value();
+    var uniqI18nFiles = _.chain( commonI18nFiles ).concat( componentsI18nFiles, appI18nFiles ).uniq().filter( isJsonFile ).value();
 
     // for each file merge all 3 files from each section
     _.forEach( uniqI18nFiles, function mergeConfigs( file ) {
@@ -51,7 +56,17 @@ function init( gulp, plugins, config, _ ) {
     }
 
     /**
+     * used by lodash to return files with .json extension in the name
+     * @param filename
+     * @returns true/false
+     */
+    function isJsonFile( filename ) {
+      return filename.endsWith( '.json' );
+    }
+
+    /**
      * dynamically add the src file if i18n section is specified
+     * This is the order of file overrides: App overrides Components which overrides Common => _.merge({}, common, components, app);
      * @param file
      * @returns {Array}
      */
@@ -72,6 +87,12 @@ function init( gulp, plugins, config, _ ) {
   } );
 }
 
+/**
+ * @description returns all files inside of a specific folder. 
+ * @param path
+ * @param defaults
+ * @returns {*}
+ */
 function readdirSync( path, defaults ) {
   var files;
   try {
