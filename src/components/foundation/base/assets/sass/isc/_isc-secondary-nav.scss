@@ -40,6 +40,10 @@
       &.active {
         background: $secondary-nav-active-background;
         color: isitlight($secondary-nav-active-background, $body-font-color, $light-text);
+
+        a {
+          color: isitlight($secondary-nav-active-background, $body-font-color, $light-text);
+        }
       }
 
       a {
