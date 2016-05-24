@@ -9,7 +9,8 @@
       'routes',
       'isc.components',
       'isc.socket',
-      'isc.templates'
+      'isc.templates',
+      'app.config'
     ] )
     .config( config )
     .run( run );
