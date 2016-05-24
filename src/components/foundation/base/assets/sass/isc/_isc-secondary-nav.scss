@@ -58,9 +58,13 @@
           font-size: 0.9735rem;
         }
 
-        &.active, &:active, &:focus, &:hover {
+        &.active, &:active, &:focus {
           background: $secondary-nav-active-background;
           color: isitlight($secondary-nav-active-background, $body-font-color, $light-text);
+        }
+
+        &:hover {
+          background: smartscale($secondary-nav-background, 4.5%);
         }
       }
 
