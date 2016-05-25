@@ -90,19 +90,6 @@
       });
     });
 
-    // -------------------------
-    describe('getConfig/setConfig tests ', function () {
-
-      it('should have a function getConfig', function () {
-        expect(angular.isFunction(customConfigService.getConfig)).toBe(true);
-      });
-
-      it('should return the config when calling getConfig', function () {
-        var result = customConfigService.getConfig();
-        expect(result).toEqual(mockConfig);
-      });
-    });
-
   });
 })();
 

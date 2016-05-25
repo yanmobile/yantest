@@ -21,7 +21,7 @@
    * @param iscSessionModel
    * @returns {{getTopNav: getTopNav, getVersionInfo: getVersionInfo, setVersionInfo: setVersionInfo, navigateToUserLandingPage: navigateToUserLandingPage}}
    */
-  function iscNavContainerModel( devlog, $state, iscCustomConfigService, iscSessionModel, $window, $timeout ) {
+  function iscNavContainerModel( devlog, $state, iscCustomConfigService, iscSessionModel, $window, $timeout, iscAuthorizationModel ) {
     var channel = devlog.channel( 'iscNavContainerModel' );
     channel.debug( 'iscNavContainerModel LOADED' );
 
@@ -29,8 +29,6 @@
     // vars
     // ----------------------------
     var topNavArr = {};
-    var secondaryNav;
-    var secondaryNavTasks;
     var versionInfo;
 
     // ----------------------------
@@ -79,18 +77,31 @@
      * @returns {*}
      */
     function getTopNav() {
+      // "*", "user"
       var currentUserRole = iscSessionModel.getCurrentUserRole();
+      // caching
       if ( !topNavArr[currentUserRole] ) {
-        var topTabs  = iscCustomConfigService.getConfigSection( 'topTabs' );
-        var userTabs = _.extend( {}, topTabs['*'] ); // include anonymous tabs
-        if ( currentUserRole !== '*' ) {
-          _.extend( userTabs, topTabs[currentUserRole] );
-        }
-
-        topNavArr[currentUserRole] = _.toArray( userTabs );
+        //returns a list of state names ['authenticated.home', '!authenticated.secret']
+        var topTabStates           = iscCustomConfigService.getConfigSection( 'topTabs', currentUserRole );
+        //the actual array of permitted state objects
+        topNavArr[currentUserRole] = _.reduce( topTabStates, getUserTabs, [] );
       }
-
       return topNavArr[currentUserRole];
+
+      /**
+       * if state has displayOrder and user is authorized to access it.
+       * This is used as part of _.reduce()
+       * @param returnArray
+       * @param stateName
+       * @returns {*}
+       */
+      function getUserTabs( returnArray, stateName ) {
+        var stateObj = $state.get( stateName );   //get state from name
+        if ( stateObj && stateObj.displayOrder && iscAuthorizationModel.isAuthorized( stateName ) ) {
+          returnArray.push( stateObj );
+        }
+        return returnArray;
+      }
     }
 
     /**

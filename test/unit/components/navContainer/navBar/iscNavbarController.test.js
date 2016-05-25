@@ -23,7 +23,7 @@
     } ) );
 
     // setup devlog
-    beforeEach(module('isc.core', 'isc.configuration', 'iscNavContainer', function (devlogProvider, iscCustomConfigServiceProvider) {
+    beforeEach(module('isc.core', 'isc.configuration', 'isc.authorization', 'iscNavContainer', function (devlogProvider, iscCustomConfigServiceProvider) {
       devlogProvider.loadConfig(mockConfig);
       iscCustomConfigServiceProvider.loadConfig(mockConfig);
     }));
