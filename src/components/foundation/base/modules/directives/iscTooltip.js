@@ -39,7 +39,6 @@
     // ----------------------------
     function link( scope, elem, attrs, iscTooltipCtrl ) {
 
-      // $timeout is needed in order to ensure the order of events
       scope.$applyAsync(registerTooltip);
       attrs.$observe( 'title', updateTooltip );
 
