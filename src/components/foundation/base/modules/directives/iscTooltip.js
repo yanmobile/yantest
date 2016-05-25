@@ -40,7 +40,6 @@
     function link( scope, elem, attrs, iscTooltipCtrl ) {
 
       scope.$applyAsync(registerTooltip);
-      attrs.$observe( 'title', updateTooltip );
 
       function updateTooltip(value) {
         elem.tooltipster('content', value);
@@ -49,6 +48,7 @@
       function registerTooltip() {
         // The directive needs to initialize jQuery's tooltip after Angular has interpolated the title
         elem.tooltipster( iscTooltipCtrl.config || defaultConfig );
+        attrs.$observe( 'title', updateTooltip );
       }
     }
 
