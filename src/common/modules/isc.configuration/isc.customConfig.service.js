@@ -21,9 +21,6 @@
       addRolePermissions: function addRolePermissions( states ) {
         updateConfig( mapRolePermissions( states ), 'rolePermissions' );
       },
-      addTopNavTab      : function addTopNavTab( topNavTab ) {
-        updateConfig( topNavTab, 'topTabs' );
-      },
       setLandingPageFor : function( role, state ) {
         updateConfig( _.makeObj( role, state ), 'landingPages' );
       },
@@ -75,12 +72,27 @@
       function getConfigSection( section, role ) {
         channel.debug( 'iscCustomConfigService.getConfigSection', section );
         var retObj;
-        if ( role ) {
+        if ( section === "topTabs" ) {
+          retObj = getTopTabs( role );
+        } else if ( role ) {
           retObj = _.get( config, [section, role].join( '.' ) );
         } else {
           retObj = _.get( config, section );
         }
         return retObj;
+      }
+
+      function getTopTabs( role ) {
+        var rolePermissions = _.get( config, "rolePermissions" );
+        var permittedTabs = rolePermissions;
+        if ( role ) {
+          //automatically include anonymous states
+          permittedTabs = angular.copy( rolePermissions['*'] );
+          if ( role !== '*' ) {
+            Array.prototype.push.apply( permittedTabs, rolePermissions[role] );
+          }
+        }
+        return permittedTabs;
       }
 
     }// END CLASS
