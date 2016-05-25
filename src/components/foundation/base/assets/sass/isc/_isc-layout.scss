@@ -61,7 +61,7 @@
   padding: 1rem 0 0 0;
   margin-bottom: 2rem;
   overflow: visible;
-  overflow-y: inherit;
+  //overflow-y: inherit;
   display: -ms-flexbox;
   -ms-flex-flow: column nowrap;
   -ms-flex-align: stretch;
@@ -76,7 +76,7 @@
 }
 
 .sub-section {
-  padding-top: 1.5rem;
+  padding-top: 2rem;
 }
 
 // Form Sections (Major)
@@ -99,7 +99,6 @@
     padding-top: 0;
   }
 }
-
 
 .grid-content .grid-block {
   margin-left: 0;
