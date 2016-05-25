@@ -84,7 +84,7 @@
 
       function getTopTabs( role ) {
         var rolePermissions = _.get( config, "rolePermissions" );
-        var permittedTabs;
+        var permittedTabs = rolePermissions;
         if ( role ) {
           //automatically include anonymous states
           permittedTabs = angular.copy( rolePermissions['*'] );
