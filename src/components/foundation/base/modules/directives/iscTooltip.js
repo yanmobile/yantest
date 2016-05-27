@@ -39,10 +39,10 @@
     // ----------------------------
     function link( scope, elem, attrs, iscTooltipCtrl ) {
 
-      scope.$applyAsync(registerTooltip);
+      scope.$applyAsync( registerTooltip );
 
-      function updateTooltip(value) {
-        elem.tooltipster('content', value);
+      function updateTooltip( value ) {
+        elem.tooltipster( 'content', value );
       }
 
       function registerTooltip() {
