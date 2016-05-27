@@ -9,6 +9,8 @@ module.exports = {
 
 function init(gulp, plugins, config, _) {
   gulp.task('sass', [], function () {
+    var autoprefixer = require('gulp-autoprefixer');
+    
     return gulp
       .src(config.app.module.scss)
       .pipe(plugins.sourcemaps.init())
@@ -23,7 +25,7 @@ function init(gulp, plugins, config, _) {
           screens: ['0px']
         }
       }))
-      //.pipe(plugins.cssmin())
+      .pipe(autoprefixer())
       .pipe(plugins.concat('app.css'))
       .pipe(plugins.rename({ basename: 'main', suffix: '.min' }))
       .pipe(plugins.sourcemaps.write())
