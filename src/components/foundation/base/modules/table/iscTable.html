@@ -53,7 +53,7 @@
     <tbody>
 
     <!--rows-->
-    <tr dir-paginate="dataItem in iscTblCtrl.tableRows "
+    <tr dir-paginate="dataItem in iscTblCtrl.tableRows | itemsPerPage:iscTblCtrl.tableConfig.itemsPerPage || 20"
         current-page="iscTblCtrl.currentPage"
         model-data="iscTblCtrl.tableRows"
         pagination-id="iscTblCtrl.tableConfig.key"
