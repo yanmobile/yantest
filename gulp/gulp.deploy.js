@@ -9,6 +9,6 @@ module.exports = {
 
 function init(gulp, plugins, config, _) {
   return gulp.task('deploy', ["clean"], function () {
-    return plugins.seq(['fonts', 'images', 'scripts:deploy', 'templates', 'i18n', 'sass', 'favicon', 'version'], 'html');
+    return plugins.seq(['fonts', 'images', 'scripts:deploy', 'templates', 'i18n', 'sass', 'favicon'], 'html');
   });
 }
