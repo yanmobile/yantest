@@ -277,9 +277,7 @@ $button-style: solid;
 $button-background: $accent-color;
 $button-cancel-background: $gray;
 $button-background-hover: scale-color($button-background, $lightness: -15%);
-
-
-
+$button-radius: $global-radius;
 
 $button-sizes: (
   tiny: 0.7,
