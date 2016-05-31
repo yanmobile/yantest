@@ -92,7 +92,6 @@ a {
 
       &:hover, &:focus, &:active {
         color: smartscale($color-name, 15%);
-        background: transparent;
 
         svg {
           fill: smartscale($color-name, 15%);

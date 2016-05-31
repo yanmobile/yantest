@@ -657,30 +657,18 @@ table, .grid-table {
 
   //Buttons
   button, a.button, input[type="submit"], input[type="button"] {
+
+    // Tiny Buttons for Tables
+    @include button-size($size: tiny);
     margin: 0;
   }
 
   //Button Groups
   .button-group {
+
+    // Tiny Buttons for Tables
+    @include button-group-size($size: tiny);
     margin: 0;
-
-    li {
-      a {
-
-        @media #{$small} {
-          padding: 0.3125rem 0.5rem;
-          font-size: 0.75rem;
-        }
-
-        .fa-lg {
-
-          @media #{$small} {
-            font-size: $table-font-size;
-            line-height: 0.2rem;
-          }
-        }
-      }
-    }
   }
 
   //section-blocks

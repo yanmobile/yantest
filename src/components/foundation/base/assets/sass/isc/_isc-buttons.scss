@@ -24,16 +24,17 @@ $button-sizes: (
  ) !default;
 $button-font-size: 1rem !default;
 $button-opacity-disabled: 0.5 !default;
+$button-cancel-background: $gray !default;
 
 /* Button Mixins */
 
-button, a.button, input[type="submit"], input[type="button"] {
+button, .button, input[type="submit"], input[type="button"] {
 
   &:not(.icon), &:not(.svg-icon) {
     font-weight: $font-weight-semi-bold;
     color: isitlight($button-background, $body-font-color, $light-text);
 
-    &.secondary, &.success, &.warning, &.alert, &.info, &.dark, &.cancel {
+    &.primary, &.secondary, &.success, &.warning, &.alert, &.info, &.dark {
       color: isitlight($button-background, $body-font-color, $light-text);
 
       &:hover, &:focus, &:active {
@@ -41,13 +42,16 @@ button, a.button, input[type="submit"], input[type="button"] {
       }
     }
   }
+}
+
+/* Cancel Buttons */
+button, .button, input[type="submit"], input[type="button"] {
 
   &.cancel {
-
     @include button-style(
       $background: $button-cancel-background,
       $background-hover: auto, // generate dynamically
-      $color: auto,
+      $color: isitlight($button-cancel-background, $body-font-color, $light-text),
       $style: solid //solid or hollow
     );
 
@@ -56,18 +60,9 @@ button, a.button, input[type="submit"], input[type="button"] {
     }
   }
 
-  .fa {
-    vertical-align: middle;
-    line-height: 1;
-  }
-
-  &:focus {
-    outline: none;
-  }
 }
 
-
-/* Submit Input Buttons */
+/* Input Buttons Can Be Disabled */
 input[type="submit"], input[type="button"] {
   @extend .button;
   &.custom-disabled {
@@ -77,15 +72,14 @@ input[type="submit"], input[type="button"] {
 
 
 /* Prefixed/Postfixed Buttons */
-
-.button, button {
+.button, button, input[type="submit"], input[type="button"] {
   &.prefix {border-radius: $global-radius 0 0 $global-radius;}
   &.postfix {border-radius: 0 $global-radius $global-radius 0;}
 }
 
 .prefix {
 
-  button, .button {
+  button, .button, input[type="submit"], input[type="button"] {
     margin: 0;
     border-radius: $global-radius 0 0 $global-radius;
     padding: 0.5em 0.75em;
@@ -95,7 +89,7 @@ input[type="submit"], input[type="button"] {
 
 .postfix {
 
-  button, .button {
+  button, .button, input[type="submit"], input[type="button"] {
     margin: 0;
     border-radius: 0 $global-radius $global-radius 0;
     padding: 0.5em 0.75em;
@@ -114,14 +108,16 @@ input[type="submit"], input[type="button"] {
     // Links become buttons
     #{$child-selectors} {
       @extend %button;
-      border-radius: 0;
-      font-size: inherit;
-      display: block;
-      margin: 0;
+        border-radius: 0;
+        font-size: inherit;
+        display: block;
+        margin: 0;
     }
+
     > input + label {
       margin: 0;
     }
+
     // Add borders between items
     &:not(:last-child) {
       #{$child-selectors} {
@@ -132,6 +128,21 @@ input[type="submit"], input[type="button"] {
 }
 
 /* Button Utilities  */
+button, .button, input[type="submit"], input[type="button"] {
 
-//Remove margin
-button.flat, .button.flat, a.flat {margin: 0;}
+  //Vertically Align Icons
+  .fa {
+    vertical-align: middle;
+    line-height: 1;
+  }
+
+  // No outline on Focus
+  &:focus {
+    outline: none;
+  }
+
+  //Remove margin
+  &.flat {
+    margin: 0;
+  }
+}
