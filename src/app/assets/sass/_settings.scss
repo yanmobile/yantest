@@ -87,6 +87,8 @@ $global-spacing: rem-calc(15);
  * Body & <p> Font Settings
  * Anchor Links
  * Headers & Subheaders
+ * Page Titles
+ * Captions
  * Lists
  * <small>, <blockquote>, <code>, <acronym>, <hr>
 --------------------------------------------------- */
@@ -150,6 +152,23 @@ $subheader-line-height: 1.6;
 $subheader-font-weight: $font-weight-normal;
 $subheader-top-margin: 0.2rem;
 $subheader-bottom-margin: 0.5rem;
+
+/* Page Titles */
+$page-title-font-size: 2rem !default;
+$page-title-color: $header-font-color !default;
+$page-title-weight: $font-weight-bold !default;
+$page-title-margin: 0 0 0.65rem 0 !default;
+$page-title-padding: 0 !default;
+$page-title-font-reduction: rem-calc(24) !default;
+
+/* Captions */
+$caption-background: transparent !default;
+$caption-font-size: 0.875rem !default;
+$caption-color: isitlight($caption-background, $subtext-color, $light-text) !default;
+$caption-align: left !default;
+$caption-padding: 0 0 0.5rem 0 !default;
+$caption-margin: 0 0 0.5rem 0 !default;
+$caption-font-reduction: rem-calc(16) !default;
 
 /* Lists
 ----------------------------------------------*/
@@ -419,14 +438,33 @@ $switch-paddle-color: white;
 $switch-paddle-offset: 4px;
 
 
-// 14. ICONS - TO DO
+// 14. ICONS
 /* ------------------------------ */
 
-//$iconic-primary-fill: $accent-color;
-// $iconic-primary-stroke: $primary-color;
-// $iconic-accent-fill: $iconic-primary-fill;
-// $iconic-accent-stroke: $iconic-accent-fill;
+$default-icon-color: $body-font-color !default;
+$default-svg-icon-size: 1.25rem !default;
 
+/* Icons Controls Map */
+$icon-controls: (
+  delete: "\f00d",
+  add: "\f067",
+  settings: "\f013",
+  view: "\f06e",
+  edit: "\f040",
+  search: "\f002",
+  email: "\f0e0",
+  hamburger: "\f0c9",
+  home: "\f015",
+  save: "\f0c7",
+  cancel: "\f05e",
+  arrowleft: "\f060",
+  arrowright: "\f061",
+  arrowup: "\f062",
+  arrowdown: "\f063",
+  checkmark: "\f00c",
+  minus: "\f068",
+  heart: "\f004"
+) !default;
 
 // 15. LABELS & BADGES
 /* ------------------------------ */
