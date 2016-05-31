@@ -9,7 +9,7 @@
    - Icons lists and Icon Controls (e.g. Add/Remove/Edit a table record)
 */
 
-/* Font Icons Map */
+/* Icons Controls Map */
 $icon-controls: (
   delete: "\f00d",
   add: "\f067",
@@ -31,7 +31,7 @@ $icon-controls: (
   heart: "\f004"
 ) !default;
 
-/* ICON SETTINGS - TO DO */
+/* ICON SETTINGS */
 $default-icon-color: $body-font-color !default;
 $default-svg-icon-size: 1.25rem !default;
 
