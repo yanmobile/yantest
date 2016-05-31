@@ -46,6 +46,7 @@
 
           &:hover {
             background:$secondary-nav-active-background;
+            color: isitlight($secondary-nav-active-background, $body-font-color, $light-text);
           }
         }
       }
@@ -65,6 +66,7 @@
 
         &:hover {
           background: smartscale($secondary-nav-background, 4.5%);
+          color: isitlight($secondary-nav-background, $body-font-color, $light-text);
         }
       }
 
