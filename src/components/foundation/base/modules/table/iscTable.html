@@ -1,8 +1,8 @@
 <div class="isc-table">
   <!--title-->
-  <h1 ng-if="iscTblCtrl.tableData[ iscTblCtrl.tableConfig.title ] || iscTblCtrl.tableConfig.title | translate"
-      class="{{iscTblCtrl.tableConfig.titleClass}}">{{ iscTblCtrl.tableData[ iscTblCtrl.tableConfig.title ] || iscTblCtrl.tableConfig.title |
-    translate }}</h1>
+  <h3 ng-if="iscTblCtrl.tableData[ iscTblCtrl.tableConfig.title ] || iscTblCtrl.tableConfig.title | translate"
+      class="{{iscTblCtrl.tableConfig.titleClass || 'table-title'}}">{{ iscTblCtrl.tableData[ iscTblCtrl.tableConfig.title ] || iscTblCtrl.tableConfig.title |
+    translate }}</h3>
 
   <!--back button for wellness workflows -->
   <button ng-if="hasBackButton"
@@ -13,20 +13,20 @@
   </button>
 
   <!--subtitles-->
-  <h2 ng-if="iscTblCtrl.tableConfig.subtitle">{{ iscTblCtrl.tableData[ iscTblCtrl.tableConfig.subtitle ] || iscTblCtrl.tableConfig.subtitle |
-    translate }}</h2>
+  <h5 ng-if="iscTblCtrl.tableConfig.subtitle"
+      class="{{iscTblCtrl.tableConfig.subtitleClass || 'subheader'}}">{{ iscTblCtrl.tableData[ iscTblCtrl.tableConfig.subtitle ] || iscTblCtrl.tableConfig.subtitle |
+    translate }}</h5>
 
-  <h3 ng-if="iscTblCtrl.tableConfig.subsubtitle">{{ iscTblCtrl.tableData[ iscTblCtrl.tableConfig.subsubtitle ] || iscTblCtrl.tableConfig.subsubtitle |
-    translate }}</h3>
   <!--desktop and tablet-->
   <table class="{{iscTblCtrl.tableConfig.tableClass}}">
+
     <!--header-->
     <thead>
     <tr ng-if="iscTblCtrl.tableConfig.summaryTitle">
       <td>
         <span class="color-bar {{iscTblCtrl.tableConfig.summaryClass}}"></span>
 
-        <h2 class="summary-heading">{{iscTblCtrl.tableRows.length}} {{iscTblCtrl.tableConfig.summaryTitle | translate }}</h2>
+        <h6 class="summary-heading">{{iscTblCtrl.tableRows.length}} {{iscTblCtrl.tableConfig.summaryTitle | translate }}</h6>
       </td>
     </tr>
 
@@ -34,18 +34,19 @@
     <tr>
       <th ng-repeat="column in iscTblCtrl.tableConfig.columns track by $index">
 
-        <span ng-if="column.columnClick === 'none'">  {{column.title | translate}} </span>
-
         <a ng-if="column.columnClick === 'sort' || !column.columnClick"
-           ng-class="{ 'isc-sortable': !!iscTblCtrl.sortField.name && column.key === iscTblCtrl.sortField.name, 'reverse': iscTblCtrl.sortField.reverse }"
            ng-click="iscTblCtrl.sortColumn(column)"
            marker="marker"
-           class="isc-clickable">{{ column.title | translate }}</a>
+           ng-class="{ 'isc-sortable': !!iscTblCtrl.sortField.name && column.key === iscTblCtrl.sortField.name, 'reverse': iscTblCtrl.sortField.reverse }"
+           class="isc-sortable">{{ column.title | translate }}
+         </a>
+
+         <span ng-if="column.columnClick === 'none'"> {{column.title | translate}} </span>
 
         <a ng-if="column.columnClick === 'filter' "
            class="isc-filterable"
            ng-click="column.filterFunction(column)"
-           class="isc-clickable">{{ column.title | translate }}</a>
+           class="isc-filterable">{{ column.title | translate }}</a>
       </th>
     </tr>
     </thead>
@@ -65,7 +66,9 @@
     <!--empty row -->
     <tr ng-if="!iscTblCtrl.tableRows.length">
       <td colspan="{{iscTblCtrl.tableConfig.columns.length}}">
-        {{(iscTblCtrl.tableConfig.emptyRowMessage || 'ISC_NO_ITEMS') | translate}}
+        <p class="{{column.emptyClass || 'empty-message'}}">
+          {{(iscTblCtrl.tableConfig.emptyRowMessage || 'ISC_NO_ITEMS') | translate}}
+        </p>
       </td>
     </tr>
 
