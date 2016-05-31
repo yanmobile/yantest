@@ -235,7 +235,7 @@ select {
 
 //Labels for radios and checkboxes need to wrap
 input[type="checkbox"] + label, input[type="radio"] + label {
-  display: inline-block;
+  display: block;
   margin-left: 0.5rem;
   margin-right: 1rem;
   margin-bottom: 1rem;

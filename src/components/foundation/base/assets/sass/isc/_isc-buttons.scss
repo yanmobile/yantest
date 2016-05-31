@@ -127,6 +127,13 @@ input[type="submit"], input[type="button"] {
   }
 }
 
+.button-group {
+
+  input[type="checkbox"] + label, input[type="radio"] + label {
+    margin: 0;
+  }
+}
+
 /* Button Utilities  */
 button, .button, input[type="submit"], input[type="button"] {
 
