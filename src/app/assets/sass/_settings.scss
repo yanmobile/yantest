@@ -24,9 +24,10 @@
 //  19. Off-canvas
 //  20. Panel
 //  21. Popup
-//  22. Tabs
-//  23. Title Bar
-//  24. Tooltips
+//  22. Tables
+//  23. Tabs
+//  24. Title Bar
+//  25. Tooltips
 
 @import "../../../components/foundation/base/bower_components/foundation-apps/scss/helpers/functions";
 @import "../../../components/foundation/base/assets/sass/isc/isc-variables";
@@ -509,8 +510,47 @@ $popup-border: 0;
 $popup-radius: 0;
 $popup-shadow: 0 0 10px rgba(black, 0.25);
 
+// 22. TABLES
+/* ------------------------------ */
+/* General Table Styles */
+$table-background: white !default;
+$table-font-color: isitlight($table-background, $body-font-color, $light-text) !default;
+$table-stripe-background: $neutral-three !default;
+$table-stripe-font-color: isitlight($table-stripe-background, $body-font-color, $light-text) !default;
+$table-row-border: 1px solid $app-border-color !default;
+$table-column-border: 1px solid $app-border-color !default;
 
-// 22. TABS
+$table-font-size: 0.875rem !default;
+$table-line-height: 1.4;
+$table-cell-padding: 0.65rem !default;
+
+/* Table Head */
+$th-font-size: 0.875rem !default;
+$th-font-weight: $font-weight-bold !default;
+$th-text-align: left !default;
+$th-background: $table-background !default;
+
+/* Table Foot */
+$tfoot-background: $th-background !default;
+$tfoot-font-size: 0.75rem !default;
+
+/* Table Titles */
+$table-title-font-size: 1.25rem !default;
+$table-title-color: $header-font-color !default;
+$table-title-weight: inherit !default;
+$table-title-align: left !default;
+$table-title-margin: 0 0 1rem 0 !default;
+$table-title-padding: 0 !default;
+
+/* Responsive Behavior */
+$show-header-for-stacked: true !default;
+/* Table Font Size Reduction on Small Screens */
+$table-font-reduction: rem-calc(12) !default;
+$th-font-reduction: rem-calc(12) !default;
+$tfoot-font-reduction: rem-calc(12) !default;
+$table-title-font-reduction: rem-calc(16) !default;
+
+// 23. TABS
 /* ------------------------------ */
 $tabstrip-background: transparent;
 $tab-title-background: $neutral-color;
@@ -521,8 +561,7 @@ $tab-title-color-active: $tab-title-color;
 $tab-title-padding: $global-padding;
 $tab-content-padding: $global-padding;
 
-
-// 23. TITLE BAR
+// 24. TITLE BAR
 /* ------------------------------ */
 $titlebar-center-width: 50%;
 $titlebar-side-width: (100% - $titlebar-center-width) / 2;
@@ -531,8 +570,7 @@ $titlebar-color: isitlight($titlebar-background, $body-font-color, $light-text);
 $titlebar-border: 1px solid $app-border-color;
 $titlebar-padding: $global-padding;
 
-
-// 24. TOOLTIPS
+// 25. TOOLTIPS
 /* ------------------------------ */
 $tooltip-background: $primary-color;
 $tooltip-border: 1px solid smartscale($tooltip-background, 10%);
