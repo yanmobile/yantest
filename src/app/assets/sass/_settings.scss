@@ -154,21 +154,21 @@ $subheader-top-margin: 0.2rem;
 $subheader-bottom-margin: 0.5rem;
 
 /* Page Titles */
-$page-title-font-size: 2rem !default;
-$page-title-color: $header-font-color !default;
-$page-title-weight: $font-weight-bold !default;
-$page-title-margin: 0 0 0.65rem 0 !default;
-$page-title-padding: 0 !default;
-$page-title-font-reduction: rem-calc(24) !default;
+$page-title-font-size: 2rem;
+$page-title-color: $header-font-color;
+$page-title-weight: $font-weight-bold;
+$page-title-margin: 0 0 0.65rem 0;
+$page-title-padding: 0;
+$page-title-font-reduction: rem-calc(24);
 
 /* Captions */
-$caption-background: transparent !default;
-$caption-font-size: 0.875rem !default;
-$caption-color: isitlight($caption-background, $subtext-color, $light-text) !default;
-$caption-align: left !default;
-$caption-padding: 0 0 0.5rem 0 !default;
-$caption-margin: 0 0 0.5rem 0 !default;
-$caption-font-reduction: rem-calc(16) !default;
+$caption-background: transparent;
+$caption-font-size: 0.875rem;
+$caption-color: isitlight($caption-background, $subtext-color, $light-text);
+$caption-align: left;
+$caption-padding: 0 0 0.5rem 0;
+$caption-margin: 0 0 0.5rem 0;
+$caption-font-reduction: rem-calc(16);
 
 /* Lists
 ----------------------------------------------*/
@@ -441,8 +441,8 @@ $switch-paddle-offset: 4px;
 // 14. ICONS
 /* ------------------------------ */
 
-$default-icon-color: $body-font-color !default;
-$default-svg-icon-size: 1.25rem !default;
+$default-icon-color: $body-font-color;
+$default-svg-icon-size: 1.25rem;
 
 /* Icons Controls Map */
 $icon-controls: (
@@ -466,7 +466,7 @@ $icon-controls: (
   sortable: "\f0dc",
   filter: "\f0b0",
   heart: "\f004"
-) !default;
+);
 
 
 // 15. LABELS & BADGES
