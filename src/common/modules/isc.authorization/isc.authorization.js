@@ -86,13 +86,19 @@
     function isBlackListed( stateToCheck, authorizedUserRoutes ) {
       channel.debug( 'iscAuthorizationModel.isBlackListed..' );
       var blacklisted = authorizedUserRoutes['!*'] || _.get( authorizedUserRoutes, '!' + stateToCheck, false );
-      return blacklisted || hasWildCardMatch( stateToCheck, authorizedUserRoutes, true );
+      // We should only blacklist a state if it has no child states, or has a wildcard.
+      // Otherwise, blacklisting a child state will also blacklist the parent state.
+      return hasNoChildStates( blacklisted ) || hasWildCardMatch( stateToCheck, authorizedUserRoutes, true );
     }
 
     function isWhiteListed( stateToCheck, authorizedUserRoutes ) {
       channel.debug( 'iscAuthorizationModel.isWhiteListed..' );
-      var blacklisted = authorizedUserRoutes['*'] || _.get( authorizedUserRoutes, stateToCheck, false );
-      return blacklisted || hasWildCardMatch( stateToCheck, authorizedUserRoutes, false );
+      var whitelisted = authorizedUserRoutes['*'] || _.get( authorizedUserRoutes, stateToCheck, false );
+      return whitelisted || hasWildCardMatch( stateToCheck, authorizedUserRoutes, false );
+    }
+
+    function hasNoChildStates( stateToCheck ) {
+      return _.isObject( stateToCheck ) && _.isEmpty( stateToCheck );
     }
 
     /**
