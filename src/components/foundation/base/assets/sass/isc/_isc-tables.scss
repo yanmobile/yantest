@@ -442,6 +442,7 @@ table {
           padding-bottom: 0;
           margin-bottom: 0;
           text-align: left;
+          vertical-align: middle;
         }
       }
     }
@@ -518,6 +519,7 @@ table {
       padding-bottom: 0;
       margin-bottom: 0;
       text-align: left;
+      vertical-align: middle;
     }
   }
 
@@ -610,6 +612,9 @@ table {
 
   ul, ol, li, p {
     margin: 0;
+    font-size: $table-font-size;
+    line-height: $table-line-height;
+    vertical-align: middle;
   }
 
   .empty-message {
@@ -624,6 +629,7 @@ table, .grid-table {
   ul, ol {
     margin: 0;
     font-size: $table-font-size;
+    vertical-align: middle;
   }
 
   // Menu Bars
