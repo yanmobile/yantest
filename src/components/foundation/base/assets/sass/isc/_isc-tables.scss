@@ -215,6 +215,11 @@ table {
       font-size: $tfoot-font-reduction;
     }
   }
+
+  // Auto Expand on Smaller Screens
+  @media #{$medium-down} {
+    width: 100%;
+  }
 }
 
 
@@ -639,10 +644,15 @@ table, .grid-table {
 
     li {
       a {
-        padding: 0.65rem 1rem;
+        padding: 0.5rem;
 
         @media #{$small} {
-          padding: 0.5rem 0.75rem;
+          padding: 0.25rem;
+          font-size: $tfoot-font-reduction;
+
+          .fa {
+            margin: 0;
+          }
         }
       }
     }
@@ -650,10 +660,15 @@ table, .grid-table {
     &.condense {
       li {
         a {
-          padding: 0.65rem;
+          padding: 0.25rem;
 
           @media #{$small} {
-            padding: 0.5rem;
+            padding: 0.25rem;
+            font-size: $tfoot-font-reduction;
+          }
+
+          .fa {
+            margin: 0;
           }
         }
       }
