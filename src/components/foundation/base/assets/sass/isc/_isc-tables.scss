@@ -11,13 +11,52 @@
    -
 */
 
-/* Basic Tables */
+/* Table Variables */
 
+// Tables General
+$table-background: white !default;
+$table-font-color: isitlight($table-background, $body-font-color, $light-text) !default;
+$table-stripe-background: $neutral-three !default;
+$table-stripe-font-color: isitlight($table-stripe-background, $body-font-color, $light-text) !default;
+$table-row-border: 1px solid $app-border-color !default;
+$table-column-border: 1px solid $app-border-color !default;
+
+$table-font-size: 0.875rem !default;
+$table-line-height: 1.4;
+$table-cell-padding: 0.65rem !default;
+
+// Table Head
+$th-font-size: 0.875rem !default;
+$th-font-weight: $font-weight-bold !default;
+$th-text-align: left !default;
+$th-background: $table-background !default;
+
+// Table Foot - Do something with these
+$tfoot-background: $th-background !default;
+$tfoot-font-size: 0.75rem !default;
+
+// Table Titles
+$table-title-font-size: 1.25rem !default;
+$table-title-color: $header-font-color !default;
+$table-title-weight: inherit !default;
+$table-title-align: left !default;
+$table-title-margin: 0 0 1rem 0 !default;
+$table-title-padding: 0 !default;
+
+/* Responsive Behavior */
+$show-header-for-stacked: true !default;
+/* Table Font Size Reduction on Small Screens */
+$table-font-reduction: rem-calc(12) !default;
+$th-font-reduction: rem-calc(12) !default;
+$tfoot-font-reduction: rem-calc(12) !default;
+$table-title-font-reduction: rem-calc(16) !default;
+
+/*-------------- CLASSIC TABLES --------------*/
 table {
-  font-family: $body-font-family, "Helvetica", Helvetica, Arial, sans-serif;
-  line-height: 1.4;
+  font-family: $body-font-family;
+  line-height: $table-line-height;
   font-weight: $font-weight-normal;
-  font-size: 0.875rem; // Change to variable
+  font-size: $table-font-size;
   border-collapse: collapse;
   border-spacing: 0;
   margin-bottom: 1rem;
@@ -25,31 +64,33 @@ table {
   color:  $body-font-color;
 
   thead {
-    border-top: 1px solid lighten($app-border-color, 2);
-    border-bottom: 1px solid lighten($app-border-color, 2);
+    border-top: $table-row-border;
+    border-bottom: $table-row-border;
 
     th {
-      padding: 0.65rem;
-      text-align: left;
-      border-left: 1px solid lighten($app-border-color, 2);
-      border-right: 1px solid lighten($app-border-color, 2);
-      font-weight: $font-weight-semi-bold;
+      padding: $table-cell-padding;
+      text-align: $th-text-align;
+      border-left: $table-column-border;
+      border-right: $table-column-border;
+      font-weight: $th-font-weight;
       white-space: nowrap;
+      background: $th-background;
+      color: isitlight($th-background, $body-font-color, $light-text);
     }
   }
 
   tbody {
 
     tr {
-      border-top: 1px solid $app-border-color;
-      border-bottom: 1px solid $app-border-color;
+      border-top: $table-row-border;
+      border-bottom: $table-row-border;
 
       td {
-        padding: 0.65rem;
+        padding: $table-cell-padding;
         text-decoration: none;
         vertical-align: middle;
-        border-left: 1px solid lighten($app-border-color, 2);
-        border-right: 1px solid lighten($app-border-color, 2);
+        border-left: $table-column-border;
+        border-right: $table-column-border;
 
         .button, button, .button-group, ul {
           margin: 0;
@@ -58,74 +99,39 @@ table {
     }
   }
 
-  // Striped Rows
-  &.striped {
+  tfoot {
+    border-top: $table-row-border;
+    border-bottom: $table-row-border;
+    border-left: $table-column-border;
+    border-right: $table-column-border;
+    padding: $table-cell-padding;
+    text-decoration: none;
+    vertical-align: middle;
+    background: $tfoot-background;
+    color: isitlight($tfoot-background, $body-font-color, $light-text);
+    font-size: $tfoot-font-size;
+    font-weight: $font-weight-normal;
 
-    thead, tbody, tfoot {
-      background: initial;
+    @media #{$medium-down} {
+      font-size: $tfoot-font-reduction;
     }
-
-    thead {
-      border-top: 1px solid lighten($app-border-color, 2);
-    }
-
-    tbody {
-
-      tr {
-        border-top: 1px solid lighten($app-border-color, 2);
-        border-bottom: 1px solid lighten($app-border-color, 2);
-
-        &:nth-child(even) {
-          background: #f9f9f9;
-        }
-      }
-    }
-
-    thead, tfoot {
-      background: #f9f9f9;
-      color: $body-font-color;
-
-      tr {
-        background: transparent;
-      }
-
-      th, td {
-        font-weight: $font-weight-bold;
-        text-align: left;
-      }
-    }
-  }
-
-  // Hover Tables
-  &.hover {
-
-    tr {
-      &:hover {
-        background-color: #f5f5f5;
-        cursor: pointer;
-      }
-    }
-  }
-
-  // Scroll Tables
-  &.scroll {
-    display: block;
-    width: 100%;
-    overflow-y: scroll;
   }
 
   // Full-Width Tables
   &.expand {
     width: 100%;
   }
+
+  // Auto Expand on Smaller Screens
+  @media #{$medium-down} {
+    width: 100%;
+  }
 }
 
-
-/* Gridded ("Faux") Tables By Rows */
-
+/*-------------- FAUX TABLES --------------*/
 .grid-table {
-  border-top: 1px solid $app-border-color;
-  border-bottom: 1px solid $app-border-color;
+  border-top: $table-row-border;
+  border-bottom: $table-row-border;
   margin-bottom: 2rem;
   display: table;
 
@@ -137,10 +143,10 @@ table {
 
       .th {
         display: table-cell;
-        font-weight: $font-weight-bold;
+        font-weight: $th-font-weight;
 
         @media #{$small} {
-          font-weight: $font-weight-semi-bold;
+          font-weight: $th-font-weight;
         }
       }
     }
@@ -154,223 +160,445 @@ table {
 
       .td {
         display: table-cell;
-        border-top: 1px solid $app-border-color;
+        border-top: $table-row-border;
       }
     }
   }
 
-  .th, .td {
-    padding: 0.65rem;
-    vertical-align: middle;
-    line-height: 1.4;
-    font-size: 0.875rem;
-    border-left: 1px solid $app-border-color;
+  .th {
+    font-size: $th-font-size;
+    font-weight: $th-font-weight;
 
-    @media #{$small} {
-      padding: 0.3125rem;
-      font-size: 0.75rem;
-    }
-
-    &:last-of-type {
-      border-right: 1px solid $app-border-color;
+    @media #{$medium-down} {
+      font-size: $th-font-reduction;
     }
   }
 
-  // Striped Tables
-  &.striped {
+  .td {
+    font-size: $table-font-size;
+    font-weight: $font-weight-normal;
+
+    @media #{$medium-down} {
+      font-size: $table-font-reduction;
+    }
+  }
+
+  .th, .td {
+    padding: $table-cell-padding;
+    vertical-align: middle;
+    line-height: $table-line-height;
+    border-left: $table-column-border;
+
+    @media #{$small} {
+      padding: 0.3125rem;
+    }
+
+    &:last-of-type {
+      border-right: $table-column-border;
+    }
+  }
+
+  .tfoot {
+    background: $tfoot-background;
+    padding: $table-cell-padding;
+    font-size: $tfoot-font-size;
+    font-weight: $font-weight-normal;
+    color: isitlight($tfoot-background, $body-font-color, $light-text);
+    border-top: $table-row-border;
+    border-bottom: $table-row-border;
+    border-left: $table-column-border;
+    border-right: $table-column-border;
+    text-decoration: none;
+    vertical-align: middle;
+
+    @media #{$medium-down} {
+      font-size: $tfoot-font-reduction;
+    }
+  }
+}
+
+
+/* TABLE MIXINS
+  ------------------------------
+   - Borderless Tables (Bordered by Default)
+   - Striped Tables
+   - Hover Tables
+   - Stacked on Smaller Screens
+   - Titles
+------------------------------*/
+
+// @mixin borderless-table
+@mixin borderless-table() {
+
+  thead, th, tbody, tfoot, tr, td {
+    border: none;
+  }
+
+  .grid-table {
+    border: none;
+
+    .thead, .th, .tbody, .tfoot, .tr, .td, .tr .td {
+      border: none;
+    }
+  }
+}
+
+// @mixin striped
+@mixin striped-table() {
+
+  tbody, tfoot {
+    background: initial;
+  }
+
+  thead {
+    border-top: $table-row-border;
+    //background: $table-stripe-background;
+
+    tr {
+
+      th {
+        font-weight: $th-font-weight;
+        text-align: $th-text-align;
+        background: $table-stripe-background;
+        color: $table-stripe-font-color;
+      }
+    }
+  }
+
+  tbody {
+
+    tr {
+      border-top: $table-row-border;
+      border-bottom: $table-row-border;
+
+      &:nth-child(even) {
+        background: $table-stripe-background;
+        color: $table-stripe-font-color;
+      }
+
+      td {
+        font-weight: $font-weight-normal;
+        text-align: $th-text-align;
+      }
+    }
+  }
+
+  tfoot {
+    background: $table-stripe-background;
+    color: $table-stripe-font-color;
+
+    td {
+      font-weight: $font-weight-normal;
+    }
+  }
+
+  .grid-table {
 
     .tr {
       &:nth-child(even) {
-        background: #f9f9f9;
+        background: $table-stripe-background;
+        color: $table-stripe-font-color;
       }
     }
 
     .thead {
-      background: #f9f9f9;
-      color: $body-font-color;
+      background: $table-stripe-background;
+      color: $table-stripe-font-color;
 
       .th, .td {
-        font-weight: $font-weight-bold;
-        text-align: left;
+        font-weight: $th-font-weight;
+        text-align: $th-text-align;
       }
     }
   }
+}
 
-  // Hover Tables
-  &.hover {
+// @mixin hover-table
+@mixin hover-table() {
+
+  .grid-table {
 
     .tr {
       &:hover {
-        background-color: #f5f5f5;
+        background-color: smartscale($table-background, 4%);
+        color: isitlight($table-background, $body-font-color, $light-text);
         cursor: pointer;
+      }
+    }
+  }
+
+  tr {
+    &:hover {
+      background-color: smartscale($table-background, 4%);
+      color: isitlight($table-background, $body-font-color, $light-text);
+      cursor: pointer;
+    }
+  }
+}
+
+
+// @mixin stacked-table
+// Adds styles for a stacked table. Useful for small-screen layouts.
+// @param {Boolean} $header [$show-header-for-stacked] - Show the first th of header when stacked.
+@mixin stacked-table($header: $show-header-for-stacked) {
+  @if $header {
+    thead {
+      th:first-child {
+        display: block;
+      }
+
+      th {
+        display: none;
+      }
+    }
+  }
+  @else {
+    thead {
+      display: none;
+    }
+  }
+
+  th, tfoot, caption {
+    // for accessibility, use visibility: hidden instead of display: none
+    visibility: hidden;
+  }
+
+  td {
+    display: block;
+
+    &:before {
+      content: attr(data-title)": ";
+      font-weight: $th-font-weight;
+
+      // For Alignment
+      min-width: 6rem; // magic number :( adjust according to your own content
+      display: inline-block;
+      padding-right: 0.5rem;
+
+      @media #{$large} {
+        display: none;
       }
     }
   }
 }
 
-/* Gridded ("Faux") Tables by Columns */
+// @mixin faux-stacked-table
+// Adds styles for a stacked table. Useful for small-screen layouts.
+// @param {Boolean} $header [$show-header-for-stacked] - Show the first th of header when stacked.
+@mixin faux-stacked-table($header: $show-header-for-stacked) {
+  @if $header {
 
-.grid-table-columns {
-  margin-bottom: 2rem;
+    .grid-table {
+      display: flex;
+      @include grid-orient(horizontal);
+      @include grid-wrap(true);
 
-  .column {
-    border-top: 1px solid $app-border-color;
-    border-bottom: 1px solid $app-border-color;
-    border-left: 1px solid $app-border-color;
+      .thead {
+        display: flex;
+        @include grid-orient(vertical);
+        @include grid-wrap(true);
+        @include grid-size(shrink);
 
-    &:last-of-type {
-      border-right: 1px solid $app-border-color;
+        .tr {
+          display: flex;
+          @include grid-orient(vertical);
+        }
+
+        .th {
+          display: none;
+        }
+      }
+
+
+      .tbody {
+        display: flex;
+        @include grid-orient(vertical);
+
+        .tr {
+          display: flex;
+          @include grid-orient(vertical);
+          border: 1px solid $app-border-color;
+
+          .td {
+            border: none;
+          }
+        }
+
+        .icon-controls,.icon-list, ul, ol, li, p, a {
+          padding-bottom: 0;
+          margin-bottom: 0;
+          text-align: left;
+        }
+      }
     }
   }
+  @else {
 
-  .th, .td {
-    padding: 0.65rem;
-    vertical-align: middle;
-    line-height: 1.4;
-    font-size: 0.875rem;
+    .grid-table {
+      display: flex;
+      @include grid-orient(horizontal);
+      @include grid-wrap(true);
+
+      .thead {
+        display: none;
+        @include grid-orient(vertical);
+        @include grid-wrap(true);
+        @include grid-size(shrink);
+
+        .tr {
+          display: flex;
+          @include grid-orient(vertical);
+        }
+
+        .th {
+          display: none;
+
+        }
+      }
+
+
+      .tbody {
+        display: flex;
+        @include grid-orient(vertical);
+
+        .tr {
+          display: flex;
+          @include grid-orient(vertical);
+          border: 1px solid $app-border-color;
+
+          .td {
+            border: none;
+          }
+        }
+      }
+    }
 
   }
 
-  .th {
-    font-weight: $font-weight-bold;
+  .tbody {
+    .tr {
+      padding: 0.5rem 0 0 0;
+    }
   }
 
   .td {
-    font-weight: $font-weight-normal;
-    border-top: 1px solid $app-border-color;
-  }
+    display: inline-block;
 
-  // Striped Rows
-  &.striped {
+    &:before {
+      content: attr(data-title)": ";
+      font-weight: $th-font-weight;
 
-    .th {
-      background: #f9f9f9;
-    }
+      // For Alignment
+      min-width: 6rem; // magic number - adjust according to your own content
+      display: inline-block;
+      padding-right: 0.5rem;
+      padding-left: 0.5rem;
+      vertical-align: top;
 
-    .column {
-
-      .td {
-
-        &:nth-child(odd) {
-          background: #f9f9f9;
-        }
-      }
-    }
-  }
-
-  // Striped Columns
-  &.striped-columns {
-
-    .column {
-
-      &:nth-child(even) {
-        background: #f9f9f9;
-      }
-    }
-  }
-
-  // Hover Columns
-  &.hover {
-
-    .column {
-      &:hover {
-        background-color: #f5f5f5;
-        cursor: pointer;
-      }
-    }
-  }
-}
-
-/* Clickable, Sortable, Filterable Table Heads */
-
-th, .th {
-
-  //Clickable Table Head
-  a {
-    color:  $body-font-color;
-    cursor: hand;
-    font-weight: $font-weight-bold;
-    padding: 0;
-    font-size: 0.875rem;
-
-    @media #{$small} {
-      font-weight: $font-weight-semi-bold;
-    }
-  }
-
-  // Sortable Columns
-  &.isc-sortable {
-    a {
-      white-space: nowrap;
-
-      &.reverse:after {
-        font-family: FontAwesome;
-        font-size: 0.75rem; // Change to variable
-        font-weight: 300;
-        content: "\F077";
-        padding-left: 0.3125rem;
-
-        @media #{$small} {
-          padding-left: 0.25rem;
-          font-weight: $font-weight-semi-bold;
-          font-size: 0.65rem; // Change to variable
-        }
+      @media #{$large} {
+        display: none;
       }
     }
 
-    &.hover {
-      background-color: #ccc;
-      color: $primary-color;
+    .icon-controls, .icon-list, ul, ol, li, p, a {
+      padding-bottom: 0;
+      margin-bottom: 0;
+      text-align: left;
     }
   }
 
-  // Filterable Columns
-  &.isc-filterable {
-    a {
-      white-space: nowrap;
-
-      &:after {
-        font-family: FontAwesome;
-        font-size: 0.75rem; // Change to variable
-        font-weight: 300;
-        content: " \f0b0";
-        padding-left: 0.3125rem;
-        vertical-align: middle;
-      }
-    }
+  .tfoot, caption {
+    //for accessibility, use visibility: hidden instead of display: none
+    visibility: hidden;
   }
 }
 
 /* Rules for Special Elements Inside Tables */
 
-table, .grid-table, .grid-table-columns {
+/* Special Table Elements
+  ------------------------------
+   - Title
+   - Subtitle?
+   - Info Summary?
+   - Add Record
+   - What else?
+------------------------------*/
 
-  //Table Titles
-  .title {
-    padding: 0;
-    margin: 0 0 1.25rem 0;
-    color: $body-font-color;
-    font-size: 1.5rem;
-    font-weight: $font-weight-semi-bold;
+/* CLASSIC TABLES */
+.isc-table {
 
-    @media #{$phab-or-less} {
-      font-size: 1rem;
-    }
+  &.borderless {
+    @include borderless-table;
   }
 
-  caption {
-    font-weight: bold;
-    padding: 0.5rem 0.625rem 0.625rem;
+  &.striped {
+    @include striped-table;
+  }
+
+  &.hover {
+    @include hover-table;
+  }
+
+  &.stack {
+    @include breakpoint(medium down) {
+      @include stacked-table;
+    }
+  }
+}
+
+/* FAUX TABLES */
+.fauxTable {
+
+  .borderless & {
+    @include borderless-table;
+  }
+
+  .striped & {
+    @include striped-table;
+  }
+
+  .hover & {
+    @include hover-table;
+  }
+
+  .stack & {
+    @include breakpoint(medium down) {
+      @include faux-stacked-table;
+    }
+  }
+}
+
+.isc-table, .fauxTable {
+  /* Table Titles */
+  h1, h2, h3, h4, h5, h6 {
+
+    &.table-title, .subheader, .summary-heading {
+      @include title($size: $table-title-font-size, $color: $table-title-color, $weight: $table-title-weight, $margin: $table-title-margin, $padding: $table-title-padding, $reduction: $table-title-font-reduction) {
+        text-align: $table-title-align;
+      }
+    }
+
   }
 
   .date {text-decoration: none;}
-
   .cell-title {display: none;}
+
+  ul, ol, li, p {
+    margin: 0;
+  }
+
+  .empty-message {
+    margin: 0;
+  }
+}
+
+/* Rules for Special Elements Inside Tables */
+table, .grid-table {
 
   //Lists in Tables
   ul, ol {
     margin: 0;
-    font-size: 0.875rem;
+    font-size: $table-font-size;
   }
 
   // Menu Bars
@@ -402,13 +630,13 @@ table, .grid-table, .grid-table-columns {
   }
 
   //Buttons
-  button, a.button {
+  button, a.button, input[type="submit"] {
     margin: 0;
   }
 
   //Button Groups
   .button-group {
-    background: transparent;
+    margin: 0;
 
     li {
       a {
@@ -421,9 +649,8 @@ table, .grid-table, .grid-table-columns {
         .fa-lg {
 
           @media #{$small} {
-            font-size: 0.85rem;
+            font-size: $table-font-size;
             line-height: 0.2rem;
-            //vertical-align: -15%;
           }
         }
       }
@@ -431,9 +658,7 @@ table, .grid-table, .grid-table-columns {
   }
 
   //section-blocks
-  .section-block {
-    margin-bottom: 0;
-  }
+  .section-block {margin-bottom: 0;}
 
   //Add New Record Wrapper
   .add-record {
@@ -443,15 +668,70 @@ table, .grid-table, .grid-table-columns {
   }
 
   @media only screen and (min-width: 1025px) and (max-width: 1045px){
-    font-size: 0.875rem;
+    font-size: $table-font-size;
   }
 
   @media #{$medium} {
-    font-size: 0.9375rem;
+    font-size: $table-font-reduction;
   }
 
   @media #{$small} {
-    font-size: 0.875rem;
+    font-size: $table-font-reduction;
     white-space: nowrap;
+  }
+}
+
+
+/* DO SOMETHING WITH THIS
+ * Clickable, Sortable, Filterable Table Heads
+ ----------------------------------------------*/
+th, .th {
+
+  //Clickable Table Head
+  a {
+    color: isitlight($th-background, $body-font-color, $light-text);
+    cursor: hand;
+    font-weight: $th-font-weight;
+    padding: 0;
+    font-size: $th-font-size;
+
+    // Sortable Columns
+    &.isc-sortable, &.reverse {
+      white-space: nowrap;
+
+      @include icon(after, sortable) {
+        padding-left: 0.3125rem;
+        font-size: $th-font-size;
+        font-weight: $font-weight-normal;
+
+        @media #{$medium-down} {
+          padding-left: 0.25rem;
+          font-weight: $font-weight-semi-bold;
+          font-size: $th-font-reduction;
+        }
+      }
+    }
+
+    // Filterable Columns
+    &.isc-filterable {
+      white-space: nowrap;
+
+      @include icon(after, filter) {
+        padding-left: 0.3125rem;
+        font-size: $th-font-size;
+        font-weight: $font-weight-normal;
+
+        @media #{$medium-down} {
+          padding-left: 0.25rem;
+          font-weight: $font-weight-semi-bold;
+          font-size: $th-font-reduction;
+        }
+      }
+    }
+  }
+
+  &.hover {
+    background-color: smartscale($th-background, 4%);
+    color: isitlight($th-background, $body-font-color, $light-text);
   }
 }
