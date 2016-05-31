@@ -8,9 +8,26 @@
    - Button Groups
 */
 
+/* Button Settings */
+$button-padding: 0.75em 1em !default;
+$button-margin: 0 0 1rem 0 !default;
+$button-style: solid !default;
+$button-background: $primary-color !default;
+$button-background-hover: scale-color($button-background, $lightness: -15%) !default;
+$button-color: auto !default;
+$button-radius: 3px !default;
+$button-sizes: (
+   tiny: 0.7,
+   small: 0.8,
+   medium: 1,
+   large: 1.3,
+ ) !default;
+$button-font-size: 1rem !default;
+$button-opacity-disabled: 0.5 !default;
+
 /* Button Mixins */
 
-button, a.button, input[type="submit"] {
+button, a.button, input[type="submit"], input[type="button"] {
 
   &:not(.icon), &:not(.svg-icon) {
     font-weight: $font-weight-semi-bold;
@@ -51,7 +68,7 @@ button, a.button, input[type="submit"] {
 
 
 /* Submit Input Buttons */
-input[type="submit"] {
+input[type="submit"], input[type="button"] {
   @extend .button;
   &.custom-disabled {
     @include button-disabled;

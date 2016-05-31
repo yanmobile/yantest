@@ -145,7 +145,7 @@ $default-svg-icon-size: 1.25rem !default;
 
 /* BUTTONS AS ICONS */
 
-button, a.button, input[type="submit"] {
+button, a.button, input[type="submit"], input[type="button"] {
 
   &.icon {
     background: transparent;
