@@ -4,55 +4,24 @@
 
   Includes basic style variations for a collection of commonly used button types.
    - Basic Buttons, size & color variations
-   - Buttons Containing Icons
-   - Icons as Buttons
-   - Link Style Buttons (e.g. Add/Remove/Edit a table record)
-   - Buttons containing svgs
+   - Prefix, Postfix
+   - Button Groups
 */
 
 /* Button Mixins */
 
-// svg icons (as buttons)
-@mixin svg-icon($background: transparent, $color: $primary-color, $fill: $primary-color, $border: none, $padding: 0, $margin: 0, $height: 1.25rem, $width: 1.25rem) {
-  border: $border;
-  margin: $margin;
-  padding: $margin;
-  background: $background;
-  color: $color;
-  fill: $fill;
-  height: $height;
-  width: $width;
+button, a.button, input[type="submit"] {
 
-  *, svg {
-    color: $color;
-    fill: $fill;
-    height: $height;
-    width: $width;
-  }
-
-  &:hover, &:focus, &:active {
-
-    * {
-      $fill: darken($fill, 8);
-      $color: darken($color, 8);
-      $background: transparent;
-      color: smartscale($color, 10%);
-      fill: smartscale($fill, 10%);
-      background: transparent;
-    }
-  }
-}
-
-
-button, a.button {
-  font-weight: $font-weight-semi-bold;
-  color: isitlight($button-background, $body-font-color, $light-text);
-
-  &.secondary, &.success, &.warning, &.alert, &.info, &.dark, &.cancel {
+  &:not(.icon), &:not(.svg-icon) {
+    font-weight: $font-weight-semi-bold;
     color: isitlight($button-background, $body-font-color, $light-text);
 
-    &:hover, &:focus, &:active {
+    &.secondary, &.success, &.warning, &.alert, &.info, &.dark, &.cancel {
       color: isitlight($button-background, $body-font-color, $light-text);
+
+      &:hover, &:focus, &:active {
+        color: isitlight($button-background, $body-font-color, $light-text);
+      }
     }
   }
 
@@ -80,97 +49,6 @@ button, a.button {
   }
 }
 
-
-button, a.button {
-
-  &.icon {
-    background: transparent;
-
-    @include svg-icon($height: 1.25rem, $width: 1.25rem, $color: $primary-color, $fill: $primary-color);
-
-    @each $color in map-keys($theme-colors) {
-      &.#{$color} {
-
-        $color-name: map-get($theme-colors, $color);
-        @include svg-icon($color: $color-name, $fill: $color-name);
-
-        svg {
-          vertical-align: middle;
-          line-height: 1;
-
-          @include svg-icon(
-            $fill: $color-name
-          );
-          width: 1.25rem;
-          height: 1.25rem;
-        }
-
-      }
-
-    }
-    // Clear icon, for filterable fields
-    &.clear {
-      fill: $alert-color;
-      color: $alert-color;
-      padding: .5rem .125rem 0 .3125rem;
-      margin: 0 0 0 .3125rem;;
-      text-align: center;
-
-      svg {
-        fill: $alert-color;
-        color: $alert-color;
-      }
-
-      &:hover, &:focus, &:active {
-        color: darken($alert-color, 8);
-
-        svg {
-          fill: darken($alert-color, 8);
-          color: darken($alert-color, 8);
-        }
-      }
-    }
-
-    // Hamburger Icon
-    &.hamburger {
-      padding: 0.5rem;
-      font-size: 1rem;
-      text-align: center;
-
-      svg {
-        width: 1.875rem;
-        height: 1.875rem;
-      }
-
-      &:hover, &:focus, &:active {
-        color: darken($primary-color, 8);
-
-        svg {
-          fill: darken($primary-color, 8);
-        }
-      }
-    }
-
-    // Help Icon
-    &.help {
-      padding: 0.5rem;
-      text-align: center;
-
-      svg {
-        width: 1.5rem;
-        height: 1.5rem;
-      }
-
-      &:hover, &:focus, &:active {
-        color: darken($info-color, 8);
-
-        svg {
-          fill: darken($info-color, 8);
-        }
-      }
-    }
-  }
-}
 
 /* Submit Input Buttons */
 input[type="submit"] {

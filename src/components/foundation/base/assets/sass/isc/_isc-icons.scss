@@ -1,0 +1,269 @@
+/*
+  ICONS
+  ----------
+
+  Includes basic icon styles and mixins. Framework uses Font Awesome Icon Library
+   - Basic Icons: position, icon, color, margin
+   - SVG Icons
+   - Icons as Buttons
+   - Icons lists and Icon Controls (e.g. Add/Remove/Edit a table record)
+*/
+
+/* Font Icons Map */
+$icon-controls: (
+  delete: "\f00d",
+  add: "\f067",
+  settings: "\f013",
+  view: "\f06e",
+  edit: "\f040",
+  search: "\f002",
+  email: "\f0e0",
+  hamburger: "\f0c9",
+  home: "\f015",
+  save: "\f0c7",
+  cancel: "\f05e",
+  arrowleft: "\f060",
+  arrowright: "\f061",
+  arrowup: "\f062",
+  arrowdown: "\f063",
+  checkmark: "\f00c",
+  minus: "\f068",
+  heart: "\f004"
+) !default;
+
+/* ICON SETTINGS - TO DO */
+$default-icon-color: $body-font-color !default;
+$default-svg-icon-size: 1.25rem !default;
+
+
+/* FONT ICONS */
+
+// For adding font icons to elements via CSS pseudo-elements
+// http://jaydenseric.com/blog/fun-with-sass-and-font-icons
+@mixin icon($position: before, $icon: false, $color: inherit, $margin: 0.3125rem, $styles: true) {
+  @if $position == both {
+      $position: 'before, &:after';
+  }
+  // Either a :before or :after pseudo-element, or both, defaulting to :before
+  &:#{$position} {
+    @if $icon {
+      // A particular icon has been specified
+      content: "#{map-get($icon-controls, $icon)}";
+    }
+    @if $color {
+      // A particular color has been specified
+      color: $color;
+    }
+    @if $margin {
+      // A particular color has been specified
+      @if $position == before {
+          margin-right: $margin;
+      }
+      @if $position == after {
+          margin-left: $margin;
+      }
+      @if $position == both {
+          margin-left: $margin;
+          margin-right: $margin;
+      }
+    }
+    @if $styles {
+        // Supportive icon styles required
+        speak: none;
+        font-style: normal;
+        font-weight: normal;
+        font-family: 'FontAwesome';
+    }
+    // Include any extra rules supplied for the pseudo-element
+    @content;
+  }
+}
+
+.icon {
+  @include icon;
+
+  @each $name, $icon in $icon-controls {
+    &.#{$name}:before {
+      content: quote($icon);
+    }
+  }
+
+  @each $color in map-keys($theme-colors) {
+    &.#{$color} {
+
+      $color-name: map-get($theme-colors, $color);
+      @include icon($color: $color-name);
+    }
+  }
+
+  // Example Usage
+  &[href^="mailto"] {
+    @include icon(before, email) {
+    }
+  }
+
+}
+
+/* SVG ICONS */
+@mixin svg-icon($fill: $default-icon-color, $height: $default-svg-icon-size, $width: $default-svg-icon-size) {
+  $fill: $fill;
+  $height: $height;
+  $width: $width;
+
+  *, svg {
+    color: $fill;
+    fill: $fill;
+    height: $height;
+    width: $width;
+    background: transparent;
+    border: none;
+    vertical-align: middle;
+    line-height: 1;
+  }
+
+  @each $color in map-keys($theme-colors) {
+    &.#{$color} {
+      $color-name: map-get($theme-colors, $color);
+
+      *, svg {
+        color: $color-name;
+        fill: $color-name;
+        vertical-align: middle;
+        line-height: 1;
+      }
+    }
+  }
+  // Include any extra rules supplied for the pseudo-element
+  @content;
+}
+
+.svg-icon {
+  @include svg-icon;
+}
+
+/* BUTTONS AS ICONS */
+
+button, a.button, input[type="submit"] {
+
+  &.icon {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+
+    &.svg-icon {
+      @include svg-icon($fill: $anchor-font-color, $height: $default-svg-icon-size, $width: $default-svg-icon-size) {
+
+        @each $color in map-keys($theme-colors) {
+          &.#{$color} {
+
+            $color-name: map-get($theme-colors, $color);
+            @include svg-icon($fill: $color-name) {
+              background: transparent;
+            }
+          }
+        }
+      }
+
+    }
+  }
+}
+
+
+/* ICON LISTS */
+
+@mixin icon-list($color: $default-icon-color, $size: $paragraph-font-size, $align: left, $icon-padding: 0, $icon-spacing: 1rem, $margin: 0 0 1rem 0) {
+  $color: $color;
+  $size: $size;
+  $margin: $margin;
+  $align: $align;
+  $icon-padding: $icon-padding;
+  $icon-spacing: $icon-spacing;
+
+  background: transparent;
+  list-style-type: none;
+  overflow: visible;
+  list-style: none;
+  text-align: $align;
+  margin: $margin;
+
+  > li {
+    display: inline-block;
+    list-style: none;
+    text-align: $align;
+    font-size: $size;
+    padding: 0;
+    line-height: 1;
+    margin: 0 $icon-spacing 0 0;
+
+    > * {display: block;}
+  }
+}
+
+.icon-list {
+
+  @include icon-list;
+
+  &.center {
+    @include icon-list($align: center);
+  }
+
+  &.right {
+    @include icon-list($align: right);
+  }
+}
+
+/* ICON CONTROLS */
+@mixin icon-controls($color: $default-icon-color, $align: center, $size: inherit, $icon-spacing: 0.125rem, $icon-padding: 0, $margin: 0 auto) {
+  $color: $color;
+  $size: $size;
+  $icon-spacing: $icon-spacing;
+  $margin: $margin;
+  $align: $align;
+  $icon-padding: $icon-padding;
+  $icon-spacing: $icon-spacing;
+
+  background: transparent;
+  list-style-type: none;
+  overflow: hidden;
+  list-style: none;
+  line-height: 1;
+  display: inline-block;
+  font-size: $size;
+  text-align: $align;
+  margin: $margin;
+
+  > li {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 1;
+    list-style: none;
+    text-align: $align;
+    color: $color;
+    font-size: $size;
+    text-align: $align;
+    margin: 0 $icon-spacing 0 0;
+
+    > * {display: block;}
+
+    svg {
+      fill: $color;
+    }
+
+    a {
+      padding: $icon-padding;
+      text-align: $align;
+      color: $anchor-font-color;
+      text-align: $align;
+      vertical-align: middle;
+      line-height: 1;
+
+      &:hover {
+        color: scale-color($color, $lightness: 25%);
+      }
+    }
+  }
+}
+
+.icon-controls {
+  @include icon-controls;
+}

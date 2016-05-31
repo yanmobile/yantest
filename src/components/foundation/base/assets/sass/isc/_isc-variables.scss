@@ -318,11 +318,6 @@ $motion-delay-long: 700ms !default;
 $zindex-app: 1;
 $modal-z-index: 2147483647;
 
-/* TO DO: Table Settings */
-$pencil-button-color: $success-color !default;
-$remove-button-color: $alert-color !default;
-$table-command-icon-width: 35px !default;
-
 /* TO DO: OTHER */
 $placeholder-text-color: palettes(type, subtext) !default; // Input Placeholder Text
 $global-margin: 1rem !default; // Layout
