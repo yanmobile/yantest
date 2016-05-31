@@ -1,4 +1,4 @@
-( function() {
+(function() {
   'use strict';
 
   /* @ngInject */
@@ -26,10 +26,20 @@
      * @returns {Promise}
      */
     function load() {
-      return iscHttpapi.get( _url ).then( function( version ) {
+      return iscHttpapi.get( _url ).then( onSuccess, onError );
+
+      function onSuccess( version ) {
         _versionInfo = version;
-        return version;
-      } );
+        return _versionInfo;
+      }
+
+      function onError() {
+        _versionInfo = {
+          app : {},
+          core: {}
+        };
+        return _versionInfo;
+      }
     }
 
     /**
@@ -41,4 +51,4 @@
     }
   }
 
-} )();
+})();
