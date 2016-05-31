@@ -603,7 +603,6 @@ table {
         text-align: $table-title-align;
       }
     }
-
   }
 
   .date {text-decoration: none;}
@@ -656,7 +655,7 @@ table, .grid-table {
   }
 
   //Buttons
-  button, a.button, input[type="submit"], input[type="button"] {
+  button, .button, input[type="submit"], input[type="button"] {
 
     // Tiny Buttons for Tables
     @include button-size($size: tiny);
@@ -669,6 +668,38 @@ table, .grid-table {
     // Tiny Buttons for Tables
     @include button-group-size($size: tiny);
     margin: 0;
+  }
+
+  input[type="checkbox"], input[type="radio"] {
+    height: $table-font-size;
+    width: $table-font-size;
+    margin: 0;
+    line-height: $table-line-height;
+    font-size: $table-font-size;
+  }
+
+  input[type="checkbox"] + label, input[type="radio"] + label {
+    margin: 0 0.5rem 0 0.25rem;
+    display: inline-block;
+    line-height: $table-line-height;
+    font-size: $table-font-size;
+    vertical-align: top;
+
+    &:last-of-type {
+      margin-right: 0;
+    }
+  }
+
+  // Form Inputs in Tables
+  label, .label, .badge, input[type="checkbox"], input[type="radio"],
+  input, input[type="text"], input[type="password"], input[type="date"],
+  input[type="datetime"], input[type="datetime-local"], input[type="month"],
+  input[type="week"], input[type="email"], input[type="number"], input[type="search"],
+  input[type="tel"], input[type="time"], input[type="url"], input[type="color"], textarea, select {
+    margin: 0;
+    min-height: none;
+    line-height: $table-line-height;
+    font-size: $table-font-size;
   }
 
   //section-blocks
