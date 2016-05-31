@@ -27,6 +27,11 @@ function init(gulp, plugins, config, _) {
   gulp.task('gitFetch', function (callback) {
     return plugins.exec('git fetch --multiple origin upstream',
       function (err, stdout) {
+        // If gitFetch errors, either git is not installed, this is not a git repo, or the remotes do not exist
+        // In any case, abort other components for this task and write out a version file with missing info
+        if (err) {
+          appBuildno = appCodeno = coreBuildno = coreCodeno = 'missing';
+        }
         upstreamUpdated = !err;
         callback();
       });
@@ -35,11 +40,11 @@ function init(gulp, plugins, config, _) {
   // Looks through local and remote:upstream history for the most recent shared commit
   gulp.task('gitCoreInfo', function (callback) {
     if (!upstreamUpdated) {
-      console.log('Warning: Unable to update remote "upstream" for version system')
+      console.log('Warning: Unable to obtain version information from upstream remote')
     }
     else {
-      // Get all merged commits for this repo
-      var commits = plugins.execSync('git log origin/master --merges --pretty="%H|%ci" ', syncEncoding);
+      // Get all merged commits for this repo and the current branch
+      var commits = plugins.execSync('git log --merges --pretty="%H|%ci" ', syncEncoding);
 
       var lines = _.compact(commits.split('\n'));
       var done  = false;
@@ -103,38 +108,40 @@ function init(gulp, plugins, config, _) {
   });
 
   gulp.task('gitLocalInfo', function (callback) {
-    var branchName = '';
+    if (upstreamUpdated) {
+      var branchName = '';
 
-    // Get branch name
-    var branchList = plugins.execSync('git branch --list', syncEncoding);
-    var lines      = branchList.split('\n');
-    _.forEach(lines, function (line) {
-      if (line.match(/^\*/)) {
-        var split  = _.compact(line.split(/[ \t]/g));
-        branchName = split[_.indexOf(split, "*") + 1];
+      // Get branch name
+      var branchList = plugins.execSync( 'git branch --list', syncEncoding );
+      var lines      = branchList.split( '\n' );
+      _.forEach( lines, function( line ) {
+        if ( line.match( /^\*/ ) ) {
+          var split  = _.compact( line.split( /[ \t]/g ) );
+          branchName = split[_.indexOf( split, "*" ) + 1];
 
-        if (branchName != 'master') {
-          suffix = '|' + branchName.substr(0, 10);
+          if ( branchName != 'master' ) {
+            suffix = '|' + branchName.substr( 0, 10 );
+          }
         }
-      }
-    });
+      } );
 
-    // Get latest commit for this branch
-    var sha   = plugins.execSync('git log -n 1 --pretty=format:"%H" --branches=' + branchName + "*", syncEncoding);
-    appCodeno = sha.substr(0, 6);
+      // Get latest commit for this branch
+      var sha   = plugins.execSync( 'git log -n 1 --pretty=format:"%H" --branches=' + branchName + "*", syncEncoding );
+      appCodeno = sha.substr( 0, 6 );
 
-    // Get commit count for the current branch for today
-    var commitCount = plugins.execSync(
-      'git rev-list HEAD --count --since=\'' + todayISO + '\'' + ' --branches=' + branchName + "*",
-      syncEncoding
-    );
+      // Get commit count for the current branch for today
+      var commitCount = plugins.execSync(
+        'git rev-list HEAD --count --since=\'' + todayISO + '\'' + ' --branches=' + branchName + "*",
+        syncEncoding
+      );
 
-    var count  = parseInt(commitCount) + 1;
-    appBuildno = plugins.dateFormat(today, outputDateFormat) + "." + count;
+      var count  = parseInt( commitCount ) + 1;
+      appBuildno = plugins.dateFormat( today, outputDateFormat ) + "." + count;
+    }
 
     callback();
     return;
-  });
+  } );
 
   // Merge the results into the version.json template
   gulp.task('setVersion', function () {
