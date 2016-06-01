@@ -215,6 +215,11 @@ table {
       font-size: $tfoot-font-reduction;
     }
   }
+
+  // Auto Expand on Smaller Screens
+  @media #{$medium-down} {
+    width: 100%;
+  }
 }
 
 
@@ -323,6 +328,13 @@ table {
         background-color: smartscale($table-background, 4%);
         color: isitlight($table-background, $body-font-color, $light-text);
         cursor: pointer;
+
+        &.striped {
+          &:nth-child(even) {
+            background-color: smartscale($table-stripe-background, 6%);
+            color: $table-stripe-font-color;
+          }
+        }
       }
     }
   }
@@ -332,6 +344,13 @@ table {
       background-color: smartscale($table-background, 4%);
       color: isitlight($table-background, $body-font-color, $light-text);
       cursor: pointer;
+
+      &.striped {
+        &:nth-child(even) {
+          background-color: smartscale($table-stripe-background, 6%);
+          color: $table-stripe-font-color;
+        }
+      }
     }
   }
 }
@@ -428,6 +447,7 @@ table {
           padding-bottom: 0;
           margin-bottom: 0;
           text-align: left;
+          vertical-align: middle;
         }
       }
     }
@@ -504,6 +524,7 @@ table {
       padding-bottom: 0;
       margin-bottom: 0;
       text-align: left;
+      vertical-align: middle;
     }
   }
 
@@ -527,6 +548,12 @@ table {
 /* CLASSIC TABLES */
 .isc-table {
 
+  &.expand {
+    table {
+      width: 100%;
+    }
+  }
+
   &.borderless {
     @include borderless-table;
   }
@@ -548,6 +575,12 @@ table {
 
 /* FAUX TABLES */
 .fauxTable {
+
+  .expand & {
+    .grid-table {
+      width: 100%;
+    }
+  }
 
   .borderless & {
     @include borderless-table;
@@ -577,7 +610,6 @@ table {
         text-align: $table-title-align;
       }
     }
-
   }
 
   .date {text-decoration: none;}
@@ -585,6 +617,9 @@ table {
 
   ul, ol, li, p {
     margin: 0;
+    font-size: $table-font-size;
+    line-height: $table-line-height;
+    vertical-align: middle;
   }
 
   .empty-message {
@@ -599,6 +634,7 @@ table, .grid-table {
   ul, ol {
     margin: 0;
     font-size: $table-font-size;
+    vertical-align: middle;
   }
 
   // Menu Bars
@@ -608,10 +644,15 @@ table, .grid-table {
 
     li {
       a {
-        padding: 0.65rem 1rem;
+        padding: 0.5rem;
 
         @media #{$small} {
-          padding: 0.5rem 0.75rem;
+          padding: 0.25rem;
+          font-size: $tfoot-font-reduction;
+
+          .fa {
+            margin: 0;
+          }
         }
       }
     }
@@ -619,10 +660,15 @@ table, .grid-table {
     &.condense {
       li {
         a {
-          padding: 0.65rem;
+          padding: 0.25rem;
 
           @media #{$small} {
-            padding: 0.5rem;
+            padding: 0.25rem;
+            font-size: $tfoot-font-reduction;
+          }
+
+          .fa {
+            margin: 0;
           }
         }
       }
@@ -630,31 +676,51 @@ table, .grid-table {
   }
 
   //Buttons
-  button, a.button, input[type="submit"] {
+  button, .button, input[type="submit"], input[type="button"] {
+
+    // Tiny Buttons for Tables
+    @include button-size($size: tiny);
     margin: 0;
   }
 
   //Button Groups
   .button-group {
+
+    // Tiny Buttons for Tables
+    @include button-group-size($size: tiny);
     margin: 0;
+  }
 
-    li {
-      a {
+  input[type="checkbox"], input[type="radio"] {
+    height: $table-font-size;
+    width: $table-font-size;
+    margin: 0;
+    line-height: $table-line-height;
+    font-size: $table-font-size;
+  }
 
-        @media #{$small} {
-          padding: 0.3125rem 0.5rem;
-          font-size: 0.75rem;
-        }
+  input[type="checkbox"] + label, input[type="radio"] + label {
+    margin: 0 0.5rem 0 0.25rem;
+    display: inline-block;
+    line-height: $table-line-height;
+    font-size: $table-font-size;
+    vertical-align: top;
 
-        .fa-lg {
-
-          @media #{$small} {
-            font-size: $table-font-size;
-            line-height: 0.2rem;
-          }
-        }
-      }
+    &:last-of-type {
+      margin-right: 0;
     }
+  }
+
+  // Form Inputs in Tables
+  label, .label, .badge, input[type="checkbox"], input[type="radio"],
+  input, input[type="text"], input[type="password"], input[type="date"],
+  input[type="datetime"], input[type="datetime-local"], input[type="month"],
+  input[type="week"], input[type="email"], input[type="number"], input[type="search"],
+  input[type="tel"], input[type="time"], input[type="url"], input[type="color"], textarea, select {
+    margin: 0;
+    min-height: none;
+    line-height: $table-line-height;
+    font-size: $table-font-size;
   }
 
   //section-blocks

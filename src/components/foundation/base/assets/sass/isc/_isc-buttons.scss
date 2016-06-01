@@ -8,15 +8,33 @@
    - Button Groups
 */
 
+/* Button Settings */
+$button-padding: 0.75em 1em !default;
+$button-margin: 0 0 1rem 0 !default;
+$button-style: solid !default;
+$button-background: $primary-color !default;
+$button-background-hover: scale-color($button-background, $lightness: -15%) !default;
+$button-color: auto !default;
+$button-radius: 3px !default;
+$button-sizes: (
+   tiny: 0.7,
+   small: 0.8,
+   medium: 1,
+   large: 1.3,
+ ) !default;
+$button-font-size: 1rem !default;
+$button-opacity-disabled: 0.5 !default;
+$button-cancel-background: $gray !default;
+
 /* Button Mixins */
 
-button, a.button, input[type="submit"] {
+button, .button, input[type="submit"], input[type="button"] {
 
   &:not(.icon), &:not(.svg-icon) {
     font-weight: $font-weight-semi-bold;
     color: isitlight($button-background, $body-font-color, $light-text);
 
-    &.secondary, &.success, &.warning, &.alert, &.info, &.dark, &.cancel {
+    &.primary, &.secondary, &.success, &.warning, &.alert, &.info, &.dark {
       color: isitlight($button-background, $body-font-color, $light-text);
 
       &:hover, &:focus, &:active {
@@ -24,13 +42,16 @@ button, a.button, input[type="submit"] {
       }
     }
   }
+}
+
+/* Cancel Buttons */
+button, .button, input[type="submit"], input[type="button"] {
 
   &.cancel {
-
     @include button-style(
       $background: $button-cancel-background,
       $background-hover: auto, // generate dynamically
-      $color: auto,
+      $color: isitlight($button-cancel-background, $body-font-color, $light-text),
       $style: solid //solid or hollow
     );
 
@@ -39,19 +60,10 @@ button, a.button, input[type="submit"] {
     }
   }
 
-  .fa {
-    vertical-align: middle;
-    line-height: 1;
-  }
-
-  &:focus {
-    outline: none;
-  }
 }
 
-
-/* Submit Input Buttons */
-input[type="submit"] {
+/* Input Buttons Can Be Disabled */
+input[type="submit"], input[type="button"] {
   @extend .button;
   &.custom-disabled {
     @include button-disabled;
@@ -60,15 +72,14 @@ input[type="submit"] {
 
 
 /* Prefixed/Postfixed Buttons */
-
-.button, button {
+.button, button, input[type="submit"], input[type="button"] {
   &.prefix {border-radius: $global-radius 0 0 $global-radius;}
   &.postfix {border-radius: 0 $global-radius $global-radius 0;}
 }
 
 .prefix {
 
-  button, .button {
+  button, .button, input[type="submit"], input[type="button"] {
     margin: 0;
     border-radius: $global-radius 0 0 $global-radius;
     padding: 0.5em 0.75em;
@@ -78,7 +89,7 @@ input[type="submit"] {
 
 .postfix {
 
-  button, .button {
+  button, .button, input[type="submit"], input[type="button"] {
     margin: 0;
     border-radius: 0 $global-radius $global-radius 0;
     padding: 0.5em 0.75em;
@@ -97,14 +108,16 @@ input[type="submit"] {
     // Links become buttons
     #{$child-selectors} {
       @extend %button;
-      border-radius: 0;
-      font-size: inherit;
-      display: block;
-      margin: 0;
+        border-radius: 0;
+        font-size: inherit;
+        display: block;
+        margin: 0;
     }
+
     > input + label {
       margin: 0;
     }
+
     // Add borders between items
     &:not(:last-child) {
       #{$child-selectors} {
@@ -114,7 +127,29 @@ input[type="submit"] {
   }
 }
 
-/* Button Utilities  */
+.button-group {
 
-//Remove margin
-button.flat, .button.flat, a.flat {margin: 0;}
+  input[type="checkbox"] + label, input[type="radio"] + label {
+    margin: 0;
+  }
+}
+
+/* Button Utilities  */
+button, .button, input[type="submit"], input[type="button"] {
+
+  //Vertically Align Icons
+  .fa {
+    vertical-align: middle;
+    line-height: 1;
+  }
+
+  // No outline on Focus
+  &:focus {
+    outline: none;
+  }
+
+  //Remove margin
+  &.flat {
+    margin: 0;
+  }
+}
