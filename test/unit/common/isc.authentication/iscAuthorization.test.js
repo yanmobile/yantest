@@ -128,6 +128,19 @@
         var isAuthorized = suite.authorizationModel.isAuthorized( stateToCheck );
         expect( isAuthorized ).toBe( false );
       } );
+
+      it( 'should not blacklist a parent state if that parent is permitted but has a blacklisted child state', function() {
+        suite.customConfigServiceProvider.addRolePermissions( { 'index.home': ['*'] } );
+        suite.customConfigServiceProvider.addRolePermissions( { '!index.home.child': ['*'] } );
+
+        var parentState        = 'index.home';
+        var isParentAuthorized = suite.authorizationModel.isAuthorized( parentState );
+        expect( isParentAuthorized ).toBe( true );
+
+        var childState        = 'index.home.child';
+        var isChildAuthorized = suite.authorizationModel.isAuthorized( childState );
+        expect( isChildAuthorized ).toBe( false );
+      } );
     } );
   } );
 })();
