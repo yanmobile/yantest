@@ -113,12 +113,12 @@ gulp deploy --appjson path/to/app.json #only app specific
 **This framework is designed to virtually eliminate the need to write custom automation tasks. The out-of-the-box automation tasks utilize these three configuration files: gulp/common.json, gulp/components.json, and gulp/app.json.**
 
 **Notes:**
-  * This *config structure* applies to ```gulp/app.json```, ```gulp/components.json```, and ```gulp/common.json```
+  * This *config structure* applies to ```gulp/app.json```, ```src/components/<edition path>/components.json```, and ```gulp/common.json```
   * The paths must be relative to the root of the application
   * Be sure to never reference files from another module or outside of their perspective section: *src/common*, *src/components*, and *src/app*.
   * The automation scripts will load the config sections in this orders: 
     1. gulp/common.json
-    2. gulp/components.json
+    2. src/components/<edition path>/components.json
     3. gulp/app.json
 
 ```javascript
@@ -227,11 +227,11 @@ gulp deploy --appjson path/to/app.json #only app specific
   * Application specific bower packages should be installed under "src/app/" folder (don't install it in "src/common" and "src/components")
    
 * **Now that I have bower package successfully installed in "src/app/" folder, how do I add it to the application?**
-  * We use Gulp to automate build tasks. Application specific gulp configuration can be found at "gulp/app.json". You'll need to specify the file path of your bower package in "vendor.js" json property which is line 3 of "gulp/app.json" file.
+  * We use Gulp to automate our build tasks. Application specific gulp configuration can be found at "gulp/app.json". You'll need to specify the file path of your bower package in "vendor/js" json property which is line 3 of "gulp/app.json" file.
   
 * **How do I add a new javascript package which is not available through bower?**
   * You'll need to paste your non-bower library js files in "src/app/assets/vendors/" folder. If this folder doesn't exist, create one.
-  * You'll have to reference your js file in "gulp/app.json" configuration file under this key path: "module.assets.vendor.js" array.
+  * You'll have to reference your js file in "gulp/app.json" configuration file under this key path: "module/assets/vendor/js" array.
   
 * **How do I include a 3rd party css file in my application?**
   * The framework does not support *.css file extensions, you'll need to rename your *.css extension to *.scss (superset of css) and place your *.scss file in "src/app/assets/sass/" folder. Once your file is in the sass folder, add a reference to  "src/app/assets/sass/main.scss" file.
@@ -284,7 +284,6 @@ gulp deploy --appjson path/to/app.json #only app specific
   1. Update your ```hs-core-tools``` by executing ```slush hs:update```
   1. execute ```slush hs:updateCore```
   1. create a PR to merge this to your project's master branch
-  1. Follow [changelog.md] instruction for post update changes
   
 * **I have an existing application and my framework is out of date. How can I upgrade my application's framework (the old fashion way)?**
   1. Ensure you have a local git remote ```upstream``` is pointing to "https://github.com/intersystems/hs-core-ui.git"
@@ -293,21 +292,20 @@ gulp deploy --appjson path/to/app.json #only app specific
   1. Ensure you have a local git remote ```appstream``` is pointing to "https://github.com/intersystems/hs-core-app-scaffold.git"
     1. execute ```git remote -v``` to check existing git remote repo mappings
     1. if "appstream" doesn't exist, add it by executing ```git remote add appstream https://github.com/intersystems/hs-core-app-scaffold.git```
-  2. create a new branch off remote master ```git checkout -b framework-update origin/master```
+  2. create a new branch off remote master ```git checkout -b framework-update-<date> origin/master```
   3. pull the framework into your branch ```git pull upstream master```
   4. resolve conflicts (if any) and commit
   5. update your node and bower packages (we recommend using [hs-core-tools] ```slush hs:install```)
-  6. Follow [changelog.md] instruction for post update changes
-  7. Verify your application still works
-  8. commit your changes (if any)
-  9. push to origin ```git push origin framework-update```
-  10. create a PR to merge this to your project's master branch
+  6. Smoke test your application ```gulp serve```
+  7. commit your changes (if any)
+  8. push to origin ```git push origin framework-update-<date>```
+  9. create a PR to merge this to your project's master branch
   
 * **How do I specify who is authorized to access my page (ui-router state)?**
-  * Navigate to where you've defined the ui-router state for your landing page and update **roles** property.  For reference, see  **src/app/modules/login/login.module.js**
+  * Navigate to where you've defined the ui-router state for your landing page and update ```roles``` property.  For reference, see  **src/app/modules/login/login.module.js**
   
 * **How do I specify a landing page for specific user role?**
-  * Navigate to where you've defined the ui-router state for your landing page and add/update  **landingPageFor** property and include your user role as one of the array values. For reference, see  **src/app/modules/login/login.module.js**
+  * Navigate to where you've defined the ui-router state for your landing page and add/update  ```landingPageFor``` property and include your user role as one of the array values. For reference, see  **src/app/modules/login/login.module.js**
   
 * **How come when I successfully authenticated a user(Status Code 200 from REST API), nothing happens, I am still at the login page?**
   * That's because you haven't specified a landing page for the authenticated user role. You need to specifiy a landing page for your authenticated user's role. For reference, see  **src/app/modules/login/login.module.js**
@@ -315,7 +313,8 @@ gulp deploy --appjson path/to/app.json #only app specific
 * **I created a Pull-Request, but it won't let me merge it due to conflicts. How do I resolve this?**
   * merge the latest of origin master to your local branch  ```git pull origin master```
   * resolve conflicts
-  * stage and commit your resolved changes  ```git commit -am '<your message>'```
+  * stage your changes ```git add <filename>```
+  * commit your resolved changes  ```git commit -m '<your message>'```
   * Assume your branch is called "my-feature-branch". Push your changes to your tracked server branch  ```git push origin <my-feature-branch> ```
   
 * **How do I specify a different edition (US/UK)?**
