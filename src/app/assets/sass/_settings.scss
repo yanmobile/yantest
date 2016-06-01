@@ -24,9 +24,10 @@
 //  19. Off-canvas
 //  20. Panel
 //  21. Popup
-//  22. Tabs
-//  23. Title Bar
-//  24. Tooltips
+//  22. Tables
+//  23. Tabs
+//  24. Title Bar
+//  25. Tooltips
 
 @import "../../../components/foundation/base/bower_components/foundation-apps/scss/helpers/functions";
 @import "../../../components/foundation/base/assets/sass/isc/isc-variables";
@@ -295,9 +296,7 @@ $button-style: solid;
 $button-background: $accent-color;
 $button-cancel-background: $gray;
 $button-background-hover: scale-color($button-background, $lightness: -15%);
-
-
-
+$button-radius: $global-radius;
 
 $button-sizes: (
   tiny: 0.7,
@@ -550,8 +549,47 @@ $popup-border: 0;
 $popup-radius: 0;
 $popup-shadow: 0 0 10px rgba(black, 0.25);
 
+// 22. TABLES
+/* ------------------------------ */
+/* General Table Styles */
+$table-background: white;
+$table-font-color: isitlight($table-background, $body-font-color, $light-text);
+$table-stripe-background: $neutral-three;
+$table-stripe-font-color: isitlight($table-stripe-background, $body-font-color, $light-text);
+$table-row-border: 1px solid $app-border-color;
+$table-column-border: 1px solid $app-border-color;
 
-// 22. TABS
+$table-font-size: 0.875rem;
+$table-line-height: 1.4;
+$table-cell-padding: 0.65rem;
+
+/* Table Head */
+$th-font-size: 0.875rem;
+$th-font-weight: $font-weight-bold;
+$th-text-align: left;
+$th-background: $table-background;
+
+/* Table Foot */
+$tfoot-background: $th-background;
+$tfoot-font-size: 0.75rem;
+
+/* Table Titles */
+$table-title-font-size: 1.25rem;
+$table-title-color: $header-font-color;
+$table-title-weight: inherit;
+$table-title-align: left;
+$table-title-margin: 0 0 1rem 0;
+$table-title-padding: 0;
+
+/* Responsive Behavior */
+$show-header-for-stacked: true;
+/* Table Font Size Reduction on Small Screens */
+$table-font-reduction: rem-calc(12);
+$th-font-reduction: rem-calc(12);
+$tfoot-font-reduction: rem-calc(12);
+$table-title-font-reduction: rem-calc(16);
+
+// 23. TABS
 /* ------------------------------ */
 $tabstrip-background: transparent;
 $tab-title-background: $neutral-color;
@@ -562,8 +600,7 @@ $tab-title-color-active: $tab-title-color;
 $tab-title-padding: $global-padding;
 $tab-content-padding: $global-padding;
 
-
-// 23. TITLE BAR
+// 24. TITLE BAR
 /* ------------------------------ */
 $titlebar-center-width: 50%;
 $titlebar-side-width: (100% - $titlebar-center-width) / 2;
@@ -572,8 +609,7 @@ $titlebar-color: isitlight($titlebar-background, $body-font-color, $light-text);
 $titlebar-border: 1px solid $app-border-color;
 $titlebar-padding: $global-padding;
 
-
-// 24. TOOLTIPS
+// 25. TOOLTIPS
 /* ------------------------------ */
 $tooltip-background: $primary-color;
 $tooltip-border: 1px solid smartscale($tooltip-background, 10%);
