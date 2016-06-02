@@ -21,14 +21,16 @@
       "src/app/modules/**/*.html"
     ],
     "assets"  : {
-      "i18nDir"   : "src/app/assets/i18n/",
-      "mocks"  : [
+      "i18nDir"    : "src/app/assets/i18n/",
+      "comments"   : "i18nDomain value will be used as a part of the generated i18n xml",
+      "i18nDomain" : "HSPortal",
+      "mocks"      : [
         "src/app/assets/mockData/**"
       ],
-      "images" : [
+      "images"     : [
         "src/app/assets/images/**/*"
       ],
-      "vendor" : {
+      "vendor"     : {
         "js" : []
       }
     },
@@ -40,10 +42,12 @@
     ]
   },
   "dest"          : {
-    "folder" : "www",
-    "html"   : "src/index.html",
-    "css"    : "src/app/assets/sass/main.scss",
-    "js"     : "src/app/assets/sass/main.js"
+    "folder"   : "www",
+    "html"     : "src/index.html",
+    "css"      : "src/app/assets/sass/main.scss",
+    "js"       : "src/app/assets/sass/main.js",
+    "comments" : "i18nXml is used for specifying destination location of converted i18n files",
+    "i18nXml"  : "www/assets/i18n"
   },
   "cordova"       : false,
   "excludeConfig" : "!src/app/modules/app.config.js",
