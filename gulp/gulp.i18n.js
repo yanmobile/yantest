@@ -10,18 +10,20 @@ module.exports = {
 var filelog   = require( "gulp-filelog" );
 var fs        = require( 'fs' );
 var mergeJson = require( 'gulp-merge-json' );
+var convert   = require( './i18n.xml.converter' );
 
 function init( gulp, plugins, config, _ ) {
 
   /**
    * @description handles i18n source files. This will merge all i18n files with the same name into 1 output file to be consumed by the application.
-   * 
+   *
    * This is the order of file overrides: App overrides Components which overrides Common => _.merge({}, common, components, app);
    */
   gulp.task( 'i18n', function( done ) {
     var commonI18n     = _.get( config, "common.module.assets.i18nDir" );
     var componentsI18n = _.get( config, "component.module.assets.i18nDir" );
     var appI18n        = _.get( config, "app.module.assets.i18nDir" );
+    var domain         = _.get( config, "app.module.assets.i18nDomain" );
 
     //get files in each of these three folders
     var commonI18nFiles     = readdirSync( commonI18n );
@@ -37,7 +39,9 @@ function init( gulp, plugins, config, _ ) {
         .src( getSrcFiles( file ) )
         .pipe( mergeJson( file, removeComments ) )
         .pipe( filelog() )
-        .pipe( gulp.dest( plugins.path.join( config.app.dest.folder, 'assets/i18n' ) ) );
+        .pipe( gulp.dest( plugins.path.join( config.app.dest.folder, 'assets/i18n' ) ) )
+        .pipe( convert( { domain: domain } ) )
+        .pipe( gulp.dest( plugins.path.join( config.app.dest.i18nXml ) ) );
     } );
 
     done(); //NOTE: Due to the fact the actual task is asynchronous, this done() invoked before the actual task is finished.
@@ -88,7 +92,7 @@ function init( gulp, plugins, config, _ ) {
 }
 
 /**
- * @description returns all files inside of a specific folder. 
+ * @description returns all files inside of a specific folder.
  * @param path
  * @param defaults
  * @returns {*}
