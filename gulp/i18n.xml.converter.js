@@ -2,6 +2,7 @@ var gutil   = require( 'gulp-util' );
 var es      = require( 'event-stream' );
 var stream  = require( 'stream' );
 var _       = require( "lodash" );
+var xmlescape = require('xml-escape');
 
 /**
  * @description gulp plugin used to convert i18n json files to i18n xml files
@@ -46,11 +47,10 @@ ${opts.convertContent( json, opts )}
     var output = [];
 
     _.forEach( jsonObj, function( value, name ) {
-      output.push( `${opts.eachPrefix}<Message Id="${name}">${value}</Message>` );
+      output.push( `${opts.eachPrefix}<Message Id="${name}">${xmlescape(value)}</Message>` );
     } );
     return output.join( '\n' );
   }
-
 
   /**
    * gulp plugin code
