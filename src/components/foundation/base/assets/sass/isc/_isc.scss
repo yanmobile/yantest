@@ -1,29 +1,35 @@
-/* Base */
-@import "isc-variables"; // TODO - Deconstruct, remove bloat, create systematic app variables from scratch and theming POA
-@import "isc-mixins"; // TODO - Deconstruct, remove bloat, create organized, useful mixins from scratch
-@import "isc-utilities"; // TODO - Deconstruct and organize new utility classes here
-@import "isc-app";
+/* HealthShare Angular UI Framework
+  ----------------------------------
+   - Utilities - These files deal with logic and should not output any css directly.
+   - Global - Global Styles
+   - Components - UI Components
+   - Layout - Layout Templates
+----------------------------------*/
 
-/* Atoms */
-@import "isc-layout";
-@import "isc-typography";
-@import "isc-buttons";
-@import "isc-icons";
-@import "isc-tooltips";
+/* Utilities */
+@import "helpers/isc-variables"; // TODO - Deconstruct, remove bloat, create systematic app variables from scratch and theming POA
+@import "helpers/isc-mixins"; // TODO - Deconstruct, remove bloat, create organized, useful mixins from scratch
+@import "helpers/isc-utilities"; // TODO - Deconstruct and organize new utility classes here
+
+/* Global */
+@import "isc-global";
 
 /* Components */
-@import "isc-typeahead";
-@import "isc-pagination";
-@import "isc-modals";
+@import "components/isc-typography";
+@import "components/isc-buttons";
+@import "components/isc-icons";
+@import "components/isc-tooltips";
+@import "components/isc-typeahead";
+@import "components/isc-pagination";
+@import "components/isc-modals";
+@import "components/isc-forms"; // TODO - Needs more work
+@import "components/isc-ddp-forms"; // TODO - Merge DDP Form With isc-forms
+@import "components/isc-tables";
+@import "components/isc-primary-nav";
+@import "components/isc-secondary-nav";
+@import "components/isc-footer";
+@import "components/isc-sidebar"; // TODO - Dynamic Menu Icons
 
-/* Organisms */
-@import "isc-forms"; // TODO - Needs more work
-@import "isc-ddp-forms"; // Forms from DDP
-@import "isc-tables"; // TODO - Create grid table component
-
-
-/* Templates */
-@import "isc-primary-nav";
-@import "isc-secondary-nav";
-@import "isc-footer";
-@import "isc-sidebar"; // TODO - Dynamic Icons
+/* Layout */
+@import "layout/isc-layout";
+@import "layout/isc-404";
