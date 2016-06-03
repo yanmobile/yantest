@@ -1,7 +1,7 @@
 /**
  * Created by Henry Zou on 4/17/2016.
  */
-( function() {
+(function() {
   'use strict';
 
   var blacklist;
@@ -40,8 +40,8 @@
     var Log     = getLogClass();
     return _.extend( {
       channel: channel,
-      logFn  : logFn
-    }, $log );
+      logFn  : config.production ? _.noop : logFn,
+    }, config.production ? getNoOpLogger() : $log );
 
     /**
      * @ngdoc provider
@@ -58,16 +58,21 @@
     function getLogClass() {
 
       function Log( channelName ) {
-        var isAllowed = getIsAllowed( channelName, whitelist, blacklist );
-        if ( isAllowed ) {
-          $log.log( '*** devlog channel allowed: ', channelName, ":", isAllowed ? "YES" : "NO", " ***" );
-        }
-        this.channelName   = channelName;
-        this.channelPrefix = ( channelName ? "|" + channelName + "|" : '' );
-        if ( isAllowed ) {
-          _.extend( this, this.real );
-        } else {
+        if ( config.production ) {
           _.extend( this, this.fake );
+        } else {
+          var isAllowed = getIsAllowed( channelName, whitelist, blacklist );
+          if ( isAllowed ) {
+            $log.log( '*** devlog channel allowed: ', channelName, ":", isAllowed ? "YES" : "NO", " ***" );
+          }
+          this.channelName   = channelName;
+          this.channelPrefix = ( channelName ? "|" + channelName + "|" : '' );
+          if ( isAllowed ) {
+            _.extend( this, this.real );
+          } else {
+            _.extend( this, this.fake );
+            this.error = logMethod( 'error' );
+          }
         }
       }
 
@@ -119,35 +124,6 @@
 
       }
 
-      /**
-       * @memberOf devlog
-       * @description
-       *  Empty Logger performing an no-op when invoked
-       * @returns {{}}
-       */
-      function getNoOpLogger() {
-        var logger   = getLogger();
-        logger.logFn = _.noop;
-        return logger;
-      }
-
-      /**
-       * @memberOf devlog
-       * @description iterates through all of $log's own properties and creates a new log object:
-       *  it will either return a _.noop object or real $log
-       * @param logFunc
-       * @returns {{}}
-       */
-      function getLogger( logFunc ) {
-        var logger = {};
-
-        _.forEach( $logMethods, function( method ) {
-          logger[method] = logFunc ? logFunc( method ) : _.noop;
-        } );
-
-        logger.error = logMethod( 'error' );
-        return logger;
-      }
     }
 
     function logFn( method ) {
@@ -176,6 +152,34 @@
       };
     }
 
+    /**
+     * @memberOf devlog
+     * @description
+     *  Empty Logger performing an no-op when invoked
+     * @returns {{}}
+     */
+    function getNoOpLogger() {
+      var logger   = getLogger();
+      logger.logFn = _.noop;
+      return logger;
+    }
+
+    /**
+     * @memberOf devlog
+     * @description iterates through all of $log's own properties and creates a new log object:
+     *  it will either return a _.noop object or real $log
+     * @param logFunc
+     * @returns {{}}
+     */
+    function getLogger( logFunc ) {
+      var logger = {};
+
+      _.forEach( $logMethods, function( method ) {
+        logger[method] = logFunc ? logFunc( method ) : _.noop;
+      } );
+
+      return logger;
+    }
   }
 
-} )();
+})();
