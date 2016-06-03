@@ -1,26 +1,21 @@
-//@import "foundation";
-@import "../../bower_components/foundation-apps/scss/foundation";
+/* HealthShare Angular UI Framework
+  ----------------------------------
+   - Vendor SASS
+   - HealthShare Framework SASS
+   - HealthShare Module SASS
+----------------------------------*/
 
-// font awesome
-@import "font-awesome/font-awesome";
+/* Import Vendor SASS */
+@import "../../bower_components/foundation-apps/scss/foundation"; // Zurb Foundation
+@import "vendor/font-awesome/font-awesome"; // Font Awesome
+@import "vendor/angular-datepicker"; // angular datepicker
+@import "vendor/fullcalendar"; // angular calendar
+@import "vendor/charts"; // Charts - Base
+@import "vendor/LineChart"; // Charts - Line
+@import "vendor/tooltipster"; // Tooltips
 
-// angular datepicker
-@import "datepicker/angular-datepicker";
-
-// angular calendar
-@import "fullcalendar/fullcalendar";
-
-// import Charting
-@import "charts";
-@import "LineChart";
-
-// import Tooltips
-@import "tooltipster";
-
-// error 404 page
-@import "isc/isc_error_404";
-
-// isc core
+/* Import Framework SASS */
 @import "isc/isc";
 
+/* Import Module SASS */
 @import "../../modules/isc.agenda/isc.agenda";
