@@ -1,5 +1,8 @@
 
 # Core Changes
+### 06/03/2016
+This update organizes the framework SASS assets into a much cleaner, more logically organized structure. It requires one file path to be updated on line 33 of  ```src/app/assets/sass/_settings.scss``` from ```../../../components/foundation/base/assets/sass/isc/isc-variables``` to ```../../../components/foundation/base/assets/sass/isc/helpers/isc-variables``` exactly as shown in [this PR](https://github.com/intersystems/hs-core-app-scaffold/pull/26). If you do not update this path in your app after updating the framework, your app will fail to compile with a file not found error.
+
 ### 05/04/2016
 The framework has made some performance optimizations for deployed applications in production. Simply set ```src/app/modules/app.config.js```'s ```production: true```. Execute ```slush hs:updateCore``` to get the latest. Although manual updates are no longer supported, you can manually update the changes described in [this PR](https://github.com/intersystems/hs-core-app-scaffold/pull/6).
 
@@ -34,11 +37,11 @@ This change was made on 4/5/2016
 
 ### 04/26/2016
 [hs-core-ui PR 213](https://github.com/intersystems/hs-core-ui/pull/213) adds support for compile time edition selection support; apps can now specify which edition to build for at compile time. The app specific changes can be found in [hs-core-tools PR 74](https://github.com/intersystems/hs-core-tools/pull/76/files?w=1).   
-[hs-core-ui PR 210](https://github.com/intersystems/hs-core-ui/pull/210) adds theming functionially. Make sure to update both core-ui and core-tools together in this update or your app will break. Please refer to core-tools PR 75 for app specific changes: [hs-core-tools PR 75](https://github.com/intersystems/hs-core-tools/pull/75). 
+[hs-core-ui PR 210](https://github.com/intersystems/hs-core-ui/pull/210) adds theming functionially. Make sure to update both core-ui and core-tools together in this update or your app will break. Please refer to core-tools PR 75 for app specific changes: [hs-core-tools PR 75](https://github.com/intersystems/hs-core-tools/pull/75).
 
 ### 04/21/2016
 [hs-core-ui PR 209](https://github.com/intersystems/hs-core-ui/pull/209) adds support for module specific scss files. In order for individual apps to take advantage of this feature, they need to be updated. The app specific changes can be found in [hs-core-tools PR 74](https://github.com/intersystems/hs-core-tools/pull/74).
- 
+
 ### 04/19/2016
 [hs-core-ui PR 198](https://github.com/intersystems/hs-core-ui/pull/198) removed ```$$``` from navbar's ```$$active``` property. This is a breaking change, and every app that is based of hs-core-ui need to be updated to be compatible; please make the same changes as [hs-core-tools PR 66](https://github.com/intersystems/hs-core-tools/pull/66).  
 
