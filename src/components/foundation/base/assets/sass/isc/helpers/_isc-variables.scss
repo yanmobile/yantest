@@ -323,3 +323,31 @@ $modal-z-index: 2147483647;
 /* TO DO: OTHER */
 $placeholder-text-color: palettes(type, subtext) !default; // Input Placeholder Text
 $global-margin: 1rem !default; // Layout
+
+// TO DO - SASS EXPORTS
+// Purpose: Change any value in this map from "true" to "false" to disable that component's CSS class output.
+// You'll still be able to use the component's mixins, but none of our pre-written classes will be in your CSS.
+/* ------------------------------ */
+$isc-components: (
+  404error: true,
+  app: true,
+  buttons: true,
+  ddp: true,
+  footer: true,
+  forms: true,
+  icons: true,
+  layout: true,
+  mixins: true,
+  modals: true,
+  navbar: true,
+  pagination: true,
+  primarynav: true,
+  secondarynav: true,
+  sidebar: true,
+  tables: true,
+  tooltips: true,
+  typeahead: true,
+  typography: true,
+  utilities: true,
+  variables: true,
+);
