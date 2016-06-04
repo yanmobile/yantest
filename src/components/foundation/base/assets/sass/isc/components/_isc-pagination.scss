@@ -1,49 +1,95 @@
-/* Table Row Pagination */
+/* Pagination Settings */
+
+// Structure
+$pagination-link-padding:        0 0.625rem !default;
+$pagination-margin:              1rem auto !default;
+$pagination-item-spacing:        0.25rem !default; // Right margin to separate pagination items.
+
+// Normal State
+$pagination-font-size:           1.125rem !default;
+$pagination-font-weight:         $font-weight-normal !default;
+$pagination-color:               $accent-color  !default;
+
+// Hover State
+$pagination-color-hover:         scale-color($anchor-font-color, $lightness: -14%) !default;
+$pagination-background-hover:    transparent !default;
+
+// Active State
+$pagination-font-weight-active:  $font-weight-bold !default;
+$pagination-background-active:   transparent !default;
+$pagination-color-active:        $accent-color !default;
+
+// Disabled State
+$pagination-color-disabled:      $gray !default;
+$pagination-background-disabled: transparent !default;
+
+
+/* Pagination Styles */
 .pagination {
   padding: 0;
   width: 100%;
   border-top: none;
   list-style-type: none;
-  margin: 0 auto;
+  margin: $pagination-margin;
   text-align: center;
 
   li {
-    padding: .5rem;
+    padding: $pagination-link-padding;
     min-width: none;
     max-width: none;
     height: auto;
-    margin: 0;
+    margin: 0 $pagination-item-spacing 0 0;
     float: none;
+    line-height: 1;
     display: inline-block;
 
     a {
       display: inline-block;
-      vertical-align: middle;
       text-decoration: none;
-      color: $button-background;
-      font-weight: 300;
-      font-size: 1rem;
+      line-height: 1;
+      padding: 0;
+      color: $pagination-color;
+      font-weight: $pagination-font-weight;
+      font-size: $pagination-font-size;
+      border-radius: 0;
       text-align: center;
 
       &:hover {
-        font-weight: 600;
+        font-weight: $pagination-font-weight;
+        background: $pagination-background-hover;
+      }
+
+      svg {
+        fill: $pagination-color;
+        vertical-align: middle;
       }
     }
 
     &.active {
       a {
-        font-weight: 600;
+        font-weight: $pagination-font-weight-active;
+        line-height: 1;
       }
     }
 
     &.disabled {
-      a {
-        color: $gray;
-      }
+      a {color: $pagination-color-disabled;}
 
-      svg {
-        fill: $gray;
+      svg {fill: $pagination-color-disabled;}
+    }
+
+    &.active {
+
+      a {
+        color: $pagination-color-active;
+        background: $pagination-background-active;
+        font-weight: $pagination-font-weight-active;
+        line-height: 1;
       }
+    }
+
+    &:last-child {
+      margin-right: 0;
     }
   }
 }
@@ -68,5 +114,4 @@ button, a.button, a {
       }
     }
   }
-
 }
