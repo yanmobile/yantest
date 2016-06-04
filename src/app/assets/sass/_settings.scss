@@ -22,12 +22,13 @@
 //  17. Modal
 //  18. Notification
 //  19. Off-canvas
-//  20. Panel
-//  21. Popup
-//  22. Tables
-//  23. Tabs
-//  24. Title Bar
-//  25. Tooltips
+//  20. Pagination
+//  21. Panel
+//  22. Popup
+//  23. Tables
+//  24. Tabs
+//  25. Title Bar
+//  26. Tooltips
 
 @import "../../../components/foundation/base/bower_components/foundation-apps/scss/helpers/functions";
 @import "../../../components/foundation/base/assets/sass/isc/helpers/isc-variables";
@@ -439,7 +440,6 @@ $switch-paddle-offset: 4px;
 
 // 14. ICONS
 /* ------------------------------ */
-
 $default-icon-color: $body-font-color;
 $default-svg-icon-size: 1.25rem;
 
@@ -470,7 +470,6 @@ $icon-controls: (
 
 // 15. LABELS & BADGES
 /* ------------------------------ */
-
 $label-fontsize: 0.8rem;
 $label-padding: ($global-padding / 3) ($global-padding / 2);
 $label-radius: 0;
@@ -521,6 +520,7 @@ $notification-icon-size: 60px;
 $notification-icon-margin: $global-padding;
 $notification-icon-align: top;
 
+
 // 19. OFF-CANVAS
 /* ------------------------------ */
 $offcanvas-size-horizontal: 250px;
@@ -532,7 +532,33 @@ $offcanvas-shadow: 3px 0 10px rgba(black, 0.25);
 $offcanvas-animation-speed: 0.25s;
 
 
-// 20. PANEL
+// 20. PAGINATION
+/* ------------------------------ */
+// Structure
+$pagination-link-padding:        0 0.625rem;
+$pagination-margin:              1rem auto;
+$pagination-item-spacing:        0.25rem; // Right margin to separate pagination items.
+
+// Normal State
+$pagination-font-size:           1.125rem;
+$pagination-font-weight:         $font-weight-normal;
+$pagination-color:               $accent-color;
+
+// Hover State
+$pagination-color-hover:         scale-color($anchor-font-color, $lightness: -14%);
+$pagination-background-hover:    transparent;
+
+// Active State
+$pagination-font-weight-active:  $font-weight-bold;
+$pagination-background-active:   transparent;
+$pagination-color-active:        $accent-color;
+
+// Disabled State
+$pagination-color-disabled:      $gray;
+$pagination-background-disabled: transparent;
+
+
+// 21. PANEL
 /* ------------------------------ */
 $panel-size-horizontal: 300px;
 $panel-size-vertical: 300px;
@@ -541,7 +567,7 @@ $panel-background: $neutral-color;
 $panel-shadow: 3px 0 10px rgba(black, 0.25);
 
 
-// 21. POPUP
+// 22. POPUP
 /* ------------------------------ */
 $popup-width: rem-calc(300);
 $popup-background: #fff;
@@ -549,7 +575,8 @@ $popup-border: 0;
 $popup-radius: 0;
 $popup-shadow: 0 0 10px rgba(black, 0.25);
 
-// 22. TABLES
+
+// 23. TABLES
 /* ------------------------------ */
 /* General Table Styles */
 $table-background: white;
@@ -589,7 +616,8 @@ $th-font-reduction: rem-calc(12);
 $tfoot-font-reduction: rem-calc(12);
 $table-title-font-reduction: rem-calc(16);
 
-// 23. TABS
+
+// 24. TABS
 /* ------------------------------ */
 $tabstrip-background: transparent;
 $tab-title-background: $neutral-color;
@@ -600,7 +628,8 @@ $tab-title-color-active: $tab-title-color;
 $tab-title-padding: $global-padding;
 $tab-content-padding: $global-padding;
 
-// 24. TITLE BAR
+
+// 25. TITLE BAR
 /* ------------------------------ */
 $titlebar-center-width: 50%;
 $titlebar-side-width: (100% - $titlebar-center-width) / 2;
@@ -609,7 +638,8 @@ $titlebar-color: isitlight($titlebar-background, $body-font-color, $light-text);
 $titlebar-border: 1px solid $app-border-color;
 $titlebar-padding: $global-padding;
 
-// 25. TOOLTIPS
+
+// 26. TOOLTIPS
 /* ------------------------------ */
 $tooltip-background: $primary-color;
 $tooltip-border: 1px solid smartscale($tooltip-background, 10%);
