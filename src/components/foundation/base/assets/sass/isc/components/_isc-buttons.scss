@@ -1,7 +1,6 @@
 /*
   BUTTONS
   ----------
-
   Includes basic style variations for a collection of commonly used button types.
    - Basic Buttons, size & color variations
    - Prefix, Postfix
@@ -12,10 +11,10 @@
 $button-padding: 0.75em 1em !default;
 $button-margin: 0 0 1rem 0 !default;
 $button-style: solid !default;
-$button-background: $primary-color !default;
+$button-background: $accent-color !default;
 $button-background-hover: scale-color($button-background, $lightness: -15%) !default;
 $button-color: auto !default;
-$button-radius: 3px !default;
+$button-radius: $global-radius !default;
 $button-sizes: (
    tiny: 0.7,
    small: 0.8,
@@ -25,27 +24,69 @@ $button-sizes: (
 $button-font-size: 1rem !default;
 $button-opacity-disabled: 0.5 !default;
 $button-cancel-background: $gray !default;
+$button-tag-selector: true;
 
-/* Button Mixins */
+/* Style Exports */
+
+/* Support for input[type="submit"] and input[type="button"] */
+input[type="submit"], input[type="button"] {
+  @extend .button;
+}
 
 button, .button, input[type="submit"], input[type="button"] {
 
-  &:not(.icon), &:not(.svg-icon) {
-    font-weight: $font-weight-semi-bold;
-    color: isitlight($button-background, $body-font-color, $light-text);
+  &.dropdown {
+    position: relative;
+    padding-right: 2rem; // Placeholder
 
-    &.primary, &.secondary, &.success, &.warning, &.alert, &.info, &.dark {
-      color: isitlight($button-background, $body-font-color, $light-text);
+    &::after {
+      @include css-triangle(6px, inherit, top);
+      position: absolute;
+      right: 0.7rem;
+      top: 50%;
+      margin-top: -3px;
+    }
+  }
 
-      &:hover, &:focus, &:active {
-        color: isitlight($button-background, $body-font-color, $light-text);
+  @each $color in map-keys($theme-colors) {
+
+  &.#{$color} {
+    $color-name: map-get($theme-colors, $color);
+      @include button-style(
+        $background: $color-name,
+        $background-hover: scale-color($color-name, $lightness: -15%),
+        $color: isitlight($color-name, $body-font-color, $light-text)
+      );
+
+      &.dropdown {
+
+        &::after {
+          @include css-triangle(6px, isitlight($color-name, $body-font-color, $light-text), top);
+          position: absolute;
+          right: 0.7rem;
+          top: 50%;
+          margin-top: -3px;
+        }
+      }
+
+      &.hollow {
+        @include button-style(
+          $background-hover: transparent,
+          $color: scale-color($color-name, $lightness: -15%)
+        );
+        background: transparent;
+        border-color: scale-color($color-name, $lightness: -15%);
+
+        &:hover, &:focus {
+          color: scale-color($color-name, $lightness: -35%);
+          border-color: scale-color($color-name, $lightness: -35%);
+        }
+        &.dropdown {
+          &::after {border-top-color: $color-name;}
+        }
       }
     }
   }
-}
-
-/* Cancel Buttons */
-button, .button, input[type="submit"], input[type="button"] {
 
   &.cancel {
     @include button-style(
@@ -55,46 +96,42 @@ button, .button, input[type="submit"], input[type="button"] {
       $style: solid //solid or hollow
     );
 
-    &.custom-disabled {
-      @include button-disabled;
+    &.hollow {
+      background: transparent;
+      color: scale-color($button-cancel-background, $lightness: -25%);
+      border-color: scale-color($button-cancel-background, $lightness: -25%);
+
+      &:hover, &:focus {
+        color: scale-color($button-cancel-background, $lightness: -40%);
+        border-color: scale-color($button-cancel-background, $lightness: -40%);
+      }
     }
   }
-
 }
 
-/* Input Buttons Can Be Disabled */
-input[type="submit"], input[type="button"] {
-  @extend .button;
-  &.custom-disabled {
-    @include button-disabled;
-  }
-}
+/* Button Utilities  */
+button, .button, input[type="submit"], input[type="button"] {
 
+  &:focus {outline: none;} //No outline on Focus
+
+  &.flat {margin: 0;} //Removes margin
+}
 
 /* Prefixed/Postfixed Buttons */
-.button, button, input[type="submit"], input[type="button"] {
+button, .button, input[type="submit"], input[type="button"] {
+
+  .prefix &, .postfix & {
+    margin: 0;
+    padding: 0.5em 0.75em;
+    text-align: center;
+    border-radius: $global-radius 0 0 $global-radius;
+  }
+
+  .prefix & {border-radius: $global-radius 0 0 $global-radius;}
+  .postfix & {border-radius: 0 $global-radius $global-radius 0;}
+
   &.prefix {border-radius: $global-radius 0 0 $global-radius;}
   &.postfix {border-radius: 0 $global-radius $global-radius 0;}
-}
-
-.prefix {
-
-  button, .button, input[type="submit"], input[type="button"] {
-    margin: 0;
-    border-radius: $global-radius 0 0 $global-radius;
-    padding: 0.5em 0.75em;
-    text-align: center;
-  }
-}
-
-.postfix {
-
-  button, .button, input[type="submit"], input[type="button"] {
-    margin: 0;
-    border-radius: 0 $global-radius $global-radius 0;
-    padding: 0.5em 0.75em;
-    text-align: center;
-  }
 }
 
 /* Button Group */
@@ -105,51 +142,91 @@ input[type="submit"], input[type="button"] {
     flex: 0 0 auto;
     margin: 0;
 
+    > input + label, input[type="checkbox"] + label, input[type="radio"] + label {margin: 0;}
+
     // Links become buttons
     #{$child-selectors} {
       @extend %button;
-        border-radius: 0;
-        font-size: inherit;
-        display: block;
-        margin: 0;
-    }
-
-    > input + label {
+      font-size: inherit;
+      display: block;
       margin: 0;
+
+
+      &:last-child {border-radius: 0 $global-radius $global-radius 0; border-right: none;}
     }
 
-    // Add borders between items
     &:not(:last-child) {
       #{$child-selectors} {
         border-right: 1px solid rgba(black, 0.21);
+        border-radius: 0;
+      }
+    }
+
+    &.cancel {
+
+      #{$child-selectors} {
+        @include button-style(
+        $background: $button-cancel-background,
+        $background-hover: auto, // generate dynamically
+        $color: isitlight($button-cancel-background, $body-font-color, $light-text),
+        $style: solid //solid or hollow
+        );
+      }
+    }
+
+    @each $color in map-keys($theme-colors) {
+
+    &.#{$color} {
+      $color-name: map-get($theme-colors, $color);
+
+        #{$child-selectors} {
+          @include button-style(
+            $background: $color-name,
+            $background-hover: scale-color($color-name, $lightness: -15%),
+            $color: isitlight($color-name, $body-font-color, $light-text)
+          );
+        }
       }
     }
   }
 }
 
 .button-group {
+  @each $color in map-keys($theme-colors) {
 
-  input[type="checkbox"] + label, input[type="radio"] + label {
-    margin: 0;
-  }
-}
+  &.#{$color} {
+    $color-name: map-get($theme-colors, $color);
 
-/* Button Utilities  */
-button, .button, input[type="submit"], input[type="button"] {
+      > li {
 
-  //Vertically Align Icons
-  .fa {
-    vertical-align: middle;
-    line-height: 1;
-  }
+        #{$child-selectors} {
+          @include button-style(
+            $background: $color-name,
+            $background-hover: scale-color($color-name, $lightness: -15%),
+            $color: isitlight($color-name, $body-font-color, $light-text)
+          );
+        }
+      }
 
-  // No outline on Focus
-  &:focus {
-    outline: none;
-  }
+      &.segmented {
+        border-color: scale-color($color-name, $lightness: -15%);
 
-  //Remove margin
-  &.flat {
-    margin: 0;
+        > li {
+          #{$child-selectors} {
+            @include button-style(
+              $background-hover: transparent,
+              $color: scale-color($color-name, $lightness: -15%)
+            );
+            background: transparent;
+            border-color: scale-color($color-name, $lightness: -15%);
+
+            &:hover, &:focus {
+              color: scale-color($color-name, $lightness: -35%);
+              border-color: scale-color($color-name, $lightness: -35%);
+            }
+          }
+        }
+      }
+    }
   }
 }
