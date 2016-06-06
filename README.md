@@ -10,7 +10,9 @@
 2. Make sure you've installed [hs-core-tools] and its [prerequisites](https://github.com/intersystems/hs-core-tools/blob/master/README.md#requirements)
 
 *Note* that if you are creating a modified build of your application, you should not modify these files. If you do, you risk them being overwritten on routine updates.
-
+---
+## Training Videos
+Online training videos are shared internally [//iscinternal.com/isc/public/LearningServices/HealthShare/Henry Zou](training-videos)
 ---
 ## Getting Started
 *WARNING* the following instructions will fail if these [prerequisites](#prerequisites) were not satisfied.
@@ -479,3 +481,4 @@ less <filename>
 ```
 [hs-core-tools]: https://github.com/intersystems/hs-core-tools
 [changelog.md]: https://github.com/intersystems/hs-core-ui/blob/master/changelog.md
+[training-videos]: //iscinternal.com/isc/public/LearningServices/HealthShare/Henry Zou

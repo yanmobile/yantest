@@ -1,7 +1,7 @@
 /**
  * Created by Henry Zou on 4/17/2016.
  */
-(function() {
+( function() {
   'use strict';
 
   var blacklist;
@@ -40,7 +40,7 @@
     var Log     = getLogClass();
     return _.extend( {
       channel: channel,
-      logFn  : config.production ? _.noop : logFn,
+      logFn  : config.production ? _.noop : logFn
     }, config.production ? getNoOpLogger() : $log );
 
     /**
@@ -182,4 +182,4 @@
     }
   }
 
-})();
+} )();
