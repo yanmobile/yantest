@@ -1,9 +1,18 @@
-// Accessibility
-@media not speech {
-  :focus {
-    outline: 0;
+/* Global Styles */
+
+@include exports(global) {
+
+  /* Allow Multi-Page Printing */
+  .grid-frame {
+    @media #{$print}{
+      height: 100%;
+    }
+  }
+
+  /* Accessibility */
+  @media not speech {
+    :focus {
+      outline: 0;
+    }
   }
 }
-
-
-/* Animation */

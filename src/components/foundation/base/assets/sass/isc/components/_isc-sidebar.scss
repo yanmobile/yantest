@@ -1,173 +1,186 @@
-/* Sidebar Navigation */
+/* Sidebar Navigation Template
+  ----------------------------------------------
+ - Menu Links
+ - Mobile Hamburger
+ - WIP
+---------------------------------------------- */
 
-#sidebar, .sidebar {
-  background: $sidebar-background;
-  width: 100%;
-  flex: 1 0 auto;
+/* Sidebar Settings */
+$sidebar-background: scale-color($neutral-color, $lightness: 50%) !default;
+$sidebar-active-background: $accent-color !default;
 
-  .menu-bar {
-    background: transparent;
+/* Sidebar Styles */
+@include exports(sidebar) {
+  #sidebar, .sidebar {
+    background: $sidebar-background;
     width: 100%;
+    flex: 1 0 auto;
 
-    > li {
-      margin: 0;
-      color: isitlight($sidebar-background, $body-font-color, $light-text);
+    .menu-bar {
+      background: transparent;
+      width: 100%;
 
-      > a {
+      > li {
+        margin: 0;
         color: isitlight($sidebar-background, $body-font-color, $light-text);
-        font-weight: $font-weight-normal;
 
-        @media #{$xxlarge} {
-          padding: 1.5rem 2rem;
-        }
-
-        &:hover {
-          background: smartscale($sidebar-background, 4.5%);
+        > a {
           color: isitlight($sidebar-background, $body-font-color, $light-text);
-        }
+          font-weight: $font-weight-normal;
 
-        &.active {
-          background: $sidebar-active-background;
-          color: isitlight($sidebar-active-background, $body-font-color, $light-text);
-          font-weight: $font-weight-semi-bold;
+          @media #{$xxlarge} {
+            padding: 1.5rem 2rem;
+          }
+
+          &:hover {
+            background: smartscale($sidebar-background, 4.5%);
+            color: isitlight($sidebar-background, $body-font-color, $light-text);
+          }
+
+          &.active {
+            background: $sidebar-active-background;
+            color: isitlight($sidebar-active-background, $body-font-color, $light-text);
+            font-weight: $font-weight-semi-bold;
+          }
         }
       }
     }
+
+    &.is-active {
+      box-shadow: $panel-shadow;
+    }
   }
 
-  &.is-active {
-    box-shadow: $panel-shadow;
-  }
-}
-
-/* Sidebar Navigation with Dynamic Icons - TO DO */
-.isc-side-nav {
-  background-color: $sidebar-background;
-  border-bottom: 1px solid darken($secondary-nav-background, 6);
-  height: auto;
-  padding: 0;
-  margin: 0 0 4rem 0;
-  width: 100%;
-  display: block;
-
-  li.isc-nav-item {
+  /* Sidebar Navigation with Dynamic Icons - TO DO */
+  .isc-side-nav {
+    background-color: $sidebar-background;
+    border-bottom: 1px solid darken($secondary-nav-background, 6);
+    height: auto;
+    padding: 0;
+    margin: 0 0 4rem 0;
+    width: 100%;
     display: block;
-    line-height: 1.375;
-    margin: 0;
 
-    a {
-      color: $anchor-font-color;
-      font-weight: $font-weight-normal;
-      text-align: left;
-      vertical-align: middle;
+    li.isc-nav-item {
       display: block;
-      z-index: 1;
       line-height: 1.375;
-      cursor: default;
-      cursor: pointer;
       margin: 0;
-      background-color: transparent;
-      padding: 1rem;
 
-      @media only screen and (min-width: 1025px) and (max-width: 1130px){
-        padding: 1rem 0.5rem;
-        display: -ms-flexbox;
-      }
-
-      @media #{$large} {
-          display: -ms-flexbox;
-      }
-
-      @media #{$medium}{
-        padding: 0.5rem;
-      }
-
-      &:hover, &:focus, &:active, &.active {
-        background-color: white;
+      a {
+        color: $anchor-font-color;
+        font-weight: $font-weight-normal;
+        text-align: left;
+        vertical-align: middle;
+        display: block;
+        z-index: 1;
+        line-height: 1.375;
+        cursor: default;
         cursor: pointer;
-        outline: none;
-      }
+        margin: 0;
+        background-color: transparent;
+        padding: 1rem;
 
-      @media #{$medium-down}{
-        padding: 0.75rem 0.5rem;
-        font-size: 0.875rem;
-        white-space: nowrap;
-      }
-
-      .isc-sidebar-icon {
-        svg {
-          margin: 0 0.5rem 0 0;
-          vertical-align: middle;
-          display: inline-block;
-          width: 1.375rem;
-          height: 1.375rem;
-          fill: $anchor-font-color;
-          line-height: 1.375;
-          padding: 0;
-
-          @media #{$medium-down} {
-            margin: 0 0.25rem 0 0;;
-            width: 1.125rem;
-            height: 1.125rem;
-            vertical-align: middle;
-          }
+        @media only screen and (min-width: 1025px) and (max-width: 1130px){
+          padding: 1rem 0.5rem;
+          display: -ms-flexbox;
         }
 
-        img {
-          margin: 0 0.5rem 0 0;
-          vertical-align: middle;
-          display: inline-block;
-          line-height: 1.375;
+        @media #{$large} {
+            display: -ms-flexbox;
+        }
 
-          @media #{$medium-down} {
-            margin: 0 0.25rem 0 0;;
-            width: 1.125rem;
-            height: 1.125rem;
+        @media #{$medium}{
+          padding: 0.5rem;
+        }
+
+        &:hover, &:focus, &:active, &.active {
+          background-color: white;
+          cursor: pointer;
+          outline: none;
+        }
+
+        @media #{$medium-down}{
+          padding: 0.75rem 0.5rem;
+          font-size: 0.875rem;
+          white-space: nowrap;
+        }
+
+        .isc-sidebar-icon {
+          svg {
+            margin: 0 0.5rem 0 0;
+            vertical-align: middle;
+            display: inline-block;
+            width: 1.375rem;
+            height: 1.375rem;
+            fill: $anchor-font-color;
+            line-height: 1.375;
+            padding: 0;
+
+            @media #{$medium-down} {
+              margin: 0 0.25rem 0 0;;
+              width: 1.125rem;
+              height: 1.125rem;
+              vertical-align: middle;
+            }
+          }
+
+          img {
+            margin: 0 0.5rem 0 0;
+            vertical-align: middle;
+            display: inline-block;
+            line-height: 1.375;
+
+            @media #{$medium-down} {
+              margin: 0 0.25rem 0 0;;
+              width: 1.125rem;
+              height: 1.125rem;
+            }
           }
         }
       }
     }
   }
-}
 
-li.isc-nav-item:last-child a {
-  padding-bottom: 1rem;
-
-  @media #{$medium-down} {
+  li.isc-nav-item:last-child a {
     padding-bottom: 1rem;
+
+    @media #{$medium-down} {
+      padding-bottom: 1rem;
+    }
   }
-}
 
 
-.isc-sidebar-icon{
-  svg {
-    margin: auto;
-    vertical-align: middle;
-    display: inline-block;
-    width: 1.875rem;
-    height: 1.875rem;
-    fill: $anchor-font-color;
-    padding-right: 0.5rem;
+  .isc-sidebar-icon{
+    svg {
+      margin: auto;
+      vertical-align: middle;
+      display: inline-block;
+      width: 1.875rem;
+      height: 1.875rem;
+      fill: $anchor-font-color;
+      padding-right: 0.5rem;
+    }
   }
-}
 
-//Link Styles & States
-a.isc-nav-item {
-  color: $anchor-font-color;
-  font-weight: $font-weight-normal;
-  text-align: left;
-  z-index: 1;
-  cursor: default;
-  cursor: pointer;
-}
+  //Link Styles & States
+  a.isc-nav-item {
+    color: $anchor-font-color;
+    font-weight: $font-weight-normal;
+    text-align: left;
+    z-index: 1;
+    cursor: default;
+    cursor: pointer;
+  }
 
-// States when in ".active" state
-.active.isc-nav-item,
-.active.isc-nav-item:hover,
-.active.isc-nav-item:focus {
-  color: $anchor-font-color;
-  font-weight: $font-weight-semi-bold;
-  border-bottom: 1px solid darken($secondary-nav-background, 6);
+  // States when in ".active" state
+  .active.isc-nav-item,
+  .active.isc-nav-item:hover,
+  .active.isc-nav-item:focus {
+    color: $anchor-font-color;
+    font-weight: $font-weight-semi-bold;
+    border-bottom: 1px solid darken($secondary-nav-background, 6);
+  }
+
 }
 
 /* TO-DO: Off-Canvas Nav Styles

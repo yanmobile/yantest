@@ -23,93 +23,94 @@ $pagination-color-active:        $accent-color !default;
 $pagination-color-disabled:      $gray !default;
 $pagination-background-disabled: transparent !default;
 
-
 /* Pagination Styles */
-.pagination {
-  padding: 0;
-  width: 100%;
-  border-top: none;
-  list-style-type: none;
-  margin: $pagination-margin;
-  text-align: center;
+@include exports(pagination) {
+  .pagination {
+    padding: 0;
+    width: 100%;
+    border-top: none;
+    list-style-type: none;
+    margin: $pagination-margin;
+    text-align: center;
 
-  li {
-    padding: $pagination-link-padding;
-    min-width: none;
-    max-width: none;
-    height: auto;
-    margin: 0 $pagination-item-spacing 0 0;
-    float: none;
-    line-height: 1;
-    display: inline-block;
-
-    a {
-      display: inline-block;
-      text-decoration: none;
+    li {
+      padding: $pagination-link-padding;
+      min-width: none;
+      max-width: none;
+      height: auto;
+      margin: 0 $pagination-item-spacing 0 0;
+      float: none;
       line-height: 1;
-      padding: 0;
-      color: $pagination-color;
-      font-weight: $pagination-font-weight;
-      font-size: $pagination-font-size;
-      border-radius: 0;
-      text-align: center;
+      display: inline-block;
 
-      &:hover {
+      a {
+        display: inline-block;
+        text-decoration: none;
+        line-height: 1;
+        padding: 0;
+        color: $pagination-color;
         font-weight: $pagination-font-weight;
-        background: $pagination-background-hover;
-      }
+        font-size: $pagination-font-size;
+        border-radius: 0;
+        text-align: center;
 
-      svg {
-        fill: $pagination-color;
-        vertical-align: middle;
-      }
-    }
-
-    &.active {
-      a {
-        font-weight: $pagination-font-weight-active;
-        line-height: 1;
-      }
-    }
-
-    &.disabled {
-      a {color: $pagination-color-disabled;}
-
-      svg {fill: $pagination-color-disabled;}
-    }
-
-    &.active {
-
-      a {
-        color: $pagination-color-active;
-        background: $pagination-background-active;
-        font-weight: $pagination-font-weight-active;
-        line-height: 1;
-      }
-    }
-
-    &:last-child {
-      margin-right: 0;
-    }
-  }
-}
-
-button, a.button, a {
-
-  &.pagination {
-    background: transparent;
-
-    svg {
-      display: inline;
-      vertical-align: middle;
-      margin-top: 0px;
-      fill: $button-background;
-
-      &:hover, &:active, &:focus {
-        background: transparent;
+        &:hover {
+          font-weight: $pagination-font-weight;
+          background: $pagination-background-hover;
+        }
 
         svg {
-          fill: smartscale($button-background, 10%);
+          fill: $pagination-color;
+          vertical-align: middle;
+        }
+      }
+
+      &.active {
+        a {
+          font-weight: $pagination-font-weight-active;
+          line-height: 1;
+        }
+      }
+
+      &.disabled {
+        a {color: $pagination-color-disabled;}
+
+        svg {fill: $pagination-color-disabled;}
+      }
+
+      &.active {
+
+        a {
+          color: $pagination-color-active;
+          background: $pagination-background-active;
+          font-weight: $pagination-font-weight-active;
+          line-height: 1;
+        }
+      }
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+
+  button, a.button, a {
+
+    &.pagination {
+      background: transparent;
+
+      svg {
+        display: inline;
+        vertical-align: middle;
+        margin-top: 0px;
+        fill: $button-background;
+
+        &:hover, &:active, &:focus {
+          background: transparent;
+
+          svg {
+            fill: smartscale($button-background, 10%);
+          }
         }
       }
     }

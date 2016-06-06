@@ -1,122 +1,131 @@
-/* Typeahead */
+/* Typeahead Settingd */
+$typeahead-font-size: 0.875rem !default;
+$typeahead-column-title-color: $header-font-color !default;
+$typeahead-column-title-size: 0.875rem !default;
+$typeahead-column-title-padding: 0.3125rem 0.25rem 0.25rem 0.25rem !default;
+$typeahead-highlight-color: $alert-color !default;
 
-.angucomplete-holder {
-    position: relative;
-}
+/* Typeahead Styles */
+@include exports(typeahead) {
+  .angucomplete-holder {
+      position: relative;
+  }
 
-.angucomplete-dropdown, table.angucomplete-dropdown {
-    border-color: $input-border;
-    border-width: 1px;
-    border-style: solid;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-    border-bottom-left-radius: 3px;
-    border-bottom-right-radius: 3px;
-    width: 100%;
-    padding: 0;
-    cursor: pointer;
-    z-index: 9999;
-    position: absolute;
-    overflow-y: visible;
-    /*top: 32px;
-    left: 0px;
-    */
-    margin-top: -17px;
-    background-color: white;
-
-    table, .isc-table, tbody {
-      overflow: visible;
-    }
-
-    tbody tr {
-      border: none;
-    }
-
-    tr td.column-title {
-      font-weight: $font-weight-bold;
-      padding: 0.3125rem 0.25rem 0.25rem 0.25rem;
-      font-size: 0.875rem;
-      color: palette(type, primary);
-      border: none;
-    }
-
-    tr, tr.angucomplete-row {
-      color: palette(type, primary);
-      clear: both;
-      line-height: 1.5;
-      border: none;
+  .angucomplete-dropdown, table.angucomplete-dropdown {
+      border-color: $app-border-color;
+      border-width: 1px;
+      border-style: solid;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+      border-bottom-left-radius: $global-radius;
+      border-bottom-right-radius: $global-radius;
+      width: 100%;
       padding: 0;
+      cursor: pointer;
+      z-index: 9999;
+      position: absolute;
+      overflow-y: visible;
+      /*top: 32px;
+      left: 0px;
+      */
+      margin-top: -17px;
+      background-color: white;
 
-      td.person {
-        padding: 0;
+      table, .isc-table, tbody {
+        overflow: visible;
       }
 
-      td.person .angucomplete-title {
-        font-size: 0.875rem;
-        min-width: 150px;
-        padding: 0.25rem 0 0.25rem 0.25rem;
-        color: palette(type, primary);
+      tbody tr {
+        border: none;
+      }
 
-        @media #{$medium} {
-          min-width: 115px;
+      tr td.column-title {
+        font-weight: $font-weight-bold;
+        padding: $typeahead-column-title-padding;
+        font-size: $typeahead-column-title-size;
+        color: $typeahead-column-title-color;
+        border: none;
+      }
+
+      tr, tr.angucomplete-row {
+        color: $body-font-color;
+        clear: both;
+        line-height: 1.5;
+        border: none;
+        padding: 0;
+
+        td.person {
+          padding: 0;
+        }
+
+        td.person .angucomplete-title {
+          font-size: $typeahead-font-size;
+          min-width: 150px;
+          padding: 0.25rem 0 0.25rem 0.25rem;
+          color: $body-font-color;
+
+          @media #{$medium} {
+            min-width: 115px;
+          }
+        }
+
+        td.organization {
+          font-size: $typeahead-font-size;
+          padding: 0.25rem 0 0.25rem 0.125rem;
+          color: $body-font-color;
         }
       }
+  }
 
-      td.organization {
-        font-size: 0.875rem;
-        padding: 0.25rem 0 0.25rem 0.125rem;
-        color: palette(type, primary);
-      }
-    }
-}
+  .angucomplete-searching {
+      color: $body-font-color;
+      font-size: $typeahead-font-size;
+  }
 
-.angucomplete-searching {
-    color: palette(type, primary);
-    font-size: 0.875rem;
-}
+  .angucomplete-description {
+      font-size: $typeahead-font-size;
+  }
 
-.angucomplete-description {
-    font-size: 0.875rem;
-}
+  .angucomplete-row , tr.angucomplete-row {
+      color: $body-font-color;
+      clear: both;
+      line-height: 1.5;
+      font-size: $typeahead-font-size;
+      padding: 0.25rem;
+  }
 
-.angucomplete-row , tr.angucomplete-row {
-    color: palette(type, primary);
-    clear: both;
-    line-height: 1.5;
-    font-size: 0.875rem;
-    padding: 0.25rem;
-}
+  .angucomplete-selected-row {
+      background-color: $neutral-color;
+      color: $body-font-color;
+  }
 
-.angucomplete-selected-row {
-    background-color: $gray-light;
-    color: palette(type, primary);
-}
+  .angucomplete-image-holder {
+      padding-top: 2px;
+      float: left;
+      margin-right: 10px;
+      margin-left: 5px;
+  }
 
-.angucomplete-image-holder {
-    padding-top: 2px;
-    float: left;
-    margin-right: 10px;
-    margin-left: 5px;
-}
+  .angucomplete-image {
+      height: 2rem;
+      width: 2rem;
+      border-radius: $global-radius;
+      border-color: $app-border-color;
+      border-style: solid;
+      border-width: 1px;
+  }
 
-.angucomplete-image {
-    height: 2rem;
-    width: 2rem;
-    border-radius: 3px;
-    border-color: $input-border;
-    border-style: solid;
-    border-width: 1px;
-}
+  .angucomplete-image-default {
+      // Add a default image here
+      //background-image: url('/assets/default.png');
+      background-position: center;
+      background-size: contain;
+      height: 2rem;
+      width: 2rem;
+  }
 
-.angucomplete-image-default {
-    // Add a default image here
-    //background-image: url('/assets/default.png');
-    background-position: center;
-    background-size: contain;
-    height: 2rem;
-    width: 2rem;
-}
+  .angucomplete-title > .highlight {
+    color: $typeahead-highlight-color;
+  }
 
-.angucomplete-title > .highlight {
-  color: $alert-color;
 }

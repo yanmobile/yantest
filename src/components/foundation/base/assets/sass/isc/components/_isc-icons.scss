@@ -37,7 +37,6 @@ $icon-controls: (
 $default-icon-color: $body-font-color !default;
 $default-svg-icon-size: 1.25rem !default;
 
-
 /* FONT ICONS */
 
 // For adding font icons to elements via CSS pseudo-elements
@@ -81,31 +80,6 @@ $default-svg-icon-size: 1.25rem !default;
   }
 }
 
-.icon {
-  @include icon;
-
-  @each $name, $icon in $icon-controls {
-    &.#{$name}:before {
-      content: quote($icon);
-    }
-  }
-
-  @each $color in map-keys($theme-colors) {
-    &.#{$color} {
-
-      $color-name: map-get($theme-colors, $color);
-      @include icon($color: $color-name);
-    }
-  }
-
-  // Example Usage
-  &[href^="mailto"] {
-    @include icon(before, email) {
-    }
-  }
-
-}
-
 /* SVG ICONS */
 @mixin svg-icon($fill: $default-icon-color, $height: $default-svg-icon-size, $width: $default-svg-icon-size) {
   $fill: $fill;
@@ -132,6 +106,10 @@ $default-svg-icon-size: 1.25rem !default;
         fill: $color-name;
         vertical-align: middle;
         line-height: 1;
+
+        &:hover, &:focus {
+          fill: scale-color($color-name, $lightness: 25%);
+        }
       }
     }
   }
@@ -139,40 +117,7 @@ $default-svg-icon-size: 1.25rem !default;
   @content;
 }
 
-.svg-icon {
-  @include svg-icon;
-}
-
-/* BUTTONS AS ICONS */
-
-button, a.button, input[type="submit"], input[type="button"] {
-
-  &.icon {
-    background: transparent;
-    border: none;
-    box-shadow: none;
-
-    &.svg-icon {
-      @include svg-icon($fill: $anchor-font-color, $height: $default-svg-icon-size, $width: $default-svg-icon-size) {
-
-        @each $color in map-keys($theme-colors) {
-          &.#{$color} {
-
-            $color-name: map-get($theme-colors, $color);
-            @include svg-icon($fill: $color-name) {
-              background: transparent;
-            }
-          }
-        }
-      }
-
-    }
-  }
-}
-
-
 /* ICON LISTS */
-
 @mixin icon-list($color: $default-icon-color, $size: $paragraph-font-size, $align: left, $icon-padding: 0, $icon-spacing: 1rem, $margin: 0 0 1rem 0) {
   $color: $color;
   $size: $size;
@@ -198,19 +143,26 @@ button, a.button, input[type="submit"], input[type="button"] {
     margin: 0 $icon-spacing 0 0;
 
     > * {display: block;}
-  }
-}
 
-.icon-list {
+    a {
+      color: $anchor-font-color;
 
-  @include icon-list;
+      @each $color in map-keys($theme-colors) {
+        &.#{$color} {
 
-  &.center {
-    @include icon-list($align: center);
-  }
+          $color-name: map-get($theme-colors, $color);
+          color: $color-name;
 
-  &.right {
-    @include icon-list($align: right);
+          &:hover, &:focus {
+            color: scale-color($color-name, $lightness: 25%);
+          }
+        }
+      }
+
+      &:hover, &:focus {
+        color: scale-color($anchor-font-color, $lightness: 25%);
+      }
+    }
   }
 }
 
@@ -259,13 +211,86 @@ button, a.button, input[type="submit"], input[type="button"] {
       vertical-align: middle;
       line-height: 1;
 
-      &:hover {
+      &:hover, &:focus {
         color: scale-color($color, $lightness: 25%);
       }
     }
   }
 }
 
-.icon-controls {
-  @include icon-controls;
+/* ICON EXPORTS */
+@include exports(icons) {
+  .icon {
+    @include icon;
+
+    @each $name, $icon in $icon-controls {
+      &.#{$name}:before {
+        content: quote($icon);
+      }
+    }
+
+    @each $color in map-keys($theme-colors) {
+      &.#{$color} {
+
+        $color-name: map-get($theme-colors, $color);
+        @include icon($color: $color-name);
+      }
+    }
+
+    // Example Usage
+    &[href^="mailto"] {
+      @include icon(before, email) {
+      }
+    }
+
+  }
+
+  .svg-icon {
+    @include svg-icon;
+  }
+
+  /* BUTTONS AS ICONS */
+
+  button, a.button, input[type="submit"], input[type="button"] {
+
+    &.icon {
+      background: transparent;
+      border: none;
+      box-shadow: none;
+
+      &.svg-icon {
+        @include svg-icon($fill: $anchor-font-color, $height: $default-svg-icon-size, $width: $default-svg-icon-size) {
+
+          @each $color in map-keys($theme-colors) {
+            &.#{$color} {
+
+              $color-name: map-get($theme-colors, $color);
+              @include svg-icon($fill: $color-name) {
+                background: transparent;
+              }
+            }
+          }
+        }
+
+      }
+    }
+  }
+
+  .icon-list {
+    @include icon-list;
+
+    &.center {
+      @include icon-list($align: center);
+    }
+
+    &.right {
+      @include icon-list($align: right);
+    }
+  }
+
+  .icon-controls {
+    @include icon-controls;
+  }
+
+  .fa-li {line-height: $paragraph-line-height;}
 }

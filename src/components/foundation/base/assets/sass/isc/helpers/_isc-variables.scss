@@ -339,13 +339,12 @@ $isc-components: (
   layout: true,
   mixins: true,
   modals: false,
-  navbar: true,
   pagination: true,
   primarynav: true,
   secondarynav: true,
   sidebar: true,
   tables: true,
-  tooltips: true,
+  tooltip: true,
   typeahead: true,
   typography: true,
   utilities: true,
@@ -353,7 +352,6 @@ $isc-components: (
 
 $isc-components: () !default;
 $modules: () !default;
-$rem-base: 16px !default;
 
 /// Checks if a module is in use.
 @function using($name) {
