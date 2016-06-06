@@ -330,7 +330,7 @@ $global-margin: 1rem !default; // Layout
 /* ------------------------------ */
 $isc-components: (
   404error: true,
-  app: true,
+  global: true,
   buttons: true,
   ddp: true,
   footer: true,
@@ -338,7 +338,7 @@ $isc-components: (
   icons: true,
   layout: true,
   mixins: true,
-  modals: true,
+  modals: false,
   navbar: true,
   pagination: true,
   primarynav: true,
@@ -349,5 +349,52 @@ $isc-components: (
   typeahead: true,
   typography: true,
   utilities: true,
-  variables: true,
-);
+) !default;
+
+$isc-components: () !default;
+$modules: () !default;
+$rem-base: 16px !default;
+
+/// Checks if a module is in use.
+@function using($name) {
+  // Import from global scope
+  $isc-components: $isc-components !global;
+  $module-key: map-get($isc-components, $name);
+
+  @if $module-key == true or $module-key == null {
+    @return true;
+  }
+  @else {
+    @return false;
+  }
+}
+
+/// Checks if a module's CSS has already been exported.
+@function imported($name) {
+  // Import from global scope
+  $modules: $modules !global;
+  // Check if the module is already on the imported list
+  @if type-of(index($modules, $name)) == 'number' {
+    @return true;
+  }
+  @else {
+    @return false;
+  }
+}
+
+/// Outputs the chunk of content passed if component $name hasn't yet been output.
+/// This prevents code duplication by keeping track of which components have already been output.
+///
+/// @param {string} $name - Name of component to output
+///
+/// @output The content passed, if the component has not yet been exported.
+@mixin exports($name) {
+  // Check if the module has already been imported
+  @if not(imported($name)) {
+    // Check if the module should be used
+    @if using($name) {
+      $modules: append($modules, $name) !global;
+      @content;
+    }
+  }
+}
