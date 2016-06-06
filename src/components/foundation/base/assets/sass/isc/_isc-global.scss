@@ -1,9 +1,127 @@
-// Accessibility
-@media not speech {
-  :focus {
-    outline: 0;
+/* Shadow-Depth Map */
+$shadow-depths: (
+  '1dp': $shadow-1dp,
+  '2dp': $shadow-2dp,
+  '3dp': $shadow-3dp,
+  '4dp': $shadow-4dp,
+  '5dp': $shadow-5dp,
+  '6dp': $shadow-6dp,
+  '7dp': $shadow-7dp,
+  '8dp': $shadow-8dp,
+  '9dp': $shadow-9dp,
+  '10dp': $shadow-10dp,
+  '11dp': $shadow-11dp,
+  '12dp': $shadow-12dp,
+  '13dp': $shadow-13dp,
+  '14dp': $shadow-14dp,
+  '15dp': $shadow-15dp,
+  '16dp': $shadow-16dp,
+  '17dp': $shadow-17dp,
+  '18dp': $shadow-18dp,
+  '19dp': $shadow-19dp,
+  '20dp': $shadow-20dp,
+  '21dp': $shadow-21dp,
+  '22dp': $shadow-22dp,
+  '23dp': $shadow-23dp,
+  '24dp': $shadow-24dp
+) !default;
+
+// Structure CSS Class Rules
+@each $depth, $shadow-depth in $shadow-depths {
+  .shadow-#{$depth} {
+    box-shadow: $shadow-depth;
   }
 }
 
+// Shadow Mixin
+@mixin shadow($shadow-depth) {
+  $shadow-depth: map-get($shadow-depths, $shadow-depth);
+  box-shadow: $shadow-depth;
+}
 
-/* Animation */
+// ANIMATION - TO DO - MOTION UI
+/* ------------------------------ */
+
+// Classes to use when triggering in/out animations
+$motion-class: (
+  in: "ng-enter",
+  out: "ng-leave",
+) !default;
+
+$motion-class-active: (
+  in: "ng-enter-active",
+  out: "ng-leave-active",
+) !default;
+
+$motion-class-stagger: (
+  in: "ng-enter-stagger",
+  out: "ng-leave-stagger",
+) !default;
+
+$motion-class-showhide: (
+  in: "ng-hide-remove",
+  out: "ng-hide-add",
+) !default;
+
+$motion-class-showhide-active: (
+  in: "ng-hide-remove-active",
+  out: "ng-hide-add-active",
+) !default;
+
+// Set if movement-based transitions should also fade the element in and out
+$motion-slide-and-fade: false !default;
+$motion-hinge-and-fade: true !default;
+$motion-scale-and-fade: true !default;
+$motion-spin-and-fade: true !default;
+
+// Default speed for transitions and animations
+$motion-duration-default: 500ms !default;
+
+// Slow and fast modifiders
+$motion-duration-slow: 750ms !default;
+$motion-duration-fast: 250ms !default;
+$motion-stagger-duration-default: 150ms !default;
+$motion-stagger-duration-short: 50ms !default;
+$motion-stagger-duration-long: 300ms !default;
+
+// Default timing function for transitions and animations
+$motion-timing-default: ease !default;
+
+// Built-in and custom easing functions
+// Every item in this map becomes a CSS class
+$motion-timings: (
+  linear: linear,
+  ease: ease,
+  easeIn: ease-in,
+  easeOut: ease-out,
+  easeInOut: ease-in-out,
+  bounceIn: cubic-bezier(0.485, 0.155, 0.240, 1.245),
+  bounceOut: cubic-bezier(0.485, 0.155, 0.515, 0.845),
+  bounceInOut: cubic-bezier(0.760, -0.245, 0.240, 1.245),
+) !default;
+
+// Default delay for all transitions and animations
+$motion-delay-default: 0 !default;
+
+//Short and long delay modifiers
+$motion-delay-short: 300ms !default;
+$motion-delay-long: 700ms !default;
+
+
+/* Global Styles */
+@include exports(global) {
+
+  /* Allow Multi-Page Printing */
+  .grid-frame {
+    @media #{$print}{
+      height: 100%;
+    }
+  }
+
+  /* Accessibility */
+  @media not speech {
+    :focus {
+      outline: 0;
+    }
+  }
+}

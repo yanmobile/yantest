@@ -15,7 +15,8 @@
 */
 
 $form-outer-padding: 2rem !default;
-//padding: $form-padding; // 1.5rem !default but make sure you connect this to a variable!
+$text-input-selectors: 'input[type="text"], input[type="password"], input[type="date"], input[type="datetime"], input[type="datetime-local"], input[type="month"], input[type="week"], input[type="email"], input[type="number"], input[type="search"], input[type="tel"], input[type="time"], input[type="url"], input[type="color"], textarea'  !default;
+
 /* placeholder Mixin */
 
 @mixin isc-placeholder( $opacity, $size, $weight ) {
@@ -45,232 +46,253 @@ $form-outer-padding: 2rem !default;
   }
 }
 
+/* Form Styles */
+@include exports(forms) {
+  /* Base Form Architecture */
+  form, .isc-form {
+    padding: 2rem 1rem;
+    padding: $form-outer-padding;
+    margin-bottom: 1rem;
+    border: 1px solid $app-border-color;
+    width: 100%;
 
-/* Base Form Architecture */
-form, .isc-form {
-  padding: 2rem 1rem;
-  padding: $form-outer-padding;
-  margin-bottom: 1rem;
-  border: 1px solid $app-border-color;
-  width: 100%;
+    @media #{$phab-or-less}{
+      padding: 0.75rem;
+    }
 
-  @media #{$phab-or-less}{
-    padding: 0.75rem;
-  }
+    .grid-content, .grid-block {
+      overflow: visible;
+    }
 
-  .grid-content, .grid-block {
-    overflow: visible;
-  }
+    .form-title {
+      margin: 0 0 1.5rem 0;  // change to just "title"? // value should equal form padding
+    }
 
-  .form-title {
-    margin: 0 0 1.5rem 0;  // change to just "title"? // value should equal form padding
-  }
-
-  label {
-    &:not(.inline) {
-      display: block;
+    label {
+      &:not(.inline) {
+        display: block;
+      }
     }
   }
-}
 
-/* Form Inputs */
+  /* Form Inputs */
 
-/* Textual Input Types */
-input[type="text"], input[type="password"], input[type="date"],
-input[type="datetime"], input[type="datetime-local"], input[type="month"],
-input[type="week"], input[type="email"], input[type="number"], input[type="search"],
-input[type="tel"], input[type="time"], input[type="url"], input[type="color"], textarea {
-  margin: 0 0 1rem 0;
-  box-shadow: none;
-  border-radius: $global-radius;
-  border: $input-border;
-
-  &:hover {
-    border-color: $app-border-color;
-  }
-
-  &:focus {
-    border: $input-border-focus;
-  }
-
-  &[disabled] {
-    cursor: not-allowed;
-    background-color: $input-background-disabled;
-  }
-
-  &::-webkit-input-placeholder {
-    /* WebKit browsers */
-    opacity: 1;
-    color: $placeholder-text-color;
-    font-size: $paragraph-font-size;
-    font-style: italic;
-    font-weight: $font-weight-normal;
-  }
-  &:-moz-placeholder {
-    /* Mozilla Firefox 4 to 18 */
-    opacity: 1;
-    color: $placeholder-text-color;
-    font-size: $paragraph-font-size;
-    font-style: italic;
-    font-weight: $font-weight-normal;
-  }
-  &::-moz-placeholder {
-    /* Mozilla Firefox 19+ */
-    opacity: 1;
-    color: $placeholder-text-color;
-    font-size: $paragraph-font-size;
-    font-style: italic;
-    font-weight: $font-weight-normal;
-  }
-  &:-ms-input-placeholder {
-    /* Internet Explorer 10+ */
-    opacity: 1;
-    color: $placeholder-text-color;
-    font-size: $paragraph-font-size;
-    font-style: italic;
-    font-weight: $font-weight-normal;
-  }
-}
-
-
-// Inputs wrapped in labels, paired with help text
-label {
-
+  /* Textual Input Types */
   input[type="text"], input[type="password"], input[type="date"],
   input[type="datetime"], input[type="datetime-local"], input[type="month"],
   input[type="week"], input[type="email"], input[type="number"], input[type="search"],
   input[type="tel"], input[type="time"], input[type="url"], input[type="color"], textarea {
-    margin-bottom: 0;
-  }
-}
+    margin: 0 0 1rem 0;
+    box-shadow: none;
+    border-radius: $global-radius;
+    border: $input-border;
 
-//textarea
-textarea {
-  min-height: 100px;
-  border: 1px solid $app-border-color;
-  padding: 1rem;
-  font-size: 1rem;
-  border-radius: 3px;
-}
+    &:hover {
+      border-color: $app-border-color;
+    }
 
-/* Typeahead Inputs */
-input {
+    &:focus {
+      border: $input-border-focus;
+    }
 
-  //Typeahead
-  &.typeahead {
-    margin-bottom: 0;
-    width: 100%;
-    overflow: visible;
+    &[disabled] {
+      cursor: not-allowed;
+      background-color: $input-background-disabled;
+    }
 
-    ul {
-      margin: 0;
+    &::-webkit-input-placeholder {
+      /* WebKit browsers */
+      opacity: 1;
+      color: $placeholder-text-color;
+      font-size: $paragraph-font-size;
+      font-style: italic;
+      font-weight: $font-weight-normal;
+    }
+    &:-moz-placeholder {
+      /* Mozilla Firefox 4 to 18 */
+      opacity: 1;
+      color: $placeholder-text-color;
+      font-size: $paragraph-font-size;
+      font-style: italic;
+      font-weight: $font-weight-normal;
+    }
+    &::-moz-placeholder {
+      /* Mozilla Firefox 19+ */
+      opacity: 1;
+      color: $placeholder-text-color;
+      font-size: $paragraph-font-size;
+      font-style: italic;
+      font-weight: $font-weight-normal;
+    }
+    &:-ms-input-placeholder {
+      /* Internet Explorer 10+ */
+      opacity: 1;
+      color: $placeholder-text-color;
+      font-size: $paragraph-font-size;
+      font-style: italic;
+      font-weight: $font-weight-normal;
     }
   }
-}
 
 
-/* Prefixed/Postfixed Inputs */
-
-.prefix {
-
-  input, input[type="text"], input[type="password"], input[type="date"],
-  input[type="datetime"], input[type="datetime-local"], input[type="month"],
-  input[type="week"], input[type="email"], input[type="number"], input[type="search"],
-  input[type="tel"], input[type="time"], input[type="url"], input[type="color"] {
-    border-radius: 0 $global-radius $global-radius 0;
-    border-left: none;
-    box-shadow: none;
-  }
-
-  &.form-label {
-    background: $neutral-color;
-    border-radius: $global-radius 0 0 $global-radius;
-    border: 1px solid $app-border-color;
-  }
-}
-
-.postfix {
-
-  input, input[type="text"], input[type="password"], input[type="date"],
-  input[type="datetime"], input[type="datetime-local"], input[type="month"],
-  input[type="week"], input[type="email"], input[type="number"], input[type="search"],
-  input[type="tel"], input[type="time"], input[type="url"], input[type="color"] {
-    border-radius: $global-radius 0 0 $global-radius;
-    border-right: none;
-    box-shadow: none;
-  }
-  &.form-label {
-    background: $neutral-color;
-    border-radius: 0 $global-radius $global-radius 0;
-    border: 1px solid $app-border-color;
-  }
-}
-
-input {
-  &.prefix {border-radius: 0 $global-radius $global-radius 0;}
-  &.postfix {border-radius: $global-radius 0 0 $global-radius;}
-  &.prefix.postfix {border-radius: 0;}
-}
-
-// Inline Label Wrapper
-.inline-label {
-
-  input[type="text"], input[type="password"], input[type="date"],
-  input[type="datetime"], input[type="datetime-local"], input[type="month"],
-  input[type="week"], input[type="email"], input[type="number"], input[type="search"],
-  input[type="tel"], input[type="time"], input[type="url"], input[type="color"], textarea  {
-    margin-bottom: 0;
-  }
-}
-
-/* Select Inputs */
-select {
-  border-radius: $global-radius;
-  border: $input-border;
-
-  &:focus {
-    border: $input-border-focus;
-  }
-}
-
-//Labels for radios and checkboxes need to wrap
-input[type="checkbox"] + label, input[type="radio"] + label {
-  display: inline-block;
-  margin-left: 0.5rem;
-  margin-right: 1rem;
-  margin-bottom: 1rem;
-  vertical-align: baseline;
-  font-weight: $font-weight-normal;
-}
-
-.checkbox {
+  // Inputs wrapped in labels, paired with help text
   label {
-    font-weight: $font-weight-semi-bold;
+
+    input[type="text"], input[type="password"], input[type="date"],
+    input[type="datetime"], input[type="datetime-local"], input[type="month"],
+    input[type="week"], input[type="email"], input[type="number"], input[type="search"],
+    input[type="tel"], input[type="time"], input[type="url"], input[type="color"], textarea {
+      margin-bottom: 0;
+    }
   }
-}
+
+  //textarea
+  textarea {
+    min-height: 100px;
+    border: 1px solid $app-border-color;
+    padding: 1rem;
+    font-size: 1rem;
+    border-radius: 3px;
+  }
+
+  /* Typeahead Inputs */
+  input {
+
+    //Typeahead
+    &.typeahead {
+      margin-bottom: 0;
+      width: 100%;
+      overflow: visible;
+
+      ul {
+        margin: 0;
+      }
+    }
+  }
+
+
+  /* Prefixed/Postfixed Inputs */
+
+  .prefix {
+
+    input, input[type="text"], input[type="password"], input[type="date"],
+    input[type="datetime"], input[type="datetime-local"], input[type="month"],
+    input[type="week"], input[type="email"], input[type="number"], input[type="search"],
+    input[type="tel"], input[type="time"], input[type="url"], input[type="color"] {
+      border-radius: 0 $global-radius $global-radius 0;
+      border-left: none;
+      box-shadow: none;
+    }
+
+    &.form-label {
+      background: $neutral-color;
+      border-radius: $global-radius 0 0 $global-radius;
+      border: 1px solid $app-border-color;
+    }
+  }
+
+  .postfix {
+
+    input, input[type="text"], input[type="password"], input[type="date"],
+    input[type="datetime"], input[type="datetime-local"], input[type="month"],
+    input[type="week"], input[type="email"], input[type="number"], input[type="search"],
+    input[type="tel"], input[type="time"], input[type="url"], input[type="color"] {
+      border-radius: $global-radius 0 0 $global-radius;
+      border-right: none;
+      box-shadow: none;
+    }
+    &.form-label {
+      background: $neutral-color;
+      border-radius: 0 $global-radius $global-radius 0;
+      border: 1px solid $app-border-color;
+    }
+  }
+
+  input {
+    &.prefix {border-radius: 0 $global-radius $global-radius 0;}
+    &.postfix {border-radius: $global-radius 0 0 $global-radius;}
+    &.prefix.postfix {border-radius: 0;}
+  }
+
+  // Inline Label Wrapper
+  .inline-label {
+
+    input[type="text"], input[type="password"], input[type="date"],
+    input[type="datetime"], input[type="datetime-local"], input[type="month"],
+    input[type="week"], input[type="email"], input[type="number"], input[type="search"],
+    input[type="tel"], input[type="time"], input[type="url"], input[type="color"], textarea  {
+      margin-bottom: 0;
+    }
+  }
+
+  /* Select Inputs */
+  select {
+    border-radius: $global-radius;
+    border: $input-border;
+
+    &:focus {
+      border: $input-border-focus;
+    }
+  }
+
+  //Labels for radios and checkboxes need to wrap
+  input[type="checkbox"] + label, input[type="radio"] + label {
+    display: inline-block;
+    margin-left: 0.5rem;
+    margin-right: 1rem;
+    margin-bottom: 1rem;
+    vertical-align: baseline;
+    font-weight: $font-weight-normal;
+  }
+
+  .checkbox {
+    label {
+      font-weight: $font-weight-semi-bold;
+    }
+  }
 
 
 
-input[type="radio"],
-input[type="checkbox"] {
-  margin-bottom: 1rem;
-  width: 1.125rem;
-  height: 1.125rem;
-  box-sizing: border-box;
-  padding: 0;
-}
+  input[type="radio"],
+  input[type="checkbox"] {
+    margin-bottom: 1rem;
+    width: 1.125rem;
+    height: 1.125rem;
+    box-sizing: border-box;
+    padding: 0;
+  }
 
 
-/* Unordered Input Lists */
-ul.radio-list,
-ul.check-list {
-  list-style-type: none;
-  list-style: none;
-  margin-bottom: 1.5rem;
-  margin-left: 0;
+  /* Unordered Input Lists */
+  ul.radio-list,
+  ul.check-list {
+    list-style-type: none;
+    list-style: none;
+    margin-bottom: 1.5rem;
+    margin-left: 0;
 
-  li {
-    margin: 0;
+    li {
+      margin: 0;
+
+      label {
+        margin-right: 0;
+        font-weight: $font-weight-normal;
+      }
+
+      input[type="radio"],
+      input[type="checkbox"] {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  /* Input Lists */
+  .radio-list,
+  .check-list {
+
+    li {
+      margin: 0;
+    }
 
     label {
       margin-right: 0;
@@ -282,227 +304,193 @@ ul.check-list {
       margin-bottom: 0;
     }
   }
-}
-
-/* Input Lists */
-.radio-list,
-.check-list {
-
-  li {
-    margin: 0;
-  }
-
-  label {
-    margin-right: 0;
-    font-weight: $font-weight-normal;
-  }
-
-  input[type="radio"],
-  input[type="checkbox"] {
-    margin-bottom: 0;
-  }
-}
 
 
-/* Input Groups */
-ul.radio-group,
-ul.check-group {
-  list-style-type: none;
-  list-style: none;
-  margin-bottom: 1.5rem;
-  margin-left: 0;
-  line-height: 1.5;
-
-  li {
-    display: inline-block;
+  /* Input Groups */
+  ul.radio-group,
+  ul.check-group {
+    list-style-type: none;
     list-style: none;
+    margin-bottom: 1.5rem;
     margin-left: 0;
-    margin-right: 1.125rem;
+    line-height: 1.5;
 
-    label {
-      margin-right: 0;
-      font-weight: $font-weight-normal;
-    }
-
-    input[type=radio] + label {
-      margin-left: 0.3125rem;
-    }
-    // For Dynamic Inputs in a radio-group, e.g. "Other"
-    &.dynamic {
+    li {
       display: inline-block;
+      list-style: none;
+      margin-left: 0;
+      margin-right: 1.125rem;
 
-      label{
-        padding-left: .125rem;
+      label {
+        margin-right: 0;
+        font-weight: $font-weight-normal;
+      }
+
+      input[type=radio] + label {
+        margin-left: 0.3125rem;
+      }
+      // For Dynamic Inputs in a radio-group, e.g. "Other"
+      &.dynamic {
+        display: inline-block;
+
+        label{
+          padding-left: .125rem;
+        }
       }
     }
   }
-}
 
-label {
-  &.radio {
-    margin-left: 0.125rem;
-  }
-}
-
-// File Inputs
-input[type='file'] {display : none;}
-
-/* Date Components */
-.date-container {
-  width: 100%;
-  max-width: 350px;
-
-  input[type="number"], input[type="number"], input[type="date"],
-  input[type="datetime"], input[type="datetime-local"],
-  input[type="month"], input[type="week"], input[type="time"] {
-    padding: 0.5rem 0.3125rem 0.5rem 0.75rem;
-
-    &:focus {
-      border: $input-border-focus;
+  label {
+    &.radio {
+      margin-left: 0.125rem;
     }
   }
 
-  .date-components-day, .date-components-month, .date-components-year {
-    text-align : center;
-  }
+  // File Inputs
+  input[type='file'] {display : none;}
 
-  .date-components-day, .date-components-month {
-    margin-right: 0.75rem;
-  }
-
-  .ng-scope {
+  /* Date Components */
+  .date-container {
     width: 100%;
-  }
-}
+    max-width: 350px;
 
-/* Datepickers */
-datepicker {
-  font-family: $body-font-family;
+    input[type="number"], input[type="number"], input[type="date"],
+    input[type="datetime"], input[type="datetime-local"],
+    input[type="month"], input[type="week"], input[type="time"] {
+      padding: 0.5rem 0.3125rem 0.5rem 0.75rem;
 
-  input {
-    padding: 0.75rem;
+      &:focus {
+        border: $input-border-focus;
+      }
+    }
 
-    @media #{$mobile} {
-      padding: 0.3125rem;
+    .date-components-day, .date-components-month, .date-components-year {
+      text-align : center;
+    }
+
+    .date-components-day, .date-components-month {
+      margin-right: 0.75rem;
+    }
+
+    .ng-scope {
+      width: 100%;
     }
   }
-}
 
-._720kb-datepicker-calendar._720kb-datepicker-open {
-    visibility: visible;
-    z-index: 9999;
-    overflow: visible !important;
-    display: block;
-    position: absolute;
-    z-index: 15;
-    margin-top: -12px;
-}
+  /* Datepickers */
+  datepicker {
+    font-family: $body-font-family;
 
-._720kb-datepicker-calendar-header {
-    text-align: center;
+    input {
+      padding: 0.75rem;
+
+      @media #{$mobile} {
+        padding: 0.3125rem;
+      }
+    }
+  }
+
+  ._720kb-datepicker-calendar._720kb-datepicker-open {
+      visibility: visible;
+      z-index: 9999;
+      overflow: visible !important;
+      display: block;
+      position: absolute;
+      z-index: 15;
+      margin-top: -12px;
+  }
+
+  ._720kb-datepicker-calendar-header {
+      text-align: center;
+      font-size: 0.9375rem;
+      line-height: 2.25rem;
+      border-top-left-radius: $global-radius;
+      border-top-right-radius: $global-radius;
+  }
+
+  ._720kb-datepicker-calendar-days-header, ._720kb-datepicker-calendar-body {z-index: inherit;}
+
+  ._720kb-datepicker-calendar-days-header {background: darken( $primary-color, 8);}
+
+  ._720kb-datepicker-calendar-days-header div {
+      color: white;
+      width: 14.2%;
+  }
+
+  ._720kb-datepicker-calendar-header:nth-child(odd) {background: $primary-color;}
+
+  ._720kb-datepicker-calendar-header:nth-child(even) {background: $gray-light;}
+
+  ._720kb-datepicker-calendar-header a {color: $gray-dark;}
+
+  ._720kb-datepicker-calendar-month span {
+      color: white;
+      font-weight: $font-weight-semi-bold;
+  }
+
+  ._720kb-datepicker-calendar-header a:hover {
+      color: $gray-dark;
+      background: rgba(255, 255, 255, 0.45);
+  }
+
+  // Date-Picker Calendar Button
+  .button.datepicker, button.datepicker, button.datepicker, button.isc-form-datepicker-calendar {
+      margin: 0;
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+  }
+
+  .isc-form-datepicker-calendar svg {
+      height: 1.25rem;
+      width: 1.25rem;
+  }
+
+  .isc-form-datepicker {
+    max-width    : 150px;
+    margin-left  : 0px;
+    margin-right : 0px;
+  }
+
+  .isc-form-datepicker-calendar {
+    background-color : transparent;
+    border           : none;
+    cursor           : pointer;
+    position         : absolute;
+    top              : 0.75rem;
+    right            : 0.3125rem;
+  }
+
+  //DatePicker Range - Start to End
+  input#startDate, input#endDate {
+    padding: 0.5rem 0.3125rem 0.5rem 0.5rem;
     font-size: 0.9375rem;
-    line-height: 2.25rem;
-    border-top-left-radius: $global-radius;
-    border-top-right-radius: $global-radius;
-}
+    margin-bottom: 1rem;
 
-._720kb-datepicker-calendar-days-header, ._720kb-datepicker-calendar-body {z-index: inherit;}
-
-._720kb-datepicker-calendar-days-header {background: darken( $primary-color, 8);}
-
-._720kb-datepicker-calendar-days-header div {
-    color: white;
-    width: 14.2%;
-}
-
-._720kb-datepicker-calendar-header:nth-child(odd) {background: $primary-color;}
-
-._720kb-datepicker-calendar-header:nth-child(even) {background: $gray-light;}
-
-._720kb-datepicker-calendar-header a {color: $gray-dark;}
-
-._720kb-datepicker-calendar-month span {
-    color: white;
-    font-weight: $font-weight-semi-bold;
-}
-
-._720kb-datepicker-calendar-header a:hover {
-    color: $gray-dark;
-    background: rgba(255, 255, 255, 0.45);
-}
-
-// Date-Picker Calendar Button
-.button.datepicker, button.datepicker, button.datepicker, button.isc-form-datepicker-calendar {
-    margin: 0;
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-}
-
-.isc-form-datepicker-calendar svg {
-    height: 1.25rem;
-    width: 1.25rem;
-}
-
-.isc-form-datepicker {
-  max-width    : 150px;
-  margin-left  : 0px;
-  margin-right : 0px;
-}
-
-.isc-form-datepicker-calendar {
-  background-color : transparent;
-  border           : none;
-  cursor           : pointer;
-  position         : absolute;
-  top              : 0.75rem;
-  right            : 0.3125rem;
-}
-
-//DatePicker Range - Start to End
-input#startDate, input#endDate {
-  padding: 0.5rem 0.3125rem 0.5rem 0.5rem;
-  font-size: 0.9375rem;
-  margin-bottom: 1rem;
-
-  @media #{$small} {
-    font-size: 0.875rem;
-  }
-}
-
-/* Validation */
-
-/* Invalid fields are fields that have been touched, yet fail to meet validation requirements
- * Thus, fields should never be shown as invalid by default - only after they've been touched
- * Touched required fields that remain pristine (no value entered) show a red border
- *
- * When invalid fields display an .error message:
- * bottom margins should be moved underneath the error message to preserve layout rhythm
-*/
-
-
-// Single Inputs - All Types
-input[type="text"], input[type="password"], input[type="date"],
-input[type="datetime"], input[type="datetime-local"], input[type="month"],
-input[type="week"], input[type="email"], input[type="number"], input[type="search"],
-input[type="tel"], input[type="time"], input[type="url"], input[type="color"], textarea, select {
-
-  &.ng-invalid {
-
-    &.ng-touched {
-      border: 1px solid $alert-color;
+    @media #{$small} {
+      font-size: 0.875rem;
     }
   }
 
-}
+  /* Validation */
 
-// Date Component Inputs
-.date-container {
+  /* Invalid fields are fields that have been touched, yet fail to meet validation requirements
+   * Thus, fields should never be shown as invalid by default - only after they've been touched
+   * Touched required fields that remain pristine (no value entered) show a red border
+   *
+   * When invalid fields display an .error message:
+   * bottom margins should be moved underneath the error message to preserve layout rhythm
+  */
 
-  &.ng-invalid {
 
-    input[type="number"] {
+  // Single Inputs - All Types
+  input[type="text"], input[type="password"], input[type="date"],
+  input[type="datetime"], input[type="datetime-local"], input[type="month"],
+  input[type="week"], input[type="email"], input[type="number"], input[type="search"],
+  input[type="tel"], input[type="time"], input[type="url"], input[type="color"], textarea, select {
+
+    &.ng-invalid {
 
       &.ng-touched {
         border: 1px solid $alert-color;
@@ -510,31 +498,47 @@ input[type="tel"], input[type="time"], input[type="url"], input[type="color"], t
     }
 
   }
-}
 
-//.has-error wrapper
-.has-error {
-
-  input, select {
-    margin-bottom: 0.25rem;
-  }
-
-  //.error-message inside .has-error wrapper
-  label{
-    &.error-message {
-      font-weight: $font-weight-normal;
-      font-size: 0.875rem;
-    }
-  }
-
+  // Date Component Inputs
   .date-container {
-    input {
-      border: 1px solid $alert-color;
+
+    &.ng-invalid {
+
+      input[type="number"] {
+
+        &.ng-touched {
+          border: 1px solid $alert-color;
+        }
+      }
+
     }
   }
-}
 
-.error {
-  margin-bottom: 1em;
-  font-weight: normal;
+  //.has-error wrapper
+  .has-error {
+
+    input, select {
+      margin-bottom: 0.25rem;
+    }
+
+    //.error-message inside .has-error wrapper
+    label{
+      &.error-message {
+        font-weight: $font-weight-normal;
+        font-size: 0.875rem;
+      }
+    }
+
+    .date-container {
+      input {
+        border: 1px solid $alert-color;
+      }
+    }
+  }
+
+  .error {
+    margin-bottom: 1em;
+    font-weight: normal;
+  }
+
 }

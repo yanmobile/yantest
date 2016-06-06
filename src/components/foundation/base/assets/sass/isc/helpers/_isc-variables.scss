@@ -162,7 +162,6 @@ $gray-70: darken( #fff, 70 );
 $gray-80: darken( #fff, 80 );
 $gray-90: darken( #fff, 90 );
 
-
 // MATERIAL SHADOW
 /* -----------------------------------------
 /* Material Box Shadow
@@ -200,118 +199,8 @@ $shadow-22dp: 0px 10px 14px -6px rgba(0, 0, 0, $shadow-key-umbra-opacity), 0px 2
 $shadow-23dp: 0px 11px 14px -7px rgba(0, 0, 0, $shadow-key-umbra-opacity), 0px 23px 36px 3px rgba(0, 0, 0, $shadow-key-penumbra-opacity), 0px 9px 44px 8px rgba(0, 0, 0, $shadow-ambient-shadow-opacity) !default;
 $shadow-24dp: 0px 11px 15px -7px rgba(0, 0, 0, $shadow-key-umbra-opacity), 0px 24px 38px 3px rgba(0, 0, 0, $shadow-key-penumbra-opacity), 0px 9px 46px 8px rgba(0, 0, 0, $shadow-ambient-shadow-opacity) !default;
 
-// Shodow-Depth Map
-$shadow-depths: (
-  '1dp': $shadow-1dp,
-  '2dp': $shadow-2dp,
-  '3dp': $shadow-3dp,
-  '4dp': $shadow-4dp,
-  '5dp': $shadow-5dp,
-  '6dp': $shadow-6dp,
-  '7dp': $shadow-7dp,
-  '8dp': $shadow-8dp,
-  '9dp': $shadow-9dp,
-  '10dp': $shadow-10dp,
-  '11dp': $shadow-11dp,
-  '12dp': $shadow-12dp,
-  '13dp': $shadow-13dp,
-  '14dp': $shadow-14dp,
-  '15dp': $shadow-15dp,
-  '16dp': $shadow-16dp,
-  '17dp': $shadow-17dp,
-  '18dp': $shadow-18dp,
-  '19dp': $shadow-19dp,
-  '20dp': $shadow-20dp,
-  '21dp': $shadow-21dp,
-  '22dp': $shadow-22dp,
-  '23dp': $shadow-23dp,
-  '24dp': $shadow-24dp
-) !default;
-
-// Structure CSS Class Rules
-@each $depth, $shadow-depth in $shadow-depths {
-  .shadow-#{$depth} {
-    box-shadow: $shadow-depth;
-  }
-}
-
-// Shadow Mixin
-@mixin shadow($shadow-depth) {
-  $shadow-depth: map-get($shadow-depths, $shadow-depth);
-  box-shadow: $shadow-depth;
-}
-
 // Button Tag Selector
 $button-tag-selector: true;
-
-// TO DO - MOTION UI
-/* ------------------------------ */
-
-// Classes to use when triggering in/out animations
-$motion-class: (
-  in: "ng-enter",
-  out: "ng-leave",
-) !default;
-
-$motion-class-active: (
-  in: "ng-enter-active",
-  out: "ng-leave-active",
-) !default;
-
-$motion-class-stagger: (
-  in: "ng-enter-stagger",
-  out: "ng-leave-stagger",
-) !default;
-
-$motion-class-showhide: (
-  in: "ng-hide-remove",
-  out: "ng-hide-add",
-) !default;
-
-$motion-class-showhide-active: (
-  in: "ng-hide-remove-active",
-  out: "ng-hide-add-active",
-) !default;
-
-// Set if movement-based transitions should also fade the element in and out
-$motion-slide-and-fade: false !default;
-$motion-hinge-and-fade: true !default;
-$motion-scale-and-fade: true !default;
-$motion-spin-and-fade: true !default;
-
-// Default speed for transitions and animations
-$motion-duration-default: 500ms !default;
-
-// Slow and fast modifiders
-$motion-duration-slow: 750ms !default;
-$motion-duration-fast: 250ms !default;
-$motion-stagger-duration-default: 150ms !default;
-$motion-stagger-duration-short: 50ms !default;
-$motion-stagger-duration-long: 300ms !default;
-
-// Default timing function for transitions and animations
-$motion-timing-default: ease !default;
-
-// Built-in and custom easing functions
-// Every item in this map becomes a CSS class
-$motion-timings: (
-  linear: linear,
-  ease: ease,
-  easeIn: ease-in,
-  easeOut: ease-out,
-  easeInOut: ease-in-out,
-  bounceIn: cubic-bezier(0.485, 0.155, 0.240, 1.245),
-  bounceOut: cubic-bezier(0.485, 0.155, 0.515, 0.845),
-  bounceInOut: cubic-bezier(0.760, -0.245, 0.240, 1.245),
-) !default;
-
-// Default delay for all transitions and animations
-$motion-delay-default: 0 !default;
-
-//Short and long delay modifiers
-$motion-delay-short: 300ms !default;
-$motion-delay-long: 700ms !default;
-
 
 // TO DO - COMPONENT SETTINGS
 /* ------------------------------ */
@@ -330,7 +219,7 @@ $global-margin: 1rem !default; // Layout
 /* ------------------------------ */
 $isc-components: (
   404error: true,
-  app: true,
+  global: true,
   buttons: true,
   ddp: true,
   footer: true,
@@ -338,16 +227,61 @@ $isc-components: (
   icons: true,
   layout: true,
   mixins: true,
-  modals: true,
-  navbar: true,
+  modals: false,
   pagination: true,
   primarynav: true,
   secondarynav: true,
   sidebar: true,
   tables: true,
-  tooltips: true,
+  tooltip: true,
   typeahead: true,
   typography: true,
   utilities: true,
-  variables: true,
-);
+) !default;
+
+$isc-components: () !default;
+$modules: () !default;
+
+/// Checks if a module is in use.
+@function using($name) {
+  // Import from global scope
+  $isc-components: $isc-components !global;
+  $module-key: map-get($isc-components, $name);
+
+  @if $module-key == true or $module-key == null {
+    @return true;
+  }
+  @else {
+    @return false;
+  }
+}
+
+/// Checks if a module's CSS has already been exported.
+@function imported($name) {
+  // Import from global scope
+  $modules: $modules !global;
+  // Check if the module is already on the imported list
+  @if type-of(index($modules, $name)) == 'number' {
+    @return true;
+  }
+  @else {
+    @return false;
+  }
+}
+
+/// Outputs the chunk of content passed if component $name hasn't yet been output.
+/// This prevents code duplication by keeping track of which components have already been output.
+///
+/// @param {string} $name - Name of component to output
+///
+/// @output The content passed, if the component has not yet been exported.
+@mixin exports($name) {
+  // Check if the module has already been imported
+  @if not(imported($name)) {
+    // Check if the module should be used
+    @if using($name) {
+      $modules: append($modules, $name) !global;
+      @content;
+    }
+  }
+}

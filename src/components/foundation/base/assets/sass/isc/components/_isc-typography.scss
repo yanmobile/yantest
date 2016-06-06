@@ -1,5 +1,4 @@
-/*
-  TYPOGRAPHY
+/* TYPOGRAPHY
   ----------
 
   Includes typographic styles for many common elements, and a few helper classes.
@@ -10,8 +9,7 @@
    - Lists
    - Horizontal Rule
    - Counter Badges
-   - TODO - Icons
-*/
+---------------------------*/
 
 // Page Title Settings
 $page-title-font-size: 2rem !default;
@@ -30,115 +28,12 @@ $caption-padding: 0 0 0.5rem 0 !default;
 $caption-margin: 0 0 0.5rem 0 !default;
 $caption-font-reduction: rem-calc(16) !default;
 
-html, body {
-  font-size: $base-font-size;
-}
+// Divider Settings
+$divider-color: scale-color($header-font-color, $lightness: 25%) !default;
+$divider-width: 2px !default;
+$divider-margin: 2rem 0 2rem 0 !default;
 
-/* Body Copy */
-html, body, p, label {
-  font-family: $body-font-family, "Helvetica", Helvetica, Arial, sans-serif;
-  font-weight: $body-font-weight;
-  font-style: $body-font-style;
-  color: $body-font-color;
-}
-
-
-p {
-  font-family: $paragraph-font-family;
-  font-weight: $paragraph-font-weight;
-  font-size: $paragraph-font-size;
-  line-height: $paragraph-line-height;
-  margin-bottom: $paragraph-margin-bottom;
-  text-rendering: $paragraph-text-rendering;
-
-  &.lead { @include lead; }
-
-  &.error, &.alert {
-    color: $alert-color;
-  }
-
-  &.success {
-    color: $success-color;
-  }
-
-  &.inline, &.readonly {
-    margin: 0;
-    padding: 0.6rem 0;
-    display: inline-block;
-  }
-
-  //Shows in lieu of empty data
-  &.empty-message {
-    font-size: 1.125rem;
-    font-style: italic;
-    margin: 1rem 0 2rem 0;
-    color: palette(type, secondary);
-  }
-}
-
-small {
-  color: $subtext-color;
-}
-
-/* Links */
-a {
-  color: $anchor-font-color;
-  text-decoration: $anchor-text-decoration;
-
-  @each $color in map-keys($theme-colors) {
-    &.#{$color} {
-      $color-name: map-get($theme-colors, $color);
-      color: $color-name;
-
-      &:hover, &:focus, &:active {
-        color: smartscale($color-name, 15%);
-
-        svg {
-          fill: smartscale($color-name, 15%);
-        }
-      }
-    }
-  }
-
-  &.inline {
-    padding: 0.6rem 0;
-    display: inline-block;
-  }
-}
-
-/* Default header styles */
-h1, h2, h3, h4, h5, h6 {
-  font-family: $header-font-family;
-  font-weight: $header-font-weight;
-  font-style: $header-font-style;
-  color: $header-font-color;
-  text-rendering: $header-text-rendering;
-  margin-top: $header-top-margin;
-  margin-bottom: $header-bottom-margin;
-  line-height: $header-line-height;
-
-  small {
-    font-size: $small-font-size;
-    color: $small-font-color;
-  }
-}
-
-
-h1 { font-size: $h1-font-size; }
-h2 { font-size: $h2-font-size; }
-h3 { font-size: $h3-font-size; }
-h4 { font-size: $h4-font-size; }
-h5 { font-size: $h5-font-size; }
-h6 { font-size: $h6-font-size; }
-
-
-/* Headers */
-h1 {font-weight: $font-weight-normal;}
-h2 {font-weight: $font-weight-bold;}
-h3 {font-weight: $font-weight-normal;}
-h4 {font-weight: $font-weight-bold;}
-h5 {font-weight: $font-weight-semi-bold;}
-h6 {font-weight: $font-weight-bold;}
+/* Typography Mixins */
 
 // @mixin title
 @mixin title($size: inherit, $color: $header-font-color, $weight: inherit, $margin: inherit, $padding: 0, $reduction: inherit) {
@@ -169,20 +64,6 @@ h6 {font-weight: $font-weight-bold;}
   }
   @content;
 }
-
-/* Titles */
-h1, h2, h3, h4, h5, h6 {
-
-  &.title {
-    @include title;
-  }
-
-  &.page-title {
-    @include title($size: $page-title-font-size, $color: $page-title-color, $weight: $page-title-weight, $margin: $page-title-margin, $padding: $page-title-padding, $reduction: $page-title-font-reduction);
-  }
-}
-
-/* Captions */
 
 // @mixin caption
 @mixin caption($background: $caption-background, $size: $caption-font-size, $line-height: inherit, $color: $caption-color, $align: $caption-align, $padding: $caption-padding, $margin: $caption-margin, $reduction: $caption-font-reduction) {
@@ -220,174 +101,281 @@ h1, h2, h3, h4, h5, h6 {
   @content;
 }
 
-caption {
-  @include caption;
+// @mixin divider
+@mixin divider($width: $divider-width, $color: $divider-color, $margin: $divider-margin) {
+  $width: $width;
+  $color: $color;
+  $margin: $margin;
+
+  margin: $margin;
+  border-width: $width 0 0;
+  border-color: $color;
 }
 
-/* Labels */
-label, .form-label {
-  font-weight: $font-weight-bold;
-  line-height: $paragraph-line-height;
-  font-family: $body-font-family;
-  display: inline-block;
+/* Typography Styles */
+@include exports(typography) {
+  html, body {font-size: $base-font-size;}
 
-  &.required {
-    &:after {
-      content: " * ";
+  /* Body Copy */
+  html, body, p, label {
+    font-family: $body-font-family, "Helvetica", Helvetica, Arial, sans-serif;
+    font-weight: $body-font-weight;
+    font-style: $body-font-style;
+    color: $body-font-color;
+  }
+
+  p {
+    font-family: $paragraph-font-family;
+    font-weight: $paragraph-font-weight;
+    font-size: $paragraph-font-size;
+    line-height: $paragraph-line-height;
+    margin-bottom: $paragraph-margin-bottom;
+    text-rendering: $paragraph-text-rendering;
+
+    &.lead { @include lead; }
+
+    &.error, &.alert {
+      color: $alert-color;
+    }
+
+    &.success {
+      color: $success-color;
+    }
+
+    &.inline, &.readonly {
+      margin: 0;
+      padding: 0.6rem 0;
+      display: inline-block;
+    }
+
+    //Shows in lieu of empty data
+    &.empty-message {
+      font-size: 1.125rem;
+      font-style: italic;
+      margin: 1rem 0 2rem 0;
+      color: $body-font-color;
+    }
+  }
+
+  /* Links */
+  a {
+    color: $anchor-font-color;
+    text-decoration: $anchor-text-decoration;
+
+    @each $color in map-keys($theme-colors) {
+      &.#{$color} {
+        $color-name: map-get($theme-colors, $color);
+        color: $color-name;
+
+        &:hover, &:focus, &:active {
+          color: smartscale($color-name, 15%);
+
+          svg {
+            fill: smartscale($color-name, 15%);
+          }
+        }
+      }
+    }
+
+    &.inline {
+      padding: 0.6rem 0;
+      display: inline-block;
+    }
+  }
+
+  /* Headers */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: $header-font-family;
+    font-weight: $header-font-weight;
+    font-style: $header-font-style;
+    color: $header-font-color;
+    text-rendering: $header-text-rendering;
+    margin-top: $header-top-margin;
+    margin-bottom: $header-bottom-margin;
+    line-height: $header-line-height;
+
+    small {
+      font-size: $small-font-size;
+      color: $small-font-color;
+    }
+  }
+
+  h1 { font-size: $h1-font-size; font-weight: $font-weight-normal;}
+  h2 { font-size: $h2-font-size; font-weight: $font-weight-bold;}
+  h3 { font-size: $h3-font-size; font-weight: $font-weight-normal;}
+  h4 { font-size: $h4-font-size; font-weight: $font-weight-bold;}
+  h5 { font-size: $h5-font-size; font-weight: $font-weight-semi-bold;}
+  h6 { font-size: $h6-font-size; font-weight: $font-weight-bold;}
+
+  /* Titles */
+  h1, h2, h3, h4, h5, h6 {
+
+    &.title {@include title;}
+
+    &.page-title {
+      @include title($size: $page-title-font-size, $color: $page-title-color, $weight: $page-title-weight, $margin: $page-title-margin, $padding: $page-title-padding, $reduction: $page-title-font-reduction);
+    }
+  }
+
+  /* Captions */
+  caption {@include caption;}
+
+  /* hr and Divider */
+  hr {
+    margin-bottom: $hr-margin;
+
+    &.divider {
+      @include divider;
+    }
+  }
+
+  /* Labels */
+  label, .form-label {
+    font-weight: $font-weight-bold;
+    line-height: $paragraph-line-height;
+    font-family: $body-font-family;
+    display: inline-block;
+
+    &.required {
+      &:after {
+        content: " * ";
+        color: $alert-color;
+      }
+    }
+
+    &.inline {
+      margin: 0;
+      padding: 0.6rem 0;
+      display: inline-block;
+    }
+
+    &.right {
+      float: none;
+      text-align: right;
+    }
+
+    &.error, &.alert {
+      color: $alert-color;
+    }
+
+    &.success {
+      color: $success-color;
+    }
+  }
+
+  .has-error {
+    label {
       color: $alert-color;
     }
   }
 
-  &.inline {
-    margin: 0;
-    padding: 0.6rem 0;
+  /* Lists */
+  ol{
+
+    li {
+      margin-left: $list-ordered-side-margin;
+      margin-bottom: $list-margin-bottom;
+
+      ol, ul {
+        margin-top: $list-nested-margin;
+
+        li {
+          margin-bottom: $list-nested-margin;
+        }
+      }
+    }
+  }
+
+  ul {
+    li {
+      margin-left: $list-side-margin;
+      margin-bottom: $list-margin-bottom;
+
+      &.no-indent {
+        margin-left: 0;
+      }
+
+      ul, ol {
+        margin-top: $list-nested-margin;
+
+        li {
+          margin-bottom: $list-nested-margin;
+        }
+      }
+    }
+  }
+
+  /* Inline-Lists & Icon Lists */
+  .inline-list {
+    list-style-type: none;
+    text-align: left;
+    list-style: none;
+    margin-top: 0.25rem;
+    margin-right: 0;
+    overflow: hidden;
+    padding: 0;
+  }
+
+  .inline-list {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    margin-left: -1.125rem;
+  }
+
+  .inline-list > li {
     display: inline-block;
+    list-style: none;
+    margin-left: 1.125rem;
   }
 
-  &.right {
-    float: none;
-    text-align: right;
-  }
+  .inline-list > li > label {font-weight: $font-weight-semi-bold;}
+  .inline-list > li > * {display: inline-block;}
 
-  &.error, &.alert {
-    color: $alert-color;
-  }
+  /* Counter Badge */
+  .counter-badge {
+    @extend %badge;
 
-  &.success {
-    color: $success-color;
-  }
-}
+    @include badge-layout(
+      $fontsize: 1rem
+    );
 
-.has-error {
-  label {
-    color: $alert-color;
-  }
-}
+    @include badge-style(
+      $background: $badge-background,
+      $color: isitlight($badge-background, $body-font-color, $light-text)
+    );
+    padding: 0.65rem;
+    font-weight: $font-weight-semi-bold;
+    border-radius: $global-radius;
+    width: 1.5rem;
+    height: 1.5rem;
 
-/* Lists */
-
-ol{
-
-  li {
-    margin-left: $list-ordered-side-margin;
-    margin-bottom: $list-margin-bottom;
-
-    ol, ul {
-      margin-top: $list-nested-margin;
-
-      li {
-        margin-bottom: $list-nested-margin;
-      }
-    }
-  }
-}
-
-ul {
-  li {
-    margin-left: $list-side-margin;
-    margin-bottom: $list-margin-bottom;
-
-    &.no-indent {
-      margin-left: 0;
+    &.alert {
+      @include badge-style(
+        $background: $alert-color,
+        $color: isitlight($alert-color, $body-font-color, $light-text)
+      );
     }
 
-    ul, ol {
-      margin-top: $list-nested-margin;
+    &.success {
+      @include badge-style(
+        $background: $success-color,
+        $color: isitlight($success-color, $body-font-color, $light-text)
+      );
+    }
 
-      li {
-        margin-bottom: $list-nested-margin;
-      }
+    &.warning {
+      @include badge-style(
+        $background: $warning-color,
+        $color: isitlight($warning-color, $body-font-color, $light-text)
+      );
+    }
+
+    &.info {
+      @include badge-style(
+        $background: $info-color,
+        $color: isitlight($info-color, $body-font-color, $light-text)
+      );
     }
   }
-}
 
-/* Inline-Lists & Icon Lists */
-.inline-list {
-  list-style-type: none;
-  text-align: left;
-  list-style: none;
-  margin-top: 0.25rem;
-  margin-right: 0;
-  overflow: hidden;
-  padding: 0;
-}
-
-.inline-list {
-  margin-top: 0;
-  margin-bottom: 1rem;
-  margin-left: -1.125rem;
-}
-
-.inline-list > li {
-  display: inline-block;
-  list-style: none;
-  margin-left: 1.125rem;
-}
-
-.inline-list > li > label {font-weight: $font-weight-semi-bold;}
-.inline-list > li > * {display: inline-block;}
-
-/* hr */
-hr {margin-bottom: $hr-margin;}
-
-
-/* Counter Badge */
-.counter-badge {
-  @extend %badge;
-
-  @include badge-layout(
-    $fontsize: 1rem
-  );
-
-  @include badge-style(
-    $background: $badge-background,
-    $color: isitlight($badge-background, $body-font-color, $light-text)
-  );
-  padding: 0.65rem;
-  font-weight: $font-weight-semi-bold;
-  border-radius: $global-radius;
-  width: 1.5rem;
-  height: 1.5rem;
-
-  &.alert {
-    @include badge-style(
-      $background: $alert-color,
-      $color: isitlight($alert-color, $body-font-color, $light-text)
-    );
-  }
-
-  &.success {
-    @include badge-style(
-      $background: $success-color,
-      $color: isitlight($success-color, $body-font-color, $light-text)
-    );
-  }
-
-  &.warning {
-    @include badge-style(
-      $background: $warning-color,
-      $color: isitlight($warning-color, $body-font-color, $light-text)
-    );
-  }
-
-  &.info {
-    @include badge-style(
-      $background: $info-color,
-      $color: isitlight($info-color, $body-font-color, $light-text)
-    );
-  }
-}
-
-/* Icon Colors */
-i.fa {
-  &.success {color: $success-color;}
-  &.alert {color: $alert-color;}
-  &.warning {color: $warning-color;}
-  &.info {color: $info-color;}
-  &.primary {color: $primary-color;}
-  &.secondary {color: $secondary-color;}
-}
-
-.fa-li {
-  line-height: $paragraph-line-height;
 }

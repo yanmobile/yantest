@@ -1,34 +1,41 @@
-/* Tooltips */
+/* Tooltip Settings */
+$tooltip-background: $primary-color !default;
+$tooltip-border: 1px solid smartscale($tooltip-background, 10%) !default;
+$tooltip-font-size: 0.875rem !default;
+$tooltip-radius: $global-radius !default;
+$tooltip-line-height: $paragraph-line-height !default;
+$tooltip-padding: 0.5rem 0.625rem !default;
 
+/* Tooltip Styles */
+@include exports(tooltip) {
+	.tooltipster-default {
+		border-radius: $tooltip-radius;
+		border: $tooltip-border;
+		background: $tooltip-background;
+		color: isitlight($tooltip-background, $body-font-color, $light-text);
+	}
 
-.tooltipster-default {
-	border-radius: $tooltip-radius;
-	border: $tooltip-border;
-	background: $tooltip-background;
-	color: isitlight($tooltip-background, $body-font-color, $light-text);
-}
+	/* Use this next selector to style things like font-size and line-height: */
+	.tooltipster-default .tooltipster-content {
+		font-family: $body-font-family;
+		font-size: $tooltip-font-size;
+		line-height: $tooltip-line-height;
+		padding: $tooltip-padding;
+		overflow: hidden;
+	}
 
-/* Use this next selector to style things like font-size and line-height: */
-.tooltipster-default .tooltipster-content {
-	font-family: $body-font-family;
-	font-size: $tooltip-font-size;
-	line-height: $tooltip-line-height;
-	padding: $tooltip-padding;
-	overflow: hidden;
-}
+	/* This selector defines the color of the border on the outside of the arrow.
+	 * This will automatically match the color and size of the border set on the main tooltip styles.
+	 * Set display: none; if you would like a border around the tooltip but no border around the arrow
+	 *---------------------------------------------------------------------------------------------*/
 
-/* This selector defines the color of the border on the outside of the arrow.
- * This will automatically match the color and size of the border set on the main tooltip styles.
- * Set display: none; if you would like a border around the tooltip but no border around the arrow
- *---------------------------------------------------------------------------------------------*/
+	.tooltipster-default .tooltipster-arrow .tooltipster-arrow-border {
+		/* border-color: ... !important; */
+	}
 
-.tooltipster-default .tooltipster-arrow .tooltipster-arrow-border {
-	/* border-color: ... !important; */
-}
-
-
-/* If you're using the icon option, use this next selector to style them */
-.tooltipster-icon {
-	cursor: help;
-	margin-left: 4px;
+	/* If you're using the icon option, use this next selector to style them */
+	.tooltipster-icon {
+		cursor: help;
+		margin-left: 4px;
+	}
 }

@@ -1,106 +1,106 @@
-/* Allow Multi-Page Printing */
-.grid-frame {
-  @media #{$print}{
+/* Page Structure */
+$vertical-container-padding: 2rem !default;
+$horizontal-container-padding: 2.5rem !default;
+$horizontal-container-padding-small: 1rem !default;
+
+/* Section Structure */
+$section-block-padding: 1rem 0 0 0 !default;
+$section-block-margin: 0 0 2rem 0 !default;
+$subsection-padding: 2rem 0 0 0 !default;
+$subsection-margin: 0 0 2rem 0 !default;
+$section-title-margin: 0 0 2rem 0 !default;
+
+@include exports(layout) {
+  .isc-app-content {
     height: 100%;
-  }
-}
-
-.isc-app-content {
-  height: 100%;
-  flex: 1 1 auto;
-}
-
-/* Page Architecture */
-
-/* Built-In Page Padding */
-.isc-page {
-  padding-top: $vertical-container-padding;
-  padding-bottom: $vertical-container-padding;
-  width: 100%;
-  height: 100%;
-  flex: 1 0 auto;
-
-  @media #{$large} {
-    padding-left: $horizontal-container-padding;
-    padding-right: $horizontal-container-padding;
+    flex: 1 1 auto;
   }
 
-  @media #{$xlarge} {
-    padding-left: $horizontal-container-padding;
-    padding-right: $horizontal-container-padding;
+  /* Page Architecture */
+
+  /* Built-In Page Padding */
+  .isc-page {
+    padding-top: $vertical-container-padding;
+    padding-bottom: $vertical-container-padding;
+    width: 100%;
+    height: 100%;
+    flex: 1 0 auto;
+
+    @media #{$large} {
+      padding-left: $horizontal-container-padding;
+      padding-right: $horizontal-container-padding;
+    }
+
+    @media #{$xlarge} {
+      padding-left: $horizontal-container-padding;
+      padding-right: $horizontal-container-padding;
+    }
+
+    @media #{$xxlarge} {
+      padding-left: $horizontal-container-padding;
+      padding-right: $horizontal-container-padding;
+    }
+
+    @media #{$medium-down} {
+      padding-left: $horizontal-container-padding-small;
+      padding-right: $horizontal-container-padding-small;
+    }
+
+    @media #{$small} {
+      padding-left: $horizontal-container-padding-small;
+      padding-right: $horizontal-container-padding-small;
+    }
   }
 
-  @media #{$xxlarge} {
-    padding-left: $horizontal-container-padding;
-    padding-right: $horizontal-container-padding;
+  #main {height: auto;}
+
+  /* Content Architecture */
+
+  // Section Blocks of page content
+  .section-block {
+    @include grid-block;
+    @include grid-size(expand);
+    @include grid-orient(vertical);
+    @include grid-wrap(false);
+    @include grid-align(center);
+    @include grid-order(0);
+    padding: $section-block-padding;
+    margin: $section-block-margin;
+    overflow: visible;
+    //overflow-y: inherit;
+    display: -ms-flexbox;
+    -ms-flex-flow: column nowrap;
+    -ms-flex-align: stretch;
+
+    &.top {padding-top: 0;}
+
+    .section-title {margin: $section-title-margin;}
   }
 
-  @media #{$medium-down} {
-    padding-left: $horizontal-container-padding-small;
-    padding-right: $horizontal-container-padding-small;
-  }
+  .sub-section {padding: $subsection-padding;}
 
-  @media #{$small} {
-    padding-left: $horizontal-container-padding-small;
-    padding-right: $horizontal-container-padding-small;
-  }
-}
-
-#main {height: auto;}
-
-/* Content Architecture */
-
-// Section Blocks of page content
-.section-block {
-  @include grid-block;
-  @include grid-size(expand);
-  @include grid-orient(vertical);
-  @include grid-wrap(false);
-  @include grid-align(center);
-  @include grid-order(0);
-  padding: 1rem 0 0 0;
-  margin-bottom: 2rem;
-  overflow: visible;
-  //overflow-y: inherit;
-  display: -ms-flexbox;
-  -ms-flex-flow: column nowrap;
-  -ms-flex-align: stretch;
-
-  &.top {
-    padding-top: 0;
-  }
-
-  .title {
+  // Form Sections (Major)
+  .form-section {
+    @include grid-block;
+    @include grid-size(expand);
+    @include grid-orient(vertical);
+    @include grid-wrap(false);
+    @include grid-align(center);
+    @include grid-order(0);
+    padding: 1rem 0 1rem 0;
     margin-bottom: 2rem;
+    overflow: visible;
+    overflow-y: visible;
+    display: -ms-flexbox;
+    -ms-flex-flow: column nowrap;
+    -ms-flex-align: stretch;
+
+    &.top {padding-top: 0;}
   }
-}
 
-.sub-section {
-  padding-top: 2rem;
-}
-
-// Form Sections (Major)
-.form-section {
-  @include grid-block;
-  @include grid-size(expand);
-  @include grid-orient(vertical);
-  @include grid-wrap(false);
-  @include grid-align(center);
-  @include grid-order(0);
-  padding: 1rem 0 1 0;
-  margin-bottom: 2rem;
-  overflow: visible;
-  overflow-y: visible;
-  display: -ms-flexbox;
-  -ms-flex-flow: column nowrap;
-  -ms-flex-align: stretch;
-
-  &.top {
-    padding-top: 0;
+  .grid-content .grid-block {
+    margin-left: 0;
+    margin-right: 0;
   }
-}
 
-.grid-content .grid-block {
-  margin-left: 0;
-  margin-right: 0;
 }
