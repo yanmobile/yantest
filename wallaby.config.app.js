@@ -1,102 +1,75 @@
-var angularTemplatePreprocessor = require('wallaby-ng-html2js-preprocessor');
+var angularTemplatePreprocessor = require( 'wallaby-ng-html2js-preprocessor' );
 
-module.exports = function () {
+module.exports = wallaby;
+
+function wallaby() {
   'use strict';
-
-  var commonConfig     = require('./gulp/common.json');
-  var componentsConfig = require('./src/components/foundation/base/components.json');
-  var appConfig        = require('./gulp/app.json');
-
-  var commonVendorJs       = (commonConfig.vendor.js || []).map(noInstrument);
-  var commonModuleVendorJs = (commonConfig.module.assets.vendor.js || []).map(noInstrument);
-  var commonVendorMocks    = (commonConfig.vendor.mocks || []).map(noInstrument);
-  var commonModuleModules  = commonConfig.module.modules || [];
-  var commonModuleJs       = commonConfig.module.js || [];
-  var commonModuleMocks    = (commonConfig.module.mocks || []).map(noInstrument);
-  var commonModuleHtml     = commonConfig.module.html || [];
-
-  var componentsVendorJs       = (componentsConfig.vendor.js || []).map(noInstrument);
-  var componentsModuleVendorJs = (componentsConfig.module.assets.vendor.js || []).map(noInstrument);
-  var componentsVendorMocks    = (componentsConfig.vendor.mocks || []).map(noInstrument);
-  var componentsModuleJs       = componentsConfig.module.js || [];
-  var componentsModuleModules  = componentsConfig.module.modules || [];
-  var componentsModuleMocks    = (componentsConfig.module.mocks || []).map(noInstrument);
-  var componentsModuleTests    = componentsConfig.module.tests || [];
-  var componentsModuleHtml     = componentsConfig.module.html || [];
-
-  var appVendorJs       = (appConfig.vendor.js || []).map(noInstrument);
-  var appModuleVendorJs = (appConfig.module.assets.vendor.js || []).map(noInstrument);
-  var appVendorMocks    = (appConfig.vendor.mocks || []).map(noInstrument);
-  var appModuleJs       = appConfig.module.js || [];
-  var appModuleModules  = appConfig.module.modules || [];
-  var appModuleMocks    = (appConfig.module.mocks || []).map(noInstrument);
-  var appModuleTests    = appConfig.module.tests || [];
-  var appModuleHtml     = appConfig.module.html || [];
+  var src = getSrc();
 
   return {
     basePath       : '..', // Ignored through gulp-karma
     'files'        : []
-      .concat(commonVendorJs)
-      .concat(componentsVendorJs)
-      .concat(appVendorJs)
-      .concat(commonModuleVendorJs)
-      .concat(componentsModuleVendorJs)
-      .concat(appModuleVendorJs)
-      .concat(commonVendorMocks)
-      .concat(componentsVendorMocks)
-      .concat(appVendorMocks)
-      .concat(commonModuleMocks)
-      .concat(componentsModuleMocks)
-      .concat(appModuleMocks)
-      .concat(commonModuleModules)
-      .concat(componentsModuleModules)
-      .concat(appModuleModules)
-      .concat(commonModuleJs)
-      .concat(componentsModuleJs)
-      .concat(appModuleJs)
-      .concat(commonModuleHtml)
-      .concat(componentsModuleHtml)
-      .concat(appModuleHtml),
-    'tests'        : appModuleTests,
+      .concat( src.commonVendorJs )
+      .concat( src.componentsVendorJs )
+      .concat( src.appVendorJs )
+      .concat( src.commonModuleVendorJs )
+      .concat( src.componentsModuleVendorJs )
+      .concat( src.appModuleVendorJs )
+      .concat( src.commonVendorMocks )
+      .concat( src.componentsVendorMocks )
+      .concat( src.appVendorMocks )
+      .concat( src.commonModuleMocks )
+      .concat( src.componentsModuleMocks )
+      .concat( src.appModuleMocks )
+      .concat( src.commonModuleModules )
+      .concat( src.componentsModuleModules )
+      .concat( src.appModuleModules )
+      .concat( src.commonModuleJs )
+      .concat( src.componentsModuleJs )
+      .concat( src.appModuleJs )
+      .concat( src.commonModuleHtml )
+      .concat( src.componentsModuleHtml )
+      .concat( src.appModuleHtml ),
+    'tests'        : src.appModuleTests,
     'preprocessors': {
-      'src/common/modules/**/*.html'       : function (file) {
-        return angularTemplatePreprocessor.transform(file, {
+      'src/common/modules/**/*.html'       : function( file ) {
+        return angularTemplatePreprocessor.transform( file, {
           stripPrefix : 'src\/(app|common|components)\/.*\/?modules\/',
           'moduleName': 'isc.templates'
-        });
+        } );
       },
-      'src/components/**/modules/**/*.html': function (file) {
-        return angularTemplatePreprocessor.transform(file, {
+      'src/components/**/modules/**/*.html': function( file ) {
+        return angularTemplatePreprocessor.transform( file, {
           stripPrefix : 'src\/(app|common|components)\/.*\/?modules\/',
           'moduleName': 'isc.templates'
-        });
+        } );
       },
-      'src/app/modules/**/*.html'          : function (file) {
-        return angularTemplatePreprocessor.transform(file, {
+      'src/app/modules/**/*.html'          : function( file ) {
+        return angularTemplatePreprocessor.transform( file, {
           stripPrefix : 'src\/(app|common|components)\/.*\/?modules\/',
           'moduleName': 'isc.templates'
-        });
+        } );
       }
     },
     'testFramework': 'jasmine'
   };
+}
 
-  /**
-   * @description Used by WallabyJs to not run code analysis
-   * @param pattern
-   * @returns {{pattern: *, instrument: boolean}}
-   */
-  function noInstrument(pattern) {
-    if (_.isObject(pattern)) {
-      return _.extend(pattern, {
-        instrument: false
-      });
-    }
-    else {
-      return {
-        pattern   : pattern,
-        instrument: false
-      };
-    }
-  }
-};
+
+function getSrc() {
+  // var commonWallaby    = require( './wallaby.config.common' );
+  var componentsConfig = require( './wallaby.config.components' );
+  var componentsSrc    = componentsConfig.getSrc();
+  var appConfig        = require( './gulp/app.json' );
+
+  return _.extend( componentsSrc, {
+    appVendorJs      : (appConfig.vendor.js || []).map( componentsConfig.noInstrument ),
+    appModuleVendorJs: (appConfig.module.assets.vendor.js || []).map( componentsConfig.noInstrument ),
+    appVendorMocks   : (appConfig.vendor.mocks || []).map( componentsConfig.noInstrument ),
+    appModuleJs      : appConfig.module.js || [],
+    appModuleModules : appConfig.module.modules || [],
+    appModuleMocks   : (appConfig.module.mocks || []).map( componentsConfig.noInstrument ),
+    appModuleTests   : appConfig.module.tests || [],
+    appModuleHtml    : appConfig.module.html || []
+  } );
+}
