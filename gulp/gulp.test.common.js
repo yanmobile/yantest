@@ -1,22 +1,30 @@
 /**
  * Created by douglasgoodman on 1/16/15.
  */
-var Karma = require('karma').Server;
+var Karma = require( 'karma' ).Server;
 
 module.exports = {
-  init: init
+  init  : init,
+  getSrc: getSrc
 };
 
-function init(gulp, plugins, config, _) {
-  'use strict';
+function getSrc( config, _ ) {
+  var src = {
+    commonVendorJs      : config.common.vendor.js || [],
+    commonVendorMocks   : config.common.vendor.mocks || [],
+    commonModuleModules : config.common.module.modules || [],
+    commonModuleJs      : config.common.module.js || [],
+    commonModuleVendorJs: config.common.module.assets.vendor.js || [],
+    commonModuleMocks   : config.common.module.mocks || [],
+    commonModuleHtml    : config.common.module.html || [],
+    commonModuleTests   : config.common.module.tests || []
+  };
+  return src;
+}
 
-  var commonVendorJs      = config.common.vendor.js || [];
-  var commonVendorMocks   = config.common.vendor.mocks || [];
-  var commonModuleModules = config.common.module.modules || [];
-  var commonModuleJs      = config.common.module.js || [];
-  var commonModuleMocks   = config.common.module.mocks || [];
-  var commonModuleHtml    = config.common.module.html || [];
-  var commonModuleTests   = config.common.module.tests || [];
+function init( gulp, plugins, config, _ ) {
+  'use strict';
+  var src = getSrc( config, _ );
 
   /*================================================
    =              Run unit tests                   =
@@ -25,23 +33,23 @@ function init(gulp, plugins, config, _) {
   // --------------------------------
   // run the common tests
   // --------------------------------
-  gulp.task('test:common', function (done) {
+  gulp.task( 'test:common', function( done ) {
 
-    var srcFiles = _.concat(
-      commonVendorJs,
-      commonModuleModules,
-      commonModuleJs,
-      commonVendorMocks,
-      commonModuleMocks,
-      commonModuleHtml,
-      commonModuleTests);
-    var configPath = plugins.path.join(__dirname, "../test/karma.conf.common.js");
-    return new Karma({
+    var srcFiles   = _.concat(
+      src.commonVendorJs,
+      src.commonModuleModules,
+      src.commonModuleJs,
+      src.commonVendorMocks,
+      src.commonModuleMocks,
+      src.commonModuleHtml,
+      src.commonModuleTests );
+    var configPath = plugins.path.join( __dirname, "../test/karma.conf.common.js" );
+    return new Karma( {
       configFile: configPath,
       files     : srcFiles,
       singleRun : true
-    }, done).start();
+    }, done ).start();
 
-  }); //end of gulp.task
+  } ); //end of gulp.task
 
 }
