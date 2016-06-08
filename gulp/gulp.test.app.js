@@ -2,46 +2,34 @@
  * Created by douglasgoodman on 1/16/15.
  */
 
-var Karma = require('karma').Server;
+var Karma               = require( 'karma' ).Server;
+var componentTestConfig = require( './gulp.test.components' );
+var _                   = require( 'lodash' );
 
 module.exports = {
-  init: init
+  init  : init,
+  getSrc: getSrc
 };
 
-function init(gulp, plugins, config, _) {
+function getSrc( config, _ ) {
+  var componentSrc = componentTestConfig.getSrc( config );
+  var appConfig    = config.app;
+  return _.extend( componentSrc, {
+    appVendorJs      : (appConfig.vendor.js || []),
+    appModuleVendorJs: (appConfig.module.assets.vendor.js || []),
+    appVendorMocks   : (appConfig.vendor.mocks || []),
+    appModuleJs      : appConfig.module.js || [],
+    appModuleModules : appConfig.module.modules || [],
+    appModuleMocks   : (appConfig.module.mocks || []),
+    appModuleTests   : appConfig.module.tests || [],
+    appModuleHtml    : appConfig.module.html || [],
+    masterOverrides  : _.concat( config.masterConfig.overrides.js.common, config.masterConfig.overrides.js.components )
+  } );
+}
+
+function init( gulp, plugins, config, _ ) {
   'use strict';
-
-  var commonConfig     = config.common;
-  var componentsConfig = config.component;
-  var appConfig        = config.app;
-
-  var commonVendorJs      = (commonConfig.vendor.js || []);
-  var commonModuleVendorJs = (commonConfig.module.assets.vendor.js || []);
-  var commonVendorMocks   = (commonConfig.vendor.mocks || []);
-  var commonModuleModules = commonConfig.module.modules || [];
-  var commonModuleJs      = commonConfig.module.js || [];
-  var commonModuleMocks   = (commonConfig.module.mocks || []);
-  var commonModuleHtml    = commonConfig.module.html || [];
-
-  var componentsVendorJs      = (componentsConfig.vendor.js || []);
-  var componentsModuleVendorJs = (componentsConfig.module.assets.vendor.js || []);
-  var componentsVendorMocks   = (componentsConfig.vendor.mocks || []);
-  var componentsModuleJs      = componentsConfig.module.js || [];
-  var componentsModuleModules = componentsConfig.module.modules || [];
-  var componentsModuleMocks   = (componentsConfig.module.mocks || []);
-  var componentsModuleTests   = componentsConfig.module.tests || [];
-  var componentsModuleHtml    = componentsConfig.module.html || [];
-
-  var appVendorJs      = (appConfig.vendor.js || []);
-  var appModuleVendorJs = (appConfig.module.assets.vendor.js || []);
-  var appVendorMocks   = (appConfig.vendor.mocks || []);
-  var appModuleJs      = appConfig.module.js || [];
-  var appModuleModules = appConfig.module.modules || [];
-  var appModuleMocks   = (appConfig.module.mocks || []);
-  var appModuleTests   = appConfig.module.tests || [];
-  var appModuleHtml    = appConfig.module.html || [];
-
-  var masterOverrides = _.concat(config.masterConfig.overrides.js.common, config.masterConfig.overrides.js.components);
+  var src = getSrc( config, _ );
 
   /*================================================
    =              Run unit tests                   =
@@ -50,45 +38,45 @@ function init(gulp, plugins, config, _) {
   // --------------------------------
   // run the app tests
   // --------------------------------
-  gulp.task('test:app', function (done) {
+  gulp.task( 'test:app', function( done ) {
     var srcFiles = []
-      .concat(commonVendorJs) //vendorJs
-      .concat(componentsVendorJs)
-      .concat(appVendorJs)
-      .concat(commonModuleVendorJs)//module vendorJs
-      .concat(componentsModuleVendorJs)
-      .concat(appModuleVendorJs)
-      .concat(commonVendorMocks)//Vendor Mocks
-      .concat(componentsVendorMocks)
-      .concat(appVendorMocks)
-      .concat(commonModuleMocks)//Module mocks
-      .concat(componentsModuleMocks)
-      .concat(appModuleMocks)
-      .concat(commonModuleModules) //module specific module declarations
-      .concat(componentsModuleModules)
-      .concat(appModuleModules)
-      .concat(commonModuleJs) //module specific js files
-      .concat(componentsModuleJs)
-      .concat(appModuleJs)
-      .concat(commonModuleHtml) //html files
-      .concat(componentsModuleHtml)
-      .concat(appModuleHtml)
-      .concat(appModuleTests) // test files
-      .concat(masterOverrides); //overrides
+      .concat( src.commonVendorJs ) //vendorJs
+      .concat( src.componentsVendorJs )
+      .concat( src.appVendorJs )
+      .concat( src.commonModuleVendorJs )//module vendorJs
+      .concat( src.componentsModuleVendorJs )
+      .concat( src.appModuleVendorJs )
+      .concat( src.commonVendorMocks )//Vendor Mocks
+      .concat( src.componentsVendorMocks )
+      .concat( src.appVendorMocks )
+      .concat( src.commonModuleMocks )//Module mocks
+      .concat( src.componentsModuleMocks )
+      .concat( src.appModuleMocks )
+      .concat( src.commonModuleModules ) //module specific module declarations
+      .concat( src.componentsModuleModules )
+      .concat( src.appModuleModules )
+      .concat( src.commonModuleJs ) //module specific js files
+      .concat( src.componentsModuleJs )
+      .concat( src.appModuleJs )
+      .concat( src.commonModuleHtml ) //html files
+      .concat( src.componentsModuleHtml )
+      .concat( src.appModuleHtml )
+      .concat( src.appModuleTests ) // test files
+      .concat( src.masterOverrides ); //overrides
 
-    var configPath = plugins.path.join(__dirname, "../test/karma.conf.app.js");
-    return new Karma({
+    var configPath = plugins.path.join( __dirname, "../test/karma.conf.app.js" );
+    return new Karma( {
       configFile: configPath,
       files     : srcFiles,
       singleRun : true
-    }, done).start();
-  });
+    }, done ).start();
+  } );
 
   // --------------------------------
   // run all the tests
   // --------------------------------
-  gulp.task('test', function (done) {
-    return plugins.seq(['test:app', 'test:components', 'test:common'], done);
-  });
+  gulp.task( 'test', function( done ) {
+    return plugins.seq( ['test:app', 'test:components', 'test:common'], done );
+  } );
 
 }
