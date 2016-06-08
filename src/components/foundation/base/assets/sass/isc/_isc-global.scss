@@ -1,3 +1,64 @@
+// THEME COLOR PALETTES
+/* -----------------------------------------
+* Primary Palette (Primary, Secondary, Neutral, Accent)
+* Neutral Shades (Neutral Two, Neutral Three, Neutral Splash)
+* Typography Palette (Dark Text, Light Text, Header Text, Subtext)
+* States (Alert, Success, Warning, Info)
+----------------------------------------- */
+
+/* Primary Pallete */
+$primary-color: #485163 !default;
+$secondary-color: #a7b8d1 !default;
+$neutral-color: #ebebeb !default;
+$accent-color: #35b2ea !default;
+
+/* Neutral Shades */
+$neutral-two: #f1f1f1 !default;
+$neutral-three: #f8f8f8 !default;
+$neutral-splash: #eef1f6 !default;
+
+/* Typography Pallete */
+$dark-text: #424242 !default;
+$light-text: #ffffff !default;
+$header-text: #546075 !default;
+$subtext-color: #b0bbc1 !default;
+
+/* States Pallete */
+$success-color: #64B5AA !default;
+$alert-color: #db492c !default;
+$warning-color: #FB9B5F !default;
+$info-color: #B1D5E5 !default;
+
+// For internal use: a color map
+$theme-colors: (
+  primary: $primary-color,
+  secondary: $secondary-color,
+  neutral: $neutral-color,
+  accent: $accent-color,
+  success: $success-color,
+  alert: $alert-color,
+  warning: $warning-color,
+  info: $info-color,
+  dark: $dark-color,
+  neutral-two: $neutral-two,
+  neutral-three: $neutral-three,
+  dark-text: $dark-text,
+  light-text: $light-text,
+  header-text: $header-text,
+  subtext: $subtext-color
+);
+
+/* --- Grayscale Logic --- */
+$gray-10: darken( #fff, 10 );
+$gray-20: darken( #fff, 20 );
+$gray-30: darken( #fff, 30 );
+$gray-40: darken( #fff, 40 );
+$gray-50: darken( #fff, 50 );
+$gray-60: darken( #fff, 60 );
+$gray-70: darken( #fff, 70 );
+$gray-80: darken( #fff, 80 );
+$gray-90: darken( #fff, 90 );
+
 /* Shadow-Depth Map */
 $shadow-depths: (
   '1dp': $shadow-1dp,
