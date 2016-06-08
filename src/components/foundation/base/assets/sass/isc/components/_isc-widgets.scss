@@ -1,0 +1,287 @@
+/*
+  WIDGETS
+  --------------------------------------------------
+  Includes a few basic style variations for a widget component - Just getting started here; more coming soon.
+   - Widget Container
+   - Widget Header (Titles and Links)
+   - Widget Menu (action sheet)
+   - Widget Sections
+   - Widget Dividers, Stripes and Slats
+---------------------------------------------------*/
+
+/* Widget Settings */
+
+// Widget Container
+$widget-background: #fff !default;
+$widget-color: isitlight($widget-background, $body-font-color, $light-text) !default;
+$widget-border: none;
+$widget-radius: $global-radius !default;
+$widget-shadow: $card-shadow !default;
+$widget-padding: $global-padding !default;
+$widget-margin: 1rem !default;
+$widget-divider-background: smartscale($widget-background, 7%) !default;
+
+// Widget Header
+$widget-header-background: $primary-color !default;
+$widget-header-padding: 0.75rem 0.75rem !default;
+
+// Widget Menu
+$widget-menu-padding: 0.75rem !default;
+$widget-menu-width: 250px !default;
+$widget-menu-link-color: $body-font-color !default;
+$widget-menu-background-hover: smartscale($widget-background) !default;
+$widget-menu-title-margin: 0.5rem !default;
+
+/* WIDGET MIXINS */
+
+// Widget Container
+@mixin widget-container(
+  $background: $widget-background,
+  $color: $widget-color,
+  $border: $widget-border,
+  $radius: $widget-radius,
+  $shadow: $widget-shadow,
+  $padding: $widget-padding,
+  $margin: $widget-margin
+) {
+  border: $border;
+  margin-bottom: $margin;
+  background: $background;
+  color: $color;
+  border-radius: $radius;
+  box-shadow: $shadow;
+  flex-grow: 1;
+
+  h1, h2, h3, h4, h5, h6 {
+    color: inherit;
+    font-weight: $font-weight-normal;
+  }
+
+  ul, img {margin-bottom: 0;}
+  img {width: 100%; height: 100%;}
+
+  @each $depth, $shadow-depth in $shadow-depths {
+    .shadow-#{$depth} {
+      box-shadow: $shadow-depth;
+    }
+  }
+
+  @media #{$small} {
+    margin-bottom: $margin * 2;
+  }
+}
+
+// Widget Header: like cap or titlebar on modals
+@mixin widget-header(
+  $background: $widget-header-background,
+  $padding: $widget-header-padding,
+  $title-color: isitlight($widget-header-background, $body-font-color, $light-text),
+  $link-color: isitlight($widget-header-background, $gray-dark, $light-text)
+  ) {
+  background: $background;
+  padding: $padding;
+  color: $title-color;
+  font-weight: $font-weight-semi-bold;
+  //border-bottom: 1px solid isitlight($widget-header-background, $gray, $light-text);
+
+  h1, h2, h3, h4, h5, h6 {
+    color: $title-color;
+    margin: 0;
+    line-height: 1.1;
+    font-weight: $font-weight-normal;
+  }
+
+  a {
+    color: $link-color;
+    line-height: 1.2;
+
+    &:hover {
+      color: smartscale($link-color);
+    }
+  }
+
+  .title {
+    @include grid-content($size: expand);
+    padding: 0;
+  }
+
+  .menu-bar, .title-bar {
+    a {
+      padding:0;
+      font-size: 0.875rem;
+      text-align: right;
+      vertical-align: middle;
+    }
+  }
+
+}
+
+// Widget Menu
+@mixin widget-menu(
+  $padding: $widget-menu-padding,
+  $width: $widget-menu-width,
+  $color: $widget-menu-link-color,
+  $border-color: $actionsheet-border-color,
+  $background-hover: $widget-menu-background-hover
+) {
+
+  margin-bottom: -(1rem);
+
+  a {
+    display: block;
+    padding: 1rem;
+    line-height: 1;
+    color: $color;
+    border-top: 1px solid $border-color;
+    font-weight: $font-weight-normal;
+
+    i {
+      &:before {
+        margin-right: 0.25rem;
+      }
+    }
+
+    &:hover, &:active, &:focus {
+      color: $color;
+      background: $background-hover;
+    }
+  }
+
+  // Menu container
+  @include breakpoint(medium) {
+    padding: $widget-menu-padding;
+    width: $width;
+
+    ul {
+      margin: -($padding);
+      margin-top: 0;
+      list-style-type: none;
+      user-select: none;
+      text-align: left;
+
+      // If the menu has no content above it
+      &:first-child {
+        margin-top: -$padding;
+
+        li:first-child {
+          border-top: 0;
+        }
+      }
+
+      li {
+        a {padding: $padding * 1;}
+        &:first-child a {border-top: 0;}
+      }
+    }
+  }
+}
+
+// Widget Divider (Like a card divider)
+@mixin widget-divider ($background: $widget-divider-background, $padding: $widget-padding, $color: isitlight($widget-divider-background)) {
+  background: $background;
+  padding: $padding;
+  color: $color;
+
+  h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+  }
+}
+
+// widget Section: Non-specialized padded widget content
+@mixin widget-section($padding: $widget-padding) {
+  padding: $padding;
+}
+
+// Widget Callout Section: Non-specialized padded widget content but inside an inverted color stripe
+@mixin widget-stripe($padding: $widget-padding, $background: isitlight($widget-background, $primary-color, $light-text), $color: isitlight($widget-divider-background, $header-text, $light-text)) {
+  background: $background;
+  padding: $padding;
+  color: $color;
+}
+
+/* WIDGET STYLE EXPORTS */
+
+@include exports(widgets) {
+  %widget, .widget {
+    @include widget-container;
+
+    @each $color in map-keys($theme-colors) {
+      &.#{$color} {
+        $color-name: map-get($theme-colors, $color);
+        @include widget-container(
+          $background: $color-name,
+          $color: isitlight($color-name),
+          $border: 0
+        );
+
+        .divider {
+          @include widget-divider(
+            $background: smartscale($color-name, 10%)
+          );
+        }
+        .slat {
+          @include widget-divider(
+            $background: $color-name,
+            $padding: $widget-padding
+          );
+          border-top: 1px solid smartscale($color-name, 10%);
+          border-bottom: 1px solid smartscale($color-name, 10%);
+        }
+        .stripe {
+          @include widget-stripe(
+            $background: isitlight($color-name, $primary-color, $neutral-two),
+            $padding: $widget-padding
+          );
+        }
+      }
+    }
+
+    .header {
+      @include widget-header;
+
+      @each $color in map-keys($theme-colors) {
+        &.#{$color} {
+          $color-name: map-get($theme-colors, $color);
+          @include widget-header(
+            $background: $color-name,
+            $title-color: isitlight($color-name)
+          );
+          h1, h2, h3, h4, h5, h6 {color: isitlight($color-name, $body-font-color, $light-text);}
+          .menu-bar > li > a, a {color: isitlight($color-name, $gray-dark, $light-text);}
+        }
+      }
+
+      // This is the wrapper for your button and action sheet
+      .action-sheet-container {
+
+        a {
+          &.icon {
+            &:first-child {
+              &:before {
+                margin: 0;
+              }
+            }
+          }
+        }
+
+        // This is the widget menu itself
+        .action-sheet {
+          @include widget-menu;
+        }
+      }
+    }
+
+    .divider {@include widget-divider;}
+    .stripe {@include widget-stripe;}
+    .section {@include widget-section;}
+
+    .block-list {margin: 0;}
+
+    .slat {
+      @include widget-divider($background: $widget-background);
+      border-top: 1px solid smartscale($app-border-color, 10%);
+      border-bottom: 1px solid smartscale($app-border-color, 10%);
+      border: 1px solid smartscale($widget-background, 7%);
+    }
+  }
+}
