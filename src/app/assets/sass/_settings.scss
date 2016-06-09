@@ -258,9 +258,9 @@ $horizontal-container-padding-small: 1rem;
 
 // 4. BREAKPONTS
 /* -----------------------------------------
- * Target Sizes or Devices or Both
- * Sizes: Small, Medium, Large, xlarge, xxlarge
- * Devices: Phone, Phablet, Tablet, Desktop
+ * Target Sizes: Small, Medium, Large, xlarge, xxlarge
+ * If you need to target something more specific,
+ * add it to the map below.
 ----------------------------------------- */
 
 $breakpoints: (
@@ -271,15 +271,8 @@ $breakpoints: (
   'xxlarge': rem-calc(1920),
 );
 
-$devices: (
-  'phone': rem-calc(320),
-  'phablet': rem-calc(414),
-  'tablet': rem-calc(768),
-  'desktop': rem-calc(1025),
-);
-
 // Listed names are output as CSS classes e.g. small-12, medium-6, etc.
-$breakpoint-classes: (small medium large xlarge);
+$breakpoint-classes: (small medium large xlarge xxlarge);
 
 // 5. GRID
 /* ------------------------------ */
