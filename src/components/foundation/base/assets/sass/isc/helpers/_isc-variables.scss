@@ -13,10 +13,10 @@ $breakpoints: (
 ) !default;
 
 $devices: (
-  'phone': rem-calc(320),
-  'phablet': rem-calc(414),
-  'tablet': rem-calc(768),
-  'desktop': rem-calc(1025),
+  'phone': rem-calc(0),
+  'phablet': rem-calc(640),
+  'tablet': rem-calc(960),
+  'desktop': rem-calc(1200),
 ) !default;
 
 /* MINIMUM */
