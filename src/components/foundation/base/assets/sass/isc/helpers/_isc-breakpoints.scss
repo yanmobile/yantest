@@ -1,18 +1,17 @@
 // BREAKPOINT VARIABLES
 /* -----------------------------------------
-* Target Sizes: Small, Medium, Large, xlarge, xxlarge
-* If you need to target something more specific,
-* add it to the $breakpoints map in your app settings file.
+ * Target Sizes or Devices or Both
+ * Sizes: Small, Medium, Large, xlarge, xxlarge
+ * Devices: Phone, Phablet, Tablet, Desktop
 ----------------------------------------- */
 $breakpoints: (
   'small': rem-calc(0),
-  'medium': rem-calc(859),
+  'medium': rem-calc(900),
   'large': rem-calc(1025),
   'xlarge': rem-calc(1440),
   'xxlarge': rem-calc(1920),
 ) !default;
 
-// For Backwards Compatibility
 $devices: (
   'phone': rem-calc(0),
   'phablet': rem-calc(640),
@@ -20,40 +19,39 @@ $devices: (
   'desktop': rem-calc(1200),
 ) !default;
 
-/* MINIMUM */
+/*-----MINIMUM-----*/
 
-// Devices
-$screen-phone-min:  map-get($devices, 'phone') !default;
-$screen-phablet-min: map-get($devices, 'phablet') !default;
-$screen-tablet-min:  map-get($devices, 'tablet') !default;
-$screen-desktop-min: map-get($devices, 'desktop') !default;
+// Devices Min
+$phone-min:  map-get($devices, 'phone') !default;
+$phablet-min: map-get($devices, 'phablet') !default;
+$tablet-min:  map-get($devices, 'tablet') !default;
+$desktop-min: map-get($devices, 'desktop') !default;
 
-// Breakpoints
+// Breakpoints Min
 $small-min: map-get($breakpoints, 'small') !default;
 $medium-min: map-get($breakpoints, 'medium') !default;
 $large-min: map-get($breakpoints, 'large') !default;
 $xlarge-min: map-get($breakpoints, 'xlarge') !default;
 $xxlarge-min: map-get($breakpoints, 'xxlarge') !default;
 
-/* MAXIMUM */
+/*-----MAXIMUM-----*/
 
-// Devices
-$screen-phone-max:   ($screen-phablet-min - 1) !default;
-$screen-phablet-max: ($screen-tablet-min - 1) !default;
-$screen-tablet-max:  ($screen-desktop-min - 1) !default;
+// Devices Max
+$phone-max:   ($phablet-min - 1) !default;
+$phablet-max: ($tablet-min - 1) !default;
+$tablet-max:  ($desktop-min - 1) !default;
+$desktop-max: rem-calc(1439);
 
-// Breakpoints
+// Breakpoints Max
 $small-max: ($medium-min - 1) !default;
 $medium-max: ($large-min - 1) !default;
 $medium-portrait-max: 1000px !default;
 $large-max: ($xlarge-min - 1) !default;
 $xlarge-max: ($xxlarge-min - 1) !default;
 
-$phone:     "only screen and (max-width: #{$screen-phone-max})";
-$phablet:   "only screen and (min-width: #{$screen-phablet-min}) and (max-width: #{$screen-phablet-max})";
-$tablet:    "only screen and (min-width: #{$screen-tablet-min}) and (max-width: #{$screen-tablet-max})";
-$desktop:   "only screen and (min-width: #{$screen-desktop-min})";
+/*-----RANGES-----*/
 
+// Breakpoints
 $small:     "only screen and (max-width: #{$small-max})";
 $medium:    "only screen and (min-width: #{$medium-min}) and (max-width: #{$medium-max})";
 $large:     "only screen and (min-width: #{$large-min}) and (max-width: #{$large-max})";
@@ -61,32 +59,57 @@ $xlarge:    "only screen and (min-width: #{$xlarge-min}) and (max-width: #{$xlar
 $xxlarge:   "only screen and (min-width: #{$xxlarge-min})";
 $medium-portrait: "only screen and (min-width: #{$medium-min}) and (max-width: #{$medium-portrait-max})";
 
-// Medium Down
-$medium-down: "only screen and (max-width: #{$medium-max})";
-// Medium Up
+// Devices
+$phone:     "only screen and (max-width: #{$phone-max})";
+$phablet:   "only screen and (min-width: #{$phablet-min}) and (max-width: #{$phablet-max})";
+$tablet:    "only screen and (min-width: #{$tablet-min}) and (max-width: #{$tablet-max})";
+$desktop:   "only screen and (min-width: #{$desktop-min})";
+
+/*-----ONLY-----*/
+
+// Breakpoints Only
+$small-only:  "all and (min-width: 0) and (max-width: #{$small-max})";// @include breakpoint( small only)
+$medium-only:  "all and (min-width: #{$medium-min}) and (max-width: #{$medium-max})";
+$large-only:  "all and (min-width: #{$large-min}) and (max-width: #{$large-max})";
+$xlarge-only:  "all and (min-width: #{$xlarge-min}) and (max-width: #{$xlarge-max})";
+
+// Devices Only
+$phone-only:  "all and (min-width: 0) and (max-width: #{$phone-max})";// @include breakpoint( phone only)
+$phablet-only:  "all and (min-width: #{$phablet-min}) and (max-width: #{$phablet-max})";
+$tablet-only:  "all and (min-width: #{$tablet-min}) and (max-width: #{$tablet-max})";
+$desktop-only:  "all and (min-width: #{$desktop-min}) and (max-width: #{$desktop-max})";
+
+/*-----AND UP-----*/
+
+// Breakpoints Up
 $medium-up:   "only screen and (min-width: #{$medium-min})";
-// Large Down
-$large-down:  "only screen and (max-width: #{$large-max})";
-// Large Up
 $large-up:    "only screen and (min-width: #{$large-min})";
-// Xlarge Down
-$xlarge-down: "only screen and (max-width: #{$xlarge-max})";
-// Xlarge Up
 $xlarge-up:   "only screen and (min-width: #{$xlarge-min})";
 
-// Tablet Up
-$tab-plus:     "only screen and (min-width: #{$screen-tablet-min})";
-// Phablet Up
-$phab-plus:    "only screen and (min-width: #{$screen-phablet-min})";
-// Tablet and phablet only
-$tab-phab:     "only screen and (min-width: #{$screen-phablet-min}) and (max-width: #{$screen-tablet-max})";
-// Tablet Down
-$tab-or-less:  "only screen and (max-width: #{$screen-tablet-max})";
-// Phablet Down
-$phab-or-less: "only screen and (max-width: #{$screen-phablet-max})";
-// Phone Down
-$below-phab:   "only screen and (max-width: #{$screen-phone-max})";
-// Everything but Desktop
-$mobile:       "only screen and (max-width: #{$medium-max})";
-//Print
+// Devices Up
+$phone-up: "all and (min-width: 0)"; // @include breakpoint( phone )
+$phablet-up: "all and (min-width: #{$phablet-min})";
+$tablet-up: "all and (min-width: #{$tablet-min})";
+$desktop-up: "all and (min-width: #{$desktop-min})";
+
+/*-----AND DOWN-----*/
+
+// Breakpoints Down
+$medium-down: "only screen and (max-width: #{$medium-max})";
+$large-down:  "only screen and (max-width: #{$large-max})";
+$xlarge-down: "only screen and (max-width: #{$xlarge-max})";
+
+// Devices Down
+$phablet-down: "all and (max-width: #{$phone-max})"; // @include breakpoint( phablet down) or @include breakpoint( phone only)
+$tablet-down: "all and (max-width: #{$phablet-max})";
+$desktop-down:  "all and (max-width: #{$tablet-max})";
+
+/*-----COMBOS-----*/
+
+// Devices
+$desk-tab: "all and (min-width: #{$tablet-min}) and (max-width: #{$desktop-max})"; // tablet and desktop
+$tab-phab: "all and (min-width: #{$phablet-min}) and (max-width: #{$tablet-max})"; // phablet and tablet
+$phab-phone: "all and (min-width: 0) and (max-width: #{$phablet-max})"; // phone and phablet
+
+/*-----ONLY PRINT-----*/
 $print:  "only print";
