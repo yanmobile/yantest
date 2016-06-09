@@ -7,9 +7,10 @@
 ----------------------------------*/
 
 /* Utilities */
-@import "helpers/isc-variables"; // TODO - Deconstruct, remove bloat, create systematic app variables from scratch and theming POA
-@import "helpers/isc-mixins"; // TODO - Deconstruct, remove bloat, create organized, useful mixins from scratch
-@import "helpers/isc-utilities"; // TODO - Deconstruct and organize new utility classes here
+@import "helpers/isc-breakpoints";
+@import "helpers/isc-variables";
+@import "helpers/isc-mixins";
+@import "helpers/isc-utilities";
 
 /* Global */
 @import "isc-global";
@@ -28,7 +29,7 @@
 @import "components/isc-primary-nav";
 @import "components/isc-secondary-nav";
 @import "components/isc-footer";
-@import "components/isc-sidebar"; // TODO - Dynamic Menu Icons
+@import "components/isc-sidebar"; // TODO - Dynamic Sidebar Menu Icons
 @import "components/isc-widgets";
 
 /* Layout */
