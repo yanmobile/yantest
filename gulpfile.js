@@ -1,39 +1,39 @@
 'use strict';
 
-var gulp       = require('gulp');
-var _          = require('lodash');
-var requiredir = require('require-dir');
+var gulp       = require( 'gulp' );
+var _          = require( 'lodash' );
+var requiredir = require( 'require-dir' );
 
 var plugins = {
-  chmod        : require('gulp-chmod'), //changes file permissions, used by imagemin
-  concat       : require('gulp-concat'),  //concatenating multiple files into 1
-  cssmin       : require('gulp-cssmin'),  //minifies css
-  dateFormat   : require('dateformat'),
-  del          : require('del'),  //deleting folders/files
-  es           : require('event-stream'),
-  exec         : require('child_process').exec,
-  execSync     : require('child_process').execSync,
-  filelog      : require('gulp-filelog'), //used for logging files in the pipe to the console
-  fs           : require('fs'), //file system
-  imagemin     : require('gulp-imagemin'),  //used by pngCrush
-  jscs         : require('gulp-jscs'),  //javascript coding styles
-  jshint       : require('gulp-jshint'),  //js linting
-  stylish      : require('gulp-jscs-stylish'),  //js linting
-  karma        : require('karma').server, //unit test runner
-  mobilizer    : require('gulp-mobilizer'), //?
-  ngAnnotate   : require('gulp-ng-annotate'), //adding ngAnnotate
-  path         : require('path'),
-  pngcrush     : require('imagemin-pngcrush'),  //img resizer
-  rename       : require('gulp-rename'),  //rename files
-  replace      : require('gulp-replace'),
-  sass         : require('gulp-sass'), //sass => css
-  seq          : require('run-sequence'), //run tasks in parallel
-  size         : require('gulp-size'),  //output file size
-  sourcemaps   : require('gulp-sourcemaps'),  //generate sourcemaps
-  templateCache: require('gulp-angular-templatecache'),
-  uglify       : require('gulp-uglify'),  //minify/uglify
-  bytediff     : require('gulp-bytediff'),  //tells the file size before and after a gulp operation
-  inject       : require('gulp-inject') // used for injecting scripts
+  chmod        : require( 'gulp-chmod' ), //changes file permissions, used by imagemin
+  concat       : require( 'gulp-concat' ),  //concatenating multiple files into 1
+  cssmin       : require( 'gulp-cssmin' ),  //minifies css
+  dateFormat   : require( 'dateformat' ),
+  del          : require( 'del' ),  //deleting folders/files
+  es           : require( 'event-stream' ),
+  exec         : require( 'child_process' ).exec,
+  execSync     : require( 'child_process' ).execSync,
+  filelog      : require( 'gulp-filelog' ), //used for logging files in the pipe to the console
+  fs           : require( 'fs' ), //file system
+  imagemin     : require( 'gulp-imagemin' ),  //used by pngCrush
+  jscs         : require( 'gulp-jscs' ),  //javascript coding styles
+  jshint       : require( 'gulp-jshint' ),  //js linting
+  stylish      : require( 'gulp-jscs-stylish' ),  //js linting
+  karma        : require( 'karma' ).server, //unit test runner
+  mobilizer    : require( 'gulp-mobilizer' ), //?
+  ngAnnotate   : require( 'gulp-ng-annotate' ), //adding ngAnnotate
+  path         : require( 'path' ),
+  pngcrush     : require( 'imagemin-pngcrush' ),  //img resizer
+  rename       : require( 'gulp-rename' ),  //rename files
+  replace      : require( 'gulp-replace' ),
+  sass         : require( 'gulp-sass' ), //sass => css
+  seq          : require( 'run-sequence' ), //run tasks in parallel
+  size         : require( 'gulp-size' ),  //output file size
+  sourcemaps   : require( 'gulp-sourcemaps' ),  //generate sourcemaps
+  templateCache: require( 'gulp-angular-templatecache' ),
+  uglify       : require( 'gulp-uglify' ),  //minify/uglify
+  bytediff     : require( 'gulp-bytediff' ),  //tells the file size before and after a gulp operation
+  inject       : require( 'gulp-inject' ) // used for injecting scripts
 };
 
 var util = {
@@ -43,39 +43,29 @@ var util = {
   fixRelativePath: fixRelativePath
 };
 
-var appjson = getArg("--appjson");
-appjson     = fixRelativePath(appjson);
+var appjson = getArg( "--appjson" );
+appjson     = fixRelativePath( appjson );
 
-var configs = {
-  app         : readJson((appjson || './gulp/app.json'), {
-    edition: [{
-      "name": "base",
-      "path": "src/components/foundation/base/components.json"
-    }]
-  }),
-  component   : {}, //specified in app.json/editions
-  common      : require('./gulp/common.json'),
-  masterConfig: {} //aggregated config of app/components/common
-};
+var configs = readJson( (appjson || './gulp/config.app.js'), require( './gulp/config.framework.js' ) );
 
-_.forEach(configs.app.edition, function (edition) {
+_.forEach( configs.app.edition, function( edition ) {
   var editionContent;
-  edition.path          = fixRelativePath(edition.path);
-  editionContent        = require(edition.path);
+  edition.path          = fixRelativePath( edition.path );
+  editionContent        = require( edition.path );
   configs[edition.name] = editionContent;
-  _.mergeWith(configs.component, editionContent, concatArrays);
-});
+  _.mergeWith( configs.component, editionContent, concatArrays );
+} );
 
 //masterConfig is a superset of common, component, and app
-_.mergeWith(configs.masterConfig, configs.common, configs.component, configs.app, concatArrays);
+_.mergeWith( configs.masterConfig, configs.common, configs.component, configs.app, concatArrays );
 
 
 /*========================================
  =           gulp tasks                =
  ========================================*/
-gulp.task('default', ['clean'], function () {
-  gulp.start('build');
-});
+gulp.task( 'default', ['clean'], function() {
+  gulp.start( 'build' );
+} );
 
 initTasksInGulpFolder();
 
@@ -87,12 +77,12 @@ initTasksInGulpFolder();
  *  For each task inside "gulp/" folder, initialize/register the task
  */
 function initTasksInGulpFolder() {
-  var tasksInGulpFolder = _.extend({}, requiredir('./gulp/'), readdir('./gulp/custom/'));
+  var tasksInGulpFolder = _.extend( {}, requiredir( './gulp/' ), readdir( './gulp/custom/' ) );
 
-  _.forEach(tasksInGulpFolder, initTask);
-  function initTask(task, name) {
-    if (typeof task.init === "function") {
-      task.init(gulp, plugins, configs, _, util);
+  _.forEach( tasksInGulpFolder, initTask );
+  function initTask( task, name ) {
+    if ( typeof task.init === "function" ) {
+      task.init( gulp, plugins, configs, _, util );
     }
   }
 }
@@ -105,8 +95,8 @@ function initTasksInGulpFolder() {
  * @param key
  * @returns {*}
  */
-function getArg(key) {
-  var index = process.argv.indexOf(key);
+function getArg( key ) {
+  var index = process.argv.indexOf( key );
   var next  = process.argv[index + 1];
   return (index < 0) ? null : (!next || next[0] === "-") ? true : next;
 }
@@ -117,15 +107,13 @@ function getArg(key) {
  * @param filePath
  * @returns {*}
  */
-function readJson(filePath, defaults) {
+function readJson( filePath, defaults ) {
   var json;
   try {
-    filePath = plugins.path.join(filePath);
-    json     = plugins.fs.readFileSync(filePath, 'utf8');
-    //if it doesn't throw, the use JSON.parse()
-    json     = JSON.parse(json);
+    filePath = plugins.path.join( __dirname, filePath );
+    json     = require( filePath );
   } catch ( ex ) {
-    console.log('file not found:', ex);
+    console.log( 'file not found:', ex );
     json = defaults || {};
   }
   return json;
@@ -137,13 +125,13 @@ function readJson(filePath, defaults) {
  * @param dirPath
  * @returns {*}
  */
-function readdir(dirPath, defaults) {
+function readdir( dirPath, defaults ) {
   var json;
   try {
-    dirPath = plugins.path.join(dirPath);
-    plugins.fs.readdirSync(dirPath);
+    dirPath = plugins.path.join( dirPath );
+    plugins.fs.readdirSync( dirPath );
     //if it doesn't throw, the use requiredir
-    json = requiredir(dirPath);
+    json = requiredir( dirPath );
   } catch ( ex ) {
     json = defaults || {};
   }
@@ -155,9 +143,9 @@ function readdir(dirPath, defaults) {
  * @param b
  * @returns {*|string|Array.<T>}
  */
-function concatArrays(a, b) {
-  if (_.isArray(a)) {
-    return a.concat(b);
+function concatArrays( a, b ) {
+  if ( _.isArray( a ) ) {
+    return a.concat( b );
   }
 }
 
@@ -167,9 +155,9 @@ function concatArrays(a, b) {
  * @param path
  * @returns {*}
  */
-function fixRelativePath(path) {
+function fixRelativePath( path ) {
   var retPath = path;
-  if (path && !path.startsWith('/') && !path.startsWith('.')) {
+  if ( path && !path.startsWith( '/' ) && !path.startsWith( '.' ) ) {
     //append "./" to make it "./foo/bar/app.config"
     retPath = "./" + retPath;
   }
