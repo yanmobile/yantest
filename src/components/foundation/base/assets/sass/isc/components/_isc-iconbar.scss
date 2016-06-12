@@ -1,0 +1,156 @@
+/* Iconbar Component
+  ----------------------------------------------
+ - Default Settingd
+ - Mixins
+ - Style Exports
+---------------------------------------------- */
+
+/* Iconbar Settings */
+$iconbar-background: $primary-color !default;
+$iconbar-color: isitlight($iconbar-background, $body-font-color, $light-text) !default;
+$iconbar-background-active: $accent-color !default;
+$iconbar-color-active: isitlight($iconbar-background, $body-font-color, $light-text) !default;
+$iconbar-icon-size: 2rem !default;
+$iconbar-icon-padding: 1.25rem 1rem !default;
+
+/* Iconbar Mixins */
+@mixin iconbar(
+  $background: $iconbar-background,
+  $color: $iconbar-color,
+  $background-active: $iconbar-background-active,
+  $color-active: $iconbar-color-active,
+  $orientation: horizontal,
+  $stretch: true,
+  $icon-size: $iconbar-icon-size
+) {
+
+  @extend %menu-bar;
+  text-align: center;
+
+  @include menu-bar-layout(
+    $orientation: horizontal,
+    $stretch: true
+  );
+
+  @if $orientation == horizontal {
+    > li {
+      border-right: 2px solid scale-color($background, $lightness: -20%);
+
+      &:last-child {
+        border-right: none;
+      }
+    }
+    @include menu-bar-layout(
+      $orientation: horizontal,
+      $stretch: true
+    );
+  }
+  @else {
+    > li {
+      border-bottom: 2px solid scale-color($background, $lightness: -20%);
+      border-right: none;
+    }
+    @include menu-bar-layout(
+      $orientation: vertical,
+      $stretch: true
+    );
+  }
+
+  @if $stretch == false {
+    > li {
+      flex: 0 0 auto;
+    }
+  }
+
+  @include menu-bar-style(
+    $background: $iconbar-background,
+    $color: $iconbar-color,
+    $background-hover: scale-color($iconbar-background, $lightness: -20%),
+    $background-active: $iconbar-background-active,
+    $color-active: $iconbar-color-active,
+    $color-hover: isitlight($iconbar-background-active, $body-font-color, $light-text),
+    $autocolor: false // When true, all the above colors will be derived from $background
+  );
+
+  @include menu-bar-icons(
+    $position: left, // Can be top, right, bottom, or left
+    $size: $icon-size
+  );
+
+  li {
+    a {
+      padding: $iconbar-icon-padding;
+
+      &:before {
+        display: inline-block;
+        font-size: $icon-size;
+        font-family: 'FontAwesome';
+        margin: 0 auto;
+      }
+
+      &.active {
+        background: $background-active;
+        color: isitlight($background-active, $body-font-color, $light-text);
+
+        &:hover {
+          background: $background-active;
+        }
+      }
+
+      label {
+        color: $color;
+        font-family: $body-font-family;
+        margin: 0;
+        padding: 0;
+        line-height: 1;
+      }
+    }
+  }
+
+  @each $color in map-keys($theme-colors) {
+    &.#{$color} {
+      $color-name: map-get($theme-colors, $color);
+      background: $color-name;
+
+      > li {
+        border-color: scale-color($color-name, $lightness: -15%);
+
+        a {
+          color: isitlight($color-name, $body-font-color, $light-text);
+
+          &:hover, &:focus, &:active {
+            background: scale-color($color-name, $lightness: -20%);
+          }
+        }
+      }
+      label {
+        color: isitlight($color-name, $body-font-color, $light-text);
+        font-family: $body-font-family;
+        margin: 0;
+        padding: 0;
+        line-height: 1;
+      }
+    }
+  }
+
+}
+
+/* Iconbar Style Exports */
+@include exports(iconbar) {
+  %icon-bar, .icon-bar {
+    @include iconbar($orientation: horizontal);
+
+    &.vertical {
+      @include iconbar($orientation: vertical);
+
+      &.condense {
+        @include iconbar($orientation: vertical, $stretch: false);
+      }
+    }
+
+    &.stretch {
+      @include menu-bar-layout($orientation: horizontal, $stretch: true);
+    }
+  }
+
+}
