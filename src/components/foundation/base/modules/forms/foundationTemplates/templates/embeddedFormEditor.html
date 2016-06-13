@@ -1,0 +1,27 @@
+<div class="grid-content" ng-if="efCollectionCtrl.renderForm">
+
+  <form>
+    <div>
+      <formly-form model="efCollectionCtrl.editModel"
+                   fields="efCollectionCtrl.fields"
+                   options="efCollectionCtrl.subformOptions"
+                   form="efCollectionCtrl.subform.form">
+      </formly-form>
+    </div>
+
+    <div class="controls clearfix">
+      <button class="cancel float-left flat"
+              type="button"
+              ng-click="efCollectionCtrl.cancel()">
+        {{'Forms_Cancel_Button' | translate}}
+      </button>
+
+      <button class="float-right flat"
+              type="button"
+              ng-click="efCollectionCtrl.saveForm()">
+        {{'Forms_Save_Button' | translate}} {{efCollectionCtrl.label}}
+      </button>
+    </div>
+  </form>
+
+</div>

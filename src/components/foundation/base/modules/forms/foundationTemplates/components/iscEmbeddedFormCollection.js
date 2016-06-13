@@ -70,6 +70,8 @@
           viewAs          = _.get( opts, 'data.collections.viewAs' ),
           subforms        = self.formState._subforms;
 
+      self.editAs = editAs;
+
       // Inherit formState for subform
       self.subformOptions = {
         formState: _.extend( {}, self.formState )
@@ -113,30 +115,34 @@
       };
 
       self.newForm = function() {
-        self.isNew = true;
+        if (!self.renderForm) {
+          self.isNew = true;
 
-        self.editModel = {};
-        setAnnotationContext();
+          self.editModel = {};
+          setAnnotationContext();
 
-        showSubform();
-        // Defer the update until the formly-form has finished being initialized;
-        // otherwise a race condition can prevent the broadcast message from being heard
-        _.defer( updateModel );
+          showSubform();
+          // Defer the update until the formly-form has finished being initialized;
+          // otherwise a race condition can prevent the broadcast message from being heard
+          _.defer( updateModel );
+        }
       };
 
       self.editForm = function( row ) {
-        var index = _.indexOf( self.collectionModel, row );
+        if (!self.renderForm) {
+          var index = _.indexOf( self.collectionModel, row );
 
-        self.isNew     = false;
-        self.editIndex = index;
-        setAnnotationContext( index );
+          self.isNew     = false;
+          self.editIndex = index;
+          setAnnotationContext( index );
 
-        self.editModel = {};
-        _.merge( self.editModel, self.collectionModel[index] );
-        showSubform();
-        // Defer the update until the formly-form has finished being initialized;
-        // otherwise a race condition can prevent the broadcast message from being heard
-        _.defer( updateModelWithValidation );
+          self.editModel = {};
+          _.merge( self.editModel, self.collectionModel[index] );
+          showSubform();
+          // Defer the update until the formly-form has finished being initialized;
+          // otherwise a race condition can prevent the broadcast message from being heard
+          _.defer( updateModelWithValidation );
+        }
       };
 
       self.cancel = function() {
@@ -316,6 +322,10 @@
             }, 0 );
             break;
 
+          case 'inline':
+            self.renderForm = true;
+            break;
+
           default:
             $scope.$emit( FORMS_EVENTS.showSubform, {
               isNew    : self.isNew,
@@ -335,14 +345,18 @@
        * @memberOf iscEmbeddedFormCollection
        */
       function hideSubform() {
-        // Defer to avoid a flicker while Foundation catches up
 
         switch ( editAs ) {
           case 'modal':
+            // Defer to avoid a flicker while Foundation catches up
             _.defer( function() {
               self.renderForm = false;
             }, 0 );
             FoundationApi.publish( self.modalName, 'close' );
+            break;
+
+          case 'inline':
+            self.renderForm = false;
             break;
 
           default:

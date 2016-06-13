@@ -30,34 +30,13 @@
       </div>
     </div>
 
-    <div class="grid-content">
-
-      <form>
-        <div ng-if="efCollectionCtrl.renderForm">
-          <formly-form model="efCollectionCtrl.editModel"
-                       fields="efCollectionCtrl.fields"
-                       options="efCollectionCtrl.subformOptions"
-                       form="efCollectionCtrl.subform.form">
-          </formly-form>
-        </div>
-
-        <div class="controls clearfix">
-          <button class="cancel float-left flat"
-                  type="button"
-                  ng-click="efCollectionCtrl.cancel()">
-            Cancel
-          </button>
-
-          <button class="float-right flat"
-                  type="button"
-                  ng-click="efCollectionCtrl.saveForm()">
-            Save {{efCollectionCtrl.label}}
-          </button>
-        </div>
-      </form>
-
-    </div>
-
+    <div ng-include="'forms/foundationTemplates/templates/embeddedFormEditor.html'"
+         ng-if="efCollectionCtrl.editAs==='modal'"></div>
   </div>
+
+  <!--Inline Editor-->
+  <div ng-include="'forms/foundationTemplates/templates/embeddedFormEditor.html'"
+       ng-if="efCollectionCtrl.editAs==='inline'"></div>
+
 
 </div>
