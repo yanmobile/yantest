@@ -14,12 +14,13 @@
 // Widget Container
 $widget-background: #fff !default;
 $widget-color: isitlight($widget-background, $body-font-color, $light-text) !default;
-$widget-border: none;
+$widget-border: 1px solid $app-border-color !default;
 $widget-radius: $global-radius !default;
 $widget-shadow: $card-shadow !default;
 $widget-padding: $global-padding !default;
 $widget-margin: 1rem !default;
 $widget-divider-background: smartscale($widget-background, 7%) !default;
+$widget-footer-background: $neutral-color !default;
 
 // Widget Header
 $widget-header-background: $primary-color !default;
