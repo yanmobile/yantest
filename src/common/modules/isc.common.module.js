@@ -22,7 +22,8 @@
       'isc.filters',
       'isc.http',
       'isc.router',
-      'isc.states'
+      'isc.states',
+      'isc.breakpoints'
 
     ] );
 
