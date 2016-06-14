@@ -86,7 +86,7 @@ $default-svg-icon-size: 1.25rem !default;
   $height: $height;
   $width: $width;
 
-  *, svg {
+  svg {
     color: $fill;
     fill: $fill;
     height: $height;
@@ -101,7 +101,7 @@ $default-svg-icon-size: 1.25rem !default;
     &.#{$color} {
       $color-name: map-get($theme-colors, $color);
 
-      *, svg {
+      svg {
         color: $color-name;
         fill: $color-name;
         vertical-align: middle;
