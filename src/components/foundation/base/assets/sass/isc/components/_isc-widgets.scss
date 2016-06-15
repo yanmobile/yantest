@@ -83,6 +83,7 @@ $widget-menu-title-margin: 0.5rem !default;
   padding: $padding;
   color: $title-color;
   font-weight: $font-weight-semi-bold;
+  overflow: visible;
   //border-bottom: 1px solid isitlight($widget-header-background, $gray, $light-text);
 
   h1, h2, h3, h4, h5, h6 {
