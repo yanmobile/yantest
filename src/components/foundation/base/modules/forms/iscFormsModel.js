@@ -150,7 +150,7 @@
       var deferred = $q.defer();
 
       if ( cachedValidation ) {
-        deferred.resolve( cachedValidation );
+        deferred.resolve( angular.copy( cachedValidation ) );
       }
       else {
         getFormDefinition( formKey ).then( function( formDefinition ) {
@@ -159,7 +159,7 @@
           } );
 
           _validationCache[formKey] = validations;
-          deferred.resolve( validations );
+          deferred.resolve( angular.copy( validations ) );
         } );
       }
 
@@ -204,7 +204,7 @@
       var deferred = $q.defer();
 
       if ( cachedForm ) {
-        deferred.resolve( cachedForm );
+        deferred.resolve( angular.copy( cachedForm ) );
         return deferred.promise;
       }
 
@@ -267,11 +267,11 @@
               // Resolve the requested version
               switch ( mode ) {
                 case 'view':
-                  deferred.resolve( viewMode );
+                  deferred.resolve( angular.copy( viewMode ) );
                   break;
 
                 default:
-                  deferred.resolve( editMode );
+                  deferred.resolve( angular.copy( editMode ) );
               }
             } );
           } );
