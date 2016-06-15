@@ -7,12 +7,20 @@
       font-size: 1.25rem;
       padding: 0.675rem 1rem;
       text-transform: capitalize;
+
+      .title {
+        margin-bottom: 0;
+      }
     }
 
     //Force overflow visible
     .grid-content, .grid-block {
       margin: 0;
       overflow: visible;
+    }
+
+    button, .button, input[type="submit"], input[type="button"]  {
+      margin-bottom: 0;
     }
 
     @media #{$small} {
@@ -46,6 +54,16 @@
     @media #{$small} {
       max-width: 859px;
       height: auto;
+    }
+  }
+
+  // Dialog Style modals
+  .dialog {
+
+    > .modal {
+      height: auto;
+      border: 1px solid $app-border-color;
+      box-shadow: $shadow-2dp;
     }
   }
 }

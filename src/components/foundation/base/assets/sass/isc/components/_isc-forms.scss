@@ -73,6 +73,16 @@ $text-input-selectors: 'input[type="text"], input[type="password"], input[type="
         display: block;
       }
     }
+
+    .modal & {margin-bottom: 0;}
+
+    .controls {
+      margin-top: 1rem;
+
+      .button, button {
+        margin-bottom: 0;
+      }
+    }
   }
 
   /* Form Inputs */
