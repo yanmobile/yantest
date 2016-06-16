@@ -1,5 +1,5 @@
 /*
-  UTILITIES
+  UTILITIES - TO DO
   ---------
 
   Responsive helper classes to assist you in quickly doing basic formatting and layout.
@@ -158,9 +158,78 @@
   padding: 0.125rem;
 }
 
-/* Hide For Print Class */
-.no-print {
-  @media #{$print}{
-    display: none;
+
+/* Style Exportss */
+@include exports(utilities) {
+
+  /* Color Theming Utility classes for any element */
+
+  // Background
+  div, span {
+
+    @each $color in map-keys($theme-colors) {
+      &.background-#{$color} {
+        $color-name: map-get($theme-colors, $color);
+        $threshold: 60%;
+        background: $color-name;
+        color: isitlight($color-name, $body-font-color, $light-text);
+
+        h1, h2, h3, h4, h5, h6 {color: isitlight($color-name, $header-font-color, $light-text); margin-bottom: $global-padding/2;}
+        p, label {color: isitlight($color-name, $body-font-color, $light-text);}
+
+        a {
+          text-decoration: underline;
+
+          @if (lightness($color-name) > $threshold) {
+            color: $anchor-font-color;
+          }
+          @else {
+            color: $light-text;
+          }
+        }
+      }
+    }
   }
+
+  // Text
+  h1, h2, h3, h4, h5, h6, p, i, label, span, abbr, blockquote {
+
+    @each $color in map-keys($theme-colors) {
+      &.text-#{$color} {
+        $color-name: map-get($theme-colors, $color);
+        color: $color-name;
+      }
+    }
+
+  }
+
+  // Links
+  a {
+
+    @each $color in map-keys($theme-colors) {
+      &.link-#{$color} {
+        $color-name: map-get($theme-colors, $color);
+        color: $color-name;
+
+        svg {fill: smartscale($color-name, 15%);}
+        i {color: $color-name;}
+
+        &:hover, &:focus, &:active {
+          color: smartscale($color-name, 15%);
+
+          svg {fill: smartscale($color-name, 15%);}
+          i {color: smartscale($color-name, 15%);}
+        }
+      }
+    }
+
+  }
+
+  /* Hide For Print Class */
+  .no-print {
+    @media #{$print}{
+      display: none;
+    }
+  }
+
 }

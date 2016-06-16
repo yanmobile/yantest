@@ -169,6 +169,33 @@ $motion-delay-short: 300ms !default;
 $motion-delay-long: 700ms !default;
 
 
+/* General Mixins
+  ----------------------------------------------
+ - Mixins for themable custom container
+ - Style Exports - Extends all Foundation Components to work with theme colors & theming utility classes
+ - Components should use smart calculations whenever possible with fallbacks passed in as defaults
+ - WIP - Lots more to do here, just getting started
+---------------------------------------------- */
+
+/* Theming Mixins */
+
+// @mixin Themable Custom Container
+@mixin container($background: inherit, $color: isitlight($background, $body-font-color, $light-text), $margin: $global-padding, $padding: $global-padding, $border: none, $shadow: none) {
+  background: $background;
+  color: $color;
+  margin: $margin;
+  padding: $padding;
+  border: $border;
+  shadow: $shadow;
+
+  h1, h2, h3, h4, h5, h6 {color: isitlight($background, $header-font-color, $light-text);}
+
+  p {color: isitlight($background, $body-font-color, $light-text);}
+  a {color: isitlight($background, $anchor-font-color, $light-text);}
+
+  @content;
+}
+
 /* Global Styles */
 @include exports(global) {
 
@@ -183,6 +210,34 @@ $motion-delay-long: 700ms !default;
   @media not speech {
     :focus {
       outline: 0;
+    }
+  }
+
+  /* Themable Utility Classes for Framework Components */
+
+  // Notifications
+  .notification, .static-notification {
+
+    h1, h2, h3, h4, h5, h6 {
+      color: isitlight($notification-background, $header-font-color, $light-text);
+      margin-bottom: $global-padding/2;
+    }
+
+    p {color: isitlight($notification-background, $body-font-color, $light-text);}
+
+    .close-button {color: isitlight($notification-background, $body-font-color, $light-text);}
+
+    @each $color in map-keys($theme-colors) {
+
+    &.#{$color} {
+      $color-name: map-get($theme-colors, $color);
+      background: $color-name;
+      color: isitlight($color-name, $body-font-color, $light-text);
+
+        h1, h2, h3, h4, h5, h6 {color: isitlight($color-name, $header-font-color, $light-text); margin-bottom: $global-padding/2;}
+        p {color: isitlight($color-name, $body-font-color, $light-text);}
+        .close-button {color: isitlight($color-name, $body-font-color, $light-text);}
+      }
     }
   }
 }
