@@ -1,4 +1,16 @@
-{
+/**
+ * This config.app.js is now responsible for aggregating the common and component configurations.
+ *
+ * This config file now has full power and can modify the contents of config.common.js and config.component.js.
+ *
+ * This is very powerful because individual application no longer needs to rely on gulpfile to create custom logic
+ * to handle things like edition support, overrides (the existing approach still works). This config.app.js file
+ * can now read multiple edition configs and update ```module.exports.component``` configuration directly.
+ */
+module.exports.masterConfig = {};
+module.exports.common       = require( "./config.common" );
+module.exports.component    = require( "../src/components/foundation/base/config.components" );
+module.exports.app          = {
   "modulePath"    : "src/app/modules/",
   "vendor"        : {
     "js"    : [],
@@ -54,13 +66,14 @@
   "edition"       : [
     {
       "name" : "base",
-      "path" : "src/components/foundation/base/components.json"
+      "path" : "src/components/foundation/base/config.components.js"
     }
   ],
   "comments"      : "JavaScript files can't be overridden like css selector cascading or Angular's templateCache templates.",
   "comments"      : "If we want to override lower level JS files, we must exclude them from the list.",
   "comments"      : "The overrides below are used to exclude base files by specifying glob patterns.",
   "comments"      : "e.g. ```common: ['!src/modules/isc.filters/myFilter.js']```",
+  "comments"      : "update: common and components config can now be directly modified by this file.",
   "overrides"     : {
     "js"       : {
       "common"     : [],
@@ -72,4 +85,4 @@
       "components" : []
     }
   }
-}
+};
