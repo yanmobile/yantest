@@ -33,7 +33,7 @@ function wallaby() {
 }
 
 function getSrc() {
-  var commonConfig = require( './gulp/common.json' );
+  var commonConfig = require( './gulp/config.common.js' );
   // var karmaTestConfig = require( './test/karma.conf.common' );
   // var src             = karmaTestConfig.getSrc( { common: commonConfig } );
 
