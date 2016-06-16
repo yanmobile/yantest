@@ -15,26 +15,21 @@
    * @param iscFormsModel
    * @param iscFormsValidationService
    * @param iscFormDataApi
-   * @returns {{restrict: string, replace: boolean, controllerAs: string, scope: {formType: string, formKey: string, mode: string, id: string, model: string, formConfig: string, buttonConfig: string}, bindToController: boolean, controller: controller, templateUrl: directive.templateUrl}}
+   * @returns {{restrict: string, replace: boolean, controllerAs: string, scope: {formKey: string, mode: string, formDataId: string, formVersion: string, model: string, formConfig: string, buttonConfig: string}, bindToController: boolean, controller: controller, templateUrl: directive.templateUrl}}
    * @description
    *    * iscForm - A directive for displaying a form
    *
    * Parameters:
    *
    * formKey    : The unique identifier for the form definition.
-   * formType   : The category to which the form belongs. This is defined in the form's FDN.
    * mode       : 'edit' or 'view'
-   * id         : If provided, form data with this value is retrieved and loaded into this form instance.
+   * formVersion: If provided, requests this specific version of the form definition.
+   * formDataId : If provided, form data with this value is retrieved and loaded into this form instance.
    * model      : If provided, this is used as the form data model.
    *
    * formConfig : A configuration object that may include some or all of the following behavior configuration:
    *   additionalModelInit
    *     A function or expression to be invoked during form init, which may populate additional data models.
-   *
-   *   useOriginalFormKey
-   *     If loading an existing form in edit mode and this property is truthy, the formKey of the persisted form
-   *     is used, even if this differs from the active formKey of type formType.
-   *     Default: false
    *
    *   annotationsApi
    *     The API to use for annotations in this form, if applicable. These properties may be defined:
@@ -55,29 +50,28 @@
    *                 responseData   (the result from calling load)
    *       load:   The function call that will query for the initial form data.
    *               Called with one argument:
-   *                 id       (this.id)
+   *                 id       (this.formDataId)
    *       save:   The function call that will persist data in this form.
    *               Called with two arguments:
    *                 formData (the model payload for this form: this.model)
-   *                 id       (this.id)
+   *                 id       (this.formDataId)
    *
    *     Defaults:
    *       wrap:   A function that includes the following properties in the save call:
    *         formDefinition  : this.formDefinition,
    *         additionalModels: this.formConfig.additionalModels,
    *         formData        : {
-   *           formKey    : this.localFormKey,
+   *           formKey    : this.formKey,
    *           formName   : this.formDefinition.name,
-   *           formType   : this.formDefinition.formType,
-   *           id         : this.id,
+   *           id         : this.formDataId,
    *           author     : iscSessionModel.getCurrentUser(),
    *           completedOn: moment().toISOString(),
    *           data       : this.model
    *         }
    *       unwrap: A function that returns responseData.data.
-   *       load:   If this.id is defined, call iscFormDataApi.get and update this.model.
+   *       load:   If this.formDataId is defined, call iscFormDataApi.get and update this.model.
    *               Otherwise, use a new empty object.
-   *       save:   If this.id is undefined, call iscFormDataApi.post and update this.id.
+   *       save:   If this.formDataId is undefined, call iscFormDataApi.post and update this.formDataId.
    *               Otherwise, call iscFormDataApi.put.
    *
    * buttonConfig : A configuration object for form button configuration. This is an object with
@@ -147,13 +141,13 @@
       replace         : true,
       controllerAs    : 'formCtrl',
       scope           : {
-        formType    : '@',
-        formKey     : '@',
-        mode        : '@',
-        id          : '@?',
-        model       : '=?',
+        buttonConfig: '=',
         formConfig  : '=',
-        buttonConfig: '='
+        formDataId  : '@?',
+        formKey     : '@',
+        formVersion : '@?',
+        mode        : '@',
+        model       : '=?'
       },
       bindToController: true,
       controller      : controller,
@@ -179,11 +173,10 @@
       self.internalButtonConfig = _.defaultsDeep( self.buttonConfig, defaultButtonConfig );
 
       // Ensure id is either numeric or undefined (if passed directly from a route param, it could be a string)
-      var parsedId    = parseInt( self.id );
-      self.formDataId = _.isNaN( parsedId ) ? undefined : parsedId;
+      var parsedId          = parseInt( self.formDataId );
+      self.parsedFormDataId = _.isNaN( parsedId ) ? undefined : parsedId;
 
       _.merge( self, {
-        localFormKey          : self.formKey,
         formDefinition        : {},
         internalFormDefinition: {},
         validationDefinition  : [],
@@ -191,7 +184,7 @@
         options               : {
           formState: {
             _mode: self.mode,
-            _id  : self.formDataId
+            _id  : self.parsedFormDataId
           }
         }
       } );
@@ -253,10 +246,10 @@
             formDefinition  : formDefinition,
             additionalModels: self.formConfig.additionalModels,
             formData        : {
-              formKey    : self.localFormKey,
+              formKey    : self.formKey,
               formName   : formDefinition.name,
-              formType   : formDefinition.formType,
-              id         : self.formDataId,
+              formVersion: self.formVersion,
+              id         : self.parsedFormDataId,
               author     : iscSessionModel.getCurrentUser(),
               completedOn: moment().toISOString(),
               data       : formData
@@ -270,15 +263,7 @@
 
         function loadDefault( id ) {
           if ( id !== undefined ) {
-            return iscFormDataApi.get( id ).then( function( formData ) {
-              originalFormKey = formData.formKey;
-
-              // Option to force using the formKey saved in the form previously
-              if ( !self.localFormKey && self.formConfig.useOriginalFormKey ) {
-                self.localFormKey = originalFormKey;
-              }
-              return formData;
-            } );
+            return iscFormDataApi.get( id );
           }
           else {
             return $q.when( {} );
@@ -296,7 +281,7 @@
           }
           else {
             return iscFormDataApi.post( formData ).then( function( form ) {
-              self.formDataId = self.options.formState._id = form.id;
+              self.parsedFormDataId = self.options.formState._id = form.id;
               annotationsApi.processAnnotationQueue( form.id );
               return form;
             } );
@@ -332,7 +317,7 @@
 
           // Default api for submitting a form is to submit to iscFormDataApi
           var wrappedData = formDataApi.wrap( self.model, self.formDefinition.form );
-          return formDataApi.save( wrappedData, self.formDataId );
+          return formDataApi.save( wrappedData, self.parsedFormDataId );
         }
 
         /**
@@ -355,17 +340,7 @@
        * @memberOf iscForm
        */
       function init() {
-        // Resolve default formKey if not provided,
-        // and if not using formKey previously persisted with form
-        if ( !self.localFormKey && !( self.formDataId && self.formConfig.useOriginalFormKey ) ) {
-          iscFormsModel.getActiveForm( self.formType ).then( function( form ) {
-            self.localFormKey = form.formKey;
-            getFormData();
-          } );
-        }
-        else {
-          getFormData();
-        }
+        getFormData();
       }
 
       /**
@@ -378,7 +353,7 @@
         config.annotationsApi.initAnnotationQueue();
         getAnnotationData()
           .then( function() {
-            return formDataApi.load( self.formDataId )
+            return formDataApi.load( self.parsedFormDataId )
               .then( function( formData ) {
                 self.model = formDataApi.unwrap( formData ) || {};
                 return formData;
@@ -395,9 +370,9 @@
         var getApi = _.get( self.formConfig, 'annotationsApi.getFormAnnotations' );
 
         if ( getApi && _.isFunction( getApi ) ) {
-          return getApi( self.formDataId ).then( function( annotations ) {
+          return getApi( self.parsedFormDataId ).then( function( annotations ) {
             self.options.formState._annotations = {
-              index: self.formDataId,
+              index: self.parsedFormDataId,
               data : annotations
             };
             return annotations;
@@ -412,99 +387,17 @@
        * @memberOf iscForm
        */
       function getFormDefinition() {
-        iscFormsModel.getFormDefinition( self.localFormKey, self.mode )
+        iscFormsModel.getFormDefinition( {
+            formKey    : self.formKey,
+            mode       : self.mode,
+            formVersion: self.formVersion
+          } )
           .then( function( formDefinition ) {
             self.formDefinition                = formDefinition;
             self.options.formState._validateOn = formDefinition.validateOn;
 
-            reconcileModelWithFormDefinition();
-
             populateAdditionalModels( self.formDefinition.form.dataModelInit );
           } );
-      }
-
-      /**
-       * @memberOf iscForm
-       * @description
-       *  If the original/persisted formKey differs from the formKey of the definition,
-       * we need to process the implicit data model of the new formDefinition to ensure
-       * it does not contain properties that are not supported by the new definition.
-       */
-      function reconcileModelWithFormDefinition() {
-        if ( originalFormKey && originalFormKey !== self.localFormKey ) {
-          var form = self.formDefinition.form,
-              data = self.model;
-
-          self.model = _mergeFormAndData();
-        }
-
-        /**
-         * @memberOf iscForm
-         * @description
-         * Prunes any properties in data that are not keyed by fields in form.
-         * @returns {Object}
-         * @private
-         */
-        function _mergeFormAndData() {
-          var model = {};
-
-          _.forEach( form.pages, function( page ) {
-            _processFields( page.fields );
-          } );
-
-          return model;
-
-          function _processFields( fields, parentPath, isCollection ) {
-            _.forEach( fields, function( field ) {
-              // Field groups are just arrays of fields
-              if ( field.fieldGroup ) {
-                _processFields( field.fieldGroup, parentPath, isCollection );
-              }
-              else {
-                if ( field.key ) {
-                  var key            = field.key,
-                      fullPath       = ( parentPath ? parentPath + '.' : '' ) + key;
-                  // templateOptions.fields is populated with subform fields for embedded forms
-                  var embeddedFields = _.get( field, 'templateOptions.fields' ),
-                      isEfCollection = field.type === 'embeddedFormCollection' || field.extends === 'embeddedFormCollection';
-
-                  if ( embeddedFields ) {
-                    // If a collection, initialize the size of the new array to match data's size of this collection
-                    if ( isEfCollection ) {
-                      var sourceCollectionSize = _.get( data, fullPath, [] ).length;
-                      if ( sourceCollectionSize ) {
-                        _.set( model, fullPath, new Array( sourceCollectionSize ) );
-                        _.fill( model[fullPath], {} );
-                      }
-                    }
-                    _processFields( embeddedFields, fullPath, isEfCollection );
-                  }
-                  else {
-                    // If saving a collection, iterate all items in data and save this verified property
-                    if ( isCollection ) {
-                      var sourceData = _.get( data, parentPath, [] );
-
-                      _.forEach( sourceData, function( item, index ) {
-                        var indexedKey = [parentPath, '[', index, ']', '.', key].join( '' ),
-                            value      = _.get( data, indexedKey );
-                        if ( value !== undefined ) {
-                          _.set( model, indexedKey, value );
-                        }
-                      } );
-                    }
-                    else {
-                      var value = _.get( data, key );
-
-                      if ( value !== undefined ) {
-                        _.set( model, key, value );
-                      }
-                    }
-                  }
-                }
-              }
-            } );
-          }
-        }
       }
 
       /**
@@ -530,7 +423,10 @@
        * @memberOf iscForm
        */
       function getValidationDefinition() {
-        iscFormsModel.getValidationDefinition( self.localFormKey )
+        iscFormsModel.getValidationDefinition( {
+            formKey    : self.formKey,
+            formVersion: self.formVersion
+          } )
           .then( function( validationDefinition ) {
             self.validationDefinition = validationDefinition;
             self.showInternal         = true;

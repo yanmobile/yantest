@@ -130,20 +130,24 @@
         suite.timeout.flush();
 
         function test(mode) {
-          suite.model.getFormDefinition(formKey, mode).then(function (response) {
-            expect(suite.api.getFormDefinition).toHaveBeenCalled();
-            expect(suite.api.getUserScript).toHaveBeenCalledWith("loadPatient");
-            expect(suite.api.getTemplate).toHaveBeenCalledWith("js/customTemplate");
+          suite.model.getFormDefinition( {
+              formKey: formKey,
+              mode   : mode
+            } )
+            .then( function( response ) {
+              expect( suite.api.getFormDefinition ).toHaveBeenCalled();
+              expect( suite.api.getUserScript ).toHaveBeenCalledWith( "loadPatient" );
+              expect( suite.api.getTemplate ).toHaveBeenCalledWith( "js/customTemplate" );
 
-            var form     = response.form,
-                subforms = response.subforms;
+              var form     = response.form,
+                  subforms = response.subforms;
 
-            expect(_.isObject(form)).toBe(true);
-            expect(form.name).toEqual('Sample Intake Form');
+              expect( _.isObject( form ) ).toBe( true );
+              expect( form.name ).toEqual( 'Sample Intake Form' );
 
-            expect(subforms[subformKey]).toBeDefined();
-            expect(_.isArray(subforms[subformKey])).toBe(true);
-          });
+              expect( subforms[subformKey] ).toBeDefined();
+              expect( _.isArray( subforms[subformKey] ) ).toBe( true );
+            } );
         }
       });
     });
@@ -159,13 +163,14 @@
         suite.timeout.flush();
 
         function test() {
-          suite.model.getValidationDefinition(formKey).then(function (response) {
-            // There should be a list of subform fields keyed by the data model path of that collection field
-            var collectionValidation = _.find(response, {
-              key: 'sampleEmbeddedSubform'
-            });
-            expect(collectionValidation.fields.length).toBeGreaterThan(0);
-          });
+          suite.model.getValidationDefinition( { formKey: formKey } )
+            .then( function( response ) {
+              // There should be a list of subform fields keyed by the data model path of that collection field
+              var collectionValidation = _.find( response, {
+                key: 'sampleEmbeddedSubform'
+              } );
+              expect( collectionValidation.fields.length ).toBeGreaterThan( 0 );
+            } );
         }
       });
     });

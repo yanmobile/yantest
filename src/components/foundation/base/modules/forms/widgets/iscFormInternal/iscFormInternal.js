@@ -20,12 +20,12 @@
       replace         : true,
       controllerAs    : 'formInternalCtrl',
       scope           : {
+        buttonConfig   : '=',
+        formConfig     : '=',
         formDefinition : '=',
         model          : '=',
         options        : '=',
-        formConfig     : '=',
-        validateFormApi: '=',
-        buttonConfig   : '='
+        validateFormApi: '='
       },
       bindToController: true,
       controller      : controller,

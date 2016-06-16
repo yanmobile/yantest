@@ -11,16 +11,16 @@
 
   function getTopNavTabs() {
     return {
-      'index.activeForm': {
-        state      : 'index.activeForm',
-        url        : 'forms/:mode/:formType?id&dataModelType&dataModelKey&dataModelId&useOriginalFormKey',
+      'index.form'      : {
+        state      : 'index.form',
+        url        : 'forms/:mode/:formKey?formDataId',
         templateUrl: 'forms/iscForms.html',
         controller : 'iscFormsController as formsCtrl',
         roles      : ['*']
       },
-      'index.form'      : {
-        state      : 'index.form',
-        url        : 'forms/:mode/:formType/:formKey?id&dataModelType&dataModelKey&dataModelId&useOriginalFormKey',
+      'index.formByVersion'      : {
+        state      : 'index.formByVersion',
+        url        : 'forms/:mode/:formKey/:formVersion?formDataId',
         templateUrl: 'forms/iscForms.html',
         controller : 'iscFormsController as formsCtrl',
         roles      : ['*']

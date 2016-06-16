@@ -140,11 +140,17 @@
 
     /**
      * @memberOf iscFormsModel
-     * @param formKey
+     * @param {Object} config:
+     * {String} formKey,
+     * {=String} formVersion
      * @returns {*}
      */
-    function getValidationDefinition( formKey ) {
-      var cachedValidation = _.get( _validationCache, formKey );
+    function getValidationDefinition( config ) {
+      var formKey     = config.formKey,
+          formVersion = config.formVersion,
+          cacheKey    = (formVersion || 'current') + '.' + formKey;
+
+      var cachedValidation = _.get( _validationCache, cacheKey );
       var validations      = [];
 
       var deferred = $q.defer();
@@ -153,14 +159,18 @@
         deferred.resolve( angular.copy( cachedValidation ) );
       }
       else {
-        getFormDefinition( formKey ).then( function( formDefinition ) {
-          _.forEach( formDefinition.form.pages, function( page ) {
-            _getEmbeddedForms( page.fields, formDefinition.subforms );
-          } );
+        getFormDefinition( {
+          formKey    : formKey,
+          formVersion: formVersion
+        } )
+          .then( function( formDefinition ) {
+            _.forEach( formDefinition.form.pages, function( page ) {
+              _getEmbeddedForms( page.fields, formDefinition.subforms );
+            } );
 
-          _validationCache[formKey] = validations;
-          deferred.resolve( angular.copy( validations ) );
-        } );
+            _.set( _validationCache, cacheKey, validations );
+            deferred.resolve( angular.copy( validations ) );
+          } );
       }
 
       return deferred.promise;
@@ -185,21 +195,29 @@
      * @memberOf iscFormsModel
      * @description
      * Gets the form with the given formKey name.
-     * @param {String} formKey
-     * @param {=String} mode
-     * @param {=Object} subformDefinitions
+     * @param {Object} config:
+     * {String} formKey,
+     * {=String} mode,
+     * {=String} formVersion,
+     * {=String} subformDefinitions
      * @returns {Object}
      */
-    function getFormDefinition( formKey, mode, subformDefinitions ) {
+    function getFormDefinition( config ) {
+      var formKey            = config.formKey,
+          mode               = config.mode,
+          formVersion        = config.formVersion,
+          subformDefinitions = config.subformDefinitions,
+          cacheKey           = (formVersion || 'current') + '.' + formKey;
+
       // If form is already cached, return the cached form in a promise
       var cachedForm;
       switch ( mode ) {
         case 'view':
-          cachedForm = _.get( _viewModeFormsCache, formKey );
+          cachedForm = _.get( _viewModeFormsCache, cacheKey );
           break;
 
         default:
-          cachedForm = _.get( _formsCache, formKey );
+          cachedForm = _.get( _formsCache, cacheKey );
       }
       var deferred = $q.defer();
 
@@ -210,7 +228,7 @@
 
       // Otherwise, fetch the form template and resolve the form in a promise
       else {
-        iscFormsApi.getFormDefinition( formKey ).then( function( responseData ) {
+        iscFormsApi.getFormDefinition( formKey, formVersion ).then( function( responseData ) {
           var primaryPromises   = [],
               secondaryPromises = [],
               form              = responseData,
@@ -248,7 +266,7 @@
               };
 
               // Cache the editable version
-              _.set( _formsCache, formKey, editMode );
+              _.set( _formsCache, cacheKey, editMode );
 
               // Make a deep copy for the view mode version
               var viewMode = {
@@ -262,7 +280,7 @@
               } );
 
               // Cache it separately
-              _.set( _viewModeFormsCache, formKey, viewMode );
+              _.set( _viewModeFormsCache, cacheKey, viewMode );
 
               // Resolve the requested version
               switch ( mode ) {
@@ -384,7 +402,11 @@
 
                   fieldPromises.push(
                     // Fetch the embedded type
-                    getFormDefinition( embeddedType, mode, subforms )
+                    getFormDefinition( {
+                      formKey           : embeddedType,
+                      mode              : mode,
+                      subformDefinitions: subforms
+                    } )
                       .then( function( embeddedForm ) {
                         var fields = [],
                             form   = embeddedForm.form;
