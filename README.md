@@ -69,17 +69,21 @@ gulp build --config <any valid directory>/<anyFileName>.js #only app specific
 gulp deploy --config <any valid directory>/<anyFileName>.js #only app specific
 ```
 
-Override gulp/app.json:
+Override gulp/config.app.js:
 ```bash
 # for specifying compile time application config -- to specify editions or different platform targets (mobile, web)
-gulp serve --appjson path/to/app.json #only app specific
-gulp build --appjson path/to/app.json #only app specific
-gulp deploy --appjson path/to/app.json #only app specific
+gulp serve --appjson path/to/config.app.js #only app specific
+gulp build --appjson path/to/config.app.js #only app specific
+gulp deploy --appjson path/to/config.app.js #only app specific
 ```
 ---
 ###File structure
     
-    |-- gulp.js //utilizes gulp tasks inside of ./gulp folder
+    |-- gulpfile.js //utilizes gulp tasks inside of ./gulp/ folder
+    |-- gulp
+    |   |__ config.app.js   // this file imports settings from config.common and config.components
+    |   |__ config.common.js
+    |   |__ config.framework.js 
     |-- config.xml  //used by cordova
     |-- jsdocs
     |   |__ conf.json   //jsDocs configuration
@@ -97,31 +101,30 @@ gulp deploy --appjson path/to/app.json #only app specific
     |   |   |   |   |-- modules
     |   |   |   |   |   |__ isc.components.module.js
     |   |   |   |   |-- bower.json
-    |   |   |   |   |__ components.json //if this edition is picked, this file will be copied to "gulp/components.json"
+    |   |   |   |   |__ config.components.js
     |   |-- app     //application specific
     |   |   |-- assets
     |   |   |-- modules
     |   |   |-- bower.json  
-    |   |   |__ bower.json
     |-- test
     |   |-- unit
     |   |   |-- common
-    |   |   |-- component
+    |   |   |-- components
     |___|___|__ app     //application specific
    
 
 ---
 ###gulp configs
-**This framework is designed to virtually eliminate the need to write custom automation tasks. The out-of-the-box automation tasks utilize these three configuration files: gulp/common.json, gulp/components.json, and gulp/app.json.**
+**This framework is designed to virtually eliminate the need to write custom automation tasks. The out-of-the-box automation tasks utilize these three configuration files: gulp/config.common.js, gulp/components.json, and gulp/config.app.js.**
 
 **Notes:**
-  * This *config structure* applies to ```gulp/app.json```, ```src/components/<edition path>/components.json```, and ```gulp/common.json```
+  * This *config structure* applies to ```gulp/config.app.js```, ```src/components/<edition path>/components.json```, and ```gulp/config.common.js```
   * The paths must be relative to the root of the application
   * Be sure to never reference files from another module or outside of their perspective section: *src/common*, *src/components*, and *src/app*.
   * The automation scripts will load the config sections in this orders: 
-    1. gulp/common.json
-    2. src/components/<edition path>/components.json
-    3. gulp/app.json
+    1. gulp/config.common.js
+    2. src/components/<edition path>/config.components.js
+    3. gulp/config.app.js
 
 ```javascript
 {
@@ -185,13 +188,13 @@ gulp deploy --appjson path/to/app.json #only app specific
   "edition"       : [
     {
       "name" : "base",
-      "path" : "src/components/foundation/base/components.json"
+      "path" : "src/components/foundation/base/config.components.js"
     },
     // to specify another edition, add it to this edition array. For example the UK edition below.
     // the framework will take the array of edition configurations and merge them to produce a single master components configuration
     {
       "name" : "UK",
-      "path" : "src/components/foundation/UK/components.json"
+      "path" : "src/components/foundation/UK/config.components.js"
     }
   ],
   "comments"      : "JavaScript files can't be overridden like css selector cascading or Angular's templateCache templates.",
@@ -229,11 +232,11 @@ gulp deploy --appjson path/to/app.json #only app specific
   * Application specific bower packages should be installed under "src/app/" folder (don't install it in "src/common" and "src/components")
    
 * **Now that I have bower package successfully installed in "src/app/" folder, how do I add it to the application?**
-  * We use Gulp to automate our build tasks. Application specific gulp configuration can be found at "gulp/app.json". You'll need to specify the file path of your bower package in "vendor/js" json property which is line 3 of "gulp/app.json" file.
+  * We use Gulp to automate our build tasks. Application specific gulp configuration can be found at "gulp/config.app.js". You'll need to specify the file path of your bower package in "vendor/js" json property which is line 3 of "gulp/config.app.js" file.
   
 * **How do I add a new javascript package which is not available through bower?**
   * You'll need to paste your non-bower library js files in "src/app/assets/vendors/" folder. If this folder doesn't exist, create one.
-  * You'll have to reference your js file in "gulp/app.json" configuration file under this key path: "module/assets/vendor/js" array.
+  * You'll have to reference your js file in "gulp/config.app.js" configuration file under this key path: "module/assets/vendor/js" array.
   
 * **How do I include a 3rd party css file in my application?**
   * The framework does not support *.css file extensions, you'll need to rename your *.css extension to *.scss (superset of css) and place your *.scss file in "src/app/assets/sass/" folder. Once your file is in the sass folder, add a reference to  "src/app/assets/sass/main.scss" file.
@@ -321,13 +324,13 @@ gulp deploy --appjson path/to/app.json #only app specific
   
 * **How do I specify a different edition (US/UK)?**
   * *note:* By default the code uses "base" edition, which is the US edition. Specific Edition config file will be merged with base edition. (using _.mergeWith() where it concatenates arrays)
-  * Add a new edition config object in the "edition" array of ```gulp/app.json``` configuration
+  * Add a new edition config object in the "edition" array of ```gulp/config.app.js``` configuration
 
 ```javascript
   "edition"       : [
      {
        "name" : "base",
-       "path" : "src/components/foundation/base/components.json"
+       "path" : "src/components/foundation/base/config.components.js"
      },
      {
        "name" : "US",
@@ -337,13 +340,13 @@ gulp deploy --appjson path/to/app.json #only app specific
 ```   
 
 * **How do I add/exclude specific js in common or components?**
-  * add glob patterns to ```gulp/app.json -> overrides/js/[common/component]``` configuration
+  * add glob patterns to ```gulp/config.app.js -> overrides/js/[common/component]``` configuration
  
 * **How do I exclude specific html in common or components?**
-  * add glob patterns to ```gulp/app.json -> overrides/html/[common/component]``` configuration
+  * add glob patterns to ```gulp/config.app.js -> overrides/html/[common/component]``` configuration
 
 * **How do I exclude specific scss in common or components? (coming soon)**
-  * add glob patterns to ```gulp/app.json -> overrides/scss/[common/component]``` configuration
+  * add glob patterns to ```gulp/config.app.js -> overrides/scss/[common/component]``` configuration
 
 * **How do I create custom gulp tasks**
   * Custom gulp tasks should be created using the established format (exporting init()) and they should be saved in ```gulp/custom/``` directory
@@ -369,7 +372,7 @@ git branch
 # Create a new branch based off your current branch and switch to your new branch
 git branch -b <branch>
 
-# Create a new branch based off a origin *branchand switch to your new branch
+# Create a new branch based off a origin *branch* and switch to your new branch
 git checkout -b <branch> origin/<branch>
 
 # delete a local branch

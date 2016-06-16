@@ -28,7 +28,7 @@ function init(gulp, plugins, config, _, util) {
   });
 
   var tasks = ["jsformat:common", "jsformat:components"];
-  if (config.app.module) {
+  if (config.app.modulePath) {
     tasks.push("jsformat:app");
   }
 

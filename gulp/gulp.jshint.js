@@ -34,6 +34,11 @@ function init(gulp, plugins, config, _, util) {
   });
 
 
-  gulp.task('jshint', ["jshint:common", "jshint:components", "jshint:app"]);
+  var tasks = ["jshint:common", "jshint:components"];
+  if (config.app.modulePath) {
+    tasks.push("jshint:app");
+  }
+
+  gulp.task('jshint', tasks);
 
 }
