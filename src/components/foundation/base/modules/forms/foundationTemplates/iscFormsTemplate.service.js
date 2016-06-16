@@ -65,12 +65,13 @@
     formlyConfig.extras.fieldTransform.push( addDataModelDependencies );
 
     var service = {
-      isTypeRegistered : isTypeRegistered,
-      getRegisteredType: getRegisteredType,
-      registerWrapper  : formlyConfig.setWrapper,
-      registerBaseType : registerBaseType,
-      registerType     : registerType,
-      appendWrapper    : appendWrapper
+      isTypeRegistered   : isTypeRegistered,
+      isWrapperRegistered: isWrapperRegistered,
+      getRegisteredType  : getRegisteredType,
+      registerWrapper    : formlyConfig.setWrapper,
+      registerBaseType   : registerBaseType,
+      registerType       : registerType,
+      appendWrapper      : appendWrapper
     };
 
     return service;
@@ -127,6 +128,15 @@
      */
     function isTypeRegistered( type ) {
       return !!getRegisteredType( type );
+    }
+
+    /**
+     * @memberOf iscFormsTemplateService
+     * @param wrapper
+     * @returns {boolean}
+     */
+    function isWrapperRegistered( wrapper ) {
+      return !!formlyConfig.getWrapper( wrapper );
     }
 
     /**

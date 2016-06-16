@@ -471,6 +471,7 @@
             function _processScript( response ) {
               var template = parseScript( response );
 
+              _injectWrappers( template );
               _injectHtml( template );
               _injectCss();
 
@@ -485,7 +486,35 @@
             /**
              * @memberOf iscFormsModel
              * @description
+             * Fetches custom wrappers for the template and registers them.
+             * @param template
+             * @private
+             */
+            function _injectWrappers( template ) {
+              var wrappers = template.wrapper || [];
+
+              _.forEach( wrappers, function( wrapperName ) {
+                if ( !iscFormsTemplateService.isWrapperRegistered( wrapperName ) ) {
+                  var wrapperPromise = iscFormsApi.getTemplate( 'wrappers/' + wrapperName )
+                    .then( function( wrapperMarkup ) {
+                      iscFormsTemplateService.registerWrapper(
+                        {
+                          "name"    : wrapperName,
+                          "template": wrapperMarkup
+                        }
+                      );
+                      return true;
+                    } );
+                  secondaryPromises.push( wrapperPromise );
+                }
+              } );
+            }
+
+            /**
+             * @memberOf iscFormsModel
+             * @description
              * Fetches html for the template and puts it in the $templateCache.
+             * @param template
              * @private
              */
             function _injectHtml( template ) {
