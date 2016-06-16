@@ -46,7 +46,7 @@ function wallaby() {
 function getSrc() {
   var commonWallaby    = require( './wallaby.config.common' );
   var commonSrc        = commonWallaby.getSrc();
-  var componentsConfig = require( './src/components/foundation/base/components.json' );
+  var componentsConfig = require( './src/components/foundation/base/config.components.js' );
 
   wallaby.noInstrument = commonWallaby.noInstrument;
   return _.extend( commonSrc, {
