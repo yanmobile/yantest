@@ -102,8 +102,42 @@
 // Fill Parent
 // --------------------------------------------------
 @mixin fill-parent() {
-
   width: 100%;
   box-sizing: border-box;
+}
 
+// --------------------------------------------------
+// Themable Custom Container
+// --------------------------------------------------
+
+@mixin custom-container(
+  $background: $white,
+  $color: isitlight($background, $body-font-color, $light-text),
+  $border: none,
+  $radius: $global-radius,
+  $shadow: none,
+  $padding: $global-padding,
+  $margin: $global-padding
+) {
+
+  background: $background;
+  color: $color;
+  border: $border;
+  border-radius: $radius;
+  box-shadow: $shadow;
+  margin: $margin;
+  padding: $padding;
+
+  h1, h2, h3, h4, h5, h6 {color: isitlight($background, $header-font-color, $light-text);}
+
+  p, ul, li {color: isitlight($background, $body-font-color, $light-text);}
+  a {color: isitlight($background, $anchor-font-color, $light-text);}
+
+  @each $depth, $shadow-depth in $shadow-depths {
+    &.shadow-#{$depth} {
+      box-shadow: $shadow-depth;
+    }
+  }
+
+  @content;
 }
