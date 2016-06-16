@@ -73,9 +73,9 @@
      * @param formKey
      * @returns {*}
      */
-    function getFormDefinition( formKey ) {
+    function getFormDefinition( formKey, formVersion ) {
       channel.debug( 'iscFormsApi.getFormDefinition' );
-      return iscHttpapi.get( [formsUrl, formKey].join( '/' ) );
+      return iscHttpapi.get( _.compact( [formsUrl, formKey, formVersion] ).join( '/' ) );
     }
 
     /**
