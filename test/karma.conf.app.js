@@ -1,22 +1,30 @@
-(function () {
+(function() {
   'use strict';
 
-  module.exports = function (config) {
+  module.exports = function( config ) {
 
-    config.set({
+    config.set( {
       basePath: '..', // Ignored through gulp-karma
 
       files: [ // Ignored through gulp-karma
         '**/*.html'
       ],
 
-      autoWatch: false,
-
-      frameworks: ['jasmine'],
+      // coverage reporter generates the coverage
+      reporters       : ['progress', 'coverage'],
+      autoWatch       : false,
+      coverageReporter: {
+        reporters: [
+          { type: "text" },
+          { type: "html", dir : 'coverage/app' }
+        ]
+      },
+      frameworks      : ['jasmine'],
 
       browsers: ['PhantomJS'],
 
       preprocessors: {
+        'src/app/modules/**/*.js'                    : ['coverage'],
         'src/common/modules/**/*.html'               : ['ng-html2js'],
         'src/components/**/modules/**/*.html'        : ['ng-html2js'],
         'src/app/modules/**/*.html'                  : ['ng-html2js'],
@@ -35,11 +43,13 @@
       },
       plugins                 : [
         'karma-phantomjs-launcher',
-        'karma-jasmine', 'karma-fixture',
+        'karma-jasmine',
+        'karma-fixture',
+        'karma-coverage',
         'karma-html2js-preprocessor',
         'karma-ng-html2js-preprocessor',
         'karma-json-fixtures-preprocessor'
       ]
-    });
+    } );
   };
 })();
