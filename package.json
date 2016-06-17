@@ -1,6 +1,6 @@
 {
   "name"            : "hs-core-ui",
-  "version"         : "2016.0611.01",
+  "version"         : "2016.0608.02",
   "devDependencies" : {
     "angular-jsdoc"                    : "1.4.1",
     "browser-sync"                     : "2.12.3",
@@ -40,6 +40,7 @@
     "jshint"                           : "2.9.1",
     "jshint-stylish"                   : "2.1.0",
     "karma"                            : "0.13.22",
+    "karma-coverage"                   : "1.0.0",
     "karma-fixture"                    : "0.2.6",
     "karma-html2js-preprocessor"       : "1.0.0",
     "karma-jasmine"                    : "0.3.8",

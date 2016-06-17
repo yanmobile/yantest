@@ -148,7 +148,7 @@
     function getValidationDefinition( config ) {
       var formKey     = config.formKey,
           formVersion = config.formVersion,
-          cacheKey    = (formVersion || 'current') + '.' + formKey;
+          cacheKey    = ( formVersion || 'current' ) + '.' + formKey;
 
       var cachedValidation = _.get( _validationCache, cacheKey );
       var validations      = [];
@@ -207,7 +207,7 @@
           mode               = config.mode,
           formVersion        = config.formVersion,
           subformDefinitions = config.subformDefinitions,
-          cacheKey           = (formVersion || 'current') + '.' + formKey;
+          cacheKey           = ( formVersion || 'current' ) + '.' + formKey;
 
       // If form is already cached, return the cached form in a promise
       var cachedForm;

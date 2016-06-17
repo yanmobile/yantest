@@ -115,7 +115,7 @@
       };
 
       self.newForm = function() {
-        if (!self.renderForm) {
+        if ( !self.renderForm ) {
           self.isNew = true;
 
           self.editModel = {};
@@ -129,7 +129,7 @@
       };
 
       self.editForm = function( row ) {
-        if (!self.renderForm) {
+        if ( !self.renderForm ) {
           var index = _.indexOf( self.collectionModel, row );
 
           self.isNew     = false;

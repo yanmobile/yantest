@@ -11,7 +11,7 @@
 
   function getTopNavTabs() {
     return {
-      'index.form'      : {
+      'index.form'               : {
         state      : 'index.form',
         url        : 'forms/:mode/:formKey?formDataId',
         templateUrl: 'forms/iscForms.html',
