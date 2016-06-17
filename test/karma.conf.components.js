@@ -9,14 +9,20 @@
       files: [// Ignored through gulp-karma
         'src/**/*.html'
       ],
-
-      autoWatch: false,
-
+      reporters       : ['progress', 'coverage'],
+      autoWatch       : false,
+      coverageReporter: {
+        reporters: [
+          { type: "text" },
+          { type: "html", dir : 'coverage/component' }
+        ]
+      },
       frameworks: ['jasmine', 'fixture'],
 
       browsers: ['PhantomJS'],
 
       preprocessors: {
+        'src/components/**/modules/**/*.js'  : ['coverage'],
         'src/common/modules/**/*.html'               : ['ng-html2js'],
         'src/components/**/modules/**/*.html'        : ['ng-html2js'],
         'test/unit/components/forms/static/**/*.html': ['ng-html2js'],
@@ -38,6 +44,7 @@
         'karma-phantomjs-launcher',
         'karma-jasmine',
         'karma-fixture',
+        'karma-coverage',
         'karma-html2js-preprocessor',
         'karma-ng-html2js-preprocessor',
         'karma-json-fixtures-preprocessor'

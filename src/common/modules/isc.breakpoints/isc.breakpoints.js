@@ -23,7 +23,7 @@
  * ==DOM==
  <div ng-if="$ctrl.breakpoints['<breakpoint css class>']">Show content for this breakpoint</div>
  */
-(function() {
+( function() {
   "use strict";
 
   angular
@@ -52,7 +52,7 @@
       updateBreakpoints(); // initial kickoff on initialization
 
       // update values on window.resize, but throttle the drag event for 250ms
-      $( $window ).resize( _.throttle( updateBreakpoints, 250) );
+      $( $window ).resize( _.throttle( updateBreakpoints, 250 ) );
 
       function updateBreakpoints() {
         var breakpoints = {};
@@ -66,4 +66,4 @@
       }
     }
   }
-})();
+} )();

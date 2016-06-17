@@ -1,36 +1,43 @@
-
-(function(){
+(function() {
   'use strict';
 
-  module.exports = function(config) {
+  module.exports = function( config ) {
 
-    config.set({
-      basePath : '..', // Ignored through gulp-karma
+    config.set( {
+      basePath: '..', // Ignored through gulp-karma
 
-      files : [ // Ignored through gulp-karma
+      files           : [ // Ignored through gulp-karma
         '**/*.html'
       ],
-
-      autoWatch : false,
-
+      // coverage reporter generates the coverage
+      reporters       : ['progress', 'coverage'],
+      autoWatch       : false,
+      coverageReporter: {
+        reporters: [
+          { type: "text" },
+          { type: "html", dir : 'coverage/common' }
+        ]
+      },
       frameworks: ['jasmine'],
 
-      browsers : ['PhantomJS'],
+      browsers: ['PhantomJS'],
 
       preprocessors: {
+        'src/common/modules/**/*.js'  : ['coverage'],
         'src/common/modules/**/*.html': ['ng-html2js']
       },
 
       ngHtml2JsPreprocessor: {
         stripPrefix: 'src\/(app|common|components)\/.*\/?modules\/',
-        moduleName: 'isc.templates' // include beforeEach( module( 'isc.templates' )) in unit tests
+        moduleName : 'isc.templates' // include beforeEach( module( 'isc.templates' )) in unit tests
       },
 
-      plugins : [
+      plugins: [
         'karma-phantomjs-launcher',
         'karma-jasmine',
+        'karma-coverage',
         'karma-ng-html2js-preprocessor'
       ]
-    });
+    } );
   };
 })();
