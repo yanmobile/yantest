@@ -34,52 +34,57 @@
 
     /**
      * @memberOf iscFormDataApi
-     * @param id
+     * @param {Number} id
+     * @param {=String} url - optional override for api endpoint
      * @returns {*}
      */
-    function get( id ) {
+    function get( id, url ) {
       channel.debug( 'iscFormDataApi.get' );
-      return iscHttpapi.get( [formDataUrl, id].join( '/' ) );
+      return iscHttpapi.get( [url || formDataUrl, id].join( '/' ) );
     }
 
     /**
      * @memberOf iscFormDataApi
-     * @param id
-     * @param form
+     * @param {Number} id
+     * @param {Object} form
+     * @param {=String} url - optional override for api endpoint
      * @returns {*}
      */
-    function put( id, form ) {
+    function put( id, form, url ) {
       channel.debug( 'iscFormDataApi.put' );
-      return iscHttpapi.put( [formDataUrl, id].join( '/' ), form );
+      return iscHttpapi.put( [url || formDataUrl, id].join( '/' ), form );
     }
 
     /**
      * @memberOf iscFormDataApi
-     * @param form
+     * @param {Object} form
+     * @param {=String} url - optional override for api endpoint
      * @returns {*}
      */
-    function post( form ) {
+    function post( form, url ) {
       channel.debug( 'iscFormDataApi.post' );
-      return iscHttpapi.post( formDataUrl, form );
+      return iscHttpapi.post( url || formDataUrl, form );
     }
 
     /**
      * @memberOf iscFormDataApi
-     * @param id
+     * @param {Number} id
+     * @param {=String} url - optional override for api endpoint
      * @returns {*}
      */
-    function deleteApi( id ) {
+    function deleteApi( id, url ) {
       channel.debug( 'iscFormDataApi.delete' );
-      return iscHttpapi.delete( [formDataUrl, id].join( '/' ) );
+      return iscHttpapi.delete( [url || formDataUrl, id].join( '/' ) );
     }
 
     /**
      * @memberOf iscFormDataApi
+     * @param {=String} url - optional override for api endpoint
      * @returns {*}
      */
-    function list() {
+    function list( url ) {
       channel.debug( 'iscFormDataApi.list' );
-      return iscHttpapi.get( formDataUrl );
+      return iscHttpapi.get( url || formDataUrl );
     }
 
   }
