@@ -48,13 +48,20 @@
    *       unwrap: The function to use to unwrap form data returned from load.
    *               Called with one argument:
    *                 responseData   (the result from calling load)
-   *       load:   The function call that will query for the initial form data.
+   *       load  : The function call that will query for the initial form data.
    *               Called with one argument:
    *                 id       (this.formDataId)
-   *       save:   The function call that will persist data in this form.
+   *       save  : The function call that will persist data in this form.
    *               Called with two arguments:
    *                 formData (the model payload for this form: this.model)
    *                 id       (this.formDataId)
+   *       urls  : An object for overriding the API endpoints for form data. These may be absolute or relative urls.
+   *               These properties may be defined:
+   *         get   : overrides the endpoint for iscFormDataApi.get
+   *         post  : overrides the endpoint for iscFormDataApi.post
+   *         put   : overrides the endpoint for iscFormDataApi.put
+   *         delete: overrides the endpoint for iscFormDataApi.delete
+   *         list  : overrides the endpoint for iscFormDataApi.list
    *
    *     Defaults:
    *       wrap:   A function that includes the following properties in the save call:
@@ -69,10 +76,11 @@
    *           data       : this.model
    *         }
    *       unwrap: A function that returns responseData.data.
-   *       load:   If this.formDataId is defined, call iscFormDataApi.get and update this.model.
+   *       load  : If this.formDataId is defined, call iscFormDataApi.get and update this.model.
    *               Otherwise, use a new empty object.
-   *       save:   If this.formDataId is undefined, call iscFormDataApi.post and update this.formDataId.
+   *       save  : If this.formDataId is undefined, call iscFormDataApi.post and update this.formDataId.
    *               Otherwise, call iscFormDataApi.put.
+   *       urls  : None
    *
    * buttonConfig : A configuration object for form button configuration. This is an object with
    *   properties that represent buttons at the end of the main (parent) form.
@@ -113,7 +121,8 @@
    *                  This property may be defined as a primitive or as a function.
    *
    * @example
-   *   Example usage:
+   *   Example usages:
+   *
    *   to change the text of the submit button to "Complete" and add a "Home" button in the middle:
    *     buttonConfig : {
    *       submit : {
@@ -130,6 +139,17 @@
    *       }
    *     }
    *
+   *   to change the API endpoint for submitting data for just this form:
+   *     formDataApi: {
+   *       urls: {
+   *         put : {
+   *           url: "api/v1/alternateFormDataApi"
+   *         },
+   *         post: {
+   *           url: "api/v1/alternateFormDataApi"
+   *         }
+   *       }
+   *     }
 
    */
   /* @ngInject */
@@ -164,12 +184,12 @@
     function controller() {
       var self = this;
 
-      var defaultFormConfig   = getFormDefaults();
       self.formConfig         = self.formConfig || {};
+      var defaultFormConfig   = getFormDefaults( self.formConfig );
       self.internalFormConfig = _.defaultsDeep( self.formConfig, defaultFormConfig );
 
-      var defaultButtonConfig   = getButtonDefaults();
       self.buttonConfig         = self.buttonConfig || {};
+      var defaultButtonConfig   = getButtonDefaults();
       self.internalButtonConfig = _.defaultsDeep( self.buttonConfig, defaultButtonConfig );
 
       // Ensure id is either numeric or undefined (if passed directly from a route param, it could be a string)
@@ -215,9 +235,10 @@
 
       /**
        * @memberOf iscForm
+       * @param formConfig - The formConfig for the directive
        * @returns {{annotationsApi: {getFormAnnotations: function, closeAnnotationPanel: function, initAnnotationQueue: function, processAnnotationQueue: function}, additionalModels: {}}}
        */
-      function getFormDefaults() {
+      function getFormDefaults( formConfig ) {
         // Empty annotations API if not provided
         var annotationsApi = {
           getFormAnnotations    : emptyAnnotationData,
@@ -263,7 +284,7 @@
 
         function loadDefault( id ) {
           if ( id !== undefined ) {
-            return iscFormDataApi.get( id );
+            return iscFormDataApi.get( id, getConfiguredUrl( 'get' ) );
           }
           else {
             return $q.when( {} );
@@ -274,18 +295,24 @@
           var annotationsApi = self.formConfig.annotationsApi;
 
           if ( id !== undefined ) {
-            return iscFormDataApi.put( id, formData ).then( function( form ) {
-              annotationsApi.processAnnotationQueue( form.id );
-              return form;
-            } );
+            return iscFormDataApi.put( id, formData, getConfiguredUrl( 'put' ) )
+              .then( function( form ) {
+                annotationsApi.processAnnotationQueue( form.id );
+                return form;
+              } );
           }
           else {
-            return iscFormDataApi.post( formData ).then( function( form ) {
-              self.parsedFormDataId = self.options.formState._id = form.id;
-              annotationsApi.processAnnotationQueue( form.id );
-              return form;
-            } );
+            return iscFormDataApi.post( formData, getConfiguredUrl( 'post' ) )
+              .then( function( form ) {
+                self.parsedFormDataId = self.options.formState._id = form.id;
+                annotationsApi.processAnnotationQueue( form.id );
+                return form;
+              } );
           }
+        }
+
+        function getConfiguredUrl( verb ) {
+          return _.get( formConfig, 'formDataApi.urls.' + verb );
         }
       }
 
