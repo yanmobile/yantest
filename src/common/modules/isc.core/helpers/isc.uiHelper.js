@@ -16,18 +16,11 @@
     // ----------------------------
     // class factory
     // ----------------------------
-
     var service = {
-      displayOrder     : displayOrder,
       setTabActiveState: setTabActiveState
     };
 
     return service;
-
-    // each tab is assumed to have a displayOrder property
-    function displayOrder( tab ) {
-      return tab.displayOrder;
-    }
 
     function setTabActiveState( state, allTabs ) {
       channel.logFn( 'setTabActiveState' );
