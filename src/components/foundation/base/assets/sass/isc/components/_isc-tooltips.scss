@@ -5,6 +5,7 @@ $tooltip-font-size: 0.875rem !default;
 $tooltip-radius: $global-radius !default;
 $tooltip-line-height: $paragraph-line-height !default;
 $tooltip-padding: 0.5rem 0.625rem !default;
+$tooltip-max-width: 75% !default;
 
 /* Tooltip Styles */
 @include exports(tooltip) {
@@ -13,6 +14,7 @@ $tooltip-padding: 0.5rem 0.625rem !default;
 		border: $tooltip-border;
 		background: $tooltip-background;
 		color: isitlight($tooltip-background, $body-font-color, $light-text);
+		max-width: $tooltip-max-width;
 	}
 
 	/* Use this next selector to style things like font-size and line-height: */
