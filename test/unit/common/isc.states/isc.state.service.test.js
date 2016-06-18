@@ -14,21 +14,19 @@
       devlogProvider.loadConfig( customConfig );
     } ) );
 
+    // log statements
+    beforeEach( module( 'isc.configuration', 'isc.states', function( iscCustomConfigServiceProvider, iscStateProvider ) {
+      suite = {
+        iscCustomConfigServiceProvider: iscCustomConfigServiceProvider,
+        iscStateProvider              : iscStateProvider,
+        stateData                     : getStates()
+      };
+      iscCustomConfigServiceProvider.loadConfig( customConfig );
+      suite.iscStateProvider.state( suite.stateData );
+    } ) );
+
     describe( 'iscStateProvider.state()', function() {
       it( 'should add tab, permission, and landing config', function() {
-
-        // log statements
-        beforeEach( module( 'isc.configuration', 'isc.states', function( iscCustomConfigServiceProvider, iscStateProvider ) {
-          suite = {
-            iscCustomConfigServiceProvider: iscCustomConfigServiceProvider,
-            iscStateProvider              : iscStateProvider,
-            stateData                     : getStates()
-          };
-          iscCustomConfigServiceProvider.loadConfig( customConfig );
-          suite.iscStateProvider.state( suite.stateData );
-        } ) );
-
-
         inject( function( $rootScope, $httpBackend, iscCustomConfigService ) {
           suite.iscCustomConfigService = iscCustomConfigService;
           var landingPage              = iscCustomConfigService.getConfigSection( "landingPages", "*" );
