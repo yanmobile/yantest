@@ -8,6 +8,6 @@
   'use strict';
 
   angular
-    .module( 'isc.socket', [] );
+    .module( 'isc.socket', ['isc.core'] );
 
 } )();

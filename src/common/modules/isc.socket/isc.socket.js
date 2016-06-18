@@ -39,7 +39,7 @@
     function emit( eventName, data, callback ) {
       channel.debug( 'emit called' );
       socket.emit( eventName, data, function() {
-        var args = arguments;
+        var args = _.toArray( arguments );
         $rootScope.$evalAsync( function() {
           if ( callback ) {
             callback.apply( socket, args );

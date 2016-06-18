@@ -25,25 +25,6 @@
     } ) );
 
     // -------------------------
-    describe( 'displayOrder tests ', function() {
-
-      it( 'should have a function displayOrder', function() {
-        expect( angular.isFunction( service.displayOrder ) ).toBe( true );
-      } );
-
-      it( 'should return the display order of a tab when calling displayOrder', function() {
-        var topTabs = mockConfig.topTabs;
-        var expected, result;
-        _.forEach( topTabs, function( tabObj ) {
-          expected = tabObj.displayOrder;
-          result   = service.displayOrder( tabObj );
-          expect( expected ).toBe( result );
-        } );
-
-      } );
-    } );
-
-    // -------------------------
     describe( 'setTabActiveState tests ', function() {
 
       it( 'should have a function setTabActiveState', function() {
@@ -52,22 +33,22 @@
 
       it( 'should set the active tab state', function() {
         var topTabs = {
-          'index.home': {
+          'index.home'   : {
             'state'         : 'index.home',
             'translationKey': 'ISC_HOME_TAB',
             'displayOrder'  : 1,
-            'exclude'       : false
+            'active'        : true
+          }, 'index.work': {
+            'state'         : 'index.work',
+            'translationKey': 'ISC_WORK_TAB',
+            'displayOrder'  : 1,
+            'active'        : false
           }
         };
 
         service.setTabActiveState( 'index.home', topTabs );
         expect( topTabs["index.home"].active ).toBe( true );
-
-        _.forEach( topTabs, function( tab ) {
-          if ( tab.state !== 'index.home' ) {
-            expect( tab.active ).toBe( false );
-          }
-        } );
+        expect( topTabs["index.work"].active ).toBe( false );
       } );
     } );
 

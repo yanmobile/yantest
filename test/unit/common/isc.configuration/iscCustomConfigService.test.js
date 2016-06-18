@@ -1,95 +1,123 @@
-(function () {
+(function() {
   'use strict';
   //console.log( 'iscCustomConfigService Tests' );
   var permittedStates;
-  var mockConfig = angular.copy(customConfig);
+  var mockConfig = angular.copy( customConfig );
 
-  describe('iscCustomConfigService', function () {
+  describe( 'iscCustomConfigService', function() {
     var customConfigService,
         provider;
 
     // setup devlog
-    beforeEach(module('isc.core', function (devlogProvider, $provide) {
-      $provide.value('$log', mock$log);
-      devlogProvider.loadConfig(customConfig);
-    }));
+    beforeEach( module( 'isc.core', function( devlogProvider, $provide ) {
+      $provide.value( '$log', mock$log );
+      devlogProvider.loadConfig( customConfig );
+    } ) );
 
     // log statements
-    beforeEach(module('isc.configuration', function (iscCustomConfigServiceProvider) {
+    beforeEach( module( 'isc.configuration', function( iscCustomConfigServiceProvider ) {
       provider = iscCustomConfigServiceProvider;
-      iscCustomConfigServiceProvider.loadConfig(mockConfig);
-    }));
+      iscCustomConfigServiceProvider.loadConfig( mockConfig );
+    } ) );
 
-    beforeEach(inject(function ($rootScope, $httpBackend, iscCustomConfigService) {
+    beforeEach( inject( function( $rootScope, $httpBackend, iscCustomConfigService ) {
       customConfigService = iscCustomConfigService;
-    }));
+    } ) );
 
-    describe('getConfigSection', function () {
-      it('should return entire section', function () {
-        var permissions = customConfigService.getConfigSection('rolePermissions');
-        expect(permissions).toEqual(mockConfig.rolePermissions);
-      });
+    describe( 'getConfig', function() {
+      it( 'should have a getConfig method', function() {
+        expect( _.isFunction( customConfigService.getConfig ) ).toBe( true );
+      } );
 
-      it('should return config for specific role', function () {
-        var permissions = customConfigService.getConfigSection('rolePermissions', '*');
-        expect(permissions).toEqual(mockConfig.rolePermissions['*']);
-      });
-    });
+      it( 'should return entire config', function() {
+        var config = customConfigService.getConfig();
+        expect( _.isObject( config.rolePermissions ) ).toBe( true );
+        expect( _.isObject( config.topTabs ) ).toBe( true );
+        expect( _.isObject( config.landingPages ) ).toBe( true );
+      } );
+    } );
 
-    describe('iscCustomConfigServiceProvider addRolePermissions', function () {
+    describe( 'getConfigSection', function() {
+      it( 'should return entire section', function() {
+        var permissions = customConfigService.getConfigSection( 'rolePermissions' );
+        expect( permissions ).toEqual( mockConfig.rolePermissions );
+      } );
 
-      it('should addRolePermissions to be called first', function () {
-        provider.addRolePermissions({ 'myRoute.*': ['*'] });
-        provider.loadConfig(mockConfig);
+      it( 'should return rolePermissions for anonymous', function() {
+        var permissions = customConfigService.getConfigSection( 'rolePermissions', '*' );
+        expect( permissions ).toEqual( mockConfig.rolePermissions['*'] );
+      } );
 
-        permittedStates = customConfigService.getConfigSection('rolePermissions', '*');
-        expect(permittedStates).toBeDefined();
-        expect(_.includes(permittedStates, 'myRoute.*')).toBe(true);
-      });
+    } );
 
-      it('should loadConfig to be called first', function () {
-        provider.loadConfig(mockConfig);
-        provider.addRolePermissions({ 'myRoute.*': ['*'] });
+    describe( 'getTopTabs', function() {
+      it( 'should return topTabs for anonymous', function() {
+        var topTabs = customConfigService.getConfigSection( 'topTabs', '*' );
+        console.log( 'topTabs:', topTabs );
+        expect( topTabs ).toEqual( ['index.login'] );
+      } );
 
-        permittedStates = customConfigService.getConfigSection('rolePermissions', '*');
-        expect(permittedStates).toBeDefined();
-        expect(_.includes(permittedStates, 'myRoute.*')).toBe(true);
-      });
+      it( 'should return anonymous user tabs when getting non-anonymous user tabs', function() {
+        var topTabs = customConfigService.getConfigSection( 'topTabs', 'user' );
+        console.log( 'topTabs:', topTabs );
+        expect( _.includes( topTabs, 'index.login' ) ).toBe( true );
+      } );
+    } );
 
-      it('should allow adding a single route', function () {
-        provider.addRolePermissions({ 'myRoute.*': ['*'] });
+    describe( 'iscCustomConfigServiceProvider addRolePermissions', function() {
 
-        permittedStates = customConfigService.getConfigSection('rolePermissions', '*');
-        expect(permittedStates).toBeDefined();
-        expect(_.includes(permittedStates, 'myRoute.*')).toBe(true);
-      });
+      it( 'should addRolePermissions to be called first', function() {
+        provider.addRolePermissions( { 'myRoute.*': ['*'] } );
+        provider.loadConfig( mockConfig );
 
-      it('should allow padding in an array of routes', function () {
-        provider.addRolePermissions([{ 'myRoute.*': ['*'] }, { 'yourRoute.*': ['*'] }]);
+        permittedStates = customConfigService.getConfigSection( 'rolePermissions', '*' );
+        expect( permittedStates ).toBeDefined();
+        expect( _.includes( permittedStates, 'myRoute.*' ) ).toBe( true );
+      } );
 
-        permittedStates = customConfigService.getConfigSection('rolePermissions', '*');
-        expect(permittedStates).toBeDefined();
-        expect(_.includes(permittedStates, 'myRoute.*')).toBe(true);
-        expect(_.includes(permittedStates, 'yourRoute.*')).toBe(true);
-      });
+      it( 'should loadConfig to be called first', function() {
+        provider.loadConfig( mockConfig );
+        provider.addRolePermissions( { 'myRoute.*': ['*'] } );
 
-      it('should be able to add multiple roles', function () {
-        provider.addRolePermissions({
+        permittedStates = customConfigService.getConfigSection( 'rolePermissions', '*' );
+        expect( permittedStates ).toBeDefined();
+        expect( _.includes( permittedStates, 'myRoute.*' ) ).toBe( true );
+      } );
+
+      it( 'should allow adding a single route', function() {
+        provider.addRolePermissions( { 'myRoute.*': ['*'] } );
+
+        permittedStates = customConfigService.getConfigSection( 'rolePermissions', '*' );
+        expect( permittedStates ).toBeDefined();
+        expect( _.includes( permittedStates, 'myRoute.*' ) ).toBe( true );
+      } );
+
+      it( 'should allow padding in an array of routes', function() {
+        provider.addRolePermissions( [{ 'myRoute.*': ['*'] }, { 'yourRoute.*': ['*'] }] );
+
+        permittedStates = customConfigService.getConfigSection( 'rolePermissions', '*' );
+        expect( permittedStates ).toBeDefined();
+        expect( _.includes( permittedStates, 'myRoute.*' ) ).toBe( true );
+        expect( _.includes( permittedStates, 'yourRoute.*' ) ).toBe( true );
+      } );
+
+      it( 'should be able to add multiple roles', function() {
+        provider.addRolePermissions( {
           'myRoute.*': ['user', '%HSCC_CMC_CarePlanCreator']
-        });
-        permittedStates = customConfigService.getConfigSection('rolePermissions');
+        } );
+        permittedStates = customConfigService.getConfigSection( 'rolePermissions' );
 
         var statesEvaluated = 0;
         ['user',
           '%HSCC_CMC_CarePlanCreator'
-        ].forEach(function (role) {
-            expect(_.includes(permittedStates[role], 'myRoute.*')).toBe(true);
-            statesEvaluated++;
-          });
-        expect(statesEvaluated).toBe(2);
-      });
-    });
+        ].forEach( function( role ) {
+          expect( _.includes( permittedStates[role], 'myRoute.*' ) ).toBe( true );
+          statesEvaluated++;
+        } );
+        expect( statesEvaluated ).toBe( 2 );
+      } );
+    } );
 
-  });
+  } );
 })();
 
