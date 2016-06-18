@@ -1,6 +1,6 @@
 {
   "name"            : "hs-core-ui",
-  "version"         : "2016.0617.02",
+  "version"         : "2016.0617.03",
   "devDependencies" : {
     "angular-jsdoc"                    : "1.4.1",
     "browser-sync"                     : "2.12.3",

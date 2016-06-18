@@ -20,8 +20,7 @@
     // ----------------------------
     var service = {
       state: state,
-      $get : function() {
-      }
+      $get : _.noop
     };
 
     return service;
