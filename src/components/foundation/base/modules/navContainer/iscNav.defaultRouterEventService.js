@@ -6,7 +6,7 @@
   'use strict';
 
   angular
-    .module( 'isc.states' )
+    .module( 'iscNavContainer' )
     .factory( 'iscRouterDefaultEventService', iscRouterDefaultEventService );
 
   function iscRouterDefaultEventService( devlog,
