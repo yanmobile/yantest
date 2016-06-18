@@ -36,16 +36,15 @@
     } );
 
     describe( 'decorated state params', function() {
-      it( '$state.next', function() {
-        var expectedParams          = { name: "JohnSmith" };
-        var $stateChangeStartCalled = false;
-        suite.$rootScope.$on( '$stateChangeStart', function( event, state, params ) {
-          expect( suite.$state.next ).toEqual( expected );
-          expect( suite.$state.toParams ).toEqual( expectedParams );
-          $stateChangeStartCalled = true;
-        } );
+      it( '$state next and toParam', function() {
+        expect( suite.$state.next ).toEqual( undefined );
+        expect( suite.$state.toParams ).toEqual( undefined );
+
+        var expectedParams = { name: "JohnSmith" };
         suite.$state.go( 'home', expectedParams );
-        expect( $stateChangeStartCalled ).toBe( true );
+
+        expect( suite.$state.next ).toEqual( expected );
+        expect( suite.$state.toParams ).toEqual( expectedParams );
       } );
     } );
   } );
