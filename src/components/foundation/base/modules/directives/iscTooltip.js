@@ -26,8 +26,7 @@
       bindToController: {
         "config": "="
       },
-      controller      : function() {
-      },
+      controller      : _.noop,
       controllerAs    : 'iscTooltipCtrl'
 
     };
