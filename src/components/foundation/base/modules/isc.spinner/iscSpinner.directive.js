@@ -16,6 +16,7 @@
       controller      : iscSpinnerController,
       controllerAs    : 'spinnerCtrl',
       restrict        : 'EA',
+      scope           : {},
       templateUrl     : function( elem, attrs ) {
         return attrs.templateUrl || 'isc.spinner/iscSpinner.html';
       }

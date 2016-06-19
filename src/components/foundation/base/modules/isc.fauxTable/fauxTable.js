@@ -42,7 +42,7 @@
         config: '=',
         data  : '='
       },
-      scope           : true,
+      scope           : {},
       templateUrl     : function( elem, attrs ) {
         return attrs.templateUrl || 'isc.fauxTable/fauxTable.html';
       }

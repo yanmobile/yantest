@@ -20,7 +20,6 @@
         state         : 'error404',
         templateUrl   : 'isc.error/error404.html',
         translationKey: 'Error404',
-        controller    : 'error404Controller as error404Ctrl',
         roles         : ['*']
       }
     };
