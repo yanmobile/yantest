@@ -39,7 +39,6 @@
         expect( suite.element ).toBeDefined();
         expect( suite.$isolateScope ).toBeDefined();
         expect( suite.iscSpinnerModel ).toBeDefined();
-        console.log( 'suite.$isolateScope:', suite.$isolateScope );
       } );
     } );
 
