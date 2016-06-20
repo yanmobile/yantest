@@ -118,10 +118,10 @@
           }
         },
         {
-          "key"            : "sampleCustomFieldJsOnly",
-          "type"           : "customTemplateJsOnly",
+          "key"            : "sampleCustomWrapper",
+          "type"           : "customWrapperTemplate",
           "templateOptions": {
-            "label"   : "Here is a sample custom field using only javascript"
+            "label"   : "Here is a sample custom field using a custom wrapper"
           },
           "data" : {
             "viewMode" : {

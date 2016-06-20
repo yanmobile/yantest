@@ -1,6 +1,8 @@
 // Mock API
 var mockFormResponses = function (httpBackend) {
-  var staticPath = 'test/unit/components/forms/static';
+  var staticPath   = 'test/unit/components/forms/static',
+      templatePath = staticPath + '/templates',
+      wrapperPath  = staticPath + '/wrappers';
 
   resetMockFormStore();
 
@@ -59,7 +61,7 @@ var mockFormResponses = function (httpBackend) {
           splitParams  = routeParams.split('/'),
           templateName = splitParams[0],
           htmlName     = splitParams[1],
-          path         = [staticPath, templateName, htmlName].join('/');
+          path         = [templatePath, templateName, htmlName].join('/');
 
       return [200, getHTMLFile(path), {}];
     });
@@ -67,7 +69,7 @@ var mockFormResponses = function (httpBackend) {
   httpBackend.when('GET', /^formTemplates\/js\/\w*$/)
     .respond(function response(method, url) {
       var templateName = url.replace('formTemplates/js/', ''),
-          path         = [staticPath, templateName, 'script.js'].join('/');
+          path         = [templatePath, templateName, 'script.js'].join('/');
 
       return [200, getHTMLFile(path), {}];
     });
@@ -75,10 +77,10 @@ var mockFormResponses = function (httpBackend) {
   httpBackend.when('GET', /^formTemplates\/css\/\w*$/)
     .respond(function response(method, url) {
       var templateName = url.replace('formTemplates/css/', ''),
-          path         = [staticPath, templateName, 'stylesheet.css'].join('/');
+          path         = [templatePath, templateName, 'stylesheet.css'].join('/');
 
       var response = getHTMLFile(path);
-      
+
       if (!response) {
         return [404, {}, {}];
       }
@@ -86,6 +88,16 @@ var mockFormResponses = function (httpBackend) {
         return [200, response, {}];
       }
     });
+
+  // Custom wrappers
+  httpBackend.when('GET', /^formTemplates\/wrappers\/\w*$/)
+    .respond(function response(method, url) {
+      var wrapperName = url.replace('formTemplates/wrappers/', ''),
+          path         = [wrapperPath, wrapperName + '.html'].join('/');
+
+      return [200, getHTMLFile(path), {}];
+    });
+
 
   // Form Data
   // GET: list all
