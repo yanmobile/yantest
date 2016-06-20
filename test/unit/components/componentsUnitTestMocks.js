@@ -48,6 +48,7 @@ var customConfig = {
     'proxy': ['index.myAccount.*', 'index.messages', 'index.messages.inbox', 'index.messages.outbox', 'index.messages.refillPrescription']
   },
 
+  'production'     : false,
   'moduleApi'      : {
     'forms'         : {
       'path': 'forms'
