@@ -48,6 +48,15 @@ var customConfig = {
     'proxy': ['index.myAccount.*', 'index.messages', 'index.messages.inbox', 'index.messages.outbox', 'index.messages.refillPrescription']
   },
 
+  'formats'        : {
+    'date': {
+      'shortDate'   : 'MM-DD-YYYY',
+      'shortTime'   : 'h:mm A',
+      'longDate'    : 'd MMMM yyyy',
+      'longDateTime': 'd MMMM yyyy H:mm',
+      'database'    : 'YYYY-MM-DD HH:mm:ss'
+    }
+  },
   'production'     : false,
   'moduleApi'      : {
     'forms'         : {

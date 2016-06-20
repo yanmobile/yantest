@@ -15,7 +15,7 @@
    * @restrict 'E'
    * @param $filter
    * @param FoundationApi
-   * @param appConfig
+   * @param iscCustomConfigService
    * @param FORMS_EVENTS
    * @param iscFormsTemplateService
    * @param iscFormsValidationService
@@ -23,7 +23,7 @@
    * @returns {{restrict: string, replace: boolean, require: string, controllerAs: string, scope: {id: string, formState: string, options: string, annotations: string}, bindToController: boolean, controller: controller, link: link, templateUrl: string}}
    */
   /* @ngInject */
-  function iscEmbeddedFormCollection( $filter, FoundationApi, appConfig, FORMS_EVENTS,
+  function iscEmbeddedFormCollection( $filter, FoundationApi, iscCustomConfigService, FORMS_EVENTS,
     iscFormsTemplateService, iscFormsValidationService,
     iscScrollContainerService ) {//jshint ignore:line
 
@@ -84,7 +84,7 @@
         data   : self.formState._annotations.data
       };
 
-      self.dateFormat        = _.get( appConfig, 'formats.date.shortDate', 'date' );
+      self.dateFormat        = _.get( iscCustomConfigService.getConfig(), 'formats.date.shortDate', 'date' );
       self.annotationWrapper = 'forms/foundationTemplates/tableTemplates/annotation-indicator.html';
 
       self.isNew      = false;
@@ -254,7 +254,7 @@
       function mergeBuiltInTemplates( fields ) {
         _.forEach( fields, function( field ) {
           var type = _.get( field, 'type', '' );
-          if ( type && !type.startsWith( 'embeddedForm' ) ) {
+          if ( type && !_.startsWith(type, 'embeddedForm' ) ) {
             // Recurse for fieldGroups
             if ( field.fieldGroup ) {
               mergeBuiltInTemplates( field.fieldGroup );

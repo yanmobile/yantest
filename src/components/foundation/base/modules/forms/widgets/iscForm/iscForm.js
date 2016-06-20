@@ -441,7 +441,7 @@
 
         function evalScript( script ) {
           if ( script && _.isFunction( script ) ) {
-            script( self.formConfig.additionalModels, $stateParams, self.model );
+            script( self.internalFormConfig.additionalModels, $stateParams, self.model );
           }
         }
       }

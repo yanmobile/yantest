@@ -146,7 +146,7 @@
           },
           "data"            : {
             "viewMode" : {
-              "templateUrl" : "viewMode.html"
+              "templateUrl" : "testViewMode.html"
             }
           }
         }
