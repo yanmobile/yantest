@@ -25,8 +25,8 @@
         'src/components/**/modules/**/*.js'  : ['coverage'],
         'src/common/modules/**/*.html'               : ['ng-html2js'],
         'src/components/**/modules/**/*.html'        : ['ng-html2js'],
-        'test/unit/components/forms/static/**/*.html': ['ng-html2js'],
-        'test/unit/components/forms/static/**/*.css' : ['ng-html2js'],
+        'test/unit/components/forms/static/**/*.html': ['html2js'],
+        'test/unit/components/forms/static/**/*.css' : ['html2js'],
         'test/unit/components/forms/static/**/*.js'  : ['html2js'],
         'test/unit/components/forms/static/**/*.json': ['json_fixtures']
       },

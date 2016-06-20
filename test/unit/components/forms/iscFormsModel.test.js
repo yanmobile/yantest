@@ -5,10 +5,11 @@
     var suite = {};
 
     beforeEach(module('formly', 'isc.http', 'isc.forms', 'isc.templates',
-      function ($provide) {
+      function ($provide, devlogProvider) {
         $provide.value('$log', console);
         $provide.value('apiHelper', mockApiHelper);
         $provide.value('iscCustomConfigService', mockCustomConfigService);
+        devlogProvider.loadConfig( mockCustomConfigService.getConfig() );
       })
     );
 
@@ -138,6 +139,8 @@
               expect( suite.api.getFormDefinition ).toHaveBeenCalled();
               expect( suite.api.getUserScript ).toHaveBeenCalledWith( "loadPatient" );
               expect( suite.api.getTemplate ).toHaveBeenCalledWith( "js/customTemplate" );
+              expect( suite.api.getTemplate ).toHaveBeenCalledWith( "html/customTemplate/customTemplate.input.html" );
+              expect( suite.api.getTemplate ).toHaveBeenCalledWith( "css/customTemplate" );
 
               var form     = response.form,
                   subforms = response.subforms;

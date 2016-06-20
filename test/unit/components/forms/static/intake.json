@@ -116,6 +116,18 @@
               "template" : "<span></span>"
             }
           }
+        },
+        {
+          "key"            : "sampleCustomFieldJsOnly",
+          "type"           : "customTemplateJsOnly",
+          "templateOptions": {
+            "label"   : "Here is a sample custom field using only javascript"
+          },
+          "data" : {
+            "viewMode" : {
+              "templateUrl" : "viewMode.html"
+            }
+          }
         }
       ]
     }

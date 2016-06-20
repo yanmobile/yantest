@@ -5,12 +5,12 @@
     var suite = {};
 
     beforeEach( module( 'formly', 'isc.http', 'isc.forms', 'isc.templates',
-      function( $provide, devlogProvider ) {
-        $provide.value( '$log', mock$log );
-        $provide.value( 'apiHelper', mockApiHelper );
-        $provide.value( 'iscCustomConfigService', mockCustomConfigService );
+      function ($provide, devlogProvider) {
+        $provide.value('$log', console);
+        $provide.value('apiHelper', mockApiHelper);
+        $provide.value('iscCustomConfigService', mockCustomConfigService);
         devlogProvider.loadConfig( mockCustomConfigService.getConfig() );
-      } )
+      })
     );
 
     // this loads all the external templates used in directives etc

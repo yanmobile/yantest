@@ -77,7 +77,14 @@ var mockFormResponses = function (httpBackend) {
       var templateName = url.replace('formTemplates/css/', ''),
           path         = [staticPath, templateName, 'stylesheet.css'].join('/');
 
-      return [200, getHTMLFile(path), {}];
+      var response = getHTMLFile(path);
+      
+      if (!response) {
+        return [404, {}, {}];
+      }
+      else {
+        return [200, response, {}];
+      }
     });
 
   // Form Data
