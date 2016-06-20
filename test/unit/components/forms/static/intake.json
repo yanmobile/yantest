@@ -1,129 +1,150 @@
 {
-  "name"         : "Sample Intake Form",
-  "formType"     : "initial",
-  "dataModelInit": "loadPatient",
-  "pages"        : [
+  "name"          : "Sample Intake Form",
+  "formType"      : "initial",
+  "dataModelInit" : "loadPatient",
+  "pages"         : [
     {
-      "name"  : "Page 1 - Embedded Forms and Collections",
-      "fields": [
+      "name"   : "Page 1 - Embedded Forms and Collections",
+      "fields" : [
         {
-          "className" : "sample-field-group",
-          "fieldGroup": [
+          "className"  : "sample-field-group",
+          "fieldGroup" : [
             {
-              "key"            : "sampleEmbeddedFullForm",
-              "type"           : "embeddedForm",
-              "templateOptions": {
-                "label": "Embedded Full Form"
+              "key"             : "sampleEmbeddedFullForm",
+              "type"            : "embeddedForm",
+              "templateOptions" : {
+                "label" : "Embedded Full Form"
               },
-              "data"           : {
-                "embeddedType" : "embeddableFullForm",
-                "embeddedLabel": "Embedded Form"
+              "data"            : {
+                "embeddedType"  : "embeddableFullForm",
+                "embeddedLabel" : "Embedded Form"
               }
             },
             {
-              "key"            : "sampleEmbeddedFullForm",
-              "type"           : "embeddedForm",
-              "templateOptions": {
-                "label": "Embedded Full Form"
+              "key"             : "sampleEmbeddedFullForm",
+              "type"            : "embeddedForm",
+              "templateOptions" : {
+                "label" : "Embedded Full Form"
               },
-              "data"           : {
-                "embeddedType" : "embeddableFullForm",
-                "embeddedLabel": "Embedded Form",
-                "embeddedPage" : "Last Page"
+              "data"            : {
+                "embeddedType"  : "embeddableFullForm",
+                "embeddedLabel" : "Embedded Form",
+                "embeddedPage"  : 1
+              }
+            },
+            {
+              "key"             : "sampleEmbeddedFullForm",
+              "type"            : "embeddedForm",
+              "templateOptions" : {
+                "label" : "Embedded Full Form"
+              },
+              "data"            : {
+                "embeddedType"  : "embeddableFullForm",
+                "embeddedLabel" : "Embedded Form",
+                "embeddedPage"  : "Last Page"
               }
             }
           ]
         },
         {
-          "className" : "sample-field-group",
-          "fieldGroup": [
+          "className"  : "sample-field-group",
+          "fieldGroup" : [
             {
-              "key"            : "sampleEmbeddedSubform",
-              "type"           : "embeddedFormCollection",
-              "templateOptions": {
-                "label": "Embedded Subform"
+              "key"             : "sampleEmbeddedSubform",
+              "type"            : "embeddedFormCollection",
+              "templateOptions" : {
+                "label" : "Embedded Subform"
               },
-              "data"           : {
-                "embeddedType" : "embeddableSubform",
-                "embeddedLabel": "Embedded Subform"
+              "data"            : {
+                "embeddedType"  : "embeddableSubform",
+                "embeddedLabel" : "Embedded Subform"
               }
+            }
+          ]
+        },
+        {
+          "className"  : "sample-field-group",
+          "fieldGroup" : [
+            {
+              "key"  : "sampleEmbeddedFormCollectionNoTypeTest",
+              "type" : "embeddedFormCollection"
             }
           ]
         }
       ]
     },
     {
-      "name" : "Page 2 - Built-in Templates",
+      "name"   : "Page 2 - Built-in Templates",
       "fields" : [
         {
-          "key" : "templates.instructions",
+          "key"  : "templates.instructions",
           "type" : "instructions"
         },
         {
-          "key" : "templates.input",
+          "key"  : "templates.input",
           "type" : "input"
         },
         {
-          "key" : "templates.checkbox",
+          "key"  : "templates.checkbox",
           "type" : "checkbox"
         },
         {
-          "key" : "templates.multiCheckbox",
+          "key"  : "templates.multiCheckbox",
           "type" : "multiCheckbox"
         },
         {
-          "key" : "templates.radio",
+          "key"  : "templates.radio",
           "type" : "radio"
         },
         {
-          "key" : "templates.select",
+          "key"  : "templates.select",
           "type" : "select"
         },
         {
-          "key" : "templates.textarea",
+          "key"  : "templates.textarea",
           "type" : "textarea"
         },
         {
-          "key" : "templates.dateComponents",
+          "key"  : "templates.dateComponents",
           "type" : "dateComponents"
         },
         {
-          "key" : "templates.dateComponentsPartial",
+          "key"  : "templates.dateComponentsPartial",
           "type" : "dateComponentsPartial"
         },
         {
-          "key" : "templates.typeahead",
+          "key"  : "templates.typeahead",
           "type" : "typeahead"
         },
         {
-          "key" : "templates.typeaheadWithScript",
+          "key"  : "templates.typeaheadWithScript",
           "type" : "typeaheadWithScript"
         }
       ]
     },
     {
-      "name" : "Page 3 - Custom backend templates",
+      "name"   : "Page 3 - Custom backend templates",
       "fields" : [
         {
-          "key"            : "sampleCustomField",
-          "type"           : "customTemplate",
-          "templateOptions": {
-            "label"   : "Here is a sample custom field",
-            "required": true
+          "key"             : "sampleCustomField",
+          "type"            : "customTemplate",
+          "templateOptions" : {
+            "label"    : "Here is a sample custom field",
+            "required" : true
           },
-          "data" : {
+          "data"            : {
             "viewMode" : {
               "template" : "<span></span>"
             }
           }
         },
         {
-          "key"            : "sampleCustomWrapper",
-          "type"           : "customWrapperTemplate",
-          "templateOptions": {
-            "label"   : "Here is a sample custom field using a custom wrapper"
+          "key"             : "sampleCustomWrapper",
+          "type"            : "customWrapperTemplate",
+          "templateOptions" : {
+            "label" : "Here is a sample custom field using a custom wrapper"
           },
-          "data" : {
+          "data"            : {
             "viewMode" : {
               "templateUrl" : "viewMode.html"
             }
