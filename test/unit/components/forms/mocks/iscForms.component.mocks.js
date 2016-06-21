@@ -11,5 +11,8 @@ var mockApiHelper = {
 var mockCustomConfigService = {
   getConfig: function () {
     return customConfig;
+  },
+  getConfigSection: function (section) {
+    return _.get(customConfig, section, {});
   }
 };

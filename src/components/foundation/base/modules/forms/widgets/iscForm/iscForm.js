@@ -218,20 +218,12 @@
         return $q.when( [] );
       }
 
-      /**
-       * @memberOf iscForm
-       */
-      function emptyFunction() {
-      }
-
       self.validateFormApi = function() {
         return iscFormsValidationService.validateCollections( self.model, self.validationDefinition );
       };
 
       init();
 
-      // Private/helper functions
-      var originalFormKey;
 
       /**
        * @memberOf iscForm
@@ -242,9 +234,9 @@
         // Empty annotations API if not provided
         var annotationsApi = {
           getFormAnnotations    : emptyAnnotationData,
-          closeAnnotationPanel  : emptyFunction,
-          initAnnotationQueue   : emptyFunction,
-          processAnnotationQueue: emptyFunction
+          closeAnnotationPanel  : _.noop,
+          initAnnotationQueue   : _.noop,
+          processAnnotationQueue: _.noop
         };
 
         // Defaults for formDataApi property -- use iscFormDataApi
@@ -265,7 +257,7 @@
           // Wrap data with additional information and metadata
           return {
             formDefinition  : formDefinition,
-            additionalModels: self.formConfig.additionalModels,
+            additionalModels: self.internalFormConfig.additionalModels,
             formData        : {
               formKey    : self.formKey,
               formName   : formDefinition.name,
@@ -292,7 +284,7 @@
         }
 
         function saveDefault( formData, id ) {
-          var annotationsApi = self.formConfig.annotationsApi;
+          var annotationsApi = self.internalFormConfig.annotationsApi;
 
           if ( id !== undefined ) {
             return iscFormDataApi.put( id, formData, getConfiguredUrl( 'put' ) )
@@ -323,7 +315,7 @@
       function getButtonDefaults() {
         return {
           cancel: {
-            onClick   : emptyFunction,
+            onClick   : _.noop,
             afterClick: afterCancel,
             cssClass  : 'cancel button large float-left',
             text      : self.mode === 'view' ? 'Forms_Back_Button' : 'Forms_Cancel_Button'
@@ -340,7 +332,7 @@
          * @memberOf iscForm
          */
         function onSubmit() {
-          var formDataApi = self.formConfig.formDataApi;
+          var formDataApi = self.internalFormConfig.formDataApi;
 
           // Default api for submitting a form is to submit to iscFormDataApi
           var wrappedData = formDataApi.wrap( self.model, self.formDefinition.form );
@@ -358,6 +350,7 @@
          * @memberOf iscForm
          */
         function afterCancel() {
+          console.log ('after cancel');
           $window.history.back();
         }
 
@@ -374,7 +367,7 @@
        * @memberOf iscForm
        */
       function getFormData() {
-        var config      = self.formConfig,
+        var config      = self.internalFormConfig,
             formDataApi = config.formDataApi;
 
         config.annotationsApi.initAnnotationQueue();
@@ -394,7 +387,7 @@
        * @returns {*}
        */
       function getAnnotationData() {
-        var getApi = _.get( self.formConfig, 'annotationsApi.getFormAnnotations' );
+        var getApi = _.get( self.internalFormConfig, 'annotationsApi.getFormAnnotations' );
 
         if ( getApi && _.isFunction( getApi ) ) {
           return getApi( self.parsedFormDataId ).then( function( annotations ) {
@@ -406,7 +399,7 @@
           } );
         }
         else {
-          $q.when( [] );
+          return $q.when( [] );
         }
       }
 
@@ -435,7 +428,7 @@
        */
       function populateAdditionalModels( fdnScript ) {
         evalScript( fdnScript );
-        evalScript( self.formConfig.additionalModelInit );
+        evalScript( self.internalFormConfig.additionalModelInit );
 
         getValidationDefinition();
 

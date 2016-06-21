@@ -1,6 +1,5 @@
 {
   "name"          : "Sample Intake Form",
-  "formType"      : "initial",
   "dataModelInit" : "loadPatient",
   "pages"         : [
     {
