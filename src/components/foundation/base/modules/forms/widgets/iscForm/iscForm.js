@@ -350,7 +350,6 @@
          * @memberOf iscForm
          */
         function afterCancel() {
-          console.log ('after cancel');
           $window.history.back();
         }
 

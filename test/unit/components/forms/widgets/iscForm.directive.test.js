@@ -12,7 +12,7 @@
     var formConfig = {
       formDataApi   : {
         save  : function( formData ) {
-          // this should call the save data API
+          // this should normally call the save data API, if the one in components is not to be used
           return true;
         },
         wrap  : function( formData ) {
@@ -178,7 +178,6 @@
         'form-data-id=""' +
         'form-version=""' +
         'mode="edit"' +
-        // 'form-config="' + JSON.stringify( formConfig ) + '"' +
         'form-config="localFormConfig"' +
         '></isc-form>';
     }
