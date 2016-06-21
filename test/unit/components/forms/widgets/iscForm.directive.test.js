@@ -28,7 +28,7 @@
       }
     };
 
-    var goodFormConfig = {};
+    var goodFormConfig = null;
 
     var goodButtonConfig = {};
 
@@ -45,7 +45,7 @@
     );
 
     beforeEach( inject( function( $rootScope, $compile, $window, $httpBackend, $timeout,
-                                  formlyApiCheck, formlyConfig, iscFormDataApi ) {
+                                  formlyApiCheck, formlyConfig, iscFormDataApi, iscNotificationService ) {
       formlyConfig.disableWarnings   = true;
       formlyApiCheck.config.disabled = true;
 
@@ -53,8 +53,10 @@
       suiteMain.$compile     = $compile;
       suiteMain.$httpBackend = $httpBackend;
       suiteMain.$timeout     = $timeout;
-      suiteMain.formDataApi  = iscFormDataApi;
       suiteMain.$rootScope   = $rootScope;
+
+      suiteMain.formDataApi         = iscFormDataApi;
+      suiteMain.notificationService = iscNotificationService;
       mockFormResponses( suiteMain.$httpBackend );
     } ) );
 
@@ -62,14 +64,13 @@
       cleanup( suiteMain );
     } );
 
-    describe( 'iscForm suiteSimple(s)', function() {
+    //--------------------
+    describe( 'suiteSimple(s)', function() {
       beforeEach( function() {
         createDirective( suiteSimple1, getMinimalForm( 'simple1' ) );
         createDirective( suiteSimple2, getMinimalForm( 'simple2' ) );
         createDirective( suiteSimple3, getMinimalForm( 'simple3' ) );
-        suiteMain.$timeout.flush();
         suiteMain.$httpBackend.flush();
-        suiteMain.$timeout.flush();
       } );
 
       afterEach( function() {
@@ -82,8 +83,6 @@
         testSuite( suiteSimple1 );
         testSuite( suiteSimple2 );
         testSuite( suiteSimple3 );
-        // testSuite( suiteConfigured );
-        // testSuite( suiteWithData );
 
         function testSuite( suite ) {
           var formConfig   = getFormConfig( suite ),
@@ -145,16 +144,15 @@
       } );
     } );
 
-    describe( 'iscForm suiteConfigured', function() {
+    //--------------------
+    describe( 'suiteConfigured', function() {
       beforeEach( function() {
         createDirective( suiteConfigured, getConfiguredForm(), {
           localFormConfig  : goodFormConfig,
-          localButtonConfig: goodButtonConfig
+          localButtonConfig: goodButtonConfig,
+          appendToBody     : true
         } );
-
-        suiteMain.$timeout.flush();
         suiteMain.$httpBackend.flush();
-        suiteMain.$timeout.flush();
       } );
 
       afterEach( function() {
@@ -165,31 +163,76 @@
         var suite              = suiteConfigured,
             submitButton       = getButton( suite, 'submit' ),
             buttonConfig       = getButtonConfig( suite ),
-            submitButtonConfig = buttonConfig.submit;
+            submitButtonConfig = buttonConfig.submit,
+            model              = suite.controller.model,
+            subformRecord1     = {},
+            subformRecord2     = {},
+            subformRecordData  = {
+              RequiredInputInASubform : "some data",
+              RequiredInputInASubform2: "some other data"
+            };
 
         spyOn( submitButtonConfig, 'onClick' ).and.callThrough();
         spyOn( submitButtonConfig, 'afterClick' ).and.callThrough();
         spyOn( suiteMain.formDataApi, 'post' ).and.callThrough();
         spyOn( suiteMain.formDataApi, 'put' ).and.callThrough();
         spyOn( suite.controller, 'validateFormApi' ).and.callThrough();
+        spyOn( suiteMain.notificationService, 'showAlert' ).and.callThrough();
 
         submitButton.click();
 
+        // Validation should fail
         expect( submitButtonConfig.onClick ).not.toHaveBeenCalled();
         expect( suite.controller.validateFormApi ).toHaveBeenCalled();
-      } );
+        expect( suiteMain.notificationService.showAlert ).toHaveBeenCalled();
 
+        // Set the RequiredInput and add two empty records to the RequiredSubform
+        var requiredInput = suite.element.find( '[name*="RequiredInput"]' );
+        requiredInput.val( 'some value' ).trigger( 'change' );
+
+        // Adding objects directly to subform model, to bypass validation
+        // This normally cannot be done through the UI but could be done through a script
+        model.RequiredSubform = [];
+        model.RequiredSubform.push( subformRecord1 );
+        model.RequiredSubform.push( subformRecord2 );
+
+        digest( suite );
+        submitButton.click();
+
+        // Validation should still fail due to the required fields on the RequiredSubform fields
+        // This exercises the validation for subform records that are invalidated without being shown
+        expect( submitButtonConfig.onClick ).not.toHaveBeenCalled();
+        expect( suite.controller.validateFormApi ).toHaveBeenCalled();
+        expect( suiteMain.notificationService.showAlert ).toHaveBeenCalled();
+
+        _.extend( subformRecord1, subformRecordData );
+        digest( suite );
+        submitButton.click();
+
+        // Validation should still fail due to subformRecord2
+        expect( submitButtonConfig.onClick ).not.toHaveBeenCalled();
+        expect( suite.controller.validateFormApi ).toHaveBeenCalled();
+        expect( suiteMain.notificationService.showAlert ).toHaveBeenCalled();
+
+        _.extend( subformRecord2, subformRecordData );
+        digest( suite );
+        submitButton.click();
+
+        // Validation should now succeed
+        suiteMain.$httpBackend.flush();
+        expect( submitButtonConfig.onClick ).toHaveBeenCalled();
+        expect( suite.controller.validateFormApi ).toHaveBeenCalled();
+        expect( submitButtonConfig.afterClick ).toHaveBeenCalled();
+      } );
     } );
 
-    describe( 'iscForm suiteMisconfigured', function() {
+    //--------------------
+    describe( 'suiteMisconfigured', function() {
       beforeEach( function() {
         createDirective( suiteMisconfigured, getConfiguredForm(), {
           localFormConfig: badFormConfig
         } );
-
-        suiteMain.$timeout.flush();
         suiteMain.$httpBackend.flush();
-        suiteMain.$timeout.flush();
       } );
 
       afterEach( function() {
@@ -203,12 +246,11 @@
       } );
     } );
 
-    describe( 'iscForm suiteWithData', function() {
+    //--------------------
+    describe( 'suiteWithData', function() {
       beforeEach( function() {
         createDirective( suiteWithData, getFormWithData() );
-        suiteMain.$timeout.flush();
         suiteMain.$httpBackend.flush();
-        suiteMain.$timeout.flush();
       } );
 
       it( 'should parse the form data ID into an int', function() {
@@ -217,29 +259,31 @@
         expect( parsedId ).toBe( 2 );
       } );
 
-      it ('should load form data from the ID', function () {
-        var mockData = _.find(mockFormStore.formData, { id : 2 }).data;
-        console.log (mockData);
-        expect( suiteWithData.controller.model ).not.toEqual( {} );
-        expect (suiteWithData.controller.model).toEqual (mockData);
-      });
+      it( 'should load form data from the ID', function() {
+        var mockData      = _.find( mockFormStore.formData, { id: 2 } ).data,
+            // The embeddedForm types initialize the model with their keys
+            expectedModel = _.extend( {
+              sampleEmbeddedFullFormNoPage  : {},
+              sampleEmbeddedFullFormPage1   : {},
+              sampleEmbeddedFullFormLastPage: {}
+            }, mockData );
+        expect( suiteWithData.controller.model ).toEqual( expectedModel );
+      } );
     } );
 
-    describe( 'iscForm suiteInternal', function() {
+    //--------------------
+    describe( 'suiteInternal', function() {
       beforeEach( function() {
         createDirective( suiteConfigured, getConfiguredForm(), {
           localFormConfig  : goodFormConfig,
           localButtonConfig: goodButtonConfig
         } );
-        suiteMain.$timeout.flush();
         suiteMain.$httpBackend.flush();
-        suiteMain.$timeout.flush();
 
         createDirective( suiteInternal, getInternalForm(), {
           formCtrl: suiteConfigured.controller
         } );
         suiteInternal.controller = suiteInternal.$isolateScope.formInternalCtrl;
-        suiteMain.$timeout.flush();
       } );
 
       afterEach( function() {
@@ -272,20 +316,20 @@
         expect( lastPage._isHidden ).toBe( true );
 
         model.RequiredInput = "something";
-        suite.$scope.$digest();
-        suiteMain.$timeout.flush();
+        digest( suite );
         expect( model.RequiredInput ).toEqual( 'something' );
         expect( lastPage._isHidden ).toBe( false );
       } );
     } );
 
 
+    //--------------------
     // Utility functions
     function createDirective( suite, html, scopeConfig ) {
       suite.$scope = suiteMain.$rootScope.$new();
       angular.extend( suite.$scope, angular.copy( scopeConfig ) );
       suite.element = suiteMain.$compile( html )( suite.$scope );
-      suite.$scope.$digest();
+      digest( suite );
       suite.$isolateScope = suite.element.isolateScope();
       suite.controller    = suite.$isolateScope.formCtrl;
     }
@@ -302,6 +346,11 @@
       return suite.element.find( '#' + buttonName + 'Button' );
     }
 
+    function digest( suite ) {
+      suite.$scope.$digest();
+      suiteMain.$timeout.flush();
+    }
+
     // Form template generators
     function getMinimalForm( formKey ) {
       return '<isc-form ' + 'form-key="' + formKey + '" ' + '></isc-form>'
@@ -313,6 +362,7 @@
         'form-data-id=""' +
         'form-version=""' +
         'mode="edit"' +
+        'model="localModel"' +
         'form-config="localFormConfig"' +
         'button-config="localButtonConfig"' +
         '></isc-form>';

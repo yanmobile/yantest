@@ -2,8 +2,8 @@
   "name"          : "Sample Intake Form",
   "dataModelInit" : "loadPatient",
   "pageLayout"    : "paged",
-  "validateOn" : "blur",
-  "autosave"   : {
+  "validateOn"    : "change",
+  "autosave"      : {
     "trigger" : "pageChange"
   },
   "pages"         : [
@@ -179,10 +179,9 @@
       ]
     },
     {
-      "name" : "Page 5 - Page Hide Expressions",
+      "name"           : "Page 5 - Page Hide Expressions",
       "hideExpression" : "!model.RequiredInput",
-      "fields" : [
-
+      "fields"         : [
       ]
     }
   ]
