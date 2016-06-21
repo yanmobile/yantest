@@ -2,26 +2,24 @@
   'use strict';
 
   describe( 'iscForm', function() {
-    var suiteConfigured    = {},
+    var suiteMain          = {},
+        suiteConfigured    = {},
         suiteMisconfigured = {},
         suiteWithData      = {},
         suiteSimple1       = {},
         suiteSimple2       = {},
-        suiteSimple3       = {};
+        suiteSimple3       = {},
+        suiteInternal      = {};
 
     // Some intentional mis-configurations to exercise safety nets
     var badFormConfig = {
       formDataApi   : {
-        save  : function( formData ) {
-          // this should normally call the save data API, if the one in components is not to be used
-          return true;
-        },
-        wrap  : function( formData ) {
-          // this should normally return the data wrapped with metadata
-          return null;
-        },
+        // this should normally call the save data API, if the default option is not to be used
+        save  : null,
+        // this should normally return the data to be saved wrapped with metadata
+        wrap  : null,
+        // this should normally unwrap the metadata from a saved form
         unwrap: function( formData ) {
-          // this should normally return the unwrapped form
           return null;
         }
       },
@@ -51,29 +49,45 @@
       formlyConfig.disableWarnings   = true;
       formlyApiCheck.config.disabled = true;
 
+      suiteMain.$window = $window;
+      suiteMain.$window      = $window;
+      suiteMain.$httpBackend = $httpBackend;
+      suiteMain.$timeout     = $timeout;
+
       createDirective( suiteSimple1, getMinimalForm( 'simple1' ) );
       createDirective( suiteSimple2, getMinimalForm( 'simple2' ) );
       createDirective( suiteSimple3, getMinimalForm( 'simple3' ) );
-      createDirective( suiteMisconfigured, getConfiguredForm(), badFormConfig );
-      createDirective( suiteConfigured, getConfiguredForm(), goodFormConfig, goodButtonConfig );
+      createDirective( suiteMisconfigured, getConfiguredForm(), {
+        localFormConfig: badFormConfig
+      } );
+      createDirective( suiteConfigured, getConfiguredForm(), {
+        localFormConfig  : goodFormConfig,
+        localButtonConfig: goodButtonConfig
+      } );
       createDirective( suiteWithData, getFormWithData() );
 
       $timeout.flush();
       $httpBackend.flush();
       $timeout.flush();
 
-      function createDirective( suite, html, formConfig, buttonConfig ) {
+      createDirective( suiteInternal, getInternalForm(), {
+        formCtrl: suiteConfigured.controller
+      } );
+      suiteInternal.controller = suiteInternal.$isolateScope.formInternalCtrl;
+
+      $timeout.flush();
+
+      function createDirective( suite, html, scopeConfig ) {
         suite.$window      = $window;
         suite.$httpBackend = $httpBackend;
         suite.$timeout     = $timeout;
         suite.formDataApi  = iscFormDataApi;
         mockFormResponses( suite.$httpBackend );
 
-        suite.$rootScope               = $rootScope;
-        suite.$scope                   = $rootScope.$new();
-        suite.$scope.localFormConfig   = angular.copy( formConfig );
-        suite.$scope.localButtonConfig = angular.copy( buttonConfig );
-        suite.element                  = $compile( html )( suite.$scope );
+        suite.$rootScope = $rootScope;
+        suite.$scope     = $rootScope.$new();
+        angular.extend( suite.$scope, angular.copy( scopeConfig ) );
+        suite.element = $compile( html )( suite.$scope );
         suite.$scope.$digest();
         suite.$isolateScope = suite.element.isolateScope();
         suite.controller    = suite.$isolateScope.formCtrl;
@@ -85,7 +99,9 @@
       cleanup( suiteSimple2 );
       cleanup( suiteSimple3 );
       cleanup( suiteConfigured );
+      cleanup( suiteMisconfigured );
       cleanup( suiteWithData );
+      cleanup( suiteInternal );
     } );
 
     describe( 'iscForm', function() {
@@ -178,6 +194,16 @@
 
         expect( suite.$window.history.back ).toHaveBeenCalled();
       } );
+
+      it( 'should change page when the selector is changed', function() {
+        console.log( suiteInternal.controller );
+        var suite         = suiteInternal,
+            subformConfig = suite.controller.multiConfig;
+
+        spyOn( subformConfig, 'selectPage' ).and.callThrough();
+
+        subformConfig.selectPage( 1 );
+      } );
     } );
 
 
@@ -215,6 +241,17 @@
         'form-data-id="123"' +
         'mode="view"' +
         '></isc-form>';
+    }
+
+    function getInternalForm() {
+      return '<isc-form-internal ' +
+        'form-definition="formCtrl.formDefinition"' +
+        'model="formCtrl.model"' +
+        'options="formCtrl.options"' +
+        'button-config="formCtrl.internalButtonConfig"' +
+        'form-config="formCtrl.internalFormConfig"' +
+        'validate-form-api="formCtrl.validateFormApi"' +
+        '></isc-form-internal>';
     }
 
   } );

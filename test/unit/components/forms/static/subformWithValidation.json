@@ -1,0 +1,18 @@
+[
+  {
+    "key"             : "RequiredInputInASubform",
+    "type"            : "input",
+    "templateOptions" : {
+      "label"    : "I am a required input in a subform",
+      "required" : true
+    }
+  },
+  {
+    "key"             : "RequiredInputInASubform2",
+    "type"            : "input",
+    "templateOptions" : {
+      "label"    : "I am a required input in a subform",
+      "required" : true
+    }
+  }
+]

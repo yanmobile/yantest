@@ -1,6 +1,7 @@
 {
   "name"          : "Sample Intake Form",
   "dataModelInit" : "loadPatient",
+  "pageLayout"    : "paged",
   "pages"         : [
     {
       "name"   : "Page 1 - Embedded Forms and Collections",
@@ -128,7 +129,7 @@
           "key"             : "sampleCustomField",
           "type"            : "customTemplate",
           "templateOptions" : {
-            "label"    : "Here is a sample custom field"
+            "label" : "Here is a sample custom field"
           },
           "data"            : {
             "viewMode" : {
@@ -151,15 +152,33 @@
       ]
     },
     {
-      "name" : "Page 4 - Validation",
+      "name"   : "Page 4 - Validation",
       "fields" : [
         {
-          "key" : "RequiredInput",
-          "type" : "input",
+          "key"             : "RequiredInput",
+          "type"            : "input",
           "templateOptions" : {
             "required" : true
           }
+        },
+        {
+          "key"             : "RequiredSubform",
+          "type"            : "embeddedFormCollection",
+          "templateOptions" : {
+            "required" : true
+          },
+          "data"            : {
+            "embeddedType"  : "subformWithValidation",
+            "embeddedLabel" : "Subform for Validation"
+          }
         }
+      ]
+    },
+    {
+      "name" : "Page 5 - Page Hide Expressions",
+      "hideExpression" : "!model.RequiredInput",
+      "fields" : [
+
       ]
     }
   ]
