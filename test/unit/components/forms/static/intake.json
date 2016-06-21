@@ -2,6 +2,10 @@
   "name"          : "Sample Intake Form",
   "dataModelInit" : "loadPatient",
   "pageLayout"    : "paged",
+  "validateOn" : "blur",
+  "autosave"   : {
+    "trigger" : "pageChange"
+  },
   "pages"         : [
     {
       "name"   : "Page 1 - Embedded Forms and Collections",
@@ -10,7 +14,7 @@
           "className"  : "sample-field-group",
           "fieldGroup" : [
             {
-              "key"             : "sampleEmbeddedFullForm",
+              "key"             : "sampleEmbeddedFullFormNoPage",
               "type"            : "embeddedForm",
               "templateOptions" : {
                 "label" : "Embedded Full Form"
@@ -21,7 +25,7 @@
               }
             },
             {
-              "key"             : "sampleEmbeddedFullForm",
+              "key"             : "sampleEmbeddedFullFormPage1",
               "type"            : "embeddedForm",
               "templateOptions" : {
                 "label" : "Embedded Full Form"
@@ -33,7 +37,7 @@
               }
             },
             {
-              "key"             : "sampleEmbeddedFullForm",
+              "key"             : "sampleEmbeddedFullFormLastPage",
               "type"            : "embeddedForm",
               "templateOptions" : {
                 "label" : "Embedded Full Form"

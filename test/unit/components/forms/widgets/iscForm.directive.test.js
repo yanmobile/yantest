@@ -197,8 +197,8 @@
       } );
 
       it( 'should fall back to default behaviors for poorly configured forms', function() {
-        var suite          = suiteMisconfigured,
-            buttonConfig   = getButtonConfig( suite );
+        var suite        = suiteMisconfigured,
+            buttonConfig = getButtonConfig( suite );
         expect( _.isFunction( buttonConfig.submit.onClick ) ).toBe( true );
       } );
     } );
@@ -213,9 +213,16 @@
 
       it( 'should parse the form data ID into an int', function() {
         var parsedId = suiteWithData.controller.parsedFormDataId;
-        expect( parsedId ).not.toBe( "123" );
-        expect( parsedId ).toBe( 123 );
+        expect( parsedId ).not.toBe( "2" );
+        expect( parsedId ).toBe( 2 );
       } );
+
+      it ('should load form data from the ID', function () {
+        var mockData = _.find(mockFormStore.formData, { id : 2 }).data;
+        console.log (mockData);
+        expect( suiteWithData.controller.model ).not.toEqual( {} );
+        expect (suiteWithData.controller.model).toEqual (mockData);
+      });
     } );
 
     describe( 'iscForm suiteInternal', function() {
@@ -241,15 +248,35 @@
       } );
 
       it( 'should change page when the selector is changed', function() {
-        console.log( suiteInternal.controller );
         var suite         = suiteInternal,
             subformConfig = suite.controller.multiConfig;
 
         spyOn( subformConfig, 'selectPage' ).and.callThrough();
 
+        expect( getPageIndex() ).toEqual( 0 );
         subformConfig.selectPage( 1 );
+        expect( getPageIndex() ).toEqual( 1 );
+
+        function getPageIndex() {
+          return _.indexOf( subformConfig.selectablePages, subformConfig.currentPage );
+        }
       } );
 
+      it( 'should show page 5 once the model is updated', function() {
+        var suite         = suiteInternal,
+            subformConfig = suite.controller.multiConfig,
+            model         = suite.controller.model,
+            lastPage      = subformConfig.pages[4];
+
+        expect( model.RequiredInput ).toBeUndefined();
+        expect( lastPage._isHidden ).toBe( true );
+
+        model.RequiredInput = "something";
+        suite.$scope.$digest();
+        suiteMain.$timeout.flush();
+        expect( model.RequiredInput ).toEqual( 'something' );
+        expect( lastPage._isHidden ).toBe( false );
+      } );
     } );
 
 
@@ -294,7 +321,7 @@
     function getFormWithData() {
       return '<isc-form ' +
         'form-key="intake" ' +
-        'form-data-id="123"' +
+        'form-data-id="2"' +
         'mode="view"' +
         '></isc-form>';
     }
