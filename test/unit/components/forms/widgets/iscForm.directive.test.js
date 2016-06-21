@@ -49,68 +49,41 @@
       formlyConfig.disableWarnings   = true;
       formlyApiCheck.config.disabled = true;
 
-      suiteMain.$window = $window;
       suiteMain.$window      = $window;
+      suiteMain.$compile     = $compile;
       suiteMain.$httpBackend = $httpBackend;
       suiteMain.$timeout     = $timeout;
-
-      createDirective( suiteSimple1, getMinimalForm( 'simple1' ) );
-      createDirective( suiteSimple2, getMinimalForm( 'simple2' ) );
-      createDirective( suiteSimple3, getMinimalForm( 'simple3' ) );
-      createDirective( suiteMisconfigured, getConfiguredForm(), {
-        localFormConfig: badFormConfig
-      } );
-      createDirective( suiteConfigured, getConfiguredForm(), {
-        localFormConfig  : goodFormConfig,
-        localButtonConfig: goodButtonConfig
-      } );
-      createDirective( suiteWithData, getFormWithData() );
-
-      $timeout.flush();
-      $httpBackend.flush();
-      $timeout.flush();
-
-      createDirective( suiteInternal, getInternalForm(), {
-        formCtrl: suiteConfigured.controller
-      } );
-      suiteInternal.controller = suiteInternal.$isolateScope.formInternalCtrl;
-
-      $timeout.flush();
-
-      function createDirective( suite, html, scopeConfig ) {
-        suite.$window      = $window;
-        suite.$httpBackend = $httpBackend;
-        suite.$timeout     = $timeout;
-        suite.formDataApi  = iscFormDataApi;
-        mockFormResponses( suite.$httpBackend );
-
-        suite.$rootScope = $rootScope;
-        suite.$scope     = $rootScope.$new();
-        angular.extend( suite.$scope, angular.copy( scopeConfig ) );
-        suite.element = $compile( html )( suite.$scope );
-        suite.$scope.$digest();
-        suite.$isolateScope = suite.element.isolateScope();
-        suite.controller    = suite.$isolateScope.formCtrl;
-      }
+      suiteMain.formDataApi  = iscFormDataApi;
+      suiteMain.$rootScope   = $rootScope;
+      mockFormResponses( suiteMain.$httpBackend );
     } ) );
 
     afterEach( function() {
-      cleanup( suiteSimple1 );
-      cleanup( suiteSimple2 );
-      cleanup( suiteSimple3 );
-      cleanup( suiteConfigured );
-      cleanup( suiteMisconfigured );
-      cleanup( suiteWithData );
-      cleanup( suiteInternal );
+      cleanup( suiteMain );
     } );
 
-    describe( 'iscForm', function() {
-      it( 'should have base directive configuration', function() {
+    describe( 'iscForm suiteSimple(s)', function() {
+      beforeEach( function() {
+        createDirective( suiteSimple1, getMinimalForm( 'simple1' ) );
+        createDirective( suiteSimple2, getMinimalForm( 'simple2' ) );
+        createDirective( suiteSimple3, getMinimalForm( 'simple3' ) );
+        suiteMain.$timeout.flush();
+        suiteMain.$httpBackend.flush();
+        suiteMain.$timeout.flush();
+      } );
+
+      afterEach( function() {
+        cleanup( suiteSimple1 );
+        cleanup( suiteSimple2 );
+        cleanup( suiteSimple3 );
+      } );
+
+      it( 'should have basic directive configuration', function() {
         testSuite( suiteSimple1 );
         testSuite( suiteSimple2 );
         testSuite( suiteSimple3 );
-        testSuite( suiteConfigured );
-        testSuite( suiteWithData );
+        // testSuite( suiteConfigured );
+        // testSuite( suiteWithData );
 
         function testSuite( suite ) {
           var formConfig   = getFormConfig( suite ),
@@ -118,12 +91,6 @@
           expect( formConfig ).toBeDefined();
           expect( buttonConfig ).toBeDefined();
         }
-      } );
-
-      it( 'should parse the form data ID into an int', function() {
-        var parsedId = suiteWithData.controller.parsedFormDataId;
-        expect( parsedId ).not.toBe( "123" );
-        expect( parsedId ).toBe( 123 );
       } );
 
       it( 'should populate a minimally specified form with defaults', function() {
@@ -139,24 +106,6 @@
         }
       } );
 
-      it( 'should run validation when submit is clicked', function() {
-        var suite              = suiteConfigured,
-            submitButton       = getButton( suite, 'submit' ),
-            buttonConfig       = getButtonConfig( suite ),
-            submitButtonConfig = buttonConfig.submit;
-
-        spyOn( submitButtonConfig, 'onClick' ).and.callThrough();
-        spyOn( submitButtonConfig, 'afterClick' ).and.callThrough();
-        spyOn( suite.formDataApi, 'post' ).and.callThrough();
-        spyOn( suite.formDataApi, 'put' ).and.callThrough();
-        spyOn( suite.controller, 'validateFormApi' ).and.callThrough();
-
-        submitButton.click();
-
-        expect( submitButtonConfig.onClick ).not.toHaveBeenCalled();
-        expect( suite.controller.validateFormApi ).toHaveBeenCalled();
-      } );
-
       it( 'should save when submit is clicked', function() {
         var suite              = suiteSimple1,
             submitButton       = getButton( suite, 'submit' ),
@@ -165,21 +114,21 @@
 
         spyOn( submitButtonConfig, 'onClick' ).and.callThrough();
         spyOn( submitButtonConfig, 'afterClick' ).and.callThrough();
-        spyOn( suite.formDataApi, 'post' ).and.callThrough();
-        spyOn( suite.formDataApi, 'put' ).and.callThrough();
+        spyOn( suiteMain.formDataApi, 'post' ).and.callThrough();
+        spyOn( suiteMain.formDataApi, 'put' ).and.callThrough();
 
         // POST form
         submitButton.click();
-        suite.$httpBackend.flush();
+        suiteMain.$httpBackend.flush();
 
         expect( submitButtonConfig.onClick ).toHaveBeenCalled();
         expect( submitButtonConfig.afterClick ).toHaveBeenCalled();
-        expect( suite.formDataApi.post ).toHaveBeenCalled();
+        expect( suiteMain.formDataApi.post ).toHaveBeenCalled();
 
         // PUT form
         submitButton.click();
-        suite.$httpBackend.flush();
-        expect( suite.formDataApi.put ).toHaveBeenCalled();
+        suiteMain.$httpBackend.flush();
+        expect( suiteMain.formDataApi.put ).toHaveBeenCalled();
       } );
 
       it( 'should go back when cancel is clicked', function() {
@@ -188,11 +137,107 @@
 
         spyOn( cancelButtonConfig, 'onClick' ).and.callThrough();
         spyOn( cancelButtonConfig, 'afterClick' ).and.callThrough();
-        spyOn( suite.$window.history, 'back' ).and.callThrough();
+        spyOn( suiteMain.$window.history, 'back' ).and.callThrough();
 
         getButton( suite, 'cancel' ).click();
 
-        expect( suite.$window.history.back ).toHaveBeenCalled();
+        expect( suiteMain.$window.history.back ).toHaveBeenCalled();
+      } );
+    } );
+
+    describe( 'iscForm suiteConfigured', function() {
+      beforeEach( function() {
+        createDirective( suiteConfigured, getConfiguredForm(), {
+          localFormConfig  : goodFormConfig,
+          localButtonConfig: goodButtonConfig
+        } );
+
+        suiteMain.$timeout.flush();
+        suiteMain.$httpBackend.flush();
+        suiteMain.$timeout.flush();
+      } );
+
+      afterEach( function() {
+        cleanup( suiteConfigured );
+      } );
+
+      it( 'should run validation when submit is clicked', function() {
+        var suite              = suiteConfigured,
+            submitButton       = getButton( suite, 'submit' ),
+            buttonConfig       = getButtonConfig( suite ),
+            submitButtonConfig = buttonConfig.submit;
+
+        spyOn( submitButtonConfig, 'onClick' ).and.callThrough();
+        spyOn( submitButtonConfig, 'afterClick' ).and.callThrough();
+        spyOn( suiteMain.formDataApi, 'post' ).and.callThrough();
+        spyOn( suiteMain.formDataApi, 'put' ).and.callThrough();
+        spyOn( suite.controller, 'validateFormApi' ).and.callThrough();
+
+        submitButton.click();
+
+        expect( submitButtonConfig.onClick ).not.toHaveBeenCalled();
+        expect( suite.controller.validateFormApi ).toHaveBeenCalled();
+      } );
+
+    } );
+
+    describe( 'iscForm suiteMisconfigured', function() {
+      beforeEach( function() {
+        createDirective( suiteMisconfigured, getConfiguredForm(), {
+          localFormConfig: badFormConfig
+        } );
+
+        suiteMain.$timeout.flush();
+        suiteMain.$httpBackend.flush();
+        suiteMain.$timeout.flush();
+      } );
+
+      afterEach( function() {
+        cleanup( suiteMisconfigured );
+      } );
+
+      it( 'should fall back to default behaviors for poorly configured forms', function() {
+        var suite          = suiteMisconfigured,
+            buttonConfig   = getButtonConfig( suite );
+        expect( _.isFunction( buttonConfig.submit.onClick ) ).toBe( true );
+      } );
+    } );
+
+    describe( 'iscForm suiteWithData', function() {
+      beforeEach( function() {
+        createDirective( suiteWithData, getFormWithData() );
+        suiteMain.$timeout.flush();
+        suiteMain.$httpBackend.flush();
+        suiteMain.$timeout.flush();
+      } );
+
+      it( 'should parse the form data ID into an int', function() {
+        var parsedId = suiteWithData.controller.parsedFormDataId;
+        expect( parsedId ).not.toBe( "123" );
+        expect( parsedId ).toBe( 123 );
+      } );
+    } );
+
+    describe( 'iscForm suiteInternal', function() {
+      beforeEach( function() {
+        createDirective( suiteConfigured, getConfiguredForm(), {
+          localFormConfig  : goodFormConfig,
+          localButtonConfig: goodButtonConfig
+        } );
+        suiteMain.$timeout.flush();
+        suiteMain.$httpBackend.flush();
+        suiteMain.$timeout.flush();
+
+        createDirective( suiteInternal, getInternalForm(), {
+          formCtrl: suiteConfigured.controller
+        } );
+        suiteInternal.controller = suiteInternal.$isolateScope.formInternalCtrl;
+        suiteMain.$timeout.flush();
+      } );
+
+      afterEach( function() {
+        cleanup( suiteConfigured );
+        cleanup( suiteInternal );
       } );
 
       it( 'should change page when the selector is changed', function() {
@@ -204,11 +249,22 @@
 
         subformConfig.selectPage( 1 );
       } );
+
     } );
 
 
+    // Utility functions
+    function createDirective( suite, html, scopeConfig ) {
+      suite.$scope = suiteMain.$rootScope.$new();
+      angular.extend( suite.$scope, angular.copy( scopeConfig ) );
+      suite.element = suiteMain.$compile( html )( suite.$scope );
+      suite.$scope.$digest();
+      suite.$isolateScope = suite.element.isolateScope();
+      suite.controller    = suite.$isolateScope.formCtrl;
+    }
+
     function getFormConfig( suite ) {
-      return _.get( suite, 'controller.internalFormConfig' );
+      return suite.controller.internalFormConfig;
     }
 
     function getButtonConfig( suite ) {
