@@ -128,8 +128,7 @@
           "key"             : "sampleCustomField",
           "type"            : "customTemplate",
           "templateOptions" : {
-            "label"    : "Here is a sample custom field",
-            "required" : true
+            "label"    : "Here is a sample custom field"
           },
           "data"            : {
             "viewMode" : {
@@ -147,6 +146,18 @@
             "viewMode" : {
               "templateUrl" : "testViewMode.html"
             }
+          }
+        }
+      ]
+    },
+    {
+      "name" : "Page 4 - Validation",
+      "fields" : [
+        {
+          "key" : "RequiredInput",
+          "type" : "input",
+          "templateOptions" : {
+            "required" : true
           }
         }
       ]

@@ -184,13 +184,11 @@
     function controller() {
       var self = this;
 
-      self.formConfig         = self.formConfig || {};
       var defaultFormConfig   = getFormDefaults( self.formConfig );
-      self.internalFormConfig = _.defaultsDeep( self.formConfig, defaultFormConfig );
+      self.internalFormConfig = _.defaultsDeep( self.formConfig || {}, defaultFormConfig );
 
-      self.buttonConfig         = self.buttonConfig || {};
       var defaultButtonConfig   = getButtonDefaults();
-      self.internalButtonConfig = _.defaultsDeep( self.buttonConfig, defaultButtonConfig );
+      self.internalButtonConfig = _.defaultsDeep( self.buttonConfig || {}, defaultButtonConfig );
 
       // Ensure id is either numeric or undefined (if passed directly from a route param, it could be a string)
       var parsedId          = parseInt( self.formDataId );
