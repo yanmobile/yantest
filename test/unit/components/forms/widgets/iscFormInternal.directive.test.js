@@ -57,6 +57,7 @@
       suiteSubform.controller = suiteSubform.$isolateScope.subformCtrl;
     } ) );
 
+    
     //--------------------
     it( 'should change page when the selector is changed', function() {
       var suite         = suiteInternal,
@@ -72,6 +73,7 @@
         return _.indexOf( subformConfig.selectablePages, subformConfig.currentPage );
       }
     } );
+
 
     //--------------------
     it( 'should show page 5 once the model is updated', function() {
@@ -102,6 +104,7 @@
       digest( suite );
       expect( suiteMain.formDataApi.post ).toHaveBeenCalled();
     } );
+
 
     //--------------------
     it( 'should run validation when submit is clicked', function() {
@@ -172,6 +175,7 @@
       expect( submitButtonConfig.afterClick ).toHaveBeenCalled();
       expect( suiteMain.formDataApi.post ).toHaveBeenCalled();
     } );
+
 
     //--------------------
     it( 'should close a subform when cancel is clicked - Modal and Inline', function() {
@@ -269,5 +273,10 @@
       expect( _.isArray( model.RequiredSubform ) ).toBe( true );
       expect( model.RequiredSubform.length ).toEqual( 1 );
     } );
-  } );
+
+    //--------------------
+    it( 'should allow editing of data in a subform', function() {
+      
+    });
+    } );
 })();
