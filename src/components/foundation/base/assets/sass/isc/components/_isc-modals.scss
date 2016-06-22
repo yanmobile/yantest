@@ -15,12 +15,7 @@
 
     //Force overflow visible
     .grid-content, .grid-block {
-      margin: 0;
       overflow: visible;
-    }
-
-    button, .button, input[type="submit"], input[type="button"]  {
-      margin-bottom: 0;
     }
 
     @media #{$small} {
