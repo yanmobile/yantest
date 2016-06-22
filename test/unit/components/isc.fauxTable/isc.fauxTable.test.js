@@ -14,7 +14,7 @@
     } ) );
 
     // setup devlog
-    beforeEach( module( 'isc.core', function( devlogProvider ) {
+    beforeEach( module( 'pascalprecht.translate','isc.core', function( devlogProvider ) {
       devlogProvider.loadConfig( customConfig );
     } ) );
 
@@ -22,7 +22,7 @@
 
     var html = "<faux-table config='' data=''></faux-table>";
     beforeEach( inject( function( $rootScope, $compile ) {
-      suite            = {};
+      suite            = window.createSuite();
       suite.$rootScope = $rootScope;
       suite.$scope     = $rootScope.$new();
       suite.element    = $compile( html )( suite.$scope );
