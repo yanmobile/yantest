@@ -23,7 +23,7 @@
    * @returns {{restrict: string, replace: boolean, require: string, controllerAs: string, scope: {id: string, formState: string, options: string, annotations: string}, bindToController: boolean, controller: controller, link: link, templateUrl: string}}
    */
   /* @ngInject */
-  function iscEmbeddedFormCollection( $filter, FoundationApi, iscCustomConfigService, FORMS_EVENTS,
+  function iscEmbeddedFormCollection( $filter, $timeout, FoundationApi, iscCustomConfigService, FORMS_EVENTS,
     iscFormsTemplateService, iscFormsValidationService,
     iscScrollContainerService ) {//jshint ignore:line
 
@@ -313,7 +313,7 @@
 
         switch ( editAs ) {
           case 'modal':
-            _.defer( function() {
+            $timeout( function() {
               // When self.renderForm is set to true, the formly-form will be created and added to the DOM.
               // This will regenerate self.subform for validation of the subform.
               self.renderForm = true;
@@ -349,7 +349,7 @@
         switch ( editAs ) {
           case 'modal':
             // Defer to avoid a flicker while Foundation catches up
-            _.defer( function() {
+            $timeout( function() {
               self.renderForm = false;
             }, 0 );
             FoundationApi.publish( self.modalName, 'close' );
