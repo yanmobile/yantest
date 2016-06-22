@@ -60,13 +60,13 @@
 
       <!--Subform buttons-->
       <div class="controls clearfix">
-        <button class="cancel float-left flat"
+        <button class="cancel float-left flat embedded-form-cancel"
                 type="button"
                 ng-click="subformCtrl.singleConfig.onCancel()">
           {{'Forms_Cancel_Button' | translate}}
         </button>
 
-        <button class="float-right flat"
+        <button class="float-right flat embedded-form-save"
                 type="button"
                 ng-click="subformCtrl.singleConfig.onSubmit()">
           {{'Forms_Save_Button' | translate}} {{subformCtrl.singleConfig.itemLabel}}
