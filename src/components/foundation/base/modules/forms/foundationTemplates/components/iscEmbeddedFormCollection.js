@@ -124,7 +124,7 @@
           showSubform();
           // Defer the update until the formly-form has finished being initialized;
           // otherwise a race condition can prevent the broadcast message from being heard
-          _.defer( updateModel );
+          $timeout( updateModel, 0 );
         }
       };
 
@@ -141,7 +141,7 @@
           showSubform();
           // Defer the update until the formly-form has finished being initialized;
           // otherwise a race condition can prevent the broadcast message from being heard
-          _.defer( updateModelWithValidation );
+          $timeout( updateModelWithValidation, 0 );
         }
       };
 
