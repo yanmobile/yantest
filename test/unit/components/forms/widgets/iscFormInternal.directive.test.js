@@ -23,40 +23,35 @@
       formlyConfig.disableWarnings   = true;
       formlyApiCheck.config.disabled = true;
 
-      suiteMain.$window      = $window;
-      suiteMain.$compile     = $compile;
-      suiteMain.$httpBackend = $httpBackend;
-      suiteMain.$timeout     = $timeout;
-      suiteMain.$rootScope   = $rootScope;
+      suiteMain = window.createSuite( {
+        $window     : $window,
+        $compile    : $compile,
+        $httpBackend: $httpBackend,
+        $timeout    : $timeout,
+        $rootScope  : $rootScope,
 
-      suiteMain.formDataApi         = iscFormDataApi;
-      suiteMain.notificationService = iscNotificationService;
-      suiteMain.validationService   = iscFormsValidationService;
+        formDataApi        : iscFormDataApi,
+        notificationService: iscNotificationService,
+        validationService  : iscFormsValidationService
+      } );
       mockFormResponses( suiteMain.$httpBackend );
     } ) );
-
-    afterEach( function() {
-      cleanup( suiteMain );
-    } );
 
     //--------------------
     describe( 'suiteInternal', function() {
       beforeEach( function() {
         // Create an isc-form to get what would normally be passed to isc-form-internal
-        createDirective( suiteForm, getConfiguredForm(), {
+        suiteForm = createDirective( getConfiguredForm(), {
           localFormConfig  : {},
           localButtonConfig: {}
         } );
         suiteMain.$httpBackend.flush();
 
-        createDirective( suiteInternal, getInternalForm(), {
+        suiteInternal = createDirective( getInternalForm(), {
           formCtrl: suiteForm.controller
         } );
+        
         suiteInternal.controller = suiteInternal.$isolateScope.formInternalCtrl;
-      } );
-
-      afterEach( function() {
-        cleanup( suiteForm );
       } );
 
       it( 'should change page when the selector is changed', function() {
@@ -184,7 +179,7 @@
         var subform = getControlByName( suite, 'RequiredSubform' ).filter( '.subform' );
         subform.find( 'button.embedded-form-add' ).click();
 
-        var subformCancel    = suite.element.find( 'button.embedded-form-cancel' );
+        var subformCancel = suite.element.find( 'button.embedded-form-cancel' );
 
       } );
 

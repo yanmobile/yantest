@@ -1,12 +1,14 @@
 var suiteMain = {};
 
-function createDirective( suite, html, scopeConfig ) {
+function createDirective( html, scopeConfig ) {
+  var suite = window.createSuite({});
   suite.$scope = suiteMain.$rootScope.$new();
   angular.extend( suite.$scope, angular.copy( scopeConfig ) );
   suite.element = suiteMain.$compile( html )( suite.$scope );
   digest( suite );
   suite.$isolateScope = suite.element.isolateScope();
   suite.controller    = suite.$isolateScope.formCtrl;
+  return suite;
 }
 
 function getFormConfig( suite ) {

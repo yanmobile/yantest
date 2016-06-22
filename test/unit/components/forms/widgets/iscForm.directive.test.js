@@ -2,12 +2,12 @@
   'use strict';
 
   describe( 'iscForm', function() {
-    var suiteConfigured    = {},
-        suiteMisconfigured = {},
-        suiteWithData      = {},
-        suiteSimple1       = {},
-        suiteSimple2       = {},
-        suiteSimple3       = {};
+    var suiteConfigured,
+        suiteMisconfigured,
+        suiteWithData,
+        suiteSimple1,
+        suiteSimple2,
+        suiteSimple3;
 
     // Some intentional mis-configurations to exercise safety nets
     var badFormConfig = {
@@ -55,35 +55,28 @@
       formlyConfig.disableWarnings   = true;
       formlyApiCheck.config.disabled = true;
 
-      suiteMain.$window      = $window;
-      suiteMain.$compile     = $compile;
-      suiteMain.$httpBackend = $httpBackend;
-      suiteMain.$timeout     = $timeout;
-      suiteMain.$rootScope   = $rootScope;
+      suiteMain = window.createSuite( {
+        $window     : $window,
+        $compile    : $compile,
+        $httpBackend: $httpBackend,
+        $timeout    : $timeout,
+        $rootScope  : $rootScope,
 
-      suiteMain.formDataApi         = iscFormDataApi;
-      suiteMain.notificationService = iscNotificationService;
-      suiteMain.validationService   = iscFormsValidationService;
+        formDataApi        : iscFormDataApi,
+        notificationService: iscNotificationService,
+        validationService  : iscFormsValidationService
+      } );
       mockFormResponses( suiteMain.$httpBackend );
     } ) );
-
-    afterEach( function() {
-      cleanup( suiteMain );
-    } );
 
     //--------------------
     describe( 'suiteSimple(s)', function() {
       beforeEach( function() {
-        createDirective( suiteSimple1, getMinimalForm( 'simple1' ) );
-        createDirective( suiteSimple2, getMinimalForm( 'simple2' ) );
-        createDirective( suiteSimple3, getMinimalForm( 'simple3' ) );
-        suiteMain.$httpBackend.flush();
-      } );
+        suiteSimple1 = createDirective( getMinimalForm( 'simple1' ) );
+        suiteSimple2 = createDirective( getMinimalForm( 'simple2' ) );
+        suiteSimple3 = createDirective( getMinimalForm( 'simple3' ) );
 
-      afterEach( function() {
-        cleanup( suiteSimple1 );
-        cleanup( suiteSimple2 );
-        cleanup( suiteSimple3 );
+        suiteMain.$httpBackend.flush();
       } );
 
       it( 'should have basic directive configuration', function() {
@@ -154,15 +147,11 @@
     //--------------------
     describe( 'suiteConfigured', function() {
       beforeEach( function() {
-        createDirective( suiteConfigured, getConfiguredForm(), {
+        suiteConfigured = createDirective( getConfiguredForm(), {
           localFormConfig  : goodFormConfig,
           localButtonConfig: goodButtonConfig
         } );
         suiteMain.$httpBackend.flush();
-      } );
-
-      afterEach( function() {
-        cleanup( suiteConfigured );
       } );
 
       it( 'should load configuration passed to the directive', function() {
@@ -177,14 +166,10 @@
     //--------------------
     describe( 'suiteMisconfigured', function() {
       beforeEach( function() {
-        createDirective( suiteMisconfigured, getConfiguredForm(), {
+        suiteMisconfigured = createDirective( getConfiguredForm(), {
           localFormConfig: badFormConfig
         } );
         suiteMain.$httpBackend.flush();
-      } );
-
-      afterEach( function() {
-        cleanup( suiteMisconfigured );
       } );
 
       it( 'should fall back to default behaviors for poorly configured forms', function() {
@@ -198,7 +183,7 @@
     //--------------------
     describe( 'suiteWithData', function() {
       beforeEach( function() {
-        createDirective( suiteWithData, getFormWithData() );
+        suiteWithData = createDirective( getFormWithData() );
         suiteMain.$httpBackend.flush();
       } );
 
