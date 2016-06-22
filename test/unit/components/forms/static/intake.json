@@ -11,7 +11,7 @@
       "name"   : "Page 1 - Embedded Forms and Collections",
       "fields" : [
         {
-          "className"  : "sample-field-group",
+          "className"  : "EmbeddedForms-exercising-embeddedPage",
           "fieldGroup" : [
             {
               "key"             : "sampleEmbeddedFullFormNoPage",
@@ -51,7 +51,7 @@
           ]
         },
         {
-          "className"  : "sample-field-group",
+          "className" : "EmbeddedFormCollections-exercisingcomplex-subform",
           "fieldGroup" : [
             {
               "key"             : "sampleEmbeddedSubform",
@@ -62,6 +62,38 @@
               "data"            : {
                 "embeddedType"  : "embeddableSubform",
                 "embeddedLabel" : "Embedded Subform"
+              }
+            }
+          ]
+        },
+        {
+          "className"  : "EmbeddedFormCollections-exercising-editAs",
+          "fieldGroup" : [
+            {
+              "key"             : "testSubformPage",
+              "type"            : "embeddedFormCollection",
+              "data"            : {
+                "embeddedType"  : "simple1"
+              }
+            },
+            {
+              "key"             : "testSubformModal",
+              "type"            : "embeddedFormCollection",
+              "data"            : {
+                "embeddedType"  : "simple1",
+                "collections"   : {
+                  "editAs" : "modal"
+                }
+              }
+            },
+            {
+              "key"             : "testSubformInline",
+              "type"            : "embeddedFormCollection",
+              "data"            : {
+                "embeddedType"  : "simple1",
+                "collections"   : {
+                  "editAs" : "inline"
+                }
               }
             }
           ]

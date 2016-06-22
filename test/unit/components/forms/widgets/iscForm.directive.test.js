@@ -79,6 +79,7 @@
         suiteMain.$httpBackend.flush();
       } );
 
+      //--------------------
       it( 'should have basic directive configuration', function() {
         testSuite( suiteSimple1 );
         testSuite( suiteSimple2 );
@@ -92,6 +93,7 @@
         }
       } );
 
+      //--------------------
       it( 'should populate a minimally specified form with defaults', function() {
         testSuite( suiteSimple1 );
         testSuite( suiteSimple2 );
@@ -105,6 +107,7 @@
         }
       } );
 
+      //--------------------
       it( 'should save when submit is clicked', function() {
         var suite              = suiteSimple1,
             submitButton       = getButton( suite, 'submit' ),
@@ -130,6 +133,7 @@
         expect( suiteMain.formDataApi.put ).toHaveBeenCalled();
       } );
 
+      //--------------------
       it( 'should go back when cancel is clicked', function() {
         var suite              = suiteSimple1,
             cancelButtonConfig = getButtonConfig( suite ).cancel;
@@ -154,6 +158,7 @@
         suiteMain.$httpBackend.flush();
       } );
 
+      //--------------------
       it( 'should load configuration passed to the directive', function() {
         var suite      = suiteConfigured,
             formConfig = getFormConfig( suite );
@@ -172,6 +177,7 @@
         suiteMain.$httpBackend.flush();
       } );
 
+      //--------------------
       it( 'should fall back to default behaviors for poorly configured forms', function() {
         var suite        = suiteMisconfigured,
             buttonConfig = getButtonConfig( suite );
@@ -187,12 +193,14 @@
         suiteMain.$httpBackend.flush();
       } );
 
+      //--------------------
       it( 'should parse the form data ID into an int', function() {
         var parsedId = suiteWithData.controller.parsedFormDataId;
         expect( parsedId ).not.toBe( "2" );
         expect( parsedId ).toBe( 2 );
       } );
 
+      //--------------------
       it( 'should load form data from the ID', function() {
         var mockData      = _.find( mockFormStore.formData, { id: 2 } ).data,
             // The embeddedForm types initialize the model with their keys

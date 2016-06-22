@@ -63,6 +63,15 @@ function getInternalForm() {
     '></isc-form-internal>';
 }
 
+function getSubform() {
+  return '<isc-subform ' +
+    'model="formInternalCtrl.model" ' +
+    'form-title="formInternalCtrl.formDefinition.form.name" ' +
+    'options="formInternalCtrl.options" ' +
+    'multi-config="formInternalCtrl.multiConfig"' +
+    '></isc-subform>';
+}
+
 function getFormWithData() {
   return '<isc-form ' +
     'form-key="intake" ' +
