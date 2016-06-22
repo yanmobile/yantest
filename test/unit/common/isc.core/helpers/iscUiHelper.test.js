@@ -1,16 +1,9 @@
 (function() {
   'use strict';
-  //console.log( 'iscUiHelper Tests' );
 
-  var mockConfig = angular.copy( customConfig );
-  var suite      = {};
   describe( 'iscUiHelper', function() {
     var scope,
         service;
-
-    afterEach( function() {
-      cleanup( suite );
-    } );
 
     // show $log statements
     beforeEach( module( 'isc.core', function( $provide, devlogProvider ) {

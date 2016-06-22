@@ -2,10 +2,11 @@
   'use strict';
 
   describe('iscFormsApi', function () {
-    var suite = {};
+    var suite ;
 
     beforeEach(module('formly', 'isc.http', 'isc.forms', 'isc.templates',
       function ($provide) {
+        suite = window.createSuite();
         $provide.value('$log', console);
         $provide.value('apiHelper', mockApiHelper);
         $provide.value('iscCustomConfigService', mockCustomConfigService);
@@ -19,9 +20,6 @@
       mockFormResponses(suite.httpBackend);
     }));
 
-    afterEach(function () {
-      cleanup(suite);
-    });
 
     describe('iscFormApi', function () {
       it('should have revealed functions', function () {
