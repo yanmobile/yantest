@@ -2,7 +2,6 @@
   'use strict';
   //console.log( 'iscCustomConfigService Tests' );
   var permittedStates;
-  var mockConfig = angular.copy( customConfig );
 
   describe( 'iscCustomConfigService', function() {
     var customConfigService,
@@ -17,7 +16,7 @@
     // log statements
     beforeEach( module( 'isc.configuration', function( iscCustomConfigServiceProvider ) {
       provider = iscCustomConfigServiceProvider;
-      iscCustomConfigServiceProvider.loadConfig( mockConfig );
+      iscCustomConfigServiceProvider.loadConfig( customConfig );
     } ) );
 
     beforeEach( inject( function( $rootScope, $httpBackend, iscCustomConfigService ) {
@@ -40,12 +39,12 @@
     describe( 'getConfigSection', function() {
       it( 'should return entire section', function() {
         var permissions = customConfigService.getConfigSection( 'rolePermissions' );
-        expect( permissions ).toEqual( mockConfig.rolePermissions );
+        expect( permissions ).toEqual( customConfig.rolePermissions );
       } );
 
       it( 'should return rolePermissions for anonymous', function() {
         var permissions = customConfigService.getConfigSection( 'rolePermissions', '*' );
-        expect( permissions ).toEqual( mockConfig.rolePermissions['*'] );
+        expect( permissions ).toEqual( customConfig.rolePermissions['*'] );
       } );
 
     } );
@@ -68,7 +67,7 @@
 
       it( 'should addRolePermissions to be called first', function() {
         provider.addRolePermissions( { 'myRoute.*': ['*'] } );
-        provider.loadConfig( mockConfig );
+        provider.loadConfig( customConfig );
 
         permittedStates = customConfigService.getConfigSection( 'rolePermissions', '*' );
         expect( permittedStates ).toBeDefined();
@@ -76,7 +75,7 @@
       } );
 
       it( 'should loadConfig to be called first', function() {
-        provider.loadConfig( mockConfig );
+        provider.loadConfig( customConfig );
         provider.addRolePermissions( { 'myRoute.*': ['*'] } );
 
         permittedStates = customConfigService.getConfigSection( 'rolePermissions', '*' );

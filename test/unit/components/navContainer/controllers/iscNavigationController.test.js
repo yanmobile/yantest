@@ -1,8 +1,6 @@
 (function () {
   'use strict';
 
-  var mockConfig = angular.copy(customConfig);
-
   describe('iscNavigationController', function () {
     var scope,
         self,
@@ -24,8 +22,8 @@
 
     // setup devlog
     beforeEach(module('isc.core', 'isc.configuration', 'isc.authorization', 'iscNavContainer', function (devlogProvider, iscCustomConfigServiceProvider) {
-      devlogProvider.loadConfig(mockConfig);
-      iscCustomConfigServiceProvider.loadConfig(mockConfig);
+      devlogProvider.loadConfig(customConfig);
+      iscCustomConfigServiceProvider.loadConfig(customConfig);
     }));
 
     // this loads all the external templates used in directives etc
@@ -38,8 +36,7 @@
       iscCustomConfigService, iscSessionModel, iscSessionStorageHelper
     ) {
 
-      mockConfig = angular.copy(customConfig);
-      iscSessionStorageHelper.setConfig(mockConfig);
+      iscSessionStorageHelper.setConfig(customConfig);
 
       translate            = $translate;
       rootScope            = $rootScope;

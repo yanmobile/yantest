@@ -20,7 +20,8 @@ module.exports = {
       "src/common/bower_components/mobile-angular-ui/dist/js/mobile-angular-ui.js"
     ],
     "mocks": [
-      "src/common/bower_components/angular-mocks/angular-mocks.js"
+      "src/common/bower_components/angular-mocks/angular-mocks.js",
+      "test/unit/test.setup.js"
     ],
     "fonts": []
   },

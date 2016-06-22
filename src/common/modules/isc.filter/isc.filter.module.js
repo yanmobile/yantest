@@ -9,6 +9,6 @@
   'use strict';
 
   angular
-    .module( 'isc.filters', ['isc.core'] );
+    .module( 'isc.filters', ['isc.core', 'pascalprecht.translate'] );
 
 } )();
