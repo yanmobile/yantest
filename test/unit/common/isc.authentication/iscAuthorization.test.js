@@ -3,15 +3,12 @@
 
   describe( 'iscAuthorizationModel test', function() {
 
-    var suite = {
+    var suite = window.createSuite({
       authorizationModel         : undefined,
       sessionModel               : undefined,
       customConfigServiceProvider: undefined
-    };
+    });
     
-    afterEach( function() {
-      cleanup( suite );
-    } );
     
     // setup devlog
     beforeEach( module( 'isc.core', function( devlogProvider ) {

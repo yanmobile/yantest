@@ -2,7 +2,6 @@
   'use strict';
   //console.log( 'iscNavbarController Tests' );
 
-  var mockConfig = angular.copy(customConfig);
 
   describe('iscNavbarController', function () {
     var scope,
@@ -24,8 +23,8 @@
 
     // setup devlog
     beforeEach(module('isc.core', 'isc.configuration', 'isc.authorization', 'iscNavContainer', function (devlogProvider, iscCustomConfigServiceProvider) {
-      devlogProvider.loadConfig(mockConfig);
-      iscCustomConfigServiceProvider.loadConfig(mockConfig);
+      devlogProvider.loadConfig(customConfig);
+      iscCustomConfigServiceProvider.loadConfig(customConfig);
     }));
 
     beforeEach(inject(function (
@@ -39,10 +38,8 @@
       _AUTH_EVENTS_
     ) {
 
-      mockConfig = angular.copy(customConfig);
-
       customConfigService = iscCustomConfigService;
-      //customConfigService.setConfig (mockConfig);
+      //customConfigService.setConfig (customConfig);
 
       rootScope  = $rootScope;
       scope      = $rootScope.$new();

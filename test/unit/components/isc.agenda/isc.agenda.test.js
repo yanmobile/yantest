@@ -12,23 +12,17 @@
 
     beforeEach(module('angular.filter', 'isc.directives'));
 
-    // afterEach clean up
-    afterEach(function () {
-      cleanup(suite);
-      suite = null;
-    });
-
     // this loads all the external templates used in directives etc
     // eg, everything in templates/**/*.html
     beforeEach(module('isc.templates'));
 
     beforeEach(inject(function (_$rootScope_, _$compile_, _$httpBackend_) {
-      suite               = {
+      suite               = window.createSuite({
         $rootScope  : _$rootScope_,
         $scope      : _$rootScope_.$new(),
         $httpBackend: _$httpBackend_,
         $compile    : _$compile_
-      };
+      });
       suite.$scope.config = getConfig();
       suite.$scope.data   = getData();
     }));
