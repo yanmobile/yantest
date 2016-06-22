@@ -60,7 +60,8 @@ function getSrc() {
   // var commonWallaby    = require( './wallaby.config.common' );
   var componentsConfig = require( './wallaby.config.components' );
   var componentsSrc    = componentsConfig.getSrc();
-  var appConfig        = require( './gulp/app.json' );
+  var configs          = require( './gulp/config.app' );
+  var appConfig        = configs.app;
 
   return _.extend( componentsSrc, {
     appVendorJs      : (appConfig.vendor.js || []).map( componentsConfig.noInstrument ),
