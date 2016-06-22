@@ -172,6 +172,22 @@
         expect( suiteMain.formDataApi.post ).toHaveBeenCalled();
       } );
 
+      it( 'should close a subform when cancel is clicked', function() {
+        var suite = suiteForm;
+
+        // Set the RequiredInput
+        getControlByName( suite, 'RequiredInput' )
+          .val( 'some value' )
+          .trigger( 'change' );
+
+        // Open a subform of each editAs type, enter a field, and click cancel
+        var subform = getControlByName( suite, 'RequiredSubform' ).filter( '.subform' );
+        subform.find( 'button.embedded-form-add' ).click();
+
+        var subformCancel    = suite.element.find( 'button.embedded-form-cancel' );
+
+      } );
+
       it( 'should validate data in a subform', function() {
         var suite = suiteForm,
             model = suite.controller.model;
@@ -188,7 +204,7 @@
         subform.find( 'button.embedded-form-add' ).click();
 
         var requiredInputs = getControlByName( suite, 'RequiredInputInASubform' ),
-            subformSave    = suite.element.find( '.embedded-form-save' );
+            subformSave    = suite.element.find( 'button.embedded-form-save' );
 
         requiredInputs.first().val( 'required field 1' ).trigger( 'change' );
 
