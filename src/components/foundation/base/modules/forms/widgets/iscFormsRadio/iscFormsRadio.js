@@ -1,4 +1,4 @@
-( function() {
+(function() {
   'use strict';
 
   angular.module( 'isc.core' )
@@ -55,7 +55,8 @@
      * @param ngModel
      */
     function link( scope, elem, attrs, ngModel ) {
-      var ctrl          = scope.radioCtrl,
+      var localModel,
+          ctrl          = scope.radioCtrl,
           options       = ctrl.options,
           isObjectModel = ctrl.isObjectModel;
 
@@ -65,25 +66,25 @@
 
       ngModel.$render = function() {
         if ( ngModel.$viewValue ) {
-          ctrl.model = ngModel.$viewValue;
+          localModel = ngModel.$viewValue;
         }
       };
 
       scope.onSelect = function( option ) {
-        ctrl.model = option;
+        localModel = option;
         ngModel.$setTouched();
-        ngModel.$setViewValue( ctrl.model );
+        ngModel.$setViewValue( localModel );
       };
 
       ctrl.isChecked = function( option ) {
         if ( isObjectModel ) {
-          return ctrl.model && ctrl.model[scope.valueProp] === option[scope.valueProp];
+          return localModel && localModel[scope.valueProp] === option[scope.valueProp];
         }
         else {
-          return ctrl.model === option;
+          return localModel === option;
         }
       };
     }
 
   }//END CLASS
-} )();
+})();
