@@ -281,7 +281,12 @@
           var templateOptions = $scope.to;
           var opts            = $scope.options;
 
-          $scope.efModel = $scope.model[opts.key] = ( $scope.model[opts.key] || {} );
+          $scope.efModel = _.get( $scope.model, opts.key );
+          if ( !$scope.efModel ) {
+            $scope.efModel = {};
+            _.set( $scope.model, opts.key, $scope.efModel );
+          }
+
           $scope.efFields  = templateOptions.fields;
           $scope.efOptions = {
             formState: $scope.formState

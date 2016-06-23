@@ -1,4 +1,4 @@
-( function() {
+(function() {
   'use strict';
 
   angular.module( 'isc.forms' )
@@ -154,8 +154,8 @@
    */
   /* @ngInject */
   function iscForm( $stateParams, $q, $window,
-    iscSessionModel, iscNavContainerModel,
-    iscFormsModel, iscFormsValidationService, iscFormDataApi ) {//jshint ignore:line
+                    iscSessionModel, iscNavContainerModel,
+                    iscFormsModel, iscFormsValidationService, iscFormDataApi ) {//jshint ignore:line
     var directive = {
       restrict        : 'E',
       replace         : true,
@@ -322,7 +322,8 @@
             onClick   : onSubmit,
             afterClick: afterSubmit,
             cssClass  : 'button large float-right',
-            text      : 'Forms_Submit_Button'
+            text      : 'Forms_Submit_Button',
+            hide      : self.mode === 'view'
           }
         };
 
@@ -451,4 +452,4 @@
       }
     }
   }
-} )();
+})();
