@@ -108,27 +108,45 @@
         },
         /*@ngInject*/
         controller    : function( $scope ) {
-          var templateOptions  = $scope.to;
-          var opts             = $scope.options;
+          $scope.options.extras.skipNgModelAttrsManipulator = true;
+
+          var templateOptions = $scope.to,
+              opts            = $scope.options,
+              data            = opts.data;
+
+          angular.extend( $scope, {
+            valueField   : data.valueField,
+            displayField : data.displayField,
+            isObjectModel: data.isObject
+          } );
+
           $scope.multiCheckbox = {
             checked: [],
             change : setModel
           };
 
           // initialize the checkboxes check property
-          var modelValue = $scope.model[opts.key];
+          var modelValue = _.get( $scope.model, opts.key );
           if ( angular.isArray( modelValue ) ) {
-            var valueProp = templateOptions.valueProp || 'value';
-            angular.forEach( templateOptions.options, function( v, index ) {
-              $scope.multiCheckbox.checked[index] = modelValue.indexOf( v[valueProp] ) !== -1;
+            var valueField  = $scope.valueField || 'value',
+                valueObject = {};
+            angular.forEach( templateOptions.options, function( option, index ) {
+              if ( $scope.isObjectModel ) {
+                valueObject[valueField]             = option[valueField];
+                $scope.multiCheckbox.checked[index] = !!_.find( modelValue, valueObject );
+              }
+              else {
+                $scope.multiCheckbox.checked[index] = _.includes( modelValue, option );
+              }
             } );
           }
 
           function setModel() {
-            $scope.model[opts.key] = [];
+            var array = [];
+            _.set( $scope.model, opts.key, array );
             angular.forEach( $scope.multiCheckbox.checked, function( checkbox, index ) {
               if ( checkbox ) {
-                $scope.model[opts.key].push( templateOptions.options[index] );
+                array.push( templateOptions.options[index] );
               }
             } );
           }
