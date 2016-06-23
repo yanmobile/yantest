@@ -411,7 +411,7 @@
           } )
           .then( function( formDefinition ) {
             self.formDefinition                = formDefinition;
-            self.options.formState._validateOn = formDefinition.validateOn;
+            self.options.formState._validateOn = formDefinition.form.validateOn;
 
             populateAdditionalModels( self.formDefinition.form.dataModelInit );
           } );
