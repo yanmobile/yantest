@@ -3,7 +3,7 @@
     <button class="icon embedded-form-edit"
             type="button"
             title="Edit"
-            ng-click="efCollectionCtrl.editForm(row);">
+            ng-click="fauxTblCtrl.config.callbacks.editForm(row);">
       <i class="fa fa-edit"></i>
     </button>
   </li>
@@ -11,11 +11,11 @@
     <button class="icon alert embedded-form-delete"
             type="button"
             title="Remove"
-            ng-click="efCollectionCtrl.removeForm(row);">
+            ng-click="fauxTblCtrl.config.callbacks.removeForm(row);">
       <i class="fa fa-remove"></i>
     </button>
   </li>
 </ul>
 <span class="has-error">
-  <label class="error-message" ng-if="efCollectionCtrl.hasValidationError(row);">! invalid</label>
+  <label class="error-message" ng-if="fauxTblCtrl.config.callbacks.hasValidationError(row);">! invalid</label>
 </span>

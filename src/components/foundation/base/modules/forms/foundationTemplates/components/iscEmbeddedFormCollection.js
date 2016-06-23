@@ -1,4 +1,4 @@
-( function() {
+(function() {
   'use strict';
 
   // ----------------------------
@@ -24,8 +24,8 @@
    */
   /* @ngInject */
   function iscEmbeddedFormCollection( $filter, $timeout, FoundationApi, iscCustomConfigService, FORMS_EVENTS,
-    iscFormsTemplateService, iscFormsValidationService,
-    iscScrollContainerService ) {//jshint ignore:line
+                                      iscFormsTemplateService, iscFormsValidationService,
+                                      iscScrollContainerService ) {//jshint ignore:line
 
     // ----------------------------
     // vars
@@ -110,9 +110,7 @@
       createTableFields();
 
       // Callbacks
-      self.hasValidationError = function( row ) {
-        return _.includes( self.validationErrors, row );
-      };
+      self.hasValidationError = hasValidationError;
 
       self.newForm = function() {
         if ( !self.renderForm ) {
@@ -128,22 +126,7 @@
         }
       };
 
-      self.editForm = function( row ) {
-        if ( !self.renderForm ) {
-          var index = _.indexOf( self.collectionModel, row );
-
-          self.isNew     = false;
-          self.editIndex = index;
-          setAnnotationContext( index );
-
-          self.editModel = {};
-          _.merge( self.editModel, self.collectionModel[index] );
-          showSubform();
-          // Defer the update until the formly-form has finished being initialized;
-          // otherwise a race condition can prevent the broadcast message from being heard
-          $timeout( updateModelWithValidation, 0 );
-        }
-      };
+      self.editForm = editForm;
 
       self.cancel = function() {
         self.subformOptions.formState._validation.$submitted = false;
@@ -173,19 +156,14 @@
         // TODO - show message if invalid? (iscFormModel.validate will touch each control during validation)
       };
 
-      self.removeForm = function( row ) {
-        var index = _.indexOf( self.collectionModel, row );
-
-        self.collectionModel.splice( index, 1 );
-        onCollectionModified();
-      };
+      self.removeForm = removeForm;
 
       // Watches
       $scope.$watch( getValidation, function( value ) {
         self.validationErrors = _.get( value, 'records' );
       } );
 
-      // Private/helper functions
+
       /**
        * @memberOf iscEmbeddedFormCollection
        * @returns {*}
@@ -229,7 +207,12 @@
         self.tableConfig = {
           sortable : true,
           columns  : tableColumns,
-          emptyText: _.get( self.options, 'data.emptyCollectionMessage' )
+          emptyText: _.get( self.options, 'data.emptyCollectionMessage' ),
+          callbacks: {
+            editForm          : editForm,
+            removeForm        : removeForm,
+            hasValidationError: hasValidationError
+          }
         };
       }
 
@@ -254,7 +237,7 @@
       function mergeBuiltInTemplates( fields ) {
         _.forEach( fields, function( field ) {
           var type = _.get( field, 'type', '' );
-          if ( type && !_.startsWith(type, 'embeddedForm' ) ) {
+          if ( type && !_.startsWith( type, 'embeddedForm' ) ) {
             // Recurse for fieldGroups
             if ( field.fieldGroup ) {
               mergeBuiltInTemplates( field.fieldGroup );
@@ -362,7 +345,35 @@
           default:
             $scope.$emit( FORMS_EVENTS.hideSubform );
         }
+      }
 
+      // Table/collection actions
+      function editForm( row ) {
+        if ( !self.renderForm ) {
+          var index = _.indexOf( self.collectionModel, row );
+
+          self.isNew     = false;
+          self.editIndex = index;
+          setAnnotationContext( index );
+
+          self.editModel = {};
+          _.merge( self.editModel, self.collectionModel[index] );
+          showSubform();
+          // Defer the update until the formly-form has finished being initialized;
+          // otherwise a race condition can prevent the broadcast message from being heard
+          $timeout( updateModelWithValidation, 0 );
+        }
+      }
+
+      function removeForm( row ) {
+        var index = _.indexOf( self.collectionModel, row );
+
+        self.collectionModel.splice( index, 1 );
+        onCollectionModified();
+      }
+
+      function hasValidationError( row ) {
+        return _.includes( self.validationErrors, row );
       }
     }
 
@@ -378,4 +389,4 @@
 
   }//END CLASS
 
-} )();
+})();
