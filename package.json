@@ -60,7 +60,7 @@
     "xml-escape"                       : "1.1.0"
   },
   "scripts"         : {
-    "precommit" : "gulp jsformat"
+    "prepush" : "gulp test"
   },
   "engines"         : {
     "node" : "5.2.0",
