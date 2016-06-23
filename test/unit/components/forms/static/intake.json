@@ -1,7 +1,7 @@
 {
   "name"          : "Sample Intake Form",
   "dataModelInit" : "loadPatient",
-  "pageLayout"    : "paged",
+  "pageLayout"    : "scrolling",
   "validateOn"    : "change",
   "autosave"      : {
     "trigger" : "pageChange"
@@ -11,7 +11,7 @@
       "name"   : "Page 1 - Built-in Templates",
       "fields" : [
         {
-          "key"             : "components",
+          "key"             : "form.components",
           "type"            : "embeddedForm",
           "templateOptions" : {
             "label" : "Testing for built-in components"

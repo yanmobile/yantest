@@ -5,18 +5,28 @@
       "name"   : "Page 1",
       "fields" : [
         {
-          "key"  : "templates.instructions",
-          "type" : "instructions",
+          "key"             : "templates.instructions",
+          "type"            : "instructions",
           "templateOptions" : {
             "label" : "An instructions component"
           },
-          "data" : {
+          "data"            : {
             "content" : "Some instructions"
           }
         },
         {
-          "key"  : "templates.input",
-          "type" : "input"
+          "key"             : "templates.input.date",
+          "type"            : "input",
+          "templateOptions" : {
+            "label" : "An input component showing a date"
+          }
+        },
+        {
+          "key"             : "templates.input.text",
+          "type"            : "input",
+          "templateOptions" : {
+            "label" : "An input component showing text"
+          }
         },
         {
           "key"             : "templates.checkbox",
@@ -26,7 +36,7 @@
           }
         },
         {
-          "key"             : "templates.multiCheckbox.primitive",
+          "key"             : "templates.multiCheckbox.primitiveValue",
           "type"            : "multiCheckbox",
           "templateOptions" : {
             "label"   : "A multi-select checkbox",
@@ -38,7 +48,7 @@
           }
         },
         {
-          "key"             : "templates.multiCheckbox.object",
+          "key"             : "templates.multiCheckbox.objectValue",
           "type"            : "multiCheckbox",
           "templateOptions" : {
             "label"   : "A multi-select checkbox",
@@ -59,7 +69,7 @@
           }
         },
         {
-          "key"             : "templates.radio.primitive",
+          "key"             : "templates.radio.primitiveValue",
           "type"            : "radio",
           "templateOptions" : {
             "label"   : "A radio button - primitive values",
@@ -71,7 +81,7 @@
           }
         },
         {
-          "key"             : "templates.radio.object",
+          "key"             : "templates.radio.objectValue",
           "type"            : "radio",
           "templateOptions" : {
             "label"   : "A radio button - object values",
@@ -92,7 +102,7 @@
           }
         },
         {
-          "key"             : "templates.select.primitive",
+          "key"             : "templates.select.primitiveValue",
           "type"            : "select",
           "templateOptions" : {
             "label"   : "A dropdown - primitive values",
@@ -104,7 +114,7 @@
           }
         },
         {
-          "key"             : "templates.select.object",
+          "key"             : "templates.select.objectValue",
           "type"            : "select",
           "templateOptions" : {
             "label"   : "A dropdown - object values",
@@ -146,7 +156,7 @@
           }
         },
         {
-          "key"             : "templates.typeahead.primitive",
+          "key"             : "templates.typeahead.primitiveValue",
           "type"            : "typeahead",
           "templateOptions" : {
             "label"   : "A typeahead widget, primitive values",
@@ -158,7 +168,7 @@
           }
         },
         {
-          "key"             : "templates.typeahead.object",
+          "key"             : "templates.typeahead.objectValue",
           "type"            : "typeahead",
           "templateOptions" : {
             "label"   : "A typeahead widget, object values",

@@ -40,7 +40,7 @@
     beforeEach( module(
       'formly', 'foundation',
       'isc.http', 'isc.forms', 'iscNavContainer', 'isc.authorization', 'isc.notification', 'isc.directives',
-      'isc.templates',
+      'isc.templates', 'isc.fauxTable', 'isc.filters',
       function( $provide, devlogProvider ) {
         $provide.value( '$log', console );
         $provide.value( 'apiHelper', mockApiHelper );
@@ -342,7 +342,15 @@
         var suite        = suiteWithData,
             buttonConfig = getButtonConfig( suite );
 
-        expect( buttonConfig.submit ).toBeDefined();
+        expect( buttonConfig.submit.hide ).toBe( true );
+
+        var subform   = getControlByName( suite, 'subform.components' ).filter( '.subform' ),
+            fauxTable = subform.find( 'faux-table' ),
+            tableRows = fauxTable.find( '.tr' );
+
+        expect( subform.length ).toBe( 1 );
+        expect( fauxTable.length ).toBe( 1 );
+        expect( tableRows.length ).toBe( 2 ); // one header row, one data row
       } );
     } )
   } );

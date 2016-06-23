@@ -54,61 +54,6 @@ var resetMockFormStore = function() {
   }
 };
 
-var mockComponentData = {
-  "templates": {
-    "input"                : "some text",
-    "checkbox"             : true,
-    "multiCheckbox"        : {
-      "primitive": [
-        "1",
-        "2"
-      ],
-      "object"   : [
-        {
-          "name" : "MultiCheckbox 2",
-          "value": "2"
-        },
-        {
-          "name" : "MultiCheckbox 3",
-          "value": "3"
-        }
-      ]
-    },
-    "radio"                : {
-      "primitive": "Radio 1",
-      "object"   : {
-        "name" : "Radio 2",
-        "value": "2"
-      }
-    },
-    "typeahead"            : {
-      "primitive": "Typeahead 1",
-      "object"   : {
-        "name" : "Typeahead 2",
-        "value": "2"
-      }
-    },
-    "typeaheadWithScript"  : {
-      "name" : "TypeaheadWithScript 3",
-      "value": "3"
-    },
-    "select"               : {
-      "primitive": "Select 1",
-      "object"   : {
-        "name" : "Select 2",
-        "value": "2"
-      }
-    },
-    "textarea"             : "more text",
-    "dateComponents"       : "1990-12-11 00:00:00",
-    "dateComponentsPartial": {
-      "day"  : "",
-      "month": 9,
-      "year" : 1989
-    }
-  }
-};
-
 var sampleCloseout = {
   "formKey"    : "archive",
   "formName"   : "Archive Record",
@@ -224,16 +169,79 @@ var sampleDDPData  = {
   }
 };
 
+
+var mockComponentData = {
+  "templates": {
+    "input"                : {
+      "text": "some text",
+      "date": "1990-12-11 00:00:00"
+    },
+    "checkbox"             : true,
+    "multiCheckbox"        : {
+      "primitiveValue": [
+        "1",
+        "2"
+      ],
+      "objectValue"   : [
+        {
+          "name" : "MultiCheckbox 1",
+          "value": "1"
+        },
+        {
+          "name" : "MultiCheckbox 3",
+          "value": "3"
+        }
+      ]
+    },
+    "radio"                : {
+      "primitiveValue": "Radio 3",
+      "objectValue"   : {
+        "name" : "Radio 2",
+        "value": "2"
+      }
+    },
+    "typeahead"            : {
+      "primitiveValue": "Typeahead 3",
+      "objectValue"   : {
+        "name" : "Typeahead 2",
+        "value": "2"
+      }
+    },
+    "typeaheadWithScript"  : {
+      "name" : "TypeaheadWithScript 1",
+      "value": "3"
+    },
+    "select"               : {
+      "primitiveValue": "Select 3",
+      "objectValue"   : {
+        "name" : "Select 2",
+        "value": "2"
+      }
+    },
+    "textarea"             : "more text",
+    "dateComponents"       : "1990-12-11 00:00:00",
+    "dateComponentsPartial": {
+      "day"  : "",
+      "month": 9,
+      "year" : 1989
+    }
+  }
+};
+
 var sampleIntake = {
   "formKey" : "intake",
   "formName": "Intake Form",
   "id"      : 3,
   "data"    : {
-    "components": mockComponentData,
-    "subform"   : {
-      "components": mockComponentData
+    "form"   : {
+      "components": angular.copy( mockComponentData )
     },
-    "test"      : {
+    "subform": {
+      "components": [
+        angular.copy( mockComponentData )
+      ]
+    },
+    "test"   : {
       "SubformPage"  : [
         {
           "aField": "SubformPage: some data"
