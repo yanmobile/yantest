@@ -168,6 +168,110 @@
         expect( formConfig.additionalModels.configuredModel.foo ).toEqual( "bar" );
         // TODO -- extend
       } );
+
+      //--------------------
+      it( 'should run validation when submit is clicked', function() {
+        var suite              = suiteConfigured,
+            submitButton       = getButton( suite, 'submit' ),
+            buttonConfig       = getButtonConfig( suite ),
+            submitButtonConfig = buttonConfig.submit,
+            model              = suite.controller.model,
+            subformRecord1     = {},
+            subformRecord2     = {},
+            subformRecordData  = {
+              RequiredInputInASubform : "some data",
+              RequiredInputInASubform2: "some other data"
+            };
+
+        spyOn( submitButtonConfig, 'onClick' ).and.callThrough();
+        spyOn( submitButtonConfig, 'afterClick' ).and.callThrough();
+        spyOn( suiteMain.formDataApi, 'post' ).and.callThrough();
+        spyOn( suiteMain.formDataApi, 'put' ).and.callThrough();
+        spyOn( suite.controller, 'validateFormApi' ).and.callThrough();
+        spyOn( suiteMain.notificationService, 'showAlert' ).and.callThrough();
+
+        submitButton.click();
+
+        // Validation should fail
+        // The submit.onClick function is only called once the validation in iscFormInternal succeeds
+        expect( submitButtonConfig.onClick ).not.toHaveBeenCalled();
+        expect( suite.controller.validateFormApi ).toHaveBeenCalled();
+        expect( suiteMain.notificationService.showAlert ).toHaveBeenCalled();
+
+        // Set the RequiredInput and add two empty records to the RequiredSubform
+        getControlByName( suite, 'RequiredInput' )
+          .val( 'some value' )
+          .trigger( 'change' );
+
+        // Adding objects directly to subform model, to bypass validation
+        // This normally cannot be done through the UI but could be done through a script or event
+        model.RequiredSubform = [];
+        model.RequiredSubform.push( subformRecord1 );
+        model.RequiredSubform.push( subformRecord2 );
+
+        submitButton.click();
+
+        // Validation should still fail due to the required fields in the RequiredSubform fields
+        // This exercises the validation for subform records that are invalidated without being shown in the UI
+        expect( submitButtonConfig.onClick ).not.toHaveBeenCalled();
+        expect( suite.controller.validateFormApi ).toHaveBeenCalled();
+        expect( suiteMain.notificationService.showAlert ).toHaveBeenCalled();
+
+        _.extend( subformRecord1, subformRecordData );
+        _.extend( subformRecord2, subformRecordData );
+        suiteMain.$timeout.flush();
+        submitButton.click();
+        suiteMain.$timeout.flush();
+
+        // Validation should now succeed
+        expect( submitButtonConfig.onClick ).toHaveBeenCalled();
+        expect( suite.controller.validateFormApi ).toHaveBeenCalled();
+        suiteMain.$httpBackend.flush();
+        expect( submitButtonConfig.afterClick ).toHaveBeenCalled();
+        expect( suiteMain.formDataApi.post ).toHaveBeenCalled();
+      } );
+
+      //--------------------
+      it( 'should validate data in a subform', function() {
+        var suite = suiteConfigured,
+            model = suite.controller.model;
+
+        spyOn( suiteMain.validationService, 'validateForm' ).and.callThrough();
+
+        // Set the RequiredInput
+        getControlByName( suite, 'RequiredInput' )
+          .val( 'some value' )
+          .trigger( 'change' );
+
+        // Open the subform, enter a record, and submit the subform
+        var subform = getControlByName( suite, 'RequiredSubform' ).filter( '.subform' );
+        subform.find( 'button.embedded-form-add' ).click();
+
+        var requiredInputs = getControlByName( suite, 'RequiredInputInASubform' ),
+            subformSave    = suite.element.find( 'button.embedded-form-save' );
+
+        requiredInputs.first().val( 'required field 1' ).trigger( 'change' );
+
+        suiteMain.$timeout.flush();
+        subformSave.click();
+
+        // Only one of the required inputs has been entered, so validation for the subform fails
+        expect( suiteMain.validationService.validateForm ).toHaveBeenCalled();
+        expect( model.RequiredSubform ).toBeUndefined();
+
+        requiredInputs.last().val( 'required field 2' ).trigger( 'change' );
+
+        suiteMain.$timeout.flush();
+        subformSave.click();
+
+        // Update is performed on ngModelController, so trigger change on
+        // the element with that ng-model
+        subform.trigger( 'change' );
+        digest( suite );
+
+        expect( _.isArray( model.RequiredSubform ) ).toBe( true );
+        expect( model.RequiredSubform.length ).toEqual( 1 );
+      } );
     } );
 
 
