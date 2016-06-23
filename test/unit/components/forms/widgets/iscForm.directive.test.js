@@ -196,20 +196,26 @@
       //--------------------
       it( 'should parse the form data ID into an int', function() {
         var parsedId = suiteWithData.controller.parsedFormDataId;
-        expect( parsedId ).not.toBe( "2" );
-        expect( parsedId ).toBe( 2 );
+        expect( parsedId ).not.toBe( "3" );
+        expect( parsedId ).toBe( 3 );
       } );
 
       //--------------------
       it( 'should load form data from the ID', function() {
-        var mockData      = _.find( mockFormStore.formData, { id: 2 } ).data,
+        var mockData      = _.find( mockFormStore.formData, { id: 3 } ).data,
             // The embeddedForm types initialize the model with their keys
-            expectedModel = _.extend( {
-              sampleEmbeddedFullFormNoPage  : {},
-              sampleEmbeddedFullFormPage1   : {},
-              sampleEmbeddedFullFormLastPage: {}
-            }, mockData );
-        expect( suiteWithData.controller.model ).toEqual( expectedModel );
+            expectedModel = angular.copy( suiteWithData.controller.model );
+
+        // Embedded forms fill out the local model,
+        // even if they are not in data retrieved from the API.
+        expect (mockData.sampleEmbeddedFullFormNoPage).not.toBeDefined();
+        expect (mockData.sampleEmbeddedFullFormPage1).not.toBeDefined();
+        expect (mockData.sampleEmbeddedFullFormLastPage).not.toBeDefined();
+        delete expectedModel.sampleEmbeddedFullFormNoPage;
+        delete expectedModel.sampleEmbeddedFullFormPage1;
+        delete expectedModel.sampleEmbeddedFullFormLastPage;
+
+        expect( expectedModel ).toEqual( mockData );
       } );
     } );
   } );

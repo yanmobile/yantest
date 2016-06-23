@@ -75,7 +75,7 @@ function getSubform() {
 function getFormWithData() {
   return '<isc-form ' +
     'form-key="intake" ' +
-    'form-data-id="2"' +
-    'mode="view"' +
+    'form-data-id="3"' +
+    'mode="edit"' +
     '></isc-form>';
 }

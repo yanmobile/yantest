@@ -146,7 +146,6 @@
       model.RequiredSubform.push( subformRecord1 );
       model.RequiredSubform.push( subformRecord2 );
 
-      digest( suite );
       submitButton.click();
 
       // Validation should still fail due to the required fields in the RequiredSubform fields
@@ -156,17 +155,10 @@
       expect( suiteMain.notificationService.showAlert ).toHaveBeenCalled();
 
       _.extend( subformRecord1, subformRecordData );
-      digest( suite );
-      submitButton.click();
-
-      // Validation should still fail due to subformRecord2 missing required fields
-      expect( submitButtonConfig.onClick ).not.toHaveBeenCalled();
-      expect( suite.controller.validateFormApi ).toHaveBeenCalled();
-      expect( suiteMain.notificationService.showAlert ).toHaveBeenCalled();
-
       _.extend( subformRecord2, subformRecordData );
-      digest( suite );
+      suiteMain.$timeout.flush();
       submitButton.click();
+      suiteMain.$timeout.flush();
 
       // Validation should now succeed
       expect( submitButtonConfig.onClick ).toHaveBeenCalled();
@@ -276,7 +268,7 @@
 
     //--------------------
     it( 'should allow editing of data in a subform', function() {
-      
+      // TODO
     });
     } );
 })();
