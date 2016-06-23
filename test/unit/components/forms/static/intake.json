@@ -114,7 +114,10 @@
       "fields" : [
         {
           "key"  : "templates.instructions",
-          "type" : "instructions"
+          "type" : "instructions",
+          "data" : {
+            "content" : "Some instructions"
+          }
         },
         {
           "key"  : "templates.input",
@@ -122,19 +125,103 @@
         },
         {
           "key"  : "templates.checkbox",
-          "type" : "checkbox"
+          "type" : "checkbox",
+          "templateOptions" : {
+            "label" : "A checkbox"
+          }
         },
         {
-          "key"  : "templates.multiCheckbox",
-          "type" : "multiCheckbox"
+          "key"             : "templates.multiCheckbox.primitive",
+          "type"            : "multiCheckbox",
+          "templateOptions" : {
+            "options" : [
+              "1",
+              "2",
+              "3"
+            ]
+          }
         },
         {
-          "key"  : "templates.radio",
-          "type" : "radio"
+          "key"             : "templates.multiCheckbox.object",
+          "type"            : "multiCheckbox",
+          "templateOptions" : {
+            "options" : [
+              {
+                "name"  : "MultiCheckbox 1",
+                "value" : "1"
+              },
+              {
+                "name"  : "MultiCheckbox 2",
+                "value" : "2"
+              },
+              {
+                "name"  : "MultiCheckbox 3",
+                "value" : "3"
+              }
+            ]
+          }
         },
         {
-          "key"  : "templates.select",
-          "type" : "select"
+          "key"             : "templates.radio.primitive",
+          "type"            : "radio",
+          "templateOptions" : {
+            "options" : [
+              "Radio 1",
+              "Radio 2",
+              "Radio 3"
+            ]
+          }
+        },
+        {
+          "key"             : "templates.radio.object",
+          "type"            : "radio",
+          "templateOptions" : {
+            "options" : [
+              {
+                "name"  : "Radio 1",
+                "value" : "1"
+              },
+              {
+                "name"  : "Radio 2",
+                "value" : "2"
+              },
+              {
+                "name"  : "Radio 3",
+                "value" : "3"
+              }
+            ]
+          }
+        },
+        {
+          "key"             : "templates.select.primitive",
+          "type"            : "select",
+          "templateOptions" : {
+            "options" : [
+              "Select 1",
+              "Select 2",
+              "Select 3"
+            ]
+          }
+        },
+        {
+          "key"             : "templates.select.object",
+          "type"            : "select",
+          "templateOptions" : {
+            "options" : [
+              {
+                "name"  : "Select 1",
+                "value" : "1"
+              },
+              {
+                "name"  : "Select 2",
+                "value" : "2"
+              },
+              {
+                "name"  : "Select 3",
+                "value" : "3"
+              }
+            ]
+          }
         },
         {
           "key"  : "templates.textarea",
@@ -149,12 +236,48 @@
           "type" : "dateComponentsPartial"
         },
         {
-          "key"  : "templates.typeahead",
-          "type" : "typeahead"
+          "key"             : "templates.typeahead.primitive",
+          "type"            : "typeahead",
+          "templateOptions" : {
+            "options" : [
+              "Typeahead 1",
+              "Typeahead 2",
+              "Typeahead 3"
+            ]
+          }
+        },
+        {
+          "key"             : "templates.typeahead.object",
+          "type"            : "typeahead",
+          "templateOptions" : {
+            "options" : [
+              {
+                "name"  : "Typeahead 1",
+                "value" : "1"
+              },
+              {
+                "name"  : "Typeahead 2",
+                "value" : "2"
+              },
+              {
+                "name"  : "Typeahead 3",
+                "value" : "3"
+              }
+            ]
+          },
+          "data"            : {
+            "displayField"        : "name",
+            "resultsDisplayField" : "name"
+          }
         },
         {
           "key"  : "templates.typeaheadWithScript",
-          "type" : "typeaheadWithScript"
+          "type" : "typeaheadWithScript",
+          "data" : {
+            "displayField"        : "name",
+            "userScript"          : "typeaheadScript",
+            "resultsDisplayField" : "name"
+          }
         }
       ]
     },

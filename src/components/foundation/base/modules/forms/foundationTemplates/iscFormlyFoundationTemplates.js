@@ -332,7 +332,10 @@
           }
         };
 
-        $scope.onSelect( _.get( $scope.model, $scope.options.key, '' ) );
+        var initialModel = _.get( $scope.model, $scope.options.key, '' );
+        if (initialModel) {
+          $scope.onSelect( initialModel );
+        }
       }
     }
 
