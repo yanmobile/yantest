@@ -4,8 +4,7 @@
   //--------------------
   describe( 'iscFormInternal', function() {
     var suiteForm,
-        suiteInternal,
-        suiteSubform;
+        suiteInternal;
 
     beforeEach( module(
       'formly', 'foundation',
