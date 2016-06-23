@@ -70,14 +70,14 @@
           "className"  : "EmbeddedFormCollections-exercising-editAs",
           "fieldGroup" : [
             {
-              "key"             : "testSubformPage",
+              "key"             : "test.SubformPage",
               "type"            : "embeddedFormCollection",
               "data"            : {
                 "embeddedType"  : "simple1"
               }
             },
             {
-              "key"             : "testSubformModal",
+              "key"             : "test.SubformModal",
               "type"            : "embeddedFormCollection",
               "data"            : {
                 "embeddedType"  : "simple1",
@@ -87,7 +87,7 @@
               }
             },
             {
-              "key"             : "testSubformInline",
+              "key"             : "test.SubformInline",
               "type"            : "embeddedFormCollection",
               "data"            : {
                 "embeddedType"  : "simple1",
