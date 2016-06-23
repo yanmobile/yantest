@@ -173,56 +173,58 @@ var sampleIntake   = {
   "formName": "Intake Form",
   "id"      : 3,
   "data"    : {
-    "templates": {
-      "input"                : "some text",
-      "checkbox"             : true,
-      "multiCheckbox"        : {
-        "primitive": [
-          "1",
-          "2"
-        ],
-        "object"   : [
-          {
-            "name" : "MultiCheckbox 2",
+    "components" : {
+      "templates": {
+        "input"                : "some text",
+        "checkbox"             : true,
+        "multiCheckbox"        : {
+          "primitive": [
+            "1",
+            "2"
+          ],
+          "object"   : [
+            {
+              "name" : "MultiCheckbox 2",
+              "value": "2"
+            },
+            {
+              "name" : "MultiCheckbox 3",
+              "value": "3"
+            }
+          ]
+        },
+        "radio"                : {
+          "primitive": "Radio 1",
+          "object"   : {
+            "name" : "Radio 2",
             "value": "2"
-          },
-          {
-            "name" : "MultiCheckbox 3",
-            "value": "3"
           }
-        ]
-      },
-      "radio"                : {
-        "primitive": "Radio 1",
-        "object"   : {
-          "name" : "Radio 2",
-          "value": "2"
+        },
+        "typeahead"            : {
+          "primitive": "Typeahead 1",
+          "object"   : {
+            "name" : "Typeahead 2",
+            "value": "2"
+          }
+        },
+        "typeaheadWithScript"  : {
+          "name" : "TypeaheadWithScript 3",
+          "value": "3"
+        },
+        "select"               : {
+          "primitive": "Select 1",
+          "object"   : {
+            "name" : "Select 2",
+            "value": "2"
+          }
+        },
+        "textarea"             : "more text",
+        "dateComponents"       : "1990-12-11 00:00:00",
+        "dateComponentsPartial": {
+          "day"  : "",
+          "month": 9,
+          "year" : 1989
         }
-      },
-      "typeahead"            : {
-        "primitive": "Typeahead 1",
-        "object"   : {
-          "name" : "Typeahead 2",
-          "value": "2"
-        }
-      },
-      "typeaheadWithScript"  : {
-        "name" : "TypeaheadWithScript 3",
-        "value": "3"
-      },
-      "select"               : {
-        "primitive": "Select 1",
-        "object"   : {
-          "name" : "Select 2",
-          "value": "2"
-        }
-      },
-      "textarea"             : "more text",
-      "dateComponents"       : "1990-12-11 00:00:00",
-      "dateComponentsPartial": {
-        "day"  : "",
-        "month": 9,
-        "year" : 1989
       }
     },
     "test"     : {

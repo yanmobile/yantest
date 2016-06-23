@@ -8,7 +8,24 @@
   },
   "pages"         : [
     {
-      "name"   : "Page 1 - Embedded Forms and Collections",
+      "name"   : "Page 1 - Built-in Templates",
+      "fields" : [
+        {
+          "key"             : "components",
+          "type"            : "embeddedForm",
+          "templateOptions" : {
+            "label" : "Testing for built-in components"
+          },
+          "data"            : {
+            "embeddedType"  : "builtinComponents",
+            "embeddedLabel" : "Component form",
+            "embeddedPage"  : 0
+          }
+        }
+      ]
+    },
+    {
+      "name"   : "Page 2 - Embedded Forms and Collections",
       "fields" : [
         {
           "className"  : "EmbeddedForms-exercising-embeddedPage",
@@ -51,7 +68,7 @@
           ]
         },
         {
-          "className" : "EmbeddedFormCollections-exercisingcomplex-subform",
+          "className"  : "EmbeddedFormCollections-exercisingcomplex-subform",
           "fieldGroup" : [
             {
               "key"             : "sampleEmbeddedSubform",
@@ -70,28 +87,28 @@
           "className"  : "EmbeddedFormCollections-exercising-editAs",
           "fieldGroup" : [
             {
-              "key"             : "test.SubformPage",
-              "type"            : "embeddedFormCollection",
-              "data"            : {
-                "embeddedType"  : "simple1"
+              "key"  : "test.SubformPage",
+              "type" : "embeddedFormCollection",
+              "data" : {
+                "embeddedType" : "simple1"
               }
             },
             {
-              "key"             : "test.SubformModal",
-              "type"            : "embeddedFormCollection",
-              "data"            : {
-                "embeddedType"  : "simple1",
-                "collections"   : {
+              "key"  : "test.SubformModal",
+              "type" : "embeddedFormCollection",
+              "data" : {
+                "embeddedType" : "simple1",
+                "collections"  : {
                   "editAs" : "modal"
                 }
               }
             },
             {
-              "key"             : "test.SubformInline",
-              "type"            : "embeddedFormCollection",
-              "data"            : {
-                "embeddedType"  : "simple1",
-                "collections"   : {
+              "key"  : "test.SubformInline",
+              "type" : "embeddedFormCollection",
+              "data" : {
+                "embeddedType" : "simple1",
+                "collections"  : {
                   "editAs" : "inline"
                 }
               }
@@ -106,178 +123,23 @@
               "type" : "embeddedFormCollection"
             }
           ]
-        }
-      ]
-    },
-    {
-      "name"   : "Page 2 - Built-in Templates",
-      "fields" : [
-        {
-          "key"  : "templates.instructions",
-          "type" : "instructions",
-          "data" : {
-            "content" : "Some instructions"
-          }
         },
         {
-          "key"  : "templates.input",
-          "type" : "input"
-        },
-        {
-          "key"  : "templates.checkbox",
-          "type" : "checkbox",
-          "templateOptions" : {
-            "label" : "A checkbox"
-          }
-        },
-        {
-          "key"             : "templates.multiCheckbox.primitive",
-          "type"            : "multiCheckbox",
-          "templateOptions" : {
-            "options" : [
-              "1",
-              "2",
-              "3"
-            ]
-          }
-        },
-        {
-          "key"             : "templates.multiCheckbox.object",
-          "type"            : "multiCheckbox",
-          "templateOptions" : {
-            "options" : [
-              {
-                "name"  : "MultiCheckbox 1",
-                "value" : "1"
+          "className"  : "EmbeddedFormCollections-exercising-builtins-in-subform",
+          "fieldGroup" : [
+            {
+              "key"             : "subform.components",
+              "type"            : "embeddedFormCollection",
+              "templateOptions" : {
+                "label" : "Testing for built-in components in a subform"
               },
-              {
-                "name"  : "MultiCheckbox 2",
-                "value" : "2"
-              },
-              {
-                "name"  : "MultiCheckbox 3",
-                "value" : "3"
+              "data"            : {
+                "embeddedType"  : "builtinComponents",
+                "embeddedLabel" : "Built-in component subform",
+                "embeddedPage"  : 0
               }
-            ]
-          }
-        },
-        {
-          "key"             : "templates.radio.primitive",
-          "type"            : "radio",
-          "templateOptions" : {
-            "options" : [
-              "Radio 1",
-              "Radio 2",
-              "Radio 3"
-            ]
-          }
-        },
-        {
-          "key"             : "templates.radio.object",
-          "type"            : "radio",
-          "templateOptions" : {
-            "options" : [
-              {
-                "name"  : "Radio 1",
-                "value" : "1"
-              },
-              {
-                "name"  : "Radio 2",
-                "value" : "2"
-              },
-              {
-                "name"  : "Radio 3",
-                "value" : "3"
-              }
-            ]
-          }
-        },
-        {
-          "key"             : "templates.select.primitive",
-          "type"            : "select",
-          "templateOptions" : {
-            "options" : [
-              "Select 1",
-              "Select 2",
-              "Select 3"
-            ]
-          }
-        },
-        {
-          "key"             : "templates.select.object",
-          "type"            : "select",
-          "templateOptions" : {
-            "options" : [
-              {
-                "name"  : "Select 1",
-                "value" : "1"
-              },
-              {
-                "name"  : "Select 2",
-                "value" : "2"
-              },
-              {
-                "name"  : "Select 3",
-                "value" : "3"
-              }
-            ]
-          }
-        },
-        {
-          "key"  : "templates.textarea",
-          "type" : "textarea"
-        },
-        {
-          "key"  : "templates.dateComponents",
-          "type" : "dateComponents"
-        },
-        {
-          "key"  : "templates.dateComponentsPartial",
-          "type" : "dateComponentsPartial"
-        },
-        {
-          "key"             : "templates.typeahead.primitive",
-          "type"            : "typeahead",
-          "templateOptions" : {
-            "options" : [
-              "Typeahead 1",
-              "Typeahead 2",
-              "Typeahead 3"
-            ]
-          }
-        },
-        {
-          "key"             : "templates.typeahead.object",
-          "type"            : "typeahead",
-          "templateOptions" : {
-            "options" : [
-              {
-                "name"  : "Typeahead 1",
-                "value" : "1"
-              },
-              {
-                "name"  : "Typeahead 2",
-                "value" : "2"
-              },
-              {
-                "name"  : "Typeahead 3",
-                "value" : "3"
-              }
-            ]
-          },
-          "data"            : {
-            "displayField"        : "name",
-            "resultsDisplayField" : "name"
-          }
-        },
-        {
-          "key"  : "templates.typeaheadWithScript",
-          "type" : "typeaheadWithScript",
-          "data" : {
-            "displayField"        : "name",
-            "userScript"          : "typeaheadScript",
-            "resultsDisplayField" : "name"
-          }
+            }
+          ]
         }
       ]
     },

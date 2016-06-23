@@ -39,7 +39,7 @@
       mockFormResponses( suiteMain.$httpBackend );
     } ) );
 
-    describe( 'iscSubform - new', function() {
+    describe( 'iscSubform - cancel', function() {
       beforeEach( function() {
         createDirectives( getConfiguredForm() );
       } );
@@ -108,7 +108,7 @@
 
 
     //--------------------
-    describe( 'iscSubform - edit', function() {
+    describe( 'iscSubform - CRUD', function() {
       beforeEach( function() {
         createDirectives( getFormWithData() );
       } );
@@ -181,7 +181,6 @@
         test( 'test.SubformModal' );
 
         function test( subformName, isFullPage ) {
-          // suiteMain.$rootScope.$digest();
           var suite      = suiteSubform,
               subform    = getControlByName( suite, subformName ).filter( '.subform' ),
               editButton = subform.find( 'button.embedded-form-edit' ),
@@ -236,7 +235,6 @@
 
       //--------------------
       it( 'should allow deletion of data in a subform', function() {
-        // Open a subform of each editAs type, enter a field, save, then edit
         test( 'test.SubformPage' );
         test( 'test.SubformInline' );
         test( 'test.SubformModal' );
@@ -267,6 +265,79 @@
             inputField = getControlByName( suite, 'aField' );
           }
         }
+      } );
+
+      //--------------------
+      xit( 'should update the data in built-in components', function() {
+          var suite      = suiteSubform,
+              // subform = suite.element.find('.subform'), // template testing on the first page
+              formModel      = suite.controller.model;
+
+        // expect (subform.length).toBe(1);
+        
+        // testInput('templates.input');
+        
+        // testInput('templates.typeahead.primitive');
+
+        function testInput (inputName) {
+          var input = getControlByName(suite, inputName),
+              model = _.get(formModel, inputName),
+              newText = 'changing the text';
+
+          expect (input.length).toBe(1);
+          expect (input.val()).toEqual(model);
+          expect (model).not.toEqual(newText);
+
+          input.val(newText).trigger('change');
+          // suite.$scope.$digest();
+          digest(suite);
+
+          model = _.get(formModel, inputName);
+          expect (model).toEqual(newText);
+
+        }
+
+          // expect( editButton.length ).toBe( 1 );
+          // expect( subform.length ).toBe( 1 );
+          // expect( model.length ).toBe( 1 ); // 1 mock record exists
+          //
+          // // Open the subform
+          // editButton.click();
+          // digest( suite );
+          // selectElements();
+          //
+          // // Verify it opened, change a field
+          // if ( isFullPage ) {
+          //   spyOn( suite.controller.childConfig, 'onSubmit' ).and.callThrough();
+          // }
+          // else {
+          //   expect( shownForm.length ).toBe( 1 );
+          // }
+          // expect( saveButton.length ).toBe( 1 );
+          // expect( inputField.length ).toBe( 1 );
+          //
+          // // Change a field and click submit to save it
+          // inputField.val( 'some different value' ).trigger( 'change' );
+          // saveButton.click();
+          // digest( suite );
+          // selectElements();
+          //
+          // expect( saveButton.length ).toBe( 0 );
+          // expect( inputField.length ).toBe( 0 );
+          //
+          // if ( isFullPage ) {
+          //   expect( suite.controller.childConfig.onSubmit ).toHaveBeenCalled();
+          // }
+          // else {
+          //   expect( shownForm.length ).toBe( 0 );
+          // }
+          // expect( model.length ).toBe( 1 ); // still the 1 mock record
+          //
+          // function selectElements() {
+          //   saveButton = suite.element.find( '.embedded-form-save' );
+          //   shownForm  = subform.find( '.formly' );
+          //   inputField = getControlByName( suite, 'aField' );
+          // }
       } );
     } );
 
