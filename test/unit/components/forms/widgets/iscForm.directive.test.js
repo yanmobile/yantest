@@ -69,6 +69,7 @@
       mockFormResponses( suiteMain.$httpBackend );
     } ) );
 
+
     //--------------------
     describe( 'suiteSimple(s)', function() {
       beforeEach( function() {
@@ -148,6 +149,7 @@
       } );
     } );
 
+
     //--------------------
     describe( 'suiteConfigured', function() {
       beforeEach( function() {
@@ -168,6 +170,7 @@
       } );
     } );
 
+
     //--------------------
     describe( 'suiteMisconfigured', function() {
       beforeEach( function() {
@@ -186,6 +189,7 @@
       } );
     } );
 
+    
     //--------------------
     describe( 'suiteWithData', function() {
       beforeEach( function() {

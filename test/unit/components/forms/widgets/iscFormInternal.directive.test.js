@@ -1,6 +1,7 @@
 (function() {
   'use strict';
 
+  //--------------------
   describe( 'iscFormInternal', function() {
     var suiteForm,
         suiteInternal,
@@ -43,68 +44,7 @@
         localButtonConfig: {}
       } );
       suiteMain.$httpBackend.flush();
-
-      suiteInternal = createDirective( getInternalForm(), {
-        formCtrl: suiteForm.controller
-      } );
-
-      suiteInternal.controller = suiteInternal.$isolateScope.formInternalCtrl;
-
-      suiteSubform = createDirective( getSubform(), {
-        formInternalCtrl: suiteInternal.controller
-      } );
-
-      suiteSubform.controller = suiteSubform.$isolateScope.subformCtrl;
     } ) );
-
-    
-    //--------------------
-    it( 'should change page when the selector is changed', function() {
-      var suite         = suiteInternal,
-          subformConfig = suite.controller.multiConfig;
-
-      spyOn( subformConfig, 'selectPage' ).and.callThrough();
-
-      expect( getPageIndex() ).toEqual( 0 );
-      subformConfig.selectPage( 1 );
-      expect( getPageIndex() ).toEqual( 1 );
-
-      function getPageIndex() {
-        return _.indexOf( subformConfig.selectablePages, subformConfig.currentPage );
-      }
-    } );
-
-
-    //--------------------
-    it( 'should show page 5 once the model is updated', function() {
-      var suite         = suiteInternal,
-          subformConfig = suite.controller.multiConfig,
-          model         = suite.controller.model,
-          lastPage      = subformConfig.pages[4],
-          value         = 'something';
-
-      spyOn( suiteMain.formDataApi, 'post' ).and.callThrough();
-
-      expect( model.RequiredInput ).toBeUndefined();
-      expect( lastPage._isHidden ).toBe( true );
-
-      // Enter a value for RequiredInput
-      getControlByName( suite, 'RequiredInput' )
-        .val( value )
-        .trigger( 'change' );
-      digest( suite );
-
-      expect( model.RequiredInput ).toEqual( value );
-      expect( lastPage._isHidden ).toBe( false );
-      // This form is configured to autosave on page change
-      expect( suiteMain.formDataApi.post ).not.toHaveBeenCalled();
-
-      // Change page to trigger saving and cover page watches
-      subformConfig.selectPage( 2 );
-      digest( suite );
-      expect( suiteMain.formDataApi.post ).toHaveBeenCalled();
-    } );
-
 
     //--------------------
     it( 'should run validation when submit is clicked', function() {
@@ -168,62 +108,6 @@
       expect( suiteMain.formDataApi.post ).toHaveBeenCalled();
     } );
 
-
-    //--------------------
-    it( 'should close a subform when cancel is clicked - Modal and Inline', function() {
-      // Open a subform of each editAs type, enter a field, and click cancel
-      test ('testSubformPage', true);
-      test( 'testSubformInline' );
-      test( 'testSubformModal' );
-
-      function test( subformName, isFullPage ) {
-        var suite     = suiteSubform,
-            subform   = getControlByName( suite, subformName ).filter( '.subform' ),
-            addButton = subform.find( 'button.embedded-form-add' );
-
-        expect( addButton.length ).toBe( 1 );
-        expect( subform.length ).toBe( 1 );
-
-        // Open the subform
-        addButton.click();
-        digest( suite );
-
-        var cancelButton = suite.element.find( '.embedded-form-cancel' ),
-            shownForm    = subform.find( '.formly' ),
-            inputField   = getControlByName( suite, 'aField' );
-
-        // Verify it opened, change a field
-        if ( isFullPage ) {
-          spyOn(suite.controller.childConfig, 'onCancel').and.callThrough();
-        }
-        else {
-          expect( shownForm.length ).toBe( 1 );
-        }
-        expect( cancelButton.length ).toBe( 1 );
-        expect( inputField.length ).toBe( 1 );
-
-        inputField.val( 'some value' ).trigger( 'change' );
-        cancelButton.click();
-        digest( suite );
-
-        // Click cancel to close it
-        cancelButton = suite.element.find( '.embedded-form-cancel' );
-        shownForm    = subform.find( '.formly' );
-        inputField   = getControlByName( suite, 'aField' );
-
-        expect( cancelButton.length ).toBe( 0 );
-        expect( inputField.length ).toBe( 0 );
-
-        if (isFullPage) {
-          expect (suite.controller.childConfig.onCancel).toHaveBeenCalled();
-        }
-        else {
-          expect( shownForm.length ).toBe( 0 );
-        }
-      }
-    } );
-
-
     //--------------------
     it( 'should validate data in a subform', function() {
       var suite = suiteForm,
@@ -266,9 +150,133 @@
       expect( model.RequiredSubform.length ).toEqual( 1 );
     } );
 
+
     //--------------------
-    it( 'should allow editing of data in a subform', function() {
-      // TODO
-    });
+    describe( 'suiteInternal', function() {
+      beforeEach( function() {
+        suiteInternal = createDirective( getInternalForm(), {
+          formCtrl: suiteForm.controller
+        } );
+
+        suiteInternal.controller = suiteInternal.$isolateScope.formInternalCtrl;
+      } );
+
+      //--------------------
+      it( 'should change page when the selector is changed', function() {
+        var suite         = suiteInternal,
+            subformConfig = suite.controller.multiConfig;
+
+        spyOn( subformConfig, 'selectPage' ).and.callThrough();
+
+        expect( getPageIndex() ).toEqual( 0 );
+        subformConfig.selectPage( 1 );
+        expect( getPageIndex() ).toEqual( 1 );
+
+        function getPageIndex() {
+          return _.indexOf( subformConfig.selectablePages, subformConfig.currentPage );
+        }
+      } );
+
+      //--------------------
+      it( 'should show page 5 once the model is updated', function() {
+        var suite         = suiteInternal,
+            subformConfig = suite.controller.multiConfig,
+            model         = suite.controller.model,
+            lastPage      = subformConfig.pages[4],
+            value         = 'something';
+
+        spyOn( suiteMain.formDataApi, 'post' ).and.callThrough();
+
+        expect( model.RequiredInput ).toBeUndefined();
+        expect( lastPage._isHidden ).toBe( true );
+
+        // Enter a value for RequiredInput
+        getControlByName( suite, 'RequiredInput' )
+          .val( value )
+          .trigger( 'change' );
+        digest( suite );
+
+        expect( model.RequiredInput ).toEqual( value );
+        expect( lastPage._isHidden ).toBe( false );
+        // This form is configured to autosave on page change
+        expect( suiteMain.formDataApi.post ).not.toHaveBeenCalled();
+
+        // Change page to trigger saving and cover page watches
+        subformConfig.selectPage( 2 );
+        digest( suite );
+        expect( suiteMain.formDataApi.post ).toHaveBeenCalled();
+      } );
+
+
+      //--------------------
+      describe ('suiteSubform', function () {
+        beforeEach(function () {
+          suiteSubform = createDirective( getSubform(), {
+            formInternalCtrl: suiteInternal.controller
+          } );
+
+          suiteSubform.controller = suiteSubform.$isolateScope.subformCtrl;
+        });
+
+        //--------------------
+        it( 'should close a subform when cancel is clicked - Modal and Inline', function() {
+          // Open a subform of each editAs type, enter a field, and click cancel
+          test( 'testSubformPage', true );
+          test( 'testSubformInline' );
+          test( 'testSubformModal' );
+
+          function test( subformName, isFullPage ) {
+            var suite     = suiteSubform,
+                subform   = getControlByName( suite, subformName ).filter( '.subform' ),
+                addButton = subform.find( 'button.embedded-form-add' );
+
+            expect( addButton.length ).toBe( 1 );
+            expect( subform.length ).toBe( 1 );
+
+            // Open the subform
+            addButton.click();
+            digest( suite );
+
+            var cancelButton = suite.element.find( '.embedded-form-cancel' ),
+                shownForm    = subform.find( '.formly' ),
+                inputField   = getControlByName( suite, 'aField' );
+
+            // Verify it opened, change a field
+            if ( isFullPage ) {
+              spyOn( suite.controller.childConfig, 'onCancel' ).and.callThrough();
+            }
+            else {
+              expect( shownForm.length ).toBe( 1 );
+            }
+            expect( cancelButton.length ).toBe( 1 );
+            expect( inputField.length ).toBe( 1 );
+
+            inputField.val( 'some value' ).trigger( 'change' );
+            cancelButton.click();
+            digest( suite );
+
+            // Click cancel to close it
+            cancelButton = suite.element.find( '.embedded-form-cancel' );
+            shownForm    = subform.find( '.formly' );
+            inputField   = getControlByName( suite, 'aField' );
+
+            expect( cancelButton.length ).toBe( 0 );
+            expect( inputField.length ).toBe( 0 );
+
+            if ( isFullPage ) {
+              expect( suite.controller.childConfig.onCancel ).toHaveBeenCalled();
+            }
+            else {
+              expect( shownForm.length ).toBe( 0 );
+            }
+          }
+        } );
+        
+        //--------------------
+        it( 'should allow editing of data in a subform', function() {
+          // TODO
+        });
+      });
     } );
+  } );
 })();
