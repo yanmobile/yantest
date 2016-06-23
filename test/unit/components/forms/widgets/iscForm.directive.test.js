@@ -293,7 +293,7 @@
       } );
     } );
 
-    
+
     //--------------------
     describe( 'suiteWithData', function() {
       beforeEach( function() {
@@ -310,21 +310,40 @@
 
       //--------------------
       it( 'should load form data from the ID', function() {
-        var mockData      = _.find( mockFormStore.formData, { id: 3 } ).data,
-            // The embeddedForm types initialize the model with their keys
-            expectedModel = angular.copy( suiteWithData.controller.model );
+        var suite         = suiteWithData,
+            mockData      = _.find( mockFormStore.formData, { id: 3 } ).data,
+            expectedModel = angular.copy( suite.controller.model ),
+            buttonConfig  = getButtonConfig( suite );
 
-        // Embedded forms fill out the local model,
+        // The embeddedForm types initialize the model with their keys,
         // even if they are not in data retrieved from the API.
-        expect (mockData.sampleEmbeddedFullFormNoPage).not.toBeDefined();
-        expect (mockData.sampleEmbeddedFullFormPage1).not.toBeDefined();
-        expect (mockData.sampleEmbeddedFullFormLastPage).not.toBeDefined();
+        expect( mockData.sampleEmbeddedFullFormNoPage ).not.toBeDefined();
+        expect( mockData.sampleEmbeddedFullFormPage1 ).not.toBeDefined();
+        expect( mockData.sampleEmbeddedFullFormLastPage ).not.toBeDefined();
         delete expectedModel.sampleEmbeddedFullFormNoPage;
         delete expectedModel.sampleEmbeddedFullFormPage1;
         delete expectedModel.sampleEmbeddedFullFormLastPage;
 
         expect( expectedModel ).toEqual( mockData );
+        expect( buttonConfig.submit.onClick ).toBeDefined();
       } );
+
     } );
+
+    describe( 'suiteWithData - view mode', function() {
+      beforeEach( function() {
+        suiteWithData = createDirective( getFormWithData( 'view' ) );
+        suiteMain.$httpBackend.flush();
+      } );
+
+
+      //--------------------
+      it( 'should load an existing form in view mode', function() {
+        var suite        = suiteWithData,
+            buttonConfig = getButtonConfig( suite );
+
+        expect( buttonConfig.submit ).toBeDefined();
+      } );
+    } )
   } );
 })();

@@ -1,7 +1,7 @@
 var suiteMain = {};
 
 function createDirective( html, scopeConfig ) {
-  var suite = window.createSuite({});
+  var suite    = window.createSuite( {} );
   suite.$scope = suiteMain.$rootScope.$new();
   angular.extend( suite.$scope, angular.copy( scopeConfig ) );
   suite.element = suiteMain.$compile( html )( suite.$scope );
@@ -72,10 +72,11 @@ function getSubform() {
     '></isc-subform>';
 }
 
-function getFormWithData() {
+function getFormWithData( mode ) {
   return '<isc-form ' +
     'form-key="intake" ' +
     'form-data-id="3"' +
-    'mode="edit"' +
+    'mode="' + (mode || 'edit') + '"' +
     '></isc-form>';
 }
+
