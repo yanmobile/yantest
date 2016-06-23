@@ -5,6 +5,8 @@
                        api-select="taBridgeCtrl.invokeSelect(model, options.data.userModel.onSelect)"
                        list-field="{{options.data.resultsDisplayField}}">
     <input ng-model="localModel.input"
+           id="{{id}}"
+           name="{{name||id}}"
            class="typeahead"
            ng-focus="taBridgeCtrl.invokeApi(model, localModel.input, options.data.userModel.api)"
            ng-change="taBridgeCtrl.invokeApi(model, localModel.input, options.data.userModel.api)">
