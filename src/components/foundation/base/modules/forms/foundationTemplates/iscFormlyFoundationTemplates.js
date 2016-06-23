@@ -1,4 +1,4 @@
-( function() {
+(function() {
   'use strict';
 
   /** Templates adapted from angular-formly-templates-foundation 1.0.0-beta.1
@@ -242,23 +242,7 @@
         name       : 'typeahead',
         templateUrl: 'forms/foundationTemplates/templates/typeahead.html',
         wrapper    : ['templateLabel', 'templateHasError'],
-        /*@ngInject*/
-        controller : function( $scope ) {
-          var key             = $scope.options.key;
-          $scope.displayField = _.get( $scope.options, 'data.displayField', '' );
-          $scope.localModel   = {};
-
-          $scope.onSelect = function( item ) {
-            if ( _.isObject( item ) ) {
-              var copiedItem          = _.merge( {}, item );
-              $scope.model[key]       = copiedItem;
-              $scope.localModel.input = $scope.displayField ? copiedItem[$scope.displayField] : copiedItem;
-            }
-            else {
-              $scope.localModel.input = $scope.model[key] = item;
-            }
-          };
-        }
+        controller : typeaheadController
       } );
 
       // Typeahead with third-party user script support
@@ -266,29 +250,7 @@
         name       : 'typeaheadWithScript',
         templateUrl: 'forms/foundationTemplates/templates/typeaheadWithScript.html',
         wrapper    : ['templateLabel', 'templateHasError'],
-        /*@ngInject*/
-        controller : function( $scope ) {
-          var key             = $scope.options.key;
-          $scope.displayField = _.get( $scope.options, 'data.displayField', '' );
-          $scope.localModel   = {};
-
-          $scope.$watch(
-            function() {
-              return $scope.model[key];
-            },
-            function( val ) {
-              if ( $scope.displayField ) {
-                if ( val ) {
-                  $scope.model[key]       = val || {};
-                  $scope.localModel.input = val[$scope.displayField];
-                }
-              }
-              else {
-                $scope.localModel.input = val;
-              }
-            }
-          );
-        }
+        controller : typeaheadController
       } );
 
       // Embedded form
@@ -331,7 +293,30 @@
         name       : 'embeddedFormListener',
         templateUrl: 'forms/foundationTemplates/templates/embeddedFormListener.html'
       } );
+
+      /*@ngInject*/
+      function typeaheadController( $scope ) {
+        $scope.options.extras.skipNgModelAttrsManipulator = true;
+
+        var key             = $scope.options.key;
+        $scope.displayField = _.get( $scope.options, 'data.displayField', '' );
+        $scope.localModel   = {};
+
+        $scope.onSelect = function( item ) {
+          if ( _.isObject( item ) ) {
+            var copiedItem = angular.copy( item );
+            _.set( $scope.model, key, copiedItem );
+            $scope.localModel.input = $scope.displayField ? copiedItem[$scope.displayField] : copiedItem;
+          }
+          else {
+            _.set( $scope.model, key, item );
+            $scope.localModel.input = item;
+          }
+        };
+
+        $scope.onSelect( _.get( $scope.model, $scope.options.key, '' ) );
+      }
     }
 
   }
-} )();
+})();
