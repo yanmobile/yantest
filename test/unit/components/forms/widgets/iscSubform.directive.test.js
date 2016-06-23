@@ -62,7 +62,7 @@
 
           expect( addButton.length ).toBe( 1 );
           expect( subform.length ).toBe( 1 );
-          expect( model ).toBeUndefined();
+          expect( model ).toBeUndefined(); // no mock data exists
 
           // Open the subform
           addButton.click();
@@ -88,7 +88,7 @@
 
           expect( cancelButton.length ).toBe( 0 );
           expect( inputField.length ).toBe( 0 );
-          expect( model ).toBeUndefined();
+          expect( model ).toBeUndefined(); // still no mock data
 
           if ( isFullPage ) {
             expect( suite.controller.childConfig.onCancel ).toHaveBeenCalled();
@@ -131,7 +131,7 @@
 
           expect( addButton.length ).toBe( 1 );
           expect( subform.length ).toBe( 1 );
-          expect( model.length ).toBe( 1 );
+          expect( model.length ).toBe( 1 ); // 1 mock record exists
 
           // Open the subform
           addButton.click();
@@ -163,7 +163,7 @@
           else {
             expect( shownForm.length ).toBe( 0 );
           }
-          expect( model.length ).toBe( 2 );
+          expect( model.length ).toBe( 2 ); // should now be 2 mock records
 
           function selectElements() {
             saveButton = suite.element.find( '.embedded-form-save' );
@@ -173,69 +173,101 @@
         }
       } );
 
-      // //--------------------
-      // it( 'should allow editing of data in a subform', function() {
-      //   // Open a subform of each editAs type, enter a field, save, then edit
-      //   // test( 'test.SubformPage', true );
-      //   test( 'test.SubformInline' );
-      //   test( 'test.SubformModal' );
-      //
-      //   function test( subformName, isFullPage ) {
-      //     // suiteMain.$rootScope.$digest();
-      //     var suite      = suiteSubform,
-      //         subform    = getControlByName( suite, subformName ).filter( '.subform' ),
-      //         editButton = subform.find( 'button.embedded-form-edit' ),
-      //         model      = _.get( suite.controller.model, subformName ),
-      //         saveButton = null,
-      //         shownForm  = null,
-      //         inputField = null;
-      //
-      //     expect( subform.length ).toBe( 1 );
-      //     expect( model.length ).toBe( 1 );
-      //     expect( editButton.length ).toBe( 1 );
-      //
-      //     // Open the subform
-      //     editButton.click();
-      //     suite.$scope.$digest();
-      //     // digest( suite );
-      //     selectElements();
-      //
-      //     // Verify it opened, change a field
-      //     if ( isFullPage ) {
-      //       spyOn( suite.controller.childConfig, 'onSubmit' ).and.callThrough();
-      //     }
-      //     else {
-      //       expect( shownForm.length ).toBe( 1 );
-      //     }
-      //     expect( saveButton.length ).toBe( 1 );
-      //     expect( inputField.length ).toBe( 1 );
-      //
-      //     // Change a field and click submit to save it
-      //     inputField.val( 'some different value' ).trigger( 'change' );
-      //     saveButton.click();
-      //     digest( suite );
-      //     selectElements();
-      //
-      //     expect( saveButton.length ).toBe( 0 );
-      //     expect( inputField.length ).toBe( 0 );
-      //
-      //     if ( isFullPage ) {
-      //       expect( suite.controller.childConfig.onSubmit ).toHaveBeenCalled();
-      //     }
-      //     else {
-      //       expect( shownForm.length ).toBe( 0 );
-      //     }
-      //     expect( model.length ).toBe( 1 );
-      //
-      //     function selectElements() {
-      //       saveButton = suite.element.find( '.embedded-form-save' );
-      //       shownForm  = subform.find( '.formly' );
-      //       inputField = getControlByName( suite, 'aField' );
-      //     }
-      //   }
-      //
-      // } );
+      //--------------------
+      it( 'should allow editing of data in a subform', function() {
+        // Open a subform of each editAs type, enter a field, save, then edit
+        test( 'test.SubformPage', true );
+        test( 'test.SubformInline' );
+        test( 'test.SubformModal' );
 
+        function test( subformName, isFullPage ) {
+          // suiteMain.$rootScope.$digest();
+          var suite      = suiteSubform,
+              subform    = getControlByName( suite, subformName ).filter( '.subform' ),
+              editButton = subform.find( 'button.embedded-form-edit' ),
+              model      = _.get( suite.controller.model, subformName ),
+              saveButton = null,
+              shownForm  = null,
+              inputField = null;
+
+          expect( editButton.length ).toBe( 1 );
+          expect( subform.length ).toBe( 1 );
+          expect( model.length ).toBe( 1 ); // 1 mock record exists
+
+          // Open the subform
+          editButton.click();
+          digest( suite );
+          selectElements();
+
+          // Verify it opened, change a field
+          if ( isFullPage ) {
+            spyOn( suite.controller.childConfig, 'onSubmit' ).and.callThrough();
+          }
+          else {
+            expect( shownForm.length ).toBe( 1 );
+          }
+          expect( saveButton.length ).toBe( 1 );
+          expect( inputField.length ).toBe( 1 );
+
+          // Change a field and click submit to save it
+          inputField.val( 'some different value' ).trigger( 'change' );
+          saveButton.click();
+          digest( suite );
+          selectElements();
+
+          expect( saveButton.length ).toBe( 0 );
+          expect( inputField.length ).toBe( 0 );
+
+          if ( isFullPage ) {
+            expect( suite.controller.childConfig.onSubmit ).toHaveBeenCalled();
+          }
+          else {
+            expect( shownForm.length ).toBe( 0 );
+          }
+          expect( model.length ).toBe( 1 ); // still the 1 mock record
+
+          function selectElements() {
+            saveButton = suite.element.find( '.embedded-form-save' );
+            shownForm  = subform.find( '.formly' );
+            inputField = getControlByName( suite, 'aField' );
+          }
+        }
+      } );
+
+      //--------------------
+      it( 'should allow deletion of data in a subform', function() {
+        // Open a subform of each editAs type, enter a field, save, then edit
+        test( 'test.SubformPage' );
+        test( 'test.SubformInline' );
+        test( 'test.SubformModal' );
+
+        function test( subformName ) {
+          var suite        = suiteSubform,
+              subform      = getControlByName( suite, subformName ).filter( '.subform' ),
+              deleteButton = subform.find( 'button.embedded-form-delete' ),
+              model        = _.get( suite.controller.model, subformName ),
+              saveButton   = null,
+              shownForm    = null,
+              inputField   = null;
+
+          expect( deleteButton.length ).toBe( 1 );
+          expect( subform.length ).toBe( 1 );
+          expect( model.length ).toBe( 1 ); // 1 mock record exists
+
+          // Delete the record
+          deleteButton.click();
+          digest( suite );
+          selectElements();
+
+          expect( model.length ).toBe( 0 ); // model should be empty now
+
+          function selectElements() {
+            saveButton = suite.element.find( '.embedded-form-save' );
+            shownForm  = subform.find( '.formly' );
+            inputField = getControlByName( suite, 'aField' );
+          }
+        }
+      } );
     } );
 
     function createDirectives( rootForm ) {
