@@ -15,12 +15,25 @@
         $provide.value( '$log', console );
         $provide.value( 'apiHelper', mockApiHelper );
         $provide.value( 'iscCustomConfigService', mockCustomConfigService );
+
+        // Mock over _.debounce so it executes during tests
+        _.debounce = function( callback, time ) {
+          return function() {
+            callback();
+          }
+        };
+
+        // Mock over _.defer
+        _.defer = function( callback ) {
+          setTimeout( callback, 0 );
+        };
+
         devlogProvider.loadConfig( mockCustomConfigService.getConfig() );
       } )
     );
 
     beforeEach( inject( function( $rootScope, $compile, $window, $httpBackend, $timeout,
-                                  formlyApiCheck, formlyConfig,
+                                  formlyApiCheck, formlyConfig, keyCode,
                                   iscFormDataApi, iscNotificationService, iscFormsValidationService ) {
       formlyConfig.disableWarnings   = true;
       formlyApiCheck.config.disabled = true;
@@ -32,6 +45,7 @@
         $timeout    : $timeout,
         $rootScope  : $rootScope,
 
+        keyCode            : keyCode,
         formDataApi        : iscFormDataApi,
         notificationService: iscNotificationService,
         validationService  : iscFormsValidationService
@@ -292,6 +306,10 @@
 
         testTypeahead( 'templates.typeahead.primitiveValue' );
         testTypeahead( 'templates.typeahead.objectValue' );
+        // testTypeahead( 'templates.typeaheadWithScript', true );
+
+        testDateComponents( 'templates.dateComponents' );
+        testDateComponents( 'templates.dateComponentsPartial', true );
 
         function testInput( controlName ) {
           var control = getControlByName( suite, controlName ),
@@ -403,7 +421,7 @@
           expect( model ).not.toEqual( previousModel );
         }
 
-        function testTypeahead( controlName ) {
+        function testTypeahead( controlName, isScript ) {
           var control      = getControlByName( suite, controlName ).filter( 'input' ),
               model        = _.get( formModel, controlName ),
               modelDisplay = _.isObject( model ) ? model.name : model,
@@ -417,6 +435,11 @@
           control.val( newText ).trigger( 'input' ).trigger( 'change' );
           suite.$scope.$digest();
 
+          // TypeaheadWithScript components submit an http request
+          if ( isScript ) {
+            suiteMain.$httpBackend.flush();
+          }
+
           // The input is a DOM sibling to the list that appears,
           // so we have to walk up a bit before finding the list.
           var list        = control.parentsUntil( '[list-data]' ).parent().find( '.isc-typeahead-list' ),
@@ -427,9 +450,9 @@
           expect( listItems.length ).toBe( 3 );
 
           // Use down arrow two times and up arrow once to select the second item
-          sendDownArrow(control);
-          sendDownArrow(firstItem);
-          sendUpArrow(firstItem.next());
+          sendDownArrow( control );
+          sendDownArrow( firstItem );
+          sendUpArrow( firstItem.next() );
 
           firstItem.click();
           digest( suite );
@@ -458,20 +481,170 @@
           expect( control.val() ).toEqual( '' );
 
 
-          function sendDownArrow(control) {
+          function sendDownArrow( control ) {
             control.trigger( {
               type : 'keydown',
-              which : 40
+              which: 40
             } );
           }
 
-          function sendUpArrow(control) {
+          function sendUpArrow( control ) {
             control.trigger( {
               type : 'keydown',
-              which : 38
+              which: 38
             } );
           }
         }
+
+        function testDateComponents( controlName, isPartial ) {
+          var control = getControlByName( suite, controlName );
+
+          if ( !isPartial ) {
+            control = control.not( '[name*="Partial"]' );
+          }
+
+          var inputs      = control.find( 'input[type="number"]' ),
+              dayInput    = inputs.filter( ".date-components-day" ),
+              monthInput  = inputs.filter( ".date-components-month" ),
+              yearInput   = inputs.filter( ".date-components-year" ),
+              modelMoment = getModelMoment(),
+              viewMoment  = getViewMoment(),
+              ids         = {
+                "Day"  : dayInput,
+                "Month": monthInput,
+                "Year" : yearInput
+              };
+
+          var numKeys  = [// 0 through 9
+                48, 49, 50, 51, 52, 53, 54, 55, 56, 57
+              ],
+              keyCodes = suiteMain.keyCode;
+
+          wireKeypress( dayInput );
+          wireKeypress( monthInput );
+          wireKeypress( yearInput );
+
+          // Have to manually change the input control's value if the event succeeded
+          // This is normally done by the browser automatically
+          control.on( 'keypress', function( event ) {
+            if ( !event.isDefaultPrevented() ) {
+              var keyCode      = event.keyCode,
+                  target       = event.target['0'],
+                  control      = ids[target.id],
+                  targetVal    = target.value,
+                  controlVal   = control.val(),
+                  enteredValue = _.indexOf( numKeys, keyCode ).toString();
+
+              if ( keyCode === keyCodes.BACKSPACE && controlVal.length > 0 ) {
+                control.val( targetVal.substr( 0, controlVal.length - 1 ) );
+              }
+              else {
+                ids[target.id].val( targetVal + enteredValue );
+              }
+
+              control.triggerHandler( 'change' );
+              digest( suite );
+              digest( suite );
+            }
+          } );
+
+          expect( control.length ).toBe( 1 );
+          expect( inputs.length ).toBe( 3 );
+          if ( isPartial ) {
+            expect( dayInput.val() ).toEqual( getModelDay() );
+            expect( monthInput.val() ).toEqual( getModelMonth().toString() );
+            expect( yearInput.val() ).toEqual( getModelYear().toString() );
+          }
+          else {
+            expect( viewMoment.toISOString() ).toEqual( modelMoment.toISOString() );
+          }
+
+          // Day 30
+          dayInput
+            .sendKeypress( 58 ) // send an unacceptable char
+            .sendKeypress( keyCodes.BACKSPACE )
+            .sendKeypress( keyCodes.BACKSPACE )
+            .sendKeypress( numKeys[3] )
+            .sendKeypress( numKeys[0] )
+            .trigger( 'input' );
+
+          expect( dayInput.val() ).toBe( '30' );
+          expect( getModelDay() ).toBe( 30 );
+
+          // Month 10
+          // TODO - cover case of setting month to a value where the max day
+          // is less than the currently set value in the day input.
+          // This should update the view and model to be the max day allowed for that month.
+          // This will require triggering getMaxDay() on the day input's max attribute.
+          monthInput
+            .sendKeypress( keyCodes.BACKSPACE )
+            .sendKeypress( keyCodes.BACKSPACE )
+            .sendKeypress( numKeys[1] )
+            .sendKeypress( numKeys[0] )
+            .trigger( 'input' );
+
+          expect( monthInput.val() ).toBe( '10' );
+          expect( getModelMonth() ).toBe( 10 );
+
+          yearInput
+            .sendKeypress( keyCodes.BACKSPACE )
+            .sendKeypress( keyCodes.BACKSPACE )
+            .sendKeypress( numKeys[9] )
+            .sendKeypress( numKeys[8] )
+            .trigger( 'blur' );
+
+          expect( yearInput.val() ).toBe( '1998' );
+          expect( getModelYear() ).toBe( 1998 );
+
+          function getModel() {
+            return _.get( formModel, controlName );
+          }
+
+          function getModelMoment() {
+            return moment( getModel() );
+          }
+
+          function getModelDay() {
+            return isPartial ? getModel().day : getModelMoment().date();
+          }
+
+          function getModelMonth() {
+            // Moment's .month() is 0-based
+            return isPartial ? getModel().month : getModelMoment().month() + 1;
+          }
+
+          function getModelYear() {
+            return isPartial ? getModel().year : getModelMoment().year();
+          }
+
+          function getViewMoment() {
+            return moment( [
+              dayInput.val(),
+              monthInput.val(),
+              yearInput.val()
+            ].join( '-' ), 'D-M-YYYY' );
+          }
+
+          function wireKeypress( control ) {
+            control.sendKeypress = function( key ) {
+              this.trigger( {
+                type    : 'keypress',
+                target  : this,
+                charCode: key,
+                keyCode : key
+              } );
+              return this;
+            };
+          }
+
+          function setControlValue( control, value ) {
+            control.val( value );
+            control.triggerHandler( 'change' );
+            digest( suite );
+            digest( suite );
+          }
+        }
+
       } );
     } );
 

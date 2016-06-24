@@ -222,8 +222,8 @@ var mockComponentData = {
     "dateComponents"       : "1990-12-11 00:00:00",
     "dateComponentsPartial": {
       "day"  : "",
-      "month": 9,
-      "year" : 1989
+      "month": 12,
+      "year" : 1999
     }
   }
 };
