@@ -301,7 +301,7 @@
 
         testTypeahead( 'templates.typeahead.primitiveValue' );
         testTypeahead( 'templates.typeahead.objectValue' );
-        // testTypeahead( 'templates.typeaheadWithScript', true );
+        testTypeahead( 'templates.typeaheadWithScript', true );
 
         testDateComponents( 'templates.dateComponents' );
         testDateComponents( 'templates.dateComponentsPartial', true );
