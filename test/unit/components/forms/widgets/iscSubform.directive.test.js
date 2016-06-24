@@ -23,11 +23,6 @@
           }
         };
 
-        // Mock over _.defer
-        _.defer = function( callback ) {
-          setTimeout( callback, 0 );
-        };
-
         devlogProvider.loadConfig( mockCustomConfigService.getConfig() );
       } )
     );
