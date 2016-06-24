@@ -39,19 +39,7 @@ function wallaby() {
         } );
       }
     },
-    'testFramework': 'jasmine',
-    delays: { // ms delay after code updates to notify wallaby
-      edit: 500
-    },
-    workers      : {
-      initial: 8, // parallel workers to use when starting wallaby
-      regular: 2  // parallel workers to use when updating after code changes
-    },
-    env          : { // useful if phantomjs 2 is installed locally
-      runner: './node_modules/phantomjs-prebuilt/bin/phantomjs',
-      params: {runner: '--web-security=false'}
-    }
-
+    'testFramework': 'jasmine'
   };
 }
 
