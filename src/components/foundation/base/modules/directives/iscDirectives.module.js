@@ -14,6 +14,6 @@
    *
    */
   angular
-    .module( 'isc.directives', ['isc.core', 'pascalprecht.translate'] );
+    .module( 'isc.directives', ['isc.core', 'pascalprecht.translate', 'foundation'] );
 
 } )();

@@ -30,10 +30,10 @@
     // functions
     // ------------------------
     function registerDefaultEvents() {
-      registerStateChangeStart();
-      registerStateChangeError();
-      registerStateChangeRejected();
-      registerStateChangeSuccess();
+      service.registerStateChangeStart();
+      service.registerStateChangeError();
+      service.registerStateChangeRejected();
+      service.registerStateChangeSuccess();
     }
 
     function registerStateChangeStart() {

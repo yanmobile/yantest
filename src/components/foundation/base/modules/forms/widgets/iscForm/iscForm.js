@@ -1,4 +1,4 @@
-(function() {
+( function() {
   'use strict';
 
   angular.module( 'isc.forms' )
@@ -221,7 +221,6 @@
       };
 
       init();
-
 
       /**
        * @memberOf iscForm
@@ -452,4 +451,4 @@
       }
     }
   }
-})();
+} )();

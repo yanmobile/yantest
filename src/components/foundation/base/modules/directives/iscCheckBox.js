@@ -73,7 +73,7 @@
 
       if ( ngModelCtrl ) {
         ngModelCtrl.$render = function() {
-          scope.selected = ngModelCtrl.$viewValue;
+          scope.selected = !!ngModelCtrl.$viewValue;
         };
       }
 
