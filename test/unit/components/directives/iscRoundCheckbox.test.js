@@ -5,14 +5,14 @@
 (function() {
 
 
-  describe( 'isc.directives iscCheckBox', function() {
+  describe( 'isc.directives iscRoundCheckBox', function() {
     var suite;
 
     window.useDefaultModuleConfig();
 
-    beforeEach( module( 'isc.directives', 'isc.templates', 'foundation' ) );
+    beforeEach( module( 'isc.directives', 'isc.templates', 'foundation') );
 
-    var html = "<isc-check-box ng-model='isChecked' on-toggle='onToggle()'></isc-check-box>";
+    var html = "<isc-round-check-box ng-model='isChecked' on-toggle='onToggle()'></isc-round-check-box>";
     beforeEach( inject( function( $rootScope, $compile ) {
       suite                 = window.createSuite();
       suite.$rootScope      = $rootScope;

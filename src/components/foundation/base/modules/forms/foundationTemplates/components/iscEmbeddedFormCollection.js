@@ -1,4 +1,4 @@
-(function() {
+( function() {
   'use strict';
 
   // ----------------------------
@@ -162,7 +162,6 @@
       $scope.$watch( getValidation, function( value ) {
         self.validationErrors = _.get( value, 'records' );
       } );
-
 
       /**
        * @memberOf iscEmbeddedFormCollection
@@ -389,4 +388,4 @@
 
   }//END CLASS
 
-})();
+} )();

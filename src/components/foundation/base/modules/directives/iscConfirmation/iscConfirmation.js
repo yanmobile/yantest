@@ -29,7 +29,7 @@
     // ----------------------------
     var directive = {
       restrict    : 'E',
-      scope: {},
+      scope       : {},
       link        : link,
       controller  : controller,
       controllerAs: 'iscConfirmCtrl',
