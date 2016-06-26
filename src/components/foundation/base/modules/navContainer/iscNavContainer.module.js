@@ -10,6 +10,7 @@
     'isc.configuration',
     'isc.core',
     'isc.authentication',
+    'isc.authorization',
     'isc.states'] );
 
 } )();
