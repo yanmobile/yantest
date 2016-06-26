@@ -4,22 +4,23 @@
 
 (function() {
 
-  describe( 'isc.table iscTablePopupCloser', function() {
+  describe( 'isc.table iscTablePopupIndicator', function() {
     var suite;
 
     window.useDefaultModuleConfig();
 
     beforeEach( module( 'isc.table', 'isc.templates', 'foundation' ) );
 
-    var html = "<div isc-table-popup-closer><input></div>";
+    var html = "<div isc-table-popup-indicator></div>";
     beforeEach( inject( function( $rootScope, $compile, keyCode ) {
       suite            = window.createSuite();
       suite.$compile   = $compile;
       suite.keyCode    = keyCode;
       suite.$rootScope = $rootScope;
       suite.$scope     = $rootScope.$new();
-      suite.element    = $compile( html )( suite.$scope );
-      _.set( suite.$scope, "iscRowCtrl.onCommand", _.noop );
+      _.set( suite.$scope, "iscTblCtrl.tableConfig.columns", [{ type: "command" }] );
+
+      suite.element = $compile( html )( suite.$scope );
       suite.$scope.$digest();
     } ) );
 
@@ -29,29 +30,19 @@
         expect( suite.$scope ).toBeDefined();
         expect( suite.$compile ).toBeDefined();
         expect( suite.element ).toBeDefined();
+        expect( suite.$scope.iscTblIndic ).toBeDefined();
       } );
     } );
 
-    describe( 'keydown events', function() {
+    describe( 'element\s controller', function() {
 
-      // for some reason this test fails, it has something to do with jquery DOM event
-      // it( 'should focus on element if ESCAPE key event was fired', function() {
-      //   var event     = jQuery.Event( "keydown" );
-      //   event.which   = suite.keyCode.ESCAPE;
-      //   event.keyCode = suite.keyCode.ESCAPE;
-      //   // console.log( suite.element );
-      //
-      //   suite.element.find( "input" ).trigger( event );
-      //   expect( suite.element.is( ":focus" ) ).toBe( true );
-      // } );
+      it( 'should have access to iscTblIndic and its properties', function() {
+        var elementScope = suite.element.scope();
+        expect( elementScope ).toBe( suite.$scope );
 
-      it( 'should focus on element if ESCAPE key event was NOT fired on :input', function() {
-        spyOn( suite.$scope.iscRowCtrl, 'onCommand' );
-        var event     = jQuery.Event( "keydown" );
-        event.keyCode = suite.keyCode.ESCAPE;
+        expect( suite.$scope.iscTblIndic.inPopup ).toEqual( true );
 
-        suite.element.trigger( event );
-        expect( suite.$scope.iscRowCtrl.onCommand ).toHaveBeenCalledWith( "cancelEdit" );
+
       } );
 
     } );
