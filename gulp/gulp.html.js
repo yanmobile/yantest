@@ -29,6 +29,7 @@ function init(gulp, plugins, config, _) {
     process.chdir(cwd);
 
     return gulp.src(['src/index.html'])
+      .pipe(plugins.plumber())
       .pipe(plugins.replace('<!-- inject:js -->', inject.join('\n')))
       .pipe(plugins.inject(jsFiles, { transform: createScriptHtml }))
       .pipe(gulp.dest(config.app.dest.folder));

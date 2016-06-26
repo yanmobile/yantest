@@ -37,6 +37,7 @@ function init( gulp, plugins, config, _ ) {
     _.forEach( uniqI18nFiles, function mergeConfigs( file ) {
       gulp
         .src( getSrcFiles( file ) )
+        .pipe(plugins.plumber())
         .pipe( mergeJson( file, removeComments ) )
         .pipe( filelog() )
         .pipe( gulp.dest( plugins.path.join( config.app.dest.folder, 'assets/i18n' ) ) )

@@ -7,7 +7,7 @@ module.exports = {
 };
 
 function init(gulp, plugins, config, _, util) {
-  var configOverride = util.getArg('--config');
+  var configOverride = util.getArg( '--config' );
 
   gulp.task('scripts:vendor', function () {
     var vendors = _.concat(config.common.vendor.js,
@@ -18,6 +18,7 @@ function init(gulp, plugins, config, _, util) {
       config.app.module.assets.vendor.js);
 
     return gulp.src(vendors)
+      .pipe(plugins.plumber())
       //.pipe(plugins.filelog())
       .pipe(plugins.sourcemaps.init())
       .pipe(plugins.concat('1.vendor.min.js'))
@@ -34,6 +35,7 @@ function init(gulp, plugins, config, _, util) {
       config.masterConfig.overrides.js.common);
 
     return gulp.src(src)
+      .pipe(plugins.plumber())
       //.pipe(plugins.filelog())
       .pipe(plugins.sourcemaps.init())
       .pipe(plugins.ngAnnotate())
@@ -52,6 +54,7 @@ function init(gulp, plugins, config, _, util) {
       config.masterConfig.overrides.js.components);
 
     return gulp.src(src)
+      .pipe(plugins.plumber())
       //.pipe(plugins.filelog())
       .pipe(plugins.sourcemaps.init())
       .pipe(plugins.ngAnnotate())
@@ -72,6 +75,7 @@ function init(gulp, plugins, config, _, util) {
     }
 
     return gulp.src(src)
+      .pipe(plugins.plumber())
       .pipe(plugins.sourcemaps.init())
       .pipe(plugins.ngAnnotate())
       .pipe(plugins.concat('7.app.min.js', { newLine: ';' }))
