@@ -5,10 +5,10 @@
 
   var suite; //used by individual test files via window.createSuite();
 
-  window.cleanup          = cleanup;
-  window.fixFoundationBug = fixFoundationBug;
-  window.createSuite      = createSuite;
-
+  window.cleanup                = cleanup;
+  window.fixFoundationBug       = fixFoundationBug;
+  window.createSuite            = createSuite;
+  window.useDefaultModuleConfig = useDefaultModuleConfig;
   function createSuite( obj ) {
     suite = obj || {};
     return suite;
@@ -53,6 +53,19 @@
       //adding sanitize strategy to get rid of the pesky warnings
       $translateProvider.useSanitizeValueStrategy( null );
     } ) );
+  }
+
+  function useDefaultModuleConfig() {
+    // setup devlog
+    beforeEach( module( 'isc.core', function( devlogProvider ) {
+      devlogProvider.loadConfig( customConfig );
+    } ) );
+
+    // show $log statements
+    beforeEach( module( function( $provide ) {
+      $provide.value( '$log', mock$log );
+    } ) );
+
   }
 
 })();
