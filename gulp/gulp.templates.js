@@ -23,6 +23,7 @@ function init(gulp, plugins, config, _) {
 
     return gulp
       .src(templates)
+      .pipe(plugins.plumber())
       //.pipe(plugins.filelog())
       .pipe(plugins.templateCache(tplCacheOpts))
       .pipe(plugins.concat('templates.min.js'))

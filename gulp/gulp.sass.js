@@ -13,8 +13,9 @@ function init(gulp, plugins, config, _) {
     
     return gulp
       .src(config.app.module.scss)
+      .pipe(plugins.plumber())
       .pipe(plugins.sourcemaps.init())
-      .pipe(plugins.sass({ errLogToConsole: true }))
+      .pipe(plugins.sass.sync({ errLogToConsole: true }))
       .pipe(plugins.mobilizer('app.css', {
         'app.css'  : {
           hover  : 'exclude',

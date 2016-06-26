@@ -5,6 +5,7 @@ var _          = require( 'lodash' );
 var requiredir = require( 'require-dir' );
 
 var plugins = {
+  plumber      : require( 'gulp-plumber' ),
   chmod        : require( 'gulp-chmod' ), //changes file permissions, used by imagemin
   concat       : require( 'gulp-concat' ),  //concatenating multiple files into 1
   cssmin       : require( 'gulp-cssmin' ),  //minifies css
