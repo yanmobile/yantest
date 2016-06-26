@@ -1,0 +1,210 @@
+{
+  "name"  : "Testing for built-in components",
+  "pages" : [
+    {
+      "name"   : "Page 1",
+      "fields" : [
+        {
+          "key"             : "templates.instructions",
+          "type"            : "instructions",
+          "templateOptions" : {
+            "label" : "An instructions component"
+          },
+          "data"            : {
+            "content" : "Some instructions"
+          }
+        },
+        {
+          "key"             : "templates.input.date",
+          "type"            : "input",
+          "templateOptions" : {
+            "label" : "An input component showing a date"
+          }
+        },
+        {
+          "key"             : "templates.input.text",
+          "type"            : "input",
+          "templateOptions" : {
+            "label" : "An input component showing text"
+          }
+        },
+        {
+          "key"             : "templates.checkbox",
+          "type"            : "checkbox",
+          "templateOptions" : {
+            "label" : "A checkbox"
+          }
+        },
+        {
+          "key"             : "templates.multiCheckbox.primitiveValue",
+          "type"            : "multiCheckbox",
+          "templateOptions" : {
+            "label"   : "A multi-select checkbox",
+            "options" : [
+              "1",
+              "2",
+              "3"
+            ]
+          }
+        },
+        {
+          "key"             : "templates.multiCheckbox.objectValue",
+          "type"            : "multiCheckbox",
+          "templateOptions" : {
+            "label"   : "A multi-select checkbox",
+            "options" : [
+              {
+                "name"  : "MultiCheckbox 1",
+                "value" : "1"
+              },
+              {
+                "name"  : "MultiCheckbox 2",
+                "value" : "2"
+              },
+              {
+                "name"  : "MultiCheckbox 3",
+                "value" : "3"
+              }
+            ]
+          }
+        },
+        {
+          "key"             : "templates.radio.primitiveValue",
+          "type"            : "radio",
+          "templateOptions" : {
+            "label"   : "A radio button - primitive values",
+            "options" : [
+              "Radio 1",
+              "Radio 2",
+              "Radio 3"
+            ]
+          }
+        },
+        {
+          "key"             : "templates.radio.objectValue",
+          "type"            : "radio",
+          "templateOptions" : {
+            "label"   : "A radio button - object values",
+            "options" : [
+              {
+                "name"  : "Radio 1",
+                "value" : "1"
+              },
+              {
+                "name"  : "Radio 2",
+                "value" : "2"
+              },
+              {
+                "name"  : "Radio 3",
+                "value" : "3"
+              }
+            ]
+          }
+        },
+        {
+          "key"             : "templates.select.primitiveValue",
+          "type"            : "select",
+          "templateOptions" : {
+            "label"   : "A dropdown - primitive values",
+            "options" : [
+              "Select 1",
+              "Select 2",
+              "Select 3"
+            ]
+          }
+        },
+        {
+          "key"             : "templates.select.objectValue",
+          "type"            : "select",
+          "templateOptions" : {
+            "label"   : "A dropdown - object values",
+            "options" : [
+              {
+                "name"  : "Select 1",
+                "value" : "1"
+              },
+              {
+                "name"  : "Select 2",
+                "value" : "2"
+              },
+              {
+                "name"  : "Select 3",
+                "value" : "3"
+              }
+            ]
+          }
+        },
+        {
+          "key"             : "templates.textarea",
+          "type"            : "textarea",
+          "templateOptions" : {
+            "label" : "A textarea"
+          }
+        },
+        {
+          "key"             : "templates.dateComponents",
+          "type"            : "dateComponents",
+          "templateOptions" : {
+            "label" : "A date components widget"
+          }
+        },
+        {
+          "key"             : "templates.dateComponentsPartial",
+          "type"            : "dateComponentsPartial",
+          "templateOptions" : {
+            "label" : "A date components widget that allows partial dates"
+          }
+        },
+        {
+          "key"             : "templates.typeahead.primitiveValue",
+          "type"            : "typeahead",
+          "templateOptions" : {
+            "label"   : "A typeahead widget, primitive values",
+            "options" : [
+              "Typeahead 1",
+              "Typeahead 2",
+              "Typeahead 3"
+            ]
+          }
+        },
+        {
+          "key"             : "templates.typeahead.objectValue",
+          "type"            : "typeahead",
+          "templateOptions" : {
+            "label"   : "A typeahead widget, object values",
+            "options" : [
+              {
+                "name"  : "Typeahead 1",
+                "value" : "1"
+              },
+              {
+                "name"  : "Typeahead 2",
+                "value" : "2"
+              },
+              {
+                "name"  : "Typeahead 3",
+                "value" : "3"
+              }
+            ]
+          },
+          "data"            : {
+            "displayField"        : "name",
+            "resultsDisplayField" : "name"
+          }
+        },
+        {
+          "key"             : "templates.typeaheadWithScript",
+          "type"            : "typeaheadWithScript",
+          "templateOptions" : {
+            "label" : "A typeahead widget supporting user-defined scripts"
+          },
+          "data"            : {
+            "displayField"        : "name",
+            "userScript"          : "typeaheadScript",
+            "resultsDisplayField" : "name"
+          }
+        }
+      ]
+    }
+  ]
+}

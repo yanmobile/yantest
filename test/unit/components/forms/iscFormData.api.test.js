@@ -5,12 +5,13 @@
     var suite ;
 
     beforeEach(module('formly', 'isc.http', 'isc.forms', 'isc.templates',
-      function ($provide) {
+      function ($provide, devlogProvider) {
         suite = window.createSuite();
 
         $provide.value('$log', console);
         $provide.value('apiHelper', mockApiHelper);
         $provide.value('iscCustomConfigService', mockCustomConfigService);
+        devlogProvider.loadConfig( mockCustomConfigService.getConfig() );
       })
     );
 
@@ -83,7 +84,7 @@
 
     describe('api.post', function () {
       it('should save a new form to the API', function () {
-        var expectedId = 3,
+        var expectedId = 4,
             formData = {
               test : 'test'
             };

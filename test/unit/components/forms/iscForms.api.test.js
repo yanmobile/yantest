@@ -5,11 +5,12 @@
     var suite ;
 
     beforeEach(module('formly', 'isc.http', 'isc.forms', 'isc.templates',
-      function ($provide) {
+      function ($provide, devlogProvider) {
         suite = window.createSuite();
         $provide.value('$log', console);
         $provide.value('apiHelper', mockApiHelper);
         $provide.value('iscCustomConfigService', mockCustomConfigService);
+        devlogProvider.loadConfig( mockCustomConfigService.getConfig() );
       })
     );
 

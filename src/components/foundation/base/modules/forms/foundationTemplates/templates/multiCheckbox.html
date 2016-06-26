@@ -2,8 +2,9 @@
   <label>
     <input type="checkbox"
            id="{{id + '_'+ $index}}"
+           name="{{(name || id) + '_'+ $index}}"
            ng-model="multiCheckbox.checked[$index]"
            ng-change="multiCheckbox.change()">
-    {{option[to.labelProp || 'name']}}
+    {{isObjectModel ? option[displayField || 'name'] : option}}
   </label>
 </div>

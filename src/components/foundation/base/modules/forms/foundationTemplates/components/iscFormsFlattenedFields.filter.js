@@ -44,7 +44,7 @@
       if ( field.fieldGroup ) {
         return flattenFields( field.fieldGroup, annotationState );
       }
-      else if ( !field.type.startsWith( 'embeddedForm' ) ) {
+      else if ( !_.startsWith(field.type, 'embeddedForm' ) ) {
         return [].concat(
           angular.extend(
             {

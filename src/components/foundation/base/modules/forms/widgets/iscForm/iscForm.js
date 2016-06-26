@@ -1,4 +1,4 @@
-( function() {
+(function() {
   'use strict';
 
   angular.module( 'isc.forms' )
@@ -154,8 +154,8 @@
    */
   /* @ngInject */
   function iscForm( $stateParams, $q, $window,
-    iscSessionModel, iscNavContainerModel,
-    iscFormsModel, iscFormsValidationService, iscFormDataApi ) {//jshint ignore:line
+                    iscSessionModel, iscNavContainerModel,
+                    iscFormsModel, iscFormsValidationService, iscFormDataApi ) {//jshint ignore:line
     var directive = {
       restrict        : 'E',
       replace         : true,
@@ -184,13 +184,11 @@
     function controller() {
       var self = this;
 
-      self.formConfig         = self.formConfig || {};
       var defaultFormConfig   = getFormDefaults( self.formConfig );
-      self.internalFormConfig = _.defaultsDeep( self.formConfig, defaultFormConfig );
+      self.internalFormConfig = _.defaultsDeep( self.formConfig || {}, defaultFormConfig );
 
-      self.buttonConfig         = self.buttonConfig || {};
       var defaultButtonConfig   = getButtonDefaults();
-      self.internalButtonConfig = _.defaultsDeep( self.buttonConfig, defaultButtonConfig );
+      self.internalButtonConfig = _.defaultsDeep( self.buttonConfig || {}, defaultButtonConfig );
 
       // Ensure id is either numeric or undefined (if passed directly from a route param, it could be a string)
       var parsedId          = parseInt( self.formDataId );
@@ -218,20 +216,12 @@
         return $q.when( [] );
       }
 
-      /**
-       * @memberOf iscForm
-       */
-      function emptyFunction() {
-      }
-
       self.validateFormApi = function() {
         return iscFormsValidationService.validateCollections( self.model, self.validationDefinition );
       };
 
       init();
 
-      // Private/helper functions
-      var originalFormKey;
 
       /**
        * @memberOf iscForm
@@ -242,9 +232,9 @@
         // Empty annotations API if not provided
         var annotationsApi = {
           getFormAnnotations    : emptyAnnotationData,
-          closeAnnotationPanel  : emptyFunction,
-          initAnnotationQueue   : emptyFunction,
-          processAnnotationQueue: emptyFunction
+          closeAnnotationPanel  : _.noop,
+          initAnnotationQueue   : _.noop,
+          processAnnotationQueue: _.noop
         };
 
         // Defaults for formDataApi property -- use iscFormDataApi
@@ -265,7 +255,7 @@
           // Wrap data with additional information and metadata
           return {
             formDefinition  : formDefinition,
-            additionalModels: self.formConfig.additionalModels,
+            additionalModels: self.internalFormConfig.additionalModels,
             formData        : {
               formKey    : self.formKey,
               formName   : formDefinition.name,
@@ -292,7 +282,7 @@
         }
 
         function saveDefault( formData, id ) {
-          var annotationsApi = self.formConfig.annotationsApi;
+          var annotationsApi = self.internalFormConfig.annotationsApi;
 
           if ( id !== undefined ) {
             return iscFormDataApi.put( id, formData, getConfiguredUrl( 'put' ) )
@@ -323,7 +313,7 @@
       function getButtonDefaults() {
         return {
           cancel: {
-            onClick   : emptyFunction,
+            onClick   : _.noop,
             afterClick: afterCancel,
             cssClass  : 'cancel button large float-left',
             text      : self.mode === 'view' ? 'Forms_Back_Button' : 'Forms_Cancel_Button'
@@ -332,7 +322,8 @@
             onClick   : onSubmit,
             afterClick: afterSubmit,
             cssClass  : 'button large float-right',
-            text      : 'Forms_Submit_Button'
+            text      : 'Forms_Submit_Button',
+            hide      : self.mode === 'view'
           }
         };
 
@@ -340,7 +331,7 @@
          * @memberOf iscForm
          */
         function onSubmit() {
-          var formDataApi = self.formConfig.formDataApi;
+          var formDataApi = self.internalFormConfig.formDataApi;
 
           // Default api for submitting a form is to submit to iscFormDataApi
           var wrappedData = formDataApi.wrap( self.model, self.formDefinition.form );
@@ -374,7 +365,7 @@
        * @memberOf iscForm
        */
       function getFormData() {
-        var config      = self.formConfig,
+        var config      = self.internalFormConfig,
             formDataApi = config.formDataApi;
 
         config.annotationsApi.initAnnotationQueue();
@@ -394,7 +385,7 @@
        * @returns {*}
        */
       function getAnnotationData() {
-        var getApi = _.get( self.formConfig, 'annotationsApi.getFormAnnotations' );
+        var getApi = _.get( self.internalFormConfig, 'annotationsApi.getFormAnnotations' );
 
         if ( getApi && _.isFunction( getApi ) ) {
           return getApi( self.parsedFormDataId ).then( function( annotations ) {
@@ -406,7 +397,7 @@
           } );
         }
         else {
-          $q.when( [] );
+          return $q.when( [] );
         }
       }
 
@@ -421,7 +412,7 @@
           } )
           .then( function( formDefinition ) {
             self.formDefinition                = formDefinition;
-            self.options.formState._validateOn = formDefinition.validateOn;
+            self.options.formState._validateOn = formDefinition.form.validateOn;
 
             populateAdditionalModels( self.formDefinition.form.dataModelInit );
           } );
@@ -435,13 +426,13 @@
        */
       function populateAdditionalModels( fdnScript ) {
         evalScript( fdnScript );
-        evalScript( self.formConfig.additionalModelInit );
+        evalScript( self.internalFormConfig.additionalModelInit );
 
         getValidationDefinition();
 
         function evalScript( script ) {
           if ( script && _.isFunction( script ) ) {
-            script( self.formConfig.additionalModels, $stateParams, self.model );
+            script( self.internalFormConfig.additionalModels, $stateParams, self.model );
           }
         }
       }
@@ -461,4 +452,4 @@
       }
     }
   }
-} )();
+})();

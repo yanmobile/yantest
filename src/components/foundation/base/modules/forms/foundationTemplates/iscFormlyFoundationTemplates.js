@@ -1,4 +1,4 @@
-( function() {
+(function() {
   'use strict';
 
   /** Templates adapted from angular-formly-templates-foundation 1.0.0-beta.1
@@ -108,27 +108,45 @@
         },
         /*@ngInject*/
         controller    : function( $scope ) {
-          var templateOptions  = $scope.to;
-          var opts             = $scope.options;
+          $scope.options.extras.skipNgModelAttrsManipulator = true;
+
+          var templateOptions = $scope.to,
+              opts            = $scope.options,
+              data            = opts.data;
+
+          angular.extend( $scope, {
+            valueField   : data.valueField,
+            displayField : data.displayField,
+            isObjectModel: data.isObject
+          } );
+
           $scope.multiCheckbox = {
             checked: [],
             change : setModel
           };
 
           // initialize the checkboxes check property
-          var modelValue = $scope.model[opts.key];
+          var modelValue = _.get( $scope.model, opts.key );
           if ( angular.isArray( modelValue ) ) {
-            var valueProp = templateOptions.valueProp || 'value';
-            angular.forEach( templateOptions.options, function( v, index ) {
-              $scope.multiCheckbox.checked[index] = modelValue.indexOf( v[valueProp] ) !== -1;
+            var valueField  = $scope.valueField || 'value',
+                valueObject = {};
+            angular.forEach( templateOptions.options, function( option, index ) {
+              if ( $scope.isObjectModel ) {
+                valueObject[valueField]             = option[valueField];
+                $scope.multiCheckbox.checked[index] = !!_.find( modelValue, valueObject );
+              }
+              else {
+                $scope.multiCheckbox.checked[index] = _.includes( modelValue, option );
+              }
             } );
           }
 
           function setModel() {
-            $scope.model[opts.key] = [];
+            var array = [];
+            _.set( $scope.model, opts.key, array );
             angular.forEach( $scope.multiCheckbox.checked, function( checkbox, index ) {
               if ( checkbox ) {
-                $scope.model[opts.key].push( templateOptions.options[index] );
+                array.push( templateOptions.options[index] );
               }
             } );
           }
@@ -242,23 +260,7 @@
         name       : 'typeahead',
         templateUrl: 'forms/foundationTemplates/templates/typeahead.html',
         wrapper    : ['templateLabel', 'templateHasError'],
-        /*@ngInject*/
-        controller : function( $scope ) {
-          var key             = $scope.options.key;
-          $scope.displayField = _.get( $scope.options, 'data.displayField', '' );
-          $scope.localModel   = {};
-
-          $scope.onSelect = function( item ) {
-            if ( _.isObject( item ) ) {
-              var copiedItem          = _.merge( {}, item );
-              $scope.model[key]       = copiedItem;
-              $scope.localModel.input = $scope.displayField ? copiedItem[$scope.displayField] : copiedItem;
-            }
-            else {
-              $scope.localModel.input = $scope.model[key] = item;
-            }
-          };
-        }
+        controller : typeaheadController
       } );
 
       // Typeahead with third-party user script support
@@ -266,29 +268,7 @@
         name       : 'typeaheadWithScript',
         templateUrl: 'forms/foundationTemplates/templates/typeaheadWithScript.html',
         wrapper    : ['templateLabel', 'templateHasError'],
-        /*@ngInject*/
-        controller : function( $scope ) {
-          var key             = $scope.options.key;
-          $scope.displayField = _.get( $scope.options, 'data.displayField', '' );
-          $scope.localModel   = {};
-
-          $scope.$watch(
-            function() {
-              return $scope.model[key];
-            },
-            function( val ) {
-              if ( $scope.displayField ) {
-                if ( val ) {
-                  $scope.model[key]       = val || {};
-                  $scope.localModel.input = val[$scope.displayField];
-                }
-              }
-              else {
-                $scope.localModel.input = val;
-              }
-            }
-          );
-        }
+        controller : typeaheadController
       } );
 
       // Embedded form
@@ -301,7 +281,12 @@
           var templateOptions = $scope.to;
           var opts            = $scope.options;
 
-          $scope.efModel = $scope.model[opts.key] = ( $scope.model[opts.key] || {} );
+          $scope.efModel = _.get( $scope.model, opts.key );
+          if ( !$scope.efModel ) {
+            $scope.efModel = {};
+            _.set( $scope.model, opts.key, $scope.efModel );
+          }
+
           $scope.efFields  = templateOptions.fields;
           $scope.efOptions = {
             formState: $scope.formState
@@ -331,7 +316,33 @@
         name       : 'embeddedFormListener',
         templateUrl: 'forms/foundationTemplates/templates/embeddedFormListener.html'
       } );
+
+      /*@ngInject*/
+      function typeaheadController( $scope ) {
+        $scope.options.extras.skipNgModelAttrsManipulator = true;
+
+        var key             = $scope.options.key;
+        $scope.displayField = _.get( $scope.options, 'data.displayField', '' );
+        $scope.localModel   = {};
+
+        $scope.onSelect = function( item ) {
+          if ( _.isObject( item ) ) {
+            var copiedItem = angular.copy( item );
+            _.set( $scope.model, key, copiedItem );
+            $scope.localModel.input = $scope.displayField ? copiedItem[$scope.displayField] : copiedItem;
+          }
+          else {
+            _.set( $scope.model, key, item );
+            $scope.localModel.input = item;
+          }
+        };
+
+        var initialModel = _.get( $scope.model, $scope.options.key, '' );
+        if (initialModel) {
+          $scope.onSelect( initialModel );
+        }
+      }
     }
 
   }
-} )();
+})();

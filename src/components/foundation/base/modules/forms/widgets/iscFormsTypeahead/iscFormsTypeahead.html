@@ -7,7 +7,7 @@
         ng-keypress="typeaheadCtrl.select(result)"
         class="isc-dropdown-item isc-dd"
         ng-repeat="result in typeaheadCtrl.getFilteredList()">
-      {{ result[typeaheadCtrl.listField || 'name']}}
+      {{ typeaheadCtrl.listField ? result[typeaheadCtrl.listField] : result }}
     </li>
   </ul>
 </div>

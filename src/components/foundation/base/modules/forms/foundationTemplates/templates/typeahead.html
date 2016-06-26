@@ -4,6 +4,8 @@
                        minlength="3"
                        list-field="{{options.data.resultsDisplayField}}">
     <input ng-model="localModel.input"
+           id="{{id}}"
+           name="{{name||id}}"
            class="typeahead">
   </isc-forms-typeahead>
 </div>

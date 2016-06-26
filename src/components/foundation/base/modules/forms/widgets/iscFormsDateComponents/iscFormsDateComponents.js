@@ -12,7 +12,7 @@
   /**
    * @ngdoc directive
    * @memberOf isc.core
-   * @param $global
+   * @param keyCode
    * @param $window
    * @param $document
    * @param devlog
@@ -25,7 +25,7 @@
    *   </isc-form-date-components>
    */
   /* @ngInject */
-  function iscFormsDateComponents( $global, $window, $document,
+  function iscFormsDateComponents( keyCode, $window, $document,
     devlog, iscCustomConfigService ) {//jshint ignore:line
 
     // ----------------------------
@@ -97,7 +97,7 @@
       scope.maxYear = moment().year() + 50;
       scope.minYear = moment().year() - 250;
 
-      var keys      = $global.keyCode;
+      var keys      = keyCode;
       scope.navKeys = [
         keys.BACKSPACE,
         keys.DELETE,
