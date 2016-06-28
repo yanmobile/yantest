@@ -59,7 +59,7 @@ module.exports.app          = {
     "css"      : "src/app/assets/sass/main.scss",
     "js"       : "src/app/assets/sass/main.js",
     "comments" : "i18nXml is used for specifying destination location of converted i18n files",
-    "i18nXml"  : "www/assets/i18n"
+    "i18nXml"  : "isc-tools/localize"
   },
   "cordova"       : false,
   "excludeConfig" : "!src/app/modules/app.config.js",
