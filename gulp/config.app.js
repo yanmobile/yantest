@@ -34,8 +34,8 @@ module.exports.app          = {
     ],
     "assets"  : {
       "i18nDir"    : "src/app/assets/i18n/",
-      "comments"   : "i18nDomain value will be used as a part of the generated i18n xml",
-      "i18nDomain" : "HSPortal",
+      "comments"   : "i18nDomain value will be used as a part of the generated i18n XML",
+      "i18nDomain" : "hs-temp-app-scaffold",
       "mocks"      : [
         "src/app/assets/mockData/**"
       ],
