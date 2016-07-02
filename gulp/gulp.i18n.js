@@ -44,7 +44,7 @@ function init( gulp, plugins, config, _ ) {
         .pipe( gulp.dest( plugins.path.join( config.app.dest.folder, 'assets/i18n' ) ) )
         .pipe( convert( { domain: domain } ) )
         // .pipe(filelog())
-        .pipe(filter(config.app.dest.i18nXmlFilter)) // filter out non en_US.xml file
+        .pipe(filter(config.app.dest.i18nXmlFilter)) // filter out non en-us.xml file
         .pipe(filelog())
         .pipe( gulp.dest( plugins.path.join( config.app.dest.i18nXml ) ) );
     } );
