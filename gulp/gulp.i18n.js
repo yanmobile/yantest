@@ -11,6 +11,7 @@ var filelog   = require( "gulp-filelog" );
 var fs        = require( 'fs' );
 var mergeJson = require( 'gulp-merge-json' );
 var convert   = require( './i18n.xml.converter' );
+var filter    = require('gulp-filter');
 
 function init( gulp, plugins, config, _ ) {
 
@@ -42,6 +43,9 @@ function init( gulp, plugins, config, _ ) {
         .pipe( filelog() )
         .pipe( gulp.dest( plugins.path.join( config.app.dest.folder, 'assets/i18n' ) ) )
         .pipe( convert( { domain: domain } ) )
+        // .pipe(filelog())
+        .pipe(filter(config.app.dest.i18nXmlFilter)) // filter out non en-us.xml file
+        .pipe(filelog())
         .pipe( gulp.dest( plugins.path.join( config.app.dest.i18nXml ) ) );
     } );
 
