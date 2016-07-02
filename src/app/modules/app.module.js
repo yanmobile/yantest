@@ -31,7 +31,7 @@
       suffix: '.json'
     } );
 
-    $translateProvider.preferredLanguage( 'en_US' );
+    $translateProvider.preferredLanguage( 'en-us' );
     $httpProvider.defaults.withCredentials = true;
 
     if ( appConfig.production ) {

@@ -62,8 +62,8 @@ module.exports.app          = {
     "i18nXml"  : "isc-tools/localize",
     // for specifying which files are to be copied over.
     // Since development only uses "en_US.json", no need to update the gulp task to account for
-    // multiple translation files: e.g. "en_US.json", "en_UK.json" and "en.json".
-    "i18nXmlFilter": "**/en_US.xml"
+    // multiple translation files: e.g. "en-us.json", "en-uk.json" and "en.json".
+    "i18nXmlFilter": "**/en-us.xml"
   },
   "cordova"       : false,
   "excludeConfig" : "!src/app/modules/app.config.js",
