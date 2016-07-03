@@ -7,6 +7,7 @@ module.exports = {
       "src/common/bower_components/moment/moment.js",
       "src/common/bower_components/socket.io-client/socket.io.js",
       "src/common/bower_components/angular/angular.js",
+      "src/common/bower_components/angular-component.js/dist/angular-component.js",
       "src/common/bower_components/angular-animate/angular-animate.js",
       "src/common/bower_components/angular-filter/dist/angular-filter.js",
       "src/common/bower_components/angular-messages/angular-messages.js",
