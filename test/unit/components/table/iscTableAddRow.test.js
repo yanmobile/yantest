@@ -7,14 +7,7 @@
 
     var html = '<div isc-table-add-row ng-form name="iscRowForm"> </div>';
 
-    useDefaultModuleConfig("isc.templates");
-
-    beforeEach( module( 'isc.table' ) );
-
-    // show $log statements
-    beforeEach( module( function( $provide ) {
-      $provide.value( '$log', mock$log );
-    } ) );
+    useDefaultModules( 'isc.templates', 'isc.table' );
 
     beforeEach( inject( function( $rootScope, $compile, $httpBackend, $state, $timeout, $q, $templateCache ) {
       suite = createSuite( {

@@ -7,7 +7,7 @@
 
   describe( 'isc.directives iscScrollTo', function() {
     var suite = window.createSuite();
-    window.useDefaultModuleConfig();
+    window.useDefaultModules();
 
     beforeEach( module( 'isc.directives', 'isc.templates', function( $provide ) {
       suite.$uiViewScroll = _.noop;

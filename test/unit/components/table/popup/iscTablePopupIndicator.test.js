@@ -7,7 +7,7 @@
   describe( 'isc.table iscTablePopupIndicator', function() {
     var suite;
 
-    window.useDefaultModuleConfig();
+    window.useDefaultModules();
 
     beforeEach( module( 'isc.table', 'isc.templates', 'foundation' ) );
 

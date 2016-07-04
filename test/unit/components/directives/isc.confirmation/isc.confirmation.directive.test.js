@@ -8,7 +8,7 @@
   describe( 'isc.directives iscConfirmation', function() {
     var suite;
 
-    window.useDefaultModuleConfig();
+    window.useDefaultModules();
 
     beforeEach( module( 'isc.directives', 'isc.templates', 'foundation', function( iscConfirmationServiceProvider ) {
       suite = window.createSuite( {

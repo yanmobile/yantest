@@ -110,22 +110,7 @@
       'row-button-callback="rowButtonCallback( state )">' +
       '</isc-table>';
 
-    beforeEach( module( 'isc.table' ) );
-
-    // this loads all the external templates used in directives etc
-    // eg, everything in templates/**/*.html
-    beforeEach( module( 'isc.templates' ) );
-
-    // show $log statements
-    beforeEach( module( function( $provide ) {
-      $provide.value( '$log', mock$log );
-    } ) );
-
-    // setup devlog
-    beforeEach( module( 'isc.core', function( devlogProvider ) {
-      devlogProvider.loadConfig( customConfig );
-    } ) );
-
+    useDefaultModules( 'isc.templates', 'isc.table' );
 
     beforeEach( inject( function( _$rootScope_, _$compile_, $httpBackend, $state, $timeout, _$templateCache_ ) {
       $rootScope = _$rootScope_;

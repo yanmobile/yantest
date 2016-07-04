@@ -7,9 +7,7 @@
 
     var html = '<div isc-table-footer-row ng-form name="iscRowForm"> </div>';
 
-    useDefaultModuleConfig("isc.templates");
-
-    beforeEach( module( 'isc.table' ) );
+    useDefaultModules( 'isc.templates', 'isc.table' );
 
     beforeEach( inject( function( $rootScope, $compile, $httpBackend, $state, $timeout, $q, $templateCache ) {
       suite = createSuite( {

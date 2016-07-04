@@ -5,7 +5,7 @@
 
   describe( 'iscNavContainerModel', function() {
     var suite;
-    window.useDefaultModuleConfig();
+    window.useDefaultModules();
 
     // setup devlog
     beforeEach( module( 'isc.configuration', 'isc.authorization', 'iscNavContainer', function( iscCustomConfigServiceProvider ) {

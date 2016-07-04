@@ -5,7 +5,7 @@
   describe( 'iscTableRowController', function() {
     var suite;
 
-    useDefaultModuleConfig( ['isc.templates', 'isc.table'] );
+    useDefaultModules( 'isc.templates', 'isc.table' );
 
     beforeEach( inject( function( $rootScope, $compile, $controller, $q ) {
       suite = window.createSuite( {

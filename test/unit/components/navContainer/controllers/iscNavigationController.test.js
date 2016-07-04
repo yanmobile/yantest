@@ -15,7 +15,7 @@
         $state,
         controller;
 
-    window.useDefaultModuleConfig();
+    window.useDefaultModules();
 
     // setup devlog
     beforeEach( module( 'iscNavContainer' ) );
