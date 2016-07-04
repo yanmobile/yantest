@@ -56,6 +56,7 @@
     function navigateToUserLandingPage( reload ) {
       var currentUserRole = iscSessionModel.getCurrentUserRole();
       var landingPage     = iscCustomConfigService.getConfigSection( 'landingPages' )[currentUserRole];
+      console.log( 'landingPage:', landingPage );
       if ( !_.isNil( landingPage ) ) {
         var currentState = $state.current.state;
         $state.go( landingPage );
