@@ -55,16 +55,23 @@
     } ) );
   }
 
-  function useDefaultModuleConfig() {
+  function useDefaultModuleConfig( moduleNames ) {
     // setup devlog
-    beforeEach( module( 'isc.core', function( devlogProvider ) {
+    beforeEach( module( 'isc.core', function( devlogProvider, $provide ) {
       devlogProvider.loadConfig( customConfig );
-    } ) );
 
-    // show $log statements
-    beforeEach( module( function( $provide ) {
+      // show $log statements
       $provide.value( '$log', mock$log );
     } ) );
+
+    if ( moduleNames ) {
+      if ( _.isString( moduleNames ) ) {
+        moduleNames = [moduleNames];
+      }
+      moduleNames.forEach( function( moduleName ) {
+        beforeEach( module( moduleName ) );
+      } );
+    }
 
   }
 
