@@ -186,9 +186,9 @@
 
       if ( self.alertShowing ) {
         channel.debug( '...nope' );
-        return;
+      } else {
+        channel.debug( '...yup' );
       }
-      channel.debug( '...yup' );
       self.alertShowing = true;
     } );
 
@@ -196,20 +196,6 @@
       channel.debug( 'ischNavContainer.sessionTimeout' );
       self.hideAllPopups();
       self.alertShowing = false;
-    } );
-
-    $scope.$on( NAV_EVENTS.showSecondaryNav, function( event, response ) {//jshint ignore:line
-      channel.debug( 'iscNavigationController.iscShowModal' );
-      self.showSecondaryNavbar();
-    } );
-
-    $scope.$on( NAV_EVENTS.hideSecondaryNav, function( event, response ) {//jshint ignore:line
-      channel.debug( 'iscNavigationController.iscHideModal' );
-      self.hideSecondaryNavbar();
-    } );
-
-    $rootScope.$on( NAV_EVENTS.hideSideNavBar, function() {
-      self.hideSideNavbar();
     } );
 
   }// END CLASS

@@ -69,21 +69,7 @@
 
     var html = '<div isc-table-row ng-form name="iscRowForm"> </div>';
 
-    beforeEach( module( 'isc.table' ) );
-
-    // setup devlog
-    beforeEach(module('isc.core', function (devlogProvider) {
-      devlogProvider.loadConfig(customConfig);
-    }));
-
-    // this loads all the external templates used in directives etc
-    // eg, everything in templates/**/*.html
-    beforeEach( module( 'isc.templates' ) );
-
-    // show $log statements
-    beforeEach( module( function( $provide ){
-      $provide.value( '$log', mock$log );
-    } ) );
+    useDefaultModules( 'isc.templates', 'isc.table' );
 
     beforeEach( inject( function( $rootScope, $compile, $httpBackend, $state, $timeout, _$q_ ){
       rootScope = $rootScope;
@@ -98,7 +84,7 @@
 
       scope.dataItem = getDataItems()[ 0 ];   //mimicking ng-repeat
 
-      state         = $state;
+      state         = $state; 
       state.current = {
         name: 'tableTests'
       };

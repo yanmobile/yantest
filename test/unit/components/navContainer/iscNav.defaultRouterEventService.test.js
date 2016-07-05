@@ -7,13 +7,11 @@
   describe( 'iscNavContainer iscRouterDefaultEventService', function() {
     var suite;
 
-    window.useDefaultModuleConfig();
+    window.useDefaultModules('iscNavContainer');
 
     beforeEach( function() {
       suite = window.createSuite();
     } );
-
-    beforeEach( module( 'iscNavContainer', 'isc.templates' ) );
 
     beforeEach( inject( function( $rootScope, $compile, iscRouterDefaultEventService, $state ) {
       suite.iscRouterDefaultEventService = iscRouterDefaultEventService;

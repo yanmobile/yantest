@@ -5,10 +5,10 @@
 
   var suite; //used by individual test files via window.createSuite();
 
-  window.cleanup                = cleanup;
-  window.fixFoundationBug       = fixFoundationBug;
-  window.createSuite            = createSuite;
-  window.useDefaultModuleConfig = useDefaultModuleConfig;
+  window.cleanup           = cleanup;
+  window.fixFoundationBug  = fixFoundationBug;
+  window.createSuite       = createSuite;
+  window.useDefaultModules = useDefaultModules;
   function createSuite( obj ) {
     suite = obj || {};
     return suite;
@@ -48,23 +48,24 @@
     styleSheet = styleEl.sheet;
     styleSheet.insertRule( 'meta.foundation-mq { font-family: "small=&medium=&large=&xlarge=&xxlarge="; }', 0 );
 
+  }
 
-    beforeEach( module( 'pascalprecht.translate', function( $translateProvider ) {
+  function useDefaultModules() {
+    // setup devlog
+    beforeEach( module( 'pascalprecht.translate', 'isc.core', function( devlogProvider, $provide, $translateProvider ) {
+      devlogProvider.loadConfig( customConfig );
+
+      // show $log statements
+      $provide.value( '$log', mock$log );
+
       //adding sanitize strategy to get rid of the pesky warnings
       $translateProvider.useSanitizeValueStrategy( null );
     } ) );
-  }
 
-  function useDefaultModuleConfig() {
-    // setup devlog
-    beforeEach( module( 'isc.core', function( devlogProvider ) {
-      devlogProvider.loadConfig( customConfig );
-    } ) );
-
-    // show $log statements
-    beforeEach( module( function( $provide ) {
-      $provide.value( '$log', mock$log );
-    } ) );
+    var moduleNames = _.toArray( arguments );
+    // moduleNames.forEach( function( moduleName ) {
+      beforeEach( module.apply( module, moduleNames ) );
+    // } );
 
   }
 

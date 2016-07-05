@@ -58,23 +58,8 @@
         'mobile-class="isc-text-item">' +
         '</div>';
 
-    // show $log statements
-    beforeEach( module( function( $provide ){
-      $provide.value( '$log', mock$log );
-    } ) );
-
-    beforeEach( module( 'isc.table' ) );
-
-    // setup devlog
-    beforeEach(module('isc.core', function (devlogProvider) {
-      devlogProvider.loadConfig(customConfig);
-    }));
-
-    // this loads all the external templates used in directives etc
-    // eg, everything in templates/**/*.html
-    beforeEach( module( 'isc.templates' ) );
-
-
+    useDefaultModules( 'isc.templates', 'isc.table' );
+    
     beforeEach( inject( function( $rootScope, $compile, $httpBackend, $state, $timeout ){
       rootScope = $rootScope;
 
