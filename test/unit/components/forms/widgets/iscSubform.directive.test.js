@@ -49,30 +49,51 @@
     } ) );
 
     //--------------------
-    describe( 'iscSubform - cancel', function() {
+    describe( 'iscSubform - CRUD', function() {
       beforeEach( function() {
-        createDirectives( getConfiguredForm() );
+        createDirectives( getFormWithData() );
       } );
 
+      // For performance, all tests in this block share a single spec,
+      // including the model and directive state
       //--------------------
-      it( 'should close a subform when cancel is clicked', function() {
+      it( 'should allow entering of data in a subform', function() {
         // Open a subform of each editAs type, enter a field, and click cancel
-        test( 'test.SubformPage', true );
-        test( 'test.SubformInline' );
-        test( 'test.SubformModal' );
+        testCancel( 'test.SubformPage', true );
+        testCancel( 'test.SubformInline' );
+        testCancel( 'test.SubformModal' );
 
-        function test( subformName, isFullPage ) {
+        // Open a subform of each editAs type, enter a field, save the subform
+        testAdd( 'test.SubformPage', true );
+        testAdd( 'test.SubformInline' );
+        testAdd( 'test.SubformModal' );
+
+        // Edit each subform type, change a field, save
+        testEdit( 'test.SubformPage', true );
+        testEdit( 'test.SubformInline' );
+        testEdit( 'test.SubformModal' );
+
+        // Delete a row for each subform type
+        testDelete( 'test.SubformPage' );
+        testDelete( 'test.SubformInline' );
+        testDelete( 'test.SubformModal' );
+
+        // Edit data in the default row for each component type
+        testComponents();
+        
+
+        function testCancel( subformName, isFullPage ) {
           var suite        = suiteSubform,
               subform      = getControlByName( suite, subformName ).filter( '.subform' ),
               addButton    = subform.find( 'button.embedded-form-add' ),
               model        = _.get( suite.controller.model, subformName ),
               cancelButton = null,
               shownForm    = null,
-              inputField   = null;
+              inputField   = null,
+              modelCount   = model.length;
 
           expect( addButton.length ).toBe( 1 );
           expect( subform.length ).toBe( 1 );
-          expect( model ).toBeUndefined(); // no mock data exists
 
           // Open the subform
           addButton.click();
@@ -98,7 +119,7 @@
 
           expect( cancelButton.length ).toBe( 0 );
           expect( inputField.length ).toBe( 0 );
-          expect( model ).toBeUndefined(); // still no mock data
+          expect( model.length ).toBe( modelCount );
 
           if ( isFullPage ) {
             expect( suite.controller.childConfig.onCancel ).toHaveBeenCalled();
@@ -113,36 +134,6 @@
             inputField   = getControlByName( suite, 'aField' );
           }
         }
-      } );
-    } );
-
-
-    //--------------------
-    describe( 'iscSubform - CRUD', function() {
-      beforeEach( function() {
-        createDirectives( getFormWithData() );
-      } );
-
-      // For performance, all tests in this block share a single spec, including model and directive state
-      //--------------------
-      it( 'should allow entering of data in a subform', function() {
-        // Open a subform of each editAs type, enter a field, save the subform
-        testAdd( 'test.SubformPage', true );
-        testAdd( 'test.SubformInline' );
-        testAdd( 'test.SubformModal' );
-
-        // Edit each subform type, change a field, save
-        testEdit( 'test.SubformPage', true );
-        testEdit( 'test.SubformInline' );
-        testEdit( 'test.SubformModal' );
-
-        // Delete a row for each subform type
-        testDelete( 'test.SubformPage' );
-        testDelete( 'test.SubformInline' );
-        testDelete( 'test.SubformModal' );
-
-        // Edit data in the default row for each component type
-        testComponents();
 
         function testAdd( subformName, isFullPage ) {
           var suite      = suiteSubform,
