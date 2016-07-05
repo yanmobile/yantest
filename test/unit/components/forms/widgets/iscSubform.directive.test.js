@@ -48,6 +48,7 @@
       mockFormResponses( suiteMain.$httpBackend );
     } ) );
 
+    //--------------------
     describe( 'iscSubform - cancel', function() {
       beforeEach( function() {
         createDirectives( getConfiguredForm() );
@@ -275,7 +276,6 @@
         }
 
         function testComponents() {
-
           var suite       = suiteSubform,
               subformName = 'form.components',
               subform     = getControlByName( suite, subformName ).filter( '.subform' ),
@@ -552,42 +552,17 @@
               expect( viewMoment.toISOString() ).toEqual( modelMoment.toISOString() );
             }
 
-            // Day 30
-            dayInput
-              .sendKeypress( 58 ) // send an unacceptable char
-              .sendKeypress( keyCodes.BACKSPACE )
-              .sendKeypress( keyCodes.BACKSPACE )
-              .sendKeypress( numKeys[3] )
-              .sendKeypress( numKeys[0] )
-              .trigger( 'input' );
+            // Test changing DOM inputs
+            // Only run for base date components, for performance
+            if ( !isPartial ) {
+              yearInput
+                .sendKeypress( keyCodes.BACKSPACE )
+                .sendKeypress( numKeys[8] )
+                .trigger( 'blur' );
 
-            expect( dayInput.val() ).toBe( '30' );
-            expect( getModelDay() ).toBe( 30 );
-
-            // Month 10
-            // TODO - cover case of setting month to a value where the max day
-            // is less than the currently set value in the day input.
-            // This should update the view and model to be the max day allowed for that month.
-            // This will require triggering getMaxDay() on the day input's max attribute.
-            monthInput
-              .sendKeypress( keyCodes.BACKSPACE )
-              .sendKeypress( keyCodes.BACKSPACE )
-              .sendKeypress( numKeys[1] )
-              .sendKeypress( numKeys[0] )
-              .trigger( 'input' );
-
-            expect( monthInput.val() ).toBe( '10' );
-            expect( getModelMonth() ).toBe( 10 );
-
-            yearInput
-              .sendKeypress( keyCodes.BACKSPACE )
-              .sendKeypress( keyCodes.BACKSPACE )
-              .sendKeypress( numKeys[9] )
-              .sendKeypress( numKeys[8] )
-              .trigger( 'blur' );
-
-            expect( yearInput.val() ).toBe( '1998' );
-            expect( getModelYear() ).toBe( 1998 );
+              expect( yearInput.val() ).toBe( '1998' );
+              expect( getModelYear() ).toBe( 1998 );
+            }
 
             function getModel() {
               return _.get( formModel, controlName );
@@ -628,13 +603,6 @@
                 } );
                 return this;
               };
-            }
-
-            function setControlValue( control, value ) {
-              control.val( value );
-              control.triggerHandler( 'change' );
-              digest( suite );
-              digest( suite );
             }
           }
         }
