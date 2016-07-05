@@ -555,6 +555,28 @@
             // Test changing DOM inputs
             // Only run for base date components, for performance
             if ( !isPartial ) {
+              // Model date is 12/11/1990
+              // Change to 10/14/1998
+
+              // Day 14
+              dayInput
+                .sendKeypress( 58 ) // send an unacceptable char
+                .sendKeypress( keyCodes.BACKSPACE )
+                .sendKeypress( numKeys[4] )
+                .trigger( 'input' );
+
+              expect( dayInput.val() ).toBe( '14' );
+              expect( getModelDay() ).toBe( 14 );
+
+              // Month 10
+              monthInput
+                .sendKeypress( keyCodes.BACKSPACE )
+                .sendKeypress( numKeys[0] )
+                .trigger( 'input' );
+
+              expect( monthInput.val() ).toBe( '10' );
+              expect( getModelMonth() ).toBe( 10 );
+
               yearInput
                 .sendKeypress( keyCodes.BACKSPACE )
                 .sendKeypress( numKeys[8] )
