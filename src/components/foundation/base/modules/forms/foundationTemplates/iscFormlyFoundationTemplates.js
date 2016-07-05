@@ -108,6 +108,11 @@
         },
         /*@ngInject*/
         controller    : function( $scope ) {
+          // When using a template that has an ng-model attribute which is not part of the form model
+          // and which is dotted (i.e., "some.dotted.property"), angular-formly will automatically
+          // change the ng-model attribute to the model of the formly field.
+          // Setting skipNgModelAttrsManipulator to true prevents this and allows a local model
+          // to be used for more complex components.
           $scope.options.extras.skipNgModelAttrsManipulator = true;
 
           var templateOptions = $scope.to,
@@ -319,6 +324,11 @@
 
       /*@ngInject*/
       function typeaheadController( $scope ) {
+        // When using a template that has an ng-model attribute which is not part of the form model
+        // and which is dotted (i.e., "some.dotted.property"), angular-formly will automatically
+        // change the ng-model attribute to the model of the formly field.
+        // Setting skipNgModelAttrsManipulator to true prevents this and allows a local model
+        // to be used for more complex components.
         $scope.options.extras.skipNgModelAttrsManipulator = true;
 
         var key             = $scope.options.key;

@@ -203,6 +203,8 @@
           );
         }
 
+        // Callbacks to actions defined in this directive need to be linked in the tableConfig object
+        // The isolation level of the faux-table prevents it from reaching this controller
         self.tableConfig = {
           sortable : true,
           columns  : tableColumns,
