@@ -1,7 +1,7 @@
 (function() {
   'use strict';
 
-  fdescribe( 'iscForm', function() {
+  describe( 'iscForm', function() {
     var suiteConfigured,
         suiteMisconfigured,
         suiteWithData,
