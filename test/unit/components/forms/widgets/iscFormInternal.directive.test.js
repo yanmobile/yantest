@@ -51,10 +51,14 @@
       suiteInternal.controller = suiteInternal.$isolateScope.formInternalCtrl;
     } ) );
 
+    
     //--------------------
     it( 'should change page when the selector is changed', function() {
       var suite         = suiteInternal,
-          subformConfig = suite.controller.multiConfig;
+          subformConfig = suite.controller.multiConfig,
+          model         = suite.controller.model,
+          lastPage      = subformConfig.pages[4],
+          value         = 'something';
 
       spyOn( subformConfig, 'selectPage' ).and.callThrough();
 
@@ -62,19 +66,7 @@
       subformConfig.selectPage( 1 );
       expect( getPageIndex() ).toEqual( 1 );
 
-      function getPageIndex() {
-        return _.indexOf( subformConfig.selectablePages, subformConfig.currentPage );
-      }
-    } );
-
-    //--------------------
-    it( 'should show page 5 once the model is updated', function() {
-      var suite         = suiteInternal,
-          subformConfig = suite.controller.multiConfig,
-          model         = suite.controller.model,
-          lastPage      = subformConfig.pages[4],
-          value         = 'something';
-
+      // Once the model has been updated, page 5 should become visible
       spyOn( suiteMain.formDataApi, 'post' ).and.callThrough();
 
       expect( model.RequiredInput ).toBeUndefined();
@@ -95,6 +87,11 @@
       subformConfig.selectPage( 2 );
       digest( suite );
       expect( suiteMain.formDataApi.post ).toHaveBeenCalled();
+
+
+      function getPageIndex() {
+        return _.indexOf( subformConfig.selectablePages, subformConfig.currentPage );
+      }
     } );
   } );
 })();

@@ -1,6 +1,7 @@
 (function() {
   'use strict';
 
+  //--------------------
   describe( 'iscForm', function() {
     var suiteConfigured,
         suiteMisconfigured,
@@ -72,81 +73,92 @@
 
     //--------------------
     describe( 'suiteSimple(s)', function() {
-      beforeEach( function() {
-        suiteSimple1 = createDirective( getMinimalForm( 'simple1' ) );
-        suiteSimple2 = createDirective( getMinimalForm( 'simple2' ) );
-        suiteSimple3 = createDirective( getMinimalForm( 'simple3' ) );
+      describe( 'all simple suites', function() {
+        beforeEach( function() {
+          suiteSimple1 = createDirective( getMinimalForm( 'simple1' ) );
+          suiteSimple2 = createDirective( getMinimalForm( 'simple2' ) );
+          suiteSimple3 = createDirective( getMinimalForm( 'simple3' ) );
 
-        suiteMain.$httpBackend.flush();
-      } );
+          suiteMain.$httpBackend.flush();
+        } );
 
-      //--------------------
-      it( 'should have basic directive configuration', function() {
-        testSuite( suiteSimple1 );
-        testSuite( suiteSimple2 );
-        testSuite( suiteSimple3 );
+        //--------------------
+        it( 'should have basic directive configuration', function() {
+          testSuite( suiteSimple1 );
+          testSuite( suiteSimple2 );
+          testSuite( suiteSimple3 );
 
-        function testSuite( suite ) {
-          var formConfig   = getFormConfig( suite ),
-              buttonConfig = getButtonConfig( suite );
-          expect( formConfig ).toBeDefined();
-          expect( buttonConfig ).toBeDefined();
-        }
-      } );
+          function testSuite( suite ) {
+            var formConfig   = getFormConfig( suite ),
+                buttonConfig = getButtonConfig( suite );
+            expect( formConfig ).toBeDefined();
+            expect( buttonConfig ).toBeDefined();
+          }
+        } );
 
-      //--------------------
-      it( 'should populate a minimally specified form with defaults', function() {
-        testSuite( suiteSimple1 );
-        testSuite( suiteSimple2 );
-        testSuite( suiteSimple3 );
+        //--------------------
+        it( 'should populate a minimally specified form with defaults', function() {
+          testSuite( suiteSimple1 );
+          testSuite( suiteSimple2 );
+          testSuite( suiteSimple3 );
 
-        function testSuite( suite ) {
-          var annotationsApi = getFormConfig( suite ).annotationsApi,
-              buttonConfig   = getButtonConfig( suite );
-          expect( _.isFunction( annotationsApi.getFormAnnotations ) ).toBe( true );
-          expect( _.isFunction( buttonConfig.submit.onClick ) ).toBe( true );
-        }
-      } );
+          function testSuite( suite ) {
+            var annotationsApi = getFormConfig( suite ).annotationsApi,
+                buttonConfig   = getButtonConfig( suite );
+            expect( _.isFunction( annotationsApi.getFormAnnotations ) ).toBe( true );
+            expect( _.isFunction( buttonConfig.submit.onClick ) ).toBe( true );
+          }
+        } );
 
-      //--------------------
-      it( 'should save when submit is clicked', function() {
-        var suite              = suiteSimple1,
-            submitButton       = getButton( suite, 'submit' ),
-            buttonConfig       = getButtonConfig( suite ),
-            submitButtonConfig = buttonConfig.submit;
+      });
 
-        spyOn( submitButtonConfig, 'onClick' ).and.callThrough();
-        spyOn( submitButtonConfig, 'afterClick' ).and.callThrough();
-        spyOn( suiteMain.formDataApi, 'post' ).and.callThrough();
-        spyOn( suiteMain.formDataApi, 'put' ).and.callThrough();
+      describe( 'simple suite 1 only', function() {
+        beforeEach( function() {
+          suiteSimple1 = createDirective( getMinimalForm( 'simple1' ) );
 
-        // POST form
-        submitButton.click();
-        suiteMain.$httpBackend.flush();
+          suiteMain.$httpBackend.flush();
+        } );
 
-        expect( submitButtonConfig.onClick ).toHaveBeenCalled();
-        expect( submitButtonConfig.afterClick ).toHaveBeenCalled();
-        expect( suiteMain.formDataApi.post ).toHaveBeenCalled();
+        //--------------------
+        it( 'should save when submit is clicked', function() {
+          var suite              = suiteSimple1,
+              submitButton       = getButton( suite, 'submit' ),
+              buttonConfig       = getButtonConfig( suite ),
+              submitButtonConfig = buttonConfig.submit;
 
-        // PUT form
-        submitButton.click();
-        suiteMain.$httpBackend.flush();
-        expect( suiteMain.formDataApi.put ).toHaveBeenCalled();
-      } );
+          spyOn( submitButtonConfig, 'onClick' ).and.callThrough();
+          spyOn( submitButtonConfig, 'afterClick' ).and.callThrough();
+          spyOn( suiteMain.formDataApi, 'post' ).and.callThrough();
+          spyOn( suiteMain.formDataApi, 'put' ).and.callThrough();
 
-      //--------------------
-      it( 'should go back when cancel is clicked', function() {
-        var suite              = suiteSimple1,
-            cancelButtonConfig = getButtonConfig( suite ).cancel;
+          // POST form
+          submitButton.click();
+          suiteMain.$httpBackend.flush();
 
-        spyOn( cancelButtonConfig, 'onClick' ).and.callThrough();
-        spyOn( cancelButtonConfig, 'afterClick' ).and.callThrough();
-        spyOn( suiteMain.$window.history, 'back' ).and.callThrough();
+          expect( submitButtonConfig.onClick ).toHaveBeenCalled();
+          expect( submitButtonConfig.afterClick ).toHaveBeenCalled();
+          expect( suiteMain.formDataApi.post ).toHaveBeenCalled();
 
-        getButton( suite, 'cancel' ).click();
+          // PUT form
+          submitButton.click();
+          suiteMain.$httpBackend.flush();
+          expect( suiteMain.formDataApi.put ).toHaveBeenCalled();
+        } );
 
-        expect( suiteMain.$window.history.back ).toHaveBeenCalled();
-      } );
+        //--------------------
+        it( 'should go back when cancel is clicked', function() {
+          var suite              = suiteSimple1,
+              cancelButtonConfig = getButtonConfig( suite ).cancel;
+
+          spyOn( cancelButtonConfig, 'onClick' ).and.callThrough();
+          spyOn( cancelButtonConfig, 'afterClick' ).and.callThrough();
+          spyOn( suiteMain.$window.history, 'back' ).and.callThrough();
+
+          getButton( suite, 'cancel' ).click();
+
+          expect( suiteMain.$window.history.back ).toHaveBeenCalled();
+        } );
+      });
     } );
 
 
@@ -312,19 +324,11 @@
       it( 'should load form data from the ID', function() {
         var suite         = suiteWithData,
             mockData      = _.find( mockFormStore.formData, { id: 3 } ).data,
-            expectedModel = angular.copy( suite.controller.model ),
+            expectedModel = suite.controller.model,
             buttonConfig  = getButtonConfig( suite );
 
-        // The embeddedForm types initialize the model with their keys,
-        // even if they are not in data retrieved from the API.
-        expect( mockData.sampleEmbeddedFullFormNoPage ).not.toBeDefined();
-        expect( mockData.sampleEmbeddedFullFormPage1 ).not.toBeDefined();
-        expect( mockData.sampleEmbeddedFullFormLastPage ).not.toBeDefined();
-        delete expectedModel.sampleEmbeddedFullFormNoPage;
-        delete expectedModel.sampleEmbeddedFullFormPage1;
-        delete expectedModel.sampleEmbeddedFullFormLastPage;
-
-        expect( expectedModel ).toEqual( mockData );
+        expect( expectedModel.form.components.templates )
+          .toEqual( mockData.form.components.templates );
         expect( buttonConfig.submit.onClick ).toBeDefined();
       } );
 
