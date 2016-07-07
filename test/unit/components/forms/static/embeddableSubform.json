@@ -1,44 +1,48 @@
-[
-  {
-    "className" : "grid-block",
-    "fieldGroup": [
+{
+  "_Body" : {
+    "FormDefinition" : [
       {
-        "key" : "city",
-        "type" : "customTemplate",
-        "className" : "grid-block small-4 medium-4 large-4 padding-right",
-        "templateOptions" : {
-          "label" : "City"
-        },
-        "data" : {
-          "viewMode" : {
-            "template" : "<span></span>"
+        "className"  : "grid-block",
+        "fieldGroup" : [
+          {
+            "key"             : "city",
+            "type"            : "customTemplate",
+            "className"       : "grid-block small-4 medium-4 large-4 padding-right",
+            "templateOptions" : {
+              "label" : "City"
+            },
+            "data"            : {
+              "viewMode" : {
+                "template" : "<span></span>"
+              }
+            }
+          },
+          {
+            "key"             : "state",
+            "type"            : "select",
+            "className"       : "grid-block small-4 medium-4 large-4",
+            "templateOptions" : {
+              "label" : "State"
+            },
+            "data"            : {
+              "codeTable" : "US_states"
+            }
+          },
+          {
+            "key"             : "zip",
+            "type"            : "typeaheadWithScript",
+            "className"       : "grid-block small-4 medium-4 large-4 padding-left",
+            "templateOptions" : {
+              "label" : "Zipcode"
+            },
+            "data"            : {
+              "displayField"        : "name",
+              "userScript"          : "zippopotamus",
+              "resultsDisplayField" : "name"
+            }
           }
-        }
-      },
-      {
-        "key" : "state",
-        "type" : "select",
-        "className" : "grid-block small-4 medium-4 large-4",
-        "templateOptions" : {
-          "label" : "State"
-        },
-        "data" : {
-          "codeTable" : "US_states"
-        }
-      },
-      {
-        "key" : "zip",
-        "type" : "typeaheadWithScript",
-        "className" : "grid-block small-4 medium-4 large-4 padding-left",
-        "templateOptions" : {
-          "label" : "Zipcode"
-        },
-        "data" : {
-          "displayField" : "name",
-          "userScript" : "zippopotamus",
-          "resultsDisplayField" : "name"
-        }
+        ]
       }
     ]
   }
-]
+}

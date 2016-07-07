@@ -12,8 +12,9 @@
       });
 
 
-    beforeEach(inject(function (iscFormsApi, $httpBackend) {
+    beforeEach(inject(function (iscFormsApi, iscFormsModel, $httpBackend) {
       suite.api         = iscFormsApi;
+      suite.model       = iscFormsModel;
       suite.httpBackend = $httpBackend;
 
       mockFormResponses(suite.httpBackend);
@@ -93,18 +94,21 @@
         var formKey = 'intake';
 
         suite.api.getFormDefinition(formKey).then(function (response) {
+          var formDefinition = suite.model.unwrapFormDefinitionResponse( response );
+
           // Full forms are objects
-          expect(_.isObject(response)).toBe(true);
+          expect(_.isObject(formDefinition)).toBe(true);
           // with names
-          expect(response.name).toEqual('Sample Intake Form');
+          expect(formDefinition.name).toEqual('Sample Intake Form');
         });
         suite.httpBackend.flush();
 
         formKey = 'embeddableSubform';
         suite.api.getFormDefinition(formKey).then(function (response) {
-          expect(response).not.toBe('');
+          var formDefinition = suite.model.unwrapFormDefinitionResponse( response );
+
           // Embedded forms are arrays
-          expect(_.isArray(response)).toBe(true);
+          expect(_.isArray(formDefinition)).toBe(true);
         });
         suite.httpBackend.flush();
       });
