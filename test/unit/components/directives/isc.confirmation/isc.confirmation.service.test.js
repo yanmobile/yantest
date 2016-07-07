@@ -15,11 +15,14 @@
       } );
     } ) );
 
-    beforeEach( inject( function( $rootScope, $compile, iscConfirmationService ) {
+    beforeEach( inject( function( $rootScope, $compile, $timeout, iscConfirmationService ) {
       _.extend( suite, {
         $rootScope            : $rootScope,
         $scope                : $rootScope.$new(),
-        iscConfirmationService: iscConfirmationService
+        $timeout              : $timeout,
+        iscConfirmationService: iscConfirmationService,
+        onResolve             : _.noop,
+        onReject              : _.noop
       } );
     } ) );
 
@@ -38,7 +41,7 @@
         suite.iscConfirmationService.show();
         expect( suite.iscConfirmationService.options.title ).toBe( 'ISC_CONFIRM_DEFAULT_TITLE' );
 
-        suite.iscConfirmationServiceProvider.setOptions({title: "my custom title"});
+        suite.iscConfirmationServiceProvider.setOptions( { title: "my custom title" } );
         suite.iscConfirmationService.show();
         expect( suite.iscConfirmationService.options.title ).toBe( 'my custom title' );
       } );
@@ -88,8 +91,38 @@
           expect( suite.iscConfirmationService.options.title ).toBe( "Custom Title" );
         } );
 
+        describe( "suite.iscConfirmationService.resolve()", function() {
+          it( 'should resolve the promise created by show()', function() {
+            spyOn( suite, "onResolve" ).and.callThrough();
+            spyOn( suite, "onReject" ).and.callThrough();
+
+            suite.iscConfirmationService.show().then( suite.onResolve, suite.onReject );
+            suite.iscConfirmationService.resolve();
+            suite.$rootScope.$apply();
+
+            expect( suite.iscConfirmationService.isOpen ).toBe( false );
+            expect( suite.onResolve ).toHaveBeenCalled();
+            expect( suite.onReject ).not.toHaveBeenCalled();
+          } );
+        } );
+
+        describe( "suite.iscConfirmationService.reject()", function() {
+          it( 'should reject the promise created by show()', function() {
+            spyOn( suite, "onResolve" ).and.callThrough();
+            spyOn( suite, "onReject" ).and.callThrough();
+
+            suite.iscConfirmationService.show().then( suite.onResolve, suite.onReject );
+            suite.iscConfirmationService.reject();
+            suite.$rootScope.$apply();
+
+            expect( suite.iscConfirmationService.isOpen ).toBe( false );
+            expect( suite.onResolve ).not.toHaveBeenCalled();
+            expect( suite.onReject ).toHaveBeenCalled();
+          } );
+        } );
 
       } );
+
     } );
   } );
 })();
