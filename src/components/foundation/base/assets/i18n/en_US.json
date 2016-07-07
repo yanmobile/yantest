@@ -15,6 +15,7 @@
   "ISC_CONFIRM_BTN_CONFIRM"     : "OK",
   "ISC_CONFIRM_BTN_CANCEL"      : "Cancel",
   "ISC_NO_ITEMS"                : "No content available.",
+
   "COMMENTS"                    : "============ LOGIN ==============",
   "Login_Screen_Title"          : "Login",
   "Login_Username"              : "Username:",
@@ -24,10 +25,24 @@
   "Login_Forgot_Password"       : "Forgot Password",
   "Login_Organisation"          : "Select Organisation:",
   "Login_Button_Continue"       : "Continue",
+
   "COMMENTS"                    : "============ FORMS ==============",
   "Forms_Back_Button"           : "Back",
   "Forms_Cancel_Button"         : "Cancel",
   "Forms_Submit_Button"         : "Submit",
   "Forms_Save_Button"           : "Save",
-  "Forms_Collections_Add"       : "Add"
+  "Forms_Collections_Add"       : "Add",
+
+  "Forms_DateComponents_Day"    : "DD",
+  "Forms_DateComponents_Month"  : "MM",
+  "Forms_DateComponents_Year"   : "YYYY",
+
+  "Forms_Validation_Required"   : "{{FieldName}} is required",
+  "Forms_Validation_MinLength"  : "Minimum length is {{MinLength}}",
+  "Forms_Validation_MaxLength"  : "Maximum length is {{MaxLength}}",
+  "Forms_Validation_Email"      : "Invalid email address",
+
+  "COMMENTS"                    : "***************************************",
+  "COMMENTS"                    : "*************** CUSTOM ****************",
+  "COMMENTS"                    : "***************************************"
 }
