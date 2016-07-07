@@ -15,11 +15,10 @@
       } );
     } ) );
 
-    beforeEach( inject( function( $rootScope, $compile, $timeout, iscConfirmationService ) {
+    beforeEach( inject( function( $rootScope, $compile, iscConfirmationService ) {
       _.extend( suite, {
         $rootScope            : $rootScope,
         $scope                : $rootScope.$new(),
-        $timeout              : $timeout,
         iscConfirmationService: iscConfirmationService,
         onResolve             : _.noop,
         onReject              : _.noop
