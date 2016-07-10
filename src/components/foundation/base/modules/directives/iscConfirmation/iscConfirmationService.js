@@ -50,7 +50,9 @@
       var model = {
         isOpen : false,
         show   : show,
-        hide   : hide
+        hide   : hide,
+        resolve: resolve,
+        reject : reject
       };
 
       return model;
@@ -83,6 +85,23 @@
         model.isOpen = false;
       }
 
+      /**
+       * @memberOf iscConfirmationService
+       * @param data
+       */
+      function resolve(data) {
+        model.isOpen = false;
+        deferred.resolve(data || true);
+      }
+
+      /**
+       * @memberOf iscConfirmationService
+       * @param data
+       */
+      function reject(data) {
+        model.isOpen = false;
+        deferred.reject(data || true);
+      }
     }
 
     /**
