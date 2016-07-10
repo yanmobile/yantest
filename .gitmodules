@@ -1,0 +1,3 @@
+[submodule "src/hs-ui-modules"]
+	path = src/hs-ui-modules
+	url = https://github.com/intersystems/hs-ui-modules.git
