@@ -18,7 +18,8 @@ module.exports.app          = getAppConfig();
 //folder names inside of submodule, hs-ui-modules/src/modules, folder
 // src/hs-ui-modules/src/modules/timeline
 // src/hs-ui-modules/src/modules/inbox
-includeUiModules( ["timeline", "inbox"] );
+// includeUiModules( ["timeline", "inbox"] );
+includeUiModules( [] );
 
 function includeUiModules( uiModuleNames ) {
   _.forEach( uiModuleNames, injectModuleFiles );
