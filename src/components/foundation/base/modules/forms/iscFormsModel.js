@@ -1,4 +1,4 @@
-( function() {
+(function() {
   'use strict';
 
   /* @ngInject */
@@ -19,8 +19,8 @@
    * @returns {{getForms, getActiveForm, getActiveForms, setFormStatus, getFormDefinition, getValidationDefinition}}
    */
   function iscFormsModel( $q, $templateCache, $window,
-    iscHttpapi, // needed for user script closures
-    iscFormsCodeTableApi, iscFormsTemplateService, iscFormsApi ) {
+                          iscHttpapi, // needed for user script closures
+                          iscFormsCodeTableApi, iscFormsTemplateService, iscFormsApi ) {
     var _typeCache          = {};
     var _formsCache         = {};
     var _viewModeFormsCache = {};
@@ -44,13 +44,25 @@
     } );
 
     return {
-      getForms               : getForms,
-      getActiveForm          : getActiveForm,
-      getActiveForms         : getActiveForms,
-      setFormStatus          : setFormStatus,
-      getFormDefinition      : getFormDefinition,
-      getValidationDefinition: getValidationDefinition
+      getForms                    : getForms,
+      getActiveForm               : getActiveForm,
+      getActiveForms              : getActiveForms,
+      setFormStatus               : setFormStatus,
+      getFormDefinition           : getFormDefinition,
+      getValidationDefinition     : getValidationDefinition,
+      unwrapFormDefinitionResponse: unwrapFormDefinitionResponse
     };
+
+    /**
+     * @memberOf iscFormsModel
+     * @param response
+     * @returns {Object | Array}
+     */
+    function unwrapFormDefinitionResponse( response ) {
+      // Assumes the form def is in _Body.FormDefinition,
+      // but falls back to a root-level definition if not.
+      return _.get( response, '_Body.FormDefinition', response );
+    }
 
     /**
      * @memberOf iscFormsModel
@@ -231,7 +243,7 @@
         iscFormsApi.getFormDefinition( formKey, formVersion ).then( function( responseData ) {
           var primaryPromises   = [],
               secondaryPromises = [],
-              form              = responseData,
+              form              = unwrapFormDefinitionResponse( responseData ),
               subforms          = subformDefinitions || {};
 
           // Subform-only definitions are a bare array
@@ -249,9 +261,9 @@
             var scriptPromise = iscFormsApi.getUserScript( form.dataModelInit )
               .then( function( response ) {
                 var script         = parseScript( response );
-                form.dataModelInit = ( function( iscHttpapi ) {
+                form.dataModelInit = (function( iscHttpapi ) {
                   return script;
-                } )();
+                })();
                 return true;
               } );
             primaryPromises.push( scriptPromise );
@@ -374,9 +386,9 @@
                       getApi = script.api.get;
                   // Expose iscHttpapi to api getter function
                   if ( getApi ) {
-                    script.api.get = ( function( iscHttpapi ) {
+                    script.api.get = (function( iscHttpapi ) {
                       return getApi;
-                    } )();
+                    })();
                   }
                   _.set( field, 'data.userModel', script );
                   return true;
@@ -717,4 +729,4 @@
       return eval( script ); // jshint ignore:line
     }
   }
-} )();
+})();

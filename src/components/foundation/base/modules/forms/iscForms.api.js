@@ -70,7 +70,8 @@
 
     /**
      * @memberOf iscFormsApi
-     * @param formKey
+     * @param {String} formKey
+     * @param {=String} formVersion
      * @returns {*}
      */
     function getFormDefinition( formKey, formVersion ) {
