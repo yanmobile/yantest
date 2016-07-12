@@ -34,7 +34,7 @@
       } ) );
     }
 
-    describe(
+    xdescribe(
       'performance testing',
       function() {
         initNonProductionConfig();
