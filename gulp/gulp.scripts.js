@@ -86,5 +86,5 @@ function init(gulp, plugins, config, _, util) {
       .pipe(gulp.dest(plugins.path.join(config.app.dest.folder, 'js')));
   });
 
-  gulp.task('scripts', ["scripts:vendor", "scripts:common", "scripts:components", "scripts:app"]);
+  return gulp.task( 'scripts', ["scripts:vendor", "scripts:common", "scripts:components", "scripts:app"] );
 }
