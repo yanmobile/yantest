@@ -2,7 +2,7 @@
  * Created by douglasgoodman on 11/24/14.
  */
 
-( function() {
+(function() {
   'use strict';
 
   angular.module( 'iscNavContainer' )
@@ -11,6 +11,7 @@
       hideSecondaryNav      : 'iscHideSecondaryNav',
       goToBeforeLoginPage   : 'iscGoToBeforeLoginPage',
       modalBackgroundClicked: 'iscModalBackgroundClicked',
-      hideSideNavBar        : 'iscHideSideNavBar'
+      hideSideNavBar        : 'iscHideSideNavBar',
+      tabLoaded             : 'iscTabLoaded'
     } );
-} )();
+})();
