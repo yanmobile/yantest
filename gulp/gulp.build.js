@@ -8,8 +8,8 @@ module.exports = {
 };
 
 function init(gulp, plugins, config, _) {
-  gulp.task('build', ['clean', 'jshint'], function (done) {
-    var tasks = ['fonts', 'images', 'templates', 'scripts', 'i18n', 'mocks', 'sass', 'favicon', 'version'];
-    return plugins.seq(tasks, 'html', 'test', done);
+  return gulp.task('build', function (done) {
+    var tasks = ['fonts', 'images', 'scripts', 'templates', 'i18n', 'mocks', 'sass', 'favicon'];
+    plugins.seq('clean', tasks, 'html', done);
   });
 }
