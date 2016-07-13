@@ -10,9 +10,10 @@
 
   /* @ngInject */
   function iscAuthStatusService( $rootScope, $window,
-                                 storage, iscAuthStatus, iscSessionStorageHelper,
-                                 NAV_EVENTS, AUTH_EVENTS ) {
-    var thisTabHash;
+    storage, iscAuthStatus, iscSessionStorageHelper,
+    NAV_EVENTS, AUTH_EVENTS ) {
+    var thisTabHash,
+        authStatusCallFailed = false;
 
     angular.element( $window ).on( 'focus', authStatusFocus );
     angular.element( $window ).on( 'blur', authStatusBlur );
@@ -56,31 +57,46 @@
         var storageHash = storage.get( 'hashcode' );
 
         if ( storageHash && storageHash !== thisTabHash ) {
-          thisTabHash          = storageHash;
           var authStatusResult = callAuthStatus( config.authStatusUrl );
-          return callback( authStatusResult );
+          if (authStatusResult) {
+            thisTabHash          = storageHash;
+            return callback( authStatusResult );
+          }
         }
       }
     }
 
     function authStatusBlur() {
-      thisTabHash = storage.get( 'hashcode' );
+      // If the last call to auth/status failed, do not update the local hash.
+      // This will force auth/status to be retried when this window is focused again.
+      if ( !authStatusCallFailed ) {
+        thisTabHash = storage.get( 'hashcode' );
+      }
     }
 
     function callAuthStatus( url ) {
       var myRet = undefined;
 
       $.ajax( {
-        method: "GET",
-        url   : url,
-        async : false
-      } ).done( function( results ) {
-        if ( results.LoggedIn ) {
-          myRet = results;
-        }
+        method : "GET",
+        url    : url,
+        async  : false,
+        success: onSuccess,
+        error  : onError
       } );
 
       return myRet;
+
+      function onSuccess( results ) {
+        if ( results.LoggedIn ) {
+          myRet = results;
+        }
+        authStatusCallFailed = false;
+      }
+
+      function onError() {
+        authStatusCallFailed = true;
+      }
     }
 
   }

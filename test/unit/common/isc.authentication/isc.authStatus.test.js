@@ -59,16 +59,6 @@
       spyOn( suite.iscAuthStatusService, 'checkAuthStatus' ).and.callThrough();
       spyOn( suite.$rootScope, '$emit' ).and.callThrough();
 
-      // Mock the synchronous auth/status call
-      spyOn( $, 'ajax' ).and.callFake( function() {
-        return {
-          done: mockDone
-        };
-
-        function mockDone( callback ) {
-          callback( mockResults );
-        }
-      } );
     } ) );
 
     // -------------------------
@@ -88,6 +78,8 @@
 
     // -------------------------
     it( 'should call auth/status if the hashcode differs', function() {
+      mockAuthStatusCall( 'success' );
+
       suite.iscAuthStatus.configure( {
         authStatusUrl          : 'auth/status',
         authStatusFocusCallback: authStatusFocusCallback
@@ -98,7 +90,28 @@
 
       expect( suite.storage.get ).toHaveBeenCalledWith( 'hashcode' );
       expect( suite.$rootScope.$emit ).not.toHaveBeenCalled();
+
       expect( suite.authStatusFocusCallbackWasCalled ).toBe( true );
+
+      function authStatusFocusCallback() {
+        suite.authStatusFocusCallbackWasCalled = true;
+      }
+    } );
+
+    it( 'should do nothing else if the call to auth/status fails', function() {
+      mockAuthStatusCall( 'error' );
+
+      suite.iscAuthStatus.configure( {
+        authStatusUrl          : 'auth/status',
+        authStatusFocusCallback: authStatusFocusCallback
+      } );
+
+      suite.storage.set( 'hashcode', 'abcdefg' );
+      suite.$window.dispatchEvent( focus );
+
+      expect( suite.storage.get ).toHaveBeenCalledWith( 'hashcode' );
+      expect( suite.$rootScope.$emit ).not.toHaveBeenCalled();
+      expect( suite.authStatusFocusCallbackWasCalled ).toBeUndefined();
 
       function authStatusFocusCallback() {
         suite.authStatusFocusCallbackWasCalled = true;
@@ -107,18 +120,25 @@
 
     // -------------------------
     it( 'should call auth/status if the stored login response does not exist', function() {
+      mockAuthStatusCall( 'success' );
       suite.iscAuthStatusService.checkAuthStatus();
 
       expect( suite.$rootScope.$emit ).toHaveBeenCalledWith( suite.NAV_EVENTS.tabLoaded, mockResults );
     } );
 
   } );
-  
+
   function makeEvent( eventName ) {
     var event = document.createEvent( 'CustomEvent' );
     event.initEvent( eventName, true, false );
     return event;
   }
 
+  function mockAuthStatusCall( status ) {
+    // Mock the synchronous auth/status call
+    spyOn( $, 'ajax' ).and.callFake( function( config ) {
+      config[status]( mockResults );
+    } );
+  }
 })
 ();
