@@ -13,7 +13,8 @@
         $window,
         loginData,
         iscCustomConfigServiceProvider,
-        AUTH_EVENTS;
+        AUTH_EVENTS,
+        sessionStorageHelper;
 
     // setup devlog
     beforeEach( module( 'isc.core', function( devlogProvider ) {
@@ -29,17 +30,18 @@
       $provide.value( '$log', mock$log );
     } ) );
 
-    beforeEach( inject( function( $rootScope, $http, $httpBackend, $timeout, _$window_, _storage_, _AUTH_EVENTS_, iscSessionModel ) {
+    beforeEach( inject( function( $rootScope, $http, $httpBackend, $timeout, _$window_, _storage_, _AUTH_EVENTS_, iscSessionModel, iscSessionStorageHelper ) {
 
-      rootScope    = $rootScope;
-      scope        = $rootScope.$new();
-      sessionModel = iscSessionModel;
-      storage      = _storage_;
-      http         = $http;
-      httpBackend  = $httpBackend;
-      $window      = _$window_;
-      timeout      = $timeout;
-      AUTH_EVENTS  = _AUTH_EVENTS_;
+      rootScope            = $rootScope;
+      scope                = $rootScope.$new();
+      sessionModel         = iscSessionModel;
+      storage              = _storage_;
+      http                 = $http;
+      httpBackend          = $httpBackend;
+      $window              = _$window_;
+      timeout              = $timeout;
+      AUTH_EVENTS          = _AUTH_EVENTS_;
+      sessionStorageHelper = iscSessionStorageHelper;
 
       $window.sessionStorage = { // mocking sessionStorage
         getItem: function( key ) {
@@ -91,11 +93,12 @@
       it( 'should create the config when calling create, page refresh', function() {
         spyOn( rootScope, '$emit' );
         spyOn( storage, 'set' );
+        spyOn( sessionStorageHelper, 'setLoginResponse' );
         sessionModel.create( loginData, false );
         expect( sessionModel.getCredentials() ).toEqual( {} );
         expect( sessionModel.getCurrentUser() ).toEqual( loginData.UserData );
         expect( rootScope.$emit ).toHaveBeenCalledWith( AUTH_EVENTS.sessionResumedSuccess );
-        expect( storage.set ).toHaveBeenCalledWith( 'loginResponse', loginData );
+        expect( sessionStorageHelper.setLoginResponse ).toHaveBeenCalledWith( loginData );
         expect( storage.set ).not.toHaveBeenCalledWith( jasmine.objectContaining( 'jwt' ) );
       } );
 

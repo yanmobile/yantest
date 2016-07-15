@@ -2,7 +2,7 @@
  * Created by douglasgoodman on 11/18/14.
  */
 
-( function() {
+(function() {
   'use strict';
 
   angular.module( 'isc.authentication' )
@@ -15,13 +15,16 @@
    * @param $http
    * @param devlog
    * @param $rootScope
-   * @param $interval
+   * @param $window
    * @param storage
    * @param iscSessionStorageHelper
    * @param AUTH_EVENTS
+   * @param SESSION_STATUS
    * @returns {{create: create, destroy: destroy, initSessionTimeout: initSessionTimeout, stopSessionTimeout: stopSessionTimeout, resetSessionTimeout: resetSessionTimeout, getCredentials: getCredentials, getCurrentUser: getCurrentUser, getCurrentUserRole: getCurrentUserRole, isAuthenticated: isAuthenticated, getFullName: getFullName, configure: configure}}
    */
-  function iscSessionModel( $q, $http, devlog, $rootScope, $window, storage, iscSessionStorageHelper, AUTH_EVENTS ) {
+  function iscSessionModel( $q, $http, $rootScope, $window,
+                            devlog, storage, iscSessionStorageHelper,
+                            AUTH_EVENTS, SESSION_STATUS ) {
     var channel = devlog.channel( 'iscSessionModel' );
     channel.logFn( 'iscSessionModel' );
 
@@ -39,7 +42,7 @@
       maxAge     : 0,
       pingPromise: null,
       syncedOn   : null,
-      status     : 'active'
+      status     : SESSION_STATUS.active
     };
 
     var noResponseMaxAge = 60 * 5; // 5 minutes
@@ -65,22 +68,25 @@
     // ----------------------------
 
     var model = {
-      create             : create,
-      destroy            : destroy,
+      create : create,
+      destroy: destroy,
 
       initSessionTimeout : initSessionTimeout,
       stopSessionTimeout : stopSessionTimeout,
       resetSessionTimeout: resetSessionTimeout,
 
-      getCredentials     : getCredentials,
+      storeSessionTimeout             : storeSessionTimeout,
+      freshenSessionTimeoutFromStorage: freshenSessionTimeoutFromStorage,
 
-      getCurrentUser     : getCurrentUser,
-      getCurrentUserRole : getCurrentUserRole,
+      getCredentials: getCredentials,
 
-      isAuthenticated    : isAuthenticated,
-      getFullName        : getFullName,
+      getCurrentUser    : getCurrentUser,
+      getCurrentUserRole: getCurrentUserRole,
 
-      configure          : configure
+      isAuthenticated: isAuthenticated,
+      getFullName    : getFullName,
+
+      configure: configure
     };
 
     return model;
@@ -99,7 +105,7 @@
       // $log.debug( '...sessionData: ' + JSON.stringify( sessionData  ));
 
       // store the login response for page refreshes
-      storage.set( 'loginResponse', sessionData );
+      iscSessionStorageHelper.setLoginResponse( sessionData );
 
       var jwt = _.get( sessionData, 'jwt' );
       if ( jwt ) {
@@ -113,7 +119,7 @@
       // set the timeout
       sessionTimeout.maxAge = sessionData.SessionTimeout;
       var initialExpiresOn  = moment().add( sessionTimeout.maxAge, 'seconds' );
-      iscSessionStorageHelper.setSessionExpiresOn( initialExpiresOn );
+      setSessionExpiresOn( initialExpiresOn );
       initSessionTimeout();
 
       $rootScope.$emit( AUTH_EVENTS.sessionChange );
@@ -172,8 +178,8 @@
       function _pingSuccess( response ) {
         channel.logFn( '_pingSuccess' );
         var data                 = response.data;
-        sessionTimeout.status    = 'active';
-        sessionTimeout.syncedOn  = 'alive';
+        sessionTimeout.status    = SESSION_STATUS.active;
+        sessionTimeout.syncedOn  = SESSION_STATUS.alive;
         sessionTimeout.sessionId = _.get( data, sessionIdPath, sessionTimeout.sessionId );
         updateExpireAndWarnAt( _.get( data, expirationPath ) );
       }
@@ -182,8 +188,8 @@
       function _pingError() {
         channel.logFn( '_pingError' );
         // Flag this as no response received
-        if ( sessionTimeout.status === 'active' ) {
-          sessionTimeout.status = 'no response';
+        if ( sessionTimeout.status === SESSION_STATUS.active ) {
+          sessionTimeout.status = SESSION_STATUS.noResponse;
         }
       }
     }
@@ -196,10 +202,9 @@
       credentials = null;
 
       storage.remove( 'jwt' );
-      storage.remove( 'loginResponse' );
       $http.defaults.headers.common.jwt = null;
 
-      sessionTimeout.status = 'killed';
+      sessionTimeout.status = SESSION_STATUS.killed;
 
       // remove the user data so that the user
       // WONT stay logged in on page refresh
@@ -211,27 +216,47 @@
     }
 
     // --------------
-    /**
-     *
-     * @param timeoutCounter
-     */
-    function initSessionTimeout() {
-      channel.logFn( "initSessionTimeout" );
+    function storeSessionTimeout() {
+      var expiresAt = sessionTimeout.expireAt;
+      if ( expiresAt ) {
+        setSessionExpiresOn( sessionTimeout.expireAt );
+      }
+    }
 
-      var expiration = iscSessionStorageHelper.getSessionExpiresOn();
+    function freshenSessionTimeoutFromStorage() {
+      var expiration = getSessionExpiresOn();
 
       updateExpireAndWarnAt( expiration );
 
+      if ( isTimeWarned() ) {
+        return SESSION_STATUS.warn;
+      }
+      else if ( isTimeExpired() ) {
+        return SESSION_STATUS.expired;
+      }
+      else {
+        return SESSION_STATUS.active;
+      }
+    }
+
+    function initSessionTimeout() {
+      channel.logFn( "initSessionTimeout" );
+
+      freshenSessionTimeoutFromStorage();
       _logTimer();
       doSessionTimeout();
     }
 
     function updateExpireAndWarnAt( expiration ) {
       if ( expiration !== undefined ) {
-        var current = moment();
+        var expirationTime = moment( expiration ),
+            maxAge         = sessionTimeout.maxAge,
+            warnTimespan   = maxAge * ( 1 - warnThreshold );
 
-        // otherwise assume it to be the maxAge
-        sessionTimeout.warnAt   = current.add( ( expiration - current ) * ( 1 - warnThreshold ), 'ms' ).toDate();
+        // Because we may be updating this when the expiration has not been set to its max
+        // (if session is regenerated from another tab), we need to consider the expiration window
+        // as a sliding timespan, with warning occurring for a subset at the beginning of that timespan.
+        sessionTimeout.warnAt   = expirationTime.add( -maxAge, 's' ).add( warnTimespan, 's' ).toDate();
         sessionTimeout.expireAt = expiration;
       }
     }
@@ -239,6 +264,22 @@
     /**
      * private
      */
+    // Session expiration is in local storage so it can be accessed by multiple tabs
+    function getSessionExpiresOn() {
+      var max = storage.get( 'sessionExpiresOn' );
+      if ( max ) {
+        channel.debug( '...number: ' + max );
+        return new Date( max );
+      }
+      channel.debug( '...nope: ' );
+      return new Date();
+    }
+
+    function setSessionExpiresOn( val ) {
+      channel.debug( 'setSessionExpiresOn', val );
+      storage.set( 'sessionExpiresOn', val );
+    }
+
     function doSessionTimeout() {
       channel.logFn( "doSessionTimeout" );
       if ( timeoutInterval ) {
@@ -250,9 +291,9 @@
       timeoutInterval = $window.setInterval( function() {
         _logTimer();
 
-        if ( sessionTimeout.status === 'no response' ) {
+        if ( sessionTimeout.status === SESSION_STATUS.noResponse ) {
           if ( !sessionTimeout.pingPromise ) {
-            callPing( 'no response' );
+            callPing( SESSION_STATUS.noResponse );
           }
           _checkForNoResponseAtMax();
         }
@@ -273,13 +314,12 @@
 
       function _checkForWarnOrExpire( doPingFirst ) {
         channel.logFn( "_checkForWarnOrExpire" );
-        var now = new Date();
 
         // warn
-        if ( _.getRemainingTime( sessionTimeout.warnAt ) <= 0 && _.getRemainingTime( sessionTimeout.expireAt ) > 0 ) {
+        if ( isTimeWarned() ) {
           channel.debug( '...expireAt ', sessionTimeout.expireAt );
-          if ( doPingFirst && sessionTimeout.syncedOn !== 'warn' ) {
-            callPing( 'warn' ).then( function() {
+          if ( doPingFirst && sessionTimeout.syncedOn !== SESSION_STATUS.warn ) {
+            callPing( SESSION_STATUS.warn ).then( function() {
               _checkForWarnOrExpire( false );
             } );
           }
@@ -289,11 +329,11 @@
         }
 
         // expire/logout
-        else if ( sessionTimeout.expireAt - Date.now() < 0 ) {
+        else if ( isTimeExpired() ) {
           channel.debug( '...sessionTimeout.expireAt ' + sessionTimeout.expireAt );
 
-          if ( doPingFirst && sessionTimeout.syncedOn !== 'expire' ) {
-            callPing( 'expire' ).then( function() {
+          if ( doPingFirst && sessionTimeout.syncedOn !== SESSION_STATUS.expired ) {
+            callPing( SESSION_STATUS.expired ).then( function() {
               _checkForWarnOrExpire( false );
             } );
           }
@@ -310,6 +350,17 @@
         stopSessionTimeout();
       }
     }
+
+    function isTimeWarned() {
+      var warnAtTime   = _.getRemainingTime( sessionTimeout.warnAt ),
+          expireAtTime = _.getRemainingTime( sessionTimeout.expireAt );
+      return warnAtTime <= 0 && expireAtTime > 0;
+    }
+
+    function isTimeExpired() {
+      return sessionTimeout.expireAt - Date.now() < 0;
+    }
+
 
     /**
      *
@@ -328,12 +379,11 @@
     function resetSessionTimeout() {
       channel.logFn( "resetSessionTimeout" );
       // Do not reset timer if we are still waiting on a server response to a ping call
-      if ( sessionTimeout.syncedOn !== 'no response' ) {
-
+      if ( sessionTimeout.syncedOn !== SESSION_STATUS.noResponse ) {
         var expiration = moment().add( sessionTimeout.maxAge, 's' ).toDate();
 
         updateExpireAndWarnAt( expiration );
-        sessionTimeout.syncedOn = 'alive';
+        sessionTimeout.syncedOn = SESSION_STATUS.alive;
       }
     }
 
@@ -405,5 +455,5 @@
     }
   }// END CLASS
 
-} )();
+})();
 
