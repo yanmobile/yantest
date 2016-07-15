@@ -704,6 +704,9 @@
                     'name'       : viewModeType,
                     'extends'    : field.type,
                     'templateUrl': defaultViewTemplateUrl
+                  },
+                  {
+                    excludeFromWidgetLibrary : true
                   }
                 );
               }

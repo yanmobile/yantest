@@ -1,4 +1,4 @@
-( function() {
+(function() {
   'use strict';
 
   /**
@@ -56,7 +56,8 @@
 
     var config           = iscCustomConfigService.getConfig(),
         formsConfig      = _.get( config, 'forms', {} ),
-        updateOnExcluded = formsConfig.updateOnExcluded;
+        updateOnExcluded = formsConfig.updateOnExcluded,
+        widgetLibrary    = [];
 
     // YYYY-MM-DDThh:mm:ss.xxxZ   or
     // YYYY-MM-DD hh:mm:ss
@@ -71,7 +72,8 @@
       registerWrapper    : formlyConfig.setWrapper,
       registerBaseType   : registerBaseType,
       registerType       : registerType,
-      appendWrapper      : appendWrapper
+      appendWrapper      : appendWrapper,
+      getWidgetList      : getWidgetList
     };
 
     return service;
@@ -244,35 +246,35 @@
 
             // formId will not be available for unsubmitted, new forms
             // Ensure they are up to date when submitting queued annotations
-            formId   : parseInt( annotationsState.index )
+            formId: parseInt( annotationsState.index )
           };
 
           // Inject utilities so they are available in FDN expressions
           _.extend( $scope, {
             // Libraries
-            _                  : _,
-            moment             : moment,
+            _     : _,
+            moment: moment,
 
             // Utility properties
-            formModel          : formlyRootCtrl.model,
-            additionalModels   : formlyRootCtrl.additionalModels,
-            mode               : formlyRootCtrl.mode,
+            formModel       : formlyRootCtrl.model,
+            additionalModels: formlyRootCtrl.additionalModels,
+            mode            : formlyRootCtrl.mode,
 
             // Utility functions
             hasCustomValidator : hasCustomValidator,
             getDefaultViewValue: getDefaultViewValue,
 
             // HS validation
-            hsValidation       : hsValidation,
+            hsValidation: hsValidation,
 
             // Annotations state
-            annotations        : {
+            annotations       : {
               config : annotationsConfig,
               context: annotationsContext,
               data   : annotationsData
             },
-            allAnnotations     : formlyRootCtrl.options.formState._annotations.data,
-            annotationMetadata : annotationMetadata
+            allAnnotations    : formlyRootCtrl.options.formState._annotations.data,
+            annotationMetadata: annotationMetadata
           } );
 
           // Helper functions
@@ -367,11 +369,23 @@
      * @memberOf iscFormsTemplateService
      * @param type
      */
-    function registerType( type ) {
+    function registerType( type, options ) {
       // Ensure all templates extend the base type for functionality
       type.extends     = type.extends || baseType;
       type.overwriteOk = true;
+      options          = options || {};
+
+      if ( !options.excludeFromWidgetLibrary ) {
+        widgetLibrary.push( type.name );
+      }
       formlyConfig.setType( type );
+    }
+
+    /**
+     * @memberOf iscFormsTemplateService
+     */
+    function getWidgetList() {
+      return angular.copy( widgetLibrary );
     }
 
     /**
@@ -390,4 +404,4 @@
     }
 
   }
-} )();
+})();
