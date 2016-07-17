@@ -3,44 +3,6 @@
   //console.log( 'iscRadio Tests' );
 
   describe('iscLodash', function () {
-
-    describe('_.isPresent()', function () {
-      it('should return false if _.isNil(value)', function () {
-        expect(_.isPresent(null)).toBe(false);
-        expect(_.isPresent(undefined)).toBe(false);
-      });
-
-      it('should return true if value is not null and undefined', function () {
-        expect(_.isPresent(0)).toBe(true);
-        expect(_.isPresent(1)).toBe(true);
-        expect(_.isPresent("0")).toBe(true);
-        expect(_.isPresent("1")).toBe(true);
-        expect(_.isPresent(false)).toBe(true);
-        expect(_.isPresent(true)).toBe(true);
-        expect(_.isPresent({})).toBe(true);
-        expect(_.isPresent([])).toBe(true);
-        expect(_.isPresent(NaN)).toBe(true);
-      });
-    });
-    describe('_.isNotPresent()', function () {
-      it('should return true if _.isNil(value)', function () {
-        expect(_.isNotPresent(null)).toBe(true);
-        expect(_.isNotPresent(undefined)).toBe(true);
-      });
-
-      it('should return false if value is not null and undefined', function () {
-        expect(_.isNotPresent(0)).toBe(false);
-        expect(_.isNotPresent(1)).toBe(false);
-        expect(_.isNotPresent("0")).toBe(false);
-        expect(_.isNotPresent("1")).toBe(false);
-        expect(_.isNotPresent(true)).toBe(false);
-        expect(_.isNotPresent(false)).toBe(false);
-        expect(_.isNotPresent({})).toBe(false);
-        expect(_.isNotPresent([])).toBe(false);
-        expect(_.isNotPresent(NaN)).toBe(false);
-      });
-    });
-
     describe("_.getAge()", function () {
       it('should return 0 if today', function () {
         var today = moment().toString();
