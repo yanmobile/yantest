@@ -335,9 +335,12 @@
         // to be used for more complex components.
         $scope.options.extras.skipNgModelAttrsManipulator = true;
 
-        var key             = $scope.options.key;
-        $scope.displayField = _.get( $scope.options, 'data.displayField', '' );
+        var key             = $scope.options.key,
+            data = _.get($scope.options, 'data', {});
+
+        $scope.displayField = data.displayField || '';
         $scope.localModel   = {};
+        $scope.limitToList  = data.limitToList;
 
         $scope.onSelect = function( item ) {
           if ( _.isObject( item ) ) {

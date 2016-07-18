@@ -3,6 +3,7 @@
                        bypass-input-filter="true"
                        on-select="onSelect"
                        api-select="taBridgeCtrl.invokeSelect(model, options.data.userModel.onSelect)"
+                       limit-to-list="{{limitToList}}"
                        list-field="{{options.data.resultsDisplayField}}">
     <input ng-model="localModel.input"
            id="{{id}}"

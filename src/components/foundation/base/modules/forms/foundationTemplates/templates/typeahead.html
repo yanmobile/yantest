@@ -2,6 +2,7 @@
   <isc-forms-typeahead list-data="to.options"
                        on-select="onSelect"
                        minlength="3"
+                       limit-to-list="{{limitToList}}"
                        list-field="{{options.data.resultsDisplayField}}">
     <input ng-model="localModel.input"
            id="{{id}}"
