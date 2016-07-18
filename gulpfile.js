@@ -44,10 +44,16 @@ var util = {
   fixRelativePath: fixRelativePath
 };
 
-var appjson = getArg( "--appjson" );
-appjson     = fixRelativePath( appjson );
+var customAppJsonPath = getArg( "--appjson" );
+customAppJsonPath     = fixRelativePath( customAppJsonPath );
 
-var configs = readJson( (appjson || './gulp/config.app.js'), require( './gulp/config.framework.js' ) );
+//if user provided custom appconfig path in the commandline, use it. 
+//else use the default config.app path
+//if config files don't exist, it means this is running as standalone hs-core-ui project without hs-core-app-scaffold context
+//  then use framework's config.
+var defaultAppConfigPath = './gulp/config.app.js';
+var frameworkJsonConfig  = require( './gulp/config.framework.js' );
+var configs              = readJson( (customAppJsonPath || defaultAppConfigPath), frameworkJsonConfig );
 
 _.forEach( configs.app.edition, function( edition ) {
   var editionContent;
