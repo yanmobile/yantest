@@ -45,13 +45,13 @@
       self.controlHasFocus = false;
       self.showList        = true;
 
-      self.select = function( item ) {
+      self.select = function( item, omitInputFocus ) {
         callSelect( self.onSelect );
         callSelect( self.apiSelect );
 
         self.selectedItem = item;
         self.isDirty      = false;
-        if ( item ) {
+        if ( !omitInputFocus ) {
           self.focusInput();
         }
 
@@ -104,7 +104,7 @@
             ctrl.showList = false;
             // The user is clearing the field
             if ( !input.val() ) {
-              ctrl.select( undefined );
+              ctrl.select( undefined, true );
             }
             else {
               // If dirty, this means the input's contents were changed but not selected from the list
@@ -114,7 +114,7 @@
                   input.val( currVal );
                 }
                 else {
-                  ctrl.select( input.val() );
+                  ctrl.select( input.val(), true );
                 }
               }
             }
