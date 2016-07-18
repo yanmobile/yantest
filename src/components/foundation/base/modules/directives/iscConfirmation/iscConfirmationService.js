@@ -89,18 +89,18 @@
        * @memberOf iscConfirmationService
        * @param data
        */
-      function resolve(data) {
+      function resolve( data ) {
         model.isOpen = false;
-        deferred.resolve(data || true);
+        deferred.resolve( data || true );
       }
 
       /**
        * @memberOf iscConfirmationService
        * @param data
        */
-      function reject(data) {
+      function reject( data ) {
         model.isOpen = false;
-        deferred.reject(data || true);
+        deferred.reject( data || true );
       }
     }
 
