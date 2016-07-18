@@ -189,7 +189,8 @@
           },
           "data"            : {
             "displayField"        : "name",
-            "resultsDisplayField" : "name"
+            "resultsDisplayField" : "name",
+            "limitToList"         : true
           }
         },
         {
@@ -201,7 +202,8 @@
           "data"            : {
             "displayField"        : "name",
             "userScript"          : "typeaheadScript",
-            "resultsDisplayField" : "name"
+            "resultsDisplayField" : "name",
+            "limitToList"         : true
           }
         }
       ]
