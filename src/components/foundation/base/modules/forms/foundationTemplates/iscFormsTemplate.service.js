@@ -56,7 +56,8 @@
 
     var config           = iscCustomConfigService.getConfig(),
         formsConfig      = _.get( config, 'forms', {} ),
-        updateOnExcluded = formsConfig.updateOnExcluded;
+        updateOnExcluded = formsConfig.updateOnExcluded,
+        widgetLibrary    = [];
 
     // YYYY-MM-DDThh:mm:ss.xxxZ   or
     // YYYY-MM-DD hh:mm:ss
@@ -71,7 +72,8 @@
       registerWrapper    : formlyConfig.setWrapper,
       registerBaseType   : registerBaseType,
       registerType       : registerType,
-      appendWrapper      : appendWrapper
+      appendWrapper      : appendWrapper,
+      getWidgetList      : getWidgetList
     };
 
     return service;
@@ -367,11 +369,23 @@
      * @memberOf iscFormsTemplateService
      * @param type
      */
-    function registerType( type ) {
+    function registerType( type, options ) {
       // Ensure all templates extend the base type for functionality
       type.extends     = type.extends || baseType;
       type.overwriteOk = true;
+      options          = options || {};
+
+      if ( !options.excludeFromWidgetLibrary ) {
+        widgetLibrary.push( type.name );
+      }
       formlyConfig.setType( type );
+    }
+
+    /**
+     * @memberOf iscFormsTemplateService
+     */
+    function getWidgetList() {
+      return angular.copy( widgetLibrary );
     }
 
     /**

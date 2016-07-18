@@ -1,4 +1,4 @@
-( function() {
+(function() {
   'use strict';
 
   angular.module( 'isc.core' )
@@ -8,7 +8,7 @@
    * @ngdoc directive
    * @memberOf isc.core
    * @param $timeout
-   * @returns {{restrict: string, scope: {onSelect: string, apiSelect: string, listData: string, listField: string, limitTo: string, minlength: string, bypassInputFilter: string}, replace: boolean, transclude: boolean, link: link, controller: controller, controllerAs: string, bindToController: boolean, templateUrl: templateUrl}}
+   * @returns {{restrict: string, scope: {onSelect: string, apiSelect: string, listData: string, listField: string, limitToList: string, minlength: string, bypassInputFilter: string}, replace: boolean, transclude: boolean, link: link, controller: controller, controllerAs: string, bindToController: boolean, templateUrl: templateUrl}}
    */
   function iscFormsTypeahead( $timeout ) {
     var UP_ARROW_KEY_CODE   = 38;
@@ -22,7 +22,7 @@
         apiSelect        : '&',
         listData         : '=',
         listField        : '@',
-        limitTo          : '=',
+        limitToList      : '@', // if truthy, disallows values that are not selected from listData
         minlength        : '=',
         bypassInputFilter: '=' // if truthy, result typeahead list filter is bypassed;
         // useful for dynamic typeahead lists that are produced
@@ -45,13 +45,15 @@
       self.controlHasFocus = false;
       self.showList        = true;
 
-      self.select = function( item ) {
+      self.select = function( item, omitInputFocus ) {
         callSelect( self.onSelect );
         callSelect( self.apiSelect );
 
         self.selectedItem = item;
         self.isDirty      = false;
-        self.focusInput();
+        if ( !omitInputFocus ) {
+          self.focusInput();
+        }
 
         function callSelect( fn ) {
           var fnCall = fn();
@@ -102,13 +104,18 @@
             ctrl.showList = false;
             // The user is clearing the field
             if ( !input.val() ) {
-              ctrl.select( undefined );
+              ctrl.select( undefined, true );
             }
             else {
               // If dirty, this means the input's contents were changed but not selected from the list
               // If the input element has anything in it, reset it
               if ( ctrl.isDirty ) {
-                input.val( currVal );
+                if ( ctrl.limitToList ) {
+                  input.val( currVal );
+                }
+                else {
+                  ctrl.select( input.val(), true );
+                }
               }
             }
           }
@@ -172,4 +179,4 @@
     }
   }
 
-} )();
+})();

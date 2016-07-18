@@ -1,4 +1,4 @@
-(function() {
+( function() {
   'use strict';
 
   /* @ngInject */
@@ -261,9 +261,9 @@
             var scriptPromise = iscFormsApi.getUserScript( form.dataModelInit )
               .then( function( response ) {
                 var script         = parseScript( response );
-                form.dataModelInit = (function( iscHttpapi ) {
+                form.dataModelInit = ( function( iscHttpapi ) {
                   return script;
-                })();
+                } )();
                 return true;
               } );
             primaryPromises.push( scriptPromise );
@@ -386,9 +386,9 @@
                       getApi = script.api.get;
                   // Expose iscHttpapi to api getter function
                   if ( getApi ) {
-                    script.api.get = (function( iscHttpapi ) {
+                    script.api.get = ( function( iscHttpapi ) {
                       return getApi;
-                    })();
+                    } )();
                   }
                   _.set( field, 'data.userModel', script );
                   return true;
@@ -704,6 +704,9 @@
                     'name'       : viewModeType,
                     'extends'    : field.type,
                     'templateUrl': defaultViewTemplateUrl
+                  },
+                  {
+                    excludeFromWidgetLibrary : true
                   }
                 );
               }
@@ -729,4 +732,4 @@
       return eval( script ); // jshint ignore:line
     }
   }
-})();
+} )();

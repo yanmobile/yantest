@@ -318,9 +318,13 @@
       // This field will not be rendered in the DOM, but will listen for FORMS_EVENTS
       // This is useful for communication in embedded subforms
       iscFormsTemplateService.registerType( {
-        name       : 'embeddedFormListener',
-        templateUrl: 'forms/foundationTemplates/templates/embeddedFormListener.html'
-      } );
+          name       : 'embeddedFormListener',
+          templateUrl: 'forms/foundationTemplates/templates/embeddedFormListener.html'
+        },
+        {
+          excludeFromWidgetLibrary: true
+        }
+      );
 
       /*@ngInject*/
       function typeaheadController( $scope ) {
@@ -331,9 +335,16 @@
         // to be used for more complex components.
         $scope.options.extras.skipNgModelAttrsManipulator = true;
 
-        var key             = $scope.options.key;
-        $scope.displayField = _.get( $scope.options, 'data.displayField', '' );
-        $scope.localModel   = {};
+        var key  = $scope.options.key,
+            data = _.get( $scope.options, 'data', {} );
+
+        $scope.displayField   = data.displayField || '';
+        $scope.localModel     = {};
+        $scope.limitToList    = data.limitToList;
+        $scope.minInputLength = parseInt( data.minInputLength );
+        if ( _.isNaN( $scope.minInputLength ) ) {
+          $scope.minInputLength = 3;
+        }
 
         $scope.onSelect = function( item ) {
           if ( _.isObject( item ) ) {

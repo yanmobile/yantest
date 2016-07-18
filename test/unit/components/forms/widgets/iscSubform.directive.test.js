@@ -28,8 +28,8 @@
     );
 
     beforeEach( inject( function( $rootScope, $compile, $window, $httpBackend, $timeout,
-                                  formlyApiCheck, formlyConfig, keyCode,
-                                  iscFormDataApi, iscNotificationService, iscFormsValidationService ) {
+      formlyApiCheck, formlyConfig, keyCode,
+      iscFormDataApi, iscNotificationService, iscFormsValidationService ) {
       formlyConfig.disableWarnings   = true;
       formlyApiCheck.config.disabled = true;
 
@@ -80,7 +80,7 @@
 
         // Edit data in the default row for each component type
         testComponents();
-        
+
 
         function testCancel( subformName, isFullPage ) {
           var suite        = suiteSubform,
@@ -267,10 +267,11 @@
         }
 
         function testComponents() {
-          var suite       = suiteSubform,
-              subformName = 'form.components',
-              subform     = getControlByName( suite, subformName ).filter( '.subform' ),
-              formModel   = _.get( suite.controller.model, subformName );
+          var suite          = suiteSubform,
+              subformName    = 'form.components',
+              subform        = getControlByName( suite, subformName ).filter( '.subform' ),
+              formModel      = _.get( suite.controller.model, subformName ),
+              formDefinition = suiteInternal.controller.formDefinition.subforms.builtinComponents;
 
           testInput( 'templates.input.text' );
           testInput( 'templates.input.date' );
@@ -294,6 +295,11 @@
 
           testDateComponents( 'templates.dateComponents' );
           testDateComponents( 'templates.dateComponentsPartial', true );
+
+          function getFieldProperty( fieldKey, property ) {
+            var field = _.find( formDefinition, { key: fieldKey } ) || {};
+            return _.get( field, property );
+          }
 
           function testInput( controlName ) {
             var control = getControlByName( suite, controlName ),
@@ -409,7 +415,8 @@
             var control      = getControlByName( suite, controlName ).filter( 'input' ),
                 model        = _.get( formModel, controlName ),
                 modelDisplay = _.isObject( model ) ? model.name : model,
-                newText      = 'Typea';
+                newText      = 'Typea',
+                limitToList  = getFieldProperty( controlName, 'data.limitToList' );
 
             expect( control.length ).toBe( 1 );
             expect( control.val() ).toEqual( modelDisplay );
@@ -446,15 +453,23 @@
             expect( modelDisplay ).toEqual( itemDisplay );
             expect( control.val() ).toEqual( itemDisplay );
 
-            // Change the value in the control's input then leave the control;
-            // the model should not change.
+            // Change the value in the control's input then leave the control
             control.val( newText ).trigger( 'input' ).trigger( 'blur' );
             digest( suite );
 
             model        = _.get( formModel, controlName );
             modelDisplay = _.isObject( model ) ? model.name : model;
-            expect( modelDisplay ).toEqual( itemDisplay );
-            expect( control.val() ).toEqual( itemDisplay );
+            
+            // The model should not change if limitToList is truthy
+            if ( limitToList ) {
+              expect( modelDisplay ).toEqual( itemDisplay );
+              expect( control.val() ).toEqual( itemDisplay );
+            }
+            // If limitToList is falsy, then editing the input and blurring *should* update the model
+            else {
+              expect( modelDisplay ).toEqual( newText );
+              expect( control.val() ).toEqual( newText );
+            }
 
             // Clear the content and blur and the value should be cleared.
             control.val( '' ).trigger( 'input' ).trigger( 'blur' );
