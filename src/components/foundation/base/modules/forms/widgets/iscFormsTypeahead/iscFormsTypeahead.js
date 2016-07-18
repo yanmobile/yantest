@@ -114,7 +114,6 @@
                   input.val( currVal );
                 }
                 else {
-
                   ctrl.select( input.val() );
                 }
               }
