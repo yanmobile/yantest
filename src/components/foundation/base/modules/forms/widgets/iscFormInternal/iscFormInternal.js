@@ -61,6 +61,9 @@
         buttonConfig: {}
       }, self );
 
+      // Option for forcing any form-level settings for a particular form instance
+      _.merge(self.formDefinition.form, _.get(self.formConfig, 'forceFdn', {}));
+
       self.additionalModels = _.get( self.formConfig, 'additionalModels', {} );
 
       // Object to hold data and structure for temporary form validation

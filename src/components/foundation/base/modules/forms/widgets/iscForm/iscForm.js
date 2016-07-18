@@ -39,6 +39,11 @@
    *       processAnnotationQueue
    *     Default: none
    *
+   *   forceFdn
+   *     An object to use for overriding any form-level properties that would be delivered from the form
+   *     definition API call, such as annotations, autosave behavior, or page layout.
+   *     Default: none
+   *
    *   formDataApi
    *     The API to use when persisting data from this form. These properties may be defined:
    *       wrap  : The function to use to wrap the form data with metadata, before submitting it to the API.
