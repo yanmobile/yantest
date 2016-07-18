@@ -335,12 +335,16 @@
         // to be used for more complex components.
         $scope.options.extras.skipNgModelAttrsManipulator = true;
 
-        var key             = $scope.options.key,
-            data = _.get($scope.options, 'data', {});
+        var key  = $scope.options.key,
+            data = _.get( $scope.options, 'data', {} );
 
-        $scope.displayField = data.displayField || '';
-        $scope.localModel   = {};
-        $scope.limitToList  = data.limitToList;
+        $scope.displayField   = data.displayField || '';
+        $scope.localModel     = {};
+        $scope.limitToList    = data.limitToList;
+        $scope.minInputLength = parseInt( data.minInputLength );
+        if ( _.isNaN( $scope.minInputLength ) ) {
+          $scope.minInputLength = 3;
+        }
 
         $scope.onSelect = function( item ) {
           if ( _.isObject( item ) ) {
