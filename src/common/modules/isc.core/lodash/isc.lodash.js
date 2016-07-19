@@ -17,8 +17,6 @@
   //save the original _.get
 
   _.mixin( {
-    isPresent       : isPresent,
-    isNotPresent    : isNotPresent,
     getAge          : getAge,
     areSameDate     : areSameDate,
     nullifyObj      : nullifyObj,
@@ -29,18 +27,6 @@
     interpolate     : interpolate,
     getRemainingTime: getRemainingTime
   } );
-
-  // Present is defined by not undefined and not null.
-  function isPresent( obj ) {
-    console.warn( '[deprecated] _.isPresent(), use _.isNil() instead.' );
-    return !_.isNil( obj );
-  }
-
-  // Present is defined by not undefined and not null.
-  function isNotPresent( obj ) {
-    console.warn( '[deprecated] _.isNotPresent(), use !_.isNil() instead.' );
-    return _.isNil( obj );
-  }
 
   function getAge( dob, format ) {
     return moment().diff( moment( dob, format ), 'year' );

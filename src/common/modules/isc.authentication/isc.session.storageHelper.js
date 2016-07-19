@@ -33,9 +33,6 @@
       getConfig               : getConfig,
       setConfig               : setConfig,
 
-      getSessionExpiresOn     : getSessionExpiresOn,
-      setSessionExpiresOn     : setSessionExpiresOn,
-
       getShowTimedOutAlert    : getShowTimedOutAlert,
       setShowTimedOutAlert    : setShowTimedOutAlert,
 
@@ -69,6 +66,7 @@
       setSessionStorageValue( 'loginResponse', val );
     }
 
+
     // ----------------------------
     function getConfig() {
       return getValFromSessionStorage( 'config', {} );
@@ -76,22 +74,6 @@
 
     function setConfig( val ) {
       setSessionStorageValue( 'config', val );
-    }
-
-    // ----------------------------
-    function getSessionExpiresOn() {
-      var max = getValFromSessionStorage( 'sessionExpiresOn', null );
-      if ( max ) {
-        log.debug( '...number: ' + max );
-        return new Date( max );
-      }
-      log.debug( '...nope: ' );
-      return new Date();
-    }
-
-    function setSessionExpiresOn( val ) {
-      log.debug( 'iscSessionStorageHelper.setSessionExpiresOn:', val );
-      setSessionStorageValue( 'sessionExpiresOn', val );
     }
 
     // ----------------------------
