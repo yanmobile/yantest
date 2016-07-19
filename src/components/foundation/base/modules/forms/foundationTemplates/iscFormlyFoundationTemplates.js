@@ -1,4 +1,4 @@
-( function() {
+(function() {
   'use strict';
 
   /** Templates adapted from angular-formly-templates-foundation 1.0.0-beta.1
@@ -363,19 +363,26 @@
               stateInit = data.stateInit;
 
           // Eval the initial state based on the data property
-          var initialValue = $scope.$eval( stateInit, {
-            model: $scope.formModel
-          } );
+          var initialValue = $scope.$eval( stateInit, $scope );
 
+          // Need to use [] accessors when setting the formState below.
+          // Because we are including the template from another widget,
+          // when its ngModel is updated it will use a dotted property name
+          // rather than nested implicit objects.
+          
           // Persist it in formState under the stateKey
-          _.set( $scope.formState, [stateKey, key].join( '.' ), initialValue );
+          var stateModel = $scope.formState[stateKey];
+          if ( _.isEmpty( stateModel ) ) {
+            stateModel = $scope.formState[stateKey] = {};
+          }
+          stateModel[key] = initialValue;
 
           // The linked template will look up $scope.options.key in its $scope.model.
           // We will shadow its $scope.model with this $scope.localModel.
-          $scope.localModel = _.get( $scope.formState, stateKey );
+          $scope.localModel = stateModel;
 
           // This widget requires a data.templateType property to specify the base
-          // widget type that is to be rendered as control-flow-only.
+          // widget type that is to be rendered as control-flow only.
           var templateType = data.templateType;
           if ( templateType ) {
             var type        = iscFormsTemplateService.getRegisteredType( templateType ),
@@ -385,8 +392,8 @@
             // If the base templateType is based on a string template instead of a templateUrl,
             // cache that template string so it can be referenced.
             if ( template && !templateUrl ) {
-              templateUrl = [stateKey, templateType + '.html'].join('/');
-              $templateCache.put(templateUrl, template);
+              templateUrl = [stateKey, templateType + '.html'].join( '/' );
+              $templateCache.put( templateUrl, template );
             }
 
             if ( templateUrl ) {
@@ -436,4 +443,4 @@
     }
 
   }
-} )();
+})();

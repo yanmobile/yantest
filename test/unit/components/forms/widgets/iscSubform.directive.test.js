@@ -271,6 +271,7 @@
               subformName    = 'form.components',
               subform        = getControlByName( suite, subformName ).filter( '.subform' ),
               formModel      = _.get( suite.controller.model, subformName ),
+              formState      = suite.controller.options.formState,
               formDefinition = suiteInternal.controller.formDefinition.subforms.builtinComponents;
 
           testInput( 'templates.input.text' );
@@ -295,6 +296,8 @@
 
           testDateComponents( 'templates.dateComponents' );
           testDateComponents( 'templates.dateComponentsPartial', true );
+
+          testControlFlowOnly( 'templates.controlFlowOnly' );
 
           function getFieldProperty( fieldKey, property ) {
             var field = _.find( formDefinition, { key: fieldKey } ) || {};
@@ -459,7 +462,7 @@
 
             model        = _.get( formModel, controlName );
             modelDisplay = _.isObject( model ) ? model.name : model;
-            
+
             // The model should not change if limitToList is truthy
             if ( limitToList ) {
               expect( modelDisplay ).toEqual( itemDisplay );
@@ -631,6 +634,34 @@
                 } );
                 return this;
               };
+            }
+          }
+
+          function testControlFlowOnly( controlName ) {
+            var control     = getControlByName( suite, controlName ).filter( 'input[type="radio"]' ),
+                lastControl = control.last(),
+                stateKey    = '_controlFlowOnly',
+                localState  = _.get( formState, stateKey );
+
+            // Mock form has two radio options
+            expect( control.length ).toBe( 2 );
+
+            // Expect the state init expression to see the data in templates.input.text
+            expect( getFormStateValue() ).toEqual( 'opt 1' );
+            expect( getModelValue() ).toBeUndefined();
+
+            lastControl.click();
+            digest( suite );
+
+            expect( getFormStateValue() ).toEqual( 'opt 2' );
+            expect( getModelValue() ).toBeUndefined();
+
+            function getFormStateValue() {
+              return _.get( localState, controlName );
+            }
+
+            function getModelValue() {
+              return _.get( formModel, controlName );
             }
           }
         }
