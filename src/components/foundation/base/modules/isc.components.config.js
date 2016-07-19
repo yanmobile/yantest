@@ -52,7 +52,8 @@
         'forms': {
           'additionalModels': false,
           'annotations'     : false,
-          'formData'        : false
+          'formData'        : false,
+          'formState'       : false
         }
       },
       'formats'        : {

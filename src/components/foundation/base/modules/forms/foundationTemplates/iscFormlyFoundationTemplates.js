@@ -326,6 +326,76 @@
         }
       );
 
+      // Control-flow-only widget
+      // Useful for UI widgets that are needed to have an effect on control flow,
+      // but whose data models should not be persisted in the form's data model.
+      //
+      // The template type used for the widget is data.controlFlowOnly.templateType;
+      // its initial state may be specified with an expression in data.controlFlowOnly.stateInit.
+      //
+      // Sample usage in FDN:
+      // {
+      //   "key"            : "chooseBranch",
+      //   "type"           : "controlFlowOnly",
+      //   "templateOptions": {
+      //     "label"  : "This field is for control flow only",
+      //     "options": [
+      //       "opt 1",
+      //       "opt 2"
+      //     ]
+      //   },
+      //   "data"           : {
+      //     "controlFlowOnly" : {
+      //       "templateType": "radio",
+      //       "stateInit"   : "model.someProperty ? 'opt 1' : 'opt 2'"
+      //     }
+      //   }
+      // }
+
+      iscFormsTemplateService.registerType( {
+        name       : 'controlFlowOnly',
+        templateUrl: 'forms/foundationTemplates/templates/controlFlowOnly.html',
+        /* @ngInject */
+        controller : function( $scope, $templateCache ) {
+          var stateKey  = '_controlFlowOnly',
+              key       = $scope.options.key,
+              data      = _.get( $scope.options, 'data.controlFlowOnly', {} ),
+              stateInit = data.stateInit;
+
+          // Eval the initial state based on the data property
+          var initialValue = $scope.$eval( stateInit, {
+            model: $scope.formModel
+          } );
+
+          // Persist it in formState under the stateKey
+          _.set( $scope.formState, [stateKey, key].join( '.' ), initialValue );
+
+          // The linked template will look up $scope.options.key in its $scope.model.
+          // We will shadow its $scope.model with this $scope.localModel.
+          $scope.localModel = _.get( $scope.formState, stateKey );
+
+          // This widget requires a data.templateType property to specify the base
+          // widget type that is to be rendered as control-flow-only.
+          var templateType = data.templateType;
+          if ( templateType ) {
+            var type        = iscFormsTemplateService.getRegisteredType( templateType ),
+                template    = _.get( type, 'template' ),
+                templateUrl = _.get( type, 'templateUrl' );
+
+            // If the base templateType is based on a string template instead of a templateUrl,
+            // cache that template string so it can be referenced.
+            if ( template && !templateUrl ) {
+              templateUrl = [stateKey, templateType + '.html'].join('/');
+              $templateCache.put(templateUrl, template);
+            }
+
+            if ( templateUrl ) {
+              $scope.templateUrl = templateUrl;
+            }
+          }
+        }
+      } );
+
       /*@ngInject*/
       function typeaheadController( $scope ) {
         // When using a template that has an ng-model attribute which is not part of the form model

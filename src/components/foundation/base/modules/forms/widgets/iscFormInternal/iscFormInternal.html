@@ -58,5 +58,17 @@
         </div>
       </div>
     </div>
+
+    <div ng-if="::formInternalCtrl.debugDisplay.formState">
+      <hr/>
+
+      <div class="grid-block">
+        <div class="grid-content">
+          <h4>Form State (debugging display only)</h4>
+          <pre>{{formInternalCtrl.options.formState | json}}</pre>
+        </div>
+      </div>
+    </div>
+
   </div>
 </form>
