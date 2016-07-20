@@ -256,6 +256,9 @@ var sampleIntake = {
         {
           "aField": "SubformPage: some data"
         }
+      ],
+      "PrimitiveCollection" : [
+        "1"
       ]
     }
   }

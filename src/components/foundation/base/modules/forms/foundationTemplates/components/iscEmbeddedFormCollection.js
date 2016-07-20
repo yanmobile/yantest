@@ -172,7 +172,6 @@
 
           onCollectionModified();
         }
-        // TODO - show message if invalid? (iscFormModel.validate will touch each control during validation)
       };
 
       self.removeForm = removeForm;
@@ -285,6 +284,7 @@
               return item[PRIMITIVE_KEY];
             } )
           );
+          self.ngModelCtrl.$commitViewValue();
         }
         else {
           self.ngModelCtrl.$setViewValue( self.collectionModel );
@@ -415,7 +415,7 @@
         var model = ngModelCtrl.$modelValue || [];
         if ( scope.efCollectionCtrl.isPrimitive ) {
           scope.efCollectionCtrl.collectionModel = _.map( model, function( value ) {
-            var primitiveWrapper = {};
+            var primitiveWrapper            = {};
             primitiveWrapper[PRIMITIVE_KEY] = value;
             return primitiveWrapper;
           } );
