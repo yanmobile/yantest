@@ -1,4 +1,4 @@
-( function() {
+(function() {
   'use strict';
 
   // ----------------------------
@@ -24,12 +24,21 @@
    */
   /* @ngInject */
   function iscEmbeddedFormCollection( $filter, $timeout, FoundationApi, iscCustomConfigService, FORMS_EVENTS,
-                                      iscFormsTemplateService, iscFormsValidationService,
-                                      iscScrollContainerService ) {//jshint ignore:line
+    iscFormsTemplateService, iscFormsValidationService,
+    iscScrollContainerService ) {//jshint ignore:line
 
     // ----------------------------
     // vars
     // ----------------------------
+    var PRIMITIVE_KEY = '_primitiveValue';
+
+    var PRIMITIVE_OBJECT = {
+      key            : PRIMITIVE_KEY,
+      type           : 'input',
+      templateOptions: {
+        label: 'Value'
+      }
+    };
 
     // ----------------------------
     // class factory
@@ -72,6 +81,9 @@
 
       self.editAs = editAs;
 
+      // Track whether this is a collection of primitives or objects
+      self.isPrimitive = opts.type === 'primitiveCollection' || opts.extends === 'primitiveCollection';
+
       // Inherit formState for subform
       self.subformOptions = {
         formState: _.extend( {}, self.formState )
@@ -103,8 +115,15 @@
       self.label = _.get( opts, 'data.embeddedLabel', templateOptions.label );
 
       // Flatten field groups down for table header and cell iteration
-      var type    = _.get( opts, 'data.embeddedType' );
-      self.fields = angular.merge( {}, subforms[type] );
+      var embeddedType = _.get( opts, 'data.embeddedType' );
+      if ( self.isPrimitive ) {
+        self.fields = {
+          '0': PRIMITIVE_OBJECT
+        };
+      }
+      else {
+        self.fields = angular.merge( {}, subforms[embeddedType] );
+      }
       mergeBuiltInTemplates( self.fields );
 
       createTableFields();
@@ -136,7 +155,7 @@
       self.saveForm = function() {
         self.subformOptions.formState._validation.$submitted = true;
 
-        var isSubformValid = iscFormsValidationService.validateForm( self.subform.form ).isValid;
+        var isSubformValid = self.isPrimitive || iscFormsValidationService.validateForm( self.subform.form ).isValid;
 
         // If this subform is valid, save the data and return
         if ( isSubformValid ) {
@@ -260,7 +279,16 @@
       function onCollectionModified() {
         self.subformOptions.formState._validation.$submitted = false;
 
-        self.ngModelCtrl.$setViewValue( self.collectionModel );
+        if ( self.isPrimitive ) {
+          self.ngModelCtrl.$setViewValue(
+            _.map( self.collectionModel, function( item ) {
+              return item[PRIMITIVE_KEY];
+            } )
+          );
+        }
+        else {
+          self.ngModelCtrl.$setViewValue( self.collectionModel );
+        }
         self.ngModelCtrl.$setTouched();
         self.ngModelCtrl.$validate();
       }
@@ -384,10 +412,20 @@
 
       // Initialize model value for collection rows in $render
       ngModelCtrl.$render = function() {
-        scope.efCollectionCtrl.collectionModel = ngModelCtrl.$modelValue || [];
+        var model = ngModelCtrl.$modelValue || [];
+        if ( scope.efCollectionCtrl.isPrimitive ) {
+          scope.efCollectionCtrl.collectionModel = _.map( model, function( value ) {
+            var primitiveWrapper = {};
+            primitiveWrapper[PRIMITIVE_KEY] = value;
+            return primitiveWrapper;
+          } );
+        }
+        else {
+          scope.efCollectionCtrl.collectionModel = model;
+        }
       };
     }
 
   }//END CLASS
 
-} )();
+})();
