@@ -36,7 +36,7 @@
       key            : PRIMITIVE_KEY,
       type           : 'input',
       templateOptions: {
-        label: 'Value'
+        label: 'Forms_Collections_Primitive_Label'
       }
     };
 

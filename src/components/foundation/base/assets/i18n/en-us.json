@@ -42,6 +42,8 @@
   "Forms_Validation_MaxLength"  : "Maximum length is {{MaxLength}}",
   "Forms_Validation_Email"      : "Invalid email address",
 
+  "Forms_Collections_Primitive_Label" : "Value",
+
   "COMMENTS"                    : "***************************************",
   "COMMENTS"                    : "*************** CUSTOM ****************",
   "COMMENTS"                    : "***************************************"
