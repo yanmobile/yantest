@@ -1,4 +1,4 @@
-( function() {
+(function() {
   'use strict';
 
   /** Templates adapted from angular-formly-templates-foundation 1.0.0-beta.1
@@ -326,6 +326,64 @@
         }
       );
 
+      // Control-flow-only widget
+      // Useful for UI widgets that are needed to have an effect on control flow,
+      // but whose data models should not be persisted in the form's data model.
+      //
+      // The template type used for the widget is data.controlFlowOnly.templateType;
+      // its initial state may be specified with an expression in data.controlFlowOnly.stateInit.
+      //
+      // Sample usage in FDN:
+      // {
+      //   "key"            : "chooseBranch",
+      //   "type"           : "controlFlowOnly",
+      //   "templateOptions": {
+      //     "label"  : "This field is for control flow only",
+      //     "options": [
+      //       "opt 1",
+      //       "opt 2"
+      //     ]
+      //   },
+      //   "data"           : {
+      //     "controlFlowOnly" : {
+      //       "templateType": "radio",
+      //       "stateInit"   : "model.someProperty ? 'opt 1' : 'opt 2'"
+      //     }
+      //   }
+      // }
+
+      iscFormsTemplateService.registerType( {
+        name       : 'controlFlowOnly',
+        templateUrl: 'forms/foundationTemplates/templates/controlFlowOnly.html',
+        /* @ngInject */
+        controller : function( $scope ) {
+          var stateKey  = '_controlFlowOnly',
+              key       = $scope.options.key,
+              data      = _.get( $scope.options, 'data.controlFlowOnly', {} ),
+              stateInit = data.stateInit;
+
+          // Eval the initial state based on the data property
+          var initialValue = $scope.$eval( stateInit, $scope );
+
+          // Persist it in formState under the stateKey
+          var stateModel = _.get( $scope.formState, stateKey );
+          if ( _.isEmpty( stateModel ) ) {
+            _.set( $scope.formState, stateKey, {} );
+            stateModel = _.get( $scope.formState, stateKey );
+          }
+          _.set( stateModel, key, initialValue );
+
+          // We will shadow its $scope.model with this $scope.localModel.
+          $scope.localModel   = stateModel;
+          $scope.localOptions = _.merge( {}, $scope.options, {
+            type: data.templateType,
+            data: {
+              _originalModel : $scope.model
+            }
+          } );
+        }
+      } );
+
       /*@ngInject*/
       function typeaheadController( $scope ) {
         // When using a template that has an ng-model attribute which is not part of the form model
@@ -366,4 +424,4 @@
     }
 
   }
-} )();
+})();
