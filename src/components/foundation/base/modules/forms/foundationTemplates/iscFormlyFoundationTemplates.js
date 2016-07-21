@@ -356,7 +356,7 @@
         name       : 'controlFlowOnly',
         templateUrl: 'forms/foundationTemplates/templates/controlFlowOnly.html',
         /* @ngInject */
-        controller : function( $scope, $templateCache ) {
+        controller : function( $scope ) {
           var stateKey  = '_controlFlowOnly',
               key       = $scope.options.key,
               data      = _.get( $scope.options, 'data.controlFlowOnly', {} ),
@@ -365,41 +365,19 @@
           // Eval the initial state based on the data property
           var initialValue = $scope.$eval( stateInit, $scope );
 
-          // Need to use [] accessors when setting the formState below.
-          // Because we are including the template from another widget,
-          // when its ngModel is updated it will use a dotted property name
-          // rather than nested implicit objects.
-          
           // Persist it in formState under the stateKey
-          var stateModel = $scope.formState[stateKey];
+          var stateModel = _.get( $scope.formState, stateKey );
           if ( _.isEmpty( stateModel ) ) {
-            stateModel = $scope.formState[stateKey] = {};
+            _.set( $scope.formState, stateKey, {} );
+            stateModel = _.get( $scope.formState, stateKey );
           }
-          stateModel[key] = initialValue;
+          _.set( stateModel, key, initialValue );
 
-          // The linked template will look up $scope.options.key in its $scope.model.
           // We will shadow its $scope.model with this $scope.localModel.
-          $scope.localModel = stateModel;
-
-          // This widget requires a data.templateType property to specify the base
-          // widget type that is to be rendered as control-flow only.
-          var templateType = data.templateType;
-          if ( templateType ) {
-            var type        = iscFormsTemplateService.getRegisteredType( templateType ),
-                template    = _.get( type, 'template' ),
-                templateUrl = _.get( type, 'templateUrl' );
-
-            // If the base templateType is based on a string template instead of a templateUrl,
-            // cache that template string so it can be referenced.
-            if ( template && !templateUrl ) {
-              templateUrl = [stateKey, templateType + '.html'].join( '/' );
-              $templateCache.put( templateUrl, template );
-            }
-
-            if ( templateUrl ) {
-              $scope.templateUrl = templateUrl;
-            }
-          }
+          $scope.localModel   = stateModel;
+          $scope.localOptions = _.merge( {}, $scope.options, {
+            type: data.templateType
+          } );
         }
       } );
 

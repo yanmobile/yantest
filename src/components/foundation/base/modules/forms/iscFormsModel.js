@@ -1,4 +1,4 @@
-( function() {
+(function() {
   'use strict';
 
   /* @ngInject */
@@ -18,9 +18,9 @@
    * @param iscFormsApi
    * @returns {{getForms, getActiveForm, getActiveForms, setFormStatus, getFormDefinition, getValidationDefinition}}
    */
-  function iscFormsModel( $q, $templateCache, $window,
-                          iscHttpapi, // needed for user script closures
-                          iscFormsCodeTableApi, iscFormsTemplateService, iscFormsApi ) {
+  function iscFormsModel( $q, $templateCache, $window, $filter,
+    iscHttpapi, // needed for user script closures
+    iscFormsCodeTableApi, iscFormsTemplateService, iscFormsApi ) {
     var _typeCache          = {};
     var _formsCache         = {};
     var _viewModeFormsCache = {};
@@ -261,9 +261,9 @@
             var scriptPromise = iscFormsApi.getUserScript( form.dataModelInit )
               .then( function( response ) {
                 var script         = parseScript( response );
-                form.dataModelInit = ( function( iscHttpapi ) {
+                form.dataModelInit = (function( iscHttpapi ) {
                   return script;
-                } )();
+                })();
                 return true;
               } );
             primaryPromises.push( scriptPromise );
@@ -346,15 +346,11 @@
                   _processUserScript( field, data.userScript );
                 }
 
-                // Create a translated expression property for each label
+                // Translate the label if no label expression has been set
                 var expLabel = expProps['templateOptions.label'];
                 if ( label && !expLabel ) {
-                  expLabel = expProps['templateOptions.label'] = '"' + label + '"';
+                  _.set( field, 'templateOptions.label', $filter( 'translate' )( label ) );
                 }
-                if ( expLabel && !_.isFunction( expLabel ) ) {
-                  expProps['templateOptions.label'] += ' | translate';
-                }
-                _.set( field, 'expressionProperties', expProps );
 
                 // If this field uses a code table, look it up and push it into the field's options
                 if ( data.codeTable ) {
@@ -386,9 +382,9 @@
                       getApi = script.api.get;
                   // Expose iscHttpapi to api getter function
                   if ( getApi ) {
-                    script.api.get = ( function( iscHttpapi ) {
+                    script.api.get = (function( iscHttpapi ) {
                       return getApi;
-                    } )();
+                    })();
                   }
                   _.set( field, 'data.userModel', script );
                   return true;
@@ -706,7 +702,7 @@
                     'templateUrl': defaultViewTemplateUrl
                   },
                   {
-                    excludeFromWidgetLibrary : true
+                    excludeFromWidgetLibrary: true
                   }
                 );
               }
@@ -732,4 +728,4 @@
       return eval( script ); // jshint ignore:line
     }
   }
-} )();
+})();
