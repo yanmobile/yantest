@@ -1,4 +1,4 @@
-( function() {
+(function() {
   'use strict';
 
   /**
@@ -44,13 +44,13 @@
       if ( field.fieldGroup ) {
         return flattenFields( field.fieldGroup, annotationState );
       }
-      else if ( !_.startsWith( field.type, 'embeddedForm' ) ) {
+      else if ( !_.startsWith( field.type, 'embeddedForm' ) && !_.get( field, 'data.hideInTable' ) ) {
         return [].concat(
           angular.extend(
             {
-              key           : field.key,
-              label         : field.templateOptions.label,
-              model         : field.key + (
+              key           : _.get( field, 'key', '' ),
+              label         : _.get( field, 'data.tableHeaderLabel' ) || _.get( field, 'templateOptions.label', '' ),
+              model         : _.get( field, 'key', '' ) + (
                 // For data stored as complex objects, get the list field property
                 doesFieldStoreObject( field ) ?
                   ( '.' + _.get( field, 'data.displayField', 'name' ) )
@@ -131,4 +131,4 @@
 
   }
 
-} )();
+})();
