@@ -376,7 +376,10 @@
           // We will shadow its $scope.model with this $scope.localModel.
           $scope.localModel   = stateModel;
           $scope.localOptions = _.merge( {}, $scope.options, {
-            type: data.templateType
+            type: data.templateType,
+            data: {
+              _originalModel : $scope.model
+            }
           } );
         }
       } );
