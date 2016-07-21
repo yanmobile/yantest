@@ -68,7 +68,7 @@
           ]
         },
         {
-          "className"  : "EmbeddedFormCollections-exercisingcomplex-subform",
+          "className"  : "EmbeddedFormCollections-exercising-complex-subform",
           "fieldGroup" : [
             {
               "key"             : "sampleEmbeddedSubform",
@@ -111,6 +111,18 @@
                 "collections"  : {
                   "editAs" : "inline"
                 }
+              }
+            }
+          ]
+        },
+        {
+          "className"  : "EmbeddedFormCollections-exercising-primitive-collections",
+          "fieldGroup" : [
+            {
+              "key"             : "test.PrimitiveCollection",
+              "type"            : "primitiveCollection",
+              "templateOptions" : {
+                "label" : "Testing for primitive values in a collection"
               }
             }
           ]

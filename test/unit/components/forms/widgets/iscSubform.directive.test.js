@@ -3,6 +3,8 @@
 
   //--------------------
   describe( 'iscSubform', function() {
+    var PRIMITIVE_KEY = '_primitiveValue';
+
     var suiteForm,
         suiteInternal,
         suiteSubform;
@@ -59,30 +61,34 @@
       //--------------------
       it( 'should allow entering of data in a subform', function() {
         // Open a subform of each editAs type, enter a field, and click cancel
-        testCancel( 'test.SubformPage', true );
-        testCancel( 'test.SubformInline' );
-        testCancel( 'test.SubformModal' );
+        testCancel( 'test.SubformPage', { isFullPage: true } );
+        testCancel( 'test.SubformInline', {} );
+        testCancel( 'test.SubformModal', {} );
+        testCancel( 'test.PrimitiveCollection', { isPrimitive: true } );
 
         // Open a subform of each editAs type, enter a field, save the subform
-        testAdd( 'test.SubformPage', true );
-        testAdd( 'test.SubformInline' );
-        testAdd( 'test.SubformModal' );
+        testAdd( 'test.SubformPage', { isFullPage: true } );
+        testAdd( 'test.SubformInline', {} );
+        testAdd( 'test.SubformModal', {} );
+        testAdd( 'test.PrimitiveCollection', { isPrimitive: true } );
 
         // Edit each subform type, change a field, save
-        testEdit( 'test.SubformPage', true );
-        testEdit( 'test.SubformInline' );
-        testEdit( 'test.SubformModal' );
+        testEdit( 'test.SubformPage', { isFullPage: true } );
+        testEdit( 'test.SubformInline', {} );
+        testEdit( 'test.SubformModal', {} );
+        testEdit( 'test.PrimitiveCollection', { isPrimitive: true } );
 
         // Delete a row for each subform type
         testDelete( 'test.SubformPage' );
         testDelete( 'test.SubformInline' );
         testDelete( 'test.SubformModal' );
+        testDelete( 'test.PrimitiveCollection' );
 
         // Edit data in the default row for each component type
         testComponents();
 
 
-        function testCancel( subformName, isFullPage ) {
+        function testCancel( subformName, config ) {
           var suite        = suiteSubform,
               subform      = getControlByName( suite, subformName ).filter( '.subform' ),
               addButton    = subform.find( 'button.embedded-form-add' ),
@@ -90,7 +96,9 @@
               cancelButton = null,
               shownForm    = null,
               inputField   = null,
-              modelCount   = model.length;
+              modelCount   = model.length,
+              isFullPage   = config.isFullPage,
+              isPrimitive  = config.isPrimitive;
 
           expect( addButton.length ).toBe( 1 );
           expect( subform.length ).toBe( 1 );
@@ -129,21 +137,24 @@
           }
 
           function selectElements() {
+            model        = _.get( suite.controller.model, subformName );
             cancelButton = suite.element.find( '.embedded-form-cancel' );
             shownForm    = subform.find( '.formly' );
-            inputField   = getControlByName( suite, 'aField' );
+            inputField   = getControlByName( suite, isPrimitive ? PRIMITIVE_KEY : 'aField' );
           }
         }
 
-        function testAdd( subformName, isFullPage ) {
-          var suite      = suiteSubform,
-              subform    = getControlByName( suite, subformName ).filter( '.subform' ),
-              addButton  = subform.find( 'button.embedded-form-add' ),
-              model      = _.get( suite.controller.model, subformName ),
-              saveButton = null,
-              shownForm  = null,
-              inputField = null,
-              modelCount = model.length;
+        function testAdd( subformName, config ) {
+          var suite       = suiteSubform,
+              subform     = getControlByName( suite, subformName ).filter( '.subform' ),
+              addButton   = subform.find( 'button.embedded-form-add' ),
+              model       = _.get( suite.controller.model, subformName ),
+              saveButton  = null,
+              shownForm   = null,
+              inputField  = null,
+              modelCount  = model.length,
+              isFullPage  = config.isFullPage,
+              isPrimitive = config.isPrimitive;
 
           expect( addButton.length ).toBe( 1 );
           expect( subform.length ).toBe( 1 );
@@ -165,6 +176,8 @@
 
           // Change a field and click submit to save it
           inputField.val( 'some value' ).trigger( 'change' );
+          digest( suite );
+
           saveButton.click();
           digest( suite );
           selectElements();
@@ -181,21 +194,24 @@
           expect( model.length ).toBe( modelCount + 1 );
 
           function selectElements() {
+            model      = _.get( suite.controller.model, subformName );
             saveButton = suite.element.find( '.embedded-form-save' );
             shownForm  = subform.find( '.formly' );
-            inputField = getControlByName( suite, 'aField' );
+            inputField = getControlByName( suite, isPrimitive ? PRIMITIVE_KEY : 'aField' );
           }
         }
 
-        function testEdit( subformName, isFullPage ) {
-          var suite      = suiteSubform,
-              subform    = getControlByName( suite, subformName ).filter( '.subform' ),
-              editButton = subform.find( 'button.embedded-form-edit' ).last(),
-              model      = _.get( suite.controller.model, subformName ),
-              saveButton = null,
-              shownForm  = null,
-              inputField = null,
-              modelCount = model.length;
+        function testEdit( subformName, config ) {
+          var suite       = suiteSubform,
+              subform     = getControlByName( suite, subformName ).filter( '.subform' ),
+              editButton  = subform.find( 'button.embedded-form-edit' ).last(),
+              model       = _.get( suite.controller.model, subformName ),
+              saveButton  = null,
+              shownForm   = null,
+              inputField  = null,
+              modelCount  = model.length,
+              isFullPage  = config.isFullPage,
+              isPrimitive = config.isPrimitive;
 
           expect( editButton.length ).toBe( 1 );
           expect( subform.length ).toBe( 1 );
@@ -233,9 +249,10 @@
           expect( model.length ).toBe( modelCount );
 
           function selectElements() {
+            model      = _.get( suite.controller.model, subformName );
             saveButton = suite.element.find( '.embedded-form-save' );
             shownForm  = subform.find( '.formly' );
-            inputField = getControlByName( suite, 'aField' );
+            inputField = getControlByName( suite, isPrimitive ? PRIMITIVE_KEY : 'aField' );
           }
         }
 
@@ -244,9 +261,6 @@
               subform      = getControlByName( suite, subformName ).filter( '.subform' ),
               deleteButton = subform.find( 'button.embedded-form-delete' ).last(),
               model        = _.get( suite.controller.model, subformName ),
-              saveButton   = null,
-              shownForm    = null,
-              inputField   = null,
               modelCount   = model.length;
 
           expect( deleteButton.length ).toBe( 1 );
@@ -260,9 +274,7 @@
           expect( model.length ).toBe( modelCount - 1 );
 
           function selectElements() {
-            saveButton = suite.element.find( '.embedded-form-save' );
-            shownForm  = subform.find( '.formly' );
-            inputField = getControlByName( suite, 'aField' );
+            model = _.get( suite.controller.model, subformName );
           }
         }
 
