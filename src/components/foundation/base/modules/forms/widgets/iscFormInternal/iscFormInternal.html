@@ -1,82 +1,83 @@
 <form class="formly" novalidate name="iscForm"
       ng-submit="formInternalCtrl.onSubmit()"
       ng-click="formInternalCtrl.closeAnnotations()">
-  <!-- Validation notifications -->
-  <isc-notification-set></isc-notification-set>
+  <div isc-enter="_.noop()">
+    <!-- Validation notifications -->
+    <isc-notification-set></isc-notification-set>
 
-  <!--Main form-->
-  <div ng-hide="formInternalCtrl.childConfig.renderForm">
-    <div ng-if="formInternalCtrl.multiConfig">
-      <isc-subform model="formInternalCtrl.model"
-                   form-title="formInternalCtrl.formDefinition.form.name"
-                   options="formInternalCtrl.options"
-                   multi-config="formInternalCtrl.multiConfig">
-      </isc-subform>
-    </div>
-
-    <!--Validation form-->
-    <div ng-hide="true">
-      <div ng-if="formInternalCtrl.validation.renderForm">
-        <formly-form model="formInternalCtrl.validation.model"
-                     options="formInternalCtrl.validation.options"
-                     fields="formInternalCtrl.validation.fields"
-                     form="formInternalCtrl.validation.form">
-        </formly-form>
+    <!--Main form-->
+    <div ng-hide="formInternalCtrl.childConfig.renderForm">
+      <div ng-if="formInternalCtrl.multiConfig">
+        <isc-subform model="formInternalCtrl.model"
+                     form-title="formInternalCtrl.formDefinition.form.name"
+                     options="formInternalCtrl.options"
+                     multi-config="formInternalCtrl.multiConfig">
+        </isc-subform>
       </div>
-    </div>
 
-    <!--Debugging-->
-    <div ng-if="::formInternalCtrl.debugDisplay.additionalModels && formInternalCtrl.multiConfig.layout !== 'preview'">
-      <hr/>
+      <!--Validation form-->
+      <div ng-hide="true">
+        <div ng-if="formInternalCtrl.validation.renderForm">
+          <formly-form model="formInternalCtrl.validation.model"
+                       options="formInternalCtrl.validation.options"
+                       fields="formInternalCtrl.validation.fields"
+                       form="formInternalCtrl.validation.form">
+          </formly-form>
+        </div>
+      </div>
 
-      <div class="grid-block">
-        <div class="grid-content">
-          <h4 ng-click="formInternalCtrl.debugDisplay.showAdditionalModels = !formInternalCtrl.debugDisplay.showAdditionalModels">
-            Additional Data Models (debugging display only)
-          </h4>
-          <pre ng-show="formInternalCtrl.debugDisplay.showAdditionalModels">{{formInternalCtrl.formConfig.additionalModels | json}}</pre>
+      <!--Debugging-->
+      <div ng-if="::formInternalCtrl.debugDisplay.additionalModels && formInternalCtrl.multiConfig.layout !== 'preview'">
+        <hr/>
+
+        <div class="grid-block">
+          <div class="grid-content">
+            <h4 ng-click="formInternalCtrl.debugDisplay.showAdditionalModels = !formInternalCtrl.debugDisplay.showAdditionalModels">
+              Additional Data Models (debugging display only)
+            </h4>
+            <pre ng-show="formInternalCtrl.debugDisplay.showAdditionalModels">{{formInternalCtrl.formConfig.additionalModels | json}}</pre>
+          </div>
+        </div>
+      </div>
+
+      <div ng-if="::formInternalCtrl.debugDisplay.annotations && formInternalCtrl.multiConfig.layout !== 'preview'">
+        <hr/>
+
+        <div class="grid-block">
+          <div class="grid-content">
+            <h4 ng-click="formInternalCtrl.debugDisplay.showAnnotations = !formInternalCtrl.debugDisplay.showAnnotations">
+              Annotation Data (debugging display only)
+            </h4>
+            <pre ng-show="formInternalCtrl.debugDisplay.showAnnotations">{{formInternalCtrl.options.formState._annotations.data | json}}</pre>
+          </div>
+        </div>
+      </div>
+
+      <div ng-if="::formInternalCtrl.debugDisplay.formData && formInternalCtrl.multiConfig.layout !== 'preview'">
+        <hr/>
+
+        <div class="grid-block">
+          <div class="grid-content">
+            <h4 ng-click="formInternalCtrl.debugDisplay.showFormData = !formInternalCtrl.debugDisplay.showFormData">
+              Form Data (debugging display only)
+            </h4>
+            <pre ng-show="formInternalCtrl.debugDisplay.showFormData">{{formInternalCtrl.model | json}}</pre>
+          </div>
+        </div>
+      </div>
+
+      <div ng-if="::formInternalCtrl.debugDisplay.formState && formInternalCtrl.multiConfig.layout !== 'preview'">
+        <hr/>
+
+        <div class="grid-block">
+          <div class="grid-content">
+            <h4 ng-click="formInternalCtrl.debugDisplay.showFormState = !formInternalCtrl.debugDisplay.showFormState">
+              Form State (debugging display only)
+            </h4>
+            <pre ng-show="formInternalCtrl.debugDisplay.showFormState">{{formInternalCtrl.options.formState | json}}</pre>
+          </div>
         </div>
       </div>
     </div>
-
-    <div ng-if="::formInternalCtrl.debugDisplay.annotations && formInternalCtrl.multiConfig.layout !== 'preview'">
-      <hr/>
-
-      <div class="grid-block">
-        <div class="grid-content">
-          <h4 ng-click="formInternalCtrl.debugDisplay.showAnnotations = !formInternalCtrl.debugDisplay.showAnnotations">
-            Annotation Data (debugging display only)
-          </h4>
-          <pre ng-show="formInternalCtrl.debugDisplay.showAnnotations">{{formInternalCtrl.options.formState._annotations.data | json}}</pre>
-        </div>
-      </div>
-    </div>
-
-    <div ng-if="::formInternalCtrl.debugDisplay.formData && formInternalCtrl.multiConfig.layout !== 'preview'">
-      <hr/>
-
-      <div class="grid-block">
-        <div class="grid-content">
-          <h4 ng-click="formInternalCtrl.debugDisplay.showFormData = !formInternalCtrl.debugDisplay.showFormData">
-            Form Data (debugging display only)
-          </h4>
-          <pre ng-show="formInternalCtrl.debugDisplay.showFormData">{{formInternalCtrl.model | json}}</pre>
-        </div>
-      </div>
-    </div>
-
-    <div ng-if="::formInternalCtrl.debugDisplay.formState && formInternalCtrl.multiConfig.layout !== 'preview'">
-      <hr/>
-
-      <div class="grid-block">
-        <div class="grid-content">
-          <h4 ng-click="formInternalCtrl.debugDisplay.showFormState = !formInternalCtrl.debugDisplay.showFormState">
-            Form State (debugging display only)
-          </h4>
-          <pre ng-show="formInternalCtrl.debugDisplay.showFormState">{{formInternalCtrl.options.formState | json}}</pre>
-        </div>
-      </div>
-    </div>
-
   </div>
 </form>
