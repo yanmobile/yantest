@@ -78,7 +78,7 @@
     function mockBackend( httpBackend, returnError ) {
       if ( returnError ) {
         httpBackend.when( 'GET', 'version.json' )
-          .respond( 404, {} );
+          .respond( 404 );
       }
       else {
         httpBackend.when( 'GET', 'version.json' )
