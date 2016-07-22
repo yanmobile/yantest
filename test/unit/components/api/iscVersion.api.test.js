@@ -47,22 +47,6 @@
         spyOn( suite.api, 'load' ).and.callThrough();
         spyOn( suite.api, 'get' ).and.callThrough();
 
-        mockBackend( suite.$httpBackend, true );
-
-        suite.api.load();
-        suite.$httpBackend.flush();
-
-        expect( suite.httpApi.get ).toHaveBeenCalled();
-
-        var version = suite.api.get();
-        expect( version ).toEqual( errorVersionFile );
-      } );
-
-      it( 'should load an empty version file on error', function() {
-        spyOn( suite.httpApi, 'get' ).and.callThrough();
-        spyOn( suite.api, 'load' ).and.callThrough();
-        spyOn( suite.api, 'get' ).and.callThrough();
-
         mockBackend( suite.$httpBackend );
 
         suite.api.load();
@@ -72,6 +56,22 @@
 
         var version = suite.api.get();
         expect( version ).toEqual( mockVersionFile );
+      } );
+
+      it( 'should load an empty version file on error', function() {
+        spyOn( suite.httpApi, 'get' ).and.callThrough();
+        spyOn( suite.api, 'load' ).and.callThrough();
+        spyOn( suite.api, 'get' ).and.callThrough();
+
+        mockBackend( suite.$httpBackend, true );
+
+        suite.api.load();
+        suite.$httpBackend.flush();
+
+        expect( suite.httpApi.get ).toHaveBeenCalled();
+
+        var version = suite.api.get();
+        expect( version ).toEqual( errorVersionFile );
       } );
     } );
 
