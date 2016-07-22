@@ -431,7 +431,8 @@
                 model        = _.get( formModel, controlName ),
                 modelDisplay = _.isObject( model ) ? model.name : model,
                 newText      = 'Typea',
-                limitToList  = getFieldProperty( controlName, 'data.limitToList' );
+                limitToList  = getFieldProperty( controlName, 'data.limitToList' ),
+                keyCodes     = suiteMain.keyCode;
 
             expect( control.length ).toBe( 1 );
             expect( control.val() ).toEqual( modelDisplay );
@@ -448,25 +449,33 @@
 
             // The input is a DOM sibling to the list that appears,
             // so we have to walk up a bit before finding the list.
-            var list        = control.parentsUntil( '[list-data]' ).parent().find( '.isc-typeahead-list' ),
-                listItems   = list.find( 'li' ),
-                firstItem   = listItems.first(),
-                itemDisplay = firstItem.html().trim();
+            var list              = control.parentsUntil( '[list-data]' ).parent().find( '.isc-typeahead-list' ),
+                listItems         = list.find( 'li' ),
+                firstItem         = listItems.first(),
+                secondItem        = firstItem.next(),
+                firstItemDisplay  = firstItem.html().trim(),
+                secondItemDisplay = secondItem.html().trim();
 
             expect( listItems.length ).toBe( 3 );
+
+            // Exercise the DOM inspection in the widget:
+            // Go down once and back into the input
+            sendDownArrow( control );
+            sendUpArrow( firstItem );
 
             // Use down arrow two times and up arrow once to select the second item
             sendDownArrow( control );
             sendDownArrow( firstItem );
-            sendUpArrow( firstItem.next() );
+            sendUpArrow( secondItem );
 
-            firstItem.click();
+            // Pressing enter in the input should select that item
+            sendEnter( secondItem );
             digest( suite );
 
             model        = _.get( formModel, controlName );
             modelDisplay = _.isObject( model ) ? model.name : model;
-            expect( modelDisplay ).toEqual( itemDisplay );
-            expect( control.val() ).toEqual( itemDisplay );
+            expect( modelDisplay ).toEqual( secondItemDisplay );
+            expect( control.val() ).toEqual( secondItemDisplay );
 
             // Change the value in the control's input then leave the control
             control.val( newText ).trigger( 'input' ).trigger( 'blur' );
@@ -477,8 +486,8 @@
 
             // The model should not change if limitToList is truthy
             if ( limitToList ) {
-              expect( modelDisplay ).toEqual( itemDisplay );
-              expect( control.val() ).toEqual( itemDisplay );
+              expect( modelDisplay ).toEqual( secondItemDisplay );
+              expect( control.val() ).toEqual( secondItemDisplay );
             }
             // If limitToList is falsy, then editing the input and blurring *should* update the model
             else {
@@ -494,6 +503,27 @@
             expect( model ).toBeUndefined();
             expect( control.val() ).toEqual( '' );
 
+            // Re-focus on the control, enter enough chars to show the list, and press Enter.
+            // The first item should be selected.
+            control.triggerHandler( 'focus' );
+            control.val( newText ).trigger( 'input' ).trigger( 'change' );
+            suite.$scope.$digest();
+
+            sendEnter( control );
+            digest( suite );
+
+            model        = _.get( formModel, controlName );
+            modelDisplay = _.isObject( model ) ? model.name : model;
+            expect( modelDisplay ).toEqual( firstItemDisplay );
+            expect( control.val() ).toEqual( firstItemDisplay );
+
+
+            function sendEnter( control ) {
+              control.trigger( {
+                type : 'keydown',
+                which: keyCodes.ENTER
+              } )
+            }
 
             function sendDownArrow( control ) {
               control.trigger( {
