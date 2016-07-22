@@ -141,7 +141,12 @@
           event.stopPropagation();
         }
         else if ( event.which === ENTER_KEY_CODE ) {
-          ctrl.select( ctrl.listData( getIndex( event ) ) );
+          var currentList = ctrl.getFilteredList();
+          if ( currentList.length ) {
+            ctrl.select( currentList[0] );
+          }
+          event.preventDefault();
+          event.stopPropagation();
         }
       }
 
@@ -170,11 +175,16 @@
             event.preventDefault();
           }
         }
+        else if ( event.which === ENTER_KEY_CODE ) {
+          ctrl.select( ctrl.listData[index] );
+        }
       }
 
       function getIndex( event ) {
-        var ctrl = $( event.target ).ctrl;
-        return ctrl ? ctrl().$index : 0;
+        var target = $( event.target ),
+            parent = target.parent();
+        var index  = parent.find( 'li' ).index( target );
+        return Math.max( index, 0 );
       }
     }
   }
