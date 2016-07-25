@@ -72,12 +72,15 @@
     function controller( $scope ) {
       var self = this;
 
-      var opts            = self.options,
-          templateOptions = opts.templateOptions,
-          key             = opts.key,
-          editAs          = _.get( opts, 'data.collections.editAs' ),
-          viewAs          = _.get( opts, 'data.collections.viewAs' ),
-          subforms        = self.formState._subforms;
+      var opts             = self.options,
+          templateOptions  = opts.templateOptions,
+          key              = opts.key,
+          editAs           = _.get( opts, 'data.collections.editAs' ),
+          viewAs           = _.get( opts, 'data.collections.viewAs' ),
+          subforms         = self.formState._subforms,
+          useDynamicFields = _.get( opts, 'data.collections.useDynamicFields' ),
+          embeddedType     = _.get( opts, 'data.embeddedType' );
+
 
       self.editAs = editAs;
 
@@ -114,19 +117,14 @@
       // The (singular) label for each subform instance
       self.label = _.get( opts, 'data.embeddedLabel', templateOptions.label );
 
-      // Flatten field groups down for table header and cell iteration
-      var embeddedType = _.get( opts, 'data.embeddedType' );
-      if ( self.isPrimitive ) {
-        self.fields = {
-          '0': PRIMITIVE_OBJECT
-        };
+      processFieldsArray();
+      if ( useDynamicFields ) {
+        $scope.$on( FORMS_EVENTS.subformDefinitionChanged, function( event, def ) {
+          processFieldsArray( def );
+          // Force subform to close, if it is open
+          hideSubform();
+        } );
       }
-      else {
-        self.fields = angular.merge( {}, subforms[embeddedType] );
-      }
-      mergeBuiltInTemplates( self.fields );
-
-      createTableFields();
 
       // Callbacks
       self.hasValidationError = hasValidationError;
@@ -139,6 +137,7 @@
           setAnnotationContext();
 
           showSubform();
+          $scope.$emit( FORMS_EVENTS.collectionEditStarted, self.editModel );
           // Defer the update until the formly-form has finished being initialized;
           // otherwise a race condition can prevent the broadcast message from being heard
           $timeout( updateModel, 0 );
@@ -150,6 +149,7 @@
       self.cancel = function() {
         self.subformOptions.formState._validation.$submitted = false;
         hideSubform();
+        $scope.$emit( FORMS_EVENTS.collectionEditCanceled, self.editModel );
       };
 
       self.saveForm = function() {
@@ -164,11 +164,13 @@
           }
           else {
             var model = self.collectionModel[self.editIndex];
-            _.merge( model, self.editModel );
             _.remove( self.validationErrors, model );
+
+            _.set( self.collectionModel, self.editIndex, self.editModel );
           }
           self.editIndex = undefined;
           hideSubform();
+          $scope.$emit( FORMS_EVENTS.collectionEditSaved, self.editModel );
 
           onCollectionModified();
         }
@@ -238,6 +240,28 @@
       /**
        * @memberOf iscEmbeddedFormCollection
        * @description
+       * Builds the internal fields array from the subform definition and initializes the table field config.
+       * @param dynamicArray
+       */
+      function processFieldsArray( dynamicArray ) {
+        // Flatten field groups down for table header and cell iteration
+        if ( self.isPrimitive ) {
+          self.fields = {
+            '0': PRIMITIVE_OBJECT
+          };
+        }
+        else {
+          self.fields = angular.merge( {}, dynamicArray || subforms[embeddedType] );
+        }
+
+        mergeBuiltInTemplates( self.fields );
+        createTableFields();
+      }
+
+
+      /**
+       * @memberOf iscEmbeddedFormCollection
+       * @description
        * Sets the context on the subform so that field controls in that subform can use the annotation system.
        * @param {number=} index - The index of the row being edited. If for a new row, leave undefined.
        */
@@ -284,11 +308,11 @@
               return item[PRIMITIVE_KEY];
             } )
           );
-          self.ngModelCtrl.$commitViewValue();
         }
         else {
           self.ngModelCtrl.$setViewValue( self.collectionModel );
         }
+        self.ngModelCtrl.$commitViewValue();
         self.ngModelCtrl.$setTouched();
         self.ngModelCtrl.$validate();
       }
@@ -388,6 +412,7 @@
           self.editModel = {};
           _.merge( self.editModel, self.collectionModel[index] );
           showSubform();
+          $scope.$emit( FORMS_EVENTS.collectionEditStarted, self.editModel );
           // Defer the update until the formly-form has finished being initialized;
           // otherwise a race condition can prevent the broadcast message from being heard
           $timeout( updateModelWithValidation, 0 );
@@ -398,6 +423,7 @@
         var index = _.indexOf( self.collectionModel, row );
 
         self.collectionModel.splice( index, 1 );
+        $scope.$emit( FORMS_EVENTS.collectionItemRemoved, row );
         onCollectionModified();
       }
 
