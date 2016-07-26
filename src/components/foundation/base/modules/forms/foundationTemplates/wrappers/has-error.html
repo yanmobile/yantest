@@ -3,11 +3,11 @@
   <div class="grid-block"
        ng-if="showError && (options.formControl[validationShowCondition] || formState._validation.$submitted)"
        ng-messages="options.formControl.$error">
-    <div ng-messages-include="forms/foundationTemplates/validation.html"></div>
     <div ng-message="{{::name}}"
          class="has-error grid-content collapse"
          ng-repeat="(name, message) in ::options.validation.messages">
       <label class="error-message">{{message(options.formControl.$viewValue, options.formControl.$modelValue, this)}}</label>
     </div>
+    <div ng-messages-include="forms/foundationTemplates/validation.html"></div>
   </div>
 </div>
