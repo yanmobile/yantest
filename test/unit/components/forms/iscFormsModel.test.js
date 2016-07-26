@@ -2,22 +2,23 @@
   'use strict';
 
   describe( 'iscFormsModel', function() {
-    var suite ;
+    var suite;
 
     useDefaultModules( 'formly', 'isc.http', 'isc.forms', 'isc.templates',
-      function ($provide) {
+      function( $provide ) {
         suite = window.createSuite();
-        $provide.value('apiHelper', mockApiHelper);
-        $provide.value('iscCustomConfigService', mockCustomConfigService);
-      });
+        $provide.value( 'apiHelper', mockApiHelper );
+        $provide.value( 'iscCustomConfigService', mockCustomConfigService );
+      } );
 
     beforeEach( inject( function( iscFormsModel, iscFormsApi, iscFormDataApi,
-                                  $httpBackend, $timeout ) {
+      $httpBackend, $timeout, $q ) {
       suite.model       = iscFormsModel;
       suite.api         = iscFormsApi;
       suite.dataApi     = iscFormDataApi;
       suite.httpBackend = $httpBackend;
       suite.timeout     = $timeout;
+      suite.q           = $q;
 
       mockFormResponses( suite.httpBackend );
     } ) );
@@ -31,6 +32,7 @@
         expect( _.isFunction( suite.model.setFormStatus ) ).toBe( true );
         expect( _.isFunction( suite.model.getFormDefinition ) ).toBe( true );
         expect( _.isFunction( suite.model.getValidationDefinition ) ).toBe( true );
+        expect( _.isFunction( suite.model.invalidateCache ) ).toBe( true );
       } );
     } );
 
@@ -127,9 +129,9 @@
 
         function test( mode ) {
           suite.model.getFormDefinition( {
-              formKey: formKey,
-              mode   : mode
-            } )
+            formKey: formKey,
+            mode   : mode
+          } )
             .then( function( response ) {
               expect( suite.api.getFormDefinition ).toHaveBeenCalled();
               expect( suite.api.getUserScript ).toHaveBeenCalledWith( "loadPatient" );
@@ -162,6 +164,51 @@
           suite.model.getFormDefinition( {
             formKey: formKey,
             mode   : mode
+          } );
+        }
+      } );
+    } );
+
+    describe( 'model.invalidateCache', function() {
+      it( 'should force the API to request the form definition from the server next time', function() {
+        var formKey1  = 'simple1',
+            formKey2  = 'simple2',
+            callCount = 0,
+            getApi    = suite.api.getFormDefinition;
+
+        spyOn( suite.model, 'invalidateCache' ).and.callThrough();
+        spyOn( suite.api, 'getFormDefinition' ).and.callFake( function( formKey ) {
+          callCount++;
+          return getApi( formKey );
+        } );
+
+        testGet( formKey1 );
+        testGet( formKey2 );
+        suite.httpBackend.flush();
+
+        // One API call per form
+        expect( suite.api.getFormDefinition ).toHaveBeenCalled();
+        expect( callCount ).toBe( 2 );
+
+        // Both definitions are now cached, so should still be only one API call per form
+        testGet( formKey1 );
+        testGet( formKey2 );
+        expect( callCount ).toBe( 2 );
+
+        // Clear the cache for formKey1 only
+        suite.model.invalidateCache( formKey1 );
+
+        testGet( formKey1 );
+        // Should be one new call for form 1
+        expect( callCount ).toBe( 3 );
+
+        testGet( formKey2 );
+        // Should be no new call for form 2
+        expect( callCount ).toBe( 3 );
+
+        function testGet( formKey ) {
+          suite.model.getFormDefinition( {
+            formKey: formKey
           } );
         }
       } );

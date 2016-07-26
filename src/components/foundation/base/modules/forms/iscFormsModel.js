@@ -50,7 +50,8 @@
       setFormStatus               : setFormStatus,
       getFormDefinition           : getFormDefinition,
       getValidationDefinition     : getValidationDefinition,
-      unwrapFormDefinitionResponse: unwrapFormDefinitionResponse
+      unwrapFormDefinitionResponse: unwrapFormDefinitionResponse,
+      invalidateCache             : invalidateCache
     };
 
     /**
@@ -62,6 +63,20 @@
       // Assumes the form def is in _Body.FormDefinition,
       // but falls back to a root-level definition if not.
       return _.get( response, '_Body.FormDefinition', response );
+    }
+
+    /**
+     * @memberOf iscFormsModel
+     * @descriptions Explicitly invalidates the form definition cache for the given formKey.
+     * The next time the definition is needed, it will be requested from the server.
+     * @param {String} formKey
+     * @param {=String} formVersion
+     */
+    function invalidateCache( formKey, formVersion ) {
+      var cacheKey = ( formVersion || 'current' ) + '.' + formKey;
+      _.set( _formsCache, cacheKey, undefined );
+      _.set( _viewModeFormsCache, cacheKey, undefined );
+      _.set( _validationCache, cacheKey, undefined );
     }
 
     /**
