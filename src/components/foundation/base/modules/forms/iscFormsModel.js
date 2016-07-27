@@ -693,6 +693,9 @@
      */
     function replaceTemplates( fields ) {
       _.forEach( fields, function( field ) {
+        var registeredType = iscFormsTemplateService.getRegisteredType( field.type ),
+            extendsType    = _.get( field, 'extends' ) || _.get( registeredType, 'extends' );
+
         if ( field.fieldGroup ) {
           replaceTemplates( field.fieldGroup );
         }
@@ -710,10 +713,10 @@
             // Collections handle view mode on their own.
             // field.key is the data path into the model, so if this is not present,
             // there is no model (e.g., an "instructions" template or arbitrary html).
-            if ( field.type && field.type !== 'embeddedFormCollection' && field.extends !== 'embeddedFormCollection' && field.key ) {
-              var viewModeType   = viewModePrefix + field.type;
-              var registeredType = iscFormsTemplateService.getRegisteredType( viewModeType );
-              if ( !registeredType ) {
+            if ( field.type && field.type !== 'embeddedFormCollection' && extendsType !== 'embeddedFormCollection' && field.key ) {
+              var viewModeType       = viewModePrefix + field.type;
+              var registeredViewType = iscFormsTemplateService.getRegisteredType( viewModeType );
+              if ( !registeredViewType ) {
                 iscFormsTemplateService.registerType(
                   {
                     'name'       : viewModeType,
