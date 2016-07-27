@@ -74,9 +74,9 @@
      */
     function invalidateCache( formKey, formVersion ) {
       var cacheKey = ( formVersion || 'current' ) + '.' + formKey;
-      _.set( _formsCache, cacheKey, undefined );
-      _.set( _viewModeFormsCache, cacheKey, undefined );
-      _.set( _validationCache, cacheKey, undefined );
+      _.unset( _formsCache, cacheKey );
+      _.unset( _viewModeFormsCache, cacheKey );
+      _.unset( _validationCache, cacheKey );
     }
 
     /**
@@ -208,7 +208,7 @@
             _getEmbeddedForms( field.fieldGroup, subforms );
           }
           // If a collection, register it with the validation safety net
-          else if ( field.type === 'embeddedFormCollection' ) {
+          else if ( field.type === 'embeddedFormCollection' || field.extends === 'embeddedFormCollection' ) {
             validations.push( {
               key   : field.key,
               fields: subforms[_.get( field, 'data.embeddedType' )] || []
@@ -332,12 +332,15 @@
           function _processFields( fields ) {
             var fieldPromises = [];
             _.forEach( fields, function( field ) {
-              var expProps    = _.get( field, 'expressionProperties', {} ),
-                  label       = _.get( field, 'templateOptions.label' ),
-                  type        = _.get( field, 'type' ),
-                  extendsType = _.get( field, 'extends' ),
-                  fieldGroup  = _.get( field, 'fieldGroup' ),
-                  data        = _.get( field, 'data', {} );
+              var expProps       = _.get( field, 'expressionProperties', {} ),
+                  label          = _.get( field, 'templateOptions.label' ),
+                  type           = _.get( field, 'type' ),
+                  fieldGroup     = _.get( field, 'fieldGroup' ),
+                  data           = _.get( field, 'data', {} ),
+                  registeredType = iscFormsTemplateService.getRegisteredType( type ),
+                  extendsType    = _.get( field, 'extends' ) || _.get( registeredType, 'extends' ),
+                  isForm         = type === 'embeddedForm' || extendsType === 'embeddedForm',
+                  isCollection   = type === 'embeddedFormCollection' || extendsType === 'embeddedFormCollection';
 
               // A field group does not have its own type, but contains fields in the fieldGroup array
               if ( fieldGroup ) {
@@ -350,9 +353,8 @@
               }
 
               // If this is a nested form, recurse the process for its child fields
-              if ( type === 'embeddedForm' || type === 'embeddedFormCollection' ||
-                extendsType === 'embeddedForm' || extendsType === 'embeddedFormCollection' ) {
-                _processEmbeddedForm( field, data );
+              if ( isForm || isCollection ) {
+                _processEmbeddedForm( field, data, isCollection );
               }
 
               else {
@@ -411,10 +413,9 @@
              * Processes an embeddedForm or embeddedFormCollection
              * @private
              */
-            function _processEmbeddedForm( field, data ) {
+            function _processEmbeddedForm( field, data, isCollection ) {
               var embeddedType = data.embeddedType,
-                  embeddedPage = data.embeddedPage,
-                  isCollection = field.type === 'embeddedFormCollection' || field.extends === 'embeddedFormCollection';
+                  embeddedPage = data.embeddedPage;
 
               // If a linked type, look up that type and import the fields []
               if ( embeddedType ) {
@@ -706,7 +707,7 @@
             // Collections handle view mode on their own.
             // field.key is the data path into the model, so if this is not present,
             // there is no model (e.g., an "instructions" template or arbitrary html).
-            if ( field.type && field.type !== 'embeddedFormCollection' && field.key ) {
+            if ( field.type && field.type !== 'embeddedFormCollection' && field.extends !== 'embeddedFormCollection' && field.key ) {
               var viewModeType   = viewModePrefix + field.type;
               var registeredType = iscFormsTemplateService.getRegisteredType( viewModeType );
               if ( !registeredType ) {
