@@ -204,11 +204,14 @@
 
       function _getEmbeddedForms( fields, subforms ) {
         _.forEach( fields, function( field ) {
+          var registeredType = iscFormsTemplateService.getRegisteredType( field.type ),
+              extendsType    = _.get( field, 'extends' ) || _.get( registeredType, 'extends' );
+
           if ( field.fieldGroup ) {
             _getEmbeddedForms( field.fieldGroup, subforms );
           }
           // If a collection, register it with the validation safety net
-          else if ( field.type === 'embeddedFormCollection' || field.extends === 'embeddedFormCollection' ) {
+          else if ( field.type === 'embeddedFormCollection' || extendsType === 'embeddedFormCollection' ) {
             validations.push( {
               key   : field.key,
               fields: subforms[_.get( field, 'data.embeddedType' )] || []

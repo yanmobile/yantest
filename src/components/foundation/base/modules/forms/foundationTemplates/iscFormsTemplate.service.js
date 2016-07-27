@@ -364,6 +364,10 @@
         },
 
         link: function( scope, element, attrs ) {
+          // If the field's data.hideIfGroupEmpty property is truthy,
+          // this field will be hidden if all of its sibling fields are hidden.
+          // This is useful for section headers within a fieldGroup,
+          // where all members of that section have different hideExpressions.
           if ( _.get( scope, 'options.data.hideIfGroupEmpty' ) ) {
             var unregisterModelWatch = scope.$watch(
               'model',
