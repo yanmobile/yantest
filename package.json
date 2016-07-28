@@ -1,7 +1,7 @@
 {
   "name": "isc-hscommunity-angular",
   "version": "12.0.7",
-  "dependencies": {
+  "devDependencies": {
     "angular-jsdoc": "1.4.2",
     "bower": "1.7.9",
     "browser-sync": "2.13.0",
@@ -25,6 +25,7 @@
     "gulp-jscs": "4.0.0",
     "gulp-jscs-stylish": "1.4.0",
     "gulp-jshint": "2.0.1",
+    "gulp-karma": "0.0.5",
     "gulp-load-plugins": "1.2.4",
     "gulp-merge-json": "0.6.0",
     "gulp-mobilizer": "0.0.3",
@@ -69,7 +70,7 @@
   },
   "engines": {
     "node": "5.5.0",
-    "npm": "3.10.5"
+    "npm": "3.3.12"
   },
   "repository": {
     "type": "git",
