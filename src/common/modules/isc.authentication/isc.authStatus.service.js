@@ -10,7 +10,7 @@
 
   /* @ngInject */
   function iscAuthStatusService( $rootScope, $window,
-    storage, iscAuthStatus, iscSessionModel, iscSessionStorageHelper,
+    storage, iscAuthStatus, iscSessionStorageHelper,
     NAV_EVENTS, AUTH_EVENTS ) {
     var thisTabHash,
         authStatusCallFailed = false;
@@ -49,7 +49,7 @@
           callback     = config.authStatusFocusCallback || _.noop;
 
       if ( config.useAuthStatus ) {
-        if ( shouldLogOut && iscSessionModel.isAuthenticated() ) {
+        if ( shouldLogOut ) {
           $rootScope.$emit( AUTH_EVENTS.logout );
           return;
         }
@@ -59,7 +59,7 @@
         if ( storageHash && storageHash !== thisTabHash ) {
           var authStatusResult = callAuthStatus( config.authStatusUrl );
           if ( authStatusResult ) {
-            thisTabHash = storageHash;
+            thisTabHash          = storageHash;
             return callback( authStatusResult );
           }
         }
@@ -67,8 +67,6 @@
     }
 
     function authStatusBlur() {
-      // If the last call to auth/status failed, do not update the local hash.
-      // This will force auth/status to be retried when this window is focused again.
       if ( !authStatusCallFailed ) {
         thisTabHash = storage.get( 'hashcode' );
       }

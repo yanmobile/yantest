@@ -18,10 +18,9 @@
    * @param iscFormsApi
    * @returns {{getForms, getActiveForm, getActiveForms, setFormStatus, getFormDefinition, getValidationDefinition}}
    */
-  function iscFormsModel( $q, $templateCache, $window, $filter,
-    iscHttpapi, // needed for user script closures
-    iscFormsCodeTableApi, iscFormsTemplateService,
-    iscFormsApi, iscFormFieldLayoutService ) {
+  function iscFormsModel( $q, $templateCache, $window,
+                          iscHttpapi, // needed for user script closures
+                          iscFormsCodeTableApi, iscFormsTemplateService, iscFormsApi ) {
     var _typeCache          = {};
     var _formsCache         = {};
     var _viewModeFormsCache = {};
@@ -51,8 +50,7 @@
       setFormStatus               : setFormStatus,
       getFormDefinition           : getFormDefinition,
       getValidationDefinition     : getValidationDefinition,
-      unwrapFormDefinitionResponse: unwrapFormDefinitionResponse,
-      invalidateCache             : invalidateCache
+      unwrapFormDefinitionResponse: unwrapFormDefinitionResponse
     };
 
     /**
@@ -64,20 +62,6 @@
       // Assumes the form def is in _Body.FormDefinition,
       // but falls back to a root-level definition if not.
       return _.get( response, '_Body.FormDefinition', response );
-    }
-
-    /**
-     * @memberOf iscFormsModel
-     * @descriptions Explicitly invalidates the form definition cache for the given formKey.
-     * The next time the definition is needed, it will be requested from the server.
-     * @param {String} formKey
-     * @param {=String} formVersion
-     */
-    function invalidateCache( formKey, formVersion ) {
-      var cacheKey = ( formVersion || 'current' ) + '.' + formKey;
-      _.unset( _formsCache, cacheKey );
-      _.unset( _viewModeFormsCache, cacheKey );
-      _.unset( _validationCache, cacheKey );
     }
 
     /**
@@ -176,7 +160,6 @@
     function getValidationDefinition( config ) {
       var formKey     = config.formKey,
           formVersion = config.formVersion,
-          formLiteral = config.formLiteral,
           cacheKey    = ( formVersion || 'current' ) + '.' + formKey;
 
       var cachedValidation = _.get( _validationCache, cacheKey );
@@ -190,12 +173,11 @@
       else {
         getFormDefinition( {
           formKey    : formKey,
-          formLiteral: formLiteral,
           formVersion: formVersion
         } )
           .then( function( formDefinition ) {
             _.forEach( formDefinition.form.pages, function( page ) {
-              getEmbeddedForms( page.fields, formDefinition.subforms );
+              _getEmbeddedForms( page.fields, formDefinition.subforms );
             } );
 
             _.set( _validationCache, cacheKey, validations );
@@ -205,19 +187,16 @@
 
       return deferred.promise;
 
-      function getEmbeddedForms( fields, subforms ) {
+      function _getEmbeddedForms( fields, subforms ) {
         _.forEach( fields, function( field ) {
-          var registeredType = iscFormsTemplateService.getRegisteredType( field.type ),
-              extendsType    = _.get( field, 'extends' ) || _.get( registeredType, 'extends' );
-
           if ( field.fieldGroup ) {
-            getEmbeddedForms( field.fieldGroup, subforms );
+            _getEmbeddedForms( field.fieldGroup, subforms );
           }
           // If a collection, register it with the validation safety net
-          else if ( field.type === 'embeddedFormCollection' || extendsType === 'embeddedFormCollection' ) {
+          else if ( field.type === 'embeddedFormCollection' ) {
             validations.push( {
               key   : field.key,
-              fields: iscFormsTemplateService.getFieldsForEmbeddedForm( field, subforms )
+              fields: subforms[_.get( field, 'data.embeddedType' )] || []
             } );
           }
         } );
@@ -238,10 +217,8 @@
     function getFormDefinition( config ) {
       var formKey            = config.formKey,
           mode               = config.mode,
-          formLiteral        = config.formLiteral,
           formVersion        = config.formVersion,
           subformDefinitions = config.subformDefinitions,
-          library            = config.library || [],
           cacheKey           = ( formVersion || 'current' ) + '.' + formKey;
 
       // If form is already cached, return the cached form in a promise
@@ -263,14 +240,7 @@
 
       // Otherwise, fetch the form template and resolve the form in a promise
       else {
-        var formPromise;
-        if ( formLiteral ) {
-          formPromise = $q.when( formLiteral );
-        }
-        else {
-          formPromise = iscFormsApi.getFormDefinition( formKey, formVersion );
-        }
-        formPromise.then( function( responseData ) {
+        iscFormsApi.getFormDefinition( formKey, formVersion ).then( function( responseData ) {
           var primaryPromises   = [],
               secondaryPromises = [],
               form              = unwrapFormDefinitionResponse( responseData ),
@@ -278,36 +248,22 @@
 
           // Subform-only definitions are a bare array
           if ( _.isArray( form ) ) {
-            primaryPromises = primaryPromises.concat(
-              processFields( form )
-            );
+            primaryPromises = primaryPromises.concat( _processFields( form ) );
           }
           else {
-            if ( form.library ) {
-              var libraryPromise = iscFormsApi.getUserScript( form.library )
-                .then( function( response ) {
-                  var script = parseScript( response );
-                  library.push( script );
-                } );
-              primaryPromises.push( libraryPromise );
-            }
-
             _.forEach( form.pages, function( page ) {
-              iscFormFieldLayoutService.transformContainer( page );
-              primaryPromises = primaryPromises.concat(
-                processFields( page.fields )
-              );
+              primaryPromises = primaryPromises.concat( _processFields( page.fields ) );
             } );
           }
 
-          // If an FDN-specified additionalModelInit function is indicated, fetch this as a user script
-          if ( form.additionalModelInit ) {
-            var scriptPromise = iscFormsApi.getUserScript( form.additionalModelInit )
+          // If an FDN-specified dataModelInit function is indicated, fetch this as a user script
+          if ( form.dataModelInit ) {
+            var scriptPromise = iscFormsApi.getUserScript( form.dataModelInit )
               .then( function( response ) {
-                var script               = parseScript( response );
-                form.additionalModelInit = ( function( iscHttpapi ) {
+                var script         = parseScript( response );
+                form.dataModelInit = ( function( iscHttpapi ) {
                   return script;
-                } )( iscHttpapi );
+                } )();
                 return true;
               } );
             primaryPromises.push( scriptPromise );
@@ -316,8 +272,6 @@
           // After all necessary template calls have completed, return the form
           $q.all( primaryPromises ).then( function() {
             $q.all( secondaryPromises ).then( function() {
-              form.library = library;
-
               var editMode = {
                 form    : form,
                 subforms: subforms
@@ -356,38 +310,23 @@
            * @memberOf iscFormsModel
            * @description
            * Additional processing for fields to bind to the formly form.
-           * @param {Array} fields - The list of fields to process
+           * @param fields
            * @returns {Array}
            * @private
            */
-          function processFields( fields ) {
+          function _processFields( fields ) {
             var fieldPromises = [];
-
             _.forEach( fields, function( field ) {
-              var expProps       = _.get( field, 'expressionProperties', {} ),
-                  label          = _.get( field, 'templateOptions.label' ),
-                  type           = _.get( field, 'type' ),
-                  comments       = _.get( field, 'comments' ),
-                  wrappers       = _.get( field, 'wrapper' ),
-                  fieldGroup     = _.get( field, 'fieldGroup' ),
-                  data           = _.get( field, 'data', {} ),
-                  registeredType = iscFormsTemplateService.getRegisteredType( type ),
-                  extendsType    = _.get( field, 'extends' ) || _.get( registeredType, 'extends' ),
-                  isForm         = type === 'embeddedForm' || extendsType === 'embeddedForm',
-                  isCollection   = type === 'embeddedFormCollection' || extendsType === 'embeddedFormCollection',
-                  watcher        = _.get( field, 'watcher' );
-
-              // Remove comments (formly's api-check will throw an error otherwise)
-              if ( comments ) {
-                delete field.comments;
-              }
+              var expProps    = _.get( field, 'expressionProperties', {} ),
+                  label       = _.get( field, 'templateOptions.label' ),
+                  type        = _.get( field, 'type' ),
+                  extendsType = _.get( field, 'extends' ),
+                  fieldGroup  = _.get( field, 'fieldGroup' ),
+                  data        = _.get( field, 'data', {} );
 
               // A field group does not have its own type, but contains fields in the fieldGroup array
               if ( fieldGroup ) {
-                iscFormFieldLayoutService.transformContainer( field );
-                fieldPromises = fieldPromises.concat(
-                  processFields( fieldGroup )
-                );
+                fieldPromises = fieldPromises.concat( _processFields( fieldGroup ) );
               }
 
               // If type has not been specified, this is arbitrary html written into a template tag, so skip it.
@@ -396,21 +335,26 @@
               }
 
               // If this is a nested form, recurse the process for its child fields
-              if ( isForm || isCollection ) {
-                processEmbeddedForm( field, data, isCollection );
+              if ( type === 'embeddedForm' || type === 'embeddedFormCollection' ||
+                extendsType === 'embeddedForm' || extendsType === 'embeddedFormCollection' ) {
+                _processEmbeddedForm( field, data );
               }
 
               else {
                 // If a user script is provided, this needs to be loaded and parsed
                 if ( data.userScript ) {
-                  processUserScript( field, data.userScript );
+                  _processUserScript( field, data.userScript );
                 }
 
-                // Translate the label if no label expression has been set
+                // Create a translated expression property for each label
                 var expLabel = expProps['templateOptions.label'];
                 if ( label && !expLabel ) {
-                  _.set( field, 'templateOptions.label', $filter( 'translate' )( label ) );
+                  expLabel = expProps['templateOptions.label'] = '"' + label + '"';
                 }
+                if ( expLabel && !_.isFunction( expLabel ) ) {
+                  expProps['templateOptions.label'] += ' | translate';
+                }
+                _.set( field, 'expressionProperties', expProps );
 
                 // If this field uses a code table, look it up and push it into the field's options
                 if ( data.codeTable ) {
@@ -429,45 +373,17 @@
 
                 // If the type is not already registered, load it and register it with formly
                 if ( !iscFormsTemplateService.isTypeRegistered( type ) ) {
-                  getCustomTemplate( type );
-                }
-                // If a non-custom form has custom wrappers, load them
-                else if ( wrappers ) {
-                  _.forEach( wrappers, function( wrapperName ) {
-                    if ( !iscFormsTemplateService.isWrapperRegistered( wrapperName ) ) {
-                      fieldPromises.push( getWrapper( wrapperName ) );
-                    }
-                  } );
-                }
-
-                if ( watcher ) {
-                  _.forEach( watcher, function( watch ) {
-                    // Angular does not support $watch listeners as expressions, but formly thinks it does.
-                    // So we need to wrap any watch listener that is an expression in a function.
-                    if ( watch.listener && !_.isFunction( watch.listener ) ) {
-                      var watchListener = watch.listener;
-                      // The formly watcher signature takes additional args of field and the watch's deregistration function.
-                      watch.listener    = function( field, newVal, oldVal, scope, stop ) {
-                        scope.$eval( watchListener, {
-                          field : field,
-                          newVal: newVal,
-                          oldVal: oldVal,
-                          stop  : stop
-                        } );
-                      };
-                    }
-                  } );
+                  _getCustomTemplate( type );
                 }
               }
             } );
-
             return fieldPromises;
 
-            function processUserScript( field, scriptName ) {
+            function _processUserScript( field, scriptName ) {
               var scriptPromise = iscFormsApi.getUserScript( scriptName )
                 .then( function( response ) {
                   var script = parseScript( response ),
-                      getApi = _.get( script, 'api.get' );
+                      getApi = script.api.get;
                   // Expose iscHttpapi to api getter function
                   if ( getApi ) {
                     script.api.get = ( function( iscHttpapi ) {
@@ -484,8 +400,10 @@
              * Processes an embeddedForm or embeddedFormCollection
              * @private
              */
-            function processEmbeddedForm( field, data, isCollection ) {
-              var embeddedType = data.embeddedType;
+            function _processEmbeddedForm( field, data ) {
+              var embeddedType = data.embeddedType,
+                  embeddedPage = data.embeddedPage,
+                  isCollection = field.type === 'embeddedFormCollection' || field.extends === 'embeddedFormCollection';
 
               // If a linked type, look up that type and import the fields []
               if ( embeddedType ) {
@@ -499,43 +417,65 @@
                     getFormDefinition( {
                       formKey           : embeddedType,
                       mode              : mode,
-                      subformDefinitions: subforms,
-                      library           : library
+                      subformDefinitions: subforms
                     } )
                       .then( function( embeddedForm ) {
-                        var subform      = embeddedForm.form,
-                            listenerType = {
-                              'type': 'embeddedFormListener'
-                            };
+                        var fields = [],
+                            form   = embeddedForm.form;
 
                         // If this is a bare array of fields (subform-only definition),
                         // then the response form is only the fields [] for this form.
-                        // Wrap this in a simple form and page for a consistent interface.
-                        // The specific page to use will be looked up in the field controller.
-                        if ( _.isArray( subform ) ) {
-                          subform = {
-                            pages: [
-                              { fields: subform }
-                            ]
-                          };
+                        if ( _.isArray( form ) ) {
+                          fields = form;
                         }
 
-                        _.forEach( subform.pages, function( page ) {
-                          var fields = page.fields;
-                          // Force inheritance of the data property
-                          forceDataInheritance( fields );
+                        // If this is a full form with page and form wrappers, we can only use a fields [] from it.
+                        // If an embeddedPage was provided, use the fields [] from that page;
+                        // otherwise, use the fields [] on the first page.
+                        else {
+                          var pages = form.pages,
+                              page;
 
-                          // Push a subform listener into the fields list if there is not already one
-                          if ( isCollection && !_.find( fields, listenerType ) ) {
-                            fields.push( listenerType );
+                          // Page lookup can be either a 0-based index or a page name
+                          if ( embeddedPage ) {
+                            if ( _.isNumber( embeddedPage ) ) {
+                              page = _.get( pages, embeddedPage );
+                            }
+                            else {
+                              page = _.find( pages, { name: embeddedPage } );
+                            }
                           }
-                        } );
+                          // If no page was provided, use the first one
+                          else {
+                            page = _.get( pages, '0' );
+                          }
 
-                        // Update the subforms list
-                        subforms[embeddedType] = subform;
+                          fields = _.get( page, 'fields', [] );
+                        }
+
+                        // Force inheritance of the data property
+                        forceDataInheritance( fields );
+
+                        if ( isCollection ) {
+                          // Push a subform listener into the fields list
+                          fields.push( {
+                            'type': 'embeddedFormListener'
+                          } );
+
+                          // Update the subforms hash table
+                          subforms[embeddedType] = fields;
+                        }
+
+                        // A non-collection embedded form is inlined in the parent form
+                        else {
+                          // Update the fields in this embedded form from the looked-up form
+                          _.set( field, 'templateOptions.fields', fields );
+                        }
                       } )
                   );
                 }
+
+                fieldPromises = fieldPromises.concat( _processFields( _.get( field, 'templateOptions.fields' ) ) );
               }
             }
           }
@@ -547,10 +487,10 @@
            * @param templateName
            * @private
            */
-          function getCustomTemplate( templateName ) {
+          function _getCustomTemplate( templateName ) {
             var scriptPromise = iscFormsApi.getTemplate( "js/" + templateName )
               .then( function( response ) {
-                processScript( response );
+                _processScript( response );
                 return true;
               } );
             primaryPromises.push( scriptPromise );
@@ -562,12 +502,12 @@
              * @returns {Object}
              * @private
              */
-            function processScript( response ) {
+            function _processScript( response ) {
               var template = parseScript( response );
 
-              injectWrappers( template );
-              injectHtml( template );
-              injectCss();
+              _injectWrappers( template );
+              _injectHtml( template );
+              _injectCss();
 
               // TODO - load other assets such as images?
 
@@ -584,12 +524,22 @@
              * @param template
              * @private
              */
-            function injectWrappers( template ) {
+            function _injectWrappers( template ) {
               var wrappers = template.wrapper || [];
 
               _.forEach( wrappers, function( wrapperName ) {
                 if ( !iscFormsTemplateService.isWrapperRegistered( wrapperName ) ) {
-                  secondaryPromises.push( getWrapper( wrapperName ) );
+                  var wrapperPromise = iscFormsApi.getTemplate( 'wrappers/' + wrapperName )
+                    .then( function( wrapperMarkup ) {
+                      iscFormsTemplateService.registerWrapper(
+                        {
+                          "name"    : wrapperName,
+                          "template": wrapperMarkup
+                        }
+                      );
+                      return true;
+                    } );
+                  secondaryPromises.push( wrapperPromise );
                 }
               } );
             }
@@ -601,14 +551,19 @@
              * @param template
              * @private
              */
-            function injectHtml( template ) {
+            function _injectHtml( template ) {
               var templateHtml = template.templateUrl;
 
               // If a templateUrl is specified in the custom template,
               // and it has not been loaded yet, load and cache it now.
               if ( templateHtml ) {
                 if ( !$templateCache.get( templateHtml ) ) {
-                  secondaryPromises.push( getHtml( templateName, templateHtml ) );
+                  var htmlPromise = iscFormsApi.getTemplate( 'html/' + templateName + '/' + templateHtml )
+                    .then( function( templateMarkup ) {
+                      $templateCache.put( templateHtml, templateMarkup );
+                      return true;
+                    } );
+                  secondaryPromises.push( htmlPromise );
                 }
               }
             }
@@ -621,35 +576,35 @@
              * but modified to write in a dynamic style tag rather than a static file.
              * @private
              */
-            function injectCss() {
+            function _injectCss() {
               var cssPromise = iscFormsApi.getTemplate( 'css/' + templateName ).then(
                 function( stylesheet ) {
                   // Stylesheet is optional and not specified by the FDN,
                   // so the only way to find out if there is one is to ask for it.
                   // Expect the server to send a 204 (not 404) if no stylesheet was found.
                   if ( stylesheet ) {
-                    stylesheetLoaded( stylesheet );
+                    _stylesheetLoaded( stylesheet );
                   }
-                }, stylesheetNotFound );
+                }, _stylesheetNotFound );
 
               secondaryPromises.push( cssPromise );
 
-              function stylesheetLoaded( stylesheet ) {
+              function _stylesheetLoaded( stylesheet ) {
                 if ( !angular.element( 'style#' + templateName ).length ) {
-                  var style = createStyle( templateName, stylesheet );
+                  var style = _createStyle( templateName, stylesheet );
                   angular.element( 'head' ).append( style );
                 }
                 return true;
               }
 
-              function stylesheetNotFound() {
+              function _stylesheetNotFound() {
                 // This may happen if there is no custom stylesheet for this template
                 // but the server is configured to send a 404.
                 return true;
               }
 
               // Creates the style element
-              function createStyle( id, styles ) {
+              function _createStyle( id, styles ) {
                 var style       = $window.document.createElement( 'style' );
                 style.id        = id;
                 style.innerHTML = styles;
@@ -660,27 +615,6 @@
         } );
 
         return deferred.promise;
-      }
-
-      function getWrapper( wrapperName ) {
-        return iscFormsApi.getTemplate( 'wrappers/' + wrapperName )
-          .then( function( wrapperMarkup ) {
-            iscFormsTemplateService.registerWrapper(
-              {
-                "name"    : wrapperName,
-                "template": wrapperMarkup
-              }
-            );
-            return true;
-          } );
-      }
-
-      function getHtml( templateName, templateHtml ) {
-        return iscFormsApi.getTemplate( 'html/' + templateName + '/' + templateHtml )
-          .then( function( templateMarkup ) {
-            $templateCache.put( templateHtml, templateMarkup );
-            return true;
-          } );
       }
     }
 
@@ -700,7 +634,7 @@
         }
         else if ( field.type ) {
           var data              = _.get( field, 'data', {} );
-          var ancestorDataStack = _.compact( getAncestors( field.type ) ),
+          var ancestorDataStack = _.compact( _getAncestors( field.type ) ),
               ancestorData;
 
           while ( ( ancestorData = ancestorDataStack.pop() ) !== undefined ) {
@@ -718,7 +652,7 @@
        * @returns {Array}
        * @private
        */
-      function getAncestors( type ) {
+      function _getAncestors( type ) {
         var stack    = [],
             template = iscFormsTemplateService.getRegisteredType( type );
         if ( template ) {
@@ -729,7 +663,7 @@
           }
           // If this ancestor has more ancestors, recurse through them
           if ( template.extends ) {
-            stack = stack.concat( getAncestors( template.extends ) );
+            stack = stack.concat( _getAncestors( template.extends ) );
           }
         }
         return stack;
@@ -744,9 +678,6 @@
      */
     function replaceTemplates( fields ) {
       _.forEach( fields, function( field ) {
-        var registeredType = iscFormsTemplateService.getRegisteredType( field.type ),
-            extendsType    = _.get( field, 'extends' ) || _.get( registeredType, 'extends' );
-
         if ( field.fieldGroup ) {
           replaceTemplates( field.fieldGroup );
         }
@@ -764,18 +695,15 @@
             // Collections handle view mode on their own.
             // field.key is the data path into the model, so if this is not present,
             // there is no model (e.g., an "instructions" template or arbitrary html).
-            if ( field.type && field.type !== 'embeddedFormCollection' && extendsType !== 'embeddedFormCollection' && field.key ) {
-              var viewModeType       = viewModePrefix + field.type;
-              var registeredViewType = iscFormsTemplateService.getRegisteredType( viewModeType );
-              if ( !registeredViewType ) {
+            if ( field.type && field.type !== 'embeddedFormCollection' && field.key ) {
+              var viewModeType   = viewModePrefix + field.type;
+              var registeredType = iscFormsTemplateService.getRegisteredType( viewModeType );
+              if ( !registeredType ) {
                 iscFormsTemplateService.registerType(
                   {
                     'name'       : viewModeType,
                     'extends'    : field.type,
                     'templateUrl': defaultViewTemplateUrl
-                  },
-                  {
-                    excludeFromWidgetLibrary: true
                   }
                 );
               }

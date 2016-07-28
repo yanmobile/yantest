@@ -32,7 +32,7 @@
         model       : '=',
         options     : '=',
         formTitle   : '=',
-        breadcrumbs : '=',
+        breadcrumbs : '=?',
         multiConfig : '=',
         singleConfig: '='
       },
