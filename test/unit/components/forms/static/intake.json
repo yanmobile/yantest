@@ -212,6 +212,27 @@
       "hideExpression" : "!model.RequiredInput",
       "fields"         : [
       ]
+    },
+    {
+      "name"   : "Page 6 - Misc",
+      "fields" : [
+        {
+          "fieldGroup" : [
+            {
+              "type" : "instructions",
+              "data" : {
+                "content"          : "This is hidden",
+                "hideIfGroupEmpty" : true
+              }
+            },
+            {
+              "key"  : "testHidden",
+              "type" : "input",
+              "hide" : true
+            }
+          ]
+        }
+      ]
     }
   ]
 }

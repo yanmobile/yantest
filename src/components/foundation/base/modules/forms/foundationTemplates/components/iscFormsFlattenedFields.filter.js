@@ -44,7 +44,7 @@
       if ( field.fieldGroup ) {
         return flattenFields( field.fieldGroup, annotationState );
       }
-      else if ( !_.startsWith( field.type, 'embeddedForm' ) && !_.get( field, 'data.hideInTable' ) ) {
+      else if ( showInTable( field ) ) {
         return [].concat(
           angular.extend(
             {
@@ -65,6 +65,12 @@
       }
       else {
         return [];
+      }
+
+      function showInTable( field ) {
+        return !_.startsWith( field.type, 'embeddedForm' )
+          && field.type !== 'instructions'
+          && !_.get( field, 'data.hideInTable' );
       }
     }
 

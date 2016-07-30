@@ -201,7 +201,7 @@
         // Fields
         var tableColumns = _.map( self.flattenedFields, function( field ) {
           return {
-            key             : field.label,
+            key             : _.capitalize( field.label ),
             model           : field.model,
             templateUrl     : self.annotationWrapper,
             hasAnnotations  : field.hasAnnotations,
