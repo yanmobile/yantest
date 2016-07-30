@@ -1,4 +1,4 @@
-( function() {
+(function() {
   'use strict';
 
   angular.module( 'isc.forms' )
@@ -62,7 +62,7 @@
       }, self );
 
       // Option for forcing any form-level settings for a particular form instance
-      _.merge(self.formDefinition.form, _.get(self.formConfig, 'forceFdn', {}));
+      _.merge( self.formDefinition.form, _.get( self.formConfig, 'forceFdn', {} ) );
 
       self.additionalModels = _.get( self.formConfig, 'additionalModels', {} );
 
@@ -169,18 +169,35 @@
         // can use ng-messages, but each notification has its own ng-messages collection.
         var alerts = {};
 
-        _.forEach( mainFormErrors, function( error ) {
-          _.forEach( error, function( errorType ) {
-            _.forEach( errorType, function( errorInstance ) {
-              var fieldScope        = iscNotificationService.getFieldScope( errorInstance.$name );
-              alerts[fieldScope.id] = {
-                $error  : error,
-                options : fieldScope.options,
-                scrollTo: fieldScope.id
-              };
+        createMainAlerts( mainFormErrors );
+
+        function createMainAlerts( $error ) {
+          _.forEach( $error, function( error ) {
+            _.forEach( error, function( errorType ) {
+              _.forEach( errorType, function( errorInstance ) {
+                var fieldScope = iscNotificationService.getFieldScope( errorInstance.$name );
+                if ( !_.isEmpty( fieldScope ) ) {
+                  alerts[fieldScope.id] = {
+                    $error  : error,
+                    options : fieldScope.options,
+                    scrollTo: fieldScope.id
+                  };
+                }
+                else {
+                  // Recurse for embedded forms
+                  if ( _.some( errorInstance.$error, function( errorType ) {
+                      return _.isArray( errorType );
+                    } )
+                  ) {
+                    createMainAlerts( {
+                      embeddedForm: errorInstance.$error
+                    } );
+                  }
+                }
+              } );
             } );
           } );
-        } );
+        }
 
         _.forEach( alerts, function( alert ) {
           iscNotificationService.showAlert( alert );
@@ -332,5 +349,5 @@
       }
     }
   }
-} )
+})
 ();
