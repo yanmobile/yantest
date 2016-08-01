@@ -6,7 +6,8 @@
 
   /* @ngInject */
   function iscStateInit( $q ) {
-    var initFunctions = {};
+    var initFunctions = {},
+        hasRun        = false;
 
     return {
       run   : run,
@@ -23,7 +24,7 @@
       var functions = configuration.initFunctions;
       if ( functions ) {
         if ( _.isArray( functions ) ) {
-          console.log (functions);
+          console.log( functions );
           _.forEach( functions, function( fn ) {
             initFunctions[( getNextKey() ).toString()] = fn;
           } );
@@ -51,21 +52,26 @@
 
     /**
      * Executes all functions provided to config and returns a promise with all the resolutions.
+     * @param forceRun - If truthy, forces the init functions to run even if they
+     * have already been run
      * @returns {Promise}
      */
-    function run() {
+    function run( forceRun ) {
       var promises    = {};
       var initPromise = $q.defer();
 
-      _.forEach( initFunctions, function( fn, name ) {
-        if ( _.isFunction( fn ) ) {
-          var deferred   = $q.defer();
-          promises[name] = deferred.promise;
-          fn().then( function( results ) {
-            deferred.resolve( results );
-          } );
-        }
-      } );
+      if ( !hasRun || forceRun ) {
+        hasRun = true;
+        _.forEach( initFunctions, function( fn, name ) {
+          if ( _.isFunction( fn ) ) {
+            var deferred   = $q.defer();
+            promises[name] = deferred.promise;
+            fn().then( function( results ) {
+              deferred.resolve( results );
+            } );
+          }
+        } );
+      }
 
       $q.all( promises ).then( function( results ) {
         initPromise.resolve( results );

@@ -47,14 +47,19 @@
         expect( testFunctions['0'] ).toHaveBeenCalled();
         expect( testFunctions['1'] ).not.toHaveBeenCalled();
 
-        // Add additional functions to run as object properties
+        // Add additional functions to run as object config
         suite.iscStateInit.config( {
           initFunctions: {
             'foo1': testFunctions['1']
           }
         } );
-        suite.iscStateInit.run();
 
+        // If not forcing the init to run, the function just added will not have run
+        suite.iscStateInit.run();
+        expect( testFunctions['1'] ).not.toHaveBeenCalled();
+
+        // So run with force run = true
+        suite.iscStateInit.run( true );
         expect( testFunctions['0'] ).toHaveBeenCalled();
         expect( testFunctions['1'] ).toHaveBeenCalled();
         expect( testFunctions['2'] ).not.toHaveBeenCalled();
@@ -76,7 +81,7 @@
           }
         } );
 
-        suite.iscStateInit.run().then( function( results ) {
+        suite.iscStateInit.run( true ).then( function( results ) {
           // All init functions are resolved at once, with the results of all calls
           expect( results ).toEqual( {
             '0'   : {},
