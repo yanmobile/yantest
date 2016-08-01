@@ -24,7 +24,6 @@
       var functions = configuration.initFunctions;
       if ( functions ) {
         if ( _.isArray( functions ) ) {
-          console.log( functions );
           _.forEach( functions, function( fn ) {
             initFunctions[( getNextKey() ).toString()] = fn;
           } );
