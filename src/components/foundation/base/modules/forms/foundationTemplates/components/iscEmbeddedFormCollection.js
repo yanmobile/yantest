@@ -314,6 +314,7 @@
         }
         self.ngModelCtrl.$commitViewValue();
         self.ngModelCtrl.$setTouched();
+        self.ngModelCtrl.$setDirty();
         self.ngModelCtrl.$validate();
       }
 
