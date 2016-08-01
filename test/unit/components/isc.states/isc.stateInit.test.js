@@ -5,14 +5,13 @@
     var suite;
 
     useDefaultModules( 'isc.states' );
-
-
+    
     beforeEach( inject( function( $q, $timeout, iscStateInit ) {
-      suite = window.createSuite();
-
-      suite.$q           = $q;
-      suite.$timeout     = $timeout;
-      suite.iscStateInit = iscStateInit;
+      suite = window.createSuite( {
+        $q          : $q,
+        $timeout    : $timeout,
+        iscStateInit: iscStateInit
+      } );
     } ) );
 
 
