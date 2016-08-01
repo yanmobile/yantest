@@ -5,7 +5,7 @@
     var suite;
 
     useDefaultModules( 'isc.states' );
-    
+
     beforeEach( inject( function( $q, $timeout, iscStateInit ) {
       suite = window.createSuite( {
         $q          : $q,
@@ -15,7 +15,7 @@
     } ) );
 
 
-    describe( 'iscFormApi', function() {
+    describe( 'iscStateInit', function() {
       it( 'should have revealed functions', function() {
         expect( _.isFunction( suite.iscStateInit.config ) ).toBe( true );
         expect( _.isFunction( suite.iscStateInit.run ) ).toBe( true );
