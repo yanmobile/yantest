@@ -5,8 +5,13 @@
       iscStateProvider.state( getTopNavTabs() );
     } )
 
-    .run( function( iscFormlyFoundationTemplates ) {
+    .run( function( iscFormlyFoundationTemplates, iscStateInit, iscFormsCodeTableApi ) {
       iscFormlyFoundationTemplates.init();
+      iscStateInit.config({
+        initFunctions : {
+          'codeTableApi' : iscFormsCodeTableApi.loadAll
+        }
+      });
     } );
 
   function getTopNavTabs() {

@@ -1,4 +1,4 @@
-( function() {
+(function() {
   'use strict';
 
   angular.module( 'isc.states' )
@@ -23,13 +23,28 @@
       var functions = configuration.initFunctions;
       if ( functions ) {
         if ( _.isArray( functions ) ) {
-          var key = 0;
+          console.log (functions);
           _.forEach( functions, function( fn ) {
-            initFunctions[( key++ ).toString()] = fn;
+            initFunctions[( getNextKey() ).toString()] = fn;
           } );
         }
         else if ( _.isObject( functions ) ) {
-          initFunctions = functions;
+          _.forEach( functions, function( fn, name ) {
+            _.set( initFunctions, name, fn );
+          } );
+        }
+      }
+
+      // Fills in an auto-index key
+      function getNextKey( startKey ) {
+        var key = parseInt( startKey );
+        key     = _.isNaN( key ) ? 0 : key;
+
+        if ( !initFunctions.hasOwnProperty( key.toString() ) ) {
+          return key;
+        }
+        else {
+          return getNextKey( ++key );
         }
       }
     }
@@ -60,5 +75,5 @@
     }
   }//END CLASS
 
-} )();
+})();
 

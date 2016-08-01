@@ -12,13 +12,12 @@
       } );
 
     beforeEach( inject( function( iscFormsModel, iscFormsApi, iscFormDataApi,
-      $httpBackend, $timeout, $q ) {
+      $httpBackend, $timeout ) {
       suite.model       = iscFormsModel;
       suite.api         = iscFormsApi;
       suite.dataApi     = iscFormDataApi;
       suite.httpBackend = $httpBackend;
       suite.timeout     = $timeout;
-      suite.q           = $q;
 
       mockFormResponses( suite.httpBackend );
     } ) );
