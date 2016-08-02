@@ -274,12 +274,12 @@
             } );
           }
 
-          // If an FDN-specified dataModelInit function is indicated, fetch this as a user script
-          if ( form.dataModelInit ) {
-            var scriptPromise = iscFormsApi.getUserScript( form.dataModelInit )
+          // If an FDN-specified additionalModelInit function is indicated, fetch this as a user script
+          if ( form.additionalModelInit ) {
+            var scriptPromise = iscFormsApi.getUserScript( form.additionalModelInit )
               .then( function( response ) {
                 var script         = parseScript( response );
-                form.dataModelInit = (function( iscHttpapi ) {
+                form.additionalModelInit = (function( iscHttpapi ) {
                   return script;
                 })();
                 return true;

@@ -418,7 +418,7 @@
             self.formDefinition                = formDefinition;
             self.options.formState._validateOn = formDefinition.form.validateOn;
 
-            populateAdditionalModels( self.formDefinition.form.dataModelInit );
+            populateAdditionalModels( self.formDefinition.form.additionalModelInit );
           } );
       }
 
