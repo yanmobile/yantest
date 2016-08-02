@@ -11,8 +11,8 @@ var resetMockFormStore = function() {
         "status"     : "Active"
       },
       {
-        "formKey"    : "intake",
-        "formName"   : "Intake Form",
+        "formKey"    : "comprehensive",
+        "formName"   : "Comprehensive Form",
         "formType"   : "initial",
         "createdDate": "2016-01-29T16:32:50.190Z",
         "status"     : "Active"
@@ -26,7 +26,7 @@ var resetMockFormStore = function() {
       },
       {
         "formKey"    : "sample",
-        "formName"   : "Sample Intake Form",
+        "formName"   : "Sample Comprehensive Form",
         "formType"   : "initial",
         "createdDate": "2016-02-25T23:42:14.037Z",
         "status"     : "Inactive"
@@ -90,8 +90,8 @@ var sampleCloseout = {
   "id"         : 1
 };
 var sampleDDPData  = {
-  "formKey"    : "intake",
-  "formName"   : "Intake Form",
+  "formKey"    : "comprehensive",
+  "formName"   : "Comprehensive Form",
   "formType"   : "initial",
   "id"         : 2,
   "author"     : {
@@ -229,8 +229,8 @@ var mockComponentData = {
 };
 
 var sampleIntake = {
-  "formKey" : "intake",
-  "formName": "Intake Form",
+  "formKey" : "comprehensive",
+  "formName": "Comprehensive Form",
   "id"      : 3,
   "data"    : {
     "form"   : {

@@ -1,12 +1,12 @@
 {
-  "name"          : "Sample Intake Form",
-  "dataModelInit" : "loadPatient",
-  "pageLayout"    : "scrolling",
-  "validateOn"    : "change",
-  "autosave"      : {
+  "name"                : "Sample Comprehensive Form",
+  "additionalModelInit" : "loadPatient",
+  "pageLayout"          : "scrolling",
+  "validateOn"          : "change",
+  "autosave"            : {
     "trigger" : "pageChange"
   },
-  "pages"         : [
+  "pages"               : [
     {
       "name"   : "Page 1 - Built-in Templates",
       "fields" : [

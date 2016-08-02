@@ -85,7 +85,7 @@
     describe( 'model.setFormStatus', function() {
       it( 'should set the status of the given formType', function() {
         var formType            = 'initial',
-            currentlyActiveForm = 'intake',
+            currentlyActiveForm = 'comprehensive',
             formToActivate      = {
               formKey: 'sample',
               status : 'Active'
@@ -113,7 +113,7 @@
 
     describe( 'model.getFormDefinition', function() {
       it( 'should get the form definition', function() {
-        var formKey    = 'intake',
+        var formKey    = 'comprehensive',
             subformKey = 'embeddableSubform';
         spyOn( suite.api, 'getFormDefinition' ).and.callThrough();
         spyOn( suite.api, 'getUserScript' ).and.callThrough();
@@ -143,7 +143,7 @@
                   subforms = response.subforms;
 
               expect( _.isObject( form ) ).toBe( true );
-              expect( form.name ).toEqual( 'Sample Intake Form' );
+              expect( form.name ).toEqual( 'Sample Comprehensive Form' );
 
               expect( subforms[subformKey] ).toBeDefined();
               expect( _.isArray( subforms[subformKey] ) ).toBe( true );
@@ -154,7 +154,7 @@
 
     describe( 'model.getFormDefinition', function() {
       it( 'should exercise view mode outside the cache', function() {
-        var formKey = 'intake';
+        var formKey = 'comprehensive';
 
         test( 'view' );
         suite.httpBackend.flush();
@@ -215,7 +215,7 @@
 
     describe( 'model.getValidationDefinition', function() {
       it( 'should get the validation definition for the form', function() {
-        var formKey = 'intake';
+        var formKey = 'comprehensive';
 
         test(); // test initial API fetch
         suite.httpBackend.flush();
