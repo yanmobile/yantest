@@ -181,6 +181,16 @@
               "templateUrl" : "testViewMode.html"
             }
           }
+        },
+        {
+          "key"             : "sampleBuiltInWithCustomWrapper",
+          "type"            : "input",
+          "wrapper"         : [
+            "customWrapperForBuiltIn"
+          ],
+          "templateOptions" : {
+            "label" : "Here is a built-in field that uses a custom wrapper"
+          }
         }
       ]
     },

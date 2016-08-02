@@ -138,6 +138,7 @@
               expect( suite.api.getTemplate ).toHaveBeenCalledWith( "html/customTemplate/customTemplate.input.html" );
               expect( suite.api.getTemplate ).toHaveBeenCalledWith( "css/customTemplate" );
               expect( suite.api.getTemplate ).toHaveBeenCalledWith( "wrappers/customWrapper" );
+              expect( suite.api.getTemplate ).toHaveBeenCalledWith( "wrappers/customWrapperForBuiltIn" );
 
               var form     = response.form,
                   subforms = response.subforms;

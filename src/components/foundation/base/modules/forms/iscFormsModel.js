@@ -192,7 +192,7 @@
         } )
           .then( function( formDefinition ) {
             _.forEach( formDefinition.form.pages, function( page ) {
-              _getEmbeddedForms( page.fields, formDefinition.subforms );
+              getEmbeddedForms( page.fields, formDefinition.subforms );
             } );
 
             _.set( _validationCache, cacheKey, validations );
@@ -202,13 +202,13 @@
 
       return deferred.promise;
 
-      function _getEmbeddedForms( fields, subforms ) {
+      function getEmbeddedForms( fields, subforms ) {
         _.forEach( fields, function( field ) {
           var registeredType = iscFormsTemplateService.getRegisteredType( field.type ),
               extendsType    = _.get( field, 'extends' ) || _.get( registeredType, 'extends' );
 
           if ( field.fieldGroup ) {
-            _getEmbeddedForms( field.fieldGroup, subforms );
+            getEmbeddedForms( field.fieldGroup, subforms );
           }
           // If a collection, register it with the validation safety net
           else if ( field.type === 'embeddedFormCollection' || extendsType === 'embeddedFormCollection' ) {
@@ -266,11 +266,11 @@
 
           // Subform-only definitions are a bare array
           if ( _.isArray( form ) ) {
-            primaryPromises = primaryPromises.concat( _processFields( form ) );
+            primaryPromises = primaryPromises.concat( processFields( form ) );
           }
           else {
             _.forEach( form.pages, function( page ) {
-              primaryPromises = primaryPromises.concat( _processFields( page.fields ) );
+              primaryPromises = primaryPromises.concat( processFields( page.fields ) );
             } );
           }
 
@@ -281,7 +281,7 @@
                 var script         = parseScript( response );
                 form.additionalModelInit = (function( iscHttpapi ) {
                   return script;
-                })();
+                })( iscHttpapi );
                 return true;
               } );
             primaryPromises.push( scriptPromise );
@@ -332,12 +332,13 @@
            * @returns {Array}
            * @private
            */
-          function _processFields( fields ) {
+          function processFields( fields ) {
             var fieldPromises = [];
             _.forEach( fields, function( field ) {
               var expProps       = _.get( field, 'expressionProperties', {} ),
                   label          = _.get( field, 'templateOptions.label' ),
                   type           = _.get( field, 'type' ),
+                  wrappers       = _.get( field, 'wrapper' ),
                   fieldGroup     = _.get( field, 'fieldGroup' ),
                   data           = _.get( field, 'data', {} ),
                   registeredType = iscFormsTemplateService.getRegisteredType( type ),
@@ -347,7 +348,7 @@
 
               // A field group does not have its own type, but contains fields in the fieldGroup array
               if ( fieldGroup ) {
-                fieldPromises = fieldPromises.concat( _processFields( fieldGroup ) );
+                fieldPromises = fieldPromises.concat( processFields( fieldGroup ) );
               }
 
               // If type has not been specified, this is arbitrary html written into a template tag, so skip it.
@@ -357,13 +358,13 @@
 
               // If this is a nested form, recurse the process for its child fields
               if ( isForm || isCollection ) {
-                _processEmbeddedForm( field, data, isCollection );
+                processEmbeddedForm( field, data, isCollection );
               }
 
               else {
                 // If a user script is provided, this needs to be loaded and parsed
                 if ( data.userScript ) {
-                  _processUserScript( field, data.userScript );
+                  processUserScript( field, data.userScript );
                 }
 
                 // Translate the label if no label expression has been set
@@ -389,13 +390,21 @@
 
                 // If the type is not already registered, load it and register it with formly
                 if ( !iscFormsTemplateService.isTypeRegistered( type ) ) {
-                  _getCustomTemplate( type );
+                  getCustomTemplate( type );
+                }
+                // If a non-custom form has custom wrappers, load them
+                else if ( wrappers ) {
+                  _.forEach( wrappers, function( wrapperName ) {
+                    if ( !iscFormsTemplateService.isWrapperRegistered( wrapperName ) ) {
+                      fieldPromises.push( getWrapper( wrapperName ) );
+                    }
+                  } );
                 }
               }
             } );
             return fieldPromises;
 
-            function _processUserScript( field, scriptName ) {
+            function processUserScript( field, scriptName ) {
               var scriptPromise = iscFormsApi.getUserScript( scriptName )
                 .then( function( response ) {
                   var script = parseScript( response ),
@@ -416,7 +425,7 @@
              * Processes an embeddedForm or embeddedFormCollection
              * @private
              */
-            function _processEmbeddedForm( field, data, isCollection ) {
+            function processEmbeddedForm( field, data, isCollection ) {
               var embeddedType = data.embeddedType,
                   embeddedPage = data.embeddedPage;
 
@@ -490,7 +499,7 @@
                   );
                 }
 
-                fieldPromises = fieldPromises.concat( _processFields( _.get( field, 'templateOptions.fields' ) ) );
+                fieldPromises = fieldPromises.concat( processFields( _.get( field, 'templateOptions.fields' ) ) );
               }
             }
           }
@@ -502,10 +511,10 @@
            * @param templateName
            * @private
            */
-          function _getCustomTemplate( templateName ) {
+          function getCustomTemplate( templateName ) {
             var scriptPromise = iscFormsApi.getTemplate( "js/" + templateName )
               .then( function( response ) {
-                _processScript( response );
+                processScript( response );
                 return true;
               } );
             primaryPromises.push( scriptPromise );
@@ -517,12 +526,12 @@
              * @returns {Object}
              * @private
              */
-            function _processScript( response ) {
+            function processScript( response ) {
               var template = parseScript( response );
 
-              _injectWrappers( template );
-              _injectHtml( template );
-              _injectCss();
+              injectWrappers( template );
+              injectHtml( template );
+              injectCss();
 
               // TODO - load other assets such as images?
 
@@ -539,22 +548,12 @@
              * @param template
              * @private
              */
-            function _injectWrappers( template ) {
+            function injectWrappers( template ) {
               var wrappers = template.wrapper || [];
 
               _.forEach( wrappers, function( wrapperName ) {
                 if ( !iscFormsTemplateService.isWrapperRegistered( wrapperName ) ) {
-                  var wrapperPromise = iscFormsApi.getTemplate( 'wrappers/' + wrapperName )
-                    .then( function( wrapperMarkup ) {
-                      iscFormsTemplateService.registerWrapper(
-                        {
-                          "name"    : wrapperName,
-                          "template": wrapperMarkup
-                        }
-                      );
-                      return true;
-                    } );
-                  secondaryPromises.push( wrapperPromise );
+                  secondaryPromises.push( getWrapper( wrapperName ) );
                 }
               } );
             }
@@ -566,19 +565,14 @@
              * @param template
              * @private
              */
-            function _injectHtml( template ) {
+            function injectHtml( template ) {
               var templateHtml = template.templateUrl;
 
               // If a templateUrl is specified in the custom template,
               // and it has not been loaded yet, load and cache it now.
               if ( templateHtml ) {
                 if ( !$templateCache.get( templateHtml ) ) {
-                  var htmlPromise = iscFormsApi.getTemplate( 'html/' + templateName + '/' + templateHtml )
-                    .then( function( templateMarkup ) {
-                      $templateCache.put( templateHtml, templateMarkup );
-                      return true;
-                    } );
-                  secondaryPromises.push( htmlPromise );
+                  secondaryPromises.push( getHtml( templateName, templateHtml ) );
                 }
               }
             }
@@ -591,35 +585,35 @@
              * but modified to write in a dynamic style tag rather than a static file.
              * @private
              */
-            function _injectCss() {
+            function injectCss() {
               var cssPromise = iscFormsApi.getTemplate( 'css/' + templateName ).then(
                 function( stylesheet ) {
                   // Stylesheet is optional and not specified by the FDN,
                   // so the only way to find out if there is one is to ask for it.
                   // Expect the server to send a 204 (not 404) if no stylesheet was found.
                   if ( stylesheet ) {
-                    _stylesheetLoaded( stylesheet );
+                    stylesheetLoaded( stylesheet );
                   }
-                }, _stylesheetNotFound );
+                }, stylesheetNotFound );
 
               secondaryPromises.push( cssPromise );
 
-              function _stylesheetLoaded( stylesheet ) {
+              function stylesheetLoaded( stylesheet ) {
                 if ( !angular.element( 'style#' + templateName ).length ) {
-                  var style = _createStyle( templateName, stylesheet );
+                  var style = createStyle( templateName, stylesheet );
                   angular.element( 'head' ).append( style );
                 }
                 return true;
               }
 
-              function _stylesheetNotFound() {
+              function stylesheetNotFound() {
                 // This may happen if there is no custom stylesheet for this template
                 // but the server is configured to send a 404.
                 return true;
               }
 
               // Creates the style element
-              function _createStyle( id, styles ) {
+              function createStyle( id, styles ) {
                 var style       = $window.document.createElement( 'style' );
                 style.id        = id;
                 style.innerHTML = styles;
@@ -630,6 +624,27 @@
         } );
 
         return deferred.promise;
+      }
+
+      function getWrapper( wrapperName ) {
+        return iscFormsApi.getTemplate( 'wrappers/' + wrapperName )
+          .then( function( wrapperMarkup ) {
+            iscFormsTemplateService.registerWrapper(
+              {
+                "name"    : wrapperName,
+                "template": wrapperMarkup
+              }
+            );
+            return true;
+          } );
+      }
+
+      function getHtml( templateName, templateHtml ) {
+        return iscFormsApi.getTemplate( 'html/' + templateName + '/' + templateHtml )
+          .then( function( templateMarkup ) {
+            $templateCache.put( templateHtml, templateMarkup );
+            return true;
+          } );
       }
     }
 
@@ -649,7 +664,7 @@
         }
         else if ( field.type ) {
           var data              = _.get( field, 'data', {} );
-          var ancestorDataStack = _.compact( _getAncestors( field.type ) ),
+          var ancestorDataStack = _.compact( getAncestors( field.type ) ),
               ancestorData;
 
           while ( ( ancestorData = ancestorDataStack.pop() ) !== undefined ) {
@@ -667,7 +682,7 @@
        * @returns {Array}
        * @private
        */
-      function _getAncestors( type ) {
+      function getAncestors( type ) {
         var stack    = [],
             template = iscFormsTemplateService.getRegisteredType( type );
         if ( template ) {
@@ -678,7 +693,7 @@
           }
           // If this ancestor has more ancestors, recurse through them
           if ( template.extends ) {
-            stack = stack.concat( _getAncestors( template.extends ) );
+            stack = stack.concat( getAncestors( template.extends ) );
           }
         }
         return stack;
