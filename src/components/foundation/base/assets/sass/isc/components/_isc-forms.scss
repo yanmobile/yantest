@@ -238,6 +238,10 @@ $form-label-font-weight: $font-weight-semi-bold !default;
 
   /* Checkboxes & Radio Inputs - Multi */
 
+  .check-list, .single-checkbox, .formly-field-radio {
+    margin-bottom: $input-bottom-margin;
+  }
+
   /* Input Lists */
   ul.radio-list,
   ul.check-list {
