@@ -80,25 +80,6 @@ $section-title-margin: 0 0 2rem 0 !default;
 
   .sub-section {padding: $subsection-padding;}
 
-  // Form Sections (Major)
-  .form-section {
-    @include grid-block;
-    @include grid-size(expand);
-    @include grid-orient(vertical);
-    @include grid-wrap(false);
-    @include grid-align(center);
-    @include grid-order(0);
-    padding: 1rem 0 1rem 0;
-    margin-bottom: 2rem;
-    overflow: visible;
-    overflow-y: visible;
-    display: -ms-flexbox;
-    -ms-flex-flow: column nowrap;
-    -ms-flex-align: stretch;
-
-    &.top {padding-top: 0;}
-  }
-
   .grid-content .grid-block {
     margin-left: 0;
     margin-right: 0;
