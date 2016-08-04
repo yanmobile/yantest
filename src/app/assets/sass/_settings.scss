@@ -13,22 +13,23 @@
 //  8.  Accordion
 //  9.  Action Sheet
 //  10. Block List
-//  11. Card
-//  12. Extras
-//  13. Forms
-//  14. Icons
-//  15. Labels & Badges
-//  16. Menu Bar
-//  17. Modal
-//  18. Notification
-//  19. Off-canvas
-//  20. Pagination
-//  21. Panel
-//  22. Popup
-//  23. Tables
-//  24. Tabs
-//  25. Title Bar
-//  26. Tooltips
+//  11. Breadcrumbs
+//  12. Card
+//  13. Extras
+//  14. Forms
+//  15. Icons
+//  16. Labels & Badges
+//  17. Menu Bar
+//  18. Modal
+//  19. Notification
+//  20. Off-canvas
+//  21. Pagination
+//  22. Panel
+//  23. Popup
+//  24. Tables
+//  25. Tabs
+//  26. Title Bar
+//  27. Tooltips
 
 @import "../../../components/foundation/base/bower_components/foundation-apps/scss/helpers/functions";
 @import "../../../components/foundation/base/assets/sass/isc/helpers/isc-variables";
@@ -355,7 +356,14 @@ $blocklist-header-uppercase: true;
 $blocklist-check-icons: true;
 
 
-// 11. CARD
+// 11. BREADCRUMBS
+/* ------------------------------ */
+$breadcrumb-margin: 2rem;
+$breadcrumb-color: $primary-nav-background;
+$breadcrumb-color-inverse: $app-bar-link-color;
+
+
+// 12. CARD
 /* ------------------------------ */
 $card-background: #fff;
 $card-color: isitlight($card-background, $body-font-color, $light-text);
@@ -367,7 +375,7 @@ $card-margin: 0.5rem;
 $card-divider-background: smartscale($card-background, 7%);
 
 
-// 12. EXTRAS
+// 13. EXTRAS
 /* ------------------------------ */
 $closebutton-position: (top right);
 $closebutton-size: 2em;
@@ -379,9 +387,10 @@ $thumbnail-padding: 0.5rem;
 $thumbnail-shadow: $shadow-2dp;
 
 
-// 13. FORMS
+// 14. FORMS
 /* ------------------------------ */
 $form-outer-padding: 2rem;
+$input-bottom-margin: 2rem;
 
 /* Text Fields */
 $input-color: $body-font-color;
@@ -400,7 +409,7 @@ $input-cursor-disabled: not-allowed;
 $select-background-hover: smartscale($input-background, 4%);
 
 /* Labels */
-$form-label-margin: 0.75rem;
+$form-label-margin: 1rem;
 
 /* Range Slider */
 $slider-background: $gray;
@@ -431,7 +440,7 @@ $switch-paddle-color: white;
 $switch-paddle-offset: 4px;
 
 
-// 14. ICONS
+// 15. ICONS
 /* ------------------------------ */
 $default-icon-color: $body-font-color;
 $default-svg-icon-size: 1.25rem;
@@ -461,7 +470,7 @@ $icon-controls: (
 );
 
 
-// 15. LABELS & BADGES
+// 16. LABELS & BADGES
 /* ------------------------------ */
 $label-fontsize: 0.8rem;
 $label-padding: ($global-padding / 3) ($global-padding / 2);
@@ -475,7 +484,7 @@ $badge-background: $primary-color;
 $badge-color: isitlight($badge-background, $body-font-color, $light-text);
 
 
-// 16. MENU BAR
+// 17. MENU BAR
 /* ------------------------------ */
 $menubar-fontsize: 1rem;
 $menubar-background: transparent;
@@ -489,7 +498,7 @@ $menubar-icon-size: 1rem;
 $menubar-icon-spacing: $menubar-item-padding;
 
 
-// 17. MODAL
+// 18. MODAL
 /* ------------------------------ */
 $modal-zindex: 1000;
 $modal-sizes: (
@@ -500,7 +509,7 @@ $modal-sizes: (
  );
 
 
-// 18. NOTIFICATION
+// 19. NOTIFICATION
 /* ------------------------------ */
 $notification-default-position: right top;
 $notification-width: rem-calc(400);
@@ -514,7 +523,7 @@ $notification-icon-margin: $global-padding;
 $notification-icon-align: top;
 
 
-// 19. OFF-CANVAS
+// 20. OFF-CANVAS
 /* ------------------------------ */
 $offcanvas-size-horizontal: 250px;
 $offcanvas-size-vertical: 250px;
@@ -525,7 +534,7 @@ $offcanvas-shadow: 3px 0 10px rgba(black, 0.25);
 $offcanvas-animation-speed: 0.25s;
 
 
-// 20. PAGINATION
+// 21. PAGINATION
 /* ------------------------------ */
 // Structure
 $pagination-link-padding:        0 0.625rem;
@@ -551,7 +560,7 @@ $pagination-color-disabled:      $gray;
 $pagination-background-disabled: transparent;
 
 
-// 21. PANEL
+// 22. PANEL
 /* ------------------------------ */
 $panel-size-horizontal: 300px;
 $panel-size-vertical: 300px;
@@ -560,7 +569,7 @@ $panel-background: $neutral-color;
 $panel-shadow: 3px 0 10px rgba(black, 0.25);
 
 
-// 22. POPUP
+// 23. POPUP
 /* ------------------------------ */
 $popup-width: rem-calc(300);
 $popup-background: #fff;
@@ -569,7 +578,7 @@ $popup-radius: 0;
 $popup-shadow: 0 0 10px rgba(black, 0.25);
 
 
-// 23. TABLES
+// 24. TABLES
 /* ------------------------------ */
 /* General Table Styles */
 $table-background: white;
@@ -610,7 +619,7 @@ $tfoot-font-reduction: rem-calc(12);
 $table-title-font-reduction: rem-calc(16);
 
 
-// 24. TABS
+// 25. TABS
 /* ------------------------------ */
 $tabstrip-background: transparent;
 $tab-title-background: $neutral-color;
@@ -622,7 +631,7 @@ $tab-title-padding: $global-padding;
 $tab-content-padding: $global-padding;
 
 
-// 25. TITLE BAR
+// 26. TITLE BAR
 /* ------------------------------ */
 $titlebar-center-width: 50%;
 $titlebar-side-width: (100% - $titlebar-center-width) / 2;
@@ -632,7 +641,7 @@ $titlebar-border: 1px solid $app-border-color;
 $titlebar-padding: $global-padding;
 
 
-// 26. TOOLTIPS
+// 27. TOOLTIPS
 /* ------------------------------ */
 $tooltip-background: $primary-color;
 $tooltip-border: 1px solid smartscale($tooltip-background, 10%);
