@@ -278,7 +278,7 @@
           if ( form.additionalModelInit ) {
             var scriptPromise = iscFormsApi.getUserScript( form.additionalModelInit )
               .then( function( response ) {
-                var script         = parseScript( response );
+                var script               = parseScript( response );
                 form.additionalModelInit = (function( iscHttpapi ) {
                   return script;
                 })( iscHttpapi );
@@ -344,7 +344,8 @@
                   registeredType = iscFormsTemplateService.getRegisteredType( type ),
                   extendsType    = _.get( field, 'extends' ) || _.get( registeredType, 'extends' ),
                   isForm         = type === 'embeddedForm' || extendsType === 'embeddedForm',
-                  isCollection   = type === 'embeddedFormCollection' || extendsType === 'embeddedFormCollection';
+                  isCollection   = type === 'embeddedFormCollection' || extendsType === 'embeddedFormCollection',
+                  watcher        = _.get( field, 'watcher' );
 
               // A field group does not have its own type, but contains fields in the fieldGroup array
               if ( fieldGroup ) {
@@ -397,6 +398,25 @@
                   _.forEach( wrappers, function( wrapperName ) {
                     if ( !iscFormsTemplateService.isWrapperRegistered( wrapperName ) ) {
                       fieldPromises.push( getWrapper( wrapperName ) );
+                    }
+                  } );
+                }
+
+                if ( watcher ) {
+                  _.forEach( watcher, function( watch ) {
+                    // Angular does not support $watch listeners as expressions, but formly thinks it does.
+                    // So we need to wrap any watch listener that is an expression in a function.
+                    if ( watch.listener && !_.isFunction( watch.listener ) ) {
+                      var watchListener = watch.listener;
+                      // The formly watcher signature takes additional args of field and the watch's deregistration function.
+                      watch.listener = function( field, newVal, oldVal, scope, stop ) {
+                        scope.$eval( watchListener, {
+                          field : field,
+                          newVal: newVal,
+                          oldVal: oldVal,
+                          stop  : stop
+                        } );
+                      }
                     }
                   } );
                 }

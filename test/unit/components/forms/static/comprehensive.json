@@ -239,6 +239,18 @@
               "key"  : "testHidden",
               "type" : "input",
               "hide" : true
+            },
+            {
+              "key"     : "watcherTest",
+              "type"    : "instructions",
+              "watcher" : [
+                {
+                  "expression" : "model.form.components.templates.input.text",
+                  "listener"   : "options.formState.watcherFired = true",
+                  "watchDeep"  : false,
+                  "type"       : "$watch"
+                }
+              ]
             }
           ]
         }
