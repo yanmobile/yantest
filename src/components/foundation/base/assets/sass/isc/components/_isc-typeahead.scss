@@ -1,11 +1,14 @@
-/* Typeahead Settingd */
+/* Original Typeahead Styles
+ * Soon to be replaced with something better
+--------------------------------------------*/
+
+/* Typeahead Settings */
 $typeahead-font-size: 0.875rem !default;
 $typeahead-column-title-color: $header-font-color !default;
 $typeahead-column-title-size: 0.875rem !default;
 $typeahead-column-title-padding: 0.3125rem 0.25rem 0.25rem 0.25rem !default;
 $typeahead-highlight-color: $alert-color !default;
 
-/* Typeahead Styles */
 @include exports(typeahead) {
   .angucomplete-holder {
       position: relative;
@@ -126,6 +129,59 @@ $typeahead-highlight-color: $alert-color !default;
 
   .angucomplete-title > .highlight {
     color: $typeahead-highlight-color;
+  }
+
+  /* Typeahead */
+  .isc-dropdown-selection-list {
+    background-color: $button-background;
+    top:50px;
+    position:absolute;
+    left:550px;
+    visibility: visible;
+    border:1px solid $app-border-color;
+    z-index: $modal-z-index !important;
+  }
+
+  .isc-typeahead-list {
+    @extend .isc-dropdown-selection-list;
+
+    top: initial !important;
+    left: initial !important;
+    margin: 0;
+    margin-top: -2px;
+    list-style-type: none;
+    width: 100%;
+
+    li {
+      outline: none;
+      list-style-type: none;
+      padding: 0.25rem;
+
+      &:hover, &:focus {
+        background-color: $secondary-color;
+      }
+    }
+  }
+
+  input {
+    &.typeahead {
+      margin: 0;
+      box-shadow: none;
+      border-radius: $global-radius;
+      border: $input-border;
+      padding: 0.5rem;
+      display: block;
+      font-size: 1rem;
+      vertical-align: middle;
+      width: 100%;
+      overflow: visible;
+
+      ul {
+        margin: 0;
+      }
+    }
+
+    > div {width: 100%;}
   }
 
 }
