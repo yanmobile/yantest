@@ -37,6 +37,7 @@ function digest( suite ) {
 function getMinimalForm( formKey ) {
   return '<isc-form ' +
     'form-key="' + formKey + '" ' +
+    'form-config="localFormConfig"' +
     '></isc-form>'
 }
 
