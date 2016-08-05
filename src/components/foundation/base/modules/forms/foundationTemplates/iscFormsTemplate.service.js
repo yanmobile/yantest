@@ -378,7 +378,9 @@
           }
 
           function onModelChange() {
-            scope.$evalAsync( function() {
+            // $applyAsync to allow slightly more time for other fields' hideExpressions to be evaluated
+            // The other fields are the ones checked as element.siblings()
+            scope.$applyAsync( function() {
               element.css( 'display', element.siblings( '[formly-field]' ).length ? 'block' : 'none' );
             } );
           }
