@@ -163,6 +163,10 @@ $default-svg-icon-size: 1.25rem !default;
         color: scale-color($anchor-font-color, $lightness: 25%);
       }
     }
+
+    &:last-child {
+      margin-right: 0;
+    }
   }
 }
 
@@ -215,6 +219,10 @@ $default-svg-icon-size: 1.25rem !default;
         color: scale-color($color, $lightness: 25%);
       }
     }
+
+    &:last-child {
+      margin-right: 0;
+    }
   }
 }
 
@@ -257,6 +265,20 @@ $default-svg-icon-size: 1.25rem !default;
       background: transparent;
       border: none;
       box-shadow: none;
+      color: $anchor-font-color;
+      padding: 0;
+
+      @each $color in map-keys($theme-colors) {
+        &.#{$color} {
+
+          $color-name: map-get($theme-colors, $color);
+          color: $color-name;
+
+          &:hover, &:focus {
+            color: scale-color($color-name, $lightness: 25%);
+          }
+        }
+      }
 
       &.svg-icon {
         @include svg-icon($fill: $anchor-font-color, $height: $default-svg-icon-size, $width: $default-svg-icon-size) {
@@ -273,6 +295,8 @@ $default-svg-icon-size: 1.25rem !default;
         }
 
       }
+
+      &:hover, &:focus {background: transparent;}
     }
   }
 

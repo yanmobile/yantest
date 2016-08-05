@@ -134,7 +134,7 @@ $input-bottom-margin: 2rem !default;
 
   /* Typeahead */
   .isc-dropdown-selection-list {
-    background-color: $button-background;
+    background-color: #fff;
     top:50px;
     position:absolute;
     left:550px;
@@ -159,12 +159,12 @@ $input-bottom-margin: 2rem !default;
       padding: 0.25rem;
 
       &:hover, &:focus {
-        background-color: $secondary-color;
+        background-color: $neutral-color;
       }
     }
   }
 
-  input {
+  input, .formly-field {
     &.typeahead {
       margin: 0;
       box-shadow: none;
