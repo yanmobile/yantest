@@ -45,7 +45,7 @@
         <ul class="breadcrumb">
           <li ng-repeat="breadcrumb in subformCtrl.breadcrumbs" ng-class="{ 'active' : $last}">
             <a ng-click="subformCtrl.breadcrumbClick($index, breadcrumb.onCancel)">
-              {{ breadcrumb.name | translate }}>
+              {{ breadcrumb.name | translate }}
             </a>
           </li>
         </ul>
