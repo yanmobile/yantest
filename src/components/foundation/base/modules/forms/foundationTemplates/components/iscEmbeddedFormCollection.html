@@ -1,14 +1,15 @@
-<div class="subform">
+<div class="subform embedded-collection">
   <!--Table Display-->
   <div class="grid-block">
 
     <faux-table config="efCollectionCtrl.tableConfig"
+                class="expand"
                 data="efCollectionCtrl.collectionModel">
     </faux-table>
 
     <div class="grid-content collapse clearfix">
       <!--Add Button-->
-      <button class="button float-left embedded-form-add"
+      <button class="button float-left small embedded-form-add"
               type="button"
               ng-if="efCollectionCtrl.mode != 'view'"
               ng-click="efCollectionCtrl.newForm()">

@@ -1,10 +1,12 @@
-<div ng-repeat="(key, option) in to.options" class="checkbox">
-  <label>
-    <input type="checkbox"
-           id="{{id + '_'+ $index}}"
-           name="{{(name || id) + '_'+ $index}}"
-           ng-model="multiCheckbox.checked[$index]"
-           ng-change="multiCheckbox.change()">
-    {{isObjectModel ? option[displayField || 'name'] : option}}
-  </label>
+<div class="check-list">
+  <div ng-repeat="(key, option) in to.options" class="checkbox">
+    <label>
+      <input type="checkbox"
+             id="{{id + '_'+ $index}}"
+             name="{{(name || id) + '_'+ $index}}"
+             ng-model="multiCheckbox.checked[$index]"
+             ng-change="multiCheckbox.change()">
+      {{isObjectModel ? option[displayField || 'name'] : option}}
+    </label>
+  </div>
 </div>

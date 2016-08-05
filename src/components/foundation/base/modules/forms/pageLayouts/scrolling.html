@@ -1,7 +1,7 @@
 <div ng-repeat="page in subformCtrl.multiConfig.pages track by $index" class="grid-content collapse form-page">
 
   <div ng-hide="page._isHidden">
-    <h3>{{page.name | translate}}</h3>
+    <h4>{{page.name | translate}}</h4>
 
     <formly-form model="subformCtrl.model"
                  options="subformCtrl.options"

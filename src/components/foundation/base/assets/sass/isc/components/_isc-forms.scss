@@ -6,19 +6,58 @@
 
   Includes:
    - Base form architecture
-   - Textual inputs: text, textareas, prefix/postfix, filterable fields, typeaheads
-   - Select menus
-   - Checkboxes and radio buttons, single and grouped
-   - File inputs
+   - Textual inputs: text, email, password, color, etc., textarea
+   - Select dropdowns
+   - Checkboxes and radio buttons, single and multi
    - Date inputs: Date components and datepickers, datepicker ranges
+   - File inputs
+   - Form Labels
+   - Prefix/Postfix elements
    - Validation Styles
 */
 
+/* Form Settings */
+
+/* Form Structure */
 $form-outer-padding: 2rem !default;
+$form-background: #fff !default;
+$form-border: 1px solid $app-border-color !default;
+
+$form-section-padding: 1rem 0 0 0 !default;
+$form-section-margin: 0 0 2rem 0 !default;
+
+/* Text Fields */
+$input-color: $body-font-color !default;
+$input-background: $body-background !default;
+$input-border: 1px solid $app-border-color !default;
+$input-bottom-margin: 2rem !default;
+
+$input-color-hover: $input-color !default;
+$input-background-hover: $input-background !default;
+$input-border-hover: 1px solid $app-border-color !default;
+
+$input-color-focus: $input-color !default;
+$input-background-focus: $input-background !default;
+$input-border-focus: 1px solid scale-color($app-border-color, $lightness: -15%) !default;
+
+$input-background-disabled: smartscale($input-background) !default;
+$input-cursor-disabled: not-allowed !default;
+
+/* Select Menus */
+$select-background-hover: smartscale($input-background, 4%) !default;
+
 $text-input-selectors: 'input[type="text"], input[type="password"], input[type="date"], input[type="datetime"], input[type="datetime-local"], input[type="month"], input[type="week"], input[type="email"], input[type="number"], input[type="search"], input[type="tel"], input[type="time"], input[type="url"], input[type="color"], textarea'  !default;
 
-/* placeholder Mixin */
+/* Form Typography */
+$form-title-margin: 0 0 2rem 0 !default;
+$form-section-title-margin: 0 0 1.5rem 0 !default;
 
+//Labels for non-radio/checkbox inputs
+$form-label-margin: 1rem !default;
+$form-label-font-size: 1rem !default;
+$form-label-font-weight: $font-weight-semi-bold !default;
+
+/* placeholder Mixin */
 @mixin isc-placeholder( $opacity, $size, $weight ) {
 
   &::-webkit-input-placeholder {
@@ -47,32 +86,46 @@ $text-input-selectors: 'input[type="text"], input[type="password"], input[type="
 }
 
 /* Form Styles */
-@include exports(forms) {
+@include exports(isc-forms) {
+
   /* Base Form Architecture */
-  form, .isc-form {
-    padding: 2rem 1rem;
+  form, .isc-form, form.formly {
     padding: $form-outer-padding;
     margin-bottom: 1rem;
-    border: 1px solid $app-border-color;
+    border: $form-border;
     width: 100%;
+    background: $form-background;
 
-    @media #{$phab-or-less}{
+    @media #{$medium} {
+      padding: 1rem;
+    }
+
+    @media #{$small} {
       padding: 0.75rem;
     }
 
-    .grid-content, .grid-block {
-      overflow: visible;
+
+    /* Section Blocks of Form Content */
+    .form-section {
+      padding: $form-section-padding;
+      margin: $form-section-margin;
+
+      &.top {padding-top: 0;}
     }
 
-    .form-title {
-      margin: 0 0 1.5rem 0;  // change to just "title"? // value should equal form padding
-    }
+    /* Embedded Collection Container  */
+    .embedded-collection {margin-bottom: $input-bottom-margin;}
 
-    label {
-      &:not(.inline) {
-        display: block;
+    /* Subform for Adding/Editing Records in Embedded Collections  */
+    .collection-form {
+      margin-top: 1rem;
+
+      .modal & {
+        padding: 1rem;
       }
     }
+
+    .grid-content, .grid-block {overflow: visible;}
 
     .modal & {margin-bottom: 0;}
 
@@ -91,22 +144,27 @@ $text-input-selectors: 'input[type="text"], input[type="password"], input[type="
   input[type="text"], input[type="password"], input[type="date"],
   input[type="datetime"], input[type="datetime-local"], input[type="month"],
   input[type="week"], input[type="email"], input[type="number"], input[type="search"],
-  input[type="tel"], input[type="time"], input[type="url"], input[type="color"], textarea {
-    margin: 0 0 1rem 0;
+  input[type="tel"], input[type="time"], input[type="url"], textarea {
+    margin-bottom: $input-bottom-margin;
     box-shadow: none;
     border-radius: $global-radius;
     border: $input-border;
 
     &:hover {
-      border-color: $app-border-color;
+      border: $input-border-hover;
+      background: $input-background-hover;
+      color: $input-color-hover;
     }
 
     &:focus {
+      outline: 0;
       border: $input-border-focus;
+      background: $input-background-focus;
+      color: $input-color-focus;
     }
 
-    &[disabled] {
-      cursor: not-allowed;
+    &[disabled], &.disabled {
+      cursor: $input-cursor-disabled;
       background-color: $input-background-disabled;
     }
 
@@ -144,141 +202,69 @@ $text-input-selectors: 'input[type="text"], input[type="password"], input[type="
     }
   }
 
-
-  // Inputs wrapped in labels, paired with help text
-  label {
-
-    input[type="text"], input[type="password"], input[type="date"],
-    input[type="datetime"], input[type="datetime-local"], input[type="month"],
-    input[type="week"], input[type="email"], input[type="number"], input[type="search"],
-    input[type="tel"], input[type="time"], input[type="url"], input[type="color"], textarea {
-      margin-bottom: 0;
-    }
+  input[type="color"] {
+    padding: 0;
+    border-radius: $global-radius;
+    margin-bottom: $input-bottom-margin;
   }
 
-  //textarea
+  /* Textarea Inputs */
   textarea {
     min-height: 100px;
-    border: 1px solid $app-border-color;
-    padding: 1rem;
-    font-size: 1rem;
-    border-radius: 3px;
-  }
-
-  /* Typeahead Inputs */
-  input {
-
-    //Typeahead
-    &.typeahead {
-      margin-bottom: 0;
-      width: 100%;
-      overflow: visible;
-
-      ul {
-        margin: 0;
-      }
-    }
-  }
-
-
-  /* Prefixed/Postfixed Inputs */
-
-  .prefix {
-
-    input, input[type="text"], input[type="password"], input[type="date"],
-    input[type="datetime"], input[type="datetime-local"], input[type="month"],
-    input[type="week"], input[type="email"], input[type="number"], input[type="search"],
-    input[type="tel"], input[type="time"], input[type="url"], input[type="color"] {
-      border-radius: 0 $global-radius $global-radius 0;
-      border-left: none;
-      box-shadow: none;
-    }
-
-    &.form-label {
-      background: $neutral-color;
-      border-radius: $global-radius 0 0 $global-radius;
-      border: 1px solid $app-border-color;
-    }
-  }
-
-  .postfix {
-
-    input, input[type="text"], input[type="password"], input[type="date"],
-    input[type="datetime"], input[type="datetime-local"], input[type="month"],
-    input[type="week"], input[type="email"], input[type="number"], input[type="search"],
-    input[type="tel"], input[type="time"], input[type="url"], input[type="color"] {
-      border-radius: $global-radius 0 0 $global-radius;
-      border-right: none;
-      box-shadow: none;
-    }
-    &.form-label {
-      background: $neutral-color;
-      border-radius: 0 $global-radius $global-radius 0;
-      border: 1px solid $app-border-color;
-    }
-  }
-
-  input {
-    &.prefix {border-radius: 0 $global-radius $global-radius 0;}
-    &.postfix {border-radius: $global-radius 0 0 $global-radius;}
-    &.prefix.postfix {border-radius: 0;}
-  }
-
-  // Inline Label Wrapper
-  .inline-label {
-
-    input[type="text"], input[type="password"], input[type="date"],
-    input[type="datetime"], input[type="datetime-local"], input[type="month"],
-    input[type="week"], input[type="email"], input[type="number"], input[type="search"],
-    input[type="tel"], input[type="time"], input[type="url"], input[type="color"], textarea  {
-      margin-bottom: 0;
-    }
+    border: $input-border;
+    font-size: $paragraph-font-size;
+    border-radius: $global-radius;
+    color: $input-color;
   }
 
   /* Select Inputs */
   select {
     border-radius: $global-radius;
     border: $input-border;
+    margin-bottom: $input-bottom-margin;
+
+    &:hover {
+      background: $select-background-hover;
+    }
 
     &:focus {
+      outline: 0;
       border: $input-border-focus;
+      background: $input-background-focus;
+      color: $input-color-focus;
+    }
+
+    &[disabled], &.disabled {
+      cursor: $input-cursor-disabled;
+      background-color: $input-background-disabled;
     }
   }
 
-  //Labels for radios and checkboxes need to wrap
-  input[type="checkbox"] + label, input[type="radio"] + label {
-    display: inline-block;
-    margin-left: 0.5rem;
-    margin-right: 1rem;
-    margin-bottom: 1rem;
-    vertical-align: baseline;
-    font-weight: $font-weight-normal;
-  }
-
-  .checkbox {
-    label {
-      font-weight: $font-weight-semi-bold;
-    }
-  }
-
-
+  /* Checkboxes & Radio Inputs - Single */
 
   input[type="radio"],
   input[type="checkbox"] {
-    margin-bottom: 1rem;
-    width: 1.125rem;
-    height: 1.125rem;
+    margin-bottom: 0;
     box-sizing: border-box;
-    padding: 0;
   }
 
+  input[type="checkbox"] {
+    height: 0.95rem;
+    border-radius: 0;
+  }
 
-  /* Unordered Input Lists */
+  /* Checkboxes & Radio Inputs - Multi */
+
+  .check-list, .single-checkbox, .formly-field-radio {
+    margin-bottom: $input-bottom-margin;
+  }
+
+  /* Input Lists */
   ul.radio-list,
   ul.check-list {
     list-style-type: none;
     list-style: none;
-    margin-bottom: 1.5rem;
+    margin-bottom: $input-bottom-margin;
     margin-left: 0;
 
     li {
@@ -288,40 +274,15 @@ $text-input-selectors: 'input[type="text"], input[type="password"], input[type="
         margin-right: 0;
         font-weight: $font-weight-normal;
       }
-
-      input[type="radio"],
-      input[type="checkbox"] {
-        margin-bottom: 0;
-      }
     }
   }
-
-  /* Input Lists */
-  .radio-list,
-  .check-list {
-
-    li {
-      margin: 0;
-    }
-
-    label {
-      margin-right: 0;
-      font-weight: $font-weight-normal;
-    }
-
-    input[type="radio"],
-    input[type="checkbox"] {
-      margin-bottom: 0;
-    }
-  }
-
 
   /* Input Groups */
   ul.radio-group,
   ul.check-group {
     list-style-type: none;
     list-style: none;
-    margin-bottom: 1.5rem;
+    margin-bottom: $input-bottom-margin;
     margin-left: 0;
     line-height: 1.5;
 
@@ -344,62 +305,37 @@ $text-input-selectors: 'input[type="text"], input[type="password"], input[type="
         display: inline-block;
 
         label{
-          padding-left: .125rem;
+          padding-left: 0.125rem;
         }
       }
     }
   }
 
-  label {
-    &.radio {
-      margin-left: 0.125rem;
-    }
-  }
-
-  // File Inputs
-  input[type='file'] {display : none;}
 
   /* Date Components */
   .date-container {
     width: 100%;
-    max-width: 350px;
 
-    input[type="number"], input[type="number"], input[type="date"],
+    input, input[type="number"], input[type="date"],
     input[type="datetime"], input[type="datetime-local"],
     input[type="month"], input[type="week"], input[type="time"] {
       padding: 0.5rem 0.3125rem 0.5rem 0.75rem;
+      text-align: center;
+      margin-right : 1.5rem;
 
-      &:focus {
-        border: $input-border-focus;
-      }
-    }
-
-    .date-components-day, .date-components-month, .date-components-year {
-      text-align : center;
-    }
-
-    .date-components-day, .date-components-month {
-      margin-right: 0.75rem;
-    }
-
-    .ng-scope {
-      width: 100%;
-    }
-  }
-
-  /* Datepickers */
-  datepicker {
-    font-family: $body-font-family;
-
-    input {
-      padding: 0.75rem;
-
-      @media #{$mobile} {
-        padding: 0.3125rem;
+      &.date-components-year {
+        margin-right: 0;
       }
     }
   }
 
+
+  /* Date Picker - Calendar (720kb)
+   * Mostly for backwards compatibility at this point
+   * So leaving these alone for now
+   * TO DO: Assess this datepicker for usability
+   * TO DO: Test styling of this component
+  */
   ._720kb-datepicker-calendar._720kb-datepicker-open {
       visibility: visible;
       z-index: 9999;
@@ -422,10 +358,7 @@ $text-input-selectors: 'input[type="text"], input[type="password"], input[type="
 
   ._720kb-datepicker-calendar-days-header {background: darken( $primary-color, 8);}
 
-  ._720kb-datepicker-calendar-days-header div {
-      color: white;
-      width: 14.2%;
-  }
+  ._720kb-datepicker-calendar-days-header div {color: white;width: 14.2%;}
 
   ._720kb-datepicker-calendar-header:nth-child(odd) {background: $primary-color;}
 
@@ -433,29 +366,9 @@ $text-input-selectors: 'input[type="text"], input[type="password"], input[type="
 
   ._720kb-datepicker-calendar-header a {color: $gray-dark;}
 
-  ._720kb-datepicker-calendar-month span {
-      color: white;
-      font-weight: $font-weight-semi-bold;
-  }
+  ._720kb-datepicker-calendar-month span {color: white;font-weight: $font-weight-semi-bold;}
 
-  ._720kb-datepicker-calendar-header a:hover {
-      color: $gray-dark;
-      background: rgba(255, 255, 255, 0.45);
-  }
-
-  // Date-Picker Calendar Button
-  .button.datepicker, button.datepicker, button.datepicker, button.isc-form-datepicker-calendar {
-      margin: 0;
-      background-color: transparent;
-      border: none;
-      cursor: pointer;
-      padding: 0;
-  }
-
-  .isc-form-datepicker-calendar svg {
-      height: 1.25rem;
-      width: 1.25rem;
-  }
+  ._720kb-datepicker-calendar-header a:hover {color: $gray-dark; background: rgba(255, 255, 255, 0.45);}
 
   .isc-form-datepicker {
     max-width    : 150px;
@@ -470,17 +383,125 @@ $text-input-selectors: 'input[type="text"], input[type="password"], input[type="
     position         : absolute;
     top              : 0.75rem;
     right            : 0.3125rem;
+
+    svg {
+      height: 1.25rem;
+      width: 1.25rem;
+    }
   }
 
-  //DatePicker Range - Start to End
-  input#startDate, input#endDate {
-    padding: 0.5rem 0.3125rem 0.5rem 0.5rem;
-    font-size: 0.9375rem;
-    margin-bottom: 1rem;
+  // Date-Picker Calendar Button
+  .button.datepicker, button.datepicker, button.isc-form-datepicker-calendar {
+      margin: 0;
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+  }
 
-    @media #{$small} {
-      font-size: 0.875rem;
+
+  /* File Inputs */
+  input[type='file'] {display : none;}
+
+
+  /* Form Typographic Rhythm */
+  .form-title {margin: $form-title-margin;}
+
+  /* Form Section Titles */
+  .form-page {
+    h4 {margin: $form-section-title-margin;}
+  }
+
+  /* Form instructions (contextual help text) */
+  .instructions {
+    p {
+      font-size: 1.125rem;
+      margin: $form-section-title-margin;
     }
+  }
+
+  /* Form Labels */
+  label {
+    color: $body-font-color;
+    margin-bottom: $form-label-margin;
+    font-size: $form-label-font-size;
+    font-weight: $form-label-font-weight;
+
+    &:not(.inline) {
+      display: block;
+    }
+  }
+
+  //Inputs wrapped in labels
+  label, .inline-label {
+
+    input[type="text"], input[type="password"], input[type="date"],
+    input[type="datetime"], input[type="datetime-local"], input[type="month"],
+    input[type="week"], input[type="email"], input[type="number"], input[type="search"],
+    input[type="tel"], input[type="time"], input[type="url"], input[type="color"], textarea {
+      margin-bottom: 0;
+    }
+  }
+
+  label {
+    &.radio, &.checkbox, .checkbox & {
+      margin-left: 0.125rem; // no cut-off
+      font-weight: $font-weight-normal;
+    }
+  }
+
+  //Labels for radios and checkboxes need to wrap
+  input[type="checkbox"] + label, input[type="radio"] + label {
+    display: inline-block;
+    margin-left: 0.5rem;
+    margin-right: 1rem;
+    margin-bottom: 1rem;
+    vertical-align: baseline;
+    font-weight: $font-weight-normal;
+  }
+
+  /* Prefixed/Postfixed Inputs */
+
+  .prefix {
+
+    input, input[type="text"], input[type="password"], input[type="date"],
+    input[type="datetime"], input[type="datetime-local"], input[type="month"],
+    input[type="week"], input[type="email"], input[type="number"], input[type="search"],
+    input[type="tel"], input[type="time"], input[type="url"], input[type="color"] {
+      border-radius: 0 $global-radius $global-radius 0;
+      border-left: none;
+      box-shadow: none;
+    }
+
+    &.form-label {
+      background: $neutral-color;
+      border-radius: $global-radius 0 0 $global-radius;
+      border: $input-border;
+    }
+  }
+
+  .postfix {
+
+    input, input[type="text"], input[type="password"], input[type="date"],
+    input[type="datetime"], input[type="datetime-local"], input[type="month"],
+    input[type="week"], input[type="email"], input[type="number"], input[type="search"],
+    input[type="tel"], input[type="time"], input[type="url"], input[type="color"] {
+      border-radius: $global-radius 0 0 $global-radius;
+      border-right: none;
+      box-shadow: none;
+    }
+
+    &.form-label {
+      background: $neutral-color;
+      border-radius: 0 $global-radius $global-radius 0;
+      border: $input-border;
+    }
+  }
+
+  input {
+    &.prefix {border-radius: 0 $global-radius $global-radius 0;}
+    &.postfix {border-radius: $global-radius 0 0 $global-radius;}
+    &.prefix.postfix {border-radius: 0;}
   }
 
   /* Validation */
@@ -509,7 +530,8 @@ $text-input-selectors: 'input[type="text"], input[type="password"], input[type="
 
   }
 
-  // Date Component Inputs
+  /* date-container */
+
   .date-container {
 
     &.ng-invalid {
@@ -528,14 +550,18 @@ $text-input-selectors: 'input[type="text"], input[type="password"], input[type="
   .has-error {
 
     input, select {
-      margin-bottom: 0.25rem;
+      margin-bottom: 0.3125rem;
     }
 
-    //.error-message inside .has-error wrapper
-    label{
+    //.error-message inside of .has-error wrapper
+    label {
+      color: $alert-color;
+
       &.error-message {
         font-weight: $font-weight-normal;
         font-size: 0.875rem;
+        color: $alert-color;
+        margin-bottom: 0.5rem;
       }
     }
 

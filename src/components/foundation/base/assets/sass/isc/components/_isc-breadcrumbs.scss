@@ -1,0 +1,171 @@
+/*
+  BREADCRUMBS
+  -----
+  Basic styles for breadcrumb component.
+*/
+
+/* Breadcrumb Settings */
+$breadcrumb-margin: 2rem !default;
+$breadcrumb-color: $primary-nav-background !default;
+$breadcrumb-color-inverse: $app-bar-link-color !default;
+
+/* Breadcrumb Styles */
+@include exports(breadcrumbs) {
+
+  .context {
+    margin: 0.5rem 0 2.75rem 0;
+  }
+
+  .breadcrumb {
+    list-style: none;
+    overflow: hidden;
+    font-size: 1rem;
+    line-height: 1.5;
+    border: 1px solid $breadcrumb-color;
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+
+    @media #{$medium} {
+      font-size: 0.875rem;
+    }
+
+    @media #{$small} {
+      margin-top: 1rem;
+      font-size: 0.75rem;
+    }
+
+    li {
+      float: left;
+
+      &:first-child a {
+        padding-left: 16px;
+
+        @media #{$small} {
+          padding-left: 8px;
+        }
+      }
+
+      &:last-child a {
+        padding-right: 16px;
+
+        @media #{$small} {
+          padding-right: 8px;
+        }
+      }
+
+      &.active {
+
+        .breadcrumb-text {
+          display: inline-block;
+        }
+
+        a {
+          background: $breadcrumb-color;
+          color: $breadcrumb-color-inverse;
+
+          &:after {
+            border-left-color: $breadcrumb-color;
+          }
+
+          &:hover {
+            background: $breadcrumb-color;
+          }
+        }
+      }
+
+      a {
+        color: $breadcrumb-color;
+        text-decoration: none;
+        padding: 10px 0 10px 45px;
+        background: $breadcrumb-color-inverse;
+        position: relative;
+        display: block;
+        float: left;
+
+        @media #{$medium} {
+          padding: 10px 0 10px 31px;
+        }
+
+        @media #{$small} {
+          padding: 5px 0 5px 26px;
+        }
+
+        &:focus {
+          outline: none;
+        }
+
+        &:hover,
+        &:focus {
+          background: smartscale($breadcrumb-color-inverse, 3%);
+
+          &:after {
+            border-left-color: smartscale($breadcrumb-color-inverse, 3%);
+          }
+        }
+
+        &:after {
+          content: " ";
+          display: block;
+          width: 0;
+          height: 0;
+          border-top: 50px solid transparent;
+          /* Go big on the size, and let overflow hide */
+          border-bottom: 50px solid transparent;
+          border-left: 30px solid $breadcrumb-color-inverse;
+          position: absolute;
+          top: 50%;
+          margin-top: -50px;
+          left: 100%;
+          z-index: 2;
+
+          @media #{$medium} {
+            border-top: 30px solid transparent;
+            border-left: 20px solid $breadcrumb-color-inverse;
+            border-bottom: 30px solid transparent;
+            margin-top: -30px;
+          }
+
+          @media #{$small} {
+            border-top: 25px solid transparent;
+            border-left: 15px solid $breadcrumb-color-inverse;
+            border-bottom: 25px solid transparent;
+            margin-top: -25px;
+          }
+        }
+
+        &:before {
+          content: " ";
+          display: block;
+          width: 0;
+          height: 0;
+          border-top: 50px solid transparent;
+          /* Go big on the size, and let overflow hide */
+          border-bottom: 50px solid transparent;
+          border-left: 30px solid $breadcrumb-color;
+          position: absolute;
+          top: 50%;
+          margin-top: -50px;
+          margin-left: 1px;
+          left: 100%;
+          z-index: 1;
+
+          @media #{$medium} {
+            border-top: 30px solid transparent;
+            border-left: 20px solid $breadcrumb-color;
+            border-bottom: 30px solid transparent;
+            margin-top: -30px;
+          }
+
+          @media #{$small} {
+            border-top: 25px solid transparent;
+            border-left: 15px solid $breadcrumb-color;
+            border-bottom: 25px solid transparent;
+            margin-top: -25px;
+          }
+        }
+      }
+    }
+  }
+
+}
