@@ -6,6 +6,7 @@
     var suiteConfigured,
         suiteMisconfigured,
         suiteWithData,
+        suiteLibrary,
         suiteSimple1,
         suiteSimple2,
         suiteSimple3;
@@ -36,6 +37,14 @@
       }
     };
 
+    var libraryFormConfig = {
+      library: {
+        setModelDotLib: function( model, fieldScope ) {
+          _.set( model, 'lib', _.get( model, fieldScope.options.key ) );
+        }
+      }
+    };
+
     var goodButtonConfig = {};
 
     beforeEach( module(
@@ -51,8 +60,8 @@
     );
 
     beforeEach( inject( function( $rootScope, $compile, $window, $httpBackend, $timeout,
-                                  formlyApiCheck, formlyConfig,
-                                  iscFormDataApi, iscNotificationService, iscFormsValidationService ) {
+      formlyApiCheck, formlyConfig,
+      iscFormDataApi, iscNotificationService, iscFormsValidationService ) {
       formlyConfig.disableWarnings   = true;
       formlyApiCheck.config.disabled = true;
 
@@ -70,6 +79,33 @@
       mockFormResponses( suiteMain.$httpBackend );
     } ) );
 
+    //--------------------
+    describe( 'suiteLibrary', function() {
+      beforeEach( function() {
+        suiteLibrary = createDirective( getMinimalForm( 'library' ), {
+          localFormConfig: libraryFormConfig
+        } );
+
+        suiteMain.$httpBackend.flush();
+      } );
+
+      it( 'should call the library function when the input field is changed', function() {
+        var suite      = suiteLibrary,
+            model      = suite.controller.model,
+            newValue   = 'some value',
+            inputField = getControlByName( suite, 'inputField' );
+
+        expect( _.get( model, 'lib' ) ).toBeUndefined();
+
+        // library.json's inputField has an onChange trigger
+        // that calls setModelDotLib in _lib
+        inputField.val( newValue ).trigger( 'change' );
+        suiteMain.$timeout.flush();
+
+        expect( _.get( model, 'inputField' ) ).toEqual( newValue );
+        expect( _.get( model, 'lib' ) ).toEqual( newValue );
+      } );
+    } );
 
     //--------------------
     describe( 'suiteSimple(s)', function() {
@@ -110,7 +146,7 @@
           }
         } );
 
-      });
+      } );
 
       describe( 'simple suite 1 only', function() {
         beforeEach( function() {
@@ -158,7 +194,7 @@
 
           expect( suiteMain.$window.history.back ).toHaveBeenCalled();
         } );
-      });
+      } );
     } );
 
 

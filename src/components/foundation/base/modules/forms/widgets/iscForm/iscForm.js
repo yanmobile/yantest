@@ -207,7 +207,8 @@
         options               : {
           formState: {
             _mode: self.mode,
-            _id  : self.parsedFormDataId
+            _id  : self.parsedFormDataId,
+            _lib : self.internalFormConfig.library
           }
         }
       } );

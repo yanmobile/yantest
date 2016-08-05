@@ -1,0 +1,17 @@
+{
+  "name"       : "Sample Form with Function Library",
+  "pages"      : [
+    {
+      "name"   : "Page 1",
+      "fields" : [
+        {
+          "key"  : "inputField",
+          "type" : "input",
+          "templateOptions" : {
+            "onChange" : "formState._lib.setModelDotLib( model, this )"
+          }
+        }
+      ]
+    }
+  ]
+}
