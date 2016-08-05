@@ -31,12 +31,12 @@
       </div>
     </div>
 
-    <div ng-include="'forms/foundationTemplates/templates/embeddedFormEditor.html'"
+    <div class="collection-form modal" ng-include="'forms/foundationTemplates/templates/embeddedFormEditor.html'"
          ng-if="efCollectionCtrl.editAs==='modal'"></div>
   </div>
 
   <!--Inline Editor-->
-  <div ng-include="'forms/foundationTemplates/templates/embeddedFormEditor.html'"
+  <div class="collection-form" ng-include="'forms/foundationTemplates/templates/embeddedFormEditor.html'"
        ng-if="efCollectionCtrl.editAs==='inline'"></div>
 
 
