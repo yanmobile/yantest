@@ -5,6 +5,16 @@
       "name"   : "Page 1",
       "fields" : [
         {
+          "key"             : "templates.section",
+          "type"            : "section",
+          "templateOptions" : {
+            "label" : "A section component"
+          },
+          "data"            : {
+            "content" : "A Section Header"
+          }
+        },
+        {
           "key"             : "templates.instructions",
           "type"            : "instructions",
           "templateOptions" : {
