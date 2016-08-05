@@ -1,4 +1,4 @@
-<div class="grid-content" ng-if="efCollectionCtrl.renderForm">
+<div class="grid-content collapse collection-form" ng-if="efCollectionCtrl.renderForm">
 
   <form>
     <div>
@@ -10,13 +10,13 @@
     </div>
 
     <div class="controls clearfix">
-      <button class="cancel float-left flat embedded-form-cancel"
+      <button class="cancel float-left small flat embedded-form-cancel"
               type="button"
               ng-click="efCollectionCtrl.cancel()">
         {{'Forms_Cancel_Button' | translate}}
       </button>
 
-      <button class="float-right flat embedded-form-save"
+      <button class="float-right small flat embedded-form-save"
               type="button"
               ng-click="efCollectionCtrl.saveForm()">
         {{'Forms_Save_Button' | translate}} {{efCollectionCtrl.label}}
