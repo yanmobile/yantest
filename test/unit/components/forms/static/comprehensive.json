@@ -1,12 +1,12 @@
 {
-  "name"          : "Sample Intake Form",
-  "dataModelInit" : "loadPatient",
-  "pageLayout"    : "scrolling",
-  "validateOn"    : "change",
-  "autosave"      : {
+  "name"                : "Sample Comprehensive Form",
+  "additionalModelInit" : "loadPatient",
+  "pageLayout"          : "scrolling",
+  "validateOn"          : "change",
+  "autosave"            : {
     "trigger" : "pageChange"
   },
-  "pages"         : [
+  "pages"               : [
     {
       "name"   : "Page 1 - Built-in Templates",
       "fields" : [
@@ -181,6 +181,16 @@
               "templateUrl" : "testViewMode.html"
             }
           }
+        },
+        {
+          "key"             : "sampleBuiltInWithCustomWrapper",
+          "type"            : "input",
+          "wrapper"         : [
+            "customWrapperForBuiltIn"
+          ],
+          "templateOptions" : {
+            "label" : "Here is a built-in field that uses a custom wrapper"
+          }
         }
       ]
     },
@@ -229,6 +239,18 @@
               "key"  : "testHidden",
               "type" : "input",
               "hide" : true
+            },
+            {
+              "key"     : "watcherTest",
+              "type"    : "instructions",
+              "watcher" : [
+                {
+                  "expression" : "model.form.components.templates.input.text",
+                  "listener"   : "options.formState.watcherFired = true",
+                  "watchDeep"  : false,
+                  "type"       : "$watch"
+                }
+              ]
             }
           ]
         }

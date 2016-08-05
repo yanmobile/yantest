@@ -63,7 +63,7 @@
     describe('api.setFormStatus', function () {
       it('should set the status of the given form type', function () {
         var formType = 'initial',
-            formKey  = 'intake';
+            formKey  = 'comprehensive';
 
         // Intake is currently active
         suite.api.getFormStatuses(formType).then(function (response) {
@@ -91,7 +91,7 @@
 
     describe('api.getFormDefinition', function () {
       it('should get the form definition from the API', function () {
-        var formKey = 'intake';
+        var formKey = 'comprehensive';
 
         suite.api.getFormDefinition(formKey).then(function (response) {
           var formDefinition = suite.model.unwrapFormDefinitionResponse( response );
@@ -99,7 +99,7 @@
           // Full forms are objects
           expect(_.isObject(formDefinition)).toBe(true);
           // with names
-          expect(formDefinition.name).toEqual('Sample Intake Form');
+          expect(formDefinition.name).toEqual('Sample Comprehensive Form');
         });
         suite.httpBackend.flush();
 

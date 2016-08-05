@@ -311,6 +311,9 @@
 
           testControlFlowOnly( 'templates.controlFlowOnly' );
 
+          // One of the fields has a watcher and should have updated the formState
+          expect( formState.watcherFired ).toBe( true );
+
           function getFieldProperty( fieldKey, property ) {
             var field = _.find( formDefinition, { key: fieldKey } ) || {};
             return _.get( field, property );

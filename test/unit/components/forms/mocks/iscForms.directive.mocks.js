@@ -42,7 +42,7 @@ function getMinimalForm( formKey ) {
 
 function getConfiguredForm() {
   return '<isc-form ' +
-    'form-key="intake" ' +
+    'form-key="comprehensive" ' +
     'form-data-id=""' +
     'form-version=""' +
     'mode="edit"' +
@@ -74,7 +74,7 @@ function getSubform() {
 
 function getFormWithData( mode ) {
   return '<isc-form ' +
-    'form-key="intake" ' +
+    'form-key="comprehensive" ' +
     'form-data-id="3"' +
     'mode="' + (mode || 'edit') + '"' +
     '></isc-form>';

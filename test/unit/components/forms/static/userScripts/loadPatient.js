@@ -1,5 +1,5 @@
 (function () {
-  return function dataModelInit(models, params) {
+  return function additionalModelInit(models, params) {
     models.patient = {
       id: params.patientId
     };
