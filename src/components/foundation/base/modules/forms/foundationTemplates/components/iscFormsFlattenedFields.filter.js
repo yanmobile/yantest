@@ -70,6 +70,7 @@
       function showInTable( field ) {
         return !_.startsWith( field.type, 'embeddedForm' )
           && field.type !== 'instructions'
+          && field.type !== 'section'
           && !_.get( field, 'data.hideInTable' );
       }
     }
