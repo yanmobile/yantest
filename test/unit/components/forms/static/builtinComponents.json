@@ -29,6 +29,28 @@
           }
         },
         {
+          "className" : "button-fieldgroup",
+          "fieldGroup" : [
+            {
+              "type"            : "button",
+              "templateOptions" : {
+                "onClick" : "model.templates.button.input = 'Set from the button click'"
+              },
+              "data"            : {
+                "userScript" : "buttonScript",
+                "content"    : "Click me"
+              }
+            },
+            {
+              "key"             : "templates.button.input",
+              "type"            : "input",
+              "templateOptions" : {
+                "label" : "An input with text set from the button above it"
+              }
+            }
+          ]
+        },
+        {
           "key"             : "templates.checkbox",
           "type"            : "checkbox",
           "templateOptions" : {

@@ -1,0 +1,8 @@
+<div class="grid-block">
+  <button type="{{options.templateOptions.type || 'button'}}"
+          ng-class="getClass()"
+          ng-click="onClick()"
+          ng-disabled="to.disabled">
+    {{ options.data.content | translate }}
+  </button>
+</div>

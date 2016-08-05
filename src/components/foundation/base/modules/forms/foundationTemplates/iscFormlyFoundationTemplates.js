@@ -81,6 +81,45 @@
         templateUrl: 'forms/foundationTemplates/templates/instructions.html'
       } );
 
+      // Button (supports templateOptions.onClick and data.userScript)
+      iscFormsTemplateService.registerType( {
+        name       : 'button',
+        templateUrl: 'forms/foundationTemplates/templates/button.html',
+        /* @ngInject */
+        controller : function( $scope ) {
+          // data.userModel is the parsed and evaled data.userScript
+          var userScript   = _.get( $scope.options, 'data.userModel', {} ),
+              fdnOnClick   = userScript.onClick,
+              fieldOnClick = _.get( $scope.options, 'templateOptions.onClick' ),
+              cssClass     = _.get( $scope.options, 'className' );
+
+          $scope.onClick = function() {
+            invoke( fieldOnClick );
+            invoke( fdnOnClick );
+          };
+
+          $scope.getClass = function() {
+            var classes = [];
+            classes.push( cssClass || 'button' );
+
+            if ( $scope.to.disabled ) {
+              classes.push( 'disabled' );
+            }
+
+            return classes;
+          };
+
+          function invoke( handler ) {
+            if ( _.isFunction( handler ) ) {
+              handler( $scope );
+            }
+            else if ( _.isString( handler ) ) {
+              $scope.$eval( handler );
+            }
+          }
+        }
+      } );
+
       // Input
       iscFormsTemplateService.registerType( {
         name          : 'input',

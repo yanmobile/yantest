@@ -289,6 +289,8 @@
           testInput( 'templates.input.text' );
           testInput( 'templates.input.date' );
 
+          testButton( 'templates.button.input' );
+
           testCheckbox( 'templates.checkbox' );
 
           testMultiCheckbox( 'templates.multiCheckbox.primitiveValue' );
@@ -333,6 +335,32 @@
 
             model = _.get( formModel, controlName );
             expect( model ).toEqual( newText );
+          }
+
+          function testButton( inputName ) {
+            var stateName = 'buttonUserScriptCalled',
+                newText   = 'Set from the button click',
+                input     = getControlByName( suite, inputName ),
+                button    = input.parentsUntil( '.button-fieldgroup' ).parent().find( 'button' ),
+                model     = _.get( formModel, inputName, '' ),
+                state     = _.get( formState, stateName );
+
+            expect( button.length ).toBe( 1 );
+            expect( input.length ).toBe( 1 );
+            expect( input.val() ).toEqual( model );
+            expect( state ).toBeUndefined();
+
+            button.trigger( 'click' );
+            digest( suite );
+
+            model = _.get( formModel, inputName );
+            state = _.get( formState, stateName );
+
+            // The button test exercises both data.userScript and templateOptions.onClick:
+            // one sets text in the data model;
+            // the other sets a flag in the form state.
+            expect( model ).toEqual( newText );
+            expect( state ).toBe( true );
           }
 
           function testCheckbox( controlName ) {

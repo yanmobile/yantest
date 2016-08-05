@@ -428,7 +428,7 @@
               var scriptPromise = iscFormsApi.getUserScript( scriptName )
                 .then( function( response ) {
                   var script = parseScript( response ),
-                      getApi = script.api.get;
+                      getApi = _.get( script, 'api.get' );
                   // Expose iscHttpapi to api getter function
                   if ( getApi ) {
                     script.api.get = (function( iscHttpapi ) {
