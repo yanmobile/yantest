@@ -262,11 +262,15 @@
               expression: function( $viewValue, $modelValue, scope ) {
                 // Validator expression must return true or false
                 return !!(
-                  // Define a partial date as: a year, a year and a month, or a full year, month, and day
+                  // Define a partial date as:
+                  // nothing,
                   _.isEmpty( $viewValue ) ||
                   ( !$viewValue.year && !$viewValue.month && !$viewValue.day ) ||
-                  ( $viewValue.year ) ||
-                  ( $viewValue.year && $viewValue.month ) ||
+                  // a year,
+                  ( $viewValue.year && !$viewValue.month && !$viewValue.day ) ||
+                  // a year and a month,
+                  ( $viewValue.year && $viewValue.month && !$viewValue.day ) ||
+                  // or a full year, month, and day
                   ( $viewValue.year && $viewValue.month && $viewValue.day )
                 );
               },
@@ -431,7 +435,7 @@
           $scope.localOptions = _.merge( {}, $scope.options, {
             type: data.templateType,
             data: {
-              _originalModel : $scope.model
+              _originalModel: $scope.model
             }
           } );
         }
