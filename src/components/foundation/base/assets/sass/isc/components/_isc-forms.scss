@@ -17,9 +17,14 @@
 */
 
 /* Form Settings */
+
+/* Form Structure */
 $form-outer-padding: 2rem !default;
 $form-background: #fff !default;
 $form-border: 1px solid $app-border-color !default;
+
+$form-section-padding: 1rem 0 0 0 !default;
+$form-section-margin: 0 0 2rem 0 !default;
 
 /* Text Fields */
 $input-color: $body-font-color !default;
@@ -42,6 +47,10 @@ $input-cursor-disabled: not-allowed !default;
 $select-background-hover: smartscale($input-background, 4%) !default;
 
 $text-input-selectors: 'input[type="text"], input[type="password"], input[type="date"], input[type="datetime"], input[type="datetime-local"], input[type="month"], input[type="week"], input[type="email"], input[type="number"], input[type="search"], input[type="tel"], input[type="time"], input[type="url"], input[type="color"], textarea'  !default;
+
+/* Form Typography */
+$form-title-margin: 0 0 2rem 0 !default;
+$form-section-title-margin: 0 0 1.5rem 0 !default;
 
 //Labels for non-radio/checkbox inputs
 $form-label-margin: 1rem !default;
@@ -95,20 +104,28 @@ $form-label-font-weight: $font-weight-semi-bold !default;
       padding: 0.75rem;
     }
 
-    // Form Sections (Major)
+
+    /* Section Blocks of Form Content */
     .form-section {
-      margin: 1rem 0 1rem 0;
+      padding: $form-section-padding;
+      margin: $form-section-margin;
 
-      &.top {margin-top: 0;}
+      &.top {padding-top: 0;}
     }
 
-    .grid-content, .grid-block {
-      overflow: visible;
+    /* Embedded Collection Container  */
+    .embedded-collection {margin-bottom: $input-bottom-margin;}
+
+    /* Subform for Adding/Editing Records in Embedded Collections  */
+    .collection-form {
+      margin-top: 1rem;
+
+      .modal & {
+        padding: 1rem;
+      }
     }
 
-    .form-title {
-      margin-bottom: 2rem;  // form section title
-    }
+    .grid-content, .grid-block {overflow: visible;}
 
     .modal & {margin-bottom: 0;}
 
@@ -305,6 +322,10 @@ $form-label-font-weight: $font-weight-semi-bold !default;
       padding: 0.5rem 0.3125rem 0.5rem 0.75rem;
       text-align: center;
       margin-right : 1.5rem;
+
+      &.date-components-year {
+        margin-right: 0;
+      }
     }
   }
 
@@ -382,6 +403,22 @@ $form-label-font-weight: $font-weight-semi-bold !default;
   /* File Inputs */
   input[type='file'] {display : none;}
 
+
+  /* Form Typographic Rhythm */
+  .form-title {margin: $form-title-margin;}
+
+  /* Form Section Titles */
+  .form-page {
+    h4 {margin: $form-section-title-margin;}
+  }
+
+  /* Form instructions (contextual help text) */
+  .instructions {
+    p {
+      font-size: 1.125rem;
+      margin: $form-section-title-margin;
+    }
+  }
 
   /* Form Labels */
   label {
@@ -513,14 +550,18 @@ $form-label-font-weight: $font-weight-semi-bold !default;
   .has-error {
 
     input, select {
-      margin-bottom: 0.25rem;
+      margin-bottom: 0.3125rem;
     }
 
     //.error-message inside of .has-error wrapper
-    label{
+    label {
+      color: $alert-color;
+
       &.error-message {
         font-weight: $font-weight-normal;
         font-size: 0.875rem;
+        color: $alert-color;
+        margin-bottom: 0.5rem;
       }
     }
 

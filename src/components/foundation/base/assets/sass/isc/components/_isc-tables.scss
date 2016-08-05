@@ -616,14 +616,21 @@ $table-title-font-reduction: rem-calc(16) !default;
     .cell-title {display: none;}
 
     li, p {
-      margin: 0;
+      margin-bottom: 0;
       font-size: $table-font-size;
       line-height: $table-line-height;
       vertical-align: middle;
     }
 
+    /* Empty Data Message */
     .empty-message {
-      margin: 0;
+      background: $neutral-three;
+      margin-bottom: 1rem;
+      border-radius: $global-radius;
+      width: 100%;
+      padding: 1.125rem;
+      font-size: 1rem;
+      font-style: italic;
     }
   }
 
@@ -681,10 +688,12 @@ $table-title-font-reduction: rem-calc(16) !default;
 
     //Buttons
     button, .button, input[type="submit"], input[type="button"] {
-
-      // Tiny Buttons for Tables
-      @include button-size($size: tiny);
       margin: 0;
+
+      &:not(.icon) {
+        // Tiny Buttons for Tables
+        @include button-size($size: tiny);
+      }
     }
 
     //Button Groups

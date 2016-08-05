@@ -18,7 +18,7 @@
       margin-bottom: $global-padding/2;
     }
 
-    p {color: isitlight($notification-background, $body-font-color, $light-text);}
+    p, label {color: isitlight($notification-background, $body-font-color, $light-text);}
 
     .close-button {color: isitlight($notification-background, $body-font-color, $light-text);}
 
@@ -30,7 +30,7 @@
       color: isitlight($color-name, $body-font-color, $light-text);
 
         h1, h2, h3, h4, h5, h6 {color: isitlight($color-name, $header-font-color, $light-text); margin-bottom: $global-padding/2;}
-        p {color: isitlight($color-name, $body-font-color, $light-text);}
+        p, label {color: isitlight($color-name, $body-font-color, $light-text);}
         .close-button {color: isitlight($color-name, $body-font-color, $light-text);}
       }
     }
