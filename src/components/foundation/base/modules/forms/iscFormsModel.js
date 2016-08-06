@@ -334,10 +334,12 @@
            */
           function processFields( fields ) {
             var fieldPromises = [];
+
             _.forEach( fields, function( field ) {
               var expProps       = _.get( field, 'expressionProperties', {} ),
                   label          = _.get( field, 'templateOptions.label' ),
                   type           = _.get( field, 'type' ),
+                  comments       = _.get( field, 'comments' ),
                   wrappers       = _.get( field, 'wrapper' ),
                   fieldGroup     = _.get( field, 'fieldGroup' ),
                   data           = _.get( field, 'data', {} ),
@@ -346,6 +348,11 @@
                   isForm         = type === 'embeddedForm' || extendsType === 'embeddedForm',
                   isCollection   = type === 'embeddedFormCollection' || extendsType === 'embeddedFormCollection',
                   watcher        = _.get( field, 'watcher' );
+
+              // Remove comments (formly's api-check will throw an error otherwise)
+              if ( comments ) {
+                delete field.comments;
+              }
 
               // A field group does not have its own type, but contains fields in the fieldGroup array
               if ( fieldGroup ) {
@@ -409,7 +416,7 @@
                     if ( watch.listener && !_.isFunction( watch.listener ) ) {
                       var watchListener = watch.listener;
                       // The formly watcher signature takes additional args of field and the watch's deregistration function.
-                      watch.listener = function( field, newVal, oldVal, scope, stop ) {
+                      watch.listener    = function( field, newVal, oldVal, scope, stop ) {
                         scope.$eval( watchListener, {
                           field : field,
                           newVal: newVal,
@@ -422,6 +429,7 @@
                 }
               }
             } );
+
             return fieldPromises;
 
             function processUserScript( field, scriptName ) {

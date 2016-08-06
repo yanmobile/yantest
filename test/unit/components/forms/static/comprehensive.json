@@ -227,10 +227,12 @@
       "name"   : "Page 6 - Misc",
       "fields" : [
         {
+          "comments"   : "These are comments on a field group",
           "fieldGroup" : [
             {
-              "type" : "instructions",
-              "data" : {
+              "type"     : "instructions",
+              "comments" : "These are comments on a field",
+              "data"     : {
                 "content"          : "This is hidden",
                 "hideIfGroupEmpty" : true
               }
