@@ -1,4 +1,4 @@
-( function() {
+(function() {
   'use strict';
 
   angular.module( 'isc.forms' )
@@ -159,8 +159,8 @@
    */
   /* @ngInject */
   function iscForm( $stateParams, $q, $window,
-                    iscSessionModel, iscNavContainerModel,
-                    iscFormsModel, iscFormsValidationService, iscFormDataApi ) {//jshint ignore:line
+    iscSessionModel, iscNavContainerModel,
+    iscFormsModel, iscFormsValidationService, iscFormDataApi ) {//jshint ignore:line
     var directive = {
       restrict        : 'E',
       replace         : true,
@@ -208,7 +208,8 @@
           formState: {
             _mode: self.mode,
             _id  : self.parsedFormDataId,
-            _lib : self.internalFormConfig.library
+            // _lib is populated during init()
+            _lib : {}
           }
         }
       } );
@@ -411,15 +412,18 @@
        */
       function getFormDefinition() {
         iscFormsModel.getFormDefinition( {
-            formKey    : self.formKey,
-            mode       : self.mode,
-            formVersion: self.formVersion
-          } )
+          formKey    : self.formKey,
+          mode       : self.mode,
+          formVersion: self.formVersion
+        } )
           .then( function( formDefinition ) {
             self.formDefinition                = formDefinition;
             self.options.formState._validateOn = formDefinition.form.validateOn;
 
             populateAdditionalModels( self.formDefinition.form.additionalModelInit );
+            initializeUserLibrary( self.formDefinition.form.library );
+
+            getValidationDefinition();
           } );
       }
 
@@ -427,29 +431,49 @@
        * @memberOf iscForm
        * @param fdnScript
        * @description
-       * If provided, call init function/expression to populate additional dynamic data models, such as patients
+       * If provided, call init function to populate additional dynamic data models
        */
       function populateAdditionalModels( fdnScript ) {
-        evalScript( fdnScript );
-        evalScript( self.internalFormConfig.additionalModelInit );
+        var args = [self.internalFormConfig.additionalModels, $stateParams, self.model];
+        evalScript( fdnScript, args );
+        evalScript( self.internalFormConfig.additionalModelInit, args );
 
-        getValidationDefinition();
-
-        function evalScript( script ) {
+        function evalScript( script, args ) {
           if ( script && _.isFunction( script ) ) {
-            script( self.internalFormConfig.additionalModels, $stateParams, self.model );
+            script.apply( null, args );
           }
         }
       }
 
       /**
        * @memberOf iscForm
+       * @param fdnLibraries
+       * @description
+       * If provided, populate user library of reusable functions from FDN and/or controller definition
+       */
+      function initializeUserLibrary( fdnLibraries ) {
+        // Apply libraries in reverse order to ensure that the library defined on the form itself takes precedence
+        var fdnLibrary;
+        while ( fdnLibrary = fdnLibraries.pop() ) {
+          mergeLibrary( fdnLibrary );
+        }
+        // Finally, apply any library defined in client code
+        mergeLibrary( self.internalFormConfig.library );
+
+        function mergeLibrary( library ) {
+          _.extend( self.options.formState._lib, library );
+        }
+      }
+
+
+      /**
+       * @memberOf iscForm
        */
       function getValidationDefinition() {
         iscFormsModel.getValidationDefinition( {
-            formKey    : self.formKey,
-            formVersion: self.formVersion
-          } )
+          formKey    : self.formKey,
+          formVersion: self.formVersion
+        } )
           .then( function( validationDefinition ) {
             self.validationDefinition = validationDefinition;
             self.showInternal         = true;
@@ -457,4 +481,4 @@
       }
     }
   }
-} )();
+})();

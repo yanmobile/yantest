@@ -237,6 +237,7 @@
           mode               = config.mode,
           formVersion        = config.formVersion,
           subformDefinitions = config.subformDefinitions,
+          library            = config.library || [],
           cacheKey           = ( formVersion || 'current' ) + '.' + formKey;
 
       // If form is already cached, return the cached form in a promise
@@ -269,6 +270,15 @@
             primaryPromises = primaryPromises.concat( processFields( form ) );
           }
           else {
+            if ( form.library ) {
+              var libraryPromise = iscFormsApi.getUserScript( form.library )
+                .then( function( response ) {
+                  var script = parseScript( response );
+                  library.push( script );
+                } );
+              primaryPromises.push( libraryPromise );
+            }
+
             _.forEach( form.pages, function( page ) {
               primaryPromises = primaryPromises.concat( processFields( page.fields ) );
             } );
@@ -290,6 +300,8 @@
           // After all necessary template calls have completed, return the form
           $q.all( primaryPromises ).then( function() {
             $q.all( secondaryPromises ).then( function() {
+              form.library = library;
+
               var editMode = {
                 form    : form,
                 subforms: subforms
@@ -469,7 +481,8 @@
                     getFormDefinition( {
                       formKey           : embeddedType,
                       mode              : mode,
-                      subformDefinitions: subforms
+                      subformDefinitions: subforms,
+                      library           : library
                     } )
                       .then( function( embeddedForm ) {
                         var fields = [],

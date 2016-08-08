@@ -57,7 +57,8 @@
     var config           = iscCustomConfigService.getConfig(),
         formsConfig      = _.get( config, 'forms', {} ),
         updateOnExcluded = formsConfig.updateOnExcluded,
-        widgetLibrary    = [];
+        widgetLibrary    = [],
+        functionLibrary  = {};
 
     // YYYY-MM-DDThh:mm:ss.xxxZ   or
     // YYYY-MM-DD hh:mm:ss
@@ -66,14 +67,16 @@
     formlyConfig.extras.fieldTransform.push( addDataModelDependencies );
 
     var service = {
-      isTypeRegistered   : isTypeRegistered,
-      isWrapperRegistered: isWrapperRegistered,
-      getRegisteredType  : getRegisteredType,
-      registerWrapper    : formlyConfig.setWrapper,
-      registerBaseType   : registerBaseType,
-      registerType       : registerType,
-      appendWrapper      : appendWrapper,
-      getWidgetList      : getWidgetList
+      isTypeRegistered        : isTypeRegistered,
+      isWrapperRegistered     : isWrapperRegistered,
+      getRegisteredType       : getRegisteredType,
+      registerWrapper         : formlyConfig.setWrapper,
+      registerBaseType        : registerBaseType,
+      registerType            : registerType,
+      appendWrapper           : appendWrapper,
+      getWidgetList           : getWidgetList,
+      registerGlobalLibrary   : registerGlobalLibrary,
+      getGlobalFunctionLibrary: getGlobalFunctionLibrary
     };
 
     return service;
@@ -408,7 +411,29 @@
      * @memberOf iscFormsTemplateService
      */
     function getWidgetList() {
-      return angular.copy( widgetLibrary );
+      return _.sortBy( angular.copy( widgetLibrary ), function( name ) {
+        return name;
+      } );
+    }
+
+    /**
+     * @memberOf iscFormsTemplateService
+     * @param {Object} library - Properties are functions that should be available to FDN expressions.
+     * @description Registers the functions in the given library with the forms module.
+     * Subsequent calls to this function will override any library members of the same name.
+     * Functions in this library will be available to all forms in the application via formState._lib.{functionName}.
+     */
+    function registerGlobalLibrary( library ) {
+      _.extend( functionLibrary, library );
+    }
+
+    /**
+     * @memberOf iscFormsTemplateService
+     * @return {Object}
+     * @description Returns the library of functions registered with the service.
+     */
+    function getGlobalFunctionLibrary() {
+      return functionLibrary;
     }
 
     /**
