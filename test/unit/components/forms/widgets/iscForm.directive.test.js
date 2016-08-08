@@ -39,6 +39,10 @@
 
     var libraryFormConfig = {
       library: {
+        // Overrides script1 defined in libraryScript and libraryEmbeddedScript
+        script1       : function() {
+          return "Set in controller script";
+        },
         setModelDotLib: function( model, fieldScope ) {
           _.set( model, 'lib', _.get( model, fieldScope.options.key ) );
         }
@@ -87,6 +91,7 @@
         } );
 
         suiteMain.$httpBackend.flush();
+        suiteMain.$timeout.flush();
       } );
 
       it( 'should call the library function when the input field is changed', function() {
@@ -104,6 +109,29 @@
 
         expect( _.get( model, 'inputField' ) ).toEqual( newValue );
         expect( _.get( model, 'lib' ) ).toEqual( newValue );
+      } );
+
+
+      it( 'should load function library definitions in subforms, overriding function definitions that are closer to the form', function() {
+        var suite         = suiteLibrary,
+            instructions  = suite.element.find( '.formly-field-instructions' ),
+            instructions1 = instructions.filter( '.script1' ).find('.ng-binding'),
+            instructions2 = instructions.filter( '.script2' ).find('.ng-binding'),
+            instructions3 = instructions.filter( '.script3' ).find('.ng-binding');
+
+        expect(instructions1.length).toBe(1);
+        expect(instructions2.length).toBe(1);
+        expect(instructions3.length).toBe(1);
+
+        // Mocks are set up so that:
+        //   script3 is only defined in the script linked to the embedded form;
+        //   script2 is defined as an override in the main form's script;
+        //   script1 is defined as an override in the controller's script.
+        // This exercises the order in which overrides are applied.
+        expect(instructions1.html()).toEqual('Set in controller script');
+        expect(instructions2.html()).toEqual('Set in form script');
+        expect(instructions3.html()).toEqual('Set in embedded script');
+
       } );
     } );
 

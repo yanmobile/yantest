@@ -1,14 +1,23 @@
 {
-  "name"       : "Sample Form with Function Library",
-  "pages"      : [
+  "name"    : "Sample Form with Function Library",
+  "library" : "libraryScript",
+  "pages"   : [
     {
       "name"   : "Page 1",
       "fields" : [
         {
-          "key"  : "inputField",
-          "type" : "input",
+          "key"             : "inputField",
+          "type"            : "input",
           "templateOptions" : {
             "onChange" : "formState._lib.setModelDotLib( model, this )"
+          }
+        },
+        {
+          "key" : "embeddedLibraryTest",
+          "type"                 : "embeddedForm",
+          "data" : {
+            "embeddedType" : "libraryEmbedded",
+            "embeddedPage" : 0
           }
         }
       ]

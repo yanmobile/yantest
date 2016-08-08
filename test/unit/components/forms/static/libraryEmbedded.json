@@ -1,0 +1,32 @@
+{
+  "name"    : "Sample Embedded Form with Function Library",
+  "library" : "libraryEmbeddedScript",
+  "pages"   : [
+    {
+      "name"   : "Page 1",
+      "fields" : [
+        {
+          "type"                 : "instructions",
+          "className"            : "script1",
+          "expressionProperties" : {
+            "data.content" : "formState._lib.script1()"
+          }
+        },
+        {
+          "type"                 : "instructions",
+          "className"            : "script2",
+          "expressionProperties" : {
+            "data.content" : "formState._lib.script2()"
+          }
+        },
+        {
+          "type"                 : "instructions",
+          "className"            : "script3",
+          "expressionProperties" : {
+            "data.content" : "formState._lib.script3()"
+          }
+        }
+      ]
+    }
+  ]
+}
