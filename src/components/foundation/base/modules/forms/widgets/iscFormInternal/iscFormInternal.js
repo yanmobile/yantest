@@ -14,7 +14,11 @@
    * @param iscFormsValidationService
    * @returns {{restrict: string, replace: boolean, controllerAs: string, scope: {formDefinition: string, model: string, options: string, formConfig: string, validateFormApi: string, buttonConfig: string}, bindToController: boolean, controller: controller, templateUrl: directive.templateUrl}}
    */
-  function iscFormInternal( $q, iscCustomConfigService, iscNotificationService, iscFormsValidationService ) {
+  function iscFormInternal( $q,
+    iscCustomConfigService,
+    iscNotificationService,
+    iscFormsValidationService,
+    iscFormsTemplateService ) {
     var directive = {
       restrict        : 'E',
       replace         : true,
@@ -58,8 +62,11 @@
         },
         childConfig : {},
         formConfig  : {},
-        buttonConfig: {}
+        buttonConfig: {},
+        selectPage  : selectPage
       }, self );
+
+      _.defaults( self.options.formState._lib, getScopedLibrary() );
 
       // Option for forcing any form-level settings for a particular form instance
       _.merge( self.formDefinition.form, _.get( self.formConfig, 'forceFdn', {} ) );
@@ -346,6 +353,19 @@
 
         $q.when( onSubmit() )
           .then( afterSubmit );
+      }
+
+      /**
+       * @private
+       * @description Ensures default library functions that need this scope are initialized
+       */
+      function getScopedLibrary() {
+        var library = iscFormsTemplateService.getGlobalFunctionLibrary();
+        if ( !library._goToPage ) {
+          library._goToPage = self.selectPage;
+          iscFormsTemplateService.registerGlobalLibrary( library );
+        }
+        return library;
       }
     }
   }
