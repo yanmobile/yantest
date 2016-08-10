@@ -377,11 +377,16 @@
         config.annotationsApi.initAnnotationQueue();
         getAnnotationData()
           .then( function() {
-            return formDataApi.load( self.parsedFormDataId )
-              .then( function( formData ) {
-                self.internalModel = formDataApi.unwrap( formData ) || {};
-                return formData;
-              } );
+            if ( _.isEmpty( self.internalModel ) ) {
+              return formDataApi.load( self.parsedFormDataId )
+                .then( function( formData ) {
+                  self.internalModel = formDataApi.unwrap( formData ) || {};
+                  return formData;
+                } );
+            }
+            else {
+              return self.internalModel;
+            }
           } )
           .then( getFormDefinition );
       }
