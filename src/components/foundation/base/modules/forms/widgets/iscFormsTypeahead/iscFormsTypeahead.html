@@ -6,7 +6,7 @@
         ng-click="typeaheadCtrl.select(result)"
         ng-keypress="typeaheadCtrl.select(result)"
         class="isc-dropdown-item isc-dd"
-        ng-repeat="result in typeaheadCtrl.getFilteredList()">
+        ng-repeat="result in typeaheadCtrl.getFilteredList() track by $index">
       {{ typeaheadCtrl.listField ? result[typeaheadCtrl.listField] : result }}
     </li>
   </ul>

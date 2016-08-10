@@ -1,4 +1,4 @@
-( function() {
+(function() {
   'use strict';
 
   angular.module( 'isc.core' )
@@ -27,7 +27,8 @@
         id           : '=',
         model        : '=',
         options      : '=',
-        isObjectModel: '='
+        isObjectModel: '=',
+        disabled     : '='
       },
       controllerAs    : 'radioCtrl',
       controller      : controller,
@@ -87,4 +88,4 @@
     }
 
   }//END CLASS
-} )();
+})();

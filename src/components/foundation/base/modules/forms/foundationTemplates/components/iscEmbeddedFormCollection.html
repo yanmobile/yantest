@@ -11,6 +11,8 @@
       <!--Add Button-->
       <button class="button float-left small embedded-form-add"
               type="button"
+              ng-class="{'disabled' : efCollectionCtrl.disabled}"
+              ng-disabled="efCollectionCtrl.disabled"
               ng-if="efCollectionCtrl.mode != 'view'"
               ng-click="efCollectionCtrl.newForm()">
         <i class="fa fa-plus"></i> {{'Forms_Collections_Add' | translate}} {{efCollectionCtrl.label | translate}}

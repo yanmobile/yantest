@@ -342,9 +342,9 @@
           }
 
           $scope.efFields  = templateOptions.fields;
-          $scope.efOptions = {
+          $scope.efOptions = _.extend({}, $scope.formOptions, {
             formState: $scope.formState
-          };
+          });
         }
       } );
 
