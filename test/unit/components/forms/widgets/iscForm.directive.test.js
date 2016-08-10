@@ -96,7 +96,7 @@
 
       it( 'should call the library function when the input field is changed', function() {
         var suite      = suiteLibrary,
-            model      = suite.controller.model,
+            model      = suite.controller.internalModel,
             newValue   = 'some value',
             inputField = getControlByName( suite, 'inputField' );
 
@@ -251,7 +251,7 @@
             submitButton       = getButton( suite, 'submit' ),
             buttonConfig       = getButtonConfig( suite ),
             submitButtonConfig = buttonConfig.submit,
-            model              = suite.controller.model,
+            model              = suite.controller.internalModel,
             subformRecord1     = {},
             subformRecord2     = {},
             subformRecordData  = {
@@ -310,7 +310,7 @@
       //--------------------
       it( 'should validate data in a subform', function() {
         var suite = suiteConfigured,
-            model = suite.controller.model;
+            model = suite.controller.internalModel;
 
         spyOn( suiteMain.validationService, 'validateForm' ).and.callThrough();
 
@@ -388,7 +388,7 @@
       it( 'should load form data from the ID', function() {
         var suite         = suiteWithData,
             mockData      = _.find( mockFormStore.formData, { id: 3 } ).data,
-            expectedModel = suite.controller.model,
+            expectedModel = suite.controller.internalModel,
             buttonConfig  = getButtonConfig( suite );
 
         expect( expectedModel.form.components.templates )

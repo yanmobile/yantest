@@ -48,7 +48,7 @@
    *     The API to use when persisting data from this form. These properties may be defined:
    *       wrap  : The function to use to wrap the form data with metadata, before submitting it to the API.
    *               Called with two arguments:
-   *                 formData       (this.model)
+   *                 formData       (this.internalModel)
    *                 formDefinition (this.formDefinition)
    *       unwrap: The function to use to unwrap form data returned from load.
    *               Called with one argument:
@@ -58,7 +58,7 @@
    *                 id       (this.formDataId)
    *       save  : The function call that will persist data in this form.
    *               Called with two arguments:
-   *                 formData (the model payload for this form: this.model)
+   *                 formData (the model payload for this form: this.internalModel)
    *                 id       (this.formDataId)
    *       urls  : An object for overriding the API endpoints for form data. These may be absolute or relative urls.
    *               These properties may be defined:
@@ -78,10 +78,10 @@
    *           id         : this.formDataId,
    *           author     : iscSessionModel.getCurrentUser(),
    *           completedOn: moment().toISOString(),
-   *           data       : this.model
+   *           data       : this.internalModel
    *         }
    *       unwrap: A function that returns responseData.data.
-   *       load  : If this.formDataId is defined, call iscFormDataApi.get and update this.model.
+   *       load  : If this.formDataId is defined, call iscFormDataApi.get and update this.internalModel.
    *               Otherwise, use a new empty object.
    *       save  : If this.formDataId is undefined, call iscFormDataApi.post and update this.formDataId.
    *               Otherwise, call iscFormDataApi.put.
@@ -203,7 +203,7 @@
         formDefinition        : {},
         internalFormDefinition: {},
         validationDefinition  : [],
-        model                 : {},
+        internalModel         : self.model || {},
         options               : {
           formState: {
             _mode: self.mode,
@@ -224,7 +224,7 @@
       }
 
       self.validateFormApi = function() {
-        return iscFormsValidationService.validateCollections( self.model, self.validationDefinition );
+        return iscFormsValidationService.validateCollections( self.internalModel, self.validationDefinition );
       };
 
       init();
@@ -340,7 +340,7 @@
           var formDataApi = self.internalFormConfig.formDataApi;
 
           // Default api for submitting a form is to submit to iscFormDataApi
-          var wrappedData = formDataApi.wrap( self.model, self.formDefinition.form );
+          var wrappedData = formDataApi.wrap( self.internalModel, self.formDefinition.form );
           return formDataApi.save( wrappedData, self.parsedFormDataId );
         }
 
@@ -379,7 +379,7 @@
           .then( function() {
             return formDataApi.load( self.parsedFormDataId )
               .then( function( formData ) {
-                self.model = formDataApi.unwrap( formData ) || {};
+                self.internalModel = formDataApi.unwrap( formData ) || {};
                 return formData;
               } );
           } )
@@ -434,7 +434,7 @@
        * If provided, call init function to populate additional dynamic data models
        */
       function populateAdditionalModels( fdnScript ) {
-        var args = [self.internalFormConfig.additionalModels, $stateParams, self.model];
+        var args = [self.internalFormConfig.additionalModels, $stateParams, self.internalModel];
         evalScript( fdnScript, args );
         evalScript( self.internalFormConfig.additionalModelInit, args );
 

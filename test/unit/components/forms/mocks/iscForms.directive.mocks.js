@@ -56,7 +56,7 @@ function getConfiguredForm() {
 function getInternalForm() {
   return '<isc-form-internal ' +
     'form-definition="formCtrl.formDefinition"' +
-    'model="formCtrl.model"' +
+    'model="formCtrl.internalModel"' +
     'options="formCtrl.options"' +
     'button-config="formCtrl.internalButtonConfig"' +
     'form-config="formCtrl.internalFormConfig"' +
