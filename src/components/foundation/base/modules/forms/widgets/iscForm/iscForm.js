@@ -414,6 +414,7 @@
         iscFormsModel.getFormDefinition( {
           formKey    : self.formKey,
           mode       : self.mode,
+          formLiteral: self.internalFormConfig.formLiteral,
           formVersion: self.formVersion
         } )
           .then( function( formDefinition ) {
@@ -472,7 +473,8 @@
       function getValidationDefinition() {
         iscFormsModel.getValidationDefinition( {
           formKey    : self.formKey,
-          formVersion: self.formVersion
+          formVersion: self.formVersion,
+          formLiteral: self.internalFormConfig.formLiteral
         } )
           .then( function( validationDefinition ) {
             self.validationDefinition = validationDefinition;
