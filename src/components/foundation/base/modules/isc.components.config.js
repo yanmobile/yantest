@@ -36,7 +36,7 @@
         }
       },
       'forms'          : {
-        'initCodeTables'  : true,
+        'initCodeTables'  : false,
         'debounce'        : 75,
         'allowInvalid'    : true,
         'updateOn'        : 'change',
