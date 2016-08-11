@@ -169,7 +169,7 @@
         buttonConfig: '=',
         formConfig  : '=',
         formDataId  : '@?',
-        formKey     : '@',
+        formKey     : '@?',
         formVersion : '@?',
         mode        : '@',
         model       : '=?'

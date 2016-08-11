@@ -262,11 +262,12 @@
 
       // Otherwise, fetch the form template and resolve the form in a promise
       else {
+        var formPromise;
         if (formLiteral) {
-          var formPromise = $q.when( formLiteral );
+          formPromise = $q.when( formLiteral );
         }
         else {
-          var formPromise = iscFormsApi.getFormDefinition( formKey, formVersion );
+          formPromise = iscFormsApi.getFormDefinition( formKey, formVersion );
         }
         formPromise.then( function( responseData ) {
           var primaryPromises   = [],
