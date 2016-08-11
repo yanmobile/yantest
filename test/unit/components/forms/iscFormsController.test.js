@@ -11,7 +11,8 @@
         $provide.value('iscCustomConfigService', mockCustomConfigService);
       });
 
-
+    mockDefaultFormStates();
+    
     // this loads all the external templates used in directives etc
     // eg, everything in **/partials/*.html
     beforeEach( module( 'isc.templates' ) );
