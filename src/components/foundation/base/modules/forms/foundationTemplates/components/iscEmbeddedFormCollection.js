@@ -434,21 +434,25 @@
     }
 
     function link( scope, el, attrs, ngModelCtrl ) {
+      var ctrl = scope.efCollectionCtrl;
+
+      ctrl.disabled = attrs.disabled;
+
       // Hold reference to ngModelCtrl in main controller
-      scope.efCollectionCtrl.ngModelCtrl = ngModelCtrl;
+      ctrl.ngModelCtrl = ngModelCtrl;
 
       // Initialize model value for collection rows in $render
       ngModelCtrl.$render = function() {
         var model = ngModelCtrl.$modelValue || [];
-        if ( scope.efCollectionCtrl.isPrimitive ) {
-          scope.efCollectionCtrl.collectionModel = _.map( model, function( value ) {
+        if ( ctrl.isPrimitive ) {
+          ctrl.collectionModel = _.map( model, function( value ) {
             var primitiveWrapper            = {};
             primitiveWrapper[PRIMITIVE_KEY] = value;
             return primitiveWrapper;
           } );
         }
         else {
-          scope.efCollectionCtrl.collectionModel = model;
+          ctrl.collectionModel = model;
         }
       };
     }

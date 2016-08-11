@@ -6,6 +6,7 @@
              id="{{id + '_'+ $index}}"
              name="{{radioCtrl.id}}"
              tabindex="0"
+             ng-disabled="radioCtrl.disabled"
              ng-value="option"
              ng-checked="radioCtrl.isChecked(option)"
              ng-click="onSelect(option)">

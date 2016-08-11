@@ -5,6 +5,7 @@
                        limit-to-list="{{limitToList}}"
                        list-field="{{options.data.resultsDisplayField}}">
     <input ng-model="localModel.input"
+           ng-disabled="to.disabled"
            id="{{id}}"
            name="{{name||id}}"
            class="typeahead">
