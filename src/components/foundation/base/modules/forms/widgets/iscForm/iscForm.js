@@ -381,11 +381,11 @@
               return formDataApi.load( self.parsedFormDataId )
                 .then( function( formData ) {
                   self.internalModel = formDataApi.unwrap( formData ) || {};
-                  return formData;
+                  return true;
                 } );
             }
             else {
-              return self.internalModel;
+              return true;
             }
           } )
           .then( getFormDefinition );
