@@ -27,7 +27,7 @@
       var config = getConfig();
 
       return [config.api.protocol + ":/",
-        config.api.hostname + ":" + config.api.port,
+        config.api.hostname + (config.api.port ? ":" + config.api.port : ''),
         config.api.path,
         url].join( '/' );
     }
@@ -43,7 +43,7 @@
           apiProp = _.merge( {}, config.api, configProp );
 
       return [apiProp.protocol + ":/",
-        apiProp.hostname + ":" + apiProp.port,
+        apiProp.hostname + (apiProp.port ? ":" + apiProp.port : ''),
         apiProp.path].join( '/' );
     }
 
@@ -51,7 +51,7 @@
       var config = getConfig();
 
       return ["ws:/",
-        config.api.hostname + ":" + config.api.port].join( '/' );
+        config.api.hostname + (config.api.port ? ":" + config.api.port : '')].join( '/' );
     }
   }
 
