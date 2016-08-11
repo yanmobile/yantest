@@ -175,6 +175,7 @@
     function getValidationDefinition( config ) {
       var formKey     = config.formKey,
           formVersion = config.formVersion,
+          formLiteral = config.formLiteral,
           cacheKey    = ( formVersion || 'current' ) + '.' + formKey;
 
       var cachedValidation = _.get( _validationCache, cacheKey );
@@ -188,6 +189,7 @@
       else {
         getFormDefinition( {
           formKey    : formKey,
+          formLiteral: formLiteral,
           formVersion: formVersion
         } )
           .then( function( formDefinition ) {
@@ -235,6 +237,7 @@
     function getFormDefinition( config ) {
       var formKey            = config.formKey,
           mode               = config.mode,
+          formLiteral        = config.formLiteral,
           formVersion        = config.formVersion,
           subformDefinitions = config.subformDefinitions,
           library            = config.library || [],
@@ -259,7 +262,14 @@
 
       // Otherwise, fetch the form template and resolve the form in a promise
       else {
-        iscFormsApi.getFormDefinition( formKey, formVersion ).then( function( responseData ) {
+        var formPromise;
+        if (formLiteral) {
+          formPromise = $q.when( formLiteral );
+        }
+        else {
+          formPromise = iscFormsApi.getFormDefinition( formKey, formVersion );
+        }
+        formPromise.then( function( responseData ) {
           var primaryPromises   = [],
               secondaryPromises = [],
               form              = unwrapFormDefinitionResponse( responseData ),
