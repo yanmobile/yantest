@@ -160,7 +160,8 @@
   /* @ngInject */
   function iscForm( $stateParams, $q, $window,
     iscSessionModel, iscNavContainerModel,
-    iscFormsModel, iscFormsValidationService, iscFormDataApi ) {//jshint ignore:line
+    iscFormsModel, iscFormsValidationService,
+    iscFormDataApi, iscFormsTemplateService ) {//jshint ignore:line
     var directive = {
       restrict        : 'E',
       replace         : true,
@@ -452,11 +453,16 @@
        * If provided, populate user library of reusable functions from FDN and/or controller definition
        */
       function initializeUserLibrary( fdnLibraries ) {
+        // First the global library
+        mergeLibrary( iscFormsTemplateService.getGlobalFunctionLibrary() );
+
         // Apply libraries in reverse order to ensure that the library defined on the form itself takes precedence
+        // over those in subforms.
         var fdnLibrary;
         while ( fdnLibrary = fdnLibraries.pop() ) {
           mergeLibrary( fdnLibrary );
         }
+
         // Finally, apply any library defined in client code
         mergeLibrary( self.internalFormConfig.library );
 
