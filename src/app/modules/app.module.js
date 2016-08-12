@@ -39,10 +39,18 @@
     }
   }
 
-  function run( devlog, iscNavContainerModel, $rootScope, $state, iscConfirmationService, iscSessionModel, AUTH_EVENTS,
-    loginApi, iscRouterDefaultEventService, appConfig, iscExternalRouteApi, iscStateInit, iscVersionApi, $window, $timeout,
-    iscCustomConfigService, FoundationApi ) {
+  function run( $rootScope, $state, $window, $timeout, FoundationApi,
+    devlog, loginApi, AUTH_EVENTS, NOTIFICATION,
+    iscNavContainerModel, iscConfirmationService, iscNotificationService, iscSessionModel,
+    iscRouterDefaultEventService, iscExternalRouteApi, iscStateInit, iscVersionApi, iscCustomConfigService ) {
+
     var log = devlog.channel( 'app.module' );
+
+    // Configure notification defaults
+    iscNotificationService.setDefaults( {
+      position : NOTIFICATION.position.topRight,
+      autoclose: 5000
+    } );
 
     //register default state event handlers
     iscRouterDefaultEventService.registerDefaultEvents();
@@ -146,9 +154,11 @@
     // sessionTimeout event
     $rootScope.$on( AUTH_EVENTS.sessionTimeout, function() {
       log.debug( 'AUTH_EVENTS.sessionTimeout...' );
-      var state  = $state.current,
-          params = $state.params;
-      iscExternalRouteApi.persistCurrentState( state, params, appConfig.session.routeMemoryExpirationInMinutes );
+      var state         = $state.current,
+          params        = $state.params,
+          config        = iscCustomConfigService.getConfig(),
+          sessionConfig = _.get( config, 'session', {} );
+      iscExternalRouteApi.persistCurrentState( state, params, sessionConfig.routeMemoryExpirationInMinutes );
       iscConfirmationService.hide();
       destroySession();
     } );
