@@ -16,12 +16,12 @@
       //delete all cookies after every test
       cookies = document.cookie.split( ";" );
 
-      for ( var i = 0; i < cookies.length; i++ ) {
-        cookie          = cookies[i];
+      cookies.forEach( function( cookie ) {
         eqPos           = cookie.indexOf( "=" );
         name            = eqPos > -1 ? cookie.substr( 0, eqPos ) : cookie;
         document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
-      }
+      } );
+
     } );
 
     // -------------------------
@@ -30,49 +30,54 @@
       function() {
 
         it( 'should have valid methods defined', function() {
-          expect( angular.isDefined( service.getItem ) ).toBeDefined();
-          expect( angular.isDefined( service.setItem ) ).toBeDefined();
-          expect( angular.isDefined( service.removeItem ) ).toBeDefined();
+          expect( angular.isDefined( service.get ) ).toBeDefined();
+          expect( angular.isDefined( service.set ) ).toBeDefined();
+          expect( angular.isDefined( service.remove ) ).toBeDefined();
 
         } );
 
       } );
 
     describe(
-      'setItem tests ',
+      'set tests ',
       function() {
 
         it( 'should set the value in the cookie', function() {
-          service.setItem( "testKey", "testValue" );
-          expect( document.cookie ).toBe( "testKey=testValue" );
+          service.set( "testKey", "testValue" );
+          expect( document.cookie ).toEqual( 'testKey="testValue"' );
         } );
 
       } );
 
     describe(
-      'getItem tests ',
+      'get tests ',
       function() {
 
         it( 'should get return the correct value from the cookie', function() {
-          service.setItem( "testKey1", "testValue1" );
-          service.setItem( "testKey2", "testValue2" );
-          expect( service.getItem( "testKey1" ) ).toBe( "testValue1" );
-          expect( service.getItem( "testKey2" ) ).toBe( "testValue2" );
+          service.set( "testKey1", "testValue1" );
+          service.set( "testKey2", 9 );
+          var testObj = {
+            a : 1
+          };
+          service.set( "testKey3", testObj );
+          expect( service.get( "testKey1" ) ).toBe( "testValue1" );
+          expect( service.get( "testKey2" ) ).toBe( 9 );
+          expect( service.get( "testKey3" ) ).toEqual( testObj );
 
         } );
 
       } );
 
     describe(
-      'removeItem tests ',
+      'remove tests ',
       function() {
 
         it( 'should remove the value from the cookie', function() {
-          service.setItem( "testKey1", "testValue1" );
-          service.setItem( "testKey2", "testValue2" );
-          service.removeItem( "testKey2" );
-          expect( service.getItem( "testKey1" ) ).toBe( "testValue1" );
-          expect( service.getItem( "testKey2" ) ).toBe( null );
+          service.set( "testKey1", "testValue1" );
+          service.set( "testKey2", "testValue2" );
+          service.remove( "testKey2" );
+          expect( service.get( "testKey1" ) ).toBe( "testValue1" );
+          expect( service.get( "testKey2" ) ).not.toBeDefined( );
 
         } );
 

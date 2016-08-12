@@ -11,46 +11,65 @@
   /* @ngInject */
   function iscCookieManager() {
     var service = {
-      setItem   : setItem,
-      getItem   : getItem,
-      removeItem: removeItem
+      set   : set,
+      get   : get,
+      remove: remove
     };
 
     return service;
 
+    /*========================================
+     =               function                =
+     ========================================*/
 
-    function setItem( name, value, days ) {
-      var date, expires;
-      if ( days ) {
-        date = new Date();
-        date.setTime( date.getTime() + (days * 24 * 60 * 60 * 1000) );
-        expires = "; expires=" + date.toGMTString();
+    function get( key ) {
+      var rawValue = getValueFromCookie( key );
+      var value;
+      try {
+        value = _.isNil( rawValue ) ? undefined : JSON.parse( rawValue );
+      } catch ( ex ) {
+        value = undefined;
       }
-      else {
-        expires = "";
+      return value;
+    }
+
+    function set( key, value, params ) {
+      var stringified = JSON.stringify( value );
+      setValueInCookie( key, stringified, params );
+    }
+
+    function remove( key ) {
+      setValueInCookie( key, "", { 'expires': -1 } );
+    }
+
+    /*========================================
+     =                 private   =             =
+     =======================================*/
+    function setValueInCookie( name, value, params ) {
+      var date,
+          expires = '';
+      if ( params && params.expires ) {
+        date = new Date();
+        date.setTime( date.getTime() + ((parseInt(params.expires,10)) * 24 * 60 * 60 * 1000) );
+        expires = "; expires=" + date.toGMTString();
       }
       document.cookie = name + "=" + value + expires + "; path=/";
     }
 
-    function getItem( name ) {
-      var nameEQ, params, param;
-      nameEQ = name + "=";
-      params = document.cookie.split( ';' );
-      for ( var i = 0; i < params.length; i++ ) {
-        param = params[i];
-        while ( param.charAt( 0 ) == ' ' ) {
-          param = param.substring( 1, param.length );
+    function getValueFromCookie( name ) {
+      var nameEQ = name + "=",
+          value = null,
+          params = document.cookie.split( ';' );
+
+      params.forEach( function( param ) {
+        param = _.trimStart( param );
+        if ( _.startsWith( param, nameEQ ) ) {
+          value =  _.trimStart( param, nameEQ );
         }
-        if ( param.indexOf( nameEQ ) == 0 ) {
-          return param.substring( nameEQ.length, param.length );
-        }
-      }
-      return null;
+      } );
+      return value;
     }
 
-    function removeItem( name ) {
-      setItem( name, "", -1 );
-    }
 
   }// END CLASS
 })();
