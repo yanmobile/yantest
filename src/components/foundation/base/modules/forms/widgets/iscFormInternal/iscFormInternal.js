@@ -17,8 +17,7 @@
   function iscFormInternal( $q,
     iscCustomConfigService,
     iscNotificationService,
-    iscFormsValidationService,
-    iscFormsTemplateService ) {
+    iscFormsValidationService ) {
     var directive = {
       restrict        : 'E',
       replace         : true,
@@ -66,7 +65,7 @@
         selectPage  : selectPage
       }, self );
 
-      _.defaults( self.options.formState._lib, getScopedLibrary() );
+      initScopedLibrary( self.options.formState._lib );
 
       // Option for forcing any form-level settings for a particular form instance
       _.merge( self.formDefinition.form, _.get( self.formConfig, 'forceFdn', {} ) );
@@ -359,13 +358,10 @@
        * @private
        * @description Ensures default library functions that need this scope are initialized
        */
-      function getScopedLibrary() {
-        var library = iscFormsTemplateService.getGlobalFunctionLibrary();
-        if ( !library._goToPage ) {
-          library._goToPage = self.selectPage;
-          iscFormsTemplateService.registerGlobalLibrary( library );
-        }
-        return library;
+      function initScopedLibrary() {
+        _.defaults( self.options.formState._lib, {
+          _goToPage: self.selectPage
+        } );
       }
     }
   }
