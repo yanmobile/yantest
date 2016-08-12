@@ -11,6 +11,8 @@
         $provide.value( 'iscCustomConfigService', mockCustomConfigService );
       } );
 
+    mockDefaultFormStates();
+    
     beforeEach( inject( function( iscFormsModel, iscFormsApi, iscFormDataApi,
       $httpBackend, $timeout ) {
       suite.model       = iscFormsModel;
