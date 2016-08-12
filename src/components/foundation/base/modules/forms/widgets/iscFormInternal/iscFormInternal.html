@@ -9,6 +9,7 @@
     <div ng-hide="formInternalCtrl.childConfig.renderForm">
       <div ng-if="formInternalCtrl.multiConfig">
         <isc-subform model="formInternalCtrl.model"
+                     class="{{formInternalCtrl.formDefinition.form.className}}"
                      form-title="formInternalCtrl.formDefinition.form.name"
                      options="formInternalCtrl.options"
                      multi-config="formInternalCtrl.multiConfig">
