@@ -67,7 +67,7 @@
     }
 
     function isUrlRelative( apiProp ) {
-      return !apiProp.protocol || !apiProp.hostname || !apiProp.port;
+      return !apiProp.protocol || !apiProp.hostname;
     }
   }
 
