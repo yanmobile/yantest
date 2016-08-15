@@ -10,7 +10,7 @@
 
   /* @ngInject */
   function iscAuthStatusService( $rootScope, $window,
-    storage, iscAuthStatus, iscSessionStorageHelper,
+    storage, iscAuthStatus, iscSessionModel, iscSessionStorageHelper,
     NAV_EVENTS, AUTH_EVENTS ) {
     var thisTabHash,
         authStatusCallFailed = false;
@@ -49,7 +49,7 @@
           callback     = config.authStatusFocusCallback || _.noop;
 
       if ( config.useAuthStatus ) {
-        if ( shouldLogOut ) {
+        if ( shouldLogOut && iscSessionModel.isAuthenticated() ) {
           $rootScope.$emit( AUTH_EVENTS.logout );
           return;
         }
@@ -58,8 +58,8 @@
 
         if ( storageHash && storageHash !== thisTabHash ) {
           var authStatusResult = callAuthStatus( config.authStatusUrl );
-          if (authStatusResult) {
-            thisTabHash          = storageHash;
+          if ( authStatusResult ) {
+            thisTabHash = storageHash;
             return callback( authStatusResult );
           }
         }
