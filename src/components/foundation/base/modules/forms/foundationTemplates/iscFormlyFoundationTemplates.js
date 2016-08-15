@@ -332,8 +332,8 @@
         wrapper    : ['templateLabel', 'templateHasError'],
         /*@ngInject*/
         controller : function( $scope ) {
-          var templateOptions = $scope.to;
-          var opts            = $scope.options;
+          var opts            = $scope.options,
+              subforms        = $scope.formState._subforms;
 
           $scope.efModel = _.get( $scope.model, opts.key );
           if ( !$scope.efModel ) {
@@ -341,10 +341,11 @@
             _.set( $scope.model, opts.key, $scope.efModel );
           }
 
-          $scope.efFields  = templateOptions.fields;
-          $scope.efOptions = _.extend({}, $scope.formOptions, {
+          $scope.efFields  = iscFormsTemplateService.getFieldsForEmbeddedForm( opts, subforms );
+
+          $scope.efOptions = _.extend( {}, $scope.formOptions, {
             formState: $scope.formState
-          });
+          } );
         }
       } );
 
