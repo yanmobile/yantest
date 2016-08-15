@@ -33,6 +33,7 @@
       storage,
       iscAuthStatus,
       iscAuthStatusService,
+      iscSessionModel,
       iscSessionStorageHelper,
       AUTH_EVENTS,
       NAV_EVENTS ) {
@@ -43,6 +44,7 @@
         storage                : storage,
         iscAuthStatus          : iscAuthStatus,
         iscAuthStatusService   : iscAuthStatusService,
+        iscSessionModel        : iscSessionModel,
         iscSessionStorageHelper: iscSessionStorageHelper,
         AUTH_EVENTS            : AUTH_EVENTS,
         NAV_EVENTS             : NAV_EVENTS
@@ -66,6 +68,11 @@
       suite.storage.set( 'browserIsLoggedOut', 1 );
       suite.$window.dispatchEvent( focus );
 
+      // logout is only called if the user is authenticated
+      expect( suite.$rootScope.$emit ).not.toHaveBeenCalled();
+
+      spyOn(suite.iscSessionModel, 'isAuthenticated').and.returnValue(true);
+      suite.$window.dispatchEvent( focus );
       expect( suite.$rootScope.$emit ).toHaveBeenCalledWith( suite.AUTH_EVENTS.logout );
     } );
 
