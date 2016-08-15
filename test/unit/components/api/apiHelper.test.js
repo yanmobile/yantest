@@ -1,7 +1,7 @@
 (function() {
   'use strict';
 
-  describe( 'iscVersionApi', function() {
+  describe( 'apiHelper', function() {
     var suite;
 
     var mockConfig = {
@@ -13,33 +13,30 @@
       },
       moduleApi: {
         forms: {
-          'path'    : 'someOtherApi/forms'
+          'path': 'someOtherApi/forms'
         }
       }
     };
 
-    useDefaultModules( 'isc.core', 'isc.http' );
+    var mockConfigRelative = {
+      api      : {
+        'path': 'myRelativeApi'
+      },
+      moduleApi: {
+        forms: {
+          'path': 'someOtherRelativeApi/forms'
+        }
+      }
+    };
 
-    beforeEach( module( 'isc.configuration',
-      function( iscCustomConfigServiceProvider ) {
-        iscCustomConfigServiceProvider.loadConfig( mockConfig );
-      } )
-    );
+    // ---------------------------------
+    describe( 'absoluteUrls', function() {
+      useDefaultModules( 'isc.core', 'isc.http' );
 
-    beforeEach( inject( function( $httpBackend,
-      iscCustomConfigService,
-      apiHelper,
-      iscHttpapi ) {
-      suite = window.createSuite( {
-        apiHelper             : apiHelper,
-        iscCustomConfigService: iscCustomConfigService,
-        iscHttpapi            : iscHttpapi,
-        $httpBackend          : $httpBackend
-      } );
-    } ) );
+      loadConfig( mockConfig );
 
+      createApiHelperSuite();
 
-    describe( 'apiHelper', function() {
       it( 'should have revealed functions', function() {
         expect( _.isFunction( suite.apiHelper.getUrl ) ).toBe( true );
         expect( _.isFunction( suite.apiHelper.getConfigUrl ) ).toBe( true );
@@ -59,6 +56,47 @@
         expect( wsUrl ).toEqual( expectedWsUrl );
       } );
     } );
+
+    // ---------------------------------
+    describe( 'relativeUrls', function() {
+      useDefaultModules( 'isc.core', 'isc.http' );
+
+      loadConfig( mockConfigRelative );
+
+      createApiHelperSuite();
+
+      it( 'should return a relative url if the api property is not fully specified', function() {
+        var url               = suite.apiHelper.getUrl( 'myUrl' ),
+            configUrl         = suite.apiHelper.getConfigUrl( mockConfigRelative.moduleApi.forms ),
+            expectedUrl       = 'myRelativeApi/myUrl',
+            expectedConfigUrl = 'someOtherRelativeApi/forms';
+
+        expect( url ).toEqual( expectedUrl );
+        expect( configUrl ).toEqual( expectedConfigUrl );
+      } );
+    } );
+
+    function loadConfig( config ) {
+      beforeEach( module( 'isc.configuration',
+        function( iscCustomConfigServiceProvider ) {
+          iscCustomConfigServiceProvider.loadConfig( config );
+        } )
+      );
+    }
+
+    function createApiHelperSuite() {
+      beforeEach( inject( function( $httpBackend,
+        iscCustomConfigService,
+        apiHelper,
+        iscHttpapi ) {
+        suite = window.createSuite( {
+          apiHelper             : apiHelper,
+          iscCustomConfigService: iscCustomConfigService,
+          iscHttpapi            : iscHttpapi,
+          $httpBackend          : $httpBackend
+        } );
+      } ) );
+    }
 
   } );
 
