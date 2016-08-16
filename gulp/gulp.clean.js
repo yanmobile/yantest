@@ -9,6 +9,17 @@ module.exports = {
 
 function init(gulp, plugins, config, _) {
   gulp.task('clean', function (done) {
-    return plugins.del(['./www/**'], done);
+    var filesToRemove = ['./www/**'];
+
+    var appI18nXmlDest = _.get( config.app.dest.i18nXml, '' );
+    if (appI18nXmlDest !== '') {
+      if ( appI18nXmlDest.charAt( appI18nXmlDest.length - 1 ) !== '/' ) {
+        appI18nXmlDest += '/';
+      }
+      appI18nXmlDest += '**';
+      filesToRemove.push(appI18nXmlDest);
+    }
+
+    return plugins.del( filesToRemove, done);
   });
 }
