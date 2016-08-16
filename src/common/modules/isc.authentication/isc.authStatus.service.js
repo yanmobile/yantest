@@ -2,7 +2,7 @@
  * Created by paul robbins on 7/8/16.
  */
 
-(function() {
+( function() {
   'use strict';
 
   angular.module( 'isc.authentication' )
@@ -27,8 +27,8 @@
           storedLoginResponse = iscSessionStorageHelper.getLoginResponse(),
           isBrowserLoggedOut  = storage.get( 'browserIsLoggedOut' );
 
-      if ( config.authStatusUrl !== undefined
-        && _.isEmpty( storedLoginResponse ) // this is checked in isc.authentication.run()
+      if ( config.authStatusUrl !== undefined &&
+        _.isEmpty( storedLoginResponse ) // this is checked in isc.authentication.run()
         && !config.authStatusHasBeenChecked && !isBrowserLoggedOut ) {
 
         config.authStatusHasBeenChecked = true;
@@ -100,5 +100,5 @@
     }
 
   }
-})();
+} )();
 

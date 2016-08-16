@@ -2,7 +2,7 @@
  * Created by paul robbins on 7/8/16.
  */
 
-(function() {
+( function() {
   'use strict';
 
   angular.module( 'isc.authentication' )
@@ -21,7 +21,7 @@
         return {
           configure: configure,
           getConfig: getConfig
-        }
+        };
       }
     };
 
@@ -37,5 +37,5 @@
     }
 
   }
-})();
+} )();
 
