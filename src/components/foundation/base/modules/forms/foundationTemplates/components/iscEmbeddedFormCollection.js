@@ -1,4 +1,4 @@
-(function() {
+( function() {
   'use strict';
 
   // ----------------------------
@@ -80,7 +80,6 @@
           subforms         = self.formState._subforms,
           useDynamicFields = _.get( opts, 'data.collections.useDynamicFields' ),
           embeddedType     = _.get( opts, 'data.embeddedType' );
-
 
       self.editAs = editAs;
 
@@ -257,7 +256,6 @@
         mergeBuiltInTemplates( self.fields );
         createTableFields();
       }
-
 
       /**
        * @memberOf iscEmbeddedFormCollection
@@ -459,4 +457,4 @@
 
   }//END CLASS
 
-})();
+} )();

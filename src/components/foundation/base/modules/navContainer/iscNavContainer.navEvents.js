@@ -2,7 +2,7 @@
  * Created by douglasgoodman on 11/24/14.
  */
 
-(function() {
+( function() {
   'use strict';
 
   angular.module( 'iscNavContainer' )
@@ -14,4 +14,4 @@
       hideSideNavBar        : 'iscHideSideNavBar',
       tabLoaded             : 'iscTabLoaded'
     } );
-})();
+} )();
