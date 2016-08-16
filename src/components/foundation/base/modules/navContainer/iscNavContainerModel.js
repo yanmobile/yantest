@@ -84,7 +84,7 @@
         //returns a list of state names ['authenticated.home', '!authenticated.secret']
         var topTabStates           = iscCustomConfigService.getConfigSection( 'topTabs', currentUserRole );
         //the actual array of permitted state objects
-        topNavArr[currentUserRole] = _.reduce( topTabStates, getUserTabs, [] );
+        topNavArr[currentUserRole] = _.uniq(_.reduce( topTabStates, getUserTabs, [] ));
       }
       return topNavArr[currentUserRole];
 
