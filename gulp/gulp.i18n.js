@@ -24,6 +24,7 @@ function init( gulp, plugins, config, _ ) {
     var commonI18n     = _.get( config, "common.module.assets.i18nDir" );
     var componentsI18n = _.get( config, "component.module.assets.i18nDir" );
     var appI18n        = _.get( config, "app.module.assets.i18nDir" );
+    var appI18nPrefix  = _.get( config, "app.module.assets.i18nXmlFilePrefix" );
     var domain         = _.get( config, "app.module.assets.i18nDomain" );
 
     //get files in each of these three folders
@@ -46,6 +47,7 @@ function init( gulp, plugins, config, _ ) {
         // .pipe(filelog())
         .pipe(filter(config.app.dest.i18nXmlFilter)) // filter out non en-us.xml file
         .pipe(filelog())
+        .pipe( plugins.rename( addAppI18nPrefix ) )
         .pipe( gulp.dest( plugins.path.join( config.app.dest.i18nXml ) ) );
     } );
 
@@ -62,6 +64,14 @@ function init( gulp, plugins, config, _ ) {
       }
 
       return parsedJson;
+    }
+
+    /**
+     * Add appI18nPrefix to a file name based on a path - intended as callback for gulp-rename
+     * @param path
+     */
+    function addAppI18nPrefix( path ) {
+      path.basename = appI18nPrefix + path.basename;
     }
 
     /**
