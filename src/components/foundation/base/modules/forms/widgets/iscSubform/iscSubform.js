@@ -1,4 +1,4 @@
-( function() {
+(function() {
   'use strict';
 
   angular.module( 'isc.forms' )
@@ -129,6 +129,7 @@
         self.childConfig.itemLabel  = subformParams.itemLabel;
         self.childConfig.model      = subformParams.model;
         self.childConfig.fields     = subformParams.fields;
+        self.childConfig.className  = subformParams.className;
         self.childConfig.options    = subformParams.options;
         self.childConfig.subform    = subformParams.subform;
         self.childConfig.onCancel   = subformParams.onCancel;
@@ -185,4 +186,4 @@
   // injection
   // ----------------------------
 
-} )();
+})();

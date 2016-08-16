@@ -371,6 +371,7 @@
               itemLabel: self.label,
               model    : self.editModel,
               fields   : self.fields,
+              className: embeddedPage.className,
               options  : self.subformOptions,
               subform  : self.subform,
               onCancel : self.cancel,
