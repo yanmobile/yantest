@@ -47,7 +47,19 @@
           'select',
           'dateComponents',
           'dateComponentsPartial'
-        ]
+        ],
+        'fieldLayout'     : {
+          'breakpoints': [
+            'small',
+            'medium',
+            'large',
+            'x-large'
+          ],
+          'classes'    : {
+            'columns'   : '{{breakpoint}}-up-{{columns}}',
+            'percentage': 'formly-field-flex-{{percentage}}'
+          }
+        }
       },
       'debugDisplay'   : {
         'forms': {

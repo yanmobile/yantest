@@ -20,7 +20,8 @@
    */
   function iscFormsModel( $q, $templateCache, $window, $filter,
     iscHttpapi, // needed for user script closures
-    iscFormsCodeTableApi, iscFormsTemplateService, iscFormsApi ) {
+    iscFormsCodeTableApi, iscFormsTemplateService,
+    iscFormsApi, iscFormFieldLayoutService ) {
     var _typeCache          = {};
     var _formsCache         = {};
     var _viewModeFormsCache = {};
@@ -277,7 +278,9 @@
 
           // Subform-only definitions are a bare array
           if ( _.isArray( form ) ) {
-            primaryPromises = primaryPromises.concat( processFields( form ) );
+            primaryPromises = primaryPromises.concat(
+              processFields( form )
+            );
           }
           else {
             if ( form.library ) {
@@ -290,7 +293,10 @@
             }
 
             _.forEach( form.pages, function( page ) {
-              primaryPromises = primaryPromises.concat( processFields( page.fields ) );
+              iscFormFieldLayoutService.transformContainer( page );
+              primaryPromises = primaryPromises.concat(
+                processFields( page.fields )
+              );
             } );
           }
 
@@ -350,7 +356,7 @@
            * @memberOf iscFormsModel
            * @description
            * Additional processing for fields to bind to the formly form.
-           * @param fields
+           * @param {Array} fields - The list of fields to process
            * @returns {Array}
            * @private
            */
@@ -378,7 +384,10 @@
 
               // A field group does not have its own type, but contains fields in the fieldGroup array
               if ( fieldGroup ) {
-                fieldPromises = fieldPromises.concat( processFields( fieldGroup ) );
+                iscFormFieldLayoutService.transformContainer( field );
+                fieldPromises = fieldPromises.concat(
+                  processFields( fieldGroup )
+                );
               }
 
               // If type has not been specified, this is arbitrary html written into a template tag, so skip it.
@@ -527,8 +536,6 @@
                       } )
                   );
                 }
-
-                fieldPromises = fieldPromises.concat( processFields( _.get( field, 'templateOptions.fields' ) ) );
               }
             }
           }
