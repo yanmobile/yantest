@@ -11,7 +11,7 @@ function init(gulp, plugins, config, _) {
   gulp.task('clean', function (done) {
     var filesToRemove = ['./www/**'];
 
-    var appI18nXmlDest = _.get( config.app.dest.i18nXml, '' );
+    var appI18nXmlDest = _.get( config.app.dest, 'i18nXml', '' );
     if (appI18nXmlDest !== '') {
       if ( appI18nXmlDest.charAt( appI18nXmlDest.length - 1 ) !== '/' ) {
         appI18nXmlDest += '/';
