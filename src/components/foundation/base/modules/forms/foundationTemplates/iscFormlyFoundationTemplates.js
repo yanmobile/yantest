@@ -1,4 +1,4 @@
-(function() {
+( function() {
   'use strict';
 
   /** Templates adapted from angular-formly-templates-foundation 1.0.0-beta.1
@@ -377,7 +377,6 @@
         }
       } );
 
-
       // Embedded Form Listener
       // This field will not be rendered in the DOM, but will listen for FORMS_EVENTS
       // This is useful for communication in embedded subforms
@@ -488,4 +487,4 @@
     }
 
   }
-})();
+} )();

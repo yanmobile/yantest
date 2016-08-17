@@ -2,7 +2,7 @@
  * Created by douglasgoodman on 11/18/14.
  */
 
-(function() {
+( function() {
   'use strict';
 
   angular.module( 'isc.authentication' )
@@ -68,25 +68,25 @@
     // ----------------------------
 
     var model = {
-      create : create,
-      destroy: destroy,
+      create                          : create,
+      destroy                         : destroy,
 
-      initSessionTimeout : initSessionTimeout,
-      stopSessionTimeout : stopSessionTimeout,
-      resetSessionTimeout: resetSessionTimeout,
+      initSessionTimeout              : initSessionTimeout,
+      stopSessionTimeout              : stopSessionTimeout,
+      resetSessionTimeout             : resetSessionTimeout,
 
       storeSessionTimeout             : storeSessionTimeout,
       freshenSessionTimeoutFromStorage: freshenSessionTimeoutFromStorage,
 
-      getCredentials: getCredentials,
+      getCredentials                  : getCredentials,
 
-      getCurrentUser    : getCurrentUser,
-      getCurrentUserRole: getCurrentUserRole,
+      getCurrentUser                  : getCurrentUser,
+      getCurrentUserRole              : getCurrentUserRole,
 
-      isAuthenticated: isAuthenticated,
-      getFullName    : getFullName,
+      isAuthenticated                 : isAuthenticated,
+      getFullName                     : getFullName,
 
-      configure: configure
+      configure                       : configure
     };
 
     return model;
@@ -361,7 +361,6 @@
       return sessionTimeout.expireAt - Date.now() < 0;
     }
 
-
     /**
      *
      */
@@ -455,5 +454,5 @@
     }
   }// END CLASS
 
-})();
+} )();
 

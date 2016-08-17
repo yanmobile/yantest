@@ -1,4 +1,4 @@
-(function() {
+( function() {
   'use strict';
 
   // ----------------------------
@@ -260,7 +260,6 @@
         createTableFields();
       }
 
-
       /**
        * @memberOf iscEmbeddedFormCollection
        * @description
@@ -462,4 +461,4 @@
 
   }//END CLASS
 
-})();
+} )();

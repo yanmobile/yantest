@@ -66,7 +66,6 @@
       setSessionStorageValue( 'loginResponse', val );
     }
 
-
     // ----------------------------
     function getConfig() {
       return getValFromSessionStorage( 'config', {} );

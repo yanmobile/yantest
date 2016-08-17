@@ -2,7 +2,7 @@
  * Created by debashish on 08/01/16.
  */
 
-(function() {
+( function() {
   'use strict';
 
   angular.module( 'isc.core' )
@@ -50,7 +50,7 @@
           expires = '';
       if ( params && params.expires ) {
         date = new Date();
-        date.setTime( date.getTime() + ((parseInt(params.expires,10)) * 24 * 60 * 60 * 1000) );
+        date.setTime( date.getTime() + ( ( parseInt( params.expires,10 ) ) * 24 * 60 * 60 * 1000 ) );
         expires = "; expires=" + date.toGMTString();
       }
       document.cookie = name + "=" + value + expires + "; path=/";
@@ -70,6 +70,5 @@
       return value;
     }
 
-
   }// END CLASS
-})();
+} )();

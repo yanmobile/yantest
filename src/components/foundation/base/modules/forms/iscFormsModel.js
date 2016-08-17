@@ -1,4 +1,4 @@
-(function() {
+( function() {
   'use strict';
 
   /* @ngInject */
@@ -299,9 +299,9 @@
             var scriptPromise = iscFormsApi.getUserScript( form.additionalModelInit )
               .then( function( response ) {
                 var script               = parseScript( response );
-                form.additionalModelInit = (function( iscHttpapi ) {
+                form.additionalModelInit = ( function( iscHttpapi ) {
                   return script;
-                })( iscHttpapi );
+                } )( iscHttpapi );
                 return true;
               } );
             primaryPromises.push( scriptPromise );
@@ -445,7 +445,7 @@
                           oldVal: oldVal,
                           stop  : stop
                         } );
-                      }
+                      };
                     }
                   } );
                 }
@@ -461,9 +461,9 @@
                       getApi = _.get( script, 'api.get' );
                   // Expose iscHttpapi to api getter function
                   if ( getApi ) {
-                    script.api.get = (function( iscHttpapi ) {
+                    script.api.get = ( function( iscHttpapi ) {
                       return getApi;
-                    })();
+                    } )();
                   }
                   _.set( field, 'data.userModel', script );
                   return true;
@@ -794,4 +794,4 @@
       return eval( script ); // jshint ignore:line
     }
   }
-})();
+} )();
