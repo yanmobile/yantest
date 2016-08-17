@@ -98,13 +98,31 @@ $field-flex-percentages : (
         90 : 90%
 );
 
-@each $flex-amount in map-keys($field-flex-percentages) {
-  .formly-field-flex-#{$flex-amount} {
+$breakpoint-percentages : (
+        'medium' : $medium-up,
+        'large' : $large-up,
+        'xlarge' : $xlarge-up
+);
+
+@each $breakpoint in map-keys($breakpoints) {
+  @each $flex-amount in map-keys($field-flex-percentages) {
     $percentage : map-get($field-flex-percentages, $flex-amount);
-    flex : $flex-amount $flex-amount $percentage;
+    $bp-percentage : map-get($breakpoint-percentages, $breakpoint);
+    $media : $bp-percentage;
+    @if $breakpoint == 'small' {
+      $media : "only screen and (min-width: 0)";
+    }
+
+    @if $media {
+      @media #{$media} {
+        .formly-field-#{$breakpoint}-#{$flex-amount} {
+          flex : $flex-amount $flex-amount $percentage;
+        }
+      }
+    }
+
   }
 }
-
 
 /* Form Styles */
 @include exports(isc-forms) {

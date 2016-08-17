@@ -1,3 +1,7 @@
+/**
+ * Created by probbins on 8/16/2016
+ */
+
 (function() {
   'use strict';
 
@@ -29,7 +33,7 @@
 
       var classes           = _.get( config, 'classes', {} ),
           breakpoints       = _.get( config, 'breakpoints', [] ),
-          firstBreakpoint   = _.head( breakpoints ) || 'x-small',
+          firstBreakpoint   = _.head( breakpoints ) || 'small',
           columnsSetting    = _.get( classes, 'columns', '' ),
           percentageSetting = _.get( classes, 'percentage', '' ),
           columns           = _.get( layoutOptions, 'columns' );
@@ -39,7 +43,7 @@
 
       applyClassName( fieldContainer, 'grid-block' );
 
-      // If this column layout is a number, apply the layout  by using the first -up breakpoint class.
+      // If this column layout is a number, apply the layout by using the first -up breakpoint class.
       if ( _.isNumber( columns ) ) {
         applyClassName( fieldContainer, columnsSetting, {
           breakpoint: firstBreakpoint,
@@ -47,47 +51,63 @@
         } )
       }
 
-      // Otherwise, check each breakpoint individually
       else if ( _.isObject( columns ) ) {
-        var columnObj = columns;
+        // If the properties are column numbers, apply the minimum breakpoint to the fields as percentages.
+        var columnsAreNumeric = _.every( columns, function( value, key ) {
+          return !_.isNaN( parseInt( key ) );
+        } );
 
-        _.forEach( breakpoints, function( breakpoint ) {
-          columns = _.get( columnObj, breakpoint );
+        if ( columnsAreNumeric ) {
+          applyToFields( columns, firstBreakpoint );
+        }
+        else {
+          // If columns is not a number and not a list of columns, then it is a list
+          // of breakpoint properties, so process each one individually.
+          var columnObj = columns;
 
-          if ( columns ) {
-            // If the setting itself is an object, then sub-settings are based on field index.
-            // Get the max value for specified field indices so the fieldIndex can be determined.
-            // E.g., if percentage widths for columns 1, 2, and 3 are specified, maxIndex = 3.
-            if ( _.isObject( columns ) ) {
-              var maxIndex = _.maxBy( _.keys( columns ), function( key ) {
-                return parseInt( key );
-              } );
+          _.forEach( breakpoints, function( breakpoint ) {
+            columns = _.get( columnObj, breakpoint );
 
-              // Apply the percentage setting to each child field in this container
-              var childFields = _.get( fieldContainer, 'fields' ) || _.get( fieldContainer, 'fieldGroup' );
-              _.forEach( childFields, function( field, index ) {
-                var thisIndex  = (index % maxIndex) + 1,
-                    percentage = tryParsePercentage( columns[thisIndex] );
-
-                if ( percentage ) {
-                  applyClassName( field, percentageSetting, {
-                    percentage: percentage
-                  } );
-                  applyClassName( field, 'grid-content' );
-                }
-              } );
+            if ( columns ) {
+              // If the setting itself is an object, then sub-settings are column percentages.
+              if ( _.isObject( columns ) ) {
+                applyToFields( columns, breakpoint );
+              }
+              else {
+                applyClassName( fieldContainer, columnsSetting, {
+                  breakpoint: breakpoint,
+                  columns   : columns
+                } );
+              }
             }
-            else {
-              applyClassName( fieldContainer, columnsSetting, {
-                breakpoint: breakpoint,
-                columns   : columns
-              } );
-            }
+          } );
+        }
+      }
+
+      function applyToFields( columns, breakpoint ) {
+        // Get the max value for specified field indices so the fieldIndex can be determined.
+        // E.g., if percentage widths for columns 1, 2, and 3 are specified, maxIndex = 3.
+        var maxIndex = _.maxBy( _.keys( columns ), function( key ) {
+          return parseInt( key );
+        } );
+
+        // Apply the percentage setting to each child field in this container
+        var childFields = _.get( fieldContainer, 'fields' ) || _.get( fieldContainer, 'fieldGroup' );
+        _.forEach( childFields, function( field, index ) {
+          var thisIndex  = (index % maxIndex) + 1,
+              percentage = tryParsePercentage( columns[thisIndex] );
+
+          if ( percentage ) {
+            applyClassName( field, percentageSetting, {
+              breakpoint: breakpoint,
+              percentage: percentage
+            } );
+            applyClassName( field, 'grid-content' );
           }
         } );
       }
     }
-    
+
     function tryParsePercentage( value ) {
       if ( _.endsWith( value, '%' ) ) {
         return value.replace( '%', '' );

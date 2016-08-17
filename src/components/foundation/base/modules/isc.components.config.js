@@ -53,11 +53,11 @@
             'small',
             'medium',
             'large',
-            'x-large'
+            'xlarge'
           ],
           'classes'    : {
             'columns'   : '{{breakpoint}}-up-{{columns}}',
-            'percentage': 'formly-field-flex-{{percentage}}'
+            'percentage': 'formly-field-{{breakpoint}}-{{percentage}}'
           }
         }
       },
