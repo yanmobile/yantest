@@ -57,16 +57,18 @@ function getAppConfig() {
         "src/app/modules/**/*.html"
       ],
       "assets" : {
-        "i18nDir"   : "src/app/assets/i18n/",
-        "comments"  : "i18nDomain value will be used as a part of the generated i18n XML",
-        "i18nDomain": "hs-temp-app-scaffold",
-        "mocks"     : [
+        "i18nDir"          : "src/app/assets/i18n/",
+        "comments"         : "i18nDomain value will be used as a part of the generated i18n XML",
+        "i18nDomain"       : "hs-temp-app-scaffold",
+        // for specifying a filename prefix that should be project-specific
+        "i18nXmlFilePrefix": "",
+        "mocks"            : [
           "src/app/assets/mockData/**"
         ],
-        "images"    : [
+        "images"           : [
           "src/app/assets/images/**/*"
         ],
-        "vendor"    : {
+        "vendor"           : {
           "js": []
         }
       },
@@ -84,7 +86,7 @@ function getAppConfig() {
       "comments"     : "i18nXml is used for specifying destination location of converted i18n files",
       "i18nXml"      : "isc-tools/localize",
       // for specifying which files are to be copied over.
-      // Since development only uses "en_US.json", no need to update the gulp task to account for
+      // Since development only uses "en-us.json", no need to update the gulp task to account for
       // multiple translation files: e.g. "en-us.json", "en-uk.json" and "en.json".
       "i18nXmlFilter": "**/en-us.xml"
     },
