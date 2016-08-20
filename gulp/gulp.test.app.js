@@ -29,8 +29,31 @@ function getSrc( config, _ ) {
 
 function init( gulp, plugins, config, _ ) {
   'use strict';
-  var src = getSrc( config, _ );
-
+  var src      = getSrc( config, _ );
+  var srcFiles = []
+    .concat( src.commonVendorJs ) //vendorJs
+    .concat( src.componentsVendorJs )
+    .concat( src.appVendorJs )
+    .concat( src.commonModuleVendorJs )//module vendorJs
+    .concat( src.componentsModuleVendorJs )
+    .concat( src.appModuleVendorJs )
+    .concat( src.commonVendorMocks )//Vendor Mocks
+    .concat( src.componentsVendorMocks )
+    .concat( src.appVendorMocks )
+    .concat( src.commonModuleMocks )//Module mocks
+    .concat( src.componentsModuleMocks )
+    .concat( src.appModuleMocks )
+    .concat( src.commonModuleModules ) //module specific module declarations
+    .concat( src.componentsModuleModules )
+    .concat( src.appModuleModules )
+    .concat( src.commonModuleJs ) //module specific js files
+    .concat( src.componentsModuleJs )
+    .concat( src.appModuleJs )
+    .concat( src.commonModuleHtml ) //html files
+    .concat( src.componentsModuleHtml )
+    .concat( src.appModuleHtml )
+    .concat( src.appModuleTests ) // test files
+    .concat( src.masterOverrides ); //overrides
   /*================================================
    =              Run unit tests                   =
    ================================================*/
@@ -39,33 +62,24 @@ function init( gulp, plugins, config, _ ) {
   // run the app tests
   // --------------------------------
   gulp.task( 'test:app', function( done ) {
-    var srcFiles = []
-      .concat( src.commonVendorJs ) //vendorJs
-      .concat( src.componentsVendorJs )
-      .concat( src.appVendorJs )
-      .concat( src.commonModuleVendorJs )//module vendorJs
-      .concat( src.componentsModuleVendorJs )
-      .concat( src.appModuleVendorJs )
-      .concat( src.commonVendorMocks )//Vendor Mocks
-      .concat( src.componentsVendorMocks )
-      .concat( src.appVendorMocks )
-      .concat( src.commonModuleMocks )//Module mocks
-      .concat( src.componentsModuleMocks )
-      .concat( src.appModuleMocks )
-      .concat( src.commonModuleModules ) //module specific module declarations
-      .concat( src.componentsModuleModules )
-      .concat( src.appModuleModules )
-      .concat( src.commonModuleJs ) //module specific js files
-      .concat( src.componentsModuleJs )
-      .concat( src.appModuleJs )
-      .concat( src.commonModuleHtml ) //html files
-      .concat( src.componentsModuleHtml )
-      .concat( src.appModuleHtml )
-      .concat( src.appModuleTests ) // test files
-      .concat( src.masterOverrides ); //overrides
 
     var configPath = plugins.path.join( __dirname, "../test/karma.conf.app.js" );
     return new Karma( {
+      reporters : ['progress'],
+      configFile: configPath,
+      files     : srcFiles,
+      singleRun : true
+    }, done ).start();
+  } );
+
+  // --------------------------------
+  // run the app tests
+  // --------------------------------
+  gulp.task( 'coverage:app', function( done ) {
+
+    var configPath = plugins.path.join( __dirname, "../test/karma.conf.app.js" );
+    return new Karma( {
+      reporters : ["coverage"],
       configFile: configPath,
       files     : srcFiles,
       singleRun : true
@@ -77,6 +91,13 @@ function init( gulp, plugins, config, _ ) {
   // --------------------------------
   gulp.task( 'test', function( done ) {
     return plugins.seq( ['test:app', 'test:components', 'test:common'], done );
+  } );
+
+  // --------------------------------
+  // run all the tests
+  // --------------------------------
+  gulp.task( 'coverage', function( done ) {
+    return plugins.seq( ['coverage:app', 'coverage:components', 'coverage:common'], done );
   } );
 
 }

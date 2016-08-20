@@ -11,7 +11,7 @@
       ],
 
       // coverage reporter generates the coverage
-      reporters       : ['progress', 'coverage'],
+
       autoWatch       : false,
       coverageReporter: {
         reporters: [
