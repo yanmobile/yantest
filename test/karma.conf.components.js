@@ -9,7 +9,7 @@
       files: [// Ignored through gulp-karma
         'src/**/*.html'
       ],
-      reporters       : ['progress', 'coverage'],
+      reporters       : ['progress'],
       autoWatch       : false,
       coverageReporter: {
         reporters: [

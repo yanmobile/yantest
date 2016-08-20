@@ -29,38 +29,43 @@ function init( gulp, plugins, config, _ ) {
   'use strict';
   var src = getSrc( config );
 
-  // var commonOverridesJs = componentsConfig.overrides.js.common || [];
-  // var componentsOverridesJs = componentsConfig.overrides.js.components || [];
 
+  var srcFiles = []
+    .concat( src.commonVendorJs )
+    .concat( src.componentsVendorJs )
+    .concat( src.commonModuleModules )
+    .concat( src.componentsModuleModules )
+    .concat( src.commonModuleJs )
+    .concat( src.componentsModuleJs )
+    .concat( src.commonVendorMocks )
+    .concat( src.componentsVendorMocks )
+    .concat( src.commonModuleMocks )
+    .concat( src.componentsModuleMocks )
+    .concat( src.commonModuleHtml )
+    .concat( src.componentsModuleHtml )
+    .concat( src.componentsModuleTests );
   /*================================================
    =              Run unit tests                   =
    ================================================*/
-
-  // --------------------------------
-  // run the common tests
-  // --------------------------------
   gulp.task( 'test:components', function( done ) {
-
-    var srcFiles = []
-      .concat( src.commonVendorJs )
-      .concat( src.componentsVendorJs )
-      .concat( src.commonModuleModules )
-      .concat( src.componentsModuleModules )
-      .concat( src.commonModuleJs )
-      .concat( src.componentsModuleJs )
-      .concat( src.commonVendorMocks )
-      .concat( src.componentsVendorMocks )
-      .concat( src.commonModuleMocks )
-      .concat( src.componentsModuleMocks )
-      .concat( src.commonModuleHtml )
-      .concat( src.componentsModuleHtml )
-      .concat( src.componentsModuleTests );
-    // TODO: implement edition testing 
-    // .concat(commonOverridesJs)
-    // .concat(componentsOverridesJs);
 
     var configPath = plugins.path.join( __dirname, "../test/karma.conf.components.js" );
     return new Karma( {
+      reporters : ["progress"],
+      configFile: configPath,
+      files     : srcFiles,
+      singleRun : true
+    }, done ).start();
+
+  } );
+
+  /*================================================
+   =              Run unit tests  coverage                 =
+   ================================================*/
+  gulp.task( 'coverage:components', function( done ) {
+    var configPath = plugins.path.join( __dirname, "../test/karma.conf.components.js" );
+    return new Karma( {
+      reporters : ["coverage"],
       configFile: configPath,
       files     : srcFiles,
       singleRun : true

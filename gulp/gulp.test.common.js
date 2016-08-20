@@ -26,6 +26,16 @@ function init( gulp, plugins, config, _ ) {
   'use strict';
   var src = getSrc( config, _ );
 
+
+  var srcFiles   = _.concat(
+    src.commonVendorJs,
+    src.commonModuleModules,
+    src.commonModuleJs,
+    src.commonVendorMocks,
+    src.commonModuleMocks,
+    src.commonModuleHtml,
+    src.commonModuleTests );
+
   /*================================================
    =              Run unit tests                   =
    ================================================*/
@@ -35,16 +45,24 @@ function init( gulp, plugins, config, _ ) {
   // --------------------------------
   gulp.task( 'test:common', function( done ) {
 
-    var srcFiles   = _.concat(
-      src.commonVendorJs,
-      src.commonModuleModules,
-      src.commonModuleJs,
-      src.commonVendorMocks,
-      src.commonModuleMocks,
-      src.commonModuleHtml,
-      src.commonModuleTests );
     var configPath = plugins.path.join( __dirname, "../test/karma.conf.common.js" );
     return new Karma( {
+      reporters : ["progress"],
+      configFile: configPath,
+      files     : srcFiles,
+      singleRun : true
+    }, done ).start();
+
+  } ); //end of gulp.task
+
+  // --------------------------------
+  // run the test coverage tests
+  // --------------------------------
+  gulp.task( 'coverage:common', function( done ) {
+
+    var configPath = plugins.path.join( __dirname, "../test/karma.conf.common.js" );
+    return new Karma( {
+      reporters : ["coverage"],
       configFile: configPath,
       files     : srcFiles,
       singleRun : true

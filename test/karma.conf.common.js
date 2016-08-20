@@ -10,7 +10,7 @@
         '**/*.html'
       ],
       // coverage reporter generates the coverage
-      reporters       : ['progress', 'coverage'],
+      reporters       : ['progress'],
       autoWatch       : false,
       coverageReporter: {
         reporters: [
