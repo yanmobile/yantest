@@ -6,6 +6,8 @@
     var suiteForm,
         suiteInternal;
 
+    window.useDefaultTranslateBeforeEach();
+
     beforeEach( module(
       'formly', 'foundation',
       'isc.http', 'isc.forms', 'iscNavContainer', 'isc.authorization', 'isc.notification', 'isc.directives',
