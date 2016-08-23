@@ -38,7 +38,8 @@
 
       canParse                : canParse,
       getValFromSessionStorage: getValFromSessionStorage,
-      setSessionStorageValue  : setSessionStorageValue
+      setSessionStorageValue  : setSessionStorageValue,
+      removeFromSessionStorage: removeFromSessionStorage
     };
 
     return helper;
@@ -51,10 +52,10 @@
     // WONT stay logged in on page refresh
     function destroy() {
       log.debug( 'iscSessionStorageHelper.destroy' );
-      $window.sessionStorage.removeItem( 'loginResponse' );
-      $window.sessionStorage.removeItem( 'sessionTimeoutCounter' );
-      $window.sessionStorage.removeItem( 'showTimedOutAlert' );
-      $window.sessionStorage.removeItem( 'config' );
+      removeFromSessionStorage( 'loginResponse' );
+      removeFromSessionStorage( 'sessionTimeoutCounter' );
+      removeFromSessionStorage( 'showTimedOutAlert' );
+      removeFromSessionStorage( 'config' );
     }
 
     // ----------------------------
@@ -108,6 +109,10 @@
     function setSessionStorageValue( key, val ) {
       var jsonStr = angular.toJson( val );
       $window.sessionStorage.setItem( key, jsonStr );
+    }
+
+    function removeFromSessionStorage( key ) {
+      $window.sessionStorage.removeItem( key );
     }
 
   }// END CLASS
