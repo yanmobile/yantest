@@ -52,13 +52,11 @@
     describe( 'getTopTabs', function() {
       it( 'should return topTabs for anonymous', function() {
         var topTabs = customConfigService.getConfigSection( 'topTabs', '*' );
-        console.log( 'topTabs:', topTabs );
         expect( topTabs ).toEqual( ['index.login'] );
       } );
 
       it( 'should return anonymous user tabs when getting non-anonymous user tabs', function() {
         var topTabs = customConfigService.getConfigSection( 'topTabs', 'user' );
-        console.log( 'topTabs:', topTabs );
         expect( _.includes( topTabs, 'index.login' ) ).toBe( true );
       } );
     } );

@@ -5,10 +5,11 @@
 
   var suite; //used by individual test files via window.createSuite();
 
-  window.cleanup           = cleanup;
-  window.fixFoundationBug  = fixFoundationBug;
-  window.createSuite       = createSuite;
-  window.useDefaultModules = useDefaultModules;
+  window.cleanup                       = cleanup;
+  window.fixFoundationBug              = fixFoundationBug;
+  window.createSuite                   = createSuite;
+  window.useDefaultModules             = useDefaultModules;
+  window.useDefaultTranslateBeforeEach = useDefaultTranslateBeforeEach;
   function createSuite( obj ) {
     suite = obj || {};
     return suite;
@@ -50,21 +51,30 @@
 
   }
 
+  function useDefaultTranslateBeforeEach() {
+    beforeEach( module( 'pascalprecht.translate', function( $translateProvider ) {
+
+      //adding sanitize strategy to get rid of the pesky warnings
+      $translateProvider.useSanitizeValueStrategy( null );
+    } ) );
+  }
+
   function useDefaultModules() {
+
+    useDefaultTranslateBeforeEach();
+
     // setup devlog
-    beforeEach( module( 'pascalprecht.translate', 'isc.core', function( devlogProvider, $provide, $translateProvider ) {
+    beforeEach( module( 'isc.core', function( devlogProvider, $provide ) {
       devlogProvider.loadConfig( customConfig );
 
       // show $log statements
       $provide.value( '$log', mock$log );
 
-      //adding sanitize strategy to get rid of the pesky warnings
-      $translateProvider.useSanitizeValueStrategy( null );
     } ) );
 
     var moduleNames = _.toArray( arguments );
     // moduleNames.forEach( function( moduleName ) {
-      beforeEach( module.apply( module, moduleNames ) );
+    beforeEach( module.apply( module, moduleNames ) );
     // } );
 
   }
