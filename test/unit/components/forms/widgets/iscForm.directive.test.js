@@ -202,26 +202,27 @@
         it( 'should save when submit is clicked', function() {
           var suite              = suiteSimple1,
               submitButton       = getButton( suite, 'submit' ),
+              model              = suite.controller.internalModel,
               buttonConfig       = getButtonConfig( suite ),
               submitButtonConfig = buttonConfig.submit;
 
           spyOn( submitButtonConfig, 'onClick' ).and.callThrough();
           spyOn( submitButtonConfig, 'afterClick' ).and.callThrough();
+          spyOn( suiteMain.formDataApi, 'submit' ).and.callThrough();
           spyOn( suiteMain.formDataApi, 'post' ).and.callThrough();
-          spyOn( suiteMain.formDataApi, 'put' ).and.callThrough();
 
-          // POST form
+          // simple1 autosaves on model change
+          model.aField = 'some value';
+          suiteMain.$httpBackend.flush();
+          expect( suiteMain.formDataApi.post ).toHaveBeenCalled();
+
+          // clicking submit should call the submit api
           submitButton.click();
           suiteMain.$httpBackend.flush();
 
           expect( submitButtonConfig.onClick ).toHaveBeenCalled();
           expect( submitButtonConfig.afterClick ).toHaveBeenCalled();
-          expect( suiteMain.formDataApi.post ).toHaveBeenCalled();
-
-          // PUT form
-          submitButton.click();
-          suiteMain.$httpBackend.flush();
-          expect( suiteMain.formDataApi.put ).toHaveBeenCalled();
+          expect( suiteMain.formDataApi.submit ).toHaveBeenCalled();
         } );
 
         //--------------------
@@ -276,7 +277,7 @@
 
         spyOn( submitButtonConfig, 'onClick' ).and.callThrough();
         spyOn( submitButtonConfig, 'afterClick' ).and.callThrough();
-        spyOn( suiteMain.formDataApi, 'post' ).and.callThrough();
+        spyOn( suiteMain.formDataApi, 'submit' ).and.callThrough();
         spyOn( suiteMain.formDataApi, 'put' ).and.callThrough();
         spyOn( suite.controller, 'validateFormApi' ).and.callThrough();
         spyOn( suiteMain.notificationService, 'showAlert' ).and.callThrough();
@@ -319,7 +320,7 @@
         expect( suite.controller.validateFormApi ).toHaveBeenCalled();
         suiteMain.$httpBackend.flush();
         expect( submitButtonConfig.afterClick ).toHaveBeenCalled();
-        expect( suiteMain.formDataApi.post ).toHaveBeenCalled();
+        expect( suiteMain.formDataApi.submit ).toHaveBeenCalled();
       } );
 
       //--------------------
