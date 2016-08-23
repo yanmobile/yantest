@@ -350,11 +350,11 @@
          * @memberOf iscForm
          */
         function onSubmit() {
-          var formDataApi = self.internalFormConfig.formDataApi;
+          var configuredDataApi = self.internalFormConfig.formDataApi;
 
           // Default api for submitting a form is to submit to iscFormDataApi
-          var wrappedData = formDataApi.wrap( self.internalModel, self.formDefinition.form );
-          return formDataApi.save( wrappedData, self.parsedFormDataId );
+          var wrappedData = configuredDataApi.wrap( self.internalModel, self.formDefinition.form );
+          return configuredDataApi.submit( wrappedData, self.parsedFormDataId );
         }
 
         /**
