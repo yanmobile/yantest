@@ -21,7 +21,7 @@
       iscSessionModel,
       iscNavContainerModel,
       $window,
-      $timeout,
+      $q,
       AUTH_EVENTS ) {
 
       suite = createSuite( {
@@ -35,53 +35,39 @@
         iscUiHelper           : iscUiHelper,
         iscSessionModel       : iscSessionModel,
         $window               : $window,
-        $timeout              : $timeout
+        $q                    : $q
       } );
+      spyOn( suite.$state, 'go' ).and.returnValue( suite.$q.when( {} ) );
+      suite.$state.go.calls.reset();
+      spyOn( suite.$window.location, 'reload' ).and.callFake( function() {
+      } ); //avoid full page refresh for phantomjs
+      suite.$window.location.reload.calls.reset();
+
     } ) );
 
-    describe( 'navigateToUserLandingPage not anonymous user', function() {
+    describe( 'navigateToUserLandingPage not anonymous user and should NOT have caused full page refresh', function() {
       it( 'should navigate to landing page', function() {
         spyOn( suite.iscSessionModel, "getCurrentUserRole" ).and.returnValue( "patient" );
         suite.iscCustomConfigService.getConfigSection( 'landingPages' )["patient"] = "patientLanding.html";
-        spyOn( suite.$state, 'go' );
+
         suite.iscNavContainerModel.navigateToUserLandingPage();
         suite.$scope.$digest();
         expect( suite.$state.go ).toHaveBeenCalledWith( 'patientLanding.html' );
-      } );
-
-      it( 'should NOT have caused full page refresh', function() {
-        spyOn( suite.$window.location, 'reload' ); //full page refresh
-
-        spyOn( suite.iscSessionModel, "getCurrentUserRole" ).and.returnValue( "patient" );
-        suite.iscCustomConfigService.getConfigSection( 'landingPages' )["patient"] = "patientLanding.html";
-        spyOn( suite.$state, 'go' );
-        suite.iscNavContainerModel.navigateToUserLandingPage();
-        suite.$timeout.flush();
         expect( suite.$window.location.reload ).not.toHaveBeenCalled();
       } );
+
     } );
 
-    describe( 'navigateToUserLandingPage anonymous user', function() {
+    describe( 'navigateToUserLandingPage anonymous user and should have caused full page refresh', function() {
       it( 'should navigate to landing page', function() {
         spyOn( suite.iscSessionModel, "getCurrentUserRole" ).and.returnValue( "*" );
+        spyOn( suite.$state, 'get' ).and.returnValue( { url: 'login' } );
         suite.iscCustomConfigService.getConfigSection( 'landingPages' )["*"] = "login.html";
-        spyOn( suite.$state, 'go' );
         suite.iscNavContainerModel.navigateToUserLandingPage();
         suite.$scope.$digest();
-        expect( suite.$state.go ).toHaveBeenCalledWith( 'login.html' );
-      } );
-
-      it( 'should have set isAutoLogOut sessionStorage and caused full page refresh', function() {
-        spyOn( suite.$window.location, 'reload' ); //full page refresh
-        spyOn( suite.$window.sessionStorage, 'setItem' ); //save auto logout state
-
-        spyOn( suite.iscSessionModel, "getCurrentUserRole" ).and.returnValue( "*" );
-        suite.iscCustomConfigService.getConfigSection( 'landingPages' )["*"] = "login.html";
-        spyOn( suite.$state, 'go' );
-        suite.iscNavContainerModel.navigateToUserLandingPage();
-        suite.$timeout.flush();
+        expect( suite.$state.go ).not.toHaveBeenCalled();
+        expect( suite.$window.location.hash ).toBe( '#/login' );
         expect( suite.$window.location.reload ).toHaveBeenCalled();
-        expect( suite.$window.sessionStorage.setItem ).toHaveBeenCalledWith( "isAutoLogOut", true );
       } );
     } );
 

@@ -16,14 +16,14 @@
    * @param devlog
    * @param $rootScope
    * @param $window
-   * @param storage
+   * @param iscCookieManager
    * @param iscSessionStorageHelper
    * @param AUTH_EVENTS
    * @param SESSION_STATUS
    * @returns {{create: create, destroy: destroy, initSessionTimeout: initSessionTimeout, stopSessionTimeout: stopSessionTimeout, resetSessionTimeout: resetSessionTimeout, getCredentials: getCredentials, getCurrentUser: getCurrentUser, getCurrentUserRole: getCurrentUserRole, isAuthenticated: isAuthenticated, getFullName: getFullName, configure: configure}}
    */
   function iscSessionModel( $q, $http, $rootScope, $window,
-                            devlog, storage, iscSessionStorageHelper,
+                            devlog, iscCookieManager, iscSessionStorageHelper,
                             AUTH_EVENTS, SESSION_STATUS ) {
     var channel = devlog.channel( 'iscSessionModel' );
     channel.logFn( 'iscSessionModel' );
@@ -46,7 +46,6 @@
     };
 
     var noResponseMaxAge = 60 * 5; // 5 minutes
-    var warnThreshold    = 0.25;  //percent
 
     var isConfigured = false;
     // Initialize to empty promise in case it is not configured
@@ -109,7 +108,7 @@
 
       var jwt = _.get( sessionData, 'jwt' );
       if ( jwt ) {
-        storage.set( 'jwt', jwt );
+        iscCookieManager.set( 'jwt', jwt );
         $http.defaults.headers.common.jwt = jwt;
       }
 
@@ -201,7 +200,7 @@
       currentUser = anonymousUser;
       credentials = null;
 
-      storage.remove( 'jwt' );
+      iscCookieManager.remove( 'jwt' );
       $http.defaults.headers.common.jwt = null;
 
       sessionTimeout.status = SESSION_STATUS.killed;
@@ -251,6 +250,7 @@
       if ( expiration !== undefined ) {
         var expirationTime = moment( expiration ),
             maxAge         = sessionTimeout.maxAge,
+            warnThreshold  = ( maxAge > 180 ) ? 0.25 : 0.50,
             warnTimespan   = maxAge * ( 1 - warnThreshold );
 
         // Because we may be updating this when the expiration has not been set to its max
@@ -264,9 +264,9 @@
     /**
      * private
      */
-    // Session expiration is in local storage so it can be accessed by multiple tabs
+    // Session expiration is in iscCookieManager so it can be accessed by multiple tabs
     function getSessionExpiresOn() {
-      var max = storage.get( 'sessionExpiresOn' );
+      var max = iscCookieManager.get( 'sessionExpiresOn' );
       if ( max ) {
         channel.debug( '...number: ' + max );
         return new Date( max );
@@ -277,7 +277,7 @@
 
     function setSessionExpiresOn( val ) {
       channel.debug( 'setSessionExpiresOn', val );
-      storage.set( 'sessionExpiresOn', val );
+      iscCookieManager.set( 'sessionExpiresOn', val );
     }
 
     function doSessionTimeout() {
