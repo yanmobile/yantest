@@ -1,4 +1,4 @@
-( function() {
+(function() {
   'use strict';
 
   angular.module( 'isc.forms' )
@@ -249,7 +249,8 @@
           wrap  : wrapDefault,
           unwrap: unwrapDefault,
           load  : loadDefault,
-          save  : saveDefault
+          save  : saveDefault,
+          submit: submitDefault
         };
 
         return {
@@ -306,6 +307,17 @@
                 return form;
               } );
           }
+        }
+
+        function submitDefault( formData, id ) {
+          var annotationsApi = self.internalFormConfig.annotationsApi;
+
+          return iscFormDataApi.submit( id, formData, getConfiguredUrl( 'submit' ) )
+            .then( function( form ) {
+              self.parsedFormDataId = self.options.formState._id = form.id;
+              annotationsApi.processAnnotationQueue( form.id );
+              return form;
+            } );
         }
 
         function getConfiguredUrl( verb ) {
@@ -493,4 +505,4 @@
       }
     }
   }
-} )();
+})();
