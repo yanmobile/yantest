@@ -284,7 +284,7 @@
               subform        = getControlByName( suite, subformName ).filter( '.subform' ),
               formModel      = _.get( suite.controller.model, subformName ),
               formState      = suite.controller.options.formState,
-              formDefinition = suiteInternal.controller.formDefinition.subforms.builtinComponents;
+              formDefinition = suiteInternal.controller.formDefinition.subforms.builtinComponents.pages[0].fields;
 
           testInput( 'templates.input.text' );
           testInput( 'templates.input.date' );

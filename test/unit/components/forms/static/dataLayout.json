@@ -1,0 +1,241 @@
+{
+  "name"  : "Testing data.layout properties",
+  "pages" : [
+    {
+      "name"   : "Page 1 - primitive value for column number",
+      "data"   : {
+        "layout" : {
+          "columns" : 2
+        }
+      },
+      "fields" : [
+        {
+          "type"            : "input",
+          "templateOptions" : {
+            "label" : "Field"
+          }
+        },
+        {
+          "className"  : "testing-nested-layout",
+          "data"       : {
+            "layout" : {
+              "columns" : 3
+            }
+          },
+          "fieldGroup" : [
+            {
+              "type"            : "input",
+              "templateOptions" : {
+                "label" : "Field"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name"   : "Page 2 - breakpoint properties for column numbers",
+      "data"   : {
+        "layout" : {
+          "columns" : {
+            "small"  : 1,
+            "medium" : 2,
+            "large"  : 3
+          }
+        }
+      },
+      "fields" : [
+        {
+          "type"            : "input",
+          "templateOptions" : {
+            "label" : "Field"
+          }
+        },
+        {
+          "className"  : "testing-nested-layout",
+          "data"       : {
+            "layout" : {
+              "columns" : {
+                "small"  : 4,
+                "medium" : 5,
+                "large"  : 6
+              }
+            }
+          },
+          "fieldGroup" : [
+            {
+              "type"            : "input",
+              "templateOptions" : {
+                "label" : "Field"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name"   : "Page 3 - percentage properties",
+      "data"   : {
+        "layout" : {
+          "columns" : {
+            "1" : "90%",
+            "2" : "10%"
+          }
+        }
+      },
+      "fields" : [
+        {
+          "type"            : "input",
+          "templateOptions" : {
+            "label" : "Field"
+          }
+        },
+        {
+          "type"            : "input",
+          "templateOptions" : {
+            "label" : "Field"
+          }
+        },
+        {
+          "type"            : "input",
+          "templateOptions" : {
+            "label" : "Field"
+          }
+        },
+        {
+          "type"            : "input",
+          "templateOptions" : {
+            "label" : "Field"
+          }
+        },
+        {
+          "className"  : "testing-nested-layout",
+          "data"       : {
+            "layout" : {
+              "columns" : {
+                "1" : "80%",
+                "2" : "20%"
+              }
+            }
+          },
+          "fieldGroup" : [
+            {
+              "type"            : "input",
+              "templateOptions" : {
+                "label" : "Field"
+              }
+            },
+            {
+              "type"            : "input",
+              "templateOptions" : {
+                "label" : "Field"
+              }
+            },
+            {
+              "type"            : "input",
+              "templateOptions" : {
+                "label" : "Field"
+              }
+            },
+            {
+              "type"            : "input",
+              "templateOptions" : {
+                "label" : "Field"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name"   : "Page 4 - percentage properties by breakpoint",
+      "data"   : {
+        "layout" : {
+          "columns" : {
+            "small" : {
+              "1" : "90%",
+              "2" : "10%"
+            },
+            "large" : {
+              "1" : "40%",
+              "2" : "30%",
+              "3" : "20%",
+              "4" : "10%"
+            }
+          }
+        }
+      },
+      "fields" : [
+        {
+          "type"            : "input",
+          "templateOptions" : {
+            "label" : "Field"
+          }
+        },
+        {
+          "type"            : "input",
+          "templateOptions" : {
+            "label" : "Field"
+          }
+        },
+        {
+          "type"            : "input",
+          "templateOptions" : {
+            "label" : "Field"
+          }
+        },
+        {
+          "type"            : "input",
+          "templateOptions" : {
+            "label" : "Field"
+          }
+        },
+        {
+          "className"  : "testing-nested-layout",
+          "data"       : {
+            "layout" : {
+              "columns" : {
+                "small" : {
+                  "1" : "80%",
+                  "2" : "20%"
+                },
+                "large" : {
+                  "1" : "40%",
+                  "2" : "30%",
+                  "3" : "20%",
+                  "4" : "10%"
+                }
+              }
+            }
+          },
+          "fieldGroup" : [
+            {
+              "type"            : "input",
+              "templateOptions" : {
+                "label" : "Field"
+              }
+            },
+            {
+              "type"            : "input",
+              "templateOptions" : {
+                "label" : "Field"
+              }
+            },
+            {
+              "type"            : "input",
+              "templateOptions" : {
+                "label" : "Field"
+              }
+            },
+            {
+              "type"            : "input",
+              "templateOptions" : {
+                "label" : "Field"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

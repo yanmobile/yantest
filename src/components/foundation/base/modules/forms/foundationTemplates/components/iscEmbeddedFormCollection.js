@@ -79,7 +79,8 @@
           viewAs           = _.get( opts, 'data.collections.viewAs' ),
           subforms         = self.formState._subforms,
           useDynamicFields = _.get( opts, 'data.collections.useDynamicFields' ),
-          embeddedType     = _.get( opts, 'data.embeddedType' );
+          embeddedType     = _.get( opts, 'data.embeddedType' ),
+          embeddedPage     = iscFormsTemplateService.getPageForEmbeddedForm( opts, subforms );
 
       self.editAs = editAs;
 
@@ -250,7 +251,9 @@
           };
         }
         else {
-          self.fields = angular.merge( {}, dynamicArray || subforms[embeddedType] );
+          self.fields = angular.copy(
+            dynamicArray || _.get( embeddedPage, 'fields', [] )
+          );
         }
 
         mergeBuiltInTemplates( self.fields );
@@ -367,6 +370,7 @@
               itemLabel: self.label,
               model    : self.editModel,
               fields   : self.fields,
+              className: embeddedPage.className,
               options  : self.subformOptions,
               subform  : self.subform,
               onCancel : self.cancel,

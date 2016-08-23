@@ -76,10 +76,53 @@
       appendWrapper           : appendWrapper,
       getWidgetList           : getWidgetList,
       registerGlobalLibrary   : registerGlobalLibrary,
-      getGlobalFunctionLibrary: getGlobalFunctionLibrary
+      getGlobalFunctionLibrary: getGlobalFunctionLibrary,
+      getPageForEmbeddedForm  : getPageForEmbeddedForm,
+      getFieldsForEmbeddedForm: getFieldsForEmbeddedForm
     };
 
     return service;
+
+    /**
+     * Gets the list of fields that an embeddedForm(Collection) should use
+     * @param field - The field definition
+     * @param subforms - The list of subforms
+     * @returns {Array}
+     */
+    function getFieldsForEmbeddedForm( field, subforms ) {
+      var page = getPageForEmbeddedForm( field, subforms );
+      return _.get( page, 'fields', [] );
+    }
+
+    /**
+     * Returns the page that an embeddedForm(Collection) refers to.
+     * @param field - The field definition
+     * @param subforms - The list of subforms
+     * @returns {Object}
+     */
+    function getPageForEmbeddedForm( field, subforms ) {
+      var embeddedPage = _.get( field, 'data.embeddedPage' ),
+          embeddedType = _.get( field, 'data.embeddedType' ),
+          subform      = subforms[embeddedType],
+          pages        = _.get( subform, 'pages', [] ),
+          page;
+
+      // Page lookup can be either a 0-based index or a page name
+      if ( embeddedPage !== undefined ) {
+        if ( _.isNumber( embeddedPage ) ) {
+          page = _.get( pages, embeddedPage );
+        }
+        else {
+          page = _.find( pages, { name: embeddedPage } );
+        }
+      }
+      // If no page was provided, use the first one
+      else {
+        page = _.get( pages, '0' );
+      }
+
+      return angular.copy( page ) || {};
+    }
 
     /**
      * @memberOf iscFormsTemplateService

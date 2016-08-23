@@ -16,6 +16,7 @@
   <h4>{{page.name | translate}}</h4>
 
   <formly-form model="subformCtrl.model"
+               class="{{page.className}}"
                options="subformCtrl.options"
                form="subformCtrl.multiConfig.forms[$index]"
                fields="page.fields">

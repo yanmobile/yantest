@@ -20,7 +20,8 @@
    */
   function iscFormsModel( $q, $templateCache, $window, $filter,
     iscHttpapi, // needed for user script closures
-    iscFormsCodeTableApi, iscFormsTemplateService, iscFormsApi ) {
+    iscFormsCodeTableApi, iscFormsTemplateService,
+    iscFormsApi, iscFormFieldLayoutService ) {
     var _typeCache          = {};
     var _formsCache         = {};
     var _viewModeFormsCache = {};
@@ -216,7 +217,7 @@
           else if ( field.type === 'embeddedFormCollection' || extendsType === 'embeddedFormCollection' ) {
             validations.push( {
               key   : field.key,
-              fields: subforms[_.get( field, 'data.embeddedType' )] || []
+              fields: iscFormsTemplateService.getFieldsForEmbeddedForm( field, subforms )
             } );
           }
         } );
@@ -277,7 +278,9 @@
 
           // Subform-only definitions are a bare array
           if ( _.isArray( form ) ) {
-            primaryPromises = primaryPromises.concat( processFields( form ) );
+            primaryPromises = primaryPromises.concat(
+              processFields( form )
+            );
           }
           else {
             if ( form.library ) {
@@ -290,7 +293,10 @@
             }
 
             _.forEach( form.pages, function( page ) {
-              primaryPromises = primaryPromises.concat( processFields( page.fields ) );
+              iscFormFieldLayoutService.transformContainer( page );
+              primaryPromises = primaryPromises.concat(
+                processFields( page.fields )
+              );
             } );
           }
 
@@ -350,7 +356,7 @@
            * @memberOf iscFormsModel
            * @description
            * Additional processing for fields to bind to the formly form.
-           * @param fields
+           * @param {Array} fields - The list of fields to process
            * @returns {Array}
            * @private
            */
@@ -378,7 +384,10 @@
 
               // A field group does not have its own type, but contains fields in the fieldGroup array
               if ( fieldGroup ) {
-                fieldPromises = fieldPromises.concat( processFields( fieldGroup ) );
+                iscFormFieldLayoutService.transformContainer( field );
+                fieldPromises = fieldPromises.concat(
+                  processFields( fieldGroup )
+                );
               }
 
               // If type has not been specified, this is arbitrary html written into a template tag, so skip it.
@@ -476,8 +485,7 @@
              * @private
              */
             function processEmbeddedForm( field, data, isCollection ) {
-              var embeddedType = data.embeddedType,
-                  embeddedPage = data.embeddedPage;
+              var embeddedType = data.embeddedType;
 
               // If a linked type, look up that type and import the fields []
               if ( embeddedType ) {
@@ -495,62 +503,39 @@
                       library           : library
                     } )
                       .then( function( embeddedForm ) {
-                        var fields = [],
-                            form   = embeddedForm.form;
+                        var subform      = embeddedForm.form,
+                            listenerType = {
+                              'type': 'embeddedFormListener'
+                            };
 
                         // If this is a bare array of fields (subform-only definition),
                         // then the response form is only the fields [] for this form.
-                        if ( _.isArray( form ) ) {
-                          fields = form;
+                        // Wrap this in a simple form and page for a consistent interface.
+                        // The specific page to use will be looked up in the field controller.
+                        if ( _.isArray( subform ) ) {
+                          subform = {
+                            pages: [
+                              { fields: subform }
+                            ]
+                          };
                         }
 
-                        // If this is a full form with page and form wrappers, we can only use a fields [] from it.
-                        // If an embeddedPage was provided, use the fields [] from that page;
-                        // otherwise, use the fields [] on the first page.
-                        else {
-                          var pages = form.pages,
-                              page;
+                        _.forEach( subform.pages, function( page ) {
+                          var fields = page.fields;
+                          // Force inheritance of the data property
+                          forceDataInheritance( fields );
 
-                          // Page lookup can be either a 0-based index or a page name
-                          if ( embeddedPage ) {
-                            if ( _.isNumber( embeddedPage ) ) {
-                              page = _.get( pages, embeddedPage );
-                            }
-                            else {
-                              page = _.find( pages, { name: embeddedPage } );
-                            }
+                          // Push a subform listener into the fields list if there is not already one
+                          if ( isCollection && !_.find( fields, listenerType ) ) {
+                            fields.push( listenerType );
                           }
-                          // If no page was provided, use the first one
-                          else {
-                            page = _.get( pages, '0' );
-                          }
+                        } );
 
-                          fields = _.get( page, 'fields', [] );
-                        }
-
-                        // Force inheritance of the data property
-                        forceDataInheritance( fields );
-
-                        if ( isCollection ) {
-                          // Push a subform listener into the fields list
-                          fields.push( {
-                            'type': 'embeddedFormListener'
-                          } );
-
-                          // Update the subforms hash table
-                          subforms[embeddedType] = fields;
-                        }
-
-                        // A non-collection embedded form is inlined in the parent form
-                        else {
-                          // Update the fields in this embedded form from the looked-up form
-                          _.set( field, 'templateOptions.fields', fields );
-                        }
+                        // Update the subforms list
+                        subforms[embeddedType] = subform;
                       } )
                   );
                 }
-
-                fieldPromises = fieldPromises.concat( processFields( _.get( field, 'templateOptions.fields' ) ) );
               }
             }
           }

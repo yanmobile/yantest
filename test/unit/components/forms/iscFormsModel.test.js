@@ -149,7 +149,6 @@
               expect( form.name ).toEqual( 'Sample Comprehensive Form' );
 
               expect( subforms[subformKey] ).toBeDefined();
-              expect( _.isArray( subforms[subformKey] ) ).toBe( true );
             } );
         }
       } );
