@@ -15,16 +15,16 @@
    * @param $http
    * @param devlog
    * @param $rootScope
-   * @param $interval
+   * @param $window
    * @param iscCookieManager
    * @param iscSessionStorageHelper
    * @param AUTH_EVENTS
    * @param SESSION_STATUS
    * @returns {{create: create, destroy: destroy, initSessionTimeout: initSessionTimeout, stopSessionTimeout: stopSessionTimeout, resetSessionTimeout: resetSessionTimeout, getCredentials: getCredentials, getCurrentUser: getCurrentUser, getCurrentUserRole: getCurrentUserRole, isAuthenticated: isAuthenticated, getFullName: getFullName, configure: configure}}
    */
-  function iscSessionModel( $q, $http, $rootScope,
+  function iscSessionModel( $q, $http, $rootScope, $window,
                             devlog, iscCookieManager, iscSessionStorageHelper,
-                            $interval, AUTH_EVENTS, SESSION_STATUS ) {
+                            AUTH_EVENTS, SESSION_STATUS ) {
     var channel = devlog.channel( 'iscSessionModel' );
     channel.logFn( 'iscSessionModel' );
 
@@ -288,7 +288,7 @@
       }
 
       // Checks to perform each tick
-      timeoutInterval = $interval( function() {
+      timeoutInterval = $window.setInterval( function() {
         _logTimer();
 
         if ( sessionTimeout.status === SESSION_STATUS.noResponse ) {
@@ -368,7 +368,7 @@
       channel.logFn( "stopSessionTimeout" );
       if ( angular.isDefined( timeoutInterval ) ) {
         channel.debug( '...cancelling' );
-        $interval.cancel( timeoutInterval );
+        $window.clearInterval( timeoutInterval );
         timeoutInterval = null;
       }
 

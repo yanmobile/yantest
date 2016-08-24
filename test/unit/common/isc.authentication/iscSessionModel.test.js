@@ -7,10 +7,10 @@
         rootScope,
         sessionModel,
         cookieStorage,
+        timeout,
         httpBackend,
         http,
         $window,
-        $interval,
         loginData,
         iscCustomConfigServiceProvider,
         AUTH_EVENTS,
@@ -30,7 +30,7 @@
       $provide.value( '$log', mock$log );
     } ) );
 
-    beforeEach( inject( function( $rootScope, $http, $httpBackend, _$interval_, _$window_, _iscCookieManager_, _AUTH_EVENTS_, iscSessionModel, iscSessionStorageHelper ) {
+    beforeEach( inject( function( $rootScope, $http, $httpBackend, $timeout, _$window_, _iscCookieManager_, _AUTH_EVENTS_, iscSessionModel, iscSessionStorageHelper ) {
 
       rootScope            = $rootScope;
       scope                = $rootScope.$new();
@@ -39,7 +39,7 @@
       http                 = $http;
       httpBackend          = $httpBackend;
       $window              = _$window_;
-      $interval            = _$interval_;
+      timeout              = $timeout;
       AUTH_EVENTS          = _AUTH_EVENTS_;
       sessionStorageHelper = iscSessionStorageHelper;
 

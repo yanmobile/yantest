@@ -2,7 +2,7 @@
  * Created by dgoodman on 2/3/15.
  */
 
-(function() {
+( function() {
   'use strict';
 
   // ----------------------------
@@ -37,10 +37,10 @@
 
     var model = {
 
-      getTopNav: getTopNav,
+      getTopNav                : getTopNav,
 
-      getVersionInfo: getVersionInfo,
-      setVersionInfo: setVersionInfo,
+      getVersionInfo           : getVersionInfo,
+      setVersionInfo           : setVersionInfo,
 
       navigateToUserLandingPage: navigateToUserLandingPage
     };
@@ -128,5 +128,5 @@
     }
   }//END CLASS
 
-})();
+} )();
 
