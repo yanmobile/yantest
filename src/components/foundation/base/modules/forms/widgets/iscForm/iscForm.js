@@ -1,4 +1,4 @@
-( function() {
+(function() {
   'use strict';
 
   angular.module( 'isc.forms' )
@@ -249,7 +249,8 @@
           wrap  : wrapDefault,
           unwrap: unwrapDefault,
           load  : loadDefault,
-          save  : saveDefault
+          save  : saveDefault,
+          submit: submitDefault
         };
 
         return {
@@ -308,6 +309,17 @@
           }
         }
 
+        function submitDefault( formData, id ) {
+          var annotationsApi = self.internalFormConfig.annotationsApi;
+
+          return iscFormDataApi.submit( id, formData, getConfiguredUrl( 'submit' ) )
+            .then( function( form ) {
+              self.parsedFormDataId = self.options.formState._id = form.id;
+              annotationsApi.processAnnotationQueue( form.id );
+              return form;
+            } );
+        }
+
         function getConfiguredUrl( verb ) {
           return _.get( formConfig, 'formDataApi.urls.' + verb );
         }
@@ -338,11 +350,11 @@
          * @memberOf iscForm
          */
         function onSubmit() {
-          var formDataApi = self.internalFormConfig.formDataApi;
+          var configuredDataApi = self.internalFormConfig.formDataApi;
 
           // Default api for submitting a form is to submit to iscFormDataApi
-          var wrappedData = formDataApi.wrap( self.internalModel, self.formDefinition.form );
-          return formDataApi.save( wrappedData, self.parsedFormDataId );
+          var wrappedData = configuredDataApi.wrap( self.internalModel, self.formDefinition.form );
+          return configuredDataApi.submit( wrappedData, self.parsedFormDataId );
         }
 
         /**
@@ -493,4 +505,4 @@
       }
     }
   }
-} )();
+})();

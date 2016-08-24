@@ -1,4 +1,4 @@
-( function() {
+(function() {
   'use strict';
 
   angular.module( 'isc.forms' )
@@ -26,6 +26,7 @@
       get   : get,
       put   : put,
       post  : post,
+      submit: submit,
       delete: deleteApi,
       list  : list
     };
@@ -67,6 +68,20 @@
     }
 
     /**
+     * Submits the form data to the API. If the form has not been saved yet, id will be undefined
+     * and the form will be POSTed to /_submit instead of /:id.
+     * @memberOf iscFormDataApi
+     * @param {=Number} id
+     * @param {Object} form
+     * @param {=String} url - optional override for api endpoint
+     * @returns {*}
+     */
+    function submit( id, form, url ) {
+      channel.debug( 'iscFormDataApi.submit' );
+      return iscHttpapi.post( [url || formDataUrl, id === undefined ? '_submit' : id].join( '/' ), form );
+    }
+
+    /**
      * @memberOf iscFormDataApi
      * @param {Number} id
      * @param {=String} url - optional override for api endpoint
@@ -88,4 +103,4 @@
     }
 
   }
-} )();
+})();

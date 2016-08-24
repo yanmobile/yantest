@@ -112,7 +112,7 @@ var mockFormResponses = function( httpBackend ) {
     .respond( 200, mockFormStore.formData );
 
   // GET: by id
-  httpBackend.when( 'GET', /^formData\/\d*$/ )
+  httpBackend.when( 'GET', /^formData\/\d+$/ )
     .respond( function response( method, url ) {
       var id   = parseInt( url.replace( 'formData/', '' ) ),
           form = _.find( mockFormStore.formData, { id: id } );
@@ -121,7 +121,7 @@ var mockFormResponses = function( httpBackend ) {
     } );
 
   // PUT
-  httpBackend.when( 'PUT', /^formData\/\d*$/ )
+  httpBackend.when( 'PUT', /^formData\/\d+$/ )
     .respond( function response( method, url, data ) {
       var id   = parseInt( url.replace( 'formData/', '' ) ),
           form = _.find( mockFormStore.formData, { id: id } ),
@@ -136,8 +136,8 @@ var mockFormResponses = function( httpBackend ) {
       return [200, form];
     } );
 
-  // POST
-  httpBackend.when( 'POST', 'formData' )
+  // POST (create)
+  httpBackend.when( 'POST', /^formData$/ )
     .respond( function response( method, url, data ) {
       var body   = JSON.parse( data ),
           maxId  = _.maxBy( mockFormStore.formData, function( form ) {
@@ -155,8 +155,39 @@ var mockFormResponses = function( httpBackend ) {
       return [200, form];
     } );
 
+  // POST (submit)
+  httpBackend.when( 'POST', /^formData\/(\d+|_submit)$/ )
+    .respond( function response( method, url, data ) {
+      var id     = url.replace( 'formData/', '' ),
+          body   = JSON.parse( data ),
+          maxId  = _.maxBy( mockFormStore.formData, function( form ) {
+            return Math.max( form.id );
+          } ),
+          nextId = _.get( maxId, 'id', 0 ) + 1,
+          form;
+
+      if ( id === '_submit' ) {
+        form = {
+          id  : nextId,
+          data: body
+        };
+        mockFormStore.formData.push( form );
+      }
+      else {
+        id   = parseInt( id );
+        form = _.find( mockFormStore.formData, { id: id } );
+        _.mergeWith( form, body, function( dbRecord, formRecord ) {
+          if ( _.isArray( dbRecord ) ) {
+            return formRecord;
+          }
+        } );
+      }
+
+      return [200, form];
+    } );
+
   // DELETE
-  httpBackend.when( 'DELETE', /^formData\/\d*$/ )
+  httpBackend.when( 'DELETE', /^formData\/\d+$/ )
     .respond( function response( method, url ) {
       var id   = parseInt( url.replace( 'formData/', '' ) ),
           form = _.find( mockFormStore.formData, { id: id } );
