@@ -1,0 +1,26 @@
+{
+  "pages" : [
+    {
+      "fields" : [
+        {
+          "key"             : "aField",
+          "type"            : "input",
+          "templateOptions" : {
+            "label" : "A field"
+          }
+        },
+        {
+          "key"             : "subform1",
+          "type"            : "embeddedFormCollection",
+          "templateOptions" : {
+            "label" : "More fields"
+          },
+          "data"            : {
+            "embeddedType" : "subform1",
+            "embeddedPage" : 0
+          }
+        }
+      ]
+    }
+  ]
+}
