@@ -174,6 +174,7 @@
 
           onCollectionModified();
         }
+        return isSubformValid;
       };
 
       self.removeForm = removeForm;

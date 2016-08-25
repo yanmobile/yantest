@@ -67,11 +67,22 @@
           {{'Forms_Cancel_Button' | translate}}
         </button>
 
-        <button class="float-right flat embedded-form-save"
-                type="button"
-                ng-click="subformCtrl.singleConfig.onSubmit()">
-          {{'Forms_Save_Button' | translate}} {{subformCtrl.singleConfig.itemLabel}}
-        </button>
+        <div class="float-right">
+          <button class="flat embedded-form-save"
+                  type="button"
+                  ng-click="subformCtrl.singleConfig.onSubmit()">
+            {{'Forms_Save_Button' | translate}} {{subformCtrl.singleConfig.itemLabel}}
+          </button>
+
+          <button class="flat embedded-form-save"
+                  type="button"
+                  ng-if="subformCtrl.breadcrumbs.length > 2"
+                  ng-click="subformCtrl.singleConfig.onSubmitAll()">
+            {{'Forms_Save_All_Button' | translate}}
+          </button>
+        </div>
+
+
       </div>
 
     </div>
