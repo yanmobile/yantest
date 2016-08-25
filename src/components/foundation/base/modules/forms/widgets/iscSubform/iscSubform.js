@@ -91,7 +91,7 @@
             afterClick = button.afterClick || function() {
               };
 
-        $q.when( click( self.multiConfig ) )
+        $q.when( click( self ) )
           .then( afterClick );
       }
 
