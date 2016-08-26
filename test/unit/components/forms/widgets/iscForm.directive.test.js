@@ -300,7 +300,7 @@
 
       
       //--------------------
-      it( 'should raise an alert when trying data submission returns an error', function() {
+      it( 'should raise an alert when data API submission returns an error', function() {
         var suite              = suiteSimple3,
             submitButton       = getButton( suite, 'submit' ),
             buttonConfig       = getButtonConfig( suite ),
@@ -313,7 +313,6 @@
         spyOn( submitButtonConfig, 'onClick' ).and.callThrough();
         spyOn( submitButtonConfig, 'afterClick' ).and.callThrough();
         spyOn( suiteMain.formDataApi, 'submit' ).and.returnValue( mockedRejection.promise );
-        spyOn( suiteMain.formDataApi, 'post' ).and.callThrough();
 
         expect( submitButton.length ).toBe( 1 );
         submitButton.click();
