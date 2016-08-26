@@ -10,7 +10,8 @@
         suiteLiteralModel,
         suiteSimple1,
         suiteSimple2,
-        suiteSimple3;
+        suiteSimple3,
+        suiteLiteral;
 
     // Some intentional mis-configurations to exercise safety nets
     var badFormConfig = {
@@ -50,6 +51,25 @@
       }
     };
 
+    var literalFormConfig = {
+      formLiteral: {
+        name : 'Literal FDN',
+        pages: [
+          {
+            fields: [
+              {
+                key            : 'inputField',
+                type           : 'input',
+                templateOptions: {
+                  label: 'Input field on an FDN literal'
+                }
+              }
+            ]
+          }
+        ]
+      }
+    };
+
     var literalModel = {
       "form": {
         "components": {
@@ -62,7 +82,11 @@
       }
     };
 
-    var goodButtonConfig = {};
+    var goodButtonConfig = {
+      testButton : {
+        hide : function() { return false; }
+      }
+    };
 
     window.useDefaultTranslateBeforeEach();
 
@@ -97,6 +121,30 @@
       } );
       mockFormResponses( suiteMain.$httpBackend );
     } ) );
+
+    //--------------------
+    describe( 'suiteLiteral', function() {
+      beforeEach( function() {
+        suiteLiteral = createDirective( getMinimalForm(), {
+          localFormConfig: literalFormConfig
+        } );
+      } );
+
+      it( 'should load a literal FDN definition and work like a REST form', function() {
+        var suite      = suiteLiteral,
+            model      = suite.controller.internalModel,
+            newValue   = 'some value',
+            inputField = getControlByName( suite, 'inputField' );
+
+        expect( _.get( model, 'inputField' ) ).toBeUndefined();
+
+        expect( inputField.length ).toBe( 1 );
+        inputField.val( newValue ).trigger( 'change' );
+        suiteMain.$timeout.flush();
+
+        expect( _.get( model, 'inputField' ) ).toEqual( newValue );
+      } );
+    } );
 
     //--------------------
     describe( 'suiteLibrary', function() {
@@ -241,6 +289,36 @@
       } );
     } );
 
+    describe( 'simple suite 3 only', function() {
+      beforeEach( function() {
+        suiteSimple1 = createDirective( getMinimalForm( 'simple3' ) );
+
+        suiteMain.$httpBackend.flush();
+      } );
+
+      //--------------------
+      it( 'should save when submit is clicked', function() {
+        var suite              = suiteSimple1,
+            submitButton       = getButton( suite, 'submit' ),
+            model              = suite.controller.internalModel,
+            buttonConfig       = getButtonConfig( suite ),
+            submitButtonConfig = buttonConfig.submit;
+
+        spyOn( submitButtonConfig, 'onClick' ).and.callThrough();
+        spyOn( submitButtonConfig, 'afterClick' ).and.callThrough();
+        spyOn( suiteMain.formDataApi, 'submit' ).and.callThrough();
+        spyOn( suiteMain.formDataApi, 'post' ).and.callThrough();
+
+        // simple3 saves only on submit
+        // clicking submit should call the submit api
+        submitButton.click();
+        suiteMain.$httpBackend.flush();
+
+        expect( submitButtonConfig.onClick ).toHaveBeenCalled();
+        expect( submitButtonConfig.afterClick ).toHaveBeenCalled();
+        expect( suiteMain.formDataApi.submit ).toHaveBeenCalled();
+      } );
+    } );
 
     //--------------------
     describe( 'suiteConfigured', function() {
@@ -262,7 +340,7 @@
       } );
 
       //--------------------
-      it( 'should run validation when submit is clicked', function() {
+      it( 'should fail validation in a subform when it contains invalid records', function() {
         var suite              = suiteConfigured,
             submitButton       = getButton( suite, 'submit' ),
             buttonConfig       = getButtonConfig( suite ),
@@ -300,27 +378,19 @@
         model.RequiredSubform = [];
         model.RequiredSubform.push( subformRecord1 );
         model.RequiredSubform.push( subformRecord2 );
+        // _.set(model, 'RequiredSubform', [
+        //   subformRecord1,
+        //   subformRecord2
+        // ]);
 
         submitButton.click();
+        suiteMain.$timeout.flush();
 
         // Validation should still fail due to the required fields in the RequiredSubform fields
         // This exercises the validation for subform records that are invalidated without being shown in the UI
         expect( submitButtonConfig.onClick ).not.toHaveBeenCalled();
         expect( suite.controller.validateFormApi ).toHaveBeenCalled();
         expect( suiteMain.notificationService.showAlert ).toHaveBeenCalled();
-
-        _.extend( subformRecord1, subformRecordData );
-        _.extend( subformRecord2, subformRecordData );
-        suiteMain.$timeout.flush();
-        submitButton.click();
-        suiteMain.$timeout.flush();
-
-        // Validation should now succeed
-        expect( submitButtonConfig.onClick ).toHaveBeenCalled();
-        expect( suite.controller.validateFormApi ).toHaveBeenCalled();
-        suiteMain.$httpBackend.flush();
-        expect( submitButtonConfig.afterClick ).toHaveBeenCalled();
-        expect( suiteMain.formDataApi.submit ).toHaveBeenCalled();
       } );
 
       //--------------------
