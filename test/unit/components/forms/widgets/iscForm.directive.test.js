@@ -83,8 +83,10 @@
     };
 
     var goodButtonConfig = {
-      testButton : {
-        hide : function() { return false; }
+      testButton: {
+        hide: function() {
+          return false;
+        }
       }
     };
 
@@ -102,7 +104,7 @@
       } )
     );
 
-    beforeEach( inject( function( $rootScope, $compile, $window, $httpBackend, $timeout,
+    beforeEach( inject( function( $rootScope, $compile, $window, $httpBackend, $timeout, $q,
       formlyApiCheck, formlyConfig,
       iscFormDataApi, iscNotificationService, iscFormsValidationService ) {
       formlyConfig.disableWarnings   = true;
@@ -114,6 +116,7 @@
         $httpBackend: $httpBackend,
         $timeout    : $timeout,
         $rootScope  : $rootScope,
+        $q          : $q,
 
         formDataApi        : iscFormDataApi,
         notificationService: iscNotificationService,
@@ -291,16 +294,40 @@
 
     describe( 'simple suite 3 only', function() {
       beforeEach( function() {
-        suiteSimple1 = createDirective( getMinimalForm( 'simple3' ) );
-
+        suiteSimple3 = createDirective( getMinimalForm( 'simple3' ) );
         suiteMain.$httpBackend.flush();
+      } );
+
+      
+      //--------------------
+      it( 'should raise an alert when trying data submission returns an error', function() {
+        var suite              = suiteSimple3,
+            submitButton       = getButton( suite, 'submit' ),
+            buttonConfig       = getButtonConfig( suite ),
+            submitButtonConfig = buttonConfig.submit;
+
+        var mockedRejection = suiteMain.$q.defer();
+        mockedRejection.reject( 'Flagrant system error' );
+
+        spyOn( suiteMain.notificationService, 'showAlert' ).and.callThrough();
+        spyOn( submitButtonConfig, 'onClick' ).and.callThrough();
+        spyOn( submitButtonConfig, 'afterClick' ).and.callThrough();
+        spyOn( suiteMain.formDataApi, 'submit' ).and.returnValue( mockedRejection.promise );
+        spyOn( suiteMain.formDataApi, 'post' ).and.callThrough();
+
+        expect( submitButton.length ).toBe( 1 );
+        submitButton.click();
+        suiteMain.$timeout.flush();
+
+        expect( submitButtonConfig.onClick ).toHaveBeenCalled();
+        expect( suiteMain.notificationService.showAlert ).toHaveBeenCalled();
+        expect( submitButtonConfig.afterClick ).not.toHaveBeenCalled();
       } );
 
       //--------------------
       it( 'should save when submit is clicked', function() {
-        var suite              = suiteSimple1,
+        var suite              = suiteSimple3,
             submitButton       = getButton( suite, 'submit' ),
-            model              = suite.controller.internalModel,
             buttonConfig       = getButtonConfig( suite ),
             submitButtonConfig = buttonConfig.submit;
 
@@ -336,7 +363,6 @@
             formConfig = getFormConfig( suite );
 
         expect( formConfig.additionalModels.configuredModel.foo ).toEqual( "bar" );
-        // TODO -- extend
       } );
 
       //--------------------

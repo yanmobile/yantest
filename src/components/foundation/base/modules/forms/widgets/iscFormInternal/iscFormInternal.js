@@ -1,4 +1,4 @@
-( function() {
+(function() {
   'use strict';
 
   angular.module( 'isc.forms' )
@@ -351,8 +351,13 @@
             afterSubmit  = submitConfig.afterClick || function() {
               };
 
-        $q.when( onSubmit( self ) )
-          .then( afterSubmit );
+        $q.when( onSubmit( self ), afterSubmit, onError );
+
+        function onError( error ) {
+          iscNotificationService.showAlert( {
+            content: '<label class="error-message">' + error + '</label>'
+          } );
+        }
       }
 
       /**
@@ -366,5 +371,5 @@
       }
     }
   }
-} )
+})
 ();
