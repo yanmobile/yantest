@@ -347,11 +347,7 @@
             submitButtonConfig = buttonConfig.submit,
             model              = suite.controller.internalModel,
             subformRecord1     = {},
-            subformRecord2     = {},
-            subformRecordData  = {
-              RequiredInputInASubform : "some data",
-              RequiredInputInASubform2: "some other data"
-            };
+            subformRecord2     = {};
 
         spyOn( submitButtonConfig, 'onClick' ).and.callThrough();
         spyOn( submitButtonConfig, 'afterClick' ).and.callThrough();
@@ -378,10 +374,6 @@
         model.RequiredSubform = [];
         model.RequiredSubform.push( subformRecord1 );
         model.RequiredSubform.push( subformRecord2 );
-        // _.set(model, 'RequiredSubform', [
-        //   subformRecord1,
-        //   subformRecord2
-        // ]);
 
         submitButton.click();
         suiteMain.$timeout.flush();

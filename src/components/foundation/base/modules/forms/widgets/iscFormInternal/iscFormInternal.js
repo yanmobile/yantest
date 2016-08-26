@@ -351,7 +351,6 @@
             afterSubmit  = submitConfig.afterClick || function() {
               };
 
-        console.log (onSubmit === submitConfig.onClick);
         $q.when( onSubmit( self ) )
           .then( afterSubmit );
       }
