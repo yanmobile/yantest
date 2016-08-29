@@ -1,4 +1,4 @@
-( function() {
+(function() {
   'use strict';
 
   /** Templates adapted from angular-formly-templates-foundation 1.0.0-beta.1
@@ -329,8 +329,8 @@
         wrapper    : ['templateLabel', 'templateHasError'],
         /*@ngInject*/
         controller : function( $scope ) {
-          var opts            = $scope.options,
-              subforms        = $scope.formState._subforms;
+          var opts     = $scope.options,
+              subforms = $scope.formState._subforms;
 
           $scope.efModel = _.get( $scope.model, opts.key );
           if ( !$scope.efModel ) {
@@ -338,7 +338,7 @@
             _.set( $scope.model, opts.key, $scope.efModel );
           }
 
-          $scope.efFields  = iscFormsTemplateService.getFieldsForEmbeddedForm( opts, subforms );
+          $scope.efFields = iscFormsTemplateService.getFieldsForEmbeddedForm( opts, subforms );
 
           $scope.efOptions = _.extend( {}, $scope.formOptions, {
             formState: $scope.formState
@@ -484,4 +484,4 @@
     }
 
   }
-} )();
+})();

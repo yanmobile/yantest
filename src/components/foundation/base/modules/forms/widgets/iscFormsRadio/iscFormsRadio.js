@@ -1,4 +1,4 @@
-( function() {
+(function() {
   'use strict';
 
   angular.module( 'isc.core' )
@@ -78,7 +78,7 @@
 
       ctrl.isChecked = function( option ) {
         if ( isObjectModel ) {
-          return localModel && angular.equals(localModel, option);
+          return localModel && angular.equals( localModel, option );
         }
         else {
           return localModel === option;
@@ -87,4 +87,4 @@
     }
 
   }//END CLASS
-} )();
+})();
