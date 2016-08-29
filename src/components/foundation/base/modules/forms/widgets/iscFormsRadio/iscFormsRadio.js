@@ -62,7 +62,6 @@
           isObjectModel = ctrl.isObjectModel;
 
       scope.displayProp = _.get( options, 'data.displayField', 'name' );
-      scope.valueProp   = _.get( options, 'data.valueField', 'value' );
       scope.groupProp   = _.get( options, 'data.groupField', 'group' );
 
       ngModel.$render = function() {
@@ -79,7 +78,7 @@
 
       ctrl.isChecked = function( option ) {
         if ( isObjectModel ) {
-          return localModel && localModel[scope.valueProp] === option[scope.valueProp];
+          return localModel && angular.equals(localModel, option);
         }
         else {
           return localModel === option;
