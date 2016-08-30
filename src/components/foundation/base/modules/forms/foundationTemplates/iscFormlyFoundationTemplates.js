@@ -1,4 +1,4 @@
-( function() {
+(function() {
   'use strict';
 
   /** Templates adapted from angular-formly-templates-foundation 1.0.0-beta.1
@@ -327,55 +327,64 @@
 
       // Embedded form
       iscFormsTemplateService.registerType( {
-        name       : 'embeddedForm',
-        templateUrl: 'forms/foundationTemplates/templates/embeddedForm.html',
-        wrapper    : ['templateLabel', 'templateHasError'],
-        /*@ngInject*/
-        controller : function( $scope ) {
-          var opts            = $scope.options,
-              subforms        = $scope.formState._subforms;
+          name       : 'embeddedForm',
+          templateUrl: 'forms/foundationTemplates/templates/embeddedForm.html',
+          wrapper    : ['templateLabel', 'templateHasError'],
+          /*@ngInject*/
+          controller : function( $scope ) {
+            var opts     = $scope.options,
+                subforms = $scope.formState._subforms;
 
-          $scope.efModel = _.get( $scope.model, opts.key );
-          if ( !$scope.efModel ) {
-            $scope.efModel = {};
-            _.set( $scope.model, opts.key, $scope.efModel );
+            $scope.efModel = _.get( $scope.model, opts.key );
+            if ( !$scope.efModel ) {
+              $scope.efModel = {};
+              _.set( $scope.model, opts.key, $scope.efModel );
+            }
+
+            $scope.efFields = iscFormsTemplateService.getFieldsForEmbeddedForm( opts, subforms );
+
+            $scope.efOptions = _.extend( {}, $scope.formOptions, {
+              formState: $scope.formState
+            } );
           }
-
-          $scope.efFields  = iscFormsTemplateService.getFieldsForEmbeddedForm( opts, subforms );
-
-          $scope.efOptions = _.extend( {}, $scope.formOptions, {
-            formState: $scope.formState
-          } );
-        }
-      } );
+        },
+        {
+          excludeFromWidgetLibrary: true
+        } );
 
       // Embedded form collection
       iscFormsTemplateService.registerType( {
-        name       : 'embeddedFormCollection',
-        templateUrl: 'forms/foundationTemplates/templates/embeddedFormCollection.html',
-        wrapper    : ['templateLabel', 'templateHasError'],
-        /*@ngInject*/
-        controller : function( $scope, iscFormsValidationService ) {
-          iscFormsValidationService.registerCollection(
-            $scope.options.key, {
-              id   : $scope.id,
-              label: $scope.to.label
-            } );
-        }
-      } );
+          name       : 'embeddedFormCollection',
+          templateUrl: 'forms/foundationTemplates/templates/embeddedFormCollection.html',
+          wrapper    : ['templateLabel', 'templateHasError'],
+          /*@ngInject*/
+          controller : function( $scope, iscFormsValidationService ) {
+            iscFormsValidationService.registerCollection(
+              $scope.options.key, {
+                id   : $scope.id,
+                label: $scope.to.label
+              } );
+          }
+        },
+        {
+          excludeFromWidgetLibrary: true
+        } );
 
       // Embedded collection of primitive values
       iscFormsTemplateService.registerType( {
-        name          : 'primitiveCollection',
-        extends       : 'embeddedFormCollection',
-        defaultOptions: {
-          data: {
-            collections: {
-              editAs: 'inline'
+          name          : 'primitiveCollection',
+          extends       : 'embeddedFormCollection',
+          defaultOptions: {
+            data: {
+              collections: {
+                editAs: 'inline'
+              }
             }
           }
-        }
-      } );
+        },
+        {
+          excludeFromWidgetLibrary: true
+        } );
 
       // Embedded Form Listener
       // This field will not be rendered in the DOM, but will listen for FORMS_EVENTS
@@ -487,4 +496,4 @@
     }
 
   }
-} )();
+})();

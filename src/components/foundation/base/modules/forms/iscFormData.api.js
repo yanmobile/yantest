@@ -78,7 +78,10 @@
      */
     function submit( id, form, url ) {
       channel.debug( 'iscFormDataApi.submit' );
-      return iscHttpapi.post( [url || formDataUrl, id === undefined ? '_submit' : id].join( '/' ), form );
+      if (id === undefined) {
+        id = '_submit';
+      }
+      return iscHttpapi.post( [url || formDataUrl, id].join( '/' ), form );
     }
 
     /**
