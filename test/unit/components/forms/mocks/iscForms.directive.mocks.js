@@ -34,9 +34,10 @@ function digest( suite ) {
 
 
 // Form template generators
-function getMinimalForm( formKey ) {
+function getMinimalForm( formKey, formDataId ) {
   return '<isc-form ' +
     'form-key="' + formKey + '" ' +
+    'form-data-id="' + (formDataId || '' ) + '" ' +
     'form-config="localFormConfig"' +
     '></isc-form>'
 }

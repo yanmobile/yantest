@@ -123,6 +123,7 @@
 
       // Destroy any existing formly-form
       delete validation.form;
+      validation.renderForm = false;
 
       processForm();
 
@@ -151,12 +152,14 @@
        *
        * Useful for waiting for longer-running third-party synchronous functions (such as form building) to complete.
        * @memberOf iscFormsValidationService
-       * @param sleepTest {function}
-       * @param maxWait {number
+       * @param sleepTest {Function}
+       * @param maxWait {=Number}
        * @returns {promise}
        */
       function sleepUntil( sleepTest, maxWait ) {
-        maxWait = maxWait || maxWaitInMillis;
+        if (maxWait === undefined) {
+          maxWait = maxWaitInMillis;
+        }
         return $timeout( function() {
           if ( sleepTest() ) {
             return true;
@@ -164,7 +167,7 @@
           else if ( maxWait < 0 ) {
             return false;
           }
-          sleepUntil( sleepTest, maxWait - sleepLengthInMillis );
+          return sleepUntil( sleepTest, maxWait - sleepLengthInMillis );
         }, sleepLengthInMillis );
       }
 
