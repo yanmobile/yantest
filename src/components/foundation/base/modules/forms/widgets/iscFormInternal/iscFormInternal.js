@@ -1,4 +1,4 @@
-( function() {
+(function() {
   'use strict';
 
   angular.module( 'isc.forms' )
@@ -72,9 +72,6 @@
 
       self.additionalModels = _.get( self.formConfig, 'additionalModels', {} );
 
-      // Object to hold data and structure for temporary form validation
-      self.validation = iscFormsValidationService.getValidationObject();
-
       // Submit button from buttonConfig is handled separately here, to work with $validation pipeline
       self.onSubmit = onSubmit;
 
@@ -91,6 +88,10 @@
       function init() {
         // Initialize validation and notification components
         iscFormsValidationService.init( self.options );
+
+        // Object to hold data and structure for temporary form validation
+        self.validation = iscFormsValidationService.getValidationObject();
+
         iscNotificationService.init();
         initAutosaveConfig();
         watchPages();
@@ -350,8 +351,13 @@
             afterSubmit  = submitConfig.afterClick || function() {
               };
 
-        $q.when( onSubmit( self ) )
-          .then( afterSubmit );
+        $q.when( onSubmit( self ), afterSubmit, onError );
+
+        function onError( error ) {
+          iscNotificationService.showAlert( {
+            content: '<label class="error-message">' + error + '</label>'
+          } );
+        }
       }
 
       /**
@@ -365,5 +371,5 @@
       }
     }
   }
-} )
+})
 ();

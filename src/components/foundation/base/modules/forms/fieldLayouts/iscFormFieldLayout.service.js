@@ -2,7 +2,7 @@
  * Created by probbins on 8/16/2016
  */
 
-(function() {
+( function() {
   'use strict';
 
   /* @ngInject */
@@ -48,7 +48,7 @@
         applyClassName( fieldContainer, columnsSetting, {
           breakpoint: firstBreakpoint,
           columns   : columns
-        } )
+        } );
       }
 
       else if ( _.isObject( columns ) ) {
@@ -94,7 +94,7 @@
         // Apply the percentage setting to each child field in this container
         var childFields = _.get( fieldContainer, 'fields' ) || _.get( fieldContainer, 'fieldGroup' );
         _.forEach( childFields, function( field, index ) {
-          var thisIndex  = (index % maxIndex) + 1,
+          var thisIndex  = ( index % maxIndex ) + 1,
               percentage = tryParsePercentage( columns[thisIndex] );
 
           if ( percentage ) {
@@ -133,4 +133,4 @@
       return config;
     }
   }
-})();
+} )();

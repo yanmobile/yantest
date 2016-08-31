@@ -30,7 +30,7 @@
       $window,
       $timeout,
       $rootScope,
-      storage,
+      iscCookieManager,
       iscAuthStatus,
       iscAuthStatusService,
       iscSessionModel,
@@ -41,7 +41,7 @@
       suite = window.createSuite( {
         $window                : $window,
         $rootScope             : $rootScope,
-        storage                : storage,
+        cookieStorage                : iscCookieManager,
         iscAuthStatus          : iscAuthStatus,
         iscAuthStatusService   : iscAuthStatusService,
         iscSessionModel        : iscSessionModel,
@@ -54,10 +54,11 @@
         authStatusUrl: 'auth/status'
       } );
 
-      suite.storage.clear();
+      suite.cookieStorage.remove('browserIsLoggedOut');
+      suite.cookieStorage.remove('hashcode');
 
-      spyOn( suite.storage, 'get' ).and.callThrough();
-      spyOn( suite.storage, 'set' ).and.callThrough();
+      spyOn( suite.cookieStorage, 'get' ).and.callThrough();
+      spyOn( suite.cookieStorage, 'set' ).and.callThrough();
       spyOn( suite.iscAuthStatusService, 'checkAuthStatus' ).and.callThrough();
       spyOn( suite.$rootScope, '$emit' ).and.callThrough();
 
@@ -65,7 +66,7 @@
 
     // -------------------------
     it( 'should log out if the flag is set', function() {
-      suite.storage.set( 'browserIsLoggedOut', 1 );
+      suite.cookieStorage.set( 'browserIsLoggedOut', 1 );
       suite.$window.dispatchEvent( focus );
 
       // logout is only called if the user is authenticated
@@ -80,7 +81,7 @@
     it( 'should store the hashcode on blur', function() {
       suite.$window.dispatchEvent( blur );
 
-      expect( suite.storage.get ).toHaveBeenCalledWith( 'hashcode' );
+      expect( suite.cookieStorage.get ).toHaveBeenCalledWith( 'hashcode' );
     } );
 
     // -------------------------
@@ -92,10 +93,10 @@
         authStatusFocusCallback: authStatusFocusCallback
       } );
 
-      suite.storage.set( 'hashcode', 'abcdefg' );
+      suite.cookieStorage.set( 'hashcode', 'abcdefg' );
       suite.$window.dispatchEvent( focus );
 
-      expect( suite.storage.get ).toHaveBeenCalledWith( 'hashcode' );
+      expect( suite.cookieStorage.get ).toHaveBeenCalledWith( 'hashcode' );
       expect( suite.$rootScope.$emit ).not.toHaveBeenCalled();
 
       expect( suite.authStatusFocusCallbackWasCalled ).toBe( true );
@@ -113,10 +114,10 @@
         authStatusFocusCallback: authStatusFocusCallback
       } );
 
-      suite.storage.set( 'hashcode', 'abcdefg' );
+      suite.cookieStorage.set( 'hashcode', 'abcdefg' );
       suite.$window.dispatchEvent( focus );
 
-      expect( suite.storage.get ).toHaveBeenCalledWith( 'hashcode' );
+      expect( suite.cookieStorage.get ).toHaveBeenCalledWith( 'hashcode' );
       expect( suite.$rootScope.$emit ).not.toHaveBeenCalled();
       expect( suite.authStatusFocusCallbackWasCalled ).toBeUndefined();
 

@@ -6,7 +6,7 @@
     var scope,
         rootScope,
         sessionModel,
-        storage,
+        cookieStorage,
         timeout,
         httpBackend,
         http,
@@ -30,12 +30,12 @@
       $provide.value( '$log', mock$log );
     } ) );
 
-    beforeEach( inject( function( $rootScope, $http, $httpBackend, $timeout, _$window_, _storage_, _AUTH_EVENTS_, iscSessionModel, iscSessionStorageHelper ) {
+    beforeEach( inject( function( $rootScope, $http, $httpBackend, $timeout, _$window_, _iscCookieManager_, _AUTH_EVENTS_, iscSessionModel, iscSessionStorageHelper ) {
 
       rootScope            = $rootScope;
       scope                = $rootScope.$new();
       sessionModel         = iscSessionModel;
-      storage              = _storage_;
+      cookieStorage              = _iscCookieManager_;
       http                 = $http;
       httpBackend          = $httpBackend;
       $window              = _$window_;
@@ -92,22 +92,22 @@
 
       it( 'should create the config when calling create, page refresh', function() {
         spyOn( rootScope, '$emit' );
-        spyOn( storage, 'set' );
+        spyOn( cookieStorage, 'set' );
         spyOn( sessionStorageHelper, 'setLoginResponse' );
         sessionModel.create( loginData, false );
         expect( sessionModel.getCredentials() ).toEqual( {} );
         expect( sessionModel.getCurrentUser() ).toEqual( loginData.UserData );
         expect( rootScope.$emit ).toHaveBeenCalledWith( AUTH_EVENTS.sessionResumedSuccess );
         expect( sessionStorageHelper.setLoginResponse ).toHaveBeenCalledWith( loginData );
-        expect( storage.set ).not.toHaveBeenCalledWith( jasmine.objectContaining( 'jwt' ) );
+        expect( cookieStorage.set ).not.toHaveBeenCalledWith( jasmine.objectContaining( 'jwt' ) );
       } );
 
       it( 'should create jwt vars when present', function() {
         var loginData = { jwt: 'foobar' };
-        spyOn( storage, 'set' );
+        spyOn( cookieStorage, 'set' );
         sessionModel.create( loginData, false );
 
-        expect( storage.set ).toHaveBeenCalledWith( 'jwt', 'foobar' );
+        expect( cookieStorage.set ).toHaveBeenCalledWith( 'jwt', 'foobar' );
         expect( http.defaults.headers.common.jwt ).toBe( 'foobar' );
       } );
 
