@@ -10,7 +10,7 @@
 
   /* @ngInject */
   function iscAuthStatusService( $rootScope, $window,
-    storage, iscAuthStatus, iscSessionStorageHelper,
+    iscCookieManager, iscAuthStatus, iscSessionModel, iscSessionStorageHelper,
     NAV_EVENTS, AUTH_EVENTS ) {
     var thisTabHash,
         authStatusCallFailed = false;
@@ -25,7 +25,7 @@
     function checkAuthStatus() {
       var config              = iscAuthStatus.getConfig(),
           storedLoginResponse = iscSessionStorageHelper.getLoginResponse(),
-          isBrowserLoggedOut  = storage.get( 'browserIsLoggedOut' );
+          isBrowserLoggedOut  = iscCookieManager.get( 'browserIsLoggedOut' );
 
       if ( config.authStatusUrl !== undefined &&
         _.isEmpty( storedLoginResponse ) // this is checked in isc.authentication.run()
@@ -45,21 +45,21 @@
 
     function authStatusFocus() {
       var config       = iscAuthStatus.getConfig(),
-          shouldLogOut = storage.get( 'browserIsLoggedOut' ),
+          shouldLogOut = iscCookieManager.get( 'browserIsLoggedOut' ),
           callback     = config.authStatusFocusCallback || _.noop;
 
       if ( config.useAuthStatus ) {
-        if ( shouldLogOut ) {
+        if ( shouldLogOut && iscSessionModel.isAuthenticated() ) {
           $rootScope.$emit( AUTH_EVENTS.logout );
           return;
         }
 
-        var storageHash = storage.get( 'hashcode' );
+        var storageHash = iscCookieManager.get( 'hashcode' );
 
         if ( storageHash && storageHash !== thisTabHash ) {
           var authStatusResult = callAuthStatus( config.authStatusUrl );
           if ( authStatusResult ) {
-            thisTabHash          = storageHash;
+            thisTabHash = storageHash;
             return callback( authStatusResult );
           }
         }
@@ -67,8 +67,10 @@
     }
 
     function authStatusBlur() {
+      // If the last call to auth/status failed, do not update the local hash.
+      // This will force auth/status to be retried when this window is focused again.
       if ( !authStatusCallFailed ) {
-        thisTabHash = storage.get( 'hashcode' );
+        thisTabHash = iscCookieManager.get( 'hashcode' );
       }
     }
 

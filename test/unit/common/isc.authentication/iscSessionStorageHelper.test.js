@@ -43,6 +43,23 @@
     });
 
     // -------------------------
+    describe('removeFromSessionStorage tests ', function () {
+
+      it('should have a function removeFromSessionStorage', function () {
+        expect(angular.isFunction(sessionStorageHelper.removeFromSessionStorage)).toBe(true);
+      });
+
+      it('should do the right thing on removeFromSessionStorage', function () {
+
+        spyOn(window.sessionStorage, 'removeItem');
+
+        sessionStorageHelper.removeFromSessionStorage( 'key' );
+
+        expect(window.sessionStorage.removeItem).toHaveBeenCalledWith( 'key' );
+      });
+    });
+
+    // -------------------------
     describe('get/setLoginResponse tests ', function () {
 
       it('should have a function getLoginResponse', function () {

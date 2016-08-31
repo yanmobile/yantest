@@ -53,6 +53,49 @@
     } ) );
 
     //--------------------
+    describe( 'iscSubform - Save All', function() {
+      beforeEach( function() {
+        createDirectives( getMinimalForm( 'saveAllForm' ) );
+      } );
+
+      it( 'should save all the intermediate forms down to the root form', function() {
+        var suite   = suiteSubform,
+            subform = getSubform( 'subform1' ),
+            testVal = 'foo';
+
+        openForm( 'subform1' );
+        openForm( 'subform2' );
+        openForm( 'subform3' );
+
+        var saveAllButton = suite.element.find( '.embedded-form-save-all' ).first(),
+            inputField    = getControlByName( suite, 'aField3' );
+
+        inputField.val( testVal ).trigger( 'change' );
+        digest( suite );
+
+        // Nothing is saved yet
+        expect( suite.controller.model ).toEqual( {} );
+
+        saveAllButton.click();
+        digest( suite );
+
+        // Now that all forms have saved down to the root form, the model should be updated
+        var updatedField = suite.controller.model.subform1[0].subform2[0].subform3[0].aField3;
+        expect( updatedField ).toEqual( testVal );
+
+        function openForm( subformName ) {
+          getSubform( subformName )
+            .find( 'button.embedded-form-add' )
+            .click();
+        }
+
+        function getSubform( name ) {
+          return getControlByName( suite, name ).filter( '.subform' );
+        }
+      } );
+    } );
+
+    //--------------------
     describe( 'iscSubform - CRUD', function() {
       beforeEach( function() {
         createDirectives( getFormWithData() );

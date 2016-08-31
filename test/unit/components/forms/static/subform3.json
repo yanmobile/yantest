@@ -1,0 +1,15 @@
+{
+  "pages" : [
+    {
+      "fields" : [
+        {
+          "key"             : "aField3",
+          "type"            : "input",
+          "templateOptions" : {
+            "label" : "A field"
+          }
+        }
+      ]
+    }
+  ]
+}

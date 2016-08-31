@@ -2,10 +2,10 @@
  * Created by douglasgoodman on 11/25/14.
  */
 
-var customConfig      = getCustomConfig();
+var customConfig = getCustomConfig();
 
 beforeEach( function() {
-  customConfig      = getCustomConfig();
+  customConfig = getCustomConfig();
 } );
 
 function getCustomConfig() {
@@ -28,7 +28,7 @@ function getCustomConfig() {
         'database'    : 'YYYY-MM-DD HH:mm:ss'
       }
     },
-    'moduleApi': {
+    'moduleApi'      : {
       'forms'         : {
         'path': 'forms'
       },
@@ -45,7 +45,8 @@ function getCustomConfig() {
         'path': 'codeTables'
       }
     },
-    'forms'    : {
+    'forms'          : {
+      'initCodeTables'  : true,
       'debounce'        : 75,
       'allowInvalid'    : true,
       'updateOn'        : 'change',

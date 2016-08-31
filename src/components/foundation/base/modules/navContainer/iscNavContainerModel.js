@@ -21,7 +21,7 @@
    * @param iscSessionModel
    * @returns {{getTopNav: getTopNav, getVersionInfo: getVersionInfo, setVersionInfo: setVersionInfo, navigateToUserLandingPage: navigateToUserLandingPage}}
    */
-  function iscNavContainerModel( devlog, $state, iscCustomConfigService, iscSessionModel, $window, $timeout, iscAuthorizationModel ) {
+  function iscNavContainerModel( devlog, $state, iscCustomConfigService, iscSessionModel, $window, $location, iscAuthorizationModel ) {
     var channel = devlog.channel( 'iscNavContainerModel' );
     channel.debug( 'iscNavContainerModel LOADED' );
 
@@ -58,14 +58,21 @@
       var landingPage     = iscCustomConfigService.getConfigSection( 'landingPages' )[currentUserRole];
       if ( !_.isNil( landingPage ) ) {
         var currentState = $state.current.state;
-        $state.go( landingPage );
         // do a full page reload if `reload` flag is passed in
         // or if user role is anonymous ("*") and is going to the user's landing page
         if ( reload || ( currentState !== landingPage && currentUserRole === "*" ) ) {
-          $window.sessionStorage.setItem( 'isAutoLogOut', true );
-          $timeout( function() {
-            $window.location.reload();
-          }, 0 );
+
+          // get the landing page state definition
+          // update location.hash to landing page state's url and force reload the page
+          // and let app initialization set the $state based on route
+          // this ensures the $state change happens only once post window reload
+
+          var landingPageState  = $state.get( landingPage );
+          $window.location.hash = '#/' + landingPageState.url;
+          $window.location.reload( true );
+
+        } else {
+          $state.go( landingPage );
         }
       } else {
         channel.error( 'No landing page found for', _.wrapText( currentUserRole ), 'role' );
