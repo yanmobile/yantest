@@ -33,6 +33,7 @@
   "Forms_Save_Button"           : "Save",
   "Forms_Save_All_Button"       : "Save All",
   "Forms_Collections_Add"       : "Add",
+  "Forms_Collections_Edit"      : "Edit",
 
   "Forms_DateComponents_Day"    : "DD",
   "Forms_DateComponents_Month"  : "MM",

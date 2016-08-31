@@ -1,4 +1,4 @@
-( function() {
+(function() {
   'use strict';
 
   /* @ngInject */
@@ -305,9 +305,9 @@
             var scriptPromise = iscFormsApi.getUserScript( form.additionalModelInit )
               .then( function( response ) {
                 var script               = parseScript( response );
-                form.additionalModelInit = ( function( iscHttpapi ) {
+                form.additionalModelInit = (function( iscHttpapi ) {
                   return script;
-                } )( iscHttpapi );
+                })( iscHttpapi );
                 return true;
               } );
             primaryPromises.push( scriptPromise );
@@ -470,9 +470,9 @@
                       getApi = _.get( script, 'api.get' );
                   // Expose iscHttpapi to api getter function
                   if ( getApi ) {
-                    script.api.get = ( function( iscHttpapi ) {
+                    script.api.get = (function( iscHttpapi ) {
                       return getApi;
-                    } )();
+                    })();
                   }
                   _.set( field, 'data.userModel', script );
                   return true;
@@ -529,10 +529,22 @@
                           if ( isCollection && !_.find( fields, listenerType ) ) {
                             fields.push( listenerType );
                           }
+
+                          // Transform layouts on the embedded form
+                          transformEmbeddedContainer( page );
                         } );
 
                         // Update the subforms list
                         subforms[embeddedType] = subform;
+
+                        function transformEmbeddedContainer( container ) {
+                          iscFormFieldLayoutService.transformContainer( container );
+
+                          var children = container.fieldGroup || container.fields;
+                          if ( children ) {
+                            _.forEach( children, transformEmbeddedContainer );
+                          }
+                        }
                       } )
                   );
                 }
@@ -801,4 +813,4 @@
       return eval( script ); // jshint ignore:line
     }
   }
-} )();
+})();
