@@ -2,19 +2,22 @@ module.exports = {
   "modulePath": "src/components/foundation/base/modules",
   "vendor"    : {
     "js"   : [
-      "src/components/foundation/base/bower_components/d3/d3.js",
-      "src/components/foundation/base/bower_components/angular-utils-pagination/dirPagination.js",
-      "src/components/foundation/base/bower_components/angucomplete-alt/angucomplete-alt.js",
-      "src/components/foundation/base/bower_components/angularjs-datepicker/dist/angular-datepicker.min.js",
-      "src/components/foundation/base/bower_components/foundation-apps/dist/js/foundation-apps.js",
-      "src/components/foundation/base/bower_components/foundation-apps/dist/js/foundation-apps-templates.js",
-      "src/components/foundation/base/bower_components/api-check/dist/api-check.min.js",
-      "src/components/foundation/base/bower_components/angular-formly/dist/formly.min.js",
-      "src/components/foundation/base/bower_components/tooltipster/js/jquery.tooltipster.js"
+      "src/components/foundation/base/node_modules/d3/d3.js",
+      "src/components/foundation/base/node_modules/angular-utils-pagination/dirPagination.js",
+      "src/components/foundation/base/node_modules/angucomplete-alt/angucomplete-alt.js",
+      "src/components/foundation/base/node_modules/angularjs-datepicker/dist/angular-datepicker.min.js",
+      "src/components/foundation/base/node_modules/foundation-apps/dist/js/foundation-apps.js",
+      "src/components/foundation/base/node_modules/foundation-apps/dist/js/foundation-apps-templates.js",
+      "src/components/foundation/base/node_modules/api-check/dist/api-check.min.js",
+      "src/components/foundation/base/node_modules/angular-formly/dist/formly.min.js",
+      "src/components/foundation/base/node_modules/tooltipster/dist/js/tooltipster.bundle.js",
+      "src/components/foundation/base/node_modules/n3-charts/build/LineChart.js",
+      "src/components/foundation/base/node_modules/leaflet/leaflet.js"
     ],
+
     "mocks": [],
     "fonts": [
-      "src/components/foundation/base/bower_components/font-awesome/fonts/fontawesome-webfont.*"
+      "src/components/foundation/base/node_modules/font-awesome/fonts/fontawesome-webfont.*"
     ]
   },
   "module"    : {
@@ -32,12 +35,10 @@ module.exports = {
       "i18nDir": "src/components/foundation/base/assets/i18n/",
       "images" : [
         "src/components/foundation/base/assets/images/**/*",
-        "src/components/foundation/base/assets/vendors/leaflet/images/**/*"
+        "src/components/foundation/base/node_modules/leaflet/images/**/*"
       ],
       "vendor" : {
         "js": [
-          "src/components/foundation/base/assets/vendors/n3-charts/build/LineChart.js",
-          "src/components/foundation/base/assets/vendors/leaflet/leaflet.js"
         ]
       }
     },

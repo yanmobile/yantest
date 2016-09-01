@@ -1,0 +1,26 @@
+{
+  "name"            : "uifw-component",
+  "version"         : "2.0.0",
+  "private"         : true,
+  "dependencies"    : {
+    "angucomplete-alt"         : "2.4.2",
+    "angular"                  : "1.5.8",
+    "angular-formly"           : "8.3.0",
+    "angular-utils-pagination" : "0.11.1",
+    "angularjs-datepicker"     : "2.1.6",
+    "api-check"                : "7.5.5",
+    "d3"                       : "4.2.2",
+    "font-awesome"             : "4.6.3",
+    "foundation-apps"          : "1.2.0",
+    "jquery"                   : "2.2.4",
+    "leaflet"                  : "0.7.7",
+    "n3-charts"                : "2.0.28",
+    "tooltipster"              : "4.1.4"
+  },
+  "devDependencies" : {
+    "angular-mocks" : "1.5.8"
+  },
+  "resolutions"     : {
+    "angular" : "1.5.8"
+  }
+}

@@ -2,25 +2,26 @@ module.exports = {
   "modulePath": "src/common/modules/",
   "vendor"    : {
     "js"   : [
-      "src/common/bower_components/jquery/dist/jquery.js",
-      "src/common/bower_components/lodash/lodash.js",
-      "src/common/bower_components/moment/moment.js",
-      "src/common/bower_components/socket.io-client/socket.io.js",
-      "src/common/bower_components/angular/angular.js",
-      "src/common/bower_components/angular-animate/angular-animate.js",
-      "src/common/bower_components/angular-filter/dist/angular-filter.js",
-      "src/common/bower_components/angular-messages/angular-messages.js",
-      "src/common/bower_components/angular-translate/angular-translate.js",
-      "src/common/bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js",
-      "src/common/bower_components/angular-ui-router/release/angular-ui-router.js",
-      "src/common/bower_components/angular-animate/angular-animate.js",
-      "src/common/bower_components/angular-sanitize/angular-sanitize.js",
-      "src/common/bower_components/mobile-angular-ui/dist/js/mobile-angular-ui.gestures.js",
-      "src/common/bower_components/mobile-angular-ui/dist/js/mobile-angular-ui.migrate.js",
-      "src/common/bower_components/mobile-angular-ui/dist/js/mobile-angular-ui.js"
+      "src/common/node_modules/jquery/dist/jquery.js",
+      "src/common/node_modules/lodash/lodash.js",
+      "src/common/node_modules/moment/moment.js",
+      "src/common/node_modules/socket.io-client/socket.io.js",
+      "src/common/node_modules/angular/angular.js",
+      "src/common/node_modules/angular-component.js/dist/angular-component.js",
+      "src/common/node_modules/angular-animate/angular-animate.js",
+      "src/common/node_modules/angular-filter/dist/angular-filter.js",
+      "src/common/node_modules/angular-messages/angular-messages.js",
+      "src/common/node_modules/angular-translate/dist/angular-translate.js",
+      "src/common/node_modules/angular-translate-loader-static-files/angular-translate-loader-static-files.js",
+      "src/common/node_modules/angular-ui-router/release/angular-ui-router.js",
+      "src/common/node_modules/angular-animate/angular-animate.js",
+      "src/common/node_modules/angular-sanitize/angular-sanitize.js",
+      "src/common/node_modules/mobile-angular-ui/dist/js/mobile-angular-ui.gestures.js",
+      "src/common/node_modules/mobile-angular-ui/dist/js/mobile-angular-ui.migrate.js",
+      "src/common/node_modules/mobile-angular-ui/dist/js/mobile-angular-ui.js"
     ],
     "mocks": [
-      "src/common/bower_components/angular-mocks/angular-mocks.js",
+      "src/common/node_modules/angular-mocks/angular-mocks.js",
       "test/unit/test.setup.js"
     ],
     "fonts": []

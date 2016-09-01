@@ -6,7 +6,7 @@
 ----------------------------------*/
 
 /* Import Vendor SASS */
-@import "../../bower_components/foundation-apps/scss/foundation"; // Zurb Foundation
+@import "../../node_modules/foundation-apps/scss/foundation"; // Zurb Foundation
 @import "vendor/font-awesome/font-awesome"; // Font Awesome
 @import "vendor/angular-datepicker"; // angular datepicker
 @import "vendor/fullcalendar"; // angular calendar
