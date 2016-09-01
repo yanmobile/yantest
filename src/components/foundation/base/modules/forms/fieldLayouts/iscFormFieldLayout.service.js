@@ -2,7 +2,7 @@
  * Created by probbins on 8/16/2016
  */
 
-( function() {
+(function() {
   'use strict';
 
   /* @ngInject */
@@ -22,12 +22,15 @@
      * Transforms the given container of FDN FieldDefinitions by applying its layoutOptions to its fields.
      * This modifies the className property of the fieldContainer and possibly of its contained fields.
      * @param {Object} fieldContainer - The field definition in the FDN. This field is mutated by this function call.
+     * @param {=bool} applyToDescendants - If truthy, the process is applied to all of the fieldContainer's descendants.
      */
-    function transformContainer( fieldContainer ) {
+    function transformContainer( fieldContainer, applyToDescendants ) {
       var config        = getConfig(),
-          layoutOptions = _.get( fieldContainer, 'data.layout' );
+          layoutOptions = _.get( fieldContainer, 'data.layout' ),
+          childFields   = _.get( fieldContainer, 'fields' ) || _.get( fieldContainer, 'fieldGroup' );
 
-      if ( !layoutOptions ) {
+      // If no layout options are specified, or this container has no fields, we are done
+      if ( !layoutOptions || !childFields ) {
         return;
       }
 
@@ -44,7 +47,7 @@
       applyClassName( fieldContainer, 'grid-block' );
 
       // If this column layout is a number, apply the layout by using the first -up breakpoint class.
-      if ( _.isNumber( columns ) ) {
+      if ( !_.isNaN( parseInt( columns ) ) ) {
         applyClassName( fieldContainer, columnsSetting, {
           breakpoint: firstBreakpoint,
           columns   : columns
@@ -84,6 +87,13 @@
         }
       }
 
+      // Recurse over children, if indicated
+      if ( applyToDescendants ) {
+        _.forEach( childFields, function( field ) {
+          transformContainer( field, true );
+        } );
+      }
+
       function applyToFields( columns, breakpoint ) {
         // Get the max value for specified field indices so the fieldIndex can be determined.
         // E.g., if percentage widths for columns 1, 2, and 3 are specified, maxIndex = 3.
@@ -92,7 +102,6 @@
         } );
 
         // Apply the percentage setting to each child field in this container
-        var childFields = _.get( fieldContainer, 'fields' ) || _.get( fieldContainer, 'fieldGroup' );
         _.forEach( childFields, function( field, index ) {
           var thisIndex  = ( index % maxIndex ) + 1,
               percentage = tryParsePercentage( columns[thisIndex] );
@@ -117,11 +126,13 @@
     function applyClassName( fieldDefinition, classNameExpression, interpolatables ) {
       var className = $interpolate( classNameExpression )( interpolatables );
 
-      if ( fieldDefinition.className ) {
-        fieldDefinition.className += ' ' + className;
-      }
-      else {
-        fieldDefinition.className = className;
+      if ( className ) {
+        if ( fieldDefinition.className && !_.includes( fieldDefinition.className, className ) ) {
+          fieldDefinition.className += ' ' + className;
+        }
+        else {
+          fieldDefinition.className = className;
+        }
       }
     }
 
@@ -133,4 +144,4 @@
       return config;
     }
   }
-} )();
+})();
