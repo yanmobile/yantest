@@ -165,7 +165,6 @@
               data            = opts.data;
 
           angular.extend( $scope, {
-            valueField   : data.valueField,
             displayField : data.displayField,
             isObjectModel: data.isObject
           } );
@@ -178,12 +177,11 @@
           // initialize the checkboxes check property
           var modelValue = _.get( $scope.model, opts.key );
           if ( angular.isArray( modelValue ) ) {
-            var valueField  = $scope.valueField || 'value',
-                valueObject = {};
             angular.forEach( templateOptions.options, function( option, index ) {
               if ( $scope.isObjectModel ) {
-                valueObject[valueField]             = option[valueField];
-                $scope.multiCheckbox.checked[index] = !!_.find( modelValue, valueObject );
+                $scope.multiCheckbox.checked[index] = !!_.find( modelValue, function( value ) {
+                  return angular.equals( value, option );
+                } );
               }
               else {
                 $scope.multiCheckbox.checked[index] = _.includes( modelValue, option );
@@ -223,12 +221,11 @@
         wrapper    : ['templateLabel', 'templateHasError'],
         /*@ngInject*/
         controller : function( $scope ) {
-          var data           = _.get( $scope, 'options.data', {} );
-          $scope.displayProp = _.get( data, 'displayField', 'name' );
-          $scope.valueProp   = _.get( data, 'valueField', 'value' );
-          $scope.groupProp   = _.get( data, 'groupField', 'group' );
-
+          var data             = _.get( $scope, 'options.data', {} );
+          $scope.displayProp   = _.get( data, 'displayField', 'name' );
+          $scope.groupProp     = _.get( data, 'groupField', 'group' );
           $scope.isObjectModel = _.get( data, 'isObject' );
+          $scope.stringify     = JSON.stringify;
         }
       } );
 
