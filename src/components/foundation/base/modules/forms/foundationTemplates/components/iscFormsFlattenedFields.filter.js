@@ -48,7 +48,7 @@
         return [].concat(
           angular.extend(
             {
-              key           : _.get( field, 'key', '' ),
+              key           : _.get( field, 'data.tableHeaderLabel' ) || _.get( field, 'key', '' ),
               label         : _.get( field, 'data.tableHeaderLabel' ) || _.get( field, 'templateOptions.label', '' ),
               model         : _.get( field, 'key', '' ) + (
                 // For data stored as complex objects, get the list field property
