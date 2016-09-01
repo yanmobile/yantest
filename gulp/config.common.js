@@ -7,7 +7,6 @@ module.exports = {
       "src/common/node_modules/moment/moment.js",
       "src/common/node_modules/socket.io-client/socket.io.js",
       "src/common/node_modules/angular/angular.js",
-      "src/common/node_modules/angular-component.js/dist/angular-component.js",
       "src/common/node_modules/angular-animate/angular-animate.js",
       "src/common/node_modules/angular-filter/dist/angular-filter.js",
       "src/common/node_modules/angular-messages/angular-messages.js",
