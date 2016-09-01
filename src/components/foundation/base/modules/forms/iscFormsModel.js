@@ -242,6 +242,7 @@
           formVersion        = config.formVersion,
           subformDefinitions = config.subformDefinitions,
           library            = config.library || [],
+          omitTransforms     = config.omitTransforms || [],
           cacheKey           = ( formVersion || 'current' ) + '.' + formKey;
 
       // If form is already cached, return the cached form in a promise
@@ -293,7 +294,9 @@
             }
 
             _.forEach( form.pages, function( page ) {
-              iscFormFieldLayoutService.transformContainer( page );
+              if ( !_.includes( omitTransforms, 'layout' ) ) {
+                iscFormFieldLayoutService.transformContainer( page );
+              }
               primaryPromises = primaryPromises.concat(
                 processFields( page.fields )
               );
@@ -384,7 +387,9 @@
 
               // A field group does not have its own type, but contains fields in the fieldGroup array
               if ( fieldGroup ) {
-                iscFormFieldLayoutService.transformContainer( field );
+                if ( !_.includes( omitTransforms, 'layout' ) ) {
+                  iscFormFieldLayoutService.transformContainer( field );
+                }
                 fieldPromises = fieldPromises.concat(
                   processFields( fieldGroup )
                 );
@@ -531,20 +536,13 @@
                           }
 
                           // Transform layouts on the embedded form
-                          transformEmbeddedContainer( page );
+                          if ( !_.includes( omitTransforms, 'layout' ) ) {
+                            iscFormFieldLayoutService.transformContainer( page, true );
+                          }
                         } );
 
                         // Update the subforms list
                         subforms[embeddedType] = subform;
-
-                        function transformEmbeddedContainer( container ) {
-                          iscFormFieldLayoutService.transformContainer( container );
-
-                          var children = container.fieldGroup || container.fields;
-                          if ( children ) {
-                            _.forEach( children, transformEmbeddedContainer );
-                          }
-                        }
                       } )
                   );
                 }
