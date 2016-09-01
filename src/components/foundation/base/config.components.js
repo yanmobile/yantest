@@ -1,3 +1,5 @@
+// NOTE: n3-charts only works with D3 v.3
+
 module.exports = {
   "modulePath": "src/components/foundation/base/modules",
   "vendor"    : {
@@ -12,7 +14,7 @@ module.exports = {
       "src/components/foundation/base/node_modules/angular-formly/dist/formly.min.js",
       "src/components/foundation/base/node_modules/tooltipster/dist/js/tooltipster.bundle.js",
       "src/components/foundation/base/node_modules/n3-charts/build/LineChart.js",
-      "src/components/foundation/base/node_modules/leaflet/leaflet.js"
+      "src/components/foundation/base/node_modules/leaflet/dist/leaflet.js"
     ],
 
     "mocks": [],
@@ -35,7 +37,7 @@ module.exports = {
       "i18nDir": "src/components/foundation/base/assets/i18n/",
       "images" : [
         "src/components/foundation/base/assets/images/**/*",
-        "src/components/foundation/base/node_modules/leaflet/images/**/*"
+        "src/components/foundation/base/node_modules/leaflet/dist/images/**/*"
       ],
       "vendor" : {
         "js": [
