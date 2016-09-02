@@ -30,60 +30,58 @@
           childFields   = _.get( fieldContainer, 'fields' ) || _.get( fieldContainer, 'fieldGroup' );
 
       // If no layout options are specified, or this container has no fields, we are done
-      if ( !layoutOptions || !childFields ) {
-        return;
-      }
+      if ( layoutOptions && childFields ) {
+        var classes           = _.get( config, 'classes', {} ),
+            breakpoints       = _.get( config, 'breakpoints', [] ),
+            firstBreakpoint   = _.head( breakpoints ) || 'small',
+            columnsSetting    = _.get( classes, 'columns', '' ),
+            percentageSetting = _.get( classes, 'percentage', '' ),
+            columns           = _.get( layoutOptions, 'columns' );
 
-      var classes           = _.get( config, 'classes', {} ),
-          breakpoints       = _.get( config, 'breakpoints', [] ),
-          firstBreakpoint   = _.head( breakpoints ) || 'small',
-          columnsSetting    = _.get( classes, 'columns', '' ),
-          percentageSetting = _.get( classes, 'percentage', '' ),
-          columns           = _.get( layoutOptions, 'columns' );
+        // ---------------
+        // Columns
 
-      // ---------------
-      // Columns
+        applyClassName( fieldContainer, 'grid-block' );
 
-      applyClassName( fieldContainer, 'grid-block' );
-
-      // If this column layout is a number, apply the layout by using the first -up breakpoint class.
-      if ( !_.isNaN( parseInt( columns ) ) ) {
-        applyClassName( fieldContainer, columnsSetting, {
-          breakpoint: firstBreakpoint,
-          columns   : columns
-        } );
-      }
-
-      else if ( _.isObject( columns ) ) {
-        // If the properties are column numbers, apply the minimum breakpoint to the fields as percentages.
-        var columnsAreNumeric = _.every( columns, function( value, key ) {
-          return !_.isNaN( parseInt( key ) );
-        } );
-
-        if ( columnsAreNumeric ) {
-          applyToFields( columns, firstBreakpoint );
-        }
-        else {
-          // If columns is not a number and not a list of columns, then it is a list
-          // of breakpoint properties, so process each one individually.
-          var columnObj = columns;
-
-          _.forEach( breakpoints, function( breakpoint ) {
-            columns = _.get( columnObj, breakpoint );
-
-            if ( columns ) {
-              // If the setting itself is an object, then sub-settings are column percentages.
-              if ( _.isObject( columns ) ) {
-                applyToFields( columns, breakpoint );
-              }
-              else {
-                applyClassName( fieldContainer, columnsSetting, {
-                  breakpoint: breakpoint,
-                  columns   : columns
-                } );
-              }
-            }
+        // If this column layout is a number, apply the layout by using the first -up breakpoint class.
+        if ( !_.isNaN( parseInt( columns ) ) ) {
+          applyClassName( fieldContainer, columnsSetting, {
+            breakpoint: firstBreakpoint,
+            columns   : columns
           } );
+        }
+
+        else if ( _.isObject( columns ) ) {
+          // If the properties are column numbers, apply the minimum breakpoint to the fields as percentages.
+          var columnsAreNumeric = _.every( columns, function( value, key ) {
+            return !_.isNaN( parseInt( key ) );
+          } );
+
+          if ( columnsAreNumeric ) {
+            applyToFields( columns, firstBreakpoint );
+          }
+          else {
+            // If columns is not a number and not a list of columns, then it is a list
+            // of breakpoint properties, so process each one individually.
+            var columnObj = columns;
+
+            _.forEach( breakpoints, function( breakpoint ) {
+              columns = _.get( columnObj, breakpoint );
+
+              if ( columns ) {
+                // If the setting itself is an object, then sub-settings are column percentages.
+                if ( _.isObject( columns ) ) {
+                  applyToFields( columns, breakpoint );
+                }
+                else {
+                  applyClassName( fieldContainer, columnsSetting, {
+                    breakpoint: breakpoint,
+                    columns   : columns
+                  } );
+                }
+              }
+            } );
+          }
         }
       }
 

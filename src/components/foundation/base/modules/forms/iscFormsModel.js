@@ -52,6 +52,7 @@
       getFormDefinition           : getFormDefinition,
       getValidationDefinition     : getValidationDefinition,
       unwrapFormDefinitionResponse: unwrapFormDefinitionResponse,
+      getFormMetadata             : getFormMetadata,
       invalidateCache             : invalidateCache
     };
 
@@ -64,6 +65,18 @@
       // Assumes the form def is in _Body.FormDefinition,
       // but falls back to a root-level definition if not.
       return _.get( response, '_Body.FormDefinition', response );
+    }
+
+    /**
+     * @memberOf iscFormsModel
+     * @param response
+     * @returns {{_Header: {}, _Body: {}}}
+     */
+    function getFormMetadata( response ) {
+      return {
+        _Header: _.get( response, '_Header', {} ),
+        _Body  : _.omit( _.get( response, '_Body', {} ), 'FormDefinition' )
+      };
     }
 
     /**
@@ -275,7 +288,8 @@
           var primaryPromises   = [],
               secondaryPromises = [],
               form              = unwrapFormDefinitionResponse( responseData ),
-              subforms          = subformDefinitions || {};
+              subforms          = subformDefinitions || {},
+              metadata          = getFormMetadata( responseData );
 
           // Subform-only definitions are a bare array
           if ( _.isArray( form ) ) {
@@ -323,7 +337,8 @@
 
               var editMode = {
                 form    : form,
-                subforms: subforms
+                subforms: subforms,
+                metadata: metadata
               };
 
               // Cache the editable version
@@ -332,7 +347,8 @@
               // Make a deep copy for the view mode version
               var viewMode = {
                 form    : angular.merge( {}, form ),
-                subforms: subforms
+                subforms: subforms,
+                metadata: metadata
               };
 
               // Replace templates in the view mode with readonly versions
