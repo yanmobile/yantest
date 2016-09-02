@@ -126,8 +126,8 @@
     function applyClassName( fieldDefinition, classNameExpression, interpolatables ) {
       var className = $interpolate( classNameExpression )( interpolatables );
 
-      if ( className ) {
-        if ( fieldDefinition.className && !_.includes( fieldDefinition.className, className ) ) {
+      if ( className && !_.includes( fieldDefinition.className, className ) ) {
+        if ( fieldDefinition.className ) {
           fieldDefinition.className += ' ' + className;
         }
         else {
