@@ -35,7 +35,7 @@
       rootScope            = $rootScope;
       scope                = $rootScope.$new();
       sessionModel         = iscSessionModel;
-      cookieStorage              = _iscCookieManager_;
+      cookieStorage        = _iscCookieManager_;
       http                 = $http;
       httpBackend          = $httpBackend;
       $window              = _$window_;
@@ -141,7 +141,85 @@
       it( 'should have a function resetSessionTimeout', function() {
         expect( angular.isFunction( sessionModel.resetSessionTimeout ) ).toBe( true );
       } );
-    } );
+
+      });
+    // -------------------------
+
+    describe ( 'initSessionTimeout tests ', function () {
+
+        it ('should have a function initSessionTimeout', function () {
+          expect (angular.isFunction (sessionModel.initSessionTimeout)).toBe (true);
+        });
+
+        it ('should initSessionTimeout, no warn or timeout', function (done) {
+          var expiresOn      = moment ().add(10,'s').unix ();
+          spyOn (rootScope, '$broadcast').and.callThrough ();
+          spyOn (sessionModel, 'stopSessionTimeout');
+
+          spyOn (cookieStorage,'get').and.callFake(function( key ) {
+            if(key === 'sessionExpiresOn'){
+              return expiresOn;
+            }
+          });
+
+          sessionModel.initSessionTimeout ();
+          $window.setTimeout(function(){
+            expect (cookieStorage.get).toHaveBeenCalledWith('sessionExpiresOn');
+            expect (rootScope.$broadcast).not.toHaveBeenCalledWith (AUTH_EVENTS.sessionTimeoutWarning);
+            expect (rootScope.$broadcast).not.toHaveBeenCalledWith (AUTH_EVENTS.sessionTimeout);
+            expect (sessionModel.stopSessionTimeout).not.toHaveBeenCalled ();
+            done();
+          }, 1000);
+
+        });
+
+        it ('should initSessionTimeout, warn', function () {
+          var expiresOn      = moment ().add(5,'s').unix ();
+          spyOn (rootScope, '$broadcast').and.callThrough ();
+          spyOn (sessionModel, 'stopSessionTimeout');
+
+          spyOn(cookieStorage,'get').and.callFake(function( key ) {
+            if(key === 'sessionExpiresOn'){
+              return expiresOn;
+            }
+          });
+
+          sessionModel.initSessionTimeout ();
+          $window.setTimeout(function(){
+            expect (cookieStorage.get).toHaveBeenCalledWith('sessionExpiresOn');
+            expect (rootScope.$broadcast).not.toHaveBeenCalledWith (AUTH_EVENTS.sessionTimeoutWarning);
+            expect (rootScope.$broadcast).not.toHaveBeenCalledWith (AUTH_EVENTS.sessionTimeout);
+            expect (sessionModel.stopSessionTimeout).not.toHaveBeenCalled ();
+            done();
+          }, 3000);
+
+        });
+
+
+        it ('should initSessionTimeout, timeout', function () {
+          var expiresOn      = moment ().add(1,'s').unix ();
+          spyOn (rootScope, '$broadcast').and.callThrough ();
+          spyOn (sessionModel, 'stopSessionTimeout');
+
+          spyOn(cookieStorage,'get').and.callFake(function( key ) {
+            if(key === 'sessionExpiresOn'){
+              return expiresOn;
+            }
+          });
+
+          sessionModel.initSessionTimeout ();
+          $window.setTimeout(function(){
+            expect (cookieStorage.get).toHaveBeenCalledWith('sessionExpiresOn');
+            expect (rootScope.$broadcast).not.toHaveBeenCalledWith (AUTH_EVENTS.sessionTimeoutWarning);
+            expect (rootScope.$broadcast).not.toHaveBeenCalledWith (AUTH_EVENTS.sessionTimeout);
+            expect (sessionModel.stopSessionTimeout).not.toHaveBeenCalled ();
+            done();
+          }, 2000);
+
+        });
+
+
+      });
 
     // -------------------------
     describe( 'isAuthenticated tests ', function() {
