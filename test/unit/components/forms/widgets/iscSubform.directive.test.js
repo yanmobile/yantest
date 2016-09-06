@@ -758,7 +758,7 @@
           function testControlFlowOnly( controlName ) {
             var control     = getControlByName( suite, controlName ).filter( 'input[type="radio"]' ),
                 lastControl = control.last(),
-                stateKey    = '_controlFlowOnly',
+                stateKey    = 'controlFlowOnly',
                 localState  = _.get( formState, stateKey );
 
             // Mock form has two radio options

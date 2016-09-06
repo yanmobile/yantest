@@ -426,7 +426,7 @@
         templateUrl: 'forms/foundationTemplates/templates/controlFlowOnly.html',
         /* @ngInject */
         controller : function( $scope ) {
-          var stateKey  = '_controlFlowOnly',
+          var stateKey  = 'controlFlowOnly',
               key       = $scope.options.key,
               data      = _.get( $scope.options, 'data.controlFlowOnly', {} ),
               stateInit = data.stateInit;

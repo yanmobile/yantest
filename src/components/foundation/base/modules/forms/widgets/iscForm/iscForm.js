@@ -209,8 +209,8 @@
           formState: {
             _mode: self.mode,
             _id  : self.parsedFormDataId,
-            // _lib is populated during init()
-            _lib : {}
+            // lib is populated during init()
+            lib : {}
           }
         }
       } );
@@ -485,7 +485,7 @@
         mergeLibrary( self.internalFormConfig.library );
 
         function mergeLibrary( library ) {
-          _.extend( self.options.formState._lib, library );
+          _.extend( self.options.formState.lib, library );
         }
       }
 
