@@ -65,7 +65,7 @@
         selectPage  : selectPage
       }, self );
 
-      initScopedLibrary( self.options.formState._lib );
+      initScopedLibrary( self.options.formState.lib );
 
       // Option for forcing any form-level settings for a particular form instance
       _.merge( self.formDefinition.form, _.get( self.formConfig, 'forceFdn', {} ) );
@@ -365,7 +365,7 @@
        * @description Ensures default library functions that need this scope are initialized
        */
       function initScopedLibrary() {
-        _.defaults( self.options.formState._lib, {
+        _.defaults( self.options.formState.lib, {
           _goToPage: self.selectPage
         } );
       }

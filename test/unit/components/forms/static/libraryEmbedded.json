@@ -9,21 +9,21 @@
           "type"                 : "instructions",
           "className"            : "script1",
           "expressionProperties" : {
-            "data.content" : "formState._lib.script1()"
+            "data.content" : "formState.lib.script1()"
           }
         },
         {
           "type"                 : "instructions",
           "className"            : "script2",
           "expressionProperties" : {
-            "data.content" : "formState._lib.script2()"
+            "data.content" : "formState.lib.script2()"
           }
         },
         {
           "type"                 : "instructions",
           "className"            : "script3",
           "expressionProperties" : {
-            "data.content" : "formState._lib.script3()"
+            "data.content" : "formState.lib.script3()"
           }
         }
       ]
