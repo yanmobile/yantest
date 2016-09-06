@@ -23,8 +23,8 @@
    * @returns {{create: create, destroy: destroy, initSessionTimeout: initSessionTimeout, stopSessionTimeout: stopSessionTimeout, resetSessionTimeout: resetSessionTimeout, getCredentials: getCredentials, getCurrentUser: getCurrentUser, getCurrentUserRole: getCurrentUserRole, isAuthenticated: isAuthenticated, getFullName: getFullName, configure: configure}}
    */
   function iscSessionModel( $q, $http, $rootScope, $window,
-                            devlog, iscCookieManager, iscSessionStorageHelper,
-                            AUTH_EVENTS, SESSION_STATUS ) {
+    devlog, iscCookieManager, iscSessionStorageHelper,
+    AUTH_EVENTS, SESSION_STATUS ) {
     var channel = devlog.channel( 'iscSessionModel' );
     channel.logFn( 'iscSessionModel' );
 
@@ -40,25 +40,10 @@
       warnAt     : 0,
       expireAt   : 0,
       maxAge     : 0,
-      pingPromise: null,
-      syncedOn   : null,
       status     : SESSION_STATUS.active
     };
 
     var noResponseMaxAge = 60 * 5; // 5 minutes
-
-    var isConfigured = false;
-    // Initialize to empty promise in case it is not configured
-    /**
-     *
-     * @returns {promise} The promise object calls "resolve" with an empty object as a parameter
-     */
-    var ping         = function() {
-      var deferred = $q.defer();
-      deferred.resolve( {} );
-      return deferred.promise;
-    };
-    var sessionIdPath, expirationPath;
 
     var timeoutInterval;
 
@@ -83,9 +68,7 @@
       getCurrentUserRole              : getCurrentUserRole,
 
       isAuthenticated                 : isAuthenticated,
-      getFullName                     : getFullName,
-
-      configure                       : configure
+      getFullName                     : getFullName
     };
 
     return model;
@@ -132,25 +115,6 @@
       }
     }
 
-    /**
-     *
-     * @param config
-     * @description
-     * Configures session management for server communication
-     * Pass in a configuration object with these properties:
-     *
-     * ping              - a function that calls a REST api which queries the server for remaining session time,
-     *                       without causing a session time renewal
-     * sessionIdPath     - the path in the response data that represents the session id
-     */
-    function configure( config ) {
-      isConfigured     = true;
-      ping             = config.ping;
-      sessionIdPath    = config.sessionIdPath;
-      expirationPath   = config.expirationPath;
-      noResponseMaxAge = config.noResponseMaxAge || noResponseMaxAge;
-    }
-
     //
     /**
      *
@@ -160,38 +124,6 @@
      * Calls a non-invasive ping API which inspects the current server session, without renewing that session,
      * and returns information about the time remaining in this session.
      */
-    function callPing( syncedOn ) {
-      channel.logFn( 'callPing' );
-      sessionTimeout.syncedOn = syncedOn || sessionTimeout.syncedOn;
-
-      var request = ping().then( _pingSuccess, _pingError )
-        .finally( function() {
-          sessionTimeout.pingPromise = null;
-        } );
-
-      sessionTimeout.pingPromise = request;
-      return request;
-
-      // On successful ping, re-sync the local counter with the ping response,
-      // falling back to no change in the counter.
-      function _pingSuccess( response ) {
-        channel.logFn( '_pingSuccess' );
-        var data                 = response.data;
-        sessionTimeout.status    = SESSION_STATUS.active;
-        sessionTimeout.syncedOn  = SESSION_STATUS.alive;
-        sessionTimeout.sessionId = _.get( data, sessionIdPath, sessionTimeout.sessionId );
-        updateExpireAndWarnAt( _.get( data, expirationPath ) );
-      }
-
-      // Assumes any error returning from a ping means no server response
-      function _pingError() {
-        channel.logFn( '_pingError' );
-        // Flag this as no response received
-        if ( sessionTimeout.status === SESSION_STATUS.active ) {
-          sessionTimeout.status = SESSION_STATUS.noResponse;
-        }
-      }
-    }
 
     function destroy() {
       channel.logFn( 'destroy' );
@@ -248,16 +180,12 @@
 
     function updateExpireAndWarnAt( expiration ) {
       if ( expiration !== undefined ) {
-        var expirationTime = moment( expiration ),
-            maxAge         = sessionTimeout.maxAge,
+        var maxAge         = sessionTimeout.maxAge,
             warnThreshold  = ( maxAge > 180 ) ? 0.25 : 0.50,
             warnTimespan   = maxAge * ( 1 - warnThreshold );
 
-        // Because we may be updating this when the expiration has not been set to its max
-        // (if session is regenerated from another tab), we need to consider the expiration window
-        // as a sliding timespan, with warning occurring for a subset at the beginning of that timespan.
-        sessionTimeout.warnAt   = expirationTime.add( -maxAge, 's' ).add( warnTimespan, 's' ).toDate();
-        sessionTimeout.expireAt = expiration;
+        sessionTimeout.expireAt = moment( expiration );
+        sessionTimeout.warnAt   = moment( expiration ).add( -maxAge, 's' ).add( warnTimespan, 's' );
       }
     }
 
@@ -291,55 +219,22 @@
       timeoutInterval = $window.setInterval( function() {
         _logTimer();
 
-        if ( sessionTimeout.status === SESSION_STATUS.noResponse ) {
-          if ( !sessionTimeout.pingPromise ) {
-            callPing( SESSION_STATUS.noResponse );
-          }
-          _checkForNoResponseAtMax();
-        }
-        else {
-          if ( !sessionTimeout.pingPromise ) {
-            _checkForWarnOrExpire( isConfigured );
-          }
-        }
+        _checkForWarnOrExpire(  );
+
       }, 3000 );
 
-      function _checkForNoResponseAtMax() {
-        channel.logFn( "_checkForNoResponseAtMax" );
-        // If the time with no response has reached its maximum, expire client session
-        if ( moment().isAfter( sessionTimeout.expireAt ) ) {
-          _expireSession();
-        }
-      }
-
-      function _checkForWarnOrExpire( doPingFirst ) {
+      function _checkForWarnOrExpire(  ) {
         channel.logFn( "_checkForWarnOrExpire" );
 
         // warn
         if ( isTimeWarned() ) {
-          channel.debug( '...expireAt ', sessionTimeout.expireAt );
-          if ( doPingFirst && sessionTimeout.syncedOn !== SESSION_STATUS.warn ) {
-            callPing( SESSION_STATUS.warn ).then( function() {
-              _checkForWarnOrExpire( false );
-            } );
-          }
-          else {
-            $rootScope.$emit( AUTH_EVENTS.sessionTimeoutWarning );
-          }
+          $rootScope.$emit( AUTH_EVENTS.sessionTimeoutWarning );
         }
 
         // expire/logout
         else if ( isTimeExpired() ) {
           channel.debug( '...sessionTimeout.expireAt ' + sessionTimeout.expireAt );
-
-          if ( doPingFirst && sessionTimeout.syncedOn !== SESSION_STATUS.expired ) {
-            callPing( SESSION_STATUS.expired ).then( function() {
-              _checkForWarnOrExpire( false );
-            } );
-          }
-          else {
-            _expireSession();
-          }
+          _expireSession();
         }
       }
 
@@ -358,7 +253,7 @@
     }
 
     function isTimeExpired() {
-      return sessionTimeout.expireAt - Date.now() < 0;
+      return moment().isAfter( sessionTimeout.expireAt );
     }
 
     /**
@@ -377,13 +272,10 @@
 
     function resetSessionTimeout() {
       channel.logFn( "resetSessionTimeout" );
-      // Do not reset timer if we are still waiting on a server response to a ping call
-      if ( sessionTimeout.syncedOn !== SESSION_STATUS.noResponse ) {
-        var expiration = moment().add( sessionTimeout.maxAge, 's' ).toDate();
-
-        updateExpireAndWarnAt( expiration );
-        sessionTimeout.syncedOn = SESSION_STATUS.alive;
-      }
+      var expiration = moment().add( sessionTimeout.maxAge, 's' );
+      stopSessionTimeout();
+      setSessionExpiresOn( expiration );
+      initSessionTimeout();
     }
 
     // --------------
