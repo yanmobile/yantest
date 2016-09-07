@@ -509,7 +509,7 @@
               var embeddedType = data.embeddedType;
 
               // If a linked type, look up that type and import the fields []
-              if ( embeddedType ) {
+              if ( embeddedType && embeddedType !== formKey ) {
                 if ( subforms[embeddedType] === undefined ) {
                   if ( isCollection ) {
                     subforms[embeddedType] = [];
