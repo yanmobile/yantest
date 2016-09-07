@@ -36,10 +36,22 @@ var mockFormResponses = function( httpBackend ) {
     } );
 
   // Form Definition
-  httpBackend.when( 'GET', /^forms\/\w*$/ )
+  httpBackend.when( 'GET', /^forms\/[\w.]*$/ )
     .respond( function response( method, url ) {
       var formKey = url.replace( 'forms/', '' ),
           path    = [staticPath, formKey].join( '/' );
+
+      return [200, getJSONFile( path ), {}];
+    } );
+
+  // Form Definition, specific version
+  httpBackend.when( 'GET', /^forms\/[\w.]*\/[\w.]*$/ )
+    .respond( function response( method, url ) {
+      var requestUrl  = url.replace( 'forms/', '' ).split( '/' ),
+          formKey     = requestUrl[0],
+          formVersion = requestUrl[1],
+          formPath    = [formKey, formVersion].join( '.' ),
+          path        = [staticPath, formPath].join( '/' );
 
       return [200, getJSONFile( path ), {}];
     } );
