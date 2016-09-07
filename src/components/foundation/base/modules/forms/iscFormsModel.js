@@ -418,7 +418,7 @@
 
               // If this is a nested form, recurse the process for its child fields
               if ( isForm || isCollection ) {
-                processEmbeddedForm( field, data, isCollection );
+                processEmbeddedForm( data, isCollection );
               }
 
               else {
@@ -505,8 +505,9 @@
              * Processes an embeddedForm or embeddedFormCollection
              * @private
              */
-            function processEmbeddedForm( field, data, isCollection ) {
-              var embeddedType = data.embeddedType;
+            function processEmbeddedForm( data, isCollection ) {
+              var embeddedType    = data.embeddedType,
+                  embeddedVersion = data.embeddedVersion;
 
               // If a linked type, look up that type and import the fields []
               if ( embeddedType && embeddedType !== formKey ) {
@@ -519,6 +520,7 @@
                     // Fetch the embedded type
                     getFormDefinition( {
                       formKey           : embeddedType,
+                      formVersion       : embeddedVersion,
                       mode              : mode,
                       subformDefinitions: subforms,
                       library           : library

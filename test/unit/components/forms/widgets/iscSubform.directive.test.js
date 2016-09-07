@@ -96,6 +96,47 @@
     } );
 
     //--------------------
+    describe( 'iscSubform - Version 1', function() {
+      beforeEach( function() {
+        createDirectives( getMinimalForm( 'saveAllForm.version1' ) );
+      } );
+
+      it( 'should load a specific version of a form when configured in the FDN', function() {
+        var suite   = suiteSubform,
+            subform = getSubform( 'subform1' ),
+            testVal = 'foo';
+
+        openForm( 'subform1' );
+
+        var saveAllButton = suite.element.find( '.embedded-form-save' ).first(),
+            inputField    = getControlByName( suite, 'aField1Version1' );
+
+        inputField.val( testVal ).trigger( 'change' );
+        digest( suite );
+
+        // Nothing is saved yet
+        expect( suite.controller.model ).toEqual( {} );
+
+        saveAllButton.click();
+        digest( suite );
+
+        // Now that all forms have saved down to the root form, the model should be updated
+        var updatedField = suite.controller.model.subform1[0].aField1Version1;
+        expect( updatedField ).toEqual( testVal );
+
+        function openForm( subformName ) {
+          getSubform( subformName )
+            .find( 'button.embedded-form-add' )
+            .click();
+        }
+
+        function getSubform( name ) {
+          return getControlByName( suite, name ).filter( '.subform' );
+        }
+      } );
+    });
+
+    //--------------------
     describe( 'iscSubform - CRUD', function() {
       beforeEach( function() {
         createDirectives( getFormWithData() );
