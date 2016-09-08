@@ -464,7 +464,7 @@
      * @param {Object} library - Properties are functions that should be available to FDN expressions.
      * @description Registers the functions in the given library with the forms module.
      * Subsequent calls to this function will override any library members of the same name.
-     * Functions in this library will be available to all forms in the application via formState._lib.{functionName}.
+     * Functions in this library will be available to all forms in the application via formState.lib.{functionName}.
      */
     function registerGlobalLibrary( library ) {
       _.extend( functionLibrary, library );

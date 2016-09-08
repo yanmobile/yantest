@@ -9,7 +9,7 @@
           "key"             : "inputField",
           "type"            : "input",
           "templateOptions" : {
-            "onChange" : "formState._lib.setModelDotLib( model, this )"
+            "onChange" : "formState.lib.setModelDotLib( model, this )"
           }
         },
         {

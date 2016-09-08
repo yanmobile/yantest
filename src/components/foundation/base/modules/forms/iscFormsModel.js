@@ -1,4 +1,4 @@
-( function() {
+(function() {
   'use strict';
 
   /* @ngInject */
@@ -52,6 +52,7 @@
       getFormDefinition           : getFormDefinition,
       getValidationDefinition     : getValidationDefinition,
       unwrapFormDefinitionResponse: unwrapFormDefinitionResponse,
+      getFormMetadata             : getFormMetadata,
       invalidateCache             : invalidateCache
     };
 
@@ -64,6 +65,18 @@
       // Assumes the form def is in _Body.FormDefinition,
       // but falls back to a root-level definition if not.
       return _.get( response, '_Body.FormDefinition', response );
+    }
+
+    /**
+     * @memberOf iscFormsModel
+     * @param response
+     * @returns {{_Header: {}, _Body: {}}}
+     */
+    function getFormMetadata( response ) {
+      return {
+        _Header: _.get( response, '_Header', {} ),
+        _Body  : _.omit( _.get( response, '_Body', {} ), 'FormDefinition' )
+      };
     }
 
     /**
@@ -242,6 +255,7 @@
           formVersion        = config.formVersion,
           subformDefinitions = config.subformDefinitions,
           library            = config.library || [],
+          omitTransforms     = config.omitTransforms || [],
           cacheKey           = ( formVersion || 'current' ) + '.' + formKey;
 
       // If form is already cached, return the cached form in a promise
@@ -274,7 +288,8 @@
           var primaryPromises   = [],
               secondaryPromises = [],
               form              = unwrapFormDefinitionResponse( responseData ),
-              subforms          = subformDefinitions || {};
+              subforms          = subformDefinitions || {},
+              metadata          = getFormMetadata( responseData );
 
           // Subform-only definitions are a bare array
           if ( _.isArray( form ) ) {
@@ -293,7 +308,9 @@
             }
 
             _.forEach( form.pages, function( page ) {
-              iscFormFieldLayoutService.transformContainer( page );
+              if ( !_.includes( omitTransforms, 'layout' ) ) {
+                iscFormFieldLayoutService.transformContainer( page );
+              }
               primaryPromises = primaryPromises.concat(
                 processFields( page.fields )
               );
@@ -305,9 +322,9 @@
             var scriptPromise = iscFormsApi.getUserScript( form.additionalModelInit )
               .then( function( response ) {
                 var script               = parseScript( response );
-                form.additionalModelInit = ( function( iscHttpapi ) {
+                form.additionalModelInit = (function( iscHttpapi ) {
                   return script;
-                } )( iscHttpapi );
+                })( iscHttpapi );
                 return true;
               } );
             primaryPromises.push( scriptPromise );
@@ -320,7 +337,8 @@
 
               var editMode = {
                 form    : form,
-                subforms: subforms
+                subforms: subforms,
+                metadata: metadata
               };
 
               // Cache the editable version
@@ -329,7 +347,8 @@
               // Make a deep copy for the view mode version
               var viewMode = {
                 form    : angular.merge( {}, form ),
-                subforms: subforms
+                subforms: subforms,
+                metadata: metadata
               };
 
               // Replace templates in the view mode with readonly versions
@@ -384,7 +403,9 @@
 
               // A field group does not have its own type, but contains fields in the fieldGroup array
               if ( fieldGroup ) {
-                iscFormFieldLayoutService.transformContainer( field );
+                if ( !_.includes( omitTransforms, 'layout' ) ) {
+                  iscFormFieldLayoutService.transformContainer( field );
+                }
                 fieldPromises = fieldPromises.concat(
                   processFields( fieldGroup )
                 );
@@ -397,7 +418,7 @@
 
               // If this is a nested form, recurse the process for its child fields
               if ( isForm || isCollection ) {
-                processEmbeddedForm( field, data, isCollection );
+                processEmbeddedForm( data, isCollection );
               }
 
               else {
@@ -470,9 +491,9 @@
                       getApi = _.get( script, 'api.get' );
                   // Expose iscHttpapi to api getter function
                   if ( getApi ) {
-                    script.api.get = ( function( iscHttpapi ) {
+                    script.api.get = (function( iscHttpapi ) {
                       return getApi;
-                    } )();
+                    })();
                   }
                   _.set( field, 'data.userModel', script );
                   return true;
@@ -484,11 +505,12 @@
              * Processes an embeddedForm or embeddedFormCollection
              * @private
              */
-            function processEmbeddedForm( field, data, isCollection ) {
-              var embeddedType = data.embeddedType;
+            function processEmbeddedForm( data, isCollection ) {
+              var embeddedType    = data.embeddedType,
+                  embeddedVersion = data.embeddedVersion;
 
               // If a linked type, look up that type and import the fields []
-              if ( embeddedType ) {
+              if ( embeddedType && embeddedType !== formKey ) {
                 if ( subforms[embeddedType] === undefined ) {
                   if ( isCollection ) {
                     subforms[embeddedType] = [];
@@ -498,6 +520,7 @@
                     // Fetch the embedded type
                     getFormDefinition( {
                       formKey           : embeddedType,
+                      formVersion       : embeddedVersion,
                       mode              : mode,
                       subformDefinitions: subforms,
                       library           : library
@@ -528,6 +551,11 @@
                           // Push a subform listener into the fields list if there is not already one
                           if ( isCollection && !_.find( fields, listenerType ) ) {
                             fields.push( listenerType );
+                          }
+
+                          // Transform layouts on the embedded form
+                          if ( !_.includes( omitTransforms, 'layout' ) ) {
+                            iscFormFieldLayoutService.transformContainer( page, true );
                           }
                         } );
 
@@ -801,4 +829,4 @@
       return eval( script ); // jshint ignore:line
     }
   }
-} )();
+})();
