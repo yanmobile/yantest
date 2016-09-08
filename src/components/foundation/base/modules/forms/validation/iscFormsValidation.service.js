@@ -157,7 +157,7 @@
        * @returns {promise}
        */
       function sleepUntil( sleepTest, maxWait ) {
-        if (maxWait === undefined) {
+        if ( maxWait === undefined ) {
           maxWait = maxWaitInMillis;
         }
         return $timeout( function() {
