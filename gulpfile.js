@@ -49,7 +49,7 @@ customAppJsonPath     = fixRelativePath( customAppJsonPath );
 
 //if user provided custom appconfig path in the commandline, use it. 
 //else use the default config.app path
-//if config files don't exist, it means this is running as standalone hs-core-ui project without hs-core-app-scaffold context
+//if config files don't exist, it means this is running as standalone uifw project without uifw-app-scaffold context
 //  then use framework's config.
 var defaultAppConfigPath = './gulp/config.app.js';
 var frameworkJsonConfig  = require( './gulp/config.framework.js' );

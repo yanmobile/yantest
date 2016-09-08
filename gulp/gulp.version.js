@@ -18,29 +18,29 @@ function init(gulp, plugins, config, _) {
   var suffix           = '';
   var outputDateFormat = 'yyyy.mmdd';
   var syncEncoding     = { encoding: 'utf-8' };
-  var upstreamUpdated  = false;
+  var uifwUpdated  = false;
 
   var appBuildno, appCodeno,
       coreBuildno, coreBuildCount, coreCodeno,
       coreSHA = '';
 
   gulp.task('gitFetch', function (callback) {
-    return plugins.exec('git fetch --multiple origin upstream',
+    return plugins.exec('git fetch --multiple origin uifw',
       function (err, stdout) {
         // If gitFetch errors, either git is not installed, this is not a git repo, or the remotes do not exist
         // In any case, abort other components for this task and write out a version file with missing info
         if (err) {
           appBuildno = appCodeno = coreBuildno = coreCodeno = 'missing';
         }
-        upstreamUpdated = !err;
+        uifwUpdated = !err;
         callback();
       });
   });
 
-  // Looks through local and remote:upstream history for the most recent shared commit
+  // Looks through local and remote:uifw history for the most recent shared commit
   gulp.task('gitCoreInfo', function (callback) {
-    if (!upstreamUpdated) {
-      console.log('Warning: Unable to obtain version information from upstream remote')
+    if (!uifwUpdated) {
+      console.log('Warning: Unable to obtain version information from uifw remote')
     }
     else {
       // Get all merged commits for this repo and the current branch
@@ -49,36 +49,36 @@ function init(gulp, plugins, config, _) {
       var lines = _.compact(commits.split('\n'));
       var done  = false;
 
-      // Check each merged commit against upstream/master for a match
+      // Check each merged commit against uifw/master for a match
       _.forEach(lines, function (commitLine) {
         var commitInfo = _.compact(commitLine.split('|')),
             commitSHA  = commitInfo[0],
             commitDate = new Date(commitInfo[1]),
             sinceDate  = new Date(commitDate).toISOString();
 
-        // Look at all merges from upstream/master since the local SHA we are checking against
-        var cmd = 'git log upstream/master --merges --pretty="%H|%ci" --since=\'' + sinceDate + '\'';
+        // Look at all merges from uifw/master since the local SHA we are checking against
+        var cmd = 'git log uifw/master --merges --pretty="%H|%ci" --since=\'' + sinceDate + '\'';
 
-        var upstream      = plugins.execSync(cmd, syncEncoding).trim();
-        var upstreamLines = _.compact(upstream.split('\n'));
+        var uifw      = plugins.execSync(cmd, syncEncoding).trim();
+        var uifwLines = _.compact(uifw.split('\n'));
 
-        _.forEach(upstreamLines, function (upstreamLine) {
-          var upstreamInfo = _.compact(upstreamLine.split('|')),
-              upstreamSHA  = upstreamInfo[0],
-              upstreamDate = new Date(upstreamInfo[1]);
+        _.forEach(uifwLines, function (uifwLine) {
+          var uifwInfo = _.compact(uifwLine.split('|')),
+              uifwSHA  = uifwInfo[0],
+              uifwDate = new Date(uifwInfo[1]);
 
           // If the commit SHA matches, this is the most recent commit that is shared between core and this app
-          if (upstreamSHA === commitSHA) {
+          if (uifwSHA === commitSHA) {
             // Count up the number of builds from core on that date
-            coreBuildno = plugins.dateFormat(upstreamDate, outputDateFormat);
-            coreSHA     = upstreamSHA;
+            coreBuildno = plugins.dateFormat(uifwDate, outputDateFormat);
+            coreSHA     = uifwSHA;
             coreCodeno  = coreSHA.substr(0, 6);
 
-            // Get the build count for upstream/master on the date of the commit
-            var sinceDate = plugins.dateFormat(upstreamDate.toISOString(), 'yyyy-mm-dd') + 'T00:00:00.000',
-                untilDate = new Date(upstreamDate).toISOString();
+            // Get the build count for uifw/master on the date of the commit
+            var sinceDate = plugins.dateFormat(uifwDate.toISOString(), 'yyyy-mm-dd') + 'T00:00:00.000',
+                untilDate = new Date(uifwDate).toISOString();
 
-            var countCmd = 'git rev-list upstream/master --count --merges '
+            var countCmd = 'git rev-list uifw/master --count --merges '
               + ' --since=\'' + sinceDate + '\''
               + ' --until=\'' + untilDate + '\'';
 
@@ -96,7 +96,7 @@ function init(gulp, plugins, config, _) {
       });
 
       if (!coreCodeno) {
-        console.log('Warning: No commits matching remote "upstream/master" were found');
+        console.log('Warning: No commits matching remote "uifw/master" were found');
         coreBuildno = coreCodeno = 'unavailable';
       }
       else {
@@ -108,7 +108,7 @@ function init(gulp, plugins, config, _) {
   });
 
   gulp.task('gitLocalInfo', function (callback) {
-    if (upstreamUpdated) {
+    if (uifwUpdated) {
       var branchName = '';
 
       // Get branch name
