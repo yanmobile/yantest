@@ -1,5 +1,5 @@
 {
-  "name": "uifw-component",
+  "name": "uifw-components-base",
   "version": "2.0.0",
   "dependencies": {
     "angucomplete-alt": {

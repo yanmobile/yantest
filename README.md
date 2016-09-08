@@ -1,13 +1,13 @@
-# hs-core-ui
+# uifw
 
 ---
 ## HealthShare UI Framework is intended to be used across multiple projects
-*NOTE*: hs-core-ui not a standalone project -- it only contains common framework code. To become a standalone project, it needs to be complemented with application specific code. see: [Getting started](#getting-started))
+*NOTE*: uifw is not a standalone project -- it only contains common framework code. To become a standalone project, it needs to be complemented with application specific code. see: [Getting started](#getting-started))
 
 ---
 ## prerequisites:
-1. Make sure you've read both [hs-core-tools](https://github.com/intersystems/hs-core-tools/blob/master/README.md) and [hs-core-ui](https://github.com/intersystems/hs-core-ui/blob/master/README.md) README.md files
-2. Make sure you've installed [hs-core-tools] and its [prerequisites](https://github.com/intersystems/hs-core-tools/blob/master/README.md#requirements)
+1. Make sure you've read both [uifw-tools](https://github.com/intersystems/uifw-tools/blob/master/README.md) and [uifw](https://github.com/intersystems/uifw/blob/master/README.md) README.md files
+2. Make sure you've installed [uifw-tools] and its [prerequisites](https://github.com/intersystems/uifw-tools/blob/master/README.md#requirements)
 
 *Note* that if you are creating a modified build of your application, you should not modify these files. If you do, you risk them being overwritten on routine updates.
 ---
@@ -20,16 +20,16 @@ Online training videos are shared internally [//iscinternal.com/isc/public/Learn
 ### For framework developers
 ```bash
     #clone repo && switch to folder
-    git clone https://github.com/intersystems/hs-core-ui.git 
-    cd hs-core-ui
+    git clone https://github.com/intersystems/uifw.git 
+    cd uifw
     
     #install dependencies (bower/npm)
-    slush hs:install
+    slush isc:install
 ```    
 ### For app developers
 ```bash
-    #clone repo && setup upstream && push to destination repo && creat app specific code && install dependencies
-    slush hs
+    #clone repo && setup uifw && push to destination repo && creat app specific code && install dependencies
+    slush isc
     #once completed, make the necessary app specific changes then commit and push changes to origin master
     git add .
     git commit -m 'initial app code'
@@ -41,7 +41,7 @@ Online training videos are shared internally [//iscinternal.com/isc/public/Learn
 *note:* app specific commands requires app code
 
 ```bash
-slush hs:install #installs npm and bower packages
+slush isc:install #installs npm and bower packages
 gulp serve       #only app specific
 ```
 
@@ -57,7 +57,7 @@ gulp test:app    #only app specific
 Update framework: //make sure your workarea is clean 
 
 ```bash
-slush hs:updateCore 
+slush isc:updateCore 
 #create PR on GitHub
 ```
 
@@ -218,10 +218,10 @@ gulp deploy --appjson path/to/config.app.js #only app specific
 ---
 ###FAQs
 * **I am getting this error message ```slush: command not found```**
-  * Make sure your environment satisfies all of the [prerequisites](#prerequisites) and [hs-core-tools] is installed
+  * Make sure your environment satisfies all of the [prerequisites](#prerequisites) and [uifw-tools] is installed
   
 * **This framework looks awesome, how do I create a fully functional application using this framework in a couple of minutes?**
-  * We highly recommend leveraging our [hs-core-tools] to facilitate the creation of your new application.
+  * We highly recommend leveraging our [uifw-tools] to facilitate the creation of your new application.
    
 * **What are the differences between "src/app", "src/common" and "src/components"**
   * "src/common" is framework code and should only be updated directly by framework developers. It defines system wide behaviors such as session management, state authorization, page configuration, and etc.
@@ -253,54 +253,54 @@ gulp deploy --appjson path/to/config.app.js #only app specific
   
 * **How do I promote an application feature to the framework?** (Be sure your changes are in common/components folder)
   * **Scenario 1**: The code I want to promote to framework are all in their own commits
-    * Create a new branch off upstream master ```git checkout -b <branch> upstream/master```
+    * Create a new branch off uifw master ```git checkout -b <branch> uifw/master```
     * Cherry-pick the feature commits. For each of your commits in reverse chronological order (oldest first) 
         * ```git cherry-pick <commit-hash>```
             * if you have conflicts, resolve them first then continue ```git cherry-pick --continue```  
         * Once you have all the source code, commit the changes (if needed). 
-    * Push the changes to upstream (not origin)  ```git push upstream <branch> ```
+    * Push the changes to uifw (not origin)  ```git push uifw <branch> ```
     * Create a Pull Request
   * **Scenario 2**: The code I want to promote to framework are committed but contains non-feature code
-    * Create a new branch off upstream master ```git checkout -b <branch> upstream/master```
+    * Create a new branch off uifw master ```git checkout -b <branch> uifw/master```
     * Cherry-pick the feature commits. For each of your commits in reverse chronological order (oldest first) 
         * ```git cherry-pick --no-ff --no-commit <commit-hash>```
             * if you have conflicts, resolve them first then continue ```git cherry-pick --continue```  
         * Remove all changes that's not part of your feature
         * Once you have all the source code, commit the changes
-    * Push the changes to upstream (not origin)  ```git push upstream <branch>``
+    * Push the changes to uifw (not origin)  ```git push uifw <branch>``
     * Create a Pull Request`
   * **Scenario 3**: The code I want to promote to framework have not been committed
     * Stash your changes ```git stash save "<message>"```
-    * Create a new branch off upstream master ```git checkout -b <branch> upstream/master```
+    * Create a new branch off uifw master ```git checkout -b <branch> uifw/master```
     * Apply your stashed changes ```git stash apply```
     * Resolve conflicts (if any)
     * Once you have all the source code, commit the changes
-    * Push the changes to upstream (not origin)  ```git push upstream <branch> ```
+    * Push the changes to uifw (not origin)  ```git push uifw <branch> ```
     * Create a Pull Request
   * **Scenario 4**: The code I want to promote to framework are committed, and I can't easily isolate the commits. But the good news is, the code is all in my <localBranch>
-    * Create a new branch off upstream master ```git checkout -b <branch> upstream/master```
+    * Create a new branch off uifw master ```git checkout -b <branch> uifw/master```
     * Merge your <localBranch> into your <branch> without fast-forward and commit, which allows you to pick the changes you want ```git merge --no-ff --no-commit <localBranch>```
     * Remove the files/changes you don't want to promote to the framework
     * Once you have all the source code, commit the changes
-    * Push the changes to upstream (not origin)  ```git push upstream <branch> ```
+    * Push the changes to uifw (not origin)  ```git push uifw <branch> ```
     * Create a Pull Request
     
 * **I have an existing application and my framework is out of date. How can I upgrade my application's framework (cool slush way)?**
-  1. Update your ```hs-core-tools``` by executing ```slush hs:update```
-  1. execute ```slush hs:updateCore```
+  1. Update your ```uifw-tools``` by executing ```slush isc:update```
+  1. execute ```slush isc:updateCore```
   1. create a PR to merge this to your project's master branch
   
 * **I have an existing application and my framework is out of date. How can I upgrade my application's framework (the old fashion way)?**
-  1. Ensure you have a local git remote ```upstream``` is pointing to "https://github.com/intersystems/hs-core-ui.git"
+  1. Ensure you have a local git remote ```uifw``` is pointing to "https://github.com/intersystems/uifw.git"
     1. execute ```git remote -v``` to check existing git remote repo mappings
-    1. if "upstream" doesn't exist, add it by executing ```git remote add upstream https://github.com/intersystems/hs-core-ui.git```
-  1. Ensure you have a local git remote ```appstream``` is pointing to "https://github.com/intersystems/hs-core-app-scaffold.git"
+    1. if "uifw" doesn't exist, add it by executing ```git remote add uifw https://github.com/intersystems/uifw.git```
+  1. Ensure you have a local git remote ```uifw-app``` is pointing to "https://github.com/intersystems/uifw-app-scaffold.git"
     1. execute ```git remote -v``` to check existing git remote repo mappings
-    1. if "appstream" doesn't exist, add it by executing ```git remote add appstream https://github.com/intersystems/hs-core-app-scaffold.git```
+    1. if "uifw-app" doesn't exist, add it by executing ```git remote add uifw-app https://github.com/intersystems/uifw-app-scaffold.git```
   2. create a new branch off remote master ```git checkout -b framework-update-<date> origin/master```
-  3. pull the framework into your branch ```git pull upstream master```
+  3. pull the framework into your branch ```git pull uifw master```
   4. resolve conflicts (if any) and commit
-  5. update your node and bower packages (we recommend using [hs-core-tools] ```slush hs:install```)
+  5. update your node and bower packages (we recommend using [uifw-tools] ```slush isc:install```)
   6. Smoke test your application ```gulp serve```
   7. commit your changes (if any)
   8. push to origin ```git push origin framework-update-<date>```
@@ -381,8 +381,8 @@ git branch -d <branch>
 # Check existing remote repos
 git remote -v
 
-# Add upstream repo
-git remote add upstream <core repo uri>
+# Add uifw repo
+git remote add uifw <core repo uri>
 
 # Check status of git (what's staged and unstaged)
 git status
@@ -482,5 +482,5 @@ tail -f <file>
 less <filename>
 
 ```
-[hs-core-tools]: https://github.com/intersystems/hs-core-tools
-[changelog.md]: https://github.com/intersystems/hs-core-ui/blob/master/changelog.md
+[uifw-tools]: https://github.com/intersystems/uifw-tools
+[changelog.md]: https://github.com/intersystems/uifw/blob/master/changelog.md
