@@ -2,7 +2,7 @@
  * Created by probbins on 8/11/2016
  */
 
-(function() {
+( function() {
   'use strict';
 
   /* @ngInject */
@@ -30,4 +30,4 @@
     };
   }
 
-})();
+} )();
