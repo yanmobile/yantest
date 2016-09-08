@@ -38,7 +38,7 @@
           /* @ngInject */
           initFunctions: function( iscStateInit, iscNavContainerModel ) {
             return iscStateInit.run().then( function( resolves ) {
-              if (resolves.versionInfo) {
+              if ( resolves.versionInfo ) {
                 iscNavContainerModel.setVersionInfo( resolves.versionInfo );
               }
             } );
@@ -53,11 +53,11 @@
         state      : 'unauthenticated',
         templateUrl: "layout/layout.html",
         controller : 'layoutController as layoutCtrl',
-        resolve : {
+        resolve    : {
           /* @ngInject */
           initFunctions: function( iscStateInit, iscNavContainerModel ) {
             return iscStateInit.run().then( function( resolves ) {
-              if (resolves.versionInfo) {
+              if ( resolves.versionInfo ) {
                 iscNavContainerModel.setVersionInfo( resolves.versionInfo );
               }
             } );
