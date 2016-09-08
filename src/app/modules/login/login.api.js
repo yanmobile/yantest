@@ -1,4 +1,4 @@
-(function() {
+( function() {
   'use strict';
 
   angular.module( 'login' )
@@ -63,4 +63,4 @@
       return iscHttpapi.get( baseUrl + 'keepAlive' );
     }
   }
-})();
+} )();
