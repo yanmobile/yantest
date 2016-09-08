@@ -9,7 +9,7 @@
     .factory( 'iscCookieManager', iscCookieManager );
 
   /* @ngInject */
-  function iscCookieManager() {
+  function iscCookieManager( $window ) {
     var service = {
       set   : set,
       get   : get,
@@ -53,13 +53,13 @@
         date.setTime( date.getTime() + ( ( parseInt( params.expires,10 ) ) * 24 * 60 * 60 * 1000 ) );
         expires = "; expires=" + date.toGMTString();
       }
-      document.cookie = name + "=" + value + expires + "; path=/";
+      $window.document.cookie = name + "=" + value + expires + "; path=/";
     }
 
     function getValueFromCookie( name ) {
       var nameEQ = name + "=",
           value = null,
-          params = document.cookie.split( ';' );
+          params = $window.document.cookie.split( ';' );
 
       params.forEach( function( param ) {
         param = _.trimStart( param );

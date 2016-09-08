@@ -28,8 +28,8 @@
           isBrowserLoggedOut  = iscCookieManager.get( 'browserIsLoggedOut' );
 
       if ( config.authStatusUrl !== undefined &&
-        _.isEmpty( storedLoginResponse ) // this is checked in isc.authentication.run()
-        && !config.authStatusHasBeenChecked && !isBrowserLoggedOut ) {
+        _.isEmpty( storedLoginResponse ) && // this is checked in isc.authentication.run()
+        !config.authStatusHasBeenChecked && !isBrowserLoggedOut ) {
 
         config.authStatusHasBeenChecked = true;
 
@@ -75,17 +75,18 @@
     }
 
     function callAuthStatus( url ) {
-      var myRet = undefined;
+      var myRet;
 
+      //since this ajax call is synchronous, the return statement won't execute until this ajax call has returned and the callback executed
       $.ajax( {
         method : "GET",
         url    : url,
-        async  : false,
+        async  : false,   //synchronous/blocking call
         success: onSuccess,
         error  : onError
       } );
 
-      return myRet;
+      return myRet; //will be populated with onSuccess result if successful, else it'll remain as undefined
 
       function onSuccess( results ) {
         if ( results.LoggedIn ) {
