@@ -55,14 +55,6 @@
     //register default state event handlers
     iscRouterDefaultEventService.registerDefaultEvents();
 
-    // Configure session persistence
-    iscSessionModel.configure( {
-      'ping'            : loginApi.ping,
-      'sessionIdPath'   : 'sessionInfo.id',
-      'expirationPath'  : 'sessionInfo.expiresOn',
-      'noResponseMaxAge': 150
-    } );
-
     iscStateInit.config( {
       'initFunctions': {
         'versionInfo': iscVersionApi.load //grab version info for the footer
