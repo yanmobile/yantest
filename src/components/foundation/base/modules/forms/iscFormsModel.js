@@ -512,10 +512,6 @@
               // If a linked type, look up that type and import the fields []
               if ( embeddedType && embeddedType !== formKey ) {
                 if ( subforms[embeddedType] === undefined ) {
-                  if ( isCollection ) {
-                    subforms[embeddedType] = [];
-                  }
-
                   fieldPromises.push(
                     // Fetch the embedded type
                     getFormDefinition( {
@@ -527,6 +523,7 @@
                     } )
                       .then( function( embeddedForm ) {
                         var subform      = embeddedForm.form,
+                            childForms   = embeddedForm.subforms,
                             listenerType = {
                               'type': 'embeddedFormListener'
                             };
@@ -561,6 +558,10 @@
 
                         // Update the subforms list
                         subforms[embeddedType] = subform;
+                        
+                        // For previously cached subforms, merge any subforms of
+                        // that cached form into this form's subforms list
+                        _.extend( subforms, childForms );
                       } )
                   );
                 }

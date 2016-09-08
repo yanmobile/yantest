@@ -7,10 +7,12 @@ var mockFormResponses = function( httpBackend ) {
   resetMockFormStore();
 
   // List forms
+  // GET forms
   httpBackend.when( 'GET', 'forms' )
     .respond( 200, mockFormStore.formStatus );
 
   // Get form status
+  // GET formInfo/status/:formKey
   httpBackend.when( 'GET', /^formInfo\/status\/\w*$/ )
     .respond( function response( method, url ) {
       var formType = url.replace( 'formInfo/status/', '' );
@@ -20,6 +22,7 @@ var mockFormResponses = function( httpBackend ) {
     } );
 
   // Update form status
+  // PUT formInfo/:formKey
   httpBackend.when( 'PUT', /^formInfo\/\w*$/ )
     .respond( function response( method, url, data ) {
       var formType = url.replace( 'formInfo/', '' ),
@@ -36,6 +39,7 @@ var mockFormResponses = function( httpBackend ) {
     } );
 
   // Form Definition
+  // GET forms/:formKey
   httpBackend.when( 'GET', /^forms\/[\w.]*$/ )
     .respond( function response( method, url ) {
       var formKey = url.replace( 'forms/', '' ),
@@ -45,6 +49,7 @@ var mockFormResponses = function( httpBackend ) {
     } );
 
   // Form Definition, specific version
+  // GET forms/:formKey/:formVersion
   httpBackend.when( 'GET', /^forms\/[\w.]*\/[\w.]*$/ )
     .respond( function response( method, url ) {
       var requestUrl  = url.replace( 'forms/', '' ).split( '/' ),
@@ -57,6 +62,7 @@ var mockFormResponses = function( httpBackend ) {
     } );
 
   // User Scripts
+  // GET formTemplates/userScripts/:scriptName
   httpBackend.when( 'GET', /^formTemplates\/userScripts\/\w*$/ )
     .respond( function response( method, url ) {
       var scriptName = url.replace( 'formTemplates/userScripts/', '' ),
@@ -67,6 +73,7 @@ var mockFormResponses = function( httpBackend ) {
     } );
 
   // Custom Templates
+  // GET formTemplates/html/:templateName/:htmlName
   httpBackend.when( 'GET', /^formTemplates\/html\/\w*\/.*$/ )
     .respond( function response( method, url ) {
       var routeParams  = url.replace( 'formTemplates/html/', '' ),
@@ -78,6 +85,7 @@ var mockFormResponses = function( httpBackend ) {
       return [200, getHTMLFile( path ), {}];
     } );
 
+  // GET formTemplates/js/:templateName
   httpBackend.when( 'GET', /^formTemplates\/js\/\w*$/ )
     .respond( function response( method, url ) {
       var templateName = url.replace( 'formTemplates/js/', '' ),
@@ -86,6 +94,7 @@ var mockFormResponses = function( httpBackend ) {
       return [200, getHTMLFile( path ), {}];
     } );
 
+  // GET formTemplates/css/:templateName
   httpBackend.when( 'GET', /^formTemplates\/css\/\w*$/ )
     .respond( function response( method, url ) {
       var templateName = url.replace( 'formTemplates/css/', '' ),
@@ -102,6 +111,7 @@ var mockFormResponses = function( httpBackend ) {
     } );
 
   // Custom wrappers
+  // GET formTemplates/wrappers/:wrapperName
   httpBackend.when( 'GET', /^formTemplates\/wrappers\/\w*$/ )
     .respond( function response( method, url ) {
       var wrapperName = url.replace( 'formTemplates/wrappers/', '' ),
@@ -119,11 +129,11 @@ var mockFormResponses = function( httpBackend ) {
 
 
   // Form Data
-  // GET: list all
+  // GET formData
   httpBackend.when( 'GET', 'formData' )
     .respond( 200, mockFormStore.formData );
 
-  // GET: by id
+  // GET formData/:id
   httpBackend.when( 'GET', /^formData\/\d+$/ )
     .respond( function response( method, url ) {
       var id   = parseInt( url.replace( 'formData/', '' ) ),
@@ -132,7 +142,7 @@ var mockFormResponses = function( httpBackend ) {
       return [200, form || {}];
     } );
 
-  // PUT
+  // PUT formData/:id
   httpBackend.when( 'PUT', /^formData\/\d+$/ )
     .respond( function response( method, url, data ) {
       var id   = parseInt( url.replace( 'formData/', '' ) ),
@@ -148,7 +158,8 @@ var mockFormResponses = function( httpBackend ) {
       return [200, form];
     } );
 
-  // POST (create)
+  // Creating new form data
+  // POST formData
   httpBackend.when( 'POST', /^formData$/ )
     .respond( function response( method, url, data ) {
       var body   = JSON.parse( data ),
@@ -167,7 +178,9 @@ var mockFormResponses = function( httpBackend ) {
       return [200, form];
     } );
 
-  // POST (submit)
+  // Submitting form data   (may be new or may already exist)
+  // POST formData/:id      (already exists)
+  // POST formData/_submit  (new)
   httpBackend.when( 'POST', /^formData\/(\d+|_submit)$/ )
     .respond( function response( method, url, data ) {
       var id     = url.replace( 'formData/', '' ),
@@ -198,7 +211,7 @@ var mockFormResponses = function( httpBackend ) {
       return [200, form];
     } );
 
-  // DELETE
+  // DELETE formData/:id
   httpBackend.when( 'DELETE', /^formData\/\d+$/ )
     .respond( function response( method, url ) {
       var id   = parseInt( url.replace( 'formData/', '' ) ),
