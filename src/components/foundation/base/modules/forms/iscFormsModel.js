@@ -266,7 +266,7 @@
           break;
 
         default:
-          cachedForm = _.get( _formsCache, cacheKey );
+          cachedForm = _formsCache[cacheKey];
       }
       var deferred = $q.defer();
 
@@ -342,7 +342,7 @@
               };
 
               // Cache the editable version
-              _.set( _formsCache, cacheKey, editMode );
+              _formsCache[cacheKey] = editMode;
 
               // Make a deep copy for the view mode version
               var viewMode = {
