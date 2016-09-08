@@ -558,7 +558,7 @@
 
                         // Update the subforms list
                         subforms[embeddedType] = subform;
-                        
+
                         // For previously cached subforms, merge any subforms of
                         // that cached form into this form's subforms list
                         _.extend( subforms, childForms );
