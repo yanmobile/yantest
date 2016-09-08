@@ -32,12 +32,12 @@
 
         function runTest( form ) {
           _.forEach( form.pages, function( page ) {
-            runTransformations( page );
+            service.transformContainer( page, true );
           } );
 
           var page, fieldGroup;
 
-          
+
           // Page 1 - Column properties as a primitive: e.g.,
           //   data.layout.columns = 2
           page       = form.pages[0];
@@ -48,7 +48,7 @@
           // (existing className should be preserved)
           expect( fieldGroup.className ).toContain( "testing-nested-layout" );
 
-          
+
           // Page 2 - Column properties by breakpoint: e.g.,
           //   data.layout.columns.small  = 2
           //   data.layout.columns.medium = 3
@@ -64,7 +64,7 @@
           // (existing className should be preserved)
           expect( fieldGroup.className ).toContain( "testing-nested-layout" );
 
-          
+
           // Page 3 - Column widths set by percentages: e.g.,
           //    data.layout.columns.1 = '90%'
           //    data.layout.columns.2 = '10%'
@@ -115,15 +115,6 @@
           expect( fieldGroup.fieldGroup[2].className ).toContain( 'formly-field-large-20' );
           expect( fieldGroup.fieldGroup[3].className ).toContain( 'formly-field-large-10' );
 
-        }
-
-        function runTransformations( container ) {
-          var childFields = _.get( container, 'fields' ) || _.get( container, 'fieldGroup' );
-          service.transformContainer( container );
-
-          if ( childFields ) {
-            _.forEach( childFields, runTransformations );
-          }
         }
 
         function getFieldGroup( page ) {

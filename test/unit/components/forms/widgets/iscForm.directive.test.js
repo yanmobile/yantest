@@ -169,7 +169,7 @@
         expect( _.get( model, 'lib' ) ).toBeUndefined();
 
         // library.json's inputField has an onChange trigger
-        // that calls setModelDotLib in _lib
+        // that calls setModelDotLib in lib
         inputField.val( newValue ).trigger( 'change' );
         suiteMain.$timeout.flush();
 
