@@ -262,7 +262,7 @@
       var cachedForm;
       switch ( mode ) {
         case 'view':
-          cachedForm = _.get( _viewModeFormsCache, cacheKey );
+          cachedForm = _viewModeFormsCache[cacheKey];
           break;
 
         default:
@@ -357,7 +357,7 @@
               } );
 
               // Cache it separately
-              _.set( _viewModeFormsCache, cacheKey, viewMode );
+              _viewModeFormsCache[cacheKey] = viewMode;
 
               // Resolve the requested version
               switch ( mode ) {
