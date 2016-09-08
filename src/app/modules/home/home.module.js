@@ -14,7 +14,7 @@
 
   /**
    * @description this is where module specific states are defined.
-   *  Be sure not to make any method name or the structural changes; any changes may prevent ```slush hs:page``` from working properly
+   *  Be sure not to make any method name or the structural changes; any changes may prevent ```slush isc:page``` from working properly
    *
    * @returns {} -- UI router states
    */
