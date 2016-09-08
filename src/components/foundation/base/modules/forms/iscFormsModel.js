@@ -1,4 +1,4 @@
-(function() {
+( function() {
   'use strict';
 
   /* @ngInject */
@@ -81,7 +81,7 @@
 
     /**
      * @memberOf iscFormsModel
-     * @descriptions Explicitly invalidates the form definition cache for the given formKey.
+     * @description Explicitly invalidates the form definition cache for the given formKey.
      * The next time the definition is needed, it will be requested from the server.
      * @param {String} formKey
      * @param {=String} formVersion
@@ -322,9 +322,9 @@
             var scriptPromise = iscFormsApi.getUserScript( form.additionalModelInit )
               .then( function( response ) {
                 var script               = parseScript( response );
-                form.additionalModelInit = (function( iscHttpapi ) {
+                form.additionalModelInit = ( function( iscHttpapi ) {
                   return script;
-                })( iscHttpapi );
+                } )( iscHttpapi );
                 return true;
               } );
             primaryPromises.push( scriptPromise );
@@ -491,9 +491,9 @@
                       getApi = _.get( script, 'api.get' );
                   // Expose iscHttpapi to api getter function
                   if ( getApi ) {
-                    script.api.get = (function( iscHttpapi ) {
+                    script.api.get = ( function( iscHttpapi ) {
                       return getApi;
-                    })();
+                    } )();
                   }
                   _.set( field, 'data.userModel', script );
                   return true;
@@ -829,4 +829,4 @@
       return eval( script ); // jshint ignore:line
     }
   }
-})();
+} )();

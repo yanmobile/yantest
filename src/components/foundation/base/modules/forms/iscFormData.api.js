@@ -1,4 +1,4 @@
-(function() {
+( function() {
   'use strict';
 
   angular.module( 'isc.forms' )
@@ -78,7 +78,7 @@
      */
     function submit( id, form, url ) {
       channel.debug( 'iscFormDataApi.submit' );
-      if (id === undefined) {
+      if ( id === undefined ) {
         id = '_submit';
       }
       return iscHttpapi.post( [url || formDataUrl, id].join( '/' ), form );
@@ -106,4 +106,4 @@
     }
 
   }
-})();
+} )();
