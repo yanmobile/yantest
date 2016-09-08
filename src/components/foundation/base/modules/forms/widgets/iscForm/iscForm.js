@@ -1,4 +1,4 @@
-(function() {
+( function() {
   'use strict';
 
   angular.module( 'isc.forms' )
@@ -210,7 +210,7 @@
             _mode: self.mode,
             _id  : self.parsedFormDataId,
             // lib is populated during init()
-            lib : {}
+            lib  : {}
           }
         }
       } );
@@ -476,9 +476,10 @@
 
         // Apply libraries in reverse order to ensure that the library defined on the form itself takes precedence
         // over those in subforms.
-        var fdnLibrary;
-        while ( fdnLibrary = fdnLibraries.pop() ) {
+        var fdnLibrary = fdnLibraries.pop();
+        while ( fdnLibrary ) {
           mergeLibrary( fdnLibrary );
+          fdnLibrary = fdnLibraries.pop();
         }
 
         // Finally, apply any library defined in client code
@@ -505,4 +506,4 @@
       }
     }
   }
-})();
+} )();
