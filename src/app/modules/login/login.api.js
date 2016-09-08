@@ -1,4 +1,4 @@
-( function() {
+(function() {
   'use strict';
 
   angular.module( 'login' )
@@ -11,6 +11,7 @@
 
     var api = {
       login     : login,
+      cacheLogin: cacheLogin,
       logout    : logout,
       ping      : ping,
       status    : status,
@@ -29,6 +30,13 @@
     function login( credentials ) {
       devlog.channel( 'loginApi' ).debug( 'loginApi.login' );
       return iscHttpapi.post( baseUrl + 'login', credentials );
+    }
+
+    function cacheLogin( credentials ) {
+      devlog.channel( 'loginApi' ).debug( 'loginApi.iscLogin' );
+      var pl = "CacheUserName=" + credentials.CacheUserName + '&CachePassword=' + credentials.CachePassword + '&CacheNoRedirect=1';
+      //$httpProvider.defaults.headers
+      return $http.post( baseUrl + 'login', pl );// iscHttpapi.post( baseUrl + 'login', credentials);  //, {withCredentials: true} );
     }
 
     function logout() {
@@ -55,4 +63,4 @@
       return iscHttpapi.get( baseUrl + 'keepAlive' );
     }
   }
-} )();
+})();
