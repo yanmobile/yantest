@@ -6,6 +6,7 @@
 
   /* @ngInject */
   function loginApi( devlog, apiHelper, iscHttpapi ) {
+    var log = devlog.channel( 'loginApi' );
 
     var baseUrl = apiHelper.getUrl( 'auth/' );
 
@@ -22,7 +23,7 @@
     return api;
 
     function changeRole( role ) {
-      devlog.channel( 'loginApi' ).debug( 'loginApi.changeRole' );
+      log.debug( 'loginApi.changeRole' );
       var data = { role: role };
       return iscHttpapi.put( baseUrl + 'role', data );
     }
@@ -33,7 +34,7 @@
      * @returns {promise}
      */
     function login( credentials ) {
-      devlog.channel( 'loginApi' ).debug( 'loginApi.login' );
+      log.debug( 'loginApi.login' );
       return iscHttpapi.post( baseUrl + 'login', credentials );
     }
 
@@ -43,11 +44,11 @@
      * @returns {promise}
      */
     function cacheLogin( credentials ) {
-      devlog.channel( 'loginApi' ).debug( 'loginApi.iscLogin' );
+      log.debug( 'loginApi.iscLogin' );
 
-      var pl     = "CacheUserName=" + credentials.CacheUserName + '&CachePassword=' + credentials.CachePassword + '&CacheNoRedirect=1';
+      var formData = "CacheUserName=" + credentials.CacheUserName + '&CachePassword=' + credentials.CachePassword + '&CacheNoRedirect=1';
 
-      return iscHttpapi.formPost( baseUrl + 'login', pl );
+      return iscHttpapi.formPost( baseUrl + 'login', formData );
     }
 
     /**
@@ -55,17 +56,17 @@
      * @returns {promise}
      */
     function logout() {
-      devlog.channel( 'loginApi' ).debug( 'loginApi.logout' );
+      log.debug( 'loginApi.logout' );
       return iscHttpapi.post( baseUrl + 'logout' );
     }
 
     function status() {
-      devlog.channel( 'loginApi' ).debug( 'loginApi.login' );
+      log.debug( 'loginApi.login' );
       return iscHttpapi.get( baseUrl + 'status' );
     }
 
     function ping() {
-      devlog.channel( 'loginApi' ).debug( 'loginApi.ping' );
+      log.debug( 'loginApi.ping' );
       return iscHttpapi.get( baseUrl + 'ping', {
         responseAsObject  : true,
         preventDefault    : true,
@@ -74,7 +75,7 @@
     }
 
     function keepAlive() {
-      devlog.channel( 'loginApi' ).debug( 'loginApi.keepAlive' );
+      log.debug( 'loginApi.keepAlive' );
       return iscHttpapi.get( baseUrl + 'keepAlive' );
     }
   }
