@@ -23,10 +23,11 @@
   function iscHttpapi( $http ) {
 
     return {
-      get   : get,
-      put   : put,
-      post  : post,
-      delete: deleteApi
+      get     : get,
+      put     : put,
+      post    : post,
+      formPost: formPost,
+      delete  : deleteApi
     };
 
     /**
@@ -51,6 +52,22 @@
     function post( url, data, config ) {
       var partialReturnedResponseData = _.partial( returnResponseData, config );
       return $http.post( url, data, config ).then( partialReturnedResponseData );
+    }
+
+    /**
+     * Utility function for making FORM POST requests
+     * @param url
+     * @param data
+     * @param config
+     * @returns {promise}
+     */
+    function formPost( url, data, config ) {
+      config = _.extend( {
+        headers: {
+          'Content-Type': "application/x-www-form-urlencoded; charset=UTF-8"
+        }
+      }, config );
+      return post( url, data, config );
     }
 
     /**
