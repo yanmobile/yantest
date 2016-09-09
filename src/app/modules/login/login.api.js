@@ -1,4 +1,4 @@
-(function() {
+( function() {
   'use strict';
 
   angular.module( 'login' )
@@ -27,18 +27,33 @@
       return iscHttpapi.put( baseUrl + 'role', data );
     }
 
+    /**
+     * Login via REST-ful API call
+     * @param credentials
+     * @returns {promise}
+     */
     function login( credentials ) {
       devlog.channel( 'loginApi' ).debug( 'loginApi.login' );
       return iscHttpapi.post( baseUrl + 'login', credentials );
     }
 
+    /**
+     * Login via form post to CACHE server
+     * @param credentials
+     * @returns {promise}
+     */
     function cacheLogin( credentials ) {
       devlog.channel( 'loginApi' ).debug( 'loginApi.iscLogin' );
-      var pl = "CacheUserName=" + credentials.CacheUserName + '&CachePassword=' + credentials.CachePassword + '&CacheNoRedirect=1';
-      //$httpProvider.defaults.headers
-      return $http.post( baseUrl + 'login', pl );// iscHttpapi.post( baseUrl + 'login', credentials);  //, {withCredentials: true} );
+
+      var pl     = "CacheUserName=" + credentials.CacheUserName + '&CachePassword=' + credentials.CachePassword + '&CacheNoRedirect=1';
+
+      return iscHttpapi.formPost( baseUrl + 'login', pl );
     }
 
+    /**
+     * Terminates a user session
+     * @returns {promise}
+     */
     function logout() {
       devlog.channel( 'loginApi' ).debug( 'loginApi.logout' );
       return iscHttpapi.post( baseUrl + 'logout' );
@@ -63,4 +78,4 @@
       return iscHttpapi.get( baseUrl + 'keepAlive' );
     }
   }
-})();
+} )();
