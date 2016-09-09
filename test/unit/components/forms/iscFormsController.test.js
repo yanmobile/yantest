@@ -4,12 +4,7 @@
   describe( 'iscFormsController', function() {
     var suite = {};
 
-    useDefaultModules( 'formly', 'isc.http', 'isc.forms', 'isc.templates',
-      function ($provide) {
-        suite = window.createSuite();
-        $provide.value('apiHelper', mockApiHelper);
-        $provide.value('iscCustomConfigService', mockCustomConfigService);
-      });
+    useDefaultFormsModules();
 
     mockDefaultFormStates();
     
@@ -18,6 +13,8 @@
     beforeEach( module( 'isc.templates' ) );
 
     beforeEach( inject( function( $rootScope, $controller, $state, $stateParams, iscSessionModel ) {
+      suite = window.createSuite();
+
       var scope = $rootScope.$new();
 
       suite.controller = $controller( 'iscFormsController as formsCtrl',
@@ -28,10 +25,6 @@
 
       suite.self = scope.formsCtrl;
     } ) );
-
-    afterEach( function() {
-      cleanup( suite );
-    } );
 
     // -------------------------
     describe( 'iscFormsController', function() {

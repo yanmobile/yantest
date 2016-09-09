@@ -48,7 +48,6 @@
         debugDisplay: _.get( iscCustomConfigService.getConfig(), 'debugDisplay.forms', {} ),
         options     : {
           formState: {
-            _mode       : self.mode,
             _validation : {},
             _annotations: {
               data: []
@@ -134,8 +133,8 @@
         }
 
         function wrapAndSaveData() {
-          var wrappedData = wrapApi( self.model, self.formDefinition.form );
-          return saveApi( wrappedData, self.options.formState._id );
+          var wrappedData = wrapApi( self.model, self.formDefinition.form, self );
+          return saveApi( wrappedData, self.options.formState._id, self );
         }
 
         function watchModel( action ) {

@@ -51,14 +51,18 @@
    *
    */
   /* @ngInject */
-  function iscFormsTemplateService( $filter, $window, $sce, iscCustomConfigService, formlyConfig, hsModelUtils ) {
+  function iscFormsTemplateService( $filter, $window, $sce, $q,
+    iscNavContainerModel, iscCustomConfigService, iscSessionModel,
+    formlyConfig, iscFormDataApi, hsModelUtils ) {
     var baseType = '__iscFormsBase__';
 
     var config           = iscCustomConfigService.getConfig(),
         formsConfig      = _.get( config, 'forms', {} ),
         updateOnExcluded = formsConfig.updateOnExcluded,
         widgetLibrary    = [],
-        functionLibrary  = {};
+        functionLibrary  = {},
+        customButtonDefaults,
+        customFormDefaults;
 
     // YYYY-MM-DDThh:mm:ss.xxxZ   or
     // YYYY-MM-DD hh:mm:ss
@@ -67,21 +71,191 @@
     formlyConfig.extras.fieldTransform.push( addDataModelDependencies );
 
     var service = {
-      isTypeRegistered        : isTypeRegistered,
-      isWrapperRegistered     : isWrapperRegistered,
-      getRegisteredType       : getRegisteredType,
-      registerWrapper         : formlyConfig.setWrapper,
-      registerBaseType        : registerBaseType,
-      registerType            : registerType,
       appendWrapper           : appendWrapper,
-      getWidgetList           : getWidgetList,
-      registerGlobalLibrary   : registerGlobalLibrary,
+      getButtonDefaults       : getButtonDefaults,
+      getFieldsForEmbeddedForm: getFieldsForEmbeddedForm,
+      getFormDefaults         : getFormDefaults,
       getGlobalFunctionLibrary: getGlobalFunctionLibrary,
       getPageForEmbeddedForm  : getPageForEmbeddedForm,
-      getFieldsForEmbeddedForm: getFieldsForEmbeddedForm
+      getRegisteredType       : getRegisteredType,
+      getWidgetList           : getWidgetList,
+      isTypeRegistered        : isTypeRegistered,
+      isWrapperRegistered     : isWrapperRegistered,
+      registerBaseType        : registerBaseType,
+      registerButtonDefaults  : registerButtonDefaults,
+      registerFormDefaults    : registerFormDefaults,
+      registerGlobalLibrary   : registerGlobalLibrary,
+      registerType            : registerType,
+      registerWrapper         : formlyConfig.setWrapper
     };
 
     return service;
+
+    /**
+     * @description Registers default buttons for all forms using this service. These will automatically be
+     * retrieved by instances of iscForm, or may be programmatically retrieved with getButtonDefaults and extended.
+     * @param {Object} defaults
+     */
+    function registerButtonDefaults( defaults ) {
+      customButtonDefaults = defaults;
+    }
+
+    /**
+     * @memberOf iscFormsTemplateService
+     * @description Gets the default configuration for form buttons. If no custom configuration is registered
+     * with registerButtonDefaults, this will return an object with a cancel button that navigates back one
+     * history page, and a submit button which calls the configured formDataApi.submit function.
+     * @param {String} mode - The edit/view mode of the containing form
+     * @returns {{cancel: {onClick: function, afterClick: function, cssClass: string, text: string}, submit: {onClick: function, afterClick: function, cssClass: string, text: string}}}
+     */
+    function getButtonDefaults( mode ) {
+      return customButtonDefaults || {
+          cancel: {
+            onClick   : _.noop,
+            afterClick: afterCancel,
+            cssClass  : 'cancel button large float-left',
+            text      : mode === 'view' ? 'Forms_Back_Button' : 'Forms_Cancel_Button'
+          },
+          submit: {
+            onClick   : onSubmit,
+            afterClick: afterSubmit,
+            cssClass  : 'button large float-right',
+            text      : 'Forms_Submit_Button',
+            hide      : mode === 'view'
+          }
+        };
+
+      function onSubmit( context ) {
+        var configuredDataApi = context.formConfig.formDataApi;
+
+        // Default api for submitting a form is to submit to iscFormDataApi
+        var wrappedData = configuredDataApi.wrap( context.model, context.formDefinition.form, context );
+        return configuredDataApi.submit( wrappedData, context.options.formState._id, context );
+      }
+
+      function afterSubmit() {
+        iscNavContainerModel.navigateToUserLandingPage();
+      }
+
+      function afterCancel() {
+        $window.history.back();
+      }
+    }
+
+    /**
+     * @memberOf iscFormsTemplateService
+     * @description Registers default form configuration for all forms using this service. This configuration will
+     * automatically be retrieved by instances of iscForm, or may be programmatically retrieved with getFormDefaults
+     * and extended.
+     * @param {Object} defaults
+     */
+    function registerFormDefaults( defaults ) {
+      customFormDefaults = defaults;
+    }
+
+    /**
+     * @memberOf iscFormsTemplateService
+     * @description Gets the default configuration for form options. If no custom configuration is registered
+     * with registerFormDefaults, this will return an object with default endpoints for the formDataApi (based on
+     * the app's configuration) and an empty additionalModels object.
+     * @returns {{annotationsApi: {getFormAnnotations: function, closeAnnotationPanel: function, initAnnotationQueue: function, processAnnotationQueue: function}, additionalModels: {}}}
+     */
+    function getFormDefaults() {
+      // Empty annotations API if not provided
+      var annotationsApi = {
+        getFormAnnotations    : emptyAnnotationData,
+        closeAnnotationPanel  : _.noop,
+        initAnnotationQueue   : _.noop,
+        processAnnotationQueue: _.noop
+      };
+
+      // Defaults for formDataApi property -- use iscFormDataApi
+      var formDataApi = {
+        wrap  : wrapDefault,
+        unwrap: unwrapDefault,
+        load  : loadDefault,
+        save  : saveDefault,
+        submit: submitDefault
+      };
+
+      return customFormDefaults || {
+          annotationsApi  : annotationsApi,
+          formDataApi     : formDataApi,
+          additionalModels: {}
+        };
+
+      // Empty stubs for annotations, to remove dependency
+      function emptyAnnotationData() {
+        return $q.when( [] );
+      }
+
+      function wrapDefault( formData, formDefinition, formScope ) {
+        var formState = formScope.options.formState;
+
+        // Wrap data with additional information and metadata
+        return {
+          formDefinition  : formDefinition,
+          additionalModels: formScope.additionalModels,
+          formData        : {
+            formKey    : formState._formKey,
+            formName   : formDefinition.name,
+            formVersion: formState._formVersion,
+            id         : formState._id,
+            author     : iscSessionModel.getCurrentUser(),
+            completedOn: moment().toISOString(),
+            data       : formData
+          }
+        };
+      }
+
+      function unwrapDefault( responseData ) {
+        return _.get( responseData, 'data', {} );
+      }
+
+      function loadDefault( id, formConfig ) {
+        if ( id !== undefined ) {
+          return iscFormDataApi.get( id, getConfiguredUrl( 'get', { formConfig: formConfig } ) );
+        }
+        else {
+          return $q.when( {} );
+        }
+      }
+
+      function saveDefault( formData, id, formScope ) {
+        var annotationsApi = formScope.formConfig.annotationsApi;
+
+        if ( id !== undefined ) {
+          return iscFormDataApi.put( id, formData, getConfiguredUrl( 'put', formScope ) )
+            .then( function( form ) {
+              annotationsApi.processAnnotationQueue( form.id );
+              return form;
+            } );
+        }
+        else {
+          return iscFormDataApi.post( formData, getConfiguredUrl( 'post', formScope ) )
+            .then( function( form ) {
+              formScope.options.formState._id = form.id;
+              annotationsApi.processAnnotationQueue( form.id );
+              return form;
+            } );
+        }
+      }
+
+      function submitDefault( formData, id, formScope ) {
+        var annotationsApi = formScope.formConfig.annotationsApi;
+
+        return iscFormDataApi.submit( id, formData, getConfiguredUrl( 'submit', formScope ) )
+          .then( function( form ) {
+            formScope.options.formState._id = form.id;
+            annotationsApi.processAnnotationQueue( form.id );
+            return form;
+          } );
+      }
+
+      function getConfiguredUrl( verb, formScope ) {
+        return _.get( formScope.formConfig, 'formDataApi.urls.' + verb );
+      }
+    }
 
     /**
      * Gets the list of fields that an embeddedForm(Collection) should use
