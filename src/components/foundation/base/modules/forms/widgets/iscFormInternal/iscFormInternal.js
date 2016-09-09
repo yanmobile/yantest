@@ -48,7 +48,6 @@
         debugDisplay: _.get( iscCustomConfigService.getConfig(), 'debugDisplay.forms', {} ),
         options     : {
           formState: {
-            _mode       : self.mode,
             _validation : {},
             _annotations: {
               data: []
@@ -134,8 +133,8 @@
         }
 
         function wrapAndSaveData() {
-          var wrappedData = wrapApi( self.model, self.formDefinition.form );
-          return saveApi( wrappedData, self.options.formState._id );
+          var wrappedData = wrapApi( self.model, self.formDefinition.form, self );
+          return saveApi( wrappedData, self.options.formState._id, self );
         }
 
         function watchModel( action ) {
@@ -264,13 +263,14 @@
 
         self.pages       = self.formDefinition.form.pages;
         self.currentPage = _.head( self.pages );
-        self.multiConfig = {
+        self.mainFormConfig = {
           pages          : self.pages,
           layout         : self.formDefinition.form.pageLayout,
           currentPage    : self.currentPage,
           selectablePages: [],
           forms          : self.forms,
           buttonConfig   : self.buttonConfig || {},
+          buttonContext  : self,
           selectPage     : selectPage
         };
 
@@ -282,15 +282,15 @@
        * @param index - The index of the page to select/go to. Indexed from selectablePages, not all pages.
        */
       function selectPage( index ) {
-        self.currentPage             = self.multiConfig.selectablePages[index];
-        self.multiConfig.currentPage = self.currentPage;
+        self.currentPage                = self.mainFormConfig.selectablePages[index];
+        self.mainFormConfig.currentPage = self.currentPage;
       }
 
       /**
        * @memberOf iscFormInternal
        */
       function filterPages() {
-        self.multiConfig.selectablePages = _.filter( self.formDefinition.form.pages, function( page ) {
+        self.mainFormConfig.selectablePages = _.filter( self.formDefinition.form.pages, function( page ) {
           return !page._isHidden;
         } );
       }

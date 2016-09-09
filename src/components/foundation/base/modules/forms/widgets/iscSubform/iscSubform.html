@@ -9,16 +9,16 @@
   <div ng-hide="subformCtrl.childConfig.renderForm">
 
     <!--Main form (has pages with fields)-->
-    <div ng-if="subformCtrl.multiConfig">
+    <div ng-if="subformCtrl.mainFormConfig">
 
       <!--Main Form Title-->
       <h2 class="form-title"><span>{{ subformCtrl.formTitle | translate }}</span></h2>
 
       <!--Page layout-->
-      <div ng-if="subformCtrl.multiConfig.layout">
-        <div ng-include="'forms/pageLayouts/' + subformCtrl.multiConfig.layout + '.html'"></div>
+      <div ng-if="subformCtrl.mainFormConfig.layout">
+        <div ng-include="'forms/pageLayouts/' + subformCtrl.mainFormConfig.layout + '.html'"></div>
       </div>
-      <div ng-if="!subformCtrl.multiConfig.layout">
+      <div ng-if="!subformCtrl.mainFormConfig.layout">
         <div ng-include="'forms/pageLayouts/scrolling.html'"></div>
       </div>
 
@@ -39,7 +39,7 @@
     </div>
 
     <!--Child form (has fields only)-->
-    <div ng-if="subformCtrl.singleConfig">
+    <div ng-if="subformCtrl.subformConfig">
       <!--Subform Breadcrumbs-->
       <div class="grid-block context">
         <ul class="breadcrumb">
@@ -53,31 +53,31 @@
 
       <!--Subform form-->
       <formly-form model="subformCtrl.model"
-                   class="{{subformCtrl.singleConfig.className}}"
-                   fields="subformCtrl.singleConfig.fields"
+                   class="{{subformCtrl.subformConfig.className}}"
+                   fields="subformCtrl.subformConfig.fields"
                    options="subformCtrl.options"
-                   form="subformCtrl.singleConfig.subform.form">
+                   form="subformCtrl.subformConfig.subform.form">
       </formly-form>
 
       <!--Subform buttons-->
       <div class="controls clearfix">
         <button class="cancel float-left flat embedded-form-cancel"
                 type="button"
-                ng-click="subformCtrl.singleConfig.onCancel()">
+                ng-click="subformCtrl.subformConfig.onCancel()">
           {{'Forms_Cancel_Button' | translate}}
         </button>
 
         <div class="float-right">
           <button class="flat embedded-form-save"
                   type="button"
-                  ng-click="subformCtrl.singleConfig.onSubmit()">
-            {{'Forms_Save_Button' | translate}} {{subformCtrl.singleConfig.itemLabel}}
+                  ng-click="subformCtrl.subformConfig.onSubmit()">
+            {{'Forms_Save_Button' | translate}} {{subformCtrl.subformConfig.itemLabel}}
           </button>
 
           <button class="flat embedded-form-save-all"
                   type="button"
                   ng-if="subformCtrl.breadcrumbs.length > 2"
-                  ng-click="subformCtrl.singleConfig.onSubmitAll()">
+                  ng-click="subformCtrl.subformConfig.onSubmitAll()">
             {{'Forms_Save_All_Button' | translate}}
           </button>
         </div>

@@ -1,5 +1,5 @@
 <form class="formly" novalidate name="iscForm"
-      ng-submit="formInternalCtrl.onSubmit()"
+      ng-submit="formInternalCtrl.onSubmit(formInternalCtrl)"
       ng-click="formInternalCtrl.closeAnnotations()">
   <div isc-enter="_.noop()">
     <!-- Validation notifications -->
@@ -7,12 +7,12 @@
 
     <!--Main form-->
     <div ng-hide="formInternalCtrl.childConfig.renderForm">
-      <div ng-if="formInternalCtrl.multiConfig">
+      <div ng-if="formInternalCtrl.mainFormConfig">
         <isc-subform model="formInternalCtrl.model"
                      class="{{formInternalCtrl.formDefinition.form.className}}"
                      form-title="formInternalCtrl.formDefinition.form.name"
                      options="formInternalCtrl.options"
-                     multi-config="formInternalCtrl.multiConfig">
+                     main-form-config="formInternalCtrl.mainFormConfig">
         </isc-subform>
       </div>
 
@@ -28,7 +28,7 @@
       </div>
 
       <!--Debugging-->
-      <div ng-if="::formInternalCtrl.debugDisplay.additionalModels && formInternalCtrl.multiConfig.layout !== 'preview'">
+      <div ng-if="::formInternalCtrl.debugDisplay.additionalModels && formInternalCtrl.mainFormConfig.layout !== 'preview'">
         <hr/>
 
         <div class="grid-block">
@@ -41,7 +41,7 @@
         </div>
       </div>
 
-      <div ng-if="::formInternalCtrl.debugDisplay.annotations && formInternalCtrl.multiConfig.layout !== 'preview'">
+      <div ng-if="::formInternalCtrl.debugDisplay.annotations && formInternalCtrl.mainFormConfig.layout !== 'preview'">
         <hr/>
 
         <div class="grid-block">
@@ -54,7 +54,7 @@
         </div>
       </div>
 
-      <div ng-if="::formInternalCtrl.debugDisplay.formData && formInternalCtrl.multiConfig.layout !== 'preview'">
+      <div ng-if="::formInternalCtrl.debugDisplay.formData && formInternalCtrl.mainFormConfig.layout !== 'preview'">
         <hr/>
 
         <div class="grid-block">
@@ -67,7 +67,7 @@
         </div>
       </div>
 
-      <div ng-if="::formInternalCtrl.debugDisplay.formState && formInternalCtrl.multiConfig.layout !== 'preview'">
+      <div ng-if="::formInternalCtrl.debugDisplay.formState && formInternalCtrl.mainFormConfig.layout !== 'preview'">
         <hr/>
 
         <div class="grid-block">

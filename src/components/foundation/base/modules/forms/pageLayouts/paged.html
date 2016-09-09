@@ -2,15 +2,15 @@
 <div class="grid-block large-12 page-select">
   <select name="page" id="page"
           class="page-select"
-          ng-model="subformCtrl.multiConfig.currentPage"
-          ng-options="page.name for page in subformCtrl.multiConfig.selectablePages">
+          ng-model="subformCtrl.mainFormConfig.currentPage"
+          ng-options="page.name for page in subformCtrl.mainFormConfig.selectablePages">
   </select>
 </div>
 
 <hr/>
 
-<div ng-repeat="page in subformCtrl.multiConfig.pages track by $index"
-     ng-show="page === subformCtrl.multiConfig.currentPage"
+<div ng-repeat="page in subformCtrl.mainFormConfig.pages track by $index"
+     ng-show="page === subformCtrl.mainFormConfig.currentPage"
      class="grid-content collapse form-page">
 
   <h4>{{page.name | translate}}</h4>
@@ -18,7 +18,7 @@
   <formly-form model="subformCtrl.model"
                class="{{page.className}}"
                options="subformCtrl.options"
-               form="subformCtrl.multiConfig.forms[$index]"
+               form="subformCtrl.mainFormConfig.forms[$index]"
                fields="page.fields">
   </formly-form>
 </div>

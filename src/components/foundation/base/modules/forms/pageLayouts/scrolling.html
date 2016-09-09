@@ -1,4 +1,4 @@
-<div ng-repeat="page in subformCtrl.multiConfig.pages track by $index" class="grid-content collapse form-page">
+<div ng-repeat="page in subformCtrl.mainFormConfig.pages track by $index" class="grid-content collapse form-page">
 
   <div ng-hide="page._isHidden">
     <h4>{{page.name | translate}}</h4>
@@ -6,7 +6,7 @@
     <formly-form model="subformCtrl.model"
                  class="{{page.className}}"
                  options="subformCtrl.options"
-                 form="subformCtrl.multiConfig.forms[$index]"
+                 form="subformCtrl.mainFormConfig.forms[$index]"
                  fields="page.fields">
     </formly-form>
   </div>

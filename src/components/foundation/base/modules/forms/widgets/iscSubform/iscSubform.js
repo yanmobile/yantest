@@ -13,7 +13,7 @@
    * @param $filter
    * @param iscScrollContainerService
    * @param iscConfirmationService
-   * @returns {{restrict: string, replace: boolean, controllerAs: string, scope: {model: string, options: string, formTitle: string, breadcrumbs: string, multiConfig: string, singleConfig: string}, bindToController: boolean, controller: controller, link: link, templateUrl: directive.templateUrl}}
+   * @returns {{restrict: string, replace: boolean, controllerAs: string, scope: {model: string, options: string, formTitle: string, breadcrumbs: string, mainFormConfig: string, subformConfig: string}, bindToController: boolean, controller: controller, link: link, templateUrl: directive.templateUrl}}
    */
   function iscSubform( FORMS_EVENTS, $q, $filter, iscScrollContainerService, iscConfirmationService ) {//jshint ignore:line
 
@@ -29,12 +29,12 @@
       replace         : true,
       controllerAs    : 'subformCtrl',
       scope           : {
-        model       : '=',
-        options     : '=',
-        formTitle   : '=',
-        breadcrumbs : '=',
-        multiConfig : '=',
-        singleConfig: '='
+        model         : '=',
+        options       : '=',
+        formTitle     : '=',
+        breadcrumbs   : '=',
+        mainFormConfig: '=',
+        subformConfig : '='
       },
       bindToController: true,
       controller      : controller,
@@ -71,7 +71,7 @@
       } );
 
       function getFormButtons() {
-        var buttons     = _.get( self, 'multiConfig.buttonConfig', {} );
+        var buttons     = _.get( self, 'mainFormConfig.buttonConfig', {} );
         var buttonArray = _.map( buttons, function( button, name ) {
             return _.merge( {}, button, {
               name: name
@@ -82,7 +82,7 @@
       }
 
       function showButton( button ) {
-        return _.isFunction( button.hide ) ? !button.hide( self.multiConfig ) : !button.hide;
+        return _.isFunction( button.hide ) ? !button.hide( self.mainFormConfig.buttonContext ) : !button.hide;
       }
 
       function onClick( button ) {
@@ -91,7 +91,7 @@
             afterClick = button.afterClick || function() {
               };
 
-        $q.when( click( self ) )
+        $q.when( click( self.mainFormConfig.buttonContext ) )
           .then( afterClick );
       }
 
@@ -154,7 +154,7 @@
 
         function onSubmitAll() {
           if ( subformParams.onSubmit() ) {
-            var submitParent = _.get( self, 'singleConfig.onSubmitAll' );
+            var submitParent = _.get( self, 'subformConfig.onSubmitAll' );
             if ( submitParent ) {
               submitParent();
             }
