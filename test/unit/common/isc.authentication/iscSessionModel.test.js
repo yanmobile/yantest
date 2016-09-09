@@ -125,6 +125,15 @@
         expect( creds ).toBe( null );
         expect( user ).toEqual( anonymousUser );
       } );
+
+      it( 'should emit logoutSuccess on destroy with the right data', function() {
+        spyOn( rootScope, '$emit' ).and.callFake( _.noop );
+        var test = { foo: "bar" };
+        sessionModel.destroy( test );
+        expect( rootScope.$emit ).toHaveBeenCalledWith( 'iscSessionChange', test );
+        expect( rootScope.$emit ).toHaveBeenCalledWith( 'iscLogoutSuccess', test );
+
+      } );
     } );
 
     // -------------------------
