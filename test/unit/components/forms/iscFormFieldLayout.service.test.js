@@ -4,11 +4,7 @@
   describe( 'iscFormFieldLayoutService', function() {
     var suite = {};
 
-    useDefaultModules( 'formly', 'isc.http', 'isc.forms', 'isc.templates',
-      function( $provide ) {
-        $provide.value( 'apiHelper', mockApiHelper );
-        $provide.value( 'iscCustomConfigService', mockCustomConfigService );
-      } );
+    useDefaultFormsModules();
 
     beforeEach( inject( function( $httpBackend, iscFormsApi, iscFormFieldLayoutService ) {
       suite = window.createSuite( {

@@ -37,10 +37,10 @@
     var currentUser   = anonymousUser;
 
     var sessionTimeout = {
-      warnAt     : 0,
-      expireAt   : 0,
-      maxAge     : 0,
-      status     : SESSION_STATUS.active
+      warnAt  : 0,
+      expireAt: 0,
+      maxAge  : 0,
+      status  : SESSION_STATUS.active
     };
 
     var noResponseMaxAge = 60 * 5; // 5 minutes
@@ -118,14 +118,14 @@
     //
     /**
      *
-     * @param syncedOn
+     * @param goToState :: Object {stateName : '', stateParams: {}}
      * @returns {*}
      * @description
-     * Calls a non-invasive ping API which inspects the current server session, without renewing that session,
-     * and returns information about the time remaining in this session.
+     * Destroys client data in session storage, clears sessionTimeout and emits AUTH_EVENTS.logoutSuccess
+     *
      */
 
-    function destroy() {
+    function destroy( goToState ) {
       channel.logFn( 'destroy' );
 
       // create a session with null data
@@ -142,8 +142,8 @@
       iscSessionStorageHelper.destroy();
       stopSessionTimeout();
 
-      $rootScope.$emit( AUTH_EVENTS.sessionChange );
-      $rootScope.$emit( AUTH_EVENTS.logoutSuccess );
+      $rootScope.$emit( AUTH_EVENTS.sessionChange, goToState );
+      $rootScope.$emit( AUTH_EVENTS.logoutSuccess, goToState );
     }
 
     // --------------
@@ -180,9 +180,9 @@
 
     function updateExpireAndWarnAt( expiration ) {
       if ( expiration !== undefined ) {
-        var maxAge         = sessionTimeout.maxAge,
-            warnThreshold  = ( maxAge > 180 ) ? 0.25 : 0.50,
-            warnTimespan   = maxAge * ( 1 - warnThreshold );
+        var maxAge        = sessionTimeout.maxAge,
+            warnThreshold = ( maxAge > 180 ) ? 0.25 : 0.50,
+            warnTimespan  = maxAge * ( 1 - warnThreshold );
 
         sessionTimeout.expireAt = moment( expiration );
         sessionTimeout.warnAt   = moment( expiration ).add( -maxAge, 's' ).add( warnTimespan, 's' );
@@ -219,11 +219,11 @@
       timeoutInterval = $window.setInterval( function() {
         _logTimer();
 
-        _checkForWarnOrExpire(  );
+        _checkForWarnOrExpire();
 
       }, 3000 );
 
-      function _checkForWarnOrExpire(  ) {
+      function _checkForWarnOrExpire() {
         channel.logFn( "_checkForWarnOrExpire" );
 
         // warn

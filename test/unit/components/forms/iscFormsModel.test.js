@@ -4,22 +4,19 @@
   describe( 'iscFormsModel', function() {
     var suite;
 
-    useDefaultModules( 'formly', 'isc.http', 'isc.forms', 'isc.templates',
-      function( $provide ) {
-        suite = window.createSuite();
-        $provide.value( 'apiHelper', mockApiHelper );
-        $provide.value( 'iscCustomConfigService', mockCustomConfigService );
-      } );
+    useDefaultFormsModules();
 
     mockDefaultFormStates();
-    
+
     beforeEach( inject( function( iscFormsModel, iscFormsApi, iscFormDataApi,
       $httpBackend, $timeout ) {
-      suite.model       = iscFormsModel;
-      suite.api         = iscFormsApi;
-      suite.dataApi     = iscFormDataApi;
-      suite.httpBackend = $httpBackend;
-      suite.timeout     = $timeout;
+      suite = window.createSuite( {
+        model      : iscFormsModel,
+        api        : iscFormsApi,
+        dataApi    : iscFormDataApi,
+        httpBackend: $httpBackend,
+        timeout    : $timeout
+      } );
 
       mockFormResponses( suite.httpBackend );
     } ) );

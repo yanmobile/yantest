@@ -70,7 +70,7 @@ function getSubform() {
     'model="formInternalCtrl.model" ' +
     'form-title="formInternalCtrl.formDefinition.form.name" ' +
     'options="formInternalCtrl.options" ' +
-    'multi-config="formInternalCtrl.multiConfig"' +
+    'main-form-config="formInternalCtrl.mainFormConfig"' +
     '></isc-subform>';
 }
 
