@@ -57,7 +57,7 @@
     //--------------------
     it( 'should change page when the selector is changed', function() {
       var suite         = suiteInternal,
-          subformConfig = suite.controller.multiConfig,
+          subformConfig = suite.controller.mainFormConfig,
           model         = suite.controller.model,
           lastPage      = subformConfig.pages[4],
           value         = 'something';

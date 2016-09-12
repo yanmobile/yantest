@@ -262,11 +262,11 @@
       var cachedForm;
       switch ( mode ) {
         case 'view':
-          cachedForm = _.get( _viewModeFormsCache, cacheKey );
+          cachedForm = _viewModeFormsCache[cacheKey];
           break;
 
         default:
-          cachedForm = _.get( _formsCache, cacheKey );
+          cachedForm = _formsCache[cacheKey];
       }
       var deferred = $q.defer();
 
@@ -342,7 +342,7 @@
               };
 
               // Cache the editable version
-              _.set( _formsCache, cacheKey, editMode );
+              _formsCache[cacheKey] = editMode;
 
               // Make a deep copy for the view mode version
               var viewMode = {
@@ -357,7 +357,7 @@
               } );
 
               // Cache it separately
-              _.set( _viewModeFormsCache, cacheKey, viewMode );
+              _viewModeFormsCache[cacheKey] = viewMode;
 
               // Resolve the requested version
               switch ( mode ) {
@@ -512,10 +512,6 @@
               // If a linked type, look up that type and import the fields []
               if ( embeddedType && embeddedType !== formKey ) {
                 if ( subforms[embeddedType] === undefined ) {
-                  if ( isCollection ) {
-                    subforms[embeddedType] = [];
-                  }
-
                   fieldPromises.push(
                     // Fetch the embedded type
                     getFormDefinition( {
@@ -527,6 +523,7 @@
                     } )
                       .then( function( embeddedForm ) {
                         var subform      = embeddedForm.form,
+                            childForms   = embeddedForm.subforms,
                             listenerType = {
                               'type': 'embeddedFormListener'
                             };
@@ -561,6 +558,10 @@
 
                         // Update the subforms list
                         subforms[embeddedType] = subform;
+
+                        // For previously cached subforms, merge any subforms of
+                        // that cached form into this form's subforms list
+                        _.extend( subforms, childForms );
                       } )
                   );
                 }

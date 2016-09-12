@@ -1,18 +1,26 @@
 // Mock components
 var mockApiHelper = {
-  getUrl      : function (path) {
+  getUrl      : function( path ) {
     return path;
   },
-  getConfigUrl: function (configProp) {
+  getConfigUrl: function( configProp ) {
     return configProp.path;
   }
 };
 
 var mockCustomConfigService = {
-  getConfig: function () {
+  getConfig       : function() {
     return customConfig;
   },
-  getConfigSection: function (section) {
-    return _.get(customConfig, section, {});
+  getConfigSection: function( section ) {
+    return _.get( customConfig, section, {} );
   }
 };
+
+function useDefaultFormsModules() {
+  useDefaultModules( 'formly', 'isc.http', 'isc.forms', 'isc.templates', 'iscNavContainer',
+    function( $provide ) {
+      $provide.value( 'apiHelper', mockApiHelper );
+      $provide.value( 'iscCustomConfigService', mockCustomConfigService );
+    } );
+}
