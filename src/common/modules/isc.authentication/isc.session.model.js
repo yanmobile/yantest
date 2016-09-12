@@ -118,7 +118,7 @@
     //
     /**
      *
-     * @param eventData :: Object {stateName : '', stateParams: {}}
+     * @param eventData :: Object {}
      * can be used, for example, to pass in a next state Object {stateName : '', stateParams: {}}
      * @returns {*}
      * @description
