@@ -118,14 +118,15 @@
     //
     /**
      *
-     * @param goToState :: Object {stateName : '', stateParams: {}}
+     * @param eventData :: Object {stateName : '', stateParams: {}}
+     * can be used, for example, to pass in a next state Object {stateName : '', stateParams: {}}
      * @returns {*}
      * @description
      * Destroys client data in session storage, clears sessionTimeout and emits AUTH_EVENTS.logoutSuccess
      *
      */
 
-    function destroy( goToState ) {
+    function destroy( eventData ) {
       channel.logFn( 'destroy' );
 
       // create a session with null data
@@ -142,8 +143,8 @@
       iscSessionStorageHelper.destroy();
       stopSessionTimeout();
 
-      $rootScope.$emit( AUTH_EVENTS.sessionChange, goToState );
-      $rootScope.$emit( AUTH_EVENTS.logoutSuccess, goToState );
+      $rootScope.$emit( AUTH_EVENTS.sessionChange, eventData );
+      $rootScope.$emit( AUTH_EVENTS.logoutSuccess, eventData );
     }
 
     // --------------
