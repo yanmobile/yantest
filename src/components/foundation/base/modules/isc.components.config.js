@@ -64,7 +64,6 @@
       'debugDisplay'   : {
         'forms': {
           'additionalModels': false,
-          'annotations'     : false,
           'formData'        : false,
           'formState'       : false
         }

@@ -24,9 +24,6 @@
         unwrap: function( formData ) {
           return null;
         }
-      },
-      annotationsApi: {
-        getFormAnnotations: "this should normally be a function"
       }
     };
 
@@ -233,9 +230,7 @@
           testSuite( suiteSimple3 );
 
           function testSuite( suite ) {
-            var annotationsApi = getFormConfig( suite ).annotationsApi,
-                buttonConfig   = getButtonConfig( suite );
-            expect( _.isFunction( annotationsApi.getFormAnnotations ) ).toBe( true );
+            var buttonConfig   = getButtonConfig( suite );
             expect( _.isFunction( buttonConfig.submit.onClick ) ).toBe( true );
           }
         } );

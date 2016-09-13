@@ -15,21 +15,20 @@
    */
   /* @ngInject */
   function iscFormsFlattenedFields( $filter ) {
-    return function( fields, annotationState ) {
-      var flattenedFields = flattenFields( fields, annotationState );
+    return function( fields ) {
+      var flattenedFields = flattenFields( fields );
       return flattenedFields;
     };
 
     /**
      * @memberOf iscFormsFlattenedFields
      * @param fields
-     * @param annotationState
      * @returns {Array}
      */
-    function flattenFields( fields, annotationState ) {
+    function flattenFields( fields ) {
       var fieldArray = [];
       _.forEach( fields, function( field ) {
-        fieldArray = fieldArray.concat( getFields( field, annotationState ) );
+        fieldArray = fieldArray.concat( getFields( field ) );
       } );
       return fieldArray;
     }
@@ -37,12 +36,11 @@
     /**
      * @memberOf iscFormsFlattenedFields
      * @param field
-     * @param annotationState
      * @returns {*}
      */
-    function getFields( field, annotationState ) {
+    function getFields( field ) {
       if ( field.fieldGroup ) {
-        return flattenFields( field.fieldGroup, annotationState );
+        return flattenFields( field.fieldGroup );
       }
       else if ( showInTable( field ) ) {
         return [].concat(
@@ -56,8 +54,7 @@
                   ( '.' + _.get( field, 'data.displayField', 'name' ) )
                   : ''
               ),
-              templateUrl   : _.get( field, 'data.tableCellTemplateUrl' ),
-              hasAnnotations: hasAnnotations( field, annotationState )
+              templateUrl   : _.get( field, 'data.tableCellTemplateUrl' )
             },
             getCustomDisplayOptions( field )
           )
@@ -72,38 +69,6 @@
           field.type !== 'instructions' &&
           field.type !== 'section' &&
           !_.get( field, 'data.hideInTable' );
-      }
-    }
-
-    /**
-     * @memberOf iscFormsFlattenedFields
-     * @param field
-     * @param annotationState
-     * @returns {hasAnnotations}
-     */
-    function hasAnnotations( field, annotationState ) {
-      var key     = field.key,
-          context = annotationState.context,
-          data    = annotationState.data;
-
-      return function hasAnnotations( index ) {
-        var filteredAnnotations = $filter( 'iscFormsContext' )( data, getContext( index ) );
-
-        return filteredAnnotations.length > 0;
-      };
-
-      function getContext( index ) {
-        var localContext = _.merge( {}, context ),
-            endContext   = localContext;
-        while ( endContext.context !== undefined ) {
-          endContext = endContext.context;
-        }
-        endContext.context = {
-          'key'      : key,
-          'contextId': index
-        };
-
-        return localContext;
       }
     }
 
