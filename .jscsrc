@@ -76,6 +76,7 @@
     "!=="
   ],
   "requireSpaceAfterBinaryOperators"       : true,
+  "requireSpaceBeforeObjectValues"         : true,
   "requireSpacesInConditionalExpression"   : true,
   "requireSpaceBeforeBlockStatements"      : true,
   "requireLineFeedAtFileEnd"               : true,

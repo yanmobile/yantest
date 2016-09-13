@@ -115,7 +115,6 @@
       }
     }
 
-    //
     /**
      *
      * @param eventData :: Object {}
