@@ -49,9 +49,9 @@
       require         : 'ngModel',
       controllerAs    : 'efCollectionCtrl',
       scope           : {
-        id         : '@',
-        formState  : '=',
-        options    : '='
+        id       : '@',
+        formState: '=',
+        options  : '='
       },
       bindToController: true,
       controller      : controller,
@@ -92,7 +92,7 @@
       };
       self.subform        = {};
 
-      self.dateFormat        = _.get( iscCustomConfigService.getConfig(), 'formats.date.shortDate', 'date' );
+      self.dateFormat = _.get( iscCustomConfigService.getConfig(), 'formats.date.shortDate', 'date' );
 
       self.isNew      = false;
       self.renderForm = false;
@@ -193,12 +193,12 @@
         // Fields
         var tableColumns = _.map( self.flattenedFields, function( field ) {
           return {
-            key             : _.capitalize( field.label ),
-            model           : field.model,
-            innerTemplateUrl: field.templateUrl,
-            display         : field.display,
-            type            : field.type,
-            dateFormat      : self.dateFormat
+            key        : _.capitalize( field.label ),
+            model      : field.model,
+            templateUrl: field.templateUrl,
+            display    : field.display,
+            type       : field.type,
+            dateFormat : self.dateFormat
           };
         } );
 
