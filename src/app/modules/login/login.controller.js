@@ -8,34 +8,78 @@
   angular.module( 'login' )
     .controller( 'loginController', loginController );
 
-  function loginController( devlog, $rootScope, $window, loginApi, iscSessionModel, AUTH_EVENTS ) {
+  function loginController( devlog, $rootScope, $window, loginApi, iscSessionModel, AUTH_EVENTS, iscCustomConfigService ) {
     var log = devlog.channel( 'loginController' );
     log.logFn( 'loginController' );
 
     // ----------------------------
     // vars
     // ----------------------------
-    var self   = this;
-    self.login = login;
+    var loginData;
+
+    var self = this;
+    _.extend( self, {
+      login : login,
+      setOrg: setOrg
+    } );
 
     init();
 
     // ----------------------------
     // functions
     // ----------------------------
-
     function init() {
-      loginApi.status().then( function( data ) {
-        _loginSuccess( data );
-      } );
+      loginApi.status().then( _loginSuccess );
     }
 
     function login() {
       log.logFn( 'login' );
       log.debug( 'credentials', self.credentials );
 
-      loginApi.login( self.credentials )
-        .then( _loginSuccess, _loginError );
+      if ( iscCustomConfigService.getConfig().useCacheLogin ) {
+        return loginApi.cacheLogin( self.credentials )
+          .then( cacheLoginSuccess, _loginError );
+
+      } else {
+        return loginApi.login( self.credentials )
+          .then( _loginSuccess, _loginError );
+      }
+
+      function cacheLoginSuccess( responseData ) {
+        return loginApi.getCacheUser( responseData.Username )
+          .then( addFakeApplicationRole )
+          .then( cacheUserSuccess );
+
+        function addFakeApplicationRole( cacheUser ) {
+          cacheUser.ApplicationRole = "provider";  //update server to return actual ApplicationRole
+          return cacheUser;
+        }
+
+        function cacheUserSuccess( cacheUser ) {
+          self.userOrgs = cacheUser.UserContainer.Organizations;
+          loginData     = {
+            UserData       : {
+              Name: cacheUser.UserContainer.FirstName
+            },
+            Username       : responseData.Username,
+            ApplicationRole: cacheUser.ApplicationRole,
+            sessionInfo    : {
+              remainingTime: responseData.SessionTimeout
+            },
+            name           : {
+              GivenName: cacheUser.UserContainer.FirstName,
+              LastName : cacheUser.UserContainer.LastName
+            }
+          };
+        }
+      }
+    }
+
+    /**
+     * Once the user picks an organization, log the user in
+     */
+    function setOrg() {
+      _loginSuccess( loginData );
     }
 
     function _loginSuccess( responseData ) {

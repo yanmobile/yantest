@@ -12,7 +12,7 @@
 
       <div class="grid-block">
 
-        <form class="login" ng-submit="loginCtrl.login()">
+        <form class="login" ng-submit="loginCtrl.login()" ng-if="!loginCtrl.userOrgs.length">
 
           <isc-transclude template-url="login/loginFormItem.html" config-item-translation-key="Username">
             <control-template>
@@ -39,7 +39,16 @@
             </div>
           </div>
 
-        </form>
+       </form>
+
+        <div class="small-12" ng-if="loginCtrl.userOrgs.length">
+          <isc-transclude config-item-translation-key="{{ 'Select Organization' | translate }}">
+            <control-template>
+              <select type="text" placeholder="UserOrg" ng-model="loginCtrl.selectedUserOrg" ng-options="org for org in loginCtrl.userOrgs"></select>
+            </control-template>
+          </isc-transclude>
+          <button type="submit" ng-click="loginCtrl.setOrg()" class="button flat float-right">{{ "Continue" | translate}}</button>
+        </div>
       </div>
 
     </div>
