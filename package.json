@@ -61,11 +61,12 @@
     "streamqueue": "1.1.1",
     "through2": "2.0.1",
     "wallaby-ng-html2js-preprocessor": "0.1.0",
-    "xml-escape": "1.1.0"
+    "xml-escape": "1.1.0",
+    "yargs": "5.0.0"
   },
-  "scripts"         : {
+  "scripts": {
     "precommit": "gulp jsformat",
-    "prepush" : "gulp test"
+    "prepush": "gulp test"
   },
   "engines": {
     "node": "5.5.0",
