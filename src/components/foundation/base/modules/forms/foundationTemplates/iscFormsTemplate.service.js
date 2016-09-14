@@ -158,17 +158,9 @@
      * @description Gets the default configuration for form options. If no custom configuration is registered
      * with registerFormDefaults, this will return an object with default endpoints for the formDataApi (based on
      * the app's configuration) and an empty additionalModels object.
-     * @returns {{annotationsApi: {getFormAnnotations: function, closeAnnotationPanel: function, initAnnotationQueue: function, processAnnotationQueue: function}, additionalModels: {}}}
+     * @returns {{formDataApi: { wrap : function, unwrap: function, load: function, save: function, submit: function }, additionalModels: {}}}
      */
     function getFormDefaults() {
-      // Empty annotations API if not provided
-      var annotationsApi = {
-        getFormAnnotations    : emptyAnnotationData,
-        closeAnnotationPanel  : _.noop,
-        initAnnotationQueue   : _.noop,
-        processAnnotationQueue: _.noop
-      };
-
       // Defaults for formDataApi property -- use iscFormDataApi
       var formDataApi = {
         wrap  : wrapDefault,
@@ -179,15 +171,9 @@
       };
 
       return customFormDefaults || {
-          annotationsApi  : annotationsApi,
           formDataApi     : formDataApi,
           additionalModels: {}
         };
-
-      // Empty stubs for annotations, to remove dependency
-      function emptyAnnotationData() {
-        return $q.when( [] );
-      }
 
       function wrapDefault( formData, formDefinition, formScope ) {
         var formState = formScope.options.formState;
@@ -222,32 +208,22 @@
       }
 
       function saveDefault( formData, id, formScope ) {
-        var annotationsApi = formScope.formConfig.annotationsApi;
-
         if ( id !== undefined ) {
-          return iscFormDataApi.put( id, formData, getConfiguredUrl( 'put', formScope ) )
-            .then( function( form ) {
-              annotationsApi.processAnnotationQueue( form.id );
-              return form;
-            } );
+          return iscFormDataApi.put( id, formData, getConfiguredUrl( 'put', formScope ) );
         }
         else {
           return iscFormDataApi.post( formData, getConfiguredUrl( 'post', formScope ) )
             .then( function( form ) {
               formScope.options.formState._id = form.id;
-              annotationsApi.processAnnotationQueue( form.id );
               return form;
             } );
         }
       }
 
       function submitDefault( formData, id, formScope ) {
-        var annotationsApi = formScope.formConfig.annotationsApi;
-
         return iscFormDataApi.submit( id, formData, getConfiguredUrl( 'submit', formScope ) )
           .then( function( form ) {
             formScope.options.formState._id = form.id;
-            annotationsApi.processAnnotationQueue( form.id );
             return form;
           } );
       }
@@ -452,23 +428,6 @@
             $error  : ''
           };
 
-          // Annotations
-          var annotationsState   = $scope.formOptions.formState._annotations;
-          var annotationsConfig  = getAnnotationConfig();
-          var annotationsContext = getAnnotationContext();
-          var annotationsData    = getAnnotationData( annotationsContext );
-          var annotationMetadata = {
-            type     : 'field',
-            formKey  : formlyRootCtrl.formDefinition.formKey,
-            formType : formlyRootCtrl.formDefinition.formType,
-            formName : formlyRootCtrl.formDefinition.name,
-            fieldName: $scope.to.label,
-
-            // formId will not be available for unsubmitted, new forms
-            // Ensure they are up to date when submitting queued annotations
-            formId   : parseInt( annotationsState.index )
-          };
-
           // Inject utilities so they are available in FDN expressions
           _.extend( $scope, {
             // Libraries
@@ -485,16 +444,7 @@
             getDefaultViewValue: getDefaultViewValue,
 
             // HS validation
-            hsValidation       : hsValidation,
-
-            // Annotations state
-            annotations        : {
-              config : annotationsConfig,
-              context: annotationsContext,
-              data   : annotationsData
-            },
-            allAnnotations     : formlyRootCtrl.options.formState._annotations.data,
-            annotationMetadata : annotationMetadata
+            hsValidation       : hsValidation
           } );
 
           // Helper functions
@@ -539,47 +489,6 @@
                 return $sce.trustAsHtml( '<p>' + value + '</p>' );
               }
             }
-          }
-
-          function getAnnotationConfig() {
-            return _.get( formlyRootCtrl, 'formDefinition.form.annotations', {} );
-          }
-
-          function getAnnotationContext() {
-            // If the context property has been set, this is a field on a subform
-            if ( annotationsState.context ) {
-              // This means it has a containing context for the parent
-              // Contexts are nested instances of the same object type
-              var container = _.merge( {}, annotationsState.context );
-              while ( container.context !== undefined ) {
-                container = container.context;
-              }
-
-              // Set the inner context for just this field
-              container.context = makeContext( 'item' );
-
-              return container;
-            }
-
-            // Otherwise it is on the root form
-            else {
-              return makeContext( 'form' );
-            }
-
-            function makeContext( type ) {
-              var contextId = parseInt( annotationsState.index );
-              return {
-                type     : type,
-                isQueued : annotationsState.index === undefined ? true : undefined,
-                contextId: _.isNaN( contextId ) ? null : contextId,
-                key      : $scope.options.key
-              };
-
-            }
-          }
-
-          function getAnnotationData( context ) {
-            return $filter( 'iscFormsContext' )( annotationsState.data, context );
           }
         },
 
