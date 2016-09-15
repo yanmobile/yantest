@@ -2,7 +2,7 @@
  * Created by hzou on 12/8/15.
  */
 
-( function() {
+(function() {
   'use strict';
 
   /**
@@ -20,6 +20,7 @@
       loginFailed          : 'iscLoginFailed',
       logout               : 'iscLogout',
       logoutSuccess        : 'iscLogoutSuccess',
+      noNetwork            : 'iscNoNetwork',
       notAuthenticated     : 'iscNotAuthenticated',
       notAuthorized        : 'iscNotAuthorized',
       notFound             : 'iscNotFound',
@@ -32,4 +33,4 @@
       sessionTimeoutReset  : 'iscSessionTimeoutReset'
     } );
 
-} )();
+})();
