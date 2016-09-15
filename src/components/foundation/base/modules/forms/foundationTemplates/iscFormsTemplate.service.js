@@ -69,6 +69,7 @@
     var isoRE = /^\d{4}[-\/]{1}\d{2}[-\/]{1}\d{2}[T ]{1}\d{2}:{1}\d{2}:{1}\d{2}(.{1}\d{3}Z{1})?$/;
 
     formlyConfig.extras.fieldTransform.push( addDataModelDependencies );
+    formlyConfig.extras.fieldTransform.push( addInheritedClassNames );
 
     var service = {
       appendWrapper           : appendWrapper,
@@ -276,6 +277,62 @@
 
     /**
      * @memberOf iscFormsTemplateService
+     * @description formly will automatically create a 'formly-field-{type}' class
+     * for each field, but it will not inherit those classes from the field's
+     * ancestor types. This method explicitly causes those classes to inherit.
+     * @param fields
+     */
+    function addInheritedClassNames( fields ) {
+      _.forEach( fields, function( field ) {
+        if ( field.fieldGroup ) {
+          addInheritedClassNames( field.fieldGroup );
+        }
+        else {
+          inheritClassNames( field );
+        }
+      } );
+
+      return fields;
+
+      function inheritClassNames( field ) {
+        var isControlFlowOnly = field.type === 'controlFlowOnly',
+            type              = isControlFlowOnly ? _.get( field, 'data.controlFlowOnly.templateType' ) : field.type,
+            className         = isControlFlowOnly ? 'formly-field-' + type : '',
+            inheritedClasses  = getInheritedClassName( type );
+
+        field.className = [inheritedClasses, className || '', field.className].join( ' ' );
+
+        function getInheritedClassName( type ) {
+          var template    = getRegisteredType( type ),
+              extendsType = getAncestorType( template );
+
+          return [
+            ( !!extendsType ? getInheritedClassName( extendsType ) : '' ),
+            getClassName( template )
+          ].join( ' ' );
+
+          function getClassName( field ) {
+            var type;
+            if ( field.name === 'controlFlowOnly' ) {
+              type = _.get( field, 'defaultOptions.data.controlFlowOnly.templateType' );
+            }
+            else {
+              type = field.name;
+            }
+            return type ? 'formly-field-' + type : '';
+          }
+
+          function getAncestorType( type ) {
+            return type.extends !== baseType && type.extends;
+          }
+        }
+      }
+    }
+
+    /**
+     * @memberOf iscFormsTemplateService
+     * @description Applies form configuration to each formly field, including
+     * external validation systems.
      * @param fields
      * @returns {*}
      */
@@ -294,12 +351,14 @@
             allowInvalid: formsConfig.allowInvalid
           };
 
-          var validators          = field.validators || ( field.validators = {} );
-          // Executes external/HS validation api
-          validators.hsValidation = {
-            expression: 'hsValidation.getError(options.key)',
-            message   : 'hsValidation.$error.text'
-          };
+          if ( formsConfig.useExternalValidation ) {
+            var validators          = field.validators || ( field.validators = {} );
+            // Executes external/HS validation api
+            validators.hsValidation = {
+              expression: 'hsValidation.getError(options.key)',
+              message   : 'hsValidation.$error.text'
+            };
+          }
         }
       } );
       return fields;
