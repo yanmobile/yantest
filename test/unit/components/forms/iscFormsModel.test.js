@@ -24,89 +24,9 @@
 
     describe( 'iscFormsModel', function() {
       it( 'should have revealed functions', function() {
-        expect( _.isFunction( suite.model.getForms ) ).toBe( true );
-        expect( _.isFunction( suite.model.getActiveForm ) ).toBe( true );
-        expect( _.isFunction( suite.model.getActiveForms ) ).toBe( true );
-        expect( _.isFunction( suite.model.setFormStatus ) ).toBe( true );
         expect( _.isFunction( suite.model.getFormDefinition ) ).toBe( true );
         expect( _.isFunction( suite.model.getValidationDefinition ) ).toBe( true );
         expect( _.isFunction( suite.model.invalidateCache ) ).toBe( true );
-      } );
-    } );
-
-    describe( 'model.getForms', function() {
-      it( 'should get the list of forms', function() {
-        var formType = 'initial';
-
-        // test API
-        test();
-        suite.httpBackend.flush();
-
-        // test local cache
-        test();
-        suite.timeout.flush();
-
-        function test() {
-          suite.model.getForms( formType ).then( function( response ) {
-            expect( _.isArray( response ) ).toBe( true );
-            expect( response ).toEqual( getFormStatuses( formType ) );
-          } );
-        }
-      } );
-    } );
-
-    describe( 'model.getActiveForm', function() {
-      it( 'should get the current active form, for a formType with a singleton active member', function() {
-        var formType = 'closeout';
-
-        // Returns an object
-        suite.model.getActiveForm( formType ).then( function( response ) {
-          expect( _.isObject( response ) ).toBe( true );
-          expect( response ).toEqual( getFormStatuses( formType, true )[0] );
-        } );
-        suite.httpBackend.flush();
-      } );
-    } );
-
-    describe( 'model.getActiveForms', function() {
-      it( 'should get the current active forms, for a formType with multiple active members', function() {
-        var formType = 'treatment';
-
-        suite.model.getActiveForms( formType ).then( function( response ) {
-          expect( _.isArray( response ) ).toBe( true );
-          expect( response.length ).toBeGreaterThan( 1 );
-          expect( response ).toEqual( getFormStatuses( formType, true ) );
-        } );
-        suite.httpBackend.flush();
-      } );
-    } );
-
-    describe( 'model.setFormStatus', function() {
-      it( 'should set the status of the given formType', function() {
-        var formType            = 'initial',
-            currentlyActiveForm = 'comprehensive',
-            formToActivate      = {
-              formKey: 'sample',
-              status : 'Active'
-            },
-            formList;
-
-        // Retrieve form list
-        suite.model.getForms( formType ).then( function( response ) {
-          formList = response;
-          expect( formList[0].formKey ).toEqual( currentlyActiveForm );
-          expect( response[0].status ).toEqual( 'Active' );
-
-          // Activate a different form
-          suite.model.setFormStatus( formType, formToActivate, formList ).then( function() {
-            // Expect the original form to be inactive now
-            suite.model.getForms( formType ).then( function( response ) {
-              expect( response[0].formKey ).toEqual( currentlyActiveForm );
-              expect( response[0].status ).toEqual( 'Inactive' );
-            } );
-          } );
-        } );
-        suite.httpBackend.flush();
       } );
     } );
 
@@ -235,14 +155,4 @@
       } );
     } );
   } );
-
-  function getFormStatuses( formType, activeOnly ) {
-    var filterObj = {
-      formType: formType
-    };
-    if ( activeOnly ) {
-      filterObj.status = 'Active';
-    }
-    return _.filter( mockFormStore.formStatus, filterObj );
-  }
 })();
