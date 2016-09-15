@@ -130,7 +130,7 @@
         var configuredDataApi = context.formConfig.formDataApi;
 
         // Default api for submitting a form is to submit to iscFormDataApi
-        var wrappedData = configuredDataApi.wrap( context.model, context );
+        var wrappedData = configuredDataApi.wrap( context );
         return configuredDataApi.submit( wrappedData, context.options.formState._id, context );
       }
 
@@ -176,8 +176,9 @@
           additionalModels: {}
         };
 
-      function wrapDefault( formData, formScope ) {
-        var formState      = formScope.options.formState,
+      function wrapDefault( formScope ) {
+        var formData       = formScope.model,
+            formState      = formScope.options.formState,
             formDefinition = formScope.formDefinition.form;
 
         // Wrap data with additional information and metadata
