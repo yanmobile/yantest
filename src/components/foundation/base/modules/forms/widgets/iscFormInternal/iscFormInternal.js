@@ -127,7 +127,7 @@
         }
 
         function wrapAndSaveData() {
-          var wrappedData = wrapApi( self.model, self.formDefinition.form, self );
+          var wrappedData = wrapApi( self.model, self );
           return saveApi( wrappedData, self.options.formState._id, self );
         }
 
