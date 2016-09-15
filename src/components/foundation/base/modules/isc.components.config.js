@@ -25,9 +25,6 @@
         'formData'      : {
           'path': 'api/v1/formData'
         },
-        'formInfo'      : {
-          'path': 'api/v1/formInfo'
-        },
         'formTemplates' : {
           'path': 'api/v1/formTemplates'
         },
