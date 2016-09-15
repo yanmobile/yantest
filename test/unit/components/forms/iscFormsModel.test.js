@@ -24,9 +24,32 @@
 
     describe( 'iscFormsModel', function() {
       it( 'should have revealed functions', function() {
+        expect( _.isFunction( suite.model.configureCache ) ).toBe( true );
         expect( _.isFunction( suite.model.getFormDefinition ) ).toBe( true );
+        expect( _.isFunction( suite.model.getFormMetadata ) ).toBe( true );
         expect( _.isFunction( suite.model.getValidationDefinition ) ).toBe( true );
         expect( _.isFunction( suite.model.invalidateCache ) ).toBe( true );
+        expect( _.isFunction( suite.model.unwrapFormDefinitionResponse ) ).toBe( true );
+      } );
+    } );
+
+    describe( 'model.configureCache', function() {
+      it( 'should configure the scope of the FDN cache', function() {
+        var cacheKeyCounterWasCalled = false;
+
+        suite.model.configureCache( { getCacheKey: getCacheKey } );
+        suite.model.getFormDefinition( {
+          formKey: 'simple1',
+          mode   : 'edit'
+        } );
+        suite.httpBackend.flush();
+
+        expect( cacheKeyCounterWasCalled ).toBe( true );
+
+        function getCacheKey( formKey, formVersion ) {
+          cacheKeyCounterWasCalled = true;
+          return [formVersion || 'current', formKey].join( '.' );
+        }
       } );
     } );
 

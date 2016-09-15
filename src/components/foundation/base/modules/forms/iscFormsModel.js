@@ -26,16 +26,32 @@
     var _viewModeFormsCache = {};
     var _validationCache    = {};
 
-    var defaultViewTemplateUrl  = 'forms/foundationTemplates/templates/defaultViewMode.html';
-    var viewModePrefix          = '__viewMode__';
+    var defaultViewTemplateUrl = 'forms/foundationTemplates/templates/defaultViewMode.html';
+    var viewModePrefix         = '__viewMode__';
+
+    var getCacheKey = defaultGetCacheKey;
 
     return {
+      configureCache              : configureCache,
       getFormDefinition           : getFormDefinition,
       getFormMetadata             : getFormMetadata,
       getValidationDefinition     : getValidationDefinition,
       invalidateCache             : invalidateCache,
       unwrapFormDefinitionResponse: unwrapFormDefinitionResponse
     };
+
+    function defaultGetCacheKey( formKey, formVersion ) {
+      return [formVersion || 'current', formKey].join( '.' );
+    }
+
+    /**
+     * @memberOf iscFormsModel
+     * @description Configures the caching behavior of FDN.
+     * @param {{ getCacheKey : function(formKey, formVersion) }} config
+     */
+    function configureCache( config ) {
+      getCacheKey = config.getCacheKey || defaultGetCacheKey;
+    }
 
     /**
      * @memberOf iscFormsModel
@@ -68,7 +84,7 @@
      * @param {=String} formVersion
      */
     function invalidateCache( formKey, formVersion ) {
-      var cacheKey = ( formVersion || 'current' ) + '.' + formKey;
+      var cacheKey = getCacheKey( formKey, formVersion );
       _.unset( _formsCache, cacheKey );
       _.unset( _viewModeFormsCache, cacheKey );
       _.unset( _validationCache, cacheKey );
@@ -85,7 +101,7 @@
       var formKey     = config.formKey,
           formVersion = config.formVersion,
           formLiteral = config.formLiteral,
-          cacheKey    = ( formVersion || 'current' ) + '.' + formKey;
+          cacheKey    = getCacheKey( formKey, formVersion );
 
       var cachedValidation = _.get( _validationCache, cacheKey );
       var validations      = [];
@@ -151,7 +167,7 @@
           subformDefinitions = config.subformDefinitions,
           library            = config.library || [],
           omitTransforms     = config.omitTransforms || [],
-          cacheKey           = ( formVersion || 'current' ) + '.' + formKey;
+          cacheKey           = getCacheKey( formKey, formVersion );
 
       // If form is already cached, return the cached form in a promise
       var cachedForm;
