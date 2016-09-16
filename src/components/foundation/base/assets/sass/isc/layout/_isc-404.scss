@@ -1,19 +1,20 @@
 /* 404 Error Page Template */
 @include exports(404error) {
-  .error-404-container {
+
+  .error-page-container {
     text-align: center;
     margin-top: 6rem;
     font-size: 1.5rem;
     padding: 1rem;
 
-    .error-404 {
+    .error-title {
       font-size: 5.5rem;
       @include breakpoint(tablet){
         font-size: 7rem;
       }
     }
 
-    .not-found-text {
+    .error-subtitle {
       font-size:1.75rem;
     }
 
