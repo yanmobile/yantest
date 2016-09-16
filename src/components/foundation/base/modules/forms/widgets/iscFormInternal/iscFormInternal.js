@@ -49,9 +49,6 @@
         options     : {
           formState: {
             _validation : {},
-            _annotations: {
-              data: []
-            },
             _subforms   : self.formDefinition.subforms,
             _model      : {
               isDirty: false
@@ -73,9 +70,6 @@
 
       // Submit button from buttonConfig is handled separately here, to work with $validation pipeline
       self.onSubmit = onSubmit;
-
-      // Annotations
-      self.closeAnnotations = closeAnnotations;
 
       init();
 
@@ -133,7 +127,7 @@
         }
 
         function wrapAndSaveData() {
-          var wrappedData = wrapApi( self.model, self.formDefinition.form, self );
+          var wrappedData = wrapApi( self );
           return saveApi( wrappedData, self.options.formState._id, self );
         }
 
@@ -293,13 +287,6 @@
         self.mainFormConfig.selectablePages = _.filter( self.formDefinition.form.pages, function( page ) {
           return !page._isHidden;
         } );
-      }
-
-      /**
-       * @memberOf iscFormInternal
-       */
-      function closeAnnotations() {
-        self.formConfig.annotationsApi.closeAnnotationPanel();
       }
 
       /**

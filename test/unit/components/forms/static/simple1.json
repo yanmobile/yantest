@@ -11,6 +11,10 @@
         {
           "key"  : "aField",
           "type" : "input"
+        },
+        {
+          "key"  : "aCustomField",
+          "type" : "customTemplate"
         }
       ]
     }

@@ -22,39 +22,36 @@
     iscHttpapi, // needed for user script closures
     iscFormsCodeTableApi, iscFormsTemplateService,
     iscFormsApi, iscFormFieldLayoutService ) {
-    var _typeCache          = {};
     var _formsCache         = {};
     var _viewModeFormsCache = {};
     var _validationCache    = {};
 
-    var defaultViewTemplateUrl  = 'forms/foundationTemplates/templates/defaultViewMode.html';
-    var viewModePrefix          = '__viewMode__';
-    var multipleActiveFormTypes = [];
+    var defaultViewTemplateUrl = 'forms/foundationTemplates/templates/defaultViewMode.html';
+    var viewModePrefix         = '__viewMode__';
 
-    var getForms       = _.partial( getFormStatus, {
-      returnMultiple: true,
-      limitToActive : false
-    } );
-    var getActiveForm  = _.partial( getFormStatus, {
-      returnMultiple: false,
-      limitToActive : true
-    } );
-    var getActiveForms = _.partial( getFormStatus, {
-      returnMultiple: true,
-      limitToActive : true
-    } );
+    var getCacheKey = defaultGetCacheKey;
 
     return {
-      getForms                    : getForms,
-      getActiveForm               : getActiveForm,
-      getActiveForms              : getActiveForms,
-      setFormStatus               : setFormStatus,
+      configureCache              : configureCache,
       getFormDefinition           : getFormDefinition,
-      getValidationDefinition     : getValidationDefinition,
-      unwrapFormDefinitionResponse: unwrapFormDefinitionResponse,
       getFormMetadata             : getFormMetadata,
-      invalidateCache             : invalidateCache
+      getValidationDefinition     : getValidationDefinition,
+      invalidateCache             : invalidateCache,
+      unwrapFormDefinitionResponse: unwrapFormDefinitionResponse
     };
+
+    function defaultGetCacheKey( formKey, formVersion ) {
+      return [formVersion || 'current', formKey].join( '.' );
+    }
+
+    /**
+     * @memberOf iscFormsModel
+     * @description Configures the caching behavior of FDN.
+     * @param {{ getCacheKey : function(formKey, formVersion) }} config
+     */
+    function configureCache( config ) {
+      getCacheKey = config.getCacheKey || defaultGetCacheKey;
+    }
 
     /**
      * @memberOf iscFormsModel
@@ -87,96 +84,10 @@
      * @param {=String} formVersion
      */
     function invalidateCache( formKey, formVersion ) {
-      var cacheKey = ( formVersion || 'current' ) + '.' + formKey;
+      var cacheKey = getCacheKey( formKey, formVersion );
       _.unset( _formsCache, cacheKey );
       _.unset( _viewModeFormsCache, cacheKey );
       _.unset( _validationCache, cacheKey );
-    }
-
-    /**
-     * @memberOf iscFormsModel
-     * @param formType
-     * @returns {*}
-     */
-    function getCachedType( formType ) {
-      var cachedType = _.get( _typeCache, formType );
-      if ( !cachedType ) {
-        cachedType = [];
-        _.set( _typeCache, formType, cachedType );
-      }
-      return cachedType;
-    }
-
-    /**
-     * @memberOf iscFormsModel
-     * @param config
-     * @param formType
-     * @returns {*}
-     */
-    function getFormStatus( config, formType ) {
-      var allowMultiple = !!config.returnMultiple,
-          limitToActive = !!config.limitToActive,
-          cachedType    = getCachedType( formType );
-
-      if ( cachedType.length ) {
-        return $q.when( filterResults( cachedType ) );
-      }
-      else {
-        var deferred = $q.defer();
-        iscFormsApi.getFormStatuses( formType ).then( function( results ) {
-          _.set( _typeCache, formType, results );
-          deferred.resolve( filterResults( results ) );
-        } );
-        return deferred.promise;
-      }
-
-      function filterResults( array ) {
-        var filteredArray = limitToActive ? _.filter( array, { status: 'Active' } ) : array;
-        return allowMultiple ? filteredArray : _.first( filteredArray );
-      }
-    }
-
-    /**
-     * @memberOf iscFormsModel
-     * @param {String} formType
-     * @param {Object} formStatus - formKey and status
-     * @param {Array} formList
-     * @returns {*}
-     */
-    function setFormStatus( formType, formStatus, formList ) {
-      var cache               = getCachedType( formType ),
-          allowMultipleActive = _.includes( multipleActiveFormTypes, formType ),
-          formStatuses        = [formStatus];
-
-      // If multiple forms of this type are not allowed,
-      // and we are setting a form to be active,
-      // inactivate any currently active ones.
-      if ( !allowMultipleActive && formStatus.status === 'Active' ) {
-        var existingFormsToInactivate = _.filter( formList, {
-            formType: formType,
-            status  : 'Active'
-          }
-        );
-        _.forEach( existingFormsToInactivate, function( form ) {
-          if ( form.formKey !== formStatus.formKey ) {
-            form.status = 'Inactive';
-            formStatuses.push( {
-              formKey: form.formKey,
-              status : 'Inactive'
-            } );
-          }
-        } );
-      }
-
-      // Update the local cache, if it is populated
-      if ( cache.length ) {
-        _.forEach( formStatuses, function( form ) {
-          _.find( cache, { formKey: form.formKey } ).status = form.status;
-        } );
-      }
-
-      // Submit to REST api
-      return iscFormsApi.setFormStatus( formType, formStatuses );
     }
 
     /**
@@ -190,7 +101,7 @@
       var formKey     = config.formKey,
           formVersion = config.formVersion,
           formLiteral = config.formLiteral,
-          cacheKey    = ( formVersion || 'current' ) + '.' + formKey;
+          cacheKey    = getCacheKey( formKey, formVersion );
 
       var cachedValidation = _.get( _validationCache, cacheKey );
       var validations      = [];
@@ -256,7 +167,7 @@
           subformDefinitions = config.subformDefinitions,
           library            = config.library || [],
           omitTransforms     = config.omitTransforms || [],
-          cacheKey           = ( formVersion || 'current' ) + '.' + formKey;
+          cacheKey           = getCacheKey( formKey, formVersion );
 
       // If form is already cached, return the cached form in a promise
       var cachedForm;

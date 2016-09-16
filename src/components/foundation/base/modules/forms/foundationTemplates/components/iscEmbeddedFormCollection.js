@@ -20,7 +20,7 @@
    * @param iscFormsTemplateService
    * @param iscFormsValidationService
    * @param iscScrollContainerService
-   * @returns {{restrict: string, replace: boolean, require: string, controllerAs: string, scope: {id: string, formState: string, options: string, annotations: string}, bindToController: boolean, controller: controller, link: link, templateUrl: string}}
+   * @returns {{restrict: string, replace: boolean, require: string, controllerAs: string, scope: {id: string, formState: string, options: string}, bindToController: boolean, controller: controller, link: link, templateUrl: string}}
    */
   /* @ngInject */
   function iscEmbeddedFormCollection( $filter, $timeout, FoundationApi, iscCustomConfigService, FORMS_EVENTS,
@@ -49,10 +49,9 @@
       require         : 'ngModel',
       controllerAs    : 'efCollectionCtrl',
       scope           : {
-        id         : '@',
-        formState  : '=',
-        options    : '=',
-        annotations: '='
+        id       : '@',
+        formState: '=',
+        options  : '='
       },
       bindToController: true,
       controller      : controller,
@@ -93,14 +92,7 @@
       };
       self.subform        = {};
 
-      // Update annotations so that the context is filtered by the parent
-      self.subformOptions.formState._annotations = {
-        context: self.annotations.context,
-        data   : self.formState._annotations.data
-      };
-
-      self.dateFormat        = _.get( iscCustomConfigService.getConfig(), 'formats.date.shortDate', 'date' );
-      self.annotationWrapper = 'forms/foundationTemplates/tableTemplates/annotation-indicator.html';
+      self.dateFormat = _.get( iscCustomConfigService.getConfig(), 'formats.date.shortDate', 'date' );
 
       self.isNew      = false;
       self.renderForm = false;
@@ -134,7 +126,6 @@
           self.isNew = true;
 
           self.editModel = {};
-          setAnnotationContext();
 
           showSubform();
           $scope.$emit( FORMS_EVENTS.collectionEditStarted, self.editModel );
@@ -196,20 +187,18 @@
        * @memberOf iscEmbeddedFormCollection
        */
       function createTableFields() {
-        self.flattenedFields = $filter( 'iscFormsFlattenedFields' )( self.fields, self.subformOptions.formState._annotations );
+        self.flattenedFields = $filter( 'iscFormsFlattenedFields' )( self.fields );
 
         // Table configuration
         // Fields
         var tableColumns = _.map( self.flattenedFields, function( field ) {
           return {
-            key             : _.capitalize( field.label ),
-            model           : field.model,
-            templateUrl     : self.annotationWrapper,
-            hasAnnotations  : field.hasAnnotations,
-            innerTemplateUrl: field.templateUrl,
-            display         : field.display,
-            type            : field.type,
-            dateFormat      : self.dateFormat
+            key        : _.capitalize( field.label ),
+            model      : field.model,
+            templateUrl: field.templateUrl,
+            display    : field.display,
+            type       : field.type,
+            dateFormat : self.dateFormat
           };
         } );
 
@@ -259,16 +248,6 @@
 
         mergeBuiltInTemplates( self.fields );
         createTableFields();
-      }
-
-      /**
-       * @memberOf iscEmbeddedFormCollection
-       * @description
-       * Sets the context on the subform so that field controls in that subform can use the annotation system.
-       * @param {number=} index - The index of the row being edited. If for a new row, leave undefined.
-       */
-      function setAnnotationContext( index ) {
-        self.subformOptions.formState._annotations.index = index === undefined ? self.collectionModel.length : index;
       }
 
       /**
@@ -411,7 +390,6 @@
 
           self.isNew     = false;
           self.editIndex = index;
-          setAnnotationContext( index );
 
           self.editModel = {};
           _.merge( self.editModel, self.collectionModel[index] );
