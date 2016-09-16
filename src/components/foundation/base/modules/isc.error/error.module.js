@@ -26,7 +26,7 @@
         url           : '/noNetwork',
         state         : 'errorNoNetwork',
         templateUrl   : 'isc.error/errorNoNetwork.html',
-        translationKey: 'No Network Connection',
+        translationKey: 'No Network',
         roles         : ['*']
       }
     };
