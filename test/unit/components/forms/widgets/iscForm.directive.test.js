@@ -15,7 +15,7 @@
 
     // Some intentional mis-configurations to exercise safety nets
     var badFormConfig = {
-      formDataApi   : {
+      formDataApi: {
         // this should normally call the save data API, if the default option is not to be used
         save  : null,
         // this should normally return the data to be saved wrapped with metadata
@@ -24,9 +24,6 @@
         unwrap: function( formData ) {
           return null;
         }
-      },
-      annotationsApi: {
-        getFormAnnotations: "this should normally be a function"
       }
     };
 
@@ -233,9 +230,7 @@
           testSuite( suiteSimple3 );
 
           function testSuite( suite ) {
-            var annotationsApi = getFormConfig( suite ).annotationsApi,
-                buttonConfig   = getButtonConfig( suite );
-            expect( _.isFunction( annotationsApi.getFormAnnotations ) ).toBe( true );
+            var buttonConfig = getButtonConfig( suite );
             expect( _.isFunction( buttonConfig.submit.onClick ) ).toBe( true );
           }
         } );
@@ -289,6 +284,25 @@
 
           expect( suiteMain.$window.history.back ).toHaveBeenCalled();
         } );
+
+        //--------------------
+        // This tests the iscFormsTemplateService.addInheritedClassNames function
+        it( 'should load the base formly class for a custom template', function() {
+          var suite       = suiteSimple1,
+              customField = getControlByName( suite, 'aCustomField' );
+
+          expect( customField.length ).toBe( 1 );
+
+          // The "customTemplate" type extends the base "input" type,
+          // so expect the formly-field wrapper to contain these classes:
+          // formly-field-input
+          // formly-field-customTemplate
+          var formlyField = customField.parentsUntil( '[formly-field]' ).parent();
+          var className   = formlyField.attr( 'class' );
+
+          expect( _.includes( className, 'formly-field-input' ) ).toBe( true );
+          expect( _.includes( className, 'formly-field-customTemplate' ) ).toBe( true );
+        } );
       } );
     } );
 
@@ -298,7 +312,7 @@
         suiteMain.$httpBackend.flush();
       } );
 
-      
+
       //--------------------
       it( 'should raise an alert when data API submission returns an error', function() {
         var suite              = suiteSimple3,

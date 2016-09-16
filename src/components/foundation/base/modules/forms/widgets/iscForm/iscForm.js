@@ -82,41 +82,15 @@
         var config      = self.internalFormConfig,
             formDataApi = config.formDataApi;
 
-        config.annotationsApi.initAnnotationQueue();
-        getAnnotationData()
-          .then( function() {
-            if ( _.isEmpty( self.internalModel ) ) {
-              return formDataApi.load( self.parsedFormDataId, config )
-                .then( function( formData ) {
-                  self.internalModel = formDataApi.unwrap( formData ) || {};
-                  return true;
-                } );
-            }
-            else {
-              return true;
-            }
-          } )
-          .then( getFormDefinition );
-      }
-
-      /**
-       * @memberOf iscForm
-       * @returns {*}
-       */
-      function getAnnotationData() {
-        var getApi = _.get( self.internalFormConfig, 'annotationsApi.getFormAnnotations' );
-
-        if ( getApi && _.isFunction( getApi ) ) {
-          return getApi( self.parsedFormDataId ).then( function( annotations ) {
-            self.options.formState._annotations = {
-              index: self.parsedFormDataId,
-              data : annotations
-            };
-            return annotations;
-          } );
+        if ( _.isEmpty( self.internalModel ) ) {
+          formDataApi.load( self.parsedFormDataId, config )
+            .then( function( formData ) {
+              self.internalModel = formDataApi.unwrap( formData ) || {};
+              getFormDefinition();
+            } );
         }
         else {
-          return $q.when( [] );
+          getFormDefinition();
         }
       }
 

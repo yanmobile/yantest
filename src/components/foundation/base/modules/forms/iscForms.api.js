@@ -21,19 +21,15 @@
         moduleConfig = _.get( config, 'moduleApi', {} );
 
     var formsUrl     = apiHelper.getConfigUrl( moduleConfig.forms );
-    var formInfoUrl  = apiHelper.getConfigUrl( moduleConfig.formInfo );
     var templatesUrl = apiHelper.getConfigUrl( moduleConfig.formTemplates );
 
-    var statusUrl  = [formInfoUrl, 'status'].join( '/' );
     var scriptsUrl = [templatesUrl, 'userScripts'].join( '/' );
 
     var api = {
-      listForms        : listForms,
-      getFormStatuses  : getFormStatuses,
-      setFormStatus    : setFormStatus,
       getFormDefinition: getFormDefinition,
+      getTemplate      : getTemplate,
       getUserScript    : getUserScript,
-      getTemplate      : getTemplate
+      listForms        : listForms
     };
 
     return api;
@@ -45,27 +41,6 @@
     function listForms() {
       channel.debug( 'iscFormsApi.listForms' );
       return iscHttpapi.get( formsUrl );
-    }
-
-    /**
-     * @memberOf iscFormsApi
-     * @param formType
-     * @returns {*}
-     */
-    function getFormStatuses( formType ) {
-      channel.debug( 'iscFormsApi.getActiveForms' );
-      return iscHttpapi.get( [statusUrl, formType].join( '/' ) );
-    }
-
-    /**
-     * @memberOf iscFormsApi
-     * @param formType
-     * @param formStatuses
-     * @returns {*}
-     */
-    function setFormStatus( formType, formStatuses ) {
-      channel.debug( 'iscFormsApi.setFormStatus' );
-      return iscHttpapi.put( [formInfoUrl, formType].join( '/' ), formStatuses );
     }
 
     /**

@@ -176,7 +176,7 @@
           }
         }
         else if ( event.which === ENTER_KEY_CODE ) {
-          ctrl.select( ctrl.listData[index] );
+          ctrl.select( ctrl.getFilteredList()[index] );
         }
       }
 

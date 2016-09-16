@@ -25,9 +25,6 @@
         'formData'      : {
           'path': 'api/v1/formData'
         },
-        'formInfo'      : {
-          'path': 'api/v1/formInfo'
-        },
         'formTemplates' : {
           'path': 'api/v1/formTemplates'
         },
@@ -36,11 +33,12 @@
         }
       },
       'forms'          : {
-        'initCodeTables'  : false,
-        'debounce'        : 75,
-        'allowInvalid'    : true,
-        'updateOn'        : 'change',
-        'updateOnExcluded': [
+        'initCodeTables'       : false,
+        'debounce'             : 0,
+        'useExternalValidation': false,
+        'allowInvalid'         : false,
+        'updateOn'             : 'change',
+        'updateOnExcluded'     : [
           'checkbox',
           'multiCheckbox',
           'radio',
@@ -48,7 +46,7 @@
           'dateComponents',
           'dateComponentsPartial'
         ],
-        'fieldLayout'     : {
+        'fieldLayout'          : {
           'breakpoints': [
             'small',
             'medium',
@@ -64,7 +62,6 @@
       'debugDisplay'   : {
         'forms': {
           'additionalModels': false,
-          'annotations'     : false,
           'formData'        : false,
           'formState'       : false
         }

@@ -35,9 +35,6 @@ function getCustomConfig() {
       'formData'      : {
         'path': 'formData'
       },
-      'formInfo'      : {
-        'path': 'formInfo'
-      },
       'formTemplates' : {
         'path': 'formTemplates'
       },
