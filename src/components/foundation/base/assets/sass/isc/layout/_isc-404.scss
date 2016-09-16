@@ -7,7 +7,10 @@
     padding: 1rem;
 
     .error-404 {
-      font-size: 7rem;
+      font-size: 5.5rem;
+      @include breakpoint(tablet){
+        font-size: 7rem;
+      }
     }
 
     .not-found-text {
