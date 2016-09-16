@@ -26,14 +26,17 @@ Online training videos are shared internally [//iscinternal.com/isc/public/Learn
     #install dependencies (bower/npm)
     slush isc:install
 ```    
-### For app developers
+### For app developers (new project)
 ```bash
-    #clone repo && setup uifw && push to destination repo && creat app specific code && install dependencies
-    slush isc
-    #once completed, make the necessary app specific changes then commit and push changes to origin master
-    git add .
-    git commit -m 'initial app code'
-    git push origin master
+    # create a new project and push it to the destination GitHub Repo
+    slush isc:createRepo
+```
+
+```    
+### For app developers (clone project)
+```bash
+    #clone existin GitHub project
+    slush isc:cloneRepo
 ```
 
 ---
@@ -57,7 +60,7 @@ gulp test:app    #only app specific
 Update framework: //make sure your workarea is clean 
 
 ```bash
-slush isc:updateCore 
+slush isc:updateUifw 
 #create PR on GitHub
 ```
 
@@ -287,7 +290,7 @@ gulp deploy --appjson path/to/config.app.js #only app specific
     
 * **I have an existing application and my framework is out of date. How can I upgrade my application's framework (cool slush way)?**
   1. Update your ```uifw-tools``` by executing ```slush isc:update```
-  1. execute ```slush isc:updateCore```
+  1. execute ```slush isc:updateUifw```
   1. create a PR to merge this to your project's master branch
   
 * **I have an existing application and my framework is out of date. How can I upgrade my application's framework (the old fashion way)?**
@@ -363,6 +366,9 @@ gulp deploy --appjson path/to/config.app.js #only app specific
 # To switch between existing local branches
 git checkout <branch>
 
+# checkout last branch (good fo toggling between two branches)
+git checkout -
+
 # Check which branch you are currently on (current branch)
 git branch
 
@@ -387,14 +393,20 @@ git remote add uifw <core repo uri>
 # Check status of git (what's staged and unstaged)
 git status
 
-# Add all files to staged area
+# Stage files by file path
 git add <file path>
 
-# Add updated files to staged area
+# Stage all changes
+git add -A
+
+# Stage updated changes
 git add -u
 
 # Commit the staged changes with message
 git commit -m '<message>'
+
+# Commit the staged and unstaged changes with message
+git commit -am '<message>'
 
 # Push commits to origin branch
 git push origin <branch>
