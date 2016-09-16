@@ -57,6 +57,7 @@ function getAppConfig() {
         "src/app/modules/**/*.html"
       ],
       "assets" : {
+        "FDN"              : "src/app/assets/FDN/",
         "i18nDir"          : "src/app/assets/i18n/",
         "comments"         : "i18nDomain value will be used as a part of the generated i18n XML",
         "i18nDomain"       : "hs-temp-app-scaffold",
@@ -84,6 +85,7 @@ function getAppConfig() {
       "css"          : "src/app/assets/sass/main.scss",
       "js"           : "src/app/assets/sass/main.js",
       "comments"     : "i18nXml is used for specifying destination location of converted i18n files",
+      "fdn"          : "src/www/assets/FDN/",
       "i18nXml"      : "isc-tools/localize",
       // for specifying which files are to be copied over.
       // Since development only uses "en-us.json", no need to update the gulp task to account for
