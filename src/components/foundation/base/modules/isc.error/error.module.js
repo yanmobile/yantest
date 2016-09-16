@@ -19,14 +19,14 @@
         url           : '/404',
         state         : 'error404',
         templateUrl   : 'isc.error/error404.html',
-        translationKey: 'Error404',
+        translationKey: 'Error 404',
         roles         : ['*']
       },
       'errorNoNetwork': {
         url           : '/noNetwork',
         state         : 'errorNoNetwork',
         templateUrl   : 'isc.error/errorNoNetwork.html',
-        translationKey: 'ErrorNoNetwork',
+        translationKey: 'No Network Connection',
         roles         : ['*']
       }
     };
