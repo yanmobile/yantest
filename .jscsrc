@@ -120,6 +120,5 @@
   "requireParenthesesAroundIIFE"           : true,
   "disallowNestedTernaries"                : {
     "maxLevel" : 1
-  },
-  "requirePaddingNewLinesAfterUseStrict": true
+  }
 }
