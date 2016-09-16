@@ -79,6 +79,7 @@
   "requireSpaceBeforeObjectValues"         : true,
   "requireSpacesInConditionalExpression"   : true,
   "requireSpaceBeforeBlockStatements"      : true,
+  "requireSpaceAfterComma"                 : true,
   "requireLineFeedAtFileEnd"               : true,
   "requireSpacesInsideObjectBrackets"      : "all",
   "disallowSpacesInsideArrayBrackets"      : "all",
