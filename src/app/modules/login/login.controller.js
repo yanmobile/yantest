@@ -39,16 +39,33 @@
       if ( iscCustomConfigService.getConfig().useCacheLogin ) {
         return loginApi.cacheLogin( self.credentials )
           .then( cacheLoginSuccess, _loginError );
-
       } else {
         return loginApi.login( self.credentials )
           .then( _loginSuccess, _loginError );
       }
 
       function cacheLoginSuccess( responseData ) {
-        return loginApi.getCacheUser( responseData.Username )
-          .then( addFakeApplicationRole )
-          .then( cacheUserSuccess );
+        if ( iscCustomConfigService.getConfig().requiresOrg ) {
+          return loginApi.getCacheUser( responseData.Username )
+            .then( addFakeApplicationRole )
+            .then( cacheUserSuccess );
+        } else {
+          loginData = responseData;
+          addFakeApplicationRole( responseData );
+          _.extend( responseData,
+            {
+              sessionInfo: {
+                remainingTime: responseData.SessionTimeout
+              },
+              UserData   : {
+                Name: {
+                  GivenName: responseData.Username,
+                  LastName : ""
+                }
+              }
+            } );
+          _loginSuccess( loginData );
+        }
 
         function addFakeApplicationRole( cacheUser ) {
           cacheUser.ApplicationRole = "provider";  //update server to return actual ApplicationRole
