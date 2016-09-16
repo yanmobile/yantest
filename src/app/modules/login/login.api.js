@@ -6,60 +6,78 @@
 
   /* @ngInject */
   function loginApi( devlog, apiHelper, iscHttpapi ) {
+    var log          = devlog.channel( 'loginApi' );
 
     var baseUrl = apiHelper.getUrl( 'auth/' );
+    var baseUsersUrl = apiHelper.getUrl( 'users/' );
 
     var api = {
-      login     : login,
-      cacheLogin: cacheLogin,
-      logout    : logout,
-      ping      : ping,
-      status    : status,
-      keepAlive : keepAlive,
-      changeRole: changeRole
+      login          : login,
+      logout         : logout,
+      status         : status,
+      keepAlive      : keepAlive,
+      changeRole     : changeRole,
+      cacheLogin     : cacheLogin,
+      getCacheUser   : getCacheUser
     };
 
     return api;
 
     function changeRole( role ) {
-      devlog.channel( 'loginApi' ).debug( 'loginApi.changeRole' );
+      log.debug( 'loginApi.changeRole' );
       var data = { role: role };
       return iscHttpapi.put( baseUrl + 'role', data );
     }
 
+    /**
+     * Login via REST-ful API call
+     * @param credentials
+     * @returns {promise}
+     */
     function login( credentials ) {
-      devlog.channel( 'loginApi' ).debug( 'loginApi.login' );
+      log.debug( 'loginApi.login' );
       return iscHttpapi.post( baseUrl + 'login', credentials );
     }
 
+    /**
+     * Login via form post to CACHE server
+     * @param credentials
+     * @returns {promise}
+     */
     function cacheLogin( credentials ) {
-      devlog.channel( 'loginApi' ).debug( 'loginApi.iscLogin' );
-      var pl = "CacheUserName=" + credentials.CacheUserName + '&CachePassword=' + credentials.CachePassword + '&CacheNoRedirect=1';
-      //$httpProvider.defaults.headers
-      return $http.post( baseUrl + 'login', pl );// iscHttpapi.post( baseUrl + 'login', credentials);  //, {withCredentials: true} );
+      log.debug( 'loginApi.iscLogin' );
+
+      var formData = "CacheUserName=" + credentials.username + '&CachePassword=' + credentials.password + '&CacheNoRedirect=1';
+
+      return iscHttpapi.formPost( baseUrl + 'login', formData );
     }
 
+    /**
+     * Returns cache user
+     * @param username
+     * @returns {*}
+     */
+    function getCacheUser( username ) {
+      var url = baseUsersUrl + '/healthshare/' + username;
+      return iscHttpapi.get( url );
+    }
+
+    /**
+     * Terminates a user session
+     * @returns {promise}
+     */
     function logout() {
-      devlog.channel( 'loginApi' ).debug( 'loginApi.logout' );
+      log.debug( 'loginApi.logout' );
       return iscHttpapi.post( baseUrl + 'logout' );
     }
 
     function status() {
-      devlog.channel( 'loginApi' ).debug( 'loginApi.login' );
+      log.debug( 'loginApi.login' );
       return iscHttpapi.get( baseUrl + 'status' );
     }
 
-    function ping() {
-      devlog.channel( 'loginApi' ).debug( 'loginApi.ping' );
-      return iscHttpapi.get( baseUrl + 'ping', {
-        responseAsObject  : true,
-        preventDefault    : true,
-        bypassSessionReset: true
-      } );
-    }
-
     function keepAlive() {
-      devlog.channel( 'loginApi' ).debug( 'loginApi.keepAlive' );
+      log.debug( 'loginApi.keepAlive' );
       return iscHttpapi.get( baseUrl + 'keepAlive' );
     }
   }

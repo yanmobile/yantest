@@ -43,6 +43,10 @@
     return {
       //'customConfigUrl': 'path/to/external/config/api', //uncomment to call external api for custom config
       'production': false,
+      'login'     : {
+        "useCacheLogin": true,
+        'requiresOrg'  : false,
+      },
       'api'       : {
         'protocol': 'http',
         'hostname': 'localhost',
