@@ -4,9 +4,17 @@
   var gulp        = require( 'gulp' );
   var util        = require( 'util' );
   var browserSync = require( 'browser-sync' );
-  var middleware  = require( './proxy' );
   var seq         = require( 'run-sequence' );
   var argv        = require( 'yargs' ).argv;
+  var proxy       = require( 'http-proxy-middleware' );
+  var _           = require( 'lodash' );
+
+  var proxyConfig;
+  try {
+    proxyConfig = require( './proxy' );
+  } catch ( ex ) {
+    proxyConfig = [];
+  }
 
   function browserSyncInit( baseDir, files, browser ) {
     browser = browser === undefined ? 'default' : browser;
@@ -18,11 +26,19 @@
       };
     }
 
-    var config =   {
+    var proxies = _.map( proxyConfig, function( proxyConfigItem ) {
+      return proxy( proxyConfigItem.pattern, {
+        target      : proxyConfigItem.target,
+        chagneOrigin: true,
+        logLevel    : proxyConfigItem.logLevel
+      } );
+    } );
+
+    var config = {
       startPath: '',
       server   : {
         baseDir   : baseDir,
-        middleware: middleware,
+        middleware: proxies,
         routes    : routes
       },
       open     : true,
@@ -31,7 +47,7 @@
 
     //usage `gulp server --port=2222`
     //usage `gulp serve --port=2222`
-    if(argv.port){
+    if ( argv.port ) {
       config.port = argv.port;
     }
 
