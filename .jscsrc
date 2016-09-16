@@ -78,12 +78,12 @@
   "requireSpaceAfterBinaryOperators"       : true,
   "requireSpaceBeforeObjectValues"         : true,
   "requireSpacesInConditionalExpression"   : true,
-  "requireSpaceBeforeBlockStatements"      : true,
   "requireSpaceAfterComma"                 : true,
+  "requireSpaceBeforeBlockStatements"      : true,
   "requireLineFeedAtFileEnd"               : true,
   "requireSpacesInsideObjectBrackets"      : "all",
   "disallowSpacesInsideArrayBrackets"      : "all",
-  "requireAlignedObjectValues"             : "all",
+  "requireAlignedObjectValues"             : "ignoreLineBreak",
   "disallowSpacesInCallExpression"         : true,
   "disallowSpacesInsideParentheses"        : false,
   "requireSpacesInsideParentheses"         : "all", //bug in Webstorm preventing this from working for IIFEs
@@ -120,5 +120,6 @@
   "requireParenthesesAroundIIFE"           : true,
   "disallowNestedTernaries"                : {
     "maxLevel" : 1
-  }
+  },
+  "requirePaddingNewLinesAfterUseStrict": true
 }
