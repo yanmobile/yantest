@@ -36,7 +36,7 @@
       log.logFn( 'login' );
       log.debug( 'credentials', self.credentials );
 
-      if ( iscCustomConfigService.getConfig().useCacheLogin ) {
+      if ( iscCustomConfigService.getConfig().login.useCacheLogin ) {
         return loginApi.cacheLogin( self.credentials )
           .then( cacheLoginSuccess, _loginError );
       } else {
@@ -45,7 +45,7 @@
       }
 
       function cacheLoginSuccess( responseData ) {
-        if ( iscCustomConfigService.getConfig().requiresOrg ) {
+        if ( iscCustomConfigService.getConfig().login.requiresOrg ) {
           return loginApi.getCacheUser( responseData.Username )
             .then( addFakeApplicationRole )
             .then( cacheUserSuccess );

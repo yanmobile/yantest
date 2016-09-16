@@ -42,10 +42,12 @@
   function getConfig() {
     return {
       //'customConfigUrl': 'path/to/external/config/api', //uncomment to call external api for custom config
-      'production'   : false,
-      "useCacheLogin": false,
-      'requiresOrg'  : false,
-      'api'          : {
+      'production': false,
+      'login'     : {
+        "useCacheLogin": true,
+        'requiresOrg'  : false,
+      },
+      'api'       : {
         'protocol': 'http',
         'hostname': 'localhost',
         'port'    : 3030,
