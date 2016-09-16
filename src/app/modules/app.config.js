@@ -44,6 +44,7 @@
       //'customConfigUrl': 'path/to/external/config/api', //uncomment to call external api for custom config
       'production'   : false,
       "useCacheLogin": false,
+      'requiresOrg'  : false,
       'api'          : {
         'protocol': 'http',
         'hostname': 'localhost',
