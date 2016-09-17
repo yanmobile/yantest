@@ -29,7 +29,7 @@
     var proxies = _.map( proxyConfig, function( proxyConfigItem ) {
       return proxy( proxyConfigItem.pattern, {
         target      : proxyConfigItem.target,
-        chagneOrigin: true,
+        changeOrigin: true,
         logLevel    : proxyConfigItem.logLevel
       } );
     } );
