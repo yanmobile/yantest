@@ -1,6 +1,6 @@
 // NOTE:  order of the proxy items matter
 
-// to use proxy server, be sure to update your src/app/app.config.js to use relative path
+// to use proxy server, be sure to update your src/app/modules/app.config.js to use relative path
 // by removing "protocol", "hostname", and "port"
 //
 // proxy server configs are automatically used when running "gulp serve" and "gulp server"
