@@ -38,7 +38,7 @@ module.exports = {
       "i18nDir": "src/components/foundation/base/assets/i18n/",
       "images" : [
         "src/components/foundation/base/assets/images/**/*",
-        "src/components/foundation/base/node_modules/leaflet/dist/images/**/*"
+        "src/components/foundation/base/assets/vendors/leaflet/images/**/*"
       ],
       "vendor" : {
         "js": [
