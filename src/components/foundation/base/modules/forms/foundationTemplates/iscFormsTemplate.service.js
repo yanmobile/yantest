@@ -60,7 +60,10 @@
         formsConfig      = _.get( config, 'forms', {} ),
         updateOnExcluded = formsConfig.updateOnExcluded,
         widgetLibrary    = [],
-        functionLibrary  = {},
+        functionLibrary  = {
+          _     : _,
+          moment: moment
+        },
         customButtonDefaults,
         customFormDefaults;
 
