@@ -12,8 +12,8 @@
       replace         : true,
       controllerAs    : 'formCtrl',
       scope           : {
-        buttonConfig: '=',
-        formConfig  : '=',
+        buttonConfig: '=?',
+        formConfig  : '=?',
         formDataId  : '@?',
         formKey     : '@?',
         formVersion : '@?',
