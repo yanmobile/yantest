@@ -76,6 +76,7 @@
           key              = opts.key,
           editAs           = _.get( opts, 'data.collections.editAs' ),
           viewAs           = _.get( opts, 'data.collections.viewAs' ),
+          allowReordering  = _.get( opts, 'data.collections.allowReordering' ),
           subforms         = self.formState._subforms,
           useDynamicFields = _.get( opts, 'data.collections.useDynamicFields' ),
           embeddedType     = _.get( opts, 'data.embeddedType' ),
@@ -219,9 +220,14 @@
           sortable : true,
           columns  : tableColumns,
           emptyText: _.get( self.options, 'data.emptyCollectionMessage' ),
+          options  : {
+            allowReordering: allowReordering
+          },
           callbacks: {
             editForm          : editForm,
             removeForm        : removeForm,
+            moveUp            : moveUp,
+            moveDown          : moveDown,
             hasValidationError: hasValidationError
           }
         };
@@ -406,6 +412,25 @@
 
         self.collectionModel.splice( index, 1 );
         $scope.$emit( FORMS_EVENTS.collectionItemRemoved, row );
+        onCollectionModified();
+      }
+
+      function moveUp( row ) {
+        move( row, -1 );
+      }
+
+      function moveDown( row ) {
+        move( row, +1 );
+      }
+
+      function move( row, offset ) {
+        var index = _.indexOf( self.collectionModel, row );
+
+        var rowToMove  = _.pullAt( self.collectionModel, index ),
+            firstHalf  = _.slice( self.collectionModel, 0, index + offset ),
+            secondHalf = _.slice( self.collectionModel, index + offset );
+
+        self.collectionModel = _.concat( firstHalf, rowToMove, secondHalf );
         onCollectionModified();
       }
 

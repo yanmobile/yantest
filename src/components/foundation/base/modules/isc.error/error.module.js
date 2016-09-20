@@ -15,7 +15,7 @@
 
   function getStates() {
     return {
-      'error404': {
+      'error404'      : {
         url           : '/404',
         state         : 'error404',
         templateUrl   : 'isc.error/error404.html',
