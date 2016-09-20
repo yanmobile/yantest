@@ -7,6 +7,7 @@
    */
   angular.module( 'isc.forms' )
     .filter( 'iscFormsFlattenedFields', iscFormsFlattenedFields );
+
   /**
    * @ngdoc filter
    * @memberOf isc.forms

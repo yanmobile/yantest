@@ -323,6 +323,11 @@
         }
       }
     },
+    "ng-tags-input": {
+      "version": "3.1.1",
+      "from": "ng-tags-input@3.1.1",
+      "resolved": "https://registry.npmjs.org/ng-tags-input/-/ng-tags-input-3.1.1.tgz"
+    },
     "tooltipster": {
       "version": "4.1.4",
       "from": "tooltipster@4.1.4",

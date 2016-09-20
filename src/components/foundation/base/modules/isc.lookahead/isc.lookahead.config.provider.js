@@ -2,9 +2,8 @@
   'use strict';
 
   angular
-    .module( 'isc.lookahead')
+    .module( 'isc.lookahead' )
     .provider( 'lookaheadConfig', lookaheadConfig );
-
 
   function lookaheadConfig() {
     var self = this;
