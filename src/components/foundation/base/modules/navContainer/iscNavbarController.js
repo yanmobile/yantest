@@ -21,6 +21,7 @@
    * @param iscSessionModel
    * @param AUTH_EVENTS
    */
+  /* @ngInject */
   function iscNavbarController( devlog, $scope, $state, $rootScope, iscNavContainerModel,
     iscCustomConfigService, iscCustomConfigHelper, iscUiHelper, iscSessionModel,
     AUTH_EVENTS ) {

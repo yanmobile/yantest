@@ -1,0 +1,39 @@
+<tags-input 
+  id="{{lookCtrl.formConfig.formId}}"
+  name="{{lookCtrl.formConfig.formId}}"
+  ng-required="false"
+  ng-model="lookCtrl.tags" 
+  key-property="{{lookCtrl.formConfig.keyProperty}}"
+  display-property="{{lookCtrl.formConfig.displayProperty}}" 
+  placeholder="{{lookCtrl.formConfig.placeholder}}" 
+  replace-spaces-with-dashes="false"
+  template="{{lookCtrl.templates.tagTemplate}}"
+  on-tag-added="lookCtrl.tagAdded($tag)"
+  on-tag-removed="lookCtrl.tagRemoved($tag)">
+  <auto-complete 
+    source="lookCtrl.source($query)"
+    min-length="2"
+    load-on-focus="false"
+    load-on-empty="false"
+    max-results-to-show="10"
+    template="{{lookCtrl.templates.autoCompleteTemplate}}">
+  </auto-complete>
+</tags-input>
+
+<script type="text/ng-template" id="tag-template">
+  <div class="tag-template">
+    <div class="right-panel">
+      <span>{{$getDisplayText()}}</span>
+      <a class="remove-button" ng-click="$removeTag()">&#10006;</a>
+    </div>
+  </div>
+</script>
+
+<script type="text/ng-template" id="autocomplete-template">
+  <div class="autocomplete-template">
+    <div class="right-panel">
+      <span ng-bind-html="$highlight($getDisplayText())"></span>
+      <span><b>{{data.text}}</b></span>
+    </div>
+  </div>
+</script>
