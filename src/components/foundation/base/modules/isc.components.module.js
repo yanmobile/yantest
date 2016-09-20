@@ -22,7 +22,8 @@
       'isc.notification',
       'isc.spinner',
       'iscNavContainer',
-      'isc.error'
+      'isc.error',
+      'isc.lookahead'
     ] );
 
 } )();

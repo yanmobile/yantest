@@ -1,0 +1,96 @@
+/* ****************************************** */
+/* NG-TAGS-INPUT STYLES						  */
+/* ****************************************** */
+tags-input .host {
+  position: relative;
+  margin-top: 0 !important;
+  margin-bottom: 5px !important;
+  height: 100%;
+  border-bottom: solid 1px #999;
+}
+
+tags-input .tags {
+  width: 100%;
+  box-shadow: 0;
+  border: 0;
+}
+
+tags-input .tags .input {
+  border: 0 !important;
+  outline: none !important;
+  padding-left: 0 !important;
+  height: 30px !important;
+  font: 16px "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+}
+
+tags-input .tags .tag-item {
+  border-radius: 0 !important;
+  border: solid 1px royalblue !important;
+  background: #0097cf !important;
+  color: white;
+  padding: 0 5px !important;
+  height: 30px !important;
+}
+
+.tag-template .left-panel {
+  float: left;
+}
+
+.tag-template .left-panel img {
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+  padding-top: 3px;
+}
+
+.tag-template .right-panel {
+  float: left;
+  margin-left: 0;
+  line-height: 28px;
+  font-size: 0.8em !important;
+}
+
+.tag-template .right-panel .small {
+  font-size: 0.9em;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+tags-input .tags .tag-item .remove-button {
+  font: 700 10px Arial,sans-serif !important;
+  color: #fff !important;
+}
+
+.autocomplete .suggestion-item {
+  padding: 2px 10px;
+}
+
+.autocomplete-template .left-panel {
+  float: left;
+}
+
+.autocomplete-template .left-panel img {
+  width: 36px;
+  height: 36px;
+  vertical-align: middle;
+}
+
+.autocomplete-template .right-panel {
+  float: left;
+  margin-left: 5px;
+  margin-top: 0;
+}
+
+.autocomplete-template .right-panel span:first-child {
+  font-size: 0.9em;
+}
+
+.autocomplete-template .right-panel span:nth-child(2) {
+  font-size: 0.8em;
+  color: gray;
+}
+
+.autocomplete-template .right-panel span:last-child {
+  display: block;
+  font-size: 0.8em;
+}

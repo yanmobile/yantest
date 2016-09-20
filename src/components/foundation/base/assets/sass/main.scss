@@ -13,9 +13,11 @@
 @import "vendor/charts"; // Charts - Base
 @import "vendor/LineChart"; // Charts - Line
 @import "vendor/tooltipster"; // Tooltips
+@import "vendor/ng-tags-input"; // ng-tags-input
 
 /* Import Framework SASS */
 @import "isc/isc";
 
 /* Import Module SASS */
 @import "../../modules/isc.agenda/isc.agenda";
+@import "../../modules/isc.lookahead/isc.lookahead";
