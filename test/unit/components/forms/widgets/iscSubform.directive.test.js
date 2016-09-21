@@ -134,7 +134,7 @@
           return getControlByName( suite, name ).filter( '.subform' );
         }
       } );
-    });
+    } );
 
     //--------------------
     describe( 'iscSubform - CRUD', function() {
@@ -157,6 +157,12 @@
         testAdd( 'test.SubformInline', {} );
         testAdd( 'test.SubformModal', {} );
         testAdd( 'test.PrimitiveCollection', { isPrimitive: true } );
+
+        // Test reordering items in the model
+        testReorder( 'test.SubformPage' );
+        testReorder( 'test.SubformInline' );
+        testReorder( 'test.SubformModal' );
+        testReorder( 'test.PrimitiveCollection' );
 
         // Edit each subform type, change a field, save
         testEdit( 'test.SubformPage', { isFullPage: true } );
@@ -284,6 +290,39 @@
             saveButton = suite.element.find( '.embedded-form-save' );
             shownForm  = subform.find( '.formly' );
             inputField = getControlByName( suite, isPrimitive ? PRIMITIVE_KEY : 'aField' );
+          }
+        }
+
+        function testReorder( subformName ) {
+          var suite         = suiteSubform,
+              subform       = getControlByName( suite, subformName ).filter( '.subform' ),
+              moveUpButton  = subform.find( 'button.embedded-form-move-up' ).last(),
+              model         = _.get( suite.controller.model, subformName ),
+              rowToMove     = _.last( model ),
+              startingIndex = model.length - 1;
+
+          expect( moveUpButton.length ).toBe( 1 );
+          expect( subform.length ).toBe( 1 );
+
+          expect( _.indexOf( model, rowToMove ) ).toBe( startingIndex );
+
+          // Move the row up
+          moveUpButton.click();
+          selectElements();
+
+          expect( _.indexOf( model, rowToMove ) ).toBe( startingIndex - 1 );
+
+          var moveDownButton = subform.find( 'button.embedded-form-move-down' ).first();
+          expect( moveDownButton.length ).toBe( 1 );
+
+          // Move the row back down
+          moveDownButton.click();
+          selectElements();
+
+          expect( _.indexOf( model, rowToMove ) ).toBe( startingIndex );
+
+          function selectElements() {
+            model = _.get( suite.controller.model, subformName );
           }
         }
 

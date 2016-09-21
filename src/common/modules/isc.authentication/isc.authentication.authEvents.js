@@ -2,7 +2,7 @@
  * Created by hzou on 12/8/15.
  */
 
-(function() {
+( function() {
   'use strict';
 
   /**
@@ -33,4 +33,4 @@
       sessionTimeoutReset  : 'iscSessionTimeoutReset'
     } );
 
-})();
+} )();
