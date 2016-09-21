@@ -9,7 +9,10 @@
     .module( 'isc.core' )
     .factory( 'apiHelper', apiHelper );
 
-  function apiHelper( iscCustomConfigService ) {
+  function apiHelper( devlog, iscCustomConfigService ) {
+
+    var log = devlog.channel( 'apiHelper' );
+    
     var service = {
       getUrl      : getUrl,
       getConfigUrl: getConfigUrl,
@@ -20,18 +23,33 @@
     ////////////////
 
     function getUrl( url ) {
+      log.logFn( 'getUrl' );
+
       var config      = getConfig(),
           relativeUrl = isUrlRelative( config.api );
 
+      log.debug( '...url', url );
+      log.debug( '...config.api', config.api );
+      log.debug( '...relativeUrl', relativeUrl );
+
+      var finalUrl = '';
       if ( relativeUrl ) {
-        return [config.api.path, url].join( '/' );
+        finalUrl = [config.api.path, url].join( '/' );
       }
       else {
-        return [config.api.protocol + ":/",
-          config.api.hostname + ( config.api.port ? ":" + config.api.port : '' ),
-          config.api.path,
-          url].join( '/' );
+        var protocol = config.api.protocol + ":/";
+        var hostname = config.api.hostname + ( config.api.port ? ":" + config.api.port : '' );
+        var path     = config.api.path;
+
+        log.debug( '...protocol', protocol );
+        log.debug( '...hostname', hostname );
+        log.debug( '...path', path );
+
+        finalUrl = [protocol, hostname, path, url].join( '/' );
       }
+
+      log.debug( '...finalUrl', finalUrl );
+      return finalUrl;
     }
 
     /**
