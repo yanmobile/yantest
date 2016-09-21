@@ -19,25 +19,20 @@
       } )
     );
 
-    beforeEach( inject( function( $rootScope, $compile, $window, $httpBackend, $timeout, $q,
+    beforeEach( inject( function( $rootScope, $compile, $httpBackend, $timeout,
       formlyApiCheck, formlyConfig,
-      iscFormsTemplateService,
-      iscFormDataApi, iscNotificationService, iscFormsValidationService ) {
+      iscFormsTemplateService ) {
+
       formlyConfig.disableWarnings   = true;
       formlyApiCheck.config.disabled = true;
 
       suiteMain = window.createSuite( {
-        $window     : $window,
-        $compile    : $compile,
         $httpBackend: $httpBackend,
         $timeout    : $timeout,
         $rootScope  : $rootScope,
-        $q          : $q,
+        $compile    : $compile,
 
-        iscFormsTemplateService: iscFormsTemplateService,
-        formDataApi            : iscFormDataApi,
-        notificationService    : iscNotificationService,
-        validationService      : iscFormsValidationService
+        iscFormsTemplateService: iscFormsTemplateService
       } );
       mockFormResponses( suiteMain.$httpBackend );
     } ) );
@@ -68,7 +63,7 @@
         suiteMain.$httpBackend.flush();
       } );
 
-      it( 'should load a literal FDN definition and work like a REST form', function() {
+      it( 'should load the test watcher form and fire the watch listener', function() {
         var model       = suite.controller.internalModel,
             newValue    = 'some value',
             controlName = 'fieldWithCustomWatcher',
@@ -76,6 +71,7 @@
             inputField  = getControlByName( suite, controlName );
 
         expect( _.get( model, controlName ) ).toBeUndefined();
+        expect( _.get( model, watcherProp ) ).toBeUndefined();
 
         expect( inputField.length ).toBe( 1 );
         inputField.val( newValue ).trigger( 'change' );
