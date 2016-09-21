@@ -45,7 +45,7 @@
       'production': false,
       'login'     : {
         "useCacheLogin": true,
-        'requiresOrg'  : false,
+        'requiresOrg'  : false
       },
       'api'       : {
         'protocol': 'http',

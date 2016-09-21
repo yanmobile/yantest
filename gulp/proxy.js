@@ -14,8 +14,8 @@
 //     target  : "http://localhost:3030",
 //     logLevel: 'debug'
 //   }, {
-//     pattern : "/api",
-//     target  : "http://devrefhspd:7162/healthshare",
+//     pattern : "/csp",
+//     target  : "http://devrefhspd:7162",
 //     logLevel: 'debug'
 //   }
 // ];
