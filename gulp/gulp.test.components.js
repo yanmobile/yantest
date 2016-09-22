@@ -4,6 +4,7 @@
 var Karma            = require( 'karma' ).Server;
 var commonTestConfig = require( './gulp.test.common' );
 var _                = require( 'lodash' );
+var reportCoverage   = true;
 
 module.exports = {
   init  : init,
@@ -29,7 +30,6 @@ function init( gulp, plugins, config, _ ) {
   'use strict';
   var src = getSrc( config );
 
-
   var srcFiles = []
     .concat( src.commonVendorJs )
     .concat( src.componentsVendorJs )
@@ -48,10 +48,12 @@ function init( gulp, plugins, config, _ ) {
    =              Run unit tests                   =
    ================================================*/
   gulp.task( 'test:components', function( done ) {
+    var reporters  = reportCoverage ? ['progress', 'coverage'] : ['progress'];
+    reportCoverage = false; //only report coverage on the first pass
 
     var configPath = plugins.path.join( __dirname, "../test/karma.conf.components.js" );
     return new Karma( {
-      reporters : ["progress"],
+      reporters : reporters,
       configFile: configPath,
       files     : srcFiles,
       singleRun : true

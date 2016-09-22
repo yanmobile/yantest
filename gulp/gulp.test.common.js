@@ -1,9 +1,11 @@
 /**
  * Created by douglasgoodman on 1/16/15.
  */
-var Karma = require( 'karma' ).Server;
+var Karma          = require( 'karma' ).Server;
+var argv           = require( 'yargs' ).argv;
+var reportCoverage = true;
 
-module.exports = {
+module.exports     = {
   init  : init,
   getSrc: getSrc
 };
@@ -26,8 +28,7 @@ function init( gulp, plugins, config, _ ) {
   'use strict';
   var src = getSrc( config, _ );
 
-
-  var srcFiles   = _.concat(
+  var srcFiles = _.concat(
     src.commonVendorJs,
     src.commonModuleModules,
     src.commonModuleJs,
@@ -44,10 +45,12 @@ function init( gulp, plugins, config, _ ) {
   // run the common tests
   // --------------------------------
   gulp.task( 'test:common', function( done ) {
+    var reporters  = reportCoverage ? ['progress', 'coverage'] : ['progress'];
+    reportCoverage = false; //only report coverage on the first pass
 
     var configPath = plugins.path.join( __dirname, "../test/karma.conf.common.js" );
     return new Karma( {
-      reporters : ["progress"],
+      reporters : reporters,
       configFile: configPath,
       files     : srcFiles,
       singleRun : true
