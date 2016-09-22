@@ -5,8 +5,9 @@
 var Karma               = require( 'karma' ).Server;
 var componentTestConfig = require( './gulp.test.components' );
 var _                   = require( 'lodash' );
+var reportCoverage      = true;
 
-module.exports = {
+module.exports          = {
   init  : init,
   getSrc: getSrc
 };
@@ -62,10 +63,12 @@ function init( gulp, plugins, config, _ ) {
   // run the app tests
   // --------------------------------
   gulp.task( 'test:app', function( done ) {
+    var reporters  = reportCoverage ? ['progress', 'coverage'] : ['progress'];
+    reportCoverage = false; //only report coverage on the first pass
 
     var configPath = plugins.path.join( __dirname, "../test/karma.conf.app.js" );
     return new Karma( {
-      reporters : ['progress'],
+      reporters : reporters,
       configFile: configPath,
       files     : srcFiles,
       singleRun : true
