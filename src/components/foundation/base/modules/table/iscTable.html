@@ -1,7 +1,8 @@
 <div class="isc-table">
   <!--title-->
   <h3 ng-if="iscTblCtrl.tableData[ iscTblCtrl.tableConfig.title ] || iscTblCtrl.tableConfig.title | translate"
-      class="{{iscTblCtrl.tableConfig.titleClass || 'table-title'}}">{{ iscTblCtrl.tableData[ iscTblCtrl.tableConfig.title ] || iscTblCtrl.tableConfig.title |
+      class="{{iscTblCtrl.tableConfig.titleClass || 'table-title'}}">{{ iscTblCtrl.tableData[ iscTblCtrl.tableConfig.title ] ||
+    iscTblCtrl.tableConfig.title |
     translate }}</h3>
 
   <!--back button for wellness workflows -->
@@ -14,7 +15,8 @@
 
   <!--subtitles-->
   <h5 ng-if="iscTblCtrl.tableConfig.subtitle"
-      class="{{iscTblCtrl.tableConfig.subtitleClass || 'subheader'}}">{{ iscTblCtrl.tableData[ iscTblCtrl.tableConfig.subtitle ] || iscTblCtrl.tableConfig.subtitle |
+      class="{{iscTblCtrl.tableConfig.subtitleClass || 'subheader'}}">{{ iscTblCtrl.tableData[ iscTblCtrl.tableConfig.subtitle ] ||
+    iscTblCtrl.tableConfig.subtitle |
     translate }}</h5>
 
   <!--desktop and tablet-->
@@ -39,12 +41,11 @@
            marker="marker"
            ng-class="{ 'isc-sortable': !!iscTblCtrl.sortField.name && column.key === iscTblCtrl.sortField.name, 'reverse': iscTblCtrl.sortField.reverse }"
            class="isc-sortable">{{ column.title | translate }}
-         </a>
+        </a>
 
-         <span ng-if="column.columnClick === 'none'"> {{column.title | translate}} </span>
+        <span ng-if="column.columnClick === 'none'"> {{column.title | translate}} </span>
 
         <a ng-if="column.columnClick === 'filter' "
-           class="isc-filterable"
            ng-click="column.filterFunction(column)"
            class="isc-filterable">{{ column.title | translate }}</a>
       </th>
@@ -54,13 +55,15 @@
     <tbody>
 
     <!--rows-->
-    <tr dir-paginate="dataItem in iscTblCtrl.tableRows | itemsPerPage:iscTblCtrl.tableConfig.itemsPerPage || 20"
-        current-page="iscTblCtrl.currentPage"
-        model-data="iscTblCtrl.tableRows"
-        pagination-id="iscTblCtrl.tableConfig.key"
-        ng-form
-        name="iscRowForm"
-        isc-table-row>
+    <tr
+      dir-paginate="dataItem in iscTblCtrl.tableRows | orderBy: iscTblCtrl.sortField.name : iscTblCtrl.sortField.reverse | filter: iscTblCtrl.doFilter | itemsPerPage: iscTblCtrl.rowsOnPage"
+      current-page="iscTblCtrl.currentPage"
+      model-data="iscTblCtrl.tableRows"
+      pagination-id="iscTblCtrl.paginationId"
+      ng-form
+      autocomplete="off"
+      name="iscRowForm"
+      isc-table-row>
     </tr>
 
     <!--empty row -->
@@ -81,14 +84,25 @@
         ng-if="iscTblCtrl.tableConfig.editable"
         isc-table-add-row
         ng-form
+        autocomplete="off"
         name="iscRowForm">
     </tr>
     </tbody>
   </table>
+  <div class="grid-block align-center wrap">
+    <dir-pagination-controls ng-if="iscTblCtrl.tableRows.length > 0 "
+                             on-page-change="iscTblCtrl.changePage( newPageNumber )"
+                             pagination-id="iscTblCtrl.paginationId"
+                             has-more-items="!!iscTableCtrl.hasMoreItems"
+                             template-url="thirdParty/dirPagination.tpl.html"></dir-pagination-controls>
+    <button ng-class="{'disabled': !iscTblCtrl.enableLoadMoreButton()}"
+            ng-disabled="!iscTblCtrl.enableLoadMoreButton()"
+            ng-if="iscTblCtrl.hasMoreItems"
+            class="button tiny margin-top"
+            ng-click="iscTblCtrl.loadMoreCallback({ recordCount :100, recordStart :(iscTblCtrl.tableRows.length + 1)})">
+      {{'ISC_LOAD_MORE_RECORDS' | translate}}
+    </button>
+  </div>
 
-  <dir-pagination-controls ng-if="iscTblCtrl.tableRows.length > 0 "
-                           on-page-change="iscTblCtrl.changePage( newPageNumber )"
-                           pagination-id="iscTblCtrl.tableConfig.key"
-                           template-url="thirdParty/dirPagination.tpl.html"></dir-pagination-controls>
 
 </div>

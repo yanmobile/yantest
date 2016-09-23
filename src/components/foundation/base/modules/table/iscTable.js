@@ -199,17 +199,20 @@
     // ----------------------------
 
     var directive = {
-      scope           : {
+      scope: {
+        backButtonCallback: '&?',
+        defaultSort       : '@?',
+        filterFunction    : '&?',
+        hasMoreItems      : '=?',
+        loadMoreCallback  : '&?',
+        rowButtonCallback : '&?',
         tableConfig       : '=',
         tableData         : '=',
-        filterFunction    : '&?',
-        rowButtonCallback : '&?',
-        backButtonCallback: '&?',
-        tableName         : '@'
+        tableName         : '@?'
       },
 
-      restrict        : 'E',
-      replace         : true,
+      restrict: 'E',
+      replace : true,
 
       templateUrl     : function( elem, attrs ) {
         return attrs.templateUrl || 'table/iscTable.html';
@@ -248,20 +251,39 @@
       init();
 
       function init() {
-        self.rowsOnPage  = self.tableConfig.rowsOnPage || 15;
+        self.paginationId = _.get( self, 'tableConfig.key' ) || 'table' + String( _.parseInt( Math.random() * 100000 ) );
+
+        self.rowsOnPage  = _.get( self, 'tableConfig.rowsOnPage', 15 );
         self.currentPage = 1;
 
-        $scope.$watch( function() {
-          return self.tableData;
-        }, function() {
-          channel.debug( 'iscTable.WATCH tableData' );
-          // set an array of the table row objects
-          self.filteredRows = self.tableRows = self.tableConfig.key ? self.tableData[self.tableConfig.key] : self.tableData;
-          channel.debug( '...tableRows', self.tableRows );
-        } );
+        self.sortField      = { reverse: false };
+        self.sortField.name = self.defaultSort || '';
+
+        $scope.$watch(
+          function() {
+            return self.tableData;
+          },
+          function() {
+            channel.debug( 'iscTable.WATCH tableData' );
+            // set an array of the table row objects
+
+            if ( !self.tableConfig ) {
+              self.tableRows = [];
+            }
+            else {
+              self.tableRows = _.get( self, 'tableConfig.key' ) ? self.tableData[self.tableConfig.key] : self.tableData;
+
+              if ( !_.isArray( self.tableRows ) ) {
+                self.tableRows = [self.tableRows];
+              }
+            }
+            channel.debug( '...tableRows', self.tableRows );
+
+            self.filteredRows = self.tableRows;
+          }
+        );
 
         applyFilter();
-        self.sortField = { reverse: false };
       }
 
       /**
@@ -296,6 +318,10 @@
         self.currentPage = newPageNumber;
       };
 
+      self.enableLoadMoreButton = function() {
+        return self.tableRows && Math.ceil( self.tableRows.length / self.rowsOnPage ) === self.currentPage;
+      };
+
       /**
        * @memberOf iscTable
        * @param item
@@ -303,7 +329,7 @@
        */
       self.doFilter = function( item ) {
         channel.debug( 'iscTable.doFilter', item );
-        var fitlerable = _.some( self.tableConfig.columns, function( column ) {
+        var fitlerable = _.some( _.get( self, 'tableConfig.columns', [] ), function( column ) {
           return _.isFunction( column.filterFunction );
         } );
 
@@ -389,6 +415,7 @@
 
     function link( scope, elem, attr ) {
       scope.hasBackButton = !_.isUndefined( attr.backButtonCallback );
+      scope.defaultSort   = attr.defaultSort;
       // $log.debug('hasBackButton', scope.hasBackButton);
     }
 

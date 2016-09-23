@@ -1,8 +1,8 @@
-(function(){
+(function() {
   'use strict';
   //console.log( 'iscTable Tests' );
 
-  describe( 'iscTableCell', function(){
+  describe( 'iscTableCell', function() {
     var rowScope,
         rootScope,
         helper,
@@ -13,7 +13,7 @@
         columns,
         state;
 
-    function getTableConfig(){
+    function getTableConfig() {
       return {
         key           : 'LabOrders',
         title         : '',
@@ -29,7 +29,7 @@
             key  : 'Timestamp',
             title: 'ISC_WELLNESS_LAB_DATE',
             type : 'date'
-          } ]
+          }]
       };
     }
 
@@ -53,22 +53,27 @@
     ];
 
     var html = '<div isc-table-cell ' +
-        'cell-data="dataItem"' +
-        'cell-config="column"' +
-        'mobile-class="isc-text-item">' +
-        '</div>';
+      'cell-data="dataItem"' +
+      'cell-config="column"' +
+      'mobile-class="isc-text-item">' +
+      '</div>';
 
     useDefaultModules( 'isc.templates', 'isc.table' );
-    
-    beforeEach( inject( function( $rootScope, $compile, $httpBackend, $state, $timeout ){
+
+    // show $log statements
+    beforeEach( module( function( $provide ) {
+      $provide.value( '$log', console );
+    } ) );
+
+    beforeEach( inject( function( $rootScope, $compile, $httpBackend, $state, $timeout ) {
       rootScope = $rootScope;
 
       rowScope            = $rootScope.$new();
       rowScope.iscTblCtrl = { tableConfig: getTableConfig() };
       rowScope.iscRowCtrl = { inEditMode: false };
 
-      rowScope.column   = rowScope.iscTblCtrl.tableConfig.columns[ 0 ];
-      rowScope.dataItem = dataItems[ 0 ];
+      rowScope.column   = rowScope.iscTblCtrl.tableConfig.columns[0];
+      rowScope.dataItem = dataItems[0];
       cellScope         = rowScope.$new();
 
       state         = $state;
@@ -76,60 +81,60 @@
         name: 'tableTests'
       };
 
-      rowScope.backButtonCallback = function(){
+      rowScope.backButtonCallback = function() {
       };
 
-      rowScope.rowButtonCallback = function(){
+      rowScope.rowButtonCallback = function() {
       };
 
       httpBackend = $httpBackend;
       timeout     = $timeout;
 
       // dont worry about calls to assets
-      httpBackend.when( 'GET', 'assets/i18n/en_US.json' )
-          .respond( 200, {} );
+      httpBackend.when( 'GET', 'assets/i18n/en-us.json' )
+        .respond( 200, {} );
 
       compile();
     } ) );
 
-    function compile(){
-      inject( function( $rootScope, $compile ){
-        element   = $compile( html )( rowScope );
+    function compile() {
+      inject( function( $rootScope, $compile ) {
+        element = $compile( html )( rowScope );
         rowScope.$digest();
         cellScope = element.scope();
-      } );
+      } )
     }
 
     // -------------------------
-    describe( 'setup tests ', function(){
+    describe( 'setup tests ', function() {
 
-      it( "should have a column", function(){
+      it( "should have a column", function() {
         expect( angular.isObject( cellScope.column ) ).toBe( true );
       } );
 
-      it( "should have dataItem", function(){
+      it( "should have dataItem", function() {
         expect( angular.isObject( cellScope.dataItem ) ).toBe( true );
       } );
 
-      xit( "should have mobileClass", function(){
+      xit( "should have mobileClass", function() {
         expect( angular.isObject( cellScope.mobileClass ) ).toBe( true );
       } );
 
     } );
 
     // -------------------------
-    describe( 'getTrClass tests ', function(){
+    describe( 'getTrClass tests ', function() {
 
-      it( "should have a getTrClass", function(){
+      it( "should have a getTrClass", function() {
         expect( angular.isFunction( cellScope.getTrClass ) ).toBe( true );
       } );
 
-      it( "should get the right class, no explicit className, no getter", function(){
+      it( "should get the right class, no explicit className, no getter", function() {
         var expected = cellScope.getTrClass( {} );
         expect( expected ).toBe( '' );
       } );
 
-      it( "should get the right class, WITH explicit className, no getter", function(){
+      it( "should get the right class, WITH explicit className, no getter", function() {
 
         columns = [
           {
@@ -157,17 +162,18 @@
           }
         ];
 
-        rowScope.column   = columns[ 0 ];
-        rowScope.dataItem = dataItems[ 0 ];
+        rowScope.column   = columns[0];
+        rowScope.dataItem = dataItems[0];
         compile();
 
         var expected = cellScope.getTrClass( {} );
         expect( expected ).toBe( 'some-class-name' );
+        expect( cellScope.trClass ).toEqual( 'some-class-name' );
       } );
 
-      it( "should get the right class, no explicit className, WITH getter", function(){
+      it( "should get the right class, no explicit className, WITH getter", function() {
 
-        rowScope.getClass = function(){
+        rowScope.getClass = function() {
           return 'got-the-class'
         };
 
@@ -197,8 +203,8 @@
           }
         ];
 
-        rowScope.column   = columns[ 0 ];
-        rowScope.dataItem = dataItems[ 0 ];
+        rowScope.column   = columns[0];
+        rowScope.dataItem = dataItems[0];
         compile();
 
         var expected = cellScope.getTrClass( {} );
@@ -208,31 +214,28 @@
 
 
     // -------------------------
-    describe( 'getDisplayText tests ', function(){
+    describe( 'getDisplayText tests ', function() {
 
-      it( "should have a getDisplayText", function(){
+      it( "should have a getDisplayText", function() {
         expect( angular.isFunction( cellScope.getDisplayText ) ).toBe( true );
       } );
 
-      it( "should get the right displayText, getter function", function(){
+      it( "should get the right displayText, getter function", function() {
 
-        var dataItem    = 'shazam';
-        var defaultText = 1234;
-
-        rowScope.column =  {
-          key: 'OrderedItemDisplay',
-          title: 'ISC_WELLNESS_LAB_NAME',
-          textGetter: function(){
+        rowScope.column = {
+          key       : 'OrderedItemDisplay',
+          title     : 'ISC_WELLNESS_LAB_NAME',
+          textGetter: function() {
             return 'foo bar baz';
           }
         };
         compile();
 
-        var expected = cellScope.getDisplayText( dataItem, defaultText );
+        var expected = cellScope.displayText;
         expect( expected ).toBe( 'foo bar baz' );
       } );
 
-      it( "should get the right displayText, neither defined", function(){
+      it( "should get the right displayText, neither defined", function() {
 
         var dataItem    = '';
         var defaultText = '';
@@ -241,45 +244,47 @@
         expect( expected ).toBe( '' );
       } );
 
-      it( "should get the right displayText, dataItem defined, string", function(){
+      it( "should get the right displayText, dataItem defined, string", function() {
 
-        rowScope.column.default = '';
-        rowScope.dataItem[ rowScope.column.key ] = 'shazam';
+        rowScope.column.default                = '';
+        rowScope.dataItem[rowScope.column.key] = 'shazam';
 
-        var expected = cellScope.getDisplayText();
+        compile();
+
+        var expected = cellScope.displayText;
         expect( expected ).toBe( 'shazam' );
       } );
 
-      it( "should get the right displayText, dataItem defined, number", function(){
+      it( "should get the right displayText, dataItem defined, number", function() {
 
-        rowScope.column.default = '';
-        rowScope.dataItem[ rowScope.column.key ] = 0;
+        rowScope.column.default                = '';
+        rowScope.dataItem[rowScope.column.key] = 0;
 
         var expected = cellScope.getDisplayText();
         expect( expected ).toBe( '0' );
       } );
 
-      it( "should get the right displayText, defaultText defined, string", function(){
+      it( "should get the right displayText, defaultText defined, string", function() {
 
-        rowScope.column.default = 'shazam';
-        rowScope.dataItem[ rowScope.column.key ] = '';
+        rowScope.column.default                = 'shazam';
+        rowScope.dataItem[rowScope.column.key] = '';
 
         var expected = cellScope.getDisplayText();
         expect( expected ).toBe( 'shazam' );
       } );
 
-      it( "should get the right displayText, defaultText defined, number", function(){
+      it( "should get the right displayText, defaultText defined, number", function() {
 
-        rowScope.column.default = 1234;
-        rowScope.dataItem[ rowScope.column.key ] = '';
+        rowScope.column.default                = 1234;
+        rowScope.dataItem[rowScope.column.key] = '';
 
         var expected = cellScope.getDisplayText();
         expect( expected ).toBe( '1234' );
       } );
 
-      it( "should get the right displayText, BOTH defined", function(){
-        rowScope.column.default = 1234;
-        rowScope.dataItem[ rowScope.column.key ] = 'shazam';
+      it( "should get the right displayText, BOTH defined", function() {
+        rowScope.column.default                = 1234;
+        rowScope.dataItem[rowScope.column.key] = 'shazam';
 
         var expected = cellScope.getDisplayText();
         expect( expected ).toBe( 'shazam' );
@@ -287,37 +292,36 @@
     } );
 
     // -------------------------
-    describe( ' dom inspection tests', function(){
+    describe( ' dom inspection tests', function() {
 
-      it('it should not have command buttons when table is not editable', function () {
+      it( 'it should not have command buttons when table is not editable', function() {
 
         rowScope.iscTblCtrl.tableConfig.editable = false;
 
         rowScope.column = commandColumn;
         compile();
 
-        var editButton   = element.find(".isc-table-command-edit-icon");
-        var removeButton = element.find(".isc-table-command-remove-icon");
-        var saveButton   = element.find(".isc-table-command-save-icon");
-        var cancelButton = element.find(".isc-table-command-cancel-icon");
+        var editButton   = element.find( ".isc-table-command-edit-icon" );
+        var removeButton = element.find( ".isc-table-command-remove-icon" );
+        var saveButton   = element.find( ".isc-table-command-save-icon" );
+        var cancelButton = element.find( ".isc-table-command-cancel-icon" );
 
-        expect(editButton.length).toBe(0);
-        expect(removeButton.length).toBe(0);
-        expect(saveButton.length).toBe(0);
-        expect(cancelButton.length).toBe(0);
-      });
+        expect( editButton.length ).toBe( 0 );
+        expect( removeButton.length ).toBe( 0 );
+        expect( saveButton.length ).toBe( 0 );
+        expect( cancelButton.length ).toBe( 0 );
+      } );
 
-      describe( 'commands when table is using inline editable mode"', function(){
-
-        it ('editable "true" is treated as "inline"', function(){
+      describe( 'commands when table is using inline editable mode"', function() {
+        it( 'editable "true" is treated as "inline"', function() {
           rowScope.iscTblCtrl.editable = true;
           compile();
 
-          expect(rowScope.iscTblCtrl.tableConfig.editable).not.toBe(true);
-          expect(rowScope.iscTblCtrl.tableConfig.editable).toBe('inline');
-        });
+          expect( rowScope.iscTblCtrl.tableConfig.editable ).not.toBe( true );
+          expect( rowScope.iscTblCtrl.tableConfig.editable ).toBe( 'inline' );
+        } );
 
-        it( 'should have edit/remove buttons', function(){
+        it( 'should have edit/remove buttons', function() {
           rowScope.column = commandColumn;
           compile();
 
@@ -332,7 +336,7 @@
           expect( cancelButton.length ).toBe( 0 );
         } );
 
-        it( 'should have save/cancel buttons', function(){
+        it( 'should have save/cancel buttons', function() {
           rowScope.column                = commandColumn;
           rowScope.iscRowCtrl.inEditMode = true;
           compile();
@@ -351,13 +355,13 @@
     } );
 
     // -------------------------
-    describe( 'notThere tests ', function(){
+    describe( 'notThere tests ', function() {
 
-      it( "should have a notThere", function(){
+      it( "should have a notThere", function() {
         expect( angular.isFunction( cellScope.notThere ) ).toBe( true );
       } );
 
-      it( "should know if something isn't there", function(){
+      it( "should know if something isnt there", function() {
         var expected = cellScope.notThere( 0 );
         expect( expected ).toBe( false );
 

@@ -12,7 +12,7 @@
   function apiHelper( devlog, iscCustomConfigService ) {
 
     var log = devlog.channel( 'apiHelper' );
-    
+
     var service = {
       getUrl      : getUrl,
       getConfigUrl: getConfigUrl,

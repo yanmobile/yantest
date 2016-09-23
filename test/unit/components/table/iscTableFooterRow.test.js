@@ -40,7 +40,7 @@
     function compileDirective() {
       suite.element = suite.$compile( html )( suite.$scope );
       suite.$scope.$digest();
-      suite.rowScope   = suite.element.scope();
+      suite.rowScope = suite.element.scope();
     }
 
     describe( 'setup test', function() {
