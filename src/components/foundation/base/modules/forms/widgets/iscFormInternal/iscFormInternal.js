@@ -266,7 +266,6 @@
           forms           : self.forms,
           buttonConfig    : self.buttonConfig || {},
           buttonContext   : self,
-          formState       : self.options.formState,
           selectPage      : selectPage,
           isSubmitDisabled: isSubmitDisabled
         };
