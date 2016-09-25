@@ -18,6 +18,8 @@
 
       <button class="float-right small flat embedded-form-save"
               type="button"
+              ng-class="{'disabled' : efCollectionCtrl.isSubmitDisabled() }"
+              ng-disabled="efCollectionCtrl.isSubmitDisabled()"
               ng-click="efCollectionCtrl.saveForm()">
         {{'Forms_Save_Button' | translate}} {{efCollectionCtrl.label}}
       </button>
