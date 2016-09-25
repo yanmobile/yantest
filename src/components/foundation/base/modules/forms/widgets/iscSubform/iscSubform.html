@@ -31,8 +31,8 @@
           <!--Submit button-->
           <button ng-if="button.name === 'submit'"
                   type="submit"
-                  id="{{button.name + 'Button'}}"
-                  name="{{button.name + 'Button'}}"
+                  id="{{'submitButton'}}"
+                  name="{{'submitButton'}}"
                   class="{{button.cssClass}}"
                   ng-class="{'disabled' : subformCtrl.mainFormConfig.isSubmitDisabled()}"
                   ng-disabled="subformCtrl.mainFormConfig.isSubmitDisabled()">
