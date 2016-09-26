@@ -234,7 +234,34 @@
             expect( _.isFunction( buttonConfig.submit.onClick ) ).toBe( true );
           }
         } );
+      } );
 
+      describe( 'simple suite with a required field', function() {
+        beforeEach( function() {
+          suiteSimple1 = createDirective( getMinimalForm( 'simple1Required' ),
+            {
+              localFormConfig: {
+                disableSubmitIfFormInvalid : true
+              }
+            } );
+
+          suiteMain.$httpBackend.flush();
+        } );
+
+        //--------------------
+        it( 'should disable submit when the form is invalid', function() {
+          var suite        = suiteSimple1,
+              submitButton = getButton( suite, 'submit' ),
+              model        = suite.controller.internalModel;
+
+          expect( submitButton.length ).toBe( 1 );
+          expect( submitButton.is( ':disabled' ) ).toBe( true );
+
+          model.aField = 'some value';
+          digest( suite );
+
+          expect( submitButton.is( ':disabled' ) ).toBe( false );
+        } );
       } );
 
       describe( 'simple suite 1 only', function() {

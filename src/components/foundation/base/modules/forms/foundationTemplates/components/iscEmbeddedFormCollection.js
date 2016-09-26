@@ -171,6 +171,11 @@
 
       self.removeForm = removeForm;
 
+      self.isSubmitDisabled = function() {
+        return self.subformOptions.formState._disableSubmitIfFormInvalid && self.subform.form.$invalid;
+      };
+
+
       // Watches
       $scope.$watch( getValidation, function( value ) {
         self.validationErrors = _.get( value, 'records' );
@@ -352,16 +357,17 @@
 
           default:
             $scope.$emit( FORMS_EVENTS.showSubform, {
-              isNew    : self.isNew,
-              itemLabel: self.label,
-              model    : self.editModel,
-              fields   : self.fields,
-              className: embeddedPage.className,
-              options  : self.subformOptions,
-              subform  : self.subform,
-              onCancel : self.cancel,
-              onSubmit : self.saveForm,
-              scrollPos: iscScrollContainerService.getCurrentScrollPosition()
+              isNew           : self.isNew,
+              itemLabel       : self.label,
+              model           : self.editModel,
+              fields          : self.fields,
+              className       : embeddedPage.className,
+              options         : self.subformOptions,
+              subform         : self.subform,
+              onCancel        : self.cancel,
+              onSubmit        : self.saveForm,
+              scrollPos       : iscScrollContainerService.getCurrentScrollPosition(),
+              isSubmitDisabled: self.isSubmitDisabled
             } );
         }
       }
@@ -370,7 +376,6 @@
        * @memberOf iscEmbeddedFormCollection
        */
       function hideSubform() {
-
         switch ( editAs ) {
           case 'modal':
             // Defer to avoid a flicker while Foundation catches up

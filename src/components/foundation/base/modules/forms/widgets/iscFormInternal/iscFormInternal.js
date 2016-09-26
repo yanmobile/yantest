@@ -48,9 +48,10 @@
         debugDisplay: _.get( iscCustomConfigService.getConfig(), 'debugDisplay.forms', {} ),
         options     : {
           formState: {
-            _validation : {},
-            _subforms   : self.formDefinition.subforms,
-            _model      : {
+            _validation                : {},
+            _disableSubmitIfFormInvalid: _.get( self, 'formConfig.disableSubmitIfFormInvalid', false ),
+            _subforms                  : self.formDefinition.subforms,
+            _model                     : {
               isDirty: false
             }
           }
@@ -255,17 +256,18 @@
           }
         } );
 
-        self.pages       = self.formDefinition.form.pages;
-        self.currentPage = _.head( self.pages );
+        self.pages          = self.formDefinition.form.pages;
+        self.currentPage    = _.head( self.pages );
         self.mainFormConfig = {
-          pages          : self.pages,
-          layout         : self.formDefinition.form.pageLayout,
-          currentPage    : self.currentPage,
-          selectablePages: [],
-          forms          : self.forms,
-          buttonConfig   : self.buttonConfig || {},
-          buttonContext  : self,
-          selectPage     : selectPage
+          pages           : self.pages,
+          layout          : self.formDefinition.form.pageLayout,
+          currentPage     : self.currentPage,
+          selectablePages : [],
+          forms           : self.forms,
+          buttonConfig    : self.buttonConfig || {},
+          buttonContext   : self,
+          selectPage      : selectPage,
+          isSubmitDisabled: isSubmitDisabled
         };
 
         throttledFilter();
@@ -287,6 +289,10 @@
         self.mainFormConfig.selectablePages = _.filter( self.formDefinition.form.pages, function( page ) {
           return !page._isHidden;
         } );
+      }
+
+      function isSubmitDisabled() {
+        return self.options.formState._disableSubmitIfFormInvalid && _.some( self.forms, '$invalid' );
       }
 
       /**
@@ -332,13 +338,12 @@
        * @memberOf iscFormInternal
        */
       function submitForm() {
-        var submitConfig = _.get( self.buttonConfig, 'submit', {} ),
-            onSubmit     = submitConfig.onClick || function() {
-              },
-            afterSubmit  = submitConfig.afterClick || function() {
-              };
+        var submitConfig  = _.get( self.buttonConfig, 'submit', {} ),
+            onSubmit      = submitConfig.onClick || _.noop,
+            afterSubmit   = submitConfig.afterClick || _.noop,
+            onSubmitError = submitConfig.onError || onError;
 
-        $q.when( onSubmit( self ), afterSubmit, onError );
+        $q.when( onSubmit( self ), afterSubmit, onSubmitError );
 
         function onError( error ) {
           iscNotificationService.showAlert( {
