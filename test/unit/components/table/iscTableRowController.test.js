@@ -8,12 +8,12 @@
     useDefaultModules( 'isc.templates', 'isc.table' );
 
     beforeEach( inject( function( $rootScope, $compile, $controller, $q ) {
-      suite = window.createSuite( {
+      suite               = window.createSuite( {
         $rootScope: $rootScope,
         $compile  : $compile,
         $q        : $q
       } );
-      var tableData = getTableData();
+      var tableData       = getTableData();
       $rootScope.dataItem = tableData[0];
 
       suite.$ctrl = $controller( 'iscTableRowController', {

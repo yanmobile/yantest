@@ -62,19 +62,27 @@
         post: post
       };
 
-      function pre( scope, trElem, attrs, iscRowCtrl ) {
+      function pre( scope, trElem, attrs, iscRowCtrl ) { //jshint ignore:line
         var defaultTemplate = scope.iscTblCtrl.tableConfig.editable === 'popup' ? 'table/popup/iscTablePopupRow.html' : 'table/iscTableRow.html';
 
         var rowTemplate = _.get( scope, 'iscTblCtrl.tableConfig.rowTemplate', defaultTemplate );
+
+        //in the case of creating a new item, fetch dataItem from iscTblCtrl
+        if ( scope.dataItem === null && _.get( scope, 'iscTblCtrl.dataItem.isNew' ) ) {
+          iscRowCtrl.dataItem = scope.dataItem = _.get( scope, 'iscTblCtrl.dataItem' );
+          iscRowCtrl.editModeData = angular.copy( scope.dataItem );
+          iscRowCtrl.inEditMode = true;
+        }
+
         if ( rowTemplate ) {
-          //for some reason the template doesn't like spaces nor comments
+          //for some reason the template doesn't like spaces or comments
           var template = removeTemplateSpaces( $templateCache.get( rowTemplate ) );
           trElem.html( template );
           $compile( trElem.contents() )( scope );
         }
       }
 
-      function post( scope, elem, attr, iscRowCtrl ) {
+      function post( scope, elem, attr, iscRowCtrl ) { //jshint ignore:line
         iscRowCtrl.iscTblCtrl = scope.iscTblCtrl;
         scope.$watch( 'dataItem', function( value ) {
           iscRowCtrl.dataItem = value;
@@ -87,6 +95,10 @@
        * @returns {*}
        */
       function removeTemplateSpaces( templateStr ) {
+        if ( !templateStr ) {
+          return '';
+        }
+
         return templateStr
           .replace( /\r?\n|\r/g, ' ' )  //replace newline with space
           //jshint ignore:start

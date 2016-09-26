@@ -31,64 +31,52 @@
     // ----------------------------
 
     var directive = {
-      restrict: 'A',
-      compile : compile
+      scope       : true, //prototypal inheritance
+      restrict    : 'EA',
+      templateUrl : 'table/iscTableCell.html',
+      link        : link,
+      controller  : controller,
+      controllerAs: 'iscCellCtrl'
     };
     return directive;
 
     // ----------------------------
     // functions
-    // -----------
-    function compile() {
-      return {
-        pre : pre,
-        post: post
-      };
+    // ----------------------------
+
+    /* @ngInject */
+    function controller() { //needed to use with controllerAs
     }
 
-    function pre( scope, elem, attrs, iscRowCtrl ) {
-      var defaultTemplate = attrs.templateUrl;
-      if ( !defaultTemplate ) {
-        defaultTemplate = scope.iscTblCtrl.tableConfig.editable === 'popup' ? 'table/popup/iscTableReadOnlyCell.html' : 'table/iscTableCell.html';
-      }
-
-      var rowTemplate = _.get( scope, 'iscTblCtrl.tableConfig.rowTemplate', defaultTemplate );
-
-      if ( rowTemplate ) {
-        //for some reason the template doesn't like spaces nor comments
-        var template = $templateCache.get( rowTemplate );
-        var output   = $compile( template )( scope );
-        elem.html( output );
-      }
-    }
-
-    function post( scope, elem, attrs ) {//jshint ignore:line
+    function link( scope, elem, attrs ) {//jshint ignore:line
 
       // ----------------------------
       // vars
       // ----------------------------
+      var cellData    = _.get( scope.dataItem, scope.column.key );
+      var defaultText = scope.column.default;
+
       scope.notThere       = notThere;
       scope.getTrClass     = getTrClass;
       scope.getDisplayText = getDisplayText;
+      scope.mobileClass    = scope.$eval( attrs.mobileClass );
 
-      scope.mobileClass = scope.$eval( attrs.mobileClass );
+      scope.state = $state.current.name;
 
-      scope.state       = $state.current.name;
-      var cellData      = scope.dataItem[scope.column.key];
-      var defaultText   = scope.column.default;
       scope.displayText = getDisplayText( cellData, defaultText ); //getDisplayText( scope.dataItem[ column.key ], column.default );
-      scope.displayUnit = scope.dataItem[scope.column.unit];
+      scope.displayUnit = _.get( scope, 'dataItem[scope.column.unit]', '' );
+      scope.trClass     = getTrClass( cellData );
 
       // ----------------------------
       // functions
       // ----------------------------
 
-      function getTrClass( item ) {
+      function getTrClass( cellData ) {
         if ( scope.column.className ) {
           return scope.column.className;
         }
         else if ( scope.column.classGetter ) {
-          return scope.column.classGetter( item );
+          return scope.column.classGetter( cellData );
         }
         else {
           return '';

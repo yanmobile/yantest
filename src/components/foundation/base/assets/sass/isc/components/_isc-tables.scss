@@ -775,7 +775,7 @@ $table-title-font-reduction: rem-calc(16) !default;
       font-size: $th-font-size;
 
       // Sortable Columns
-      &.isc-sortable, &.reverse {
+      &.isc-sortable {
         white-space: nowrap;
 
         @include icon(after, sortable) {

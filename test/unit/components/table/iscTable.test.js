@@ -1,6 +1,5 @@
 (function() {
   'use strict';
-  //console.log( 'iscTable Tests' );
 
   describe( 'iscTable', function() {
     var $rootScope,
@@ -9,7 +8,8 @@
         timeout,
         $ctrl,
         element,
-        state, $rootScope, $compile;
+        state,
+        $compile;
 
     var tableConfig = {
       key           : 'LabOrders',
@@ -106,6 +106,7 @@
       'template-url="fakeTable.html" ' +
       'table-config="tableConfig"' +
       'table-data="tableData"' +
+      'default-sort="OrderedItemDisplay"' +
       'back-button-callback="backButtonCallback()"' +
       'row-button-callback="rowButtonCallback( state )">' +
       '</isc-table>';
@@ -157,6 +158,11 @@
         expect( angular.isObject( isolateScope.iscTblCtrl.tableData ) ).toBe( true );
       } );
 
+      it( "should have a defaultSort", function() {
+        expect( angular.isDefined( isolateScope.iscTblCtrl.defaultSort ) ).toBe( true );
+        expect( isolateScope.iscTblCtrl.defaultSort ).toBe( 'OrderedItemDisplay' );
+      } );
+
     } );
 
     describe( 'table name', function() {
@@ -203,9 +209,9 @@
       } );
 
       it( 'should not have added to $ctrl.dataRows yet', function() {
-        expect( $ctrl.tableRows.length ).toBe(1);
+        expect( $ctrl.tableRows.length ).toBe( 1 );
         $ctrl.createRow();
-        expect( $ctrl.tableRows.length ).toBe(1);
+        expect( $ctrl.tableRows.length ).toBe( 1 );
       } );
     } );
 
@@ -288,9 +294,18 @@
     } );
 
     describe( 'table sorting tests ', function() {
+      beforeEach( function() {
+        html = '<isc-table table-config="tableConfig"' +
+          '           table-data="tableData"' +
+          '           back-button-callback="backButtonCallback()"' +
+          '           row-button-callback="rowButtonCallback( state )">' +
+          '</isc-table>';
+
+        compileDirective();
+      } );
 
       it( "should start with unreversed sort order", function() {
-        expect( isolateScope.iscTblCtrl.sortField ).toEqual( { reverse: false } );
+        expect( isolateScope.iscTblCtrl.sortField ).toEqual( { reverse: false, name: '' } );
       } );
 
       it( "should have a function sortColumn", function() {
