@@ -73,6 +73,7 @@
 
     formlyConfig.extras.fieldTransform.push( addDataModelDependencies );
     formlyConfig.extras.fieldTransform.push( addInheritedClassNames );
+    formlyConfig.extras.fieldTransform.push( fixWatchers );
 
     var service = {
       appendWrapper           : appendWrapper,
@@ -336,6 +337,56 @@
 
     /**
      * @memberOf iscFormsTemplateService
+     * @description Due to the timing of field initialization and the need to attach
+     * field watchers to the $scope of the form (and not of the field), formly does not
+     * set up any watchers that are defined on custom templates as defaultOptions.watcher.
+     * This method explicitly pushes those default watchers into each instance so that the
+     * watchers are set up during formly's form initialization.
+     *
+     * This also corrects the issue that formly allows watcher listeners to be expressions,
+     * while Angular does not.
+     *
+     * @param fields
+     */
+    function fixWatchers( fields ) {
+      var typesWithDefaultWatchers  = _.pickBy( formlyConfig.getTypes(), 'defaultOptions.watcher' ),
+          typeKeys                  = _.keys( typesWithDefaultWatchers ),
+          fieldsWithDefaultWatchers = _.filter( fields, function( field ) {
+            return _.includes( typeKeys, field.type );
+          } );
+
+      _.forEach( fieldsWithDefaultWatchers, function( field ) {
+        var watcher = _.concat(
+          _.get( field, 'watcher' ),
+          _.get( typesWithDefaultWatchers[field.type], 'defaultOptions.watcher' )
+        );
+        _.set( field, 'watcher', _.compact( watcher ) );
+      } );
+
+      _.forEach( fields, function( field ) {
+        _.forEach( field.watcher, function( watch ) {
+          // Angular does not support $watch listeners as expressions, but formly thinks it does.
+          // So we need to wrap any watch listener that is an expression in a function.
+          if ( watch.listener && !_.isFunction( watch.listener ) ) {
+            var watchListener = watch.listener;
+            // The formly watcher signature takes additional args of field and the watch's deregistration function.
+            watch.listener    = function( field, newVal, oldVal, scope, stop ) {
+              scope.$eval( watchListener, {
+                field : field,
+                newVal: newVal,
+                oldVal: oldVal,
+                stop  : stop
+              } );
+            };
+          }
+        } );
+      } );
+
+      return fields;
+    }
+
+    /**
+     * @memberOf iscFormsTemplateService
      * @description Applies form configuration to each formly field, including
      * external validation systems.
      * @param fields
@@ -495,20 +546,20 @@
           // Inject utilities so they are available in FDN expressions
           _.extend( $scope, {
             // Libraries
-            _                  : _,
-            moment             : moment,
+            _     : _,
+            moment: moment,
 
             // Utility properties
-            formModel          : formlyRootCtrl.model,
-            additionalModels   : formlyRootCtrl.additionalModels,
-            mode               : formlyRootCtrl.mode,
+            formModel       : formlyRootCtrl.model,
+            additionalModels: formlyRootCtrl.additionalModels,
+            mode            : formlyRootCtrl.mode,
 
             // Utility functions
             hasCustomValidator : hasCustomValidator,
             getDefaultViewValue: getDefaultViewValue,
 
             // HS validation
-            hsValidation       : hsValidation
+            hsValidation: hsValidation
           } );
 
           // Helper functions
@@ -556,7 +607,7 @@
           }
         },
 
-        link      : function( scope, element, attrs ) {
+        link: function( scope, element, attrs ) {
           // If the field's data.hideIfGroupEmpty property is truthy,
           // this field will be hidden if all of its sibling fields are hidden.
           // This is useful for section headers within a fieldGroup,
