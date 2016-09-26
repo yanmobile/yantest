@@ -56,7 +56,7 @@
         expect( actual ).toBe( '12/7/2014' );
       } );
 
-      it( 'should log return the date string if moment is not defined', function() {
+      it( 'should return the date string if moment is not defined', function() {
         var oldMoment = moment;
         moment        = null;
         var dateStr   = '2014-12-07 04:57:00';
@@ -67,10 +67,11 @@
       } );
 
       it( 'should return the UTC version of the date if the UTC argument is provided', function() {
-        var dateArray = [2014, 11, 7, 4, 57, 0];
+        var actual,
+            dateArray = [2014, 11, 7, 4, 57, 0]; // Y, M, D, h, m, s; Month is 0-based
 
         // If UTC is not passed, the date is created in the local time zone
-        var actual = filter( dateArray, 'M/D/YY h:mm A Z' );
+        actual = filter( dateArray, 'M/D/YY h:mm A Z' );
         expect( actual ).toBe( '12/7/14 4:57 AM -05:00' );
 
         // If UTC is passed, the date is created as UTC
@@ -78,8 +79,6 @@
         expect( actual ).toBe( '12/7/14 4:57 AM +00:00' );
       } );
     } );
-
-
   } );
 })();
 
