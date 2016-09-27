@@ -3,6 +3,8 @@
  */
 // This filter contains standards for Date display for consistency
 // for custom formatting, please refer to http://momentjs.com/docs/#/displaying/format/
+// First option takes in custom format strings, 'date', 'dateWithTime', or 'fromNow'
+// Second option is UTC: true indicates to use UTC mode
 
 ( function() {
   'use strict';
@@ -17,30 +19,33 @@
     var log = devlog.channel( 'iscDate' );
     log.debug( 'iscDate LOADED' );
 
-    return function( date, format ) {
+    return function( date, format, utc ) {
+      if ( !moment ) {
+        log.error( 'Error: momentJS is not loaded as a global' );
+        return date;
+      }
       // moment(undefined) is the current date
       // moment(null) and moment('') are Invalid Dates
       if ( !date ) {
         return '';
       }
-      if ( !moment ) {
-        log.error( 'Error: momentJS is not loaded as a global' );
-        return '!momentJS';
-      }
+
+      var iscMoment = utc ? moment.utc : moment;
+
       if ( !format ) { // September 26, 1986 9:00 AM
-        return moment( date ).format( 'MMMM Do, YYYY h:mm A' );
+        return iscMoment( date ).format( 'MMMM Do, YYYY h:mm A' );
       }
       if ( format === 'date' ) { // September 26, 1986
-        return moment( date ).format( 'MMMM Do, YYYY' );
+        return iscMoment( date ).format( 'MMMM Do, YYYY' );
       }
       else if ( format === 'dateWithTime' ) { // 9/26/1986 9:00 AM
-        return moment( date ).format( 'M/D/YY h:mm A' );
+        return iscMoment( date ).format( 'M/D/YY h:mm A' );
       }
       else if ( format === 'fromNow' ) { // 29 years ago
-        return moment( date ).fromNow();
+        return iscMoment( date ).fromNow();
       }
       else { // refer to moment website
-        return moment( date ).format( format );
+        return iscMoment( date ).format( format );
       }
     };
 
