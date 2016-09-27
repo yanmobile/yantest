@@ -53,8 +53,8 @@ function getAppConfig() {
         "src/app/assets/sass/main.scss"
       ],
       "scssInjectSrc": [
-        // remove this if you don't want to dynamically inject scss files inside of modules folder into your main.scss file
-        "src/app/modules/**/*.scss"
+        // uncomment this following line if you want to dynamically inject scss files inside of modules folder into your main.scss file
+        // "src/app/modules/**/*.scss"
       ],
       "html"   : [
         "src/app/modules/**/*.html"
