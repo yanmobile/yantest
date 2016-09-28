@@ -86,6 +86,7 @@
       getWidgetList           : getWidgetList,
       isTypeRegistered        : isTypeRegistered,
       isWrapperRegistered     : isWrapperRegistered,
+      overrideWidgetList      : overrideWidgetList,
       registerBaseType        : registerBaseType,
       registerButtonDefaults  : registerButtonDefaults,
       registerFormDefaults    : registerFormDefaults,
@@ -642,9 +643,11 @@
       type.overwriteOk = true;
       options          = options || {};
 
-      if ( !options.excludeFromWidgetLibrary ) {
-        widgetLibrary.push( type.name );
-      }
+      widgetLibrary.push( {
+          name      : type.name,
+          showInList: !options.excludeFromWidgetLibrary
+        }
+      );
       formlyConfig.setType( type );
     }
 
@@ -652,9 +655,28 @@
      * @memberOf iscFormsTemplateService
      */
     function getWidgetList() {
-      return _.sortBy( angular.copy( widgetLibrary ), function( name ) {
+      var list = _.compact(
+        _.map( widgetLibrary, function( widget ) {
+          return widget.showInList ? widget.name : undefined;
+        } )
+      );
+
+      return _.sortBy( list, function( name ) {
         return name;
       } );
+    }
+
+    /**
+     * @memberOf iscFormsTemplateService
+     * @description Overrides the setting for a widget as to whether it is returned by getWidgetList().
+     * @param name
+     * @param showInList
+     */
+    function overrideWidgetList( name, showInList ) {
+      var widget = _.find( widgetLibrary, { name: name } );
+      if ( widget ) {
+        widget.showInList = showInList;
+      }
     }
 
     /**
