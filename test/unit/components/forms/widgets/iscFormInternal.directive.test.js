@@ -33,9 +33,9 @@
         $timeout    : $timeout,
         $rootScope  : $rootScope,
 
-        formDataApi        : iscFormDataApi,
-        notificationService: iscNotificationService,
-        validationService  : iscFormsValidationService
+        iscFormDataApi           : iscFormDataApi,
+        iscNotificationService   : iscNotificationService,
+        iscFormsValidationService: iscFormsValidationService
       } );
       mockFormResponses( suiteMain.$httpBackend );
 
@@ -69,7 +69,7 @@
       expect( getPageIndex() ).toEqual( 1 );
 
       // Once the model has been updated, page 5 should become visible
-      spyOn( suiteMain.formDataApi, 'post' ).and.callThrough();
+      spyOn( suiteMain.iscFormDataApi, 'post' ).and.callThrough();
 
       expect( model.RequiredInput ).toBeUndefined();
       expect( lastPage._isHidden ).toBe( true );
@@ -83,12 +83,12 @@
       expect( model.RequiredInput ).toEqual( value );
       expect( lastPage._isHidden ).toBe( false );
       // This form is configured to autosave on page change
-      expect( suiteMain.formDataApi.post ).not.toHaveBeenCalled();
+      expect( suiteMain.iscFormDataApi.post ).not.toHaveBeenCalled();
 
       // Change page to trigger saving and cover page watches
       subformConfig.selectPage( 2 );
       digest( suite );
-      expect( suiteMain.formDataApi.post ).toHaveBeenCalled();
+      expect( suiteMain.iscFormDataApi.post ).toHaveBeenCalled();
 
 
       function getPageIndex() {

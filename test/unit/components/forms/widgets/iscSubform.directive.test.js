@@ -44,10 +44,10 @@
         $timeout    : $timeout,
         $rootScope  : $rootScope,
 
-        keyCode            : keyCode,
-        formDataApi        : iscFormDataApi,
-        notificationService: iscNotificationService,
-        validationService  : iscFormsValidationService
+        keyCode                  : keyCode,
+        iscFormDataApi           : iscFormDataApi,
+        iscNotificationService   : iscNotificationService,
+        iscFormsValidationService: iscFormsValidationService
       } );
       mockFormResponses( suiteMain.$httpBackend );
     } ) );

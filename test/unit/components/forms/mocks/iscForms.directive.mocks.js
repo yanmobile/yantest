@@ -39,6 +39,7 @@ function getMinimalForm( formKey, formDataId ) {
     'form-key="' + formKey + '" ' +
     'form-data-id="' + (formDataId || '' ) + '" ' +
     'form-config="localFormConfig"' +
+    'button-config="localButtonConfig"' +
     '></isc-form>'
 }
 
