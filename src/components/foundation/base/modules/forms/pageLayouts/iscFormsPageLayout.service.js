@@ -6,10 +6,10 @@
   'use strict';
 
   angular.module( 'isc.forms' )
-    .factory( 'pageLayoutService', pageLayoutService );
+    .factory( 'iscFormsPageLayoutService', iscFormsPageLayoutService );
 
   /* @ngInject */
-  function pageLayoutService() {
+  function iscFormsPageLayoutService() {
     var wizardButtonConfig = {
       cancel: {
         cssClass: 'button cancel float-left wizard-cancel-btn',
