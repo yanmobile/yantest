@@ -557,6 +557,15 @@
             expect( lastControl.is( ':checked' ) ).toBe( true );
             expect( control.is( ':checked' ) ).toBe( true );
             expect( model ).not.toEqual( previousModel );
+
+            // Verify that when the model is updated from outside the widget,
+            // the widget reflects that change.
+            var secondValue = _.find( formDefinition, { key: controlName } ).templateOptions.options[1];
+            _.set( formModel, controlName, secondValue );
+            digest( suite );
+            expect( firstControl.is( ':checked' ) ).toBe( false );
+            expect( lastControl.is( ':checked' ) ).toBe( false );
+            expect( control.is( ':checked' ) ).toBe( true );
           }
 
           function testSelect( controlName ) {

@@ -31,7 +31,7 @@
         disabled     : '='
       },
       controllerAs    : 'radioCtrl',
-      controller      : controller,
+      controller      : _.noop,
       link            : link,
       templateUrl     : function( elem, attrs ) {
         return attrs.templateUrl || 'forms/widgets/iscFormsRadio/iscFormsRadio.html';
@@ -43,11 +43,6 @@
     // ----------------------------
     // functions
     // ----------------------------
-    function controller() {
-      var self = this;
-
-    }
-
     /**
      * memberOf iscFormsRadio
      * @param scope
@@ -75,6 +70,17 @@
         ngModel.$setTouched();
         ngModel.$setViewValue( localModel );
       };
+
+      // Set a watch in case the model value is changed from outside the widget
+      scope.$watch( function() {
+          return ngModel.$viewValue;
+        },
+        function( value ) {
+          if ( !angular.equals( value, localModel ) ) {
+            localModel = value;
+          }
+        }
+      );
 
       ctrl.isChecked = function( option ) {
         if ( isObjectModel ) {
