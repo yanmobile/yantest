@@ -13,26 +13,26 @@
     var wizardButtonConfig = {
       cancel: {
         cssClass: 'button cancel float-left wizard-cancel-btn',
-        text    : 'Cancel',
+        text    : 'Forms_Cancel_Button',
         order   : 1
       },
       prev  : {
         cssClass: 'button float-right wizard-prev-btn',
-        text    : 'Prev',
+        text    : 'Forms_Prev_Button',
         order   : 2,
         hide    : isFirstPage,
         onClick : _.partialRight( changePage, -1 )
       },
       next  : {
         cssClass: 'button float-right wizard-next-btn',
-        text    : 'Next',
+        text    : 'Forms_Next_Button',
         order   : 3,
         hide    : isLastPage,
         onClick : _.partialRight( changePage, +1 )
       },
       submit: {
         cssClass: 'button float-right wizard-submit-btn',
-        text    : 'Submit this Demo Form',
+        text    : 'Forms_Submit_Button',
         order   : 4,
         hide    : isNotLastPage
       }

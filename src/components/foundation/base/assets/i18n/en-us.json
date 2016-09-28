@@ -32,6 +32,8 @@
   "Forms_Submit_Button"         : "Submit",
   "Forms_Save_Button"           : "Save",
   "Forms_Save_All_Button"       : "Save All",
+  "Forms_Next_Button"           : "Next",
+  "Forms_Prev_Button"           : "Prev",
   "Forms_Collections_Add"       : "Add",
   "Forms_Collections_Edit"      : "Edit",
   "Forms_Collections_Remove"    : "Remove",
