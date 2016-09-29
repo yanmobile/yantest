@@ -125,19 +125,15 @@
               $filter( 'translate' )( subformParams.isNew ? 'Add' : 'Edit' ) + ' ' +
               $filter( 'translate' )( subformParams.itemLabel );
 
-        self.childConfig.isNew            = subformParams.isNew;
-        self.childConfig.itemLabel        = subformParams.itemLabel;
-        self.childConfig.model            = subformParams.model;
-        self.childConfig.fields           = subformParams.fields;
-        self.childConfig.className        = subformParams.className;
-        self.childConfig.options          = subformParams.options;
-        self.childConfig.subform          = subformParams.subform;
-        self.childConfig.onCancel         = subformParams.onCancel;
-        self.childConfig.onSubmit         = subformParams.onSubmit;
-        self.childConfig.onSubmitAll      = onSubmitAll;
-        self.childConfig.isSubmitDisabled = subformParams.isSubmitDisabled;
-        self.childConfig.formTitle        = childName;
-        self.childConfig.renderForm       = true;
+        _.merge( self.childConfig, subformParams );
+
+        // model and subform need to be explicitly set because some properties may to be updated to undefined
+        self.childConfig.model   = subformParams.model;
+        self.childConfig.subform = subformParams.subform;
+
+        self.childConfig.onSubmitAll = onSubmitAll;
+        self.childConfig.formTitle   = childName;
+        self.childConfig.renderForm  = true;
 
         _.extend(
           _.last( self.breadcrumbs ),

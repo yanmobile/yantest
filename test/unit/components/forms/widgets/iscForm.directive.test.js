@@ -11,6 +11,7 @@
         suiteSimple1,
         suiteSimple2,
         suiteSimple3,
+        suiteLayout,
         suiteLiteral;
 
     // Some intentional mis-configurations to exercise safety nets
@@ -101,9 +102,18 @@
       } )
     );
 
-    beforeEach( inject( function( $rootScope, $compile, $window, $httpBackend, $timeout, $q,
-      formlyApiCheck, formlyConfig,
-      iscFormDataApi, iscNotificationService, iscFormsValidationService ) {
+    beforeEach( inject( function( $rootScope,
+      $compile,
+      $window,
+      $httpBackend,
+      $timeout,
+      $q,
+      formlyApiCheck,
+      formlyConfig,
+      iscFormDataApi,
+      iscNotificationService,
+      iscFormsPageLayoutService,
+      iscFormsValidationService ) {
       formlyConfig.disableWarnings   = true;
       formlyApiCheck.config.disabled = true;
 
@@ -115,9 +125,10 @@
         $rootScope  : $rootScope,
         $q          : $q,
 
-        formDataApi        : iscFormDataApi,
-        notificationService: iscNotificationService,
-        validationService  : iscFormsValidationService
+        iscFormsPageLayoutService: iscFormsPageLayoutService,
+        iscFormDataApi           : iscFormDataApi,
+        iscNotificationService   : iscNotificationService,
+        iscFormsValidationService: iscFormsValidationService
       } );
       mockFormResponses( suiteMain.$httpBackend );
     } ) );
@@ -241,7 +252,7 @@
           suiteSimple1 = createDirective( getMinimalForm( 'simple1Required' ),
             {
               localFormConfig: {
-                disableSubmitIfFormInvalid : true
+                disableSubmitIfFormInvalid: true
               }
             } );
 
@@ -281,13 +292,13 @@
 
           spyOn( submitButtonConfig, 'onClick' ).and.callThrough();
           spyOn( submitButtonConfig, 'afterClick' ).and.callThrough();
-          spyOn( suiteMain.formDataApi, 'submit' ).and.callThrough();
-          spyOn( suiteMain.formDataApi, 'post' ).and.callThrough();
+          spyOn( suiteMain.iscFormDataApi, 'submit' ).and.callThrough();
+          spyOn( suiteMain.iscFormDataApi, 'post' ).and.callThrough();
 
           // simple1 autosaves on model change
           model.aField = 'some value';
           suiteMain.$httpBackend.flush();
-          expect( suiteMain.formDataApi.post ).toHaveBeenCalled();
+          expect( suiteMain.iscFormDataApi.post ).toHaveBeenCalled();
 
           // clicking submit should call the submit api
           submitButton.click();
@@ -295,7 +306,7 @@
 
           expect( submitButtonConfig.onClick ).toHaveBeenCalled();
           expect( submitButtonConfig.afterClick ).toHaveBeenCalled();
-          expect( suiteMain.formDataApi.submit ).toHaveBeenCalled();
+          expect( suiteMain.iscFormDataApi.submit ).toHaveBeenCalled();
         } );
 
         //--------------------
@@ -350,17 +361,17 @@
         var mockedRejection = suiteMain.$q.defer();
         mockedRejection.reject( 'Flagrant system error' );
 
-        spyOn( suiteMain.notificationService, 'showAlert' ).and.callThrough();
+        spyOn( suiteMain.iscNotificationService, 'showAlert' ).and.callThrough();
         spyOn( submitButtonConfig, 'onClick' ).and.callThrough();
         spyOn( submitButtonConfig, 'afterClick' ).and.callThrough();
-        spyOn( suiteMain.formDataApi, 'submit' ).and.returnValue( mockedRejection.promise );
+        spyOn( suiteMain.iscFormDataApi, 'submit' ).and.returnValue( mockedRejection.promise );
 
         expect( submitButton.length ).toBe( 1 );
         submitButton.click();
         suiteMain.$timeout.flush();
 
         expect( submitButtonConfig.onClick ).toHaveBeenCalled();
-        expect( suiteMain.notificationService.showAlert ).toHaveBeenCalled();
+        expect( suiteMain.iscNotificationService.showAlert ).toHaveBeenCalled();
         expect( submitButtonConfig.afterClick ).not.toHaveBeenCalled();
       } );
 
@@ -373,8 +384,8 @@
 
         spyOn( submitButtonConfig, 'onClick' ).and.callThrough();
         spyOn( submitButtonConfig, 'afterClick' ).and.callThrough();
-        spyOn( suiteMain.formDataApi, 'submit' ).and.callThrough();
-        spyOn( suiteMain.formDataApi, 'post' ).and.callThrough();
+        spyOn( suiteMain.iscFormDataApi, 'submit' ).and.callThrough();
+        spyOn( suiteMain.iscFormDataApi, 'post' ).and.callThrough();
 
         // simple3 saves only on submit
         // clicking submit should call the submit api
@@ -383,7 +394,7 @@
 
         expect( submitButtonConfig.onClick ).toHaveBeenCalled();
         expect( submitButtonConfig.afterClick ).toHaveBeenCalled();
-        expect( suiteMain.formDataApi.submit ).toHaveBeenCalled();
+        expect( suiteMain.iscFormDataApi.submit ).toHaveBeenCalled();
       } );
     } );
 
@@ -417,10 +428,10 @@
 
         spyOn( submitButtonConfig, 'onClick' ).and.callThrough();
         spyOn( submitButtonConfig, 'afterClick' ).and.callThrough();
-        spyOn( suiteMain.formDataApi, 'submit' ).and.callThrough();
-        spyOn( suiteMain.formDataApi, 'put' ).and.callThrough();
+        spyOn( suiteMain.iscFormDataApi, 'submit' ).and.callThrough();
+        spyOn( suiteMain.iscFormDataApi, 'put' ).and.callThrough();
         spyOn( suite.controller, 'validateFormApi' ).and.callThrough();
-        spyOn( suiteMain.notificationService, 'showAlert' ).and.callThrough();
+        spyOn( suiteMain.iscNotificationService, 'showAlert' ).and.callThrough();
 
         submitButton.click();
 
@@ -428,7 +439,7 @@
         // The submit.onClick function is only called once the validation in iscFormInternal succeeds
         expect( submitButtonConfig.onClick ).not.toHaveBeenCalled();
         expect( suite.controller.validateFormApi ).toHaveBeenCalled();
-        expect( suiteMain.notificationService.showAlert ).toHaveBeenCalled();
+        expect( suiteMain.iscNotificationService.showAlert ).toHaveBeenCalled();
 
         // Set the RequiredInput and add two empty records to the RequiredSubform
         getControlByName( suite, 'RequiredInput' )
@@ -448,7 +459,7 @@
         // This exercises the validation for subform records that are invalidated without being shown in the UI
         expect( submitButtonConfig.onClick ).not.toHaveBeenCalled();
         expect( suite.controller.validateFormApi ).toHaveBeenCalled();
-        expect( suiteMain.notificationService.showAlert ).toHaveBeenCalled();
+        expect( suiteMain.iscNotificationService.showAlert ).toHaveBeenCalled();
       } );
 
       //--------------------
@@ -456,7 +467,7 @@
         var suite = suiteConfigured,
             model = suite.controller.internalModel;
 
-        spyOn( suiteMain.validationService, 'validateForm' ).and.callThrough();
+        spyOn( suiteMain.iscFormsValidationService, 'validateForm' ).and.callThrough();
 
         // Set the RequiredInput
         getControlByName( suite, 'RequiredInput' )
@@ -476,7 +487,7 @@
         subformSave.click();
 
         // Only one of the required inputs has been entered, so validation for the subform fails
-        expect( suiteMain.validationService.validateForm ).toHaveBeenCalled();
+        expect( suiteMain.iscFormsValidationService.validateForm ).toHaveBeenCalled();
         expect( model.RequiredSubform ).toBeUndefined();
 
         requiredInputs.last().val( 'required field 2' ).trigger( 'change' );
@@ -513,6 +524,45 @@
       } );
     } );
 
+
+    //--------------------
+    describe( 'suiteLayout', function() {
+      beforeEach( function() {
+        suiteLayout = createDirective( getMinimalForm( 'wizard' ),
+          {
+            localButtonConfig: suiteMain.iscFormsPageLayoutService.getWizardButtonConfig()
+          }
+        );
+        suiteMain.$httpBackend.flush();
+      } );
+
+      //--------------------
+      it( 'should lay out as a wizard', function() {
+        var suite = suiteLayout,
+            nextButton,
+            prevButton,
+            submitButton;
+
+        // wizard.json is 2 pages
+        getControls();
+        expect( nextButton.length ).toBe( 1 );
+        expect( prevButton.length ).toBe( 0 );
+        expect( submitButton.length ).toBe( 0 );
+
+        nextButton.click();
+
+        getControls();
+        expect( nextButton.length ).toBe( 0 );
+        expect( prevButton.length ).toBe( 1 );
+        expect( submitButton.length ).toBe( 1 );
+
+        function getControls() {
+          nextButton   = suite.element.find( '.wizard-next-btn' );
+          prevButton   = suite.element.find( '.wizard-prev-btn' );
+          submitButton = suite.element.find( '.wizard-submit-btn' );
+        }
+      } );
+    } );
 
     //--------------------
     describe( 'suiteWithData', function() {

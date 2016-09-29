@@ -82,6 +82,16 @@
         // Now that the model has updated, the watcher should have fired and updated its own property
         expect( _.get( model, watcherProp ) ).toEqual( newValue );
       } );
+
+      it( 'should remove the custom widget from the widget list with overrideWidgetList', function() {
+        var widgetList = suiteMain.iscFormsTemplateService.getWidgetList();
+        expect( widgetList ).toContain( 'customWatcherWidget' );
+
+        // Overriding the visibility of the widget should remove it from the list
+        suiteMain.iscFormsTemplateService.overrideWidgetList( 'customWatcherWidget', false );
+        var updatedList = suiteMain.iscFormsTemplateService.getWidgetList();
+        expect( updatedList ).not.toContain( 'customWatcherWidget' );
+      } );
     } );
 
   } );

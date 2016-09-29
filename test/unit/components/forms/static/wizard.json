@@ -1,0 +1,28 @@
+{
+  "name"       : "Sample Wizard page layout",
+  "pageLayout" : "wizard",
+  "pages"      : [
+    {
+      "fields" : [
+        {
+          "key"             : "page1Input",
+          "type"            : "input",
+          "templateOptions" : {
+            "label" : "Input on page 1"
+          }
+        }
+      ]
+    },
+    {
+      "fields" : [
+        {
+          "key"             : "page2Input",
+          "type"            : "input",
+          "templateOptions" : {
+            "label" : "Input on page 2"
+          }
+        }
+      ]
+    }
+  ]
+}

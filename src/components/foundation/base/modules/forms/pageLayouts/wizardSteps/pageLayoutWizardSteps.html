@@ -1,0 +1,17 @@
+<div class="wizard-timeline">
+  <div ng-repeat="step in wizardStepsCtrl.context.selectablePages track by $index"
+       class="grid-block"
+       ng-class="{'line' : !$last, 'shrink' : $last}">
+    <div class="grid-block shrink">
+      <div class="circle"
+           ng-class="{'hollow' : wizardStepsCtrl.context.currentPage === step}">
+        <span>
+          <button ng-click="wizardStepsCtrl.context.selectPage($index)"
+                  ng-disabled="wizardStepsCtrl.context.currentPage === step">
+          {{ $index + 1 }}
+          </button>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
