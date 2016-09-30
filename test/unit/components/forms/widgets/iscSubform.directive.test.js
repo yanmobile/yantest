@@ -24,7 +24,7 @@
         _.debounce = function( callback, time ) {
           return function() {
             callback();
-          }
+          };
         };
 
         devlogProvider.loadConfig( mockCustomConfigService.getConfig() );
