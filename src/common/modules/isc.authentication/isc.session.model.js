@@ -234,7 +234,14 @@
         // expire/logout
         else if ( isTimeExpired() ) {
           channel.debug( '...sessionTimeout.expireAt ' + sessionTimeout.expireAt );
-          _expireSession();
+
+          // The timeout may have been updated in another tab. If this happened and this
+          // tab is still hidden, then this tab does not know that yet.
+          // So we need to check the timeout cookie before expiring session.
+          freshenSessionTimeoutFromStorage();
+          if ( isTimeExpired() ) {
+            _expireSession();
+          }
         }
       }
 
