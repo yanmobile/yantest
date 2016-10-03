@@ -30,7 +30,14 @@
       return proxy( proxyConfigItem.pattern, {
         target      : proxyConfigItem.target,
         changeOrigin: true,
-        logLevel    : proxyConfigItem.logLevel
+        logLevel    : proxyConfigItem.logLevel,
+        onProxyRes  : function onProxyRes( proxyRes, req, res ) {
+          var cookies = proxyRes.headers['set-cookie'];
+
+          proxyRes.headers['set-cookie'] = cookies.map( function( headerCookie ) {
+            return headerCookie.replace( /path=\/.+;/, 'path=/;' );
+          } );
+        }
       } );
     } );
 
