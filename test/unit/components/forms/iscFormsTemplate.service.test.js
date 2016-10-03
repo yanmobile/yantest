@@ -3,7 +3,15 @@
 
   //--------------------
   describe( 'iscFormsTemplateService', function() {
-    var suite;
+    var suite,
+        customButtonDefaults = {
+          test: {
+            onClick: _.noop
+          }
+        },
+        mockMode             = 'edit',
+        mockPageLayout       = 'wizard';
+
 
     window.useDefaultTranslateBeforeEach();
 
@@ -91,6 +99,32 @@
         suiteMain.iscFormsTemplateService.overrideWidgetList( 'customWatcherWidget', false );
         var updatedList = suiteMain.iscFormsTemplateService.getWidgetList();
         expect( updatedList ).not.toContain( 'customWatcherWidget' );
+      } );
+    } );
+
+    describe( 'custom service-level button configurations', function() {
+      it( 'should be returned by the service', function() {
+        suiteMain.iscFormsTemplateService.registerButtonDefaults( customButtonDefaults );
+        var expectedDefaults = suiteMain.iscFormsTemplateService.getButtonDefaults(
+          mockMode,
+          mockPageLayout
+        );
+        expect( customButtonDefaults ).toEqual( expectedDefaults );
+      } );
+
+      it( 'should handle a function definition for custom defaults', function() {
+        suiteMain.iscFormsTemplateService.registerButtonDefaults( defaultsAsFunction );
+        var expectedDefaults = suiteMain.iscFormsTemplateService.getButtonDefaults(
+          mockMode,
+          mockPageLayout
+        );
+        expect( customButtonDefaults ).toEqual( expectedDefaults );
+
+        function defaultsAsFunction( mode, pageLayout ) {
+          expect( mode ).toEqual( mockMode );
+          expect( pageLayout ).toEqual( mockPageLayout );
+          return customButtonDefaults;
+        }
       } );
     } );
 

@@ -53,7 +53,7 @@
   /* @ngInject */
   function iscFormsTemplateService( $filter, $window, $sce, $q,
     iscNavContainerModel, iscCustomConfigService, iscSessionModel,
-    formlyConfig, iscFormDataApi, hsModelUtils ) {
+    formlyConfig, iscFormDataApi, iscFormsPageLayoutService, hsModelUtils ) {
     var baseType = '__iscFormsBase__';
 
     var config           = iscCustomConfigService.getConfig(),
@@ -97,12 +97,14 @@
 
     return service;
 
-    /**
-     * @description Registers default buttons for all forms using this service. These will automatically be
-     * retrieved by instances of iscForm, or may be programmatically retrieved with getButtonDefaults and extended.
-     * @param {Object} defaults
-     */
     function registerButtonDefaults( defaults ) {
+      /**
+       * @description Registers default buttons for all forms using this service. These will automatically be
+       * retrieved by instances of iscForm, or may be programmatically retrieved with getButtonDefaults and extended.
+       * @param {Object|Function} defaults - default options for buttons. If a function, takes arguments for
+       * the form mode (edit or view) and the pageLayout, and it should return a buttonConfig object.
+       * If an object, it should be a buttonConfig object.
+       */
       customButtonDefaults = defaults;
     }
 
@@ -112,24 +114,49 @@
      * with registerButtonDefaults, this will return an object with a cancel button that navigates back one
      * history page, and a submit button which calls the configured formDataApi.submit function.
      * @param {String} mode - The edit/view mode of the containing form
+     * @param {String} pageLayout - The pageLayout setting of the containing form
      * @returns {{cancel: {onClick: function, afterClick: function, cssClass: string, text: string}, submit: {onClick: function, afterClick: function, cssClass: string, text: string}}}
      */
-    function getButtonDefaults( mode ) {
-      return customButtonDefaults || {
-          cancel: {
-            onClick   : _.noop,
-            afterClick: afterCancel,
-            cssClass  : 'cancel button large float-left',
-            text      : mode === 'view' ? 'Forms_Back_Button' : 'Forms_Cancel_Button'
-          },
-          submit: {
-            onClick   : onSubmit,
-            afterClick: afterSubmit,
-            cssClass  : 'button large float-right',
-            text      : 'Forms_Submit_Button',
-            hide      : mode === 'view'
-          }
-        };
+    function getButtonDefaults( mode, pageLayout ) {
+      var customDefaults,
+          pageLayoutDefaults  = {},
+          defaultButtonConfig = {
+            cancel: {
+              onClick   : _.noop,
+              afterClick: afterCancel,
+              cssClass  : 'cancel button large float-left',
+              text      : mode === 'view' ? 'Forms_Back_Button' : 'Forms_Cancel_Button',
+              order     : 1
+            },
+            submit: {
+              onClick   : onSubmit,
+              afterClick: afterSubmit,
+              cssClass  : 'button large float-right',
+              text      : 'Forms_Submit_Button',
+              hide      : mode === 'view',
+              order     : 2
+            }
+          };
+
+      // Handle custom service-level defaults
+      if ( customButtonDefaults ) {
+        if ( _.isFunction( customButtonDefaults ) ) {
+          customDefaults = customButtonDefaults.call( this, mode, pageLayout );
+        }
+        else if ( _.isObject( customButtonDefaults ) ) {
+          customDefaults = customButtonDefaults;
+        }
+      }
+
+      // Additional defaults by page layout type
+      switch ( pageLayout ) {
+        case 'wizard' :
+          pageLayoutDefaults = iscFormsPageLayoutService.getWizardButtonConfig();
+          break;
+      }
+
+      // Custom defaults override all system defaults, including pageLayout-specific buttons
+      return customDefaults || _.defaultsDeep( {}, pageLayoutDefaults, defaultButtonConfig );
 
       function onSubmit( context ) {
         var configuredDataApi = context.formConfig.formDataApi;

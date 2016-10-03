@@ -38,9 +38,6 @@
       var defaultFormConfig   = iscFormsTemplateService.getFormDefaults();
       self.internalFormConfig = _.defaultsDeep( self.formConfig || {}, defaultFormConfig );
 
-      var defaultButtonConfig   = iscFormsTemplateService.getButtonDefaults( self.mode );
-      self.internalButtonConfig = _.defaultsDeep( self.buttonConfig || {}, defaultButtonConfig );
-
       // Ensure id is either numeric or undefined (if passed directly from a route param, it could be a string)
       var parsedId          = parseInt( self.formDataId );
       self.parsedFormDataId = _.isNaN( parsedId ) ? undefined : parsedId;
@@ -169,6 +166,9 @@
           formLiteral: self.internalFormConfig.formLiteral
         } )
           .then( function( validationDefinition ) {
+            var defaultButtonConfig   = iscFormsTemplateService.getButtonDefaults( self.mode, self.formDefinition.form.pageLayout );
+            self.internalButtonConfig = _.defaultsDeep( self.buttonConfig || {}, defaultButtonConfig );
+
             self.validationDefinition = validationDefinition;
             self.showInternal         = true;
           } );
