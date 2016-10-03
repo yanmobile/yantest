@@ -97,14 +97,14 @@
 
     return service;
 
+    /**
+     * @description Registers default buttons for all forms using this service. These will automatically be
+     * retrieved by instances of iscForm, or may be programmatically retrieved with getButtonDefaults and extended.
+     * @param {Object|Function} defaults - default options for buttons. If a function, takes arguments for
+     * the form mode (edit or view) and the pageLayout, and it should return a buttonConfig object.
+     * If an object, it should be a buttonConfig object.
+     */
     function registerButtonDefaults( defaults ) {
-      /**
-       * @description Registers default buttons for all forms using this service. These will automatically be
-       * retrieved by instances of iscForm, or may be programmatically retrieved with getButtonDefaults and extended.
-       * @param {Object|Function} defaults - default options for buttons. If a function, takes arguments for
-       * the form mode (edit or view) and the pageLayout, and it should return a buttonConfig object.
-       * If an object, it should be a buttonConfig object.
-       */
       customButtonDefaults = defaults;
     }
 
