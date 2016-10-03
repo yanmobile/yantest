@@ -76,8 +76,10 @@ function getAppConfig() {
           "js": []
         }
       },
-      "mocks"  : [],
-      "tests"  : [
+      "mocks"        : [
+        "test/unit/app/appUnitTestMocks.js"
+      ],
+      "tests"        : [
         "test/unit/app/**/*.test.js",
         "test/unit/app/**/*Tests.js"
       ]
