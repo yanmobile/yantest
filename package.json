@@ -67,7 +67,8 @@
   },
   "scripts": {
     "precommit": "gulp jsformat",
-    "prepush": "gulp test"
+    "prepush": "gulp test:app --single --skip-coverage",
+    "test": "gulp test --single"
   },
   "engines": {
     "node": "5.5.0",
