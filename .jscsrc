@@ -109,7 +109,7 @@
       }
     }
   },
-  "disallowMultipleLineBreaks"             : true,
+  // "disallowMultipleLineBreaks"             : true,
   "disallowCommaBeforeLineBreak"           : null,
   "disallowDanglingUnderscores"            : null,
   "disallowEmptyBlocks"                    : true,
