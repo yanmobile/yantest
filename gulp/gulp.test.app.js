@@ -5,9 +5,11 @@
 var Karma               = require( 'karma' ).Server;
 var componentTestConfig = require( './gulp.test.components' );
 var _                   = require( 'lodash' );
-var reportCoverage      = true;
+var argv                = require( 'yargs' ).argv;
 
-module.exports          = {
+var reportCoverage = true;
+
+module.exports = {
   init  : init,
   getSrc: getSrc
 };
@@ -63,44 +65,55 @@ function init( gulp, plugins, config, _ ) {
   // run the app tests
   // --------------------------------
   gulp.task( 'test:app', function( done ) {
-    var reporters  = reportCoverage ? ['progress', 'coverage'] : ['progress'];
-    reportCoverage = false; //only report coverage on the first pass
+    // Due to a karma bug, the server will hang for up to 20 seconds after completion.
+    // This is a way to force it to exit. This approach will also kill any other tasks in the gulp chain.
+    // It should only be used when executing test task individually
+    var forceQuitWhenDone = argv.single;
+    var reporters = !argv.skipCoverage && reportCoverage ? ['progress', 'coverage'] : ['progress'];
+    reportCoverage        = false; //only report coverage on the first pass
 
     var configPath = plugins.path.join( __dirname, "../test/karma.conf.app.js" );
-    return new Karma( {
+
+    var server = new Karma( {
       reporters : reporters,
       configFile: configPath,
       files     : srcFiles,
       singleRun : true
-    }, done ).start();
+    }, forceQuitWhenDone ? undefined : done );
+
+    if ( forceQuitWhenDone ) {
+      server.on( 'run_complete', function( browsers, results ) {
+        done( results.error ? 'There are test failures' : null );
+      } );
+    }
+
+    server.start();
   } );
 
   // --------------------------------
   // run the app tests
   // --------------------------------
   gulp.task( 'coverage:app', function( done ) {
-
+    // Due to a karma bug, the server will hang for up to 20 seconds after completion.
+    // This is a way to force it to exit. This approach will also kill any other tasks in the gulp chain.
+    // It should only be used when executing test task individually
+    var forceQuitWhenDone = argv.single;
+    console.log( 'forceQuitWhenDone:', forceQuitWhenDone );
     var configPath = plugins.path.join( __dirname, "../test/karma.conf.app.js" );
-    return new Karma( {
+    var server     = new Karma( {
       reporters : ["coverage"],
       configFile: configPath,
       files     : srcFiles,
       singleRun : true
-    }, done ).start();
-  } );
+    }, forceQuitWhenDone ? undefined : done );
 
-  // --------------------------------
-  // run all the tests
-  // --------------------------------
-  gulp.task( 'test', function( done ) {
-    return plugins.seq( ['test:app', 'test:components', 'test:common'], done );
-  } );
+    if ( forceQuitWhenDone ) {
+      server.on( 'run_complete', function( browsers, results ) {
+        done( results.error ? 'There are test failures' : null );
+      } );
+    }
 
-  // --------------------------------
-  // run all the tests
-  // --------------------------------
-  gulp.task( 'coverage', function( done ) {
-    return plugins.seq( ['coverage:app', 'coverage:components', 'coverage:common'], done );
+    server.start();
   } );
 
 }
