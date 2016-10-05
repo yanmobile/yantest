@@ -11,8 +11,9 @@ module.exports = {
 
 function init(gulp, plugins, config, _, util) {
   "use strict";
+  var argv           = require( 'yargs' ).argv;
+  var configOverride = argv.config;
 
-  var configOverride = util.getArg('--config');
 
   gulp.task('scripts:deploy', function () {
 
@@ -25,13 +26,12 @@ function init(gulp, plugins, config, _, util) {
     _.forEach(configPaths, function (configPath) {
       jsSrc.push(_.get(config.common, configPath, []));
       jsSrc.push(_.get(config.component, configPath, []));
+      if(configPath.endsWith('modules') && configOverride){
+        jsSrc.push(configOverride);
+        jsSrc.push(config.app.excludeConfig);
+      }
       jsSrc.push(_.get(config.app, configPath, []));
     });
-
-    if (configOverride) {
-      jsSrc.push(configOverride);
-      jsSrc.push(config.app.excludeConfig);
-    }
 
     jsSrc = _.flatten(jsSrc);
     jsSrc
