@@ -25,7 +25,8 @@
     get             : advancedGet,
     wrapText        : wrapText,
     interpolate     : interpolate,
-    getRemainingTime: getRemainingTime
+    getRemainingTime: getRemainingTime,
+    findNested      : findNested
   } );
 
   function getAge( dob, format ) {
@@ -180,6 +181,34 @@
 
   function getRemainingTime( time ) {
     return ( moment( time ) - Date.now() ) / 1000;
+  }
+
+  /**
+   * @description Finds an object in the given collection. Useful for collections that are nested
+   * arbitrarily deep with the same or similar data structure.
+   * Named _.findNested to avoid possible future conflicts with native _.findDeep, if it is implemented.
+   * @param {Object|Array} items
+   * @param {String} nestedPropertyName
+   * @param {Object|String|Function} findExpr
+   * @returns {*}
+   */
+  function findNested( items, nestedPropertyName, findExpr ) {
+    var result;
+
+    if ( _.isArray( items ) || _.isObject( items ) ) {
+      result = _.find( items, findExpr );
+    }
+
+    if ( !result ) {
+      var nextLevel = items[nestedPropertyName] || ( _.isArray( items ) ? items : undefined );
+      _.forEach( nextLevel, function( item ) {
+        if ( item[nestedPropertyName] ) {
+          result = result || findNested( item[nestedPropertyName], nestedPropertyName, findExpr );
+        }
+      } );
+    }
+
+    return result;
   }
 
   //END CLASS
