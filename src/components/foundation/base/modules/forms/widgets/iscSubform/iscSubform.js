@@ -125,11 +125,7 @@
               $filter( 'translate' )( subformParams.isNew ? 'Add' : 'Edit' ) + ' ' +
               $filter( 'translate' )( subformParams.itemLabel );
 
-        _.merge( self.childConfig, _.omit( subformParams, ['model', 'subform'] ) );
-
-        // model and subform need to be explicitly set because some properties may to be updated to undefined
-        self.childConfig.model   = subformParams.model;
-        self.childConfig.subform = subformParams.subform;
+        _.extend( self.childConfig, subformParams );
 
         self.childConfig.onSubmitAll = onSubmitAll;
         self.childConfig.formTitle   = childName;
