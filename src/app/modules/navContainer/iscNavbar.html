@@ -51,7 +51,7 @@
   <div class="grid-container">
     <ul class="inline-list show-for-medium">
       <li class="item"
-          ng-repeat="tab in navbarCtrl.getTabs() | orderBy: navbarCtrl.iscUiHelper.displayOrder"
+          ng-repeat="tab in navbarCtrl.getTabs() | orderBy: 'displayOrder'"
           ng-class="{'active': tab.active }">
         <a ng-class="{'active': tab.active }"
            ng-click="navbarCtrl.setTabActive( tab )"
@@ -70,7 +70,7 @@
     <ul class="icon-left menu-bar vertical">
       <li><a zf-close="" class="close float-right"><i class="fa fa-times" aria-hidden="true"></i></a></li>
       <li class="item"
-          ng-repeat="tab in navbarCtrl.getTabs() | orderBy: navbarCtrl.iscUiHelper.displayOrder"
+          ng-repeat="tab in navbarCtrl.getTabs() | orderBy: 'displayOrder'"
           ng-class="{'active': tab.active }">
         <a ng-class="{'active': tab.active }"
            ng-click="navbarCtrl.setTabActive( tab )"
