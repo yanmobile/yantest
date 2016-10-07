@@ -32,11 +32,14 @@
         changeOrigin: true,
         logLevel    : proxyConfigItem.logLevel,
         onProxyRes  : function onProxyRes( proxyRes, req, res ) {
-          var cookies = proxyRes.headers['set-cookie'];
+          var setCookies = proxyRes.headers['set-cookie'];
 
-          proxyRes.headers['set-cookie'] = cookies.map( function( headerCookie ) {
-            return headerCookie.replace( /path=\/.+;/, 'path=/;' );
-          } );
+          if ( setCookies && setCookies.map ) {
+            proxyRes.headers['set-cookie'] = setCookies.map( function( headerCookie ) {
+              //re-write cookie path to "/"
+              return headerCookie.replace( /path=\/.+;/, 'path=/;' );
+            } );
+          }
         }
       } );
     } );
