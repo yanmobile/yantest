@@ -237,30 +237,136 @@
       });
     });
 
-    describe("primative and their Object types", function () {
+    describe("primitive and their Object types", function () {
       it('should treat 5 and Number(5) the same', function () {
-        var primative = _.isTypeOf(5, "Number");
+        var primitive = _.isTypeOf(5, "Number");
         var object    = _.isTypeOf(Number(5), "Number");
 
-        expect(primative).toBe(object);
+        expect(primitive).toBe(object);
       });
-      
+
       it('should treat "hello" and String("hello") the same', function () {
-        var primative = _.isTypeOf("Hello", "String");
+        var primitive = _.isTypeOf("Hello", "String");
         var object    = _.isTypeOf(String("Hello"), "String");
 
-        expect(primative).toBe(object);
+        expect(primitive).toBe(object);
       });
-      
+
       it('should treat "[]" and Array() the same', function () {
-        var primative = _.isTypeOf([], "Array");
+        var primitive = _.isTypeOf([], "Array");
         var object    = _.isTypeOf(Array(), "Array");
 
-        expect(primative).toBe(object);
+        expect(primitive).toBe(object);
       });
-      
+
     });
 
-  });
+    describe( '_.findNested(collection, nestedProperty, findExpr)', function() {
+      var findable1 = {
+        "_class"     : "Local.Form.DataGram.FormReference",
+        "_id"        : 5,
+        "Application": "hscomm",
+        "Description": "Blood Sugar Reading",
+        "FormKey"    : "blood-sugar",
+        "ParentId"   : "3",
+        "Title"      : "Blood Sugar Reading"
+      };
+
+      var findable2 = {
+        "_class"     : "Local.Form.DataGram.FormReference",
+        "_id"        : 6,
+        "Application": "hscomm",
+        "Description": "Another Form",
+        "FormKey"    : "another-form",
+        "ParentId"   : "3",
+        "Title"      : "Another Form, not a Blood Sugar Reading"
+      };
+
+      var mockCollectionWithoutFindables = {
+        "_class"     : "Local.Form.DataGram.FolderRoot",
+        "_id"        : 2,
+        "Description": "",
+        "Items"      : [
+          {
+            "_class"     : "Local.Form.DataGram.Folder",
+            "_id"        : 3,
+            "Description": "Vitals",
+            // no forms
+            "Items"      : [],
+            "ParentId"   : "2",
+            "Title"      : "Vitals"
+          }
+        ],
+        "Key"        : "hspc-public-library-forms",
+        "ParentId"   : "",
+        "Title"      : "Public Forms Library"
+      };
+
+      var mockCollectionWithFindables = {
+        "_class"  : "Local.Form.DataGram.FolderRoot",
+        "_id"     : 2,
+        "Items"   : [
+          {
+            "_class"     : "Local.Form.DataGram.Folder",
+            "_id"        : 3,
+            "Description": "Vitals",
+            // coupla forms
+            "Items"      : [
+              findable1, findable2
+            ],
+            "ParentId"   : "2",
+            "Title"      : "Vitals"
+          }
+        ],
+        "Key"     : "hspc-public-library-forms",
+        "ParentId": "",
+        "Title"   : "Public Forms Library"
+      };
+
+      var result;
+
+      it( 'should return falsy if nothing is found', function() {
+        // By string
+        result = _.findNested( mockCollectionWithoutFindables, 'Items', 'FormKey' );
+        expect( result ).toBeFalsy();
+
+        // By object
+        result = _.findNested( mockCollectionWithoutFindables, 'Items', { FormKey: 'blood-sugar' } );
+        expect( result ).toBeFalsy();
+
+        // By function
+        result = _.findNested( mockCollectionWithoutFindables, 'Items', function( item ) {
+          return item.FormKey;
+        } );
+        expect( result ).toBeFalsy();
+      } );
+
+      it( 'should return the item if it finds one', function() {
+        // By string
+        // _.find returns the first match
+        result = _.findNested( mockCollectionWithFindables, 'Items', 'FormKey' );
+        expect( result ).toBe( findable1 );
+
+        // By object
+        result = _.findNested( mockCollectionWithFindables, 'Items', { FormKey: 'blood-sugar' } );
+        expect( result ).toBe( findable1 );
+
+        result = _.findNested( mockCollectionWithFindables, 'Items', { FormKey: 'another-form' } );
+        expect( result ).toBe( findable2 );
+
+        // By function
+        result = _.findNested( mockCollectionWithFindables, 'Items', function( item ) {
+          return item.FormKey === 'blood-sugar';
+        } );
+        expect( result ).toBe( findable1 );
+
+        result = _.findNested( mockCollectionWithFindables, 'Items', function( item ) {
+          return item.FormKey === 'another-form';
+        } );
+        expect( result ).toBe( findable2 );
+      } );
+    } );
+
+  } );
 })();
 
