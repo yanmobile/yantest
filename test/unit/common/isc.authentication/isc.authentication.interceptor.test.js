@@ -112,64 +112,6 @@
 
       } );
 
-
-    } );
-
-    xdescribe( 'without preventDefault', function() {
-
-      it( 'should have called confirmationService.show status 404', function() {
-        spyOn( fakeConfirmationService, 'show' );
-
-        interceptor.responseError( { status: 404, config: { url: "api/v1/patient" } } );
-        expect( fakeConfirmationService.show ).toHaveBeenCalled();
-      } );
-
-      it( 'should have called confirmationService.show status 555', function() {
-        spyOn( fakeConfirmationService, 'show' );
-
-        interceptor.responseError( { status: 555, config: {} } );
-        expect( fakeConfirmationService.show ).toHaveBeenCalled();
-      } );
-
-    } );
-
-    xdescribe( 'prevent default on ALL status code with preventDefault = true', function() {
-      it( 'should not call confirmationService.show status 404', function() {
-        spyOn( fakeConfirmationService, 'show' );
-
-        interceptor.responseError( { status: 404, config: { preventDefault: true } } );
-        expect( fakeConfirmationService.show ).not.toHaveBeenCalled();
-      } );
-
-      it( 'should not call confirmationService.show status 555', function() {
-        spyOn( fakeConfirmationService, 'show' );
-
-        interceptor.responseError( { status: 555, config: { preventDefault: true } } );
-        expect( fakeConfirmationService.show ).not.toHaveBeenCalled();
-      } );
-    } );
-
-    xdescribe( 'prevent default on selective status code with preventDefault = [codes]', function() {
-      it( 'should call confirmation.show if status code is 404', function() {
-        spyOn( fakeConfirmationService, 'show' );
-
-        interceptor.responseError( { status: 404, config: { preventDefault: [403] } } );
-        expect( fakeConfirmationService.show ).toHaveBeenCalled();
-      } );
-
-      it( 'should not call confirmationService.show status 404', function() {
-        spyOn( fakeConfirmationService, 'show' );
-
-        interceptor.responseError( { status: 404, config: { preventDefault: [404] } } );
-        expect( fakeConfirmationService.show ).not.toHaveBeenCalled();
-      } );
-
-      it( 'should not call confirmationService.show status 555', function() {
-        spyOn( fakeConfirmationService, 'show' );
-
-        interceptor.responseError( { status: 555, config: { preventDefault: [555] } } );
-        expect( fakeConfirmationService.show ).not.toHaveBeenCalled();
-      } );
     } );
 
   } );
