@@ -109,7 +109,7 @@ function getAppConfig() {
     // e.g. ```common: ['!src/modules/isc.filters/myFilter.js']```
     // update: common and components config can now be directly modified by this file.
     "overrides"    : {
-      "js"
+      "js": {
         "common"    : [],
         "components": []
       },
