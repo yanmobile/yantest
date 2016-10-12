@@ -42,24 +42,24 @@ function getAppConfig() {
       "fonts": []
     },
     "module"       : {
-      "modules": [
+      "modules"      : [
         "src/app/modules/**/app.module.js",
         "src/app/modules/**/*.module.js"
       ],
-      "js"     : [
+      "js"           : [
         "src/app/modules/**/*.js"
       ],
-      "scss"   : [
+      "scss"         : [
         "src/app/assets/sass/main.scss"
       ],
       "scssInjectSrc": [
         // uncomment this following line if you want to dynamically inject scss files inside of modules folder into your main.scss file
         // "src/app/modules/**/*.scss"
       ],
-      "html"   : [
+      "html"         : [
         "src/app/modules/**/*.html"
       ],
-      "assets" : {
+      "assets"       : {
         "FDN"              : "src/app/assets/FDN/",
         "i18nDir"          : "src/app/assets/i18n/",
         "comments"         : "i18nDomain value will be used as a part of the generated i18n XML",
@@ -85,17 +85,15 @@ function getAppConfig() {
       ]
     },
     "dest"         : {
-      "folder"       : "www",
-      "html"         : "src/index.html",
-      "css"          : "src/app/assets/sass/main.scss",
-      "js"           : "src/app/assets/sass/main.js",
-      "comments"     : "i18nXml is used for specifying destination location of converted i18n files",
-      "fdn"          : "src/www/assets/FDN/",
-      "i18nXml"      : "isc-tools/localize",
+      "folder"        : "www",
+      "comments"      : "i18nXml is used for specifying destination location of converted i18n files",
+      "fdn"           : "www/assets/FDN/",
+      "i18nXml"       : "isc-tools/localize",
+      "i18nExtract"   : "isc-tools/i18nExtract",
       // for specifying which files are to be copied over.
-      // Since development only uses "en-us.json", no need to update the gulp task to account for
+      // Since development only uses "en-us.json", no need t// o update the gulp task to account for
       // multiple translation files: e.g. "en-us.json", "en-uk.json" and "en.json".
-      "i18nXmlFilter": "**/en-us.xml"
+      "i18nXmlFilter" : "**/en-us.xml"
     },
     "cordova"      : false,
     "excludeConfig": "!src/app/modules/app.config.js",
@@ -105,13 +103,13 @@ function getAppConfig() {
         "path": "src/components/foundation/base/config.components.js"
       }
     ],
-    "comments"     : "JavaScript files can't be overridden like css selector cascading or Angular's templateCache templates.",
-    "comments"     : "If we want to override lower level JS files, we must exclude them from the list.",
-    "comments"     : "The overrides below are used to exclude base files by specifying glob patterns.",
-    "comments"     : "e.g. ```common: ['!src/modules/isc.filters/myFilter.js']```",
-    "comments"     : "update: common and components config can now be directly modified by this file.",
+    // JavaScript files can't be overridden like css selector cascading or Angular's templateCache templates.
+    // If we want to override lower level JS files, we must exclude them from the list.
+    // The overrides below are used to exclude base files by specifying glob patterns.
+    // e.g. ```common: ['!src/modules/isc.filters/myFilter.js']```
+    // update: common and components config can now be directly modified by this file.
     "overrides"    : {
-      "js"      : {
+      "js"
         "common"    : [],
         "components": []
       },
