@@ -25,7 +25,7 @@
   /* @ngInject */
   function iscEmbeddedFormCollection( $filter, $timeout, FoundationApi, iscCustomConfigService, FORMS_EVENTS,
     iscFormsTemplateService, iscFormsValidationService,
-    iscScrollContainerService ) {//jshint ignore:line
+    iscScrollContainerService, $translate ) {//jshint ignore:line
 
     // ----------------------------
     // vars
@@ -36,7 +36,7 @@
       key            : PRIMITIVE_KEY,
       type           : 'input',
       templateOptions: {
-        label: 'Forms_Collections_Primitive_Label'
+        label: $translate.instant( 'Value' )
       }
     };
 

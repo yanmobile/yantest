@@ -6,6 +6,6 @@
   'use strict';
 
   angular
-    .module( 'isc.http', ['isc.configuration', 'isc.authentication', 'isc.core'] );
+    .module( 'isc.http', ['isc.configuration', 'isc.authentication', 'isc.core', 'pascalprecht.translate'] );
 
 } )();

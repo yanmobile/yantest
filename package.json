@@ -11,6 +11,7 @@
     "event-stream": "3.3.4",
     "gulp": "3.9.1",
     "gulp-angular-templatecache": "2.0.0",
+    "gulp-angular-translate-extract": "git+https://github.com/HenryZouInterSystems/gulp-angular-translate-extract.git",
     "gulp-autoprefixer": "3.1.0",
     "gulp-bytediff": "1.0.0",
     "gulp-chmod": "1.3.0",
