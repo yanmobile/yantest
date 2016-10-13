@@ -10,23 +10,41 @@ module.exports = {
 };
 
 function init(gulp, plugins, config, _) {
-  var customRegex = {
-      // {{ ($ctrl.condition || "my translation") | translate }} #html
-      // {{ $ctrl.condition || "my translation" | translate }} #html
-      HtmlWithDoubleStart: `\\{\\{\\s*\\(?["'](.+)["']\\s*\\|\\|\\s*.+\\)?\\s*\\|\\s*translate\\s*\\}\\}`,
-      // {{ ("my translation" || $ctrl.condition) | translate }}
-      // {{ "my translation" || $ctrl.condition | translate }}
-      HtmlWithDoubleEnd: `\\{\\{\\s*\\(?\\s*.+\\s*\\|\\|\\s*["'](.+)["']\\s*\\)?\\s*\\|\\s*translate\\s*\\}\\}`,
-      // {{ (foo ? "bar" : baz) | translate }}
-      // {{ foo ? "bar" : baz | translate }}
-      HtmlTertiaryStart: `\\{\\{\\s*\\(?\\s*.+\\s*\\?\\s*.+\\s*\\:\\s*["'](.+)["']\\s*\\)?\\s*\\|\\s*translate\\s`,
-      // {{ (foo ? bar : "baz") | translate }}
-      // {{ foo ? bar : "baz" | translate }}
-      HtmlTertiaryEnd: `\\{\\{\\s*\\(?\\s*.+\\s*\\?\\s*["'](.+)["']\\s*\\:\\s*.+\\s*\\)?\\s*\\|\\s*translate\\s`,
-      // translation: "Patient Page"  #used by state config
-      AngularStateConfigTranslationKey: `\\stranslationKey\\s*:\\s*['"](.+)['"]`
-  };
+  var anySpace = '\\s*';  //0 or more spaces
+  var pipex2 = '\\|\\|'; //two pipes
+  var anything = '.+';  //1 or more non-space chars
+  var anythingInQuotes = `["'](${anything})["']`; //in single or double quotes
+  //tests: "{{ ( "
+  //tests: "{{ "
+  var leftMustache = '\\{\\{\\s*\\(?\\s*';
+  //tests: " ) | translate }}"
+  //tests: " | translate }}"
+  var pipeTranslateWithRightMustache = '\\s*\\)?\\s*\\|\\s*translate\\s*\\}\\}';
 
+  var customRegex = {
+    // {{ ($ctrl.condition || "my translation") | translate }} #html
+    // {{ $ctrl.condition || "my translation" | translate }} #html
+    // REGEX: `\\{\\{\\s*\\(?["'](.+)["']\\s*\\|\\|\\s*.+\\)?\\s*\\|\\s*translate\\s*\\}\\}`,
+    HtmlWithDoubleStart: `${leftMustache}${anythingInQuotes}${anySpace}${pipex2}${anySpace}${anything}${pipeTranslateWithRightMustache}`,
+
+    // {{ ("my translation" || $ctrl.condition) | translate }}
+    // {{ "my translation" || $ctrl.condition | translate }}
+    // REGEX: `\\{\\{\\s*\\(?\\s*.+\\s*\\|\\|\\s*["'](.+)["']\\s*\\)?\\s*\\|\\s*translate\\s*\\}\\}`,
+    HtmlWithDoubleEnd: `${leftMustache}${anything}${anySpace}${pipex2}${anySpace}${anythingInQuotes}${pipeTranslateWithRightMustache}`,
+
+    // {{ (foo ? "bar" : baz) | translate }}
+    // {{ foo ? "bar" : baz | translate }}
+    // REGEX: `\\{\\{\\s*\\(?\\s*.+\\s*\\?\\s*.+\\s*\\:\\s*["'](.+)["']\\s*\\)?\\s*\\|\\s*translate\\s`,
+    HtmlTertiaryStart: `${leftMustache}${anything}${anySpace}\\?${anySpace}${anything}${anySpace}\\:${anySpace}${anythingInQuotes}${pipeTranslateWithRightMustache}`,
+
+    // {{ (foo ? bar : "baz") | translate }}
+    // {{ foo ? bar : "baz" | translate }}
+    // REGEX: `\\{\\{\\s*\\(?\\s*.+\\s*\\?\\s*["'](.+)["']\\s*\\:\\s*.+\\s*\\)?\\s*\\|\\s*translate\\s`,
+    HtmlTertiaryEnd: `${leftMustache}${anything}${anySpace}\\?${anySpace}${anythingInQuotes}${anySpace}\\:${anySpace}${anything}${pipeTranslateWithRightMustache}`,
+
+    // translation: "Patient Page"  #used by state config
+    AngularStateConfigTranslationKey: `${anySpace}translationKey${anySpace}:${anySpace}${anythingInQuotes}`
+  };
 
   gulp.task('i18nExtract:common', function () {
 
