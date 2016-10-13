@@ -1,4 +1,4 @@
-<div ng-message="required"><label class="error-message">* {{"Forms_Validation_Required" | translate : "{FieldName: '" + to.label + "'}" }}</label></div>
-<div ng-message="minlength"><label class="error-message">{{"Forms_Validation_MinLength" | translate : "{MinLength: '" + to.minlength + "'}"}}</label></div>
-<div ng-message="maxlength"><label class="error-message">{{"Forms_Validation_MaxLength" | translate : "{MaxLength: '" + to.maxlength + "'}"}}</label></div>
-<div ng-message="email"><label class="error-message">{{"Forms_Validation_Email" | translate}}</label></div>
+<div ng-message="required"><label class="error-message">* {{ "{{FieldName}} is required" | translate : "{FieldName: '" + to.label + "'}" }}</label></div>
+<div ng-message="minlength"><label class="error-message">{{ "Minimum length is {{MinLength}}" | translate : "{MinLength: '" + to.minlength + "'}"}}</label></div>
+<div ng-message="maxlength"><label class="error-message">{{ "Maximum length is {{MaxLength}}" | translate : "{MaxLength: '" + to.maxlength + "'}"}}</label></div>
+<div ng-message="email"><label class="error-message">{{ "Invalid email address" | translate }}</label></div>

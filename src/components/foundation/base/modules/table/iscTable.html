@@ -70,7 +70,7 @@
     <tr ng-if="!iscTblCtrl.tableRows.length">
       <td colspan="{{iscTblCtrl.tableConfig.columns.length}}">
         <p class="{{column.emptyClass || 'empty-message'}}">
-          {{(iscTblCtrl.tableConfig.emptyRowMessage || 'ISC_NO_ITEMS') | translate}}
+          {{(iscTblCtrl.tableConfig.emptyRowMessage || 'No content available.') | translate}}
         </p>
       </td>
     </tr>
