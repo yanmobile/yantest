@@ -42,7 +42,8 @@
   function run( $rootScope, $state, $window, $timeout, FoundationApi,
     devlog, loginApi, AUTH_EVENTS, NOTIFICATION,
     iscNavContainerModel, iscConfirmationService, iscNotificationService, iscSessionModel,
-    iscRouterDefaultEventService, iscExternalRouteApi, iscStateInit, iscVersionApi, iscCustomConfigService ) {
+    iscRouterDefaultEventService, iscExternalRouteApi, iscStateInit, iscVersionApi, iscCustomConfigService,
+    $translate) {
 
     var log = devlog.channel( 'app.module' );
 
@@ -65,7 +66,10 @@
     var isManualLogOut = $window.sessionStorage.getItem( 'isManualLogOut' );
     if ( !Boolean( isManualLogOut ) && Boolean( isAutoLogOut ) ) {
       $timeout( function() {
-        FoundationApi.publish( 'main-notifications', { title: 'Session Expired', content: 'You were automatically logged out.' } );
+        FoundationApi.publish( 'main-notifications', {
+          title: $translate.instant('Session Expired'),
+          content: $translate.instant('You were automatically logged out.')
+        } );
       } );
     }
     $window.sessionStorage.removeItem( 'isAutoLogOut' );
@@ -127,7 +131,7 @@
     $rootScope.$on( AUTH_EVENTS.sessionTimeoutWarning, function() {
       log.debug( 'AUTH_EVENTS.sessionTimeoutWarning...' );
       iscConfirmationService
-        .show( 'Session is about to expire. Continue working?' )
+        .show( $translate.instant('Session is about to expire. Continue working?') )
         .then( _onYes, _onNo );
 
       function _onYes() {
@@ -158,7 +162,10 @@
     // ------------------------
     // login failed
     $rootScope.$on( AUTH_EVENTS.loginFailed, function loginFailedHandler() {
-      FoundationApi.publish( 'main-notifications', { title: 'Login Failed', content: 'Please check your username and password and try again' } );
+      FoundationApi.publish( 'main-notifications', {
+        title: $translate.instant('Login Failed'),
+        content: $translate.instant('Please check your username and password and try again')
+      } );
     } );
 
     $rootScope.$on( AUTH_EVENTS.sessionTimeoutReset, function resetTimeout() {
