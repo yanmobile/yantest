@@ -13,7 +13,7 @@ function init(gulp, plugins, config, _) {
   var anySpace = '\\s*';  //0 or more spaces
   var pipex2 = '\\|\\|'; //two pipes
   var anything = '.+';  //1 or more non-space chars
-  var anythingInQuotes = `["'](${anything})["']`; //in single or double quotes
+  var captureAnythingInQuotes = `["'](${anything})["']`; //in single or double quotes
   //tests: "{{ ( "
   //tests: "{{ "
   var leftMustache = '\\{\\{\\s*\\(?\\s*';
@@ -25,25 +25,26 @@ function init(gulp, plugins, config, _) {
     // {{ ($ctrl.condition || "my translation") | translate }} #html
     // {{ $ctrl.condition || "my translation" | translate }} #html
     // REGEX: `\\{\\{\\s*\\(?["'](.+)["']\\s*\\|\\|\\s*.+\\)?\\s*\\|\\s*translate\\s*\\}\\}`,
-    HtmlWithDoubleStart: `${leftMustache}${anythingInQuotes}${anySpace}${pipex2}${anySpace}${anything}${pipeTranslateWithRightMustache}`,
+    HtmlWithDoubleStart: `${leftMustache}${captureAnythingInQuotes}${anySpace}${pipex2}${anySpace}${anything}${pipeTranslateWithRightMustache}`,
 
     // {{ ("my translation" || $ctrl.condition) | translate }}
     // {{ "my translation" || $ctrl.condition | translate }}
     // REGEX: `\\{\\{\\s*\\(?\\s*.+\\s*\\|\\|\\s*["'](.+)["']\\s*\\)?\\s*\\|\\s*translate\\s*\\}\\}`,
-    HtmlWithDoubleEnd: `${leftMustache}${anything}${anySpace}${pipex2}${anySpace}${anythingInQuotes}${pipeTranslateWithRightMustache}`,
+    HtmlWithDoubleEnd: `${leftMustache}${anything}${anySpace}${pipex2}${anySpace}${captureAnythingInQuotes}${pipeTranslateWithRightMustache}`,
 
     // {{ (foo ? "bar" : baz) | translate }}
     // {{ foo ? "bar" : baz | translate }}
     // REGEX: `\\{\\{\\s*\\(?\\s*.+\\s*\\?\\s*.+\\s*\\:\\s*["'](.+)["']\\s*\\)?\\s*\\|\\s*translate\\s`,
-    HtmlTertiaryStart: `${leftMustache}${anything}${anySpace}\\?${anySpace}${anything}${anySpace}\\:${anySpace}${anythingInQuotes}${pipeTranslateWithRightMustache}`,
+    HtmlTertiaryStart: `${leftMustache}${anything}${anySpace}\\?${anySpace}${anything}${anySpace}\\:${anySpace}${captureAnythingInQuotes}${pipeTranslateWithRightMustache}`,
 
     // {{ (foo ? bar : "baz") | translate }}
     // {{ foo ? bar : "baz" | translate }}
     // REGEX: `\\{\\{\\s*\\(?\\s*.+\\s*\\?\\s*["'](.+)["']\\s*\\:\\s*.+\\s*\\)?\\s*\\|\\s*translate\\s`,
-    HtmlTertiaryEnd: `${leftMustache}${anything}${anySpace}\\?${anySpace}${anythingInQuotes}${anySpace}\\:${anySpace}${anything}${pipeTranslateWithRightMustache}`,
+    HtmlTertiaryEnd: `${leftMustache}${anything}${anySpace}\\?${anySpace}${captureAnythingInQuotes}${anySpace}\\:${anySpace}${anything}${pipeTranslateWithRightMustache}`,
 
     // translation: "Patient Page"  #used by state config
-    AngularStateConfigTranslationKey: `${anySpace}translationKey${anySpace}:${anySpace}${anythingInQuotes}`
+    // REGEX: `\\s*translationKey\\s*:\\s*['"](.+)['"]`
+    AngularStateConfigTranslationKey: `${anySpace}translationKey${anySpace}:${anySpace}${captureAnythingInQuotes}`
   };
 
   gulp.task('i18nExtract:common', function () {
