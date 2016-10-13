@@ -3,16 +3,16 @@
  */
 
 
-var angularTranslate = require('gulp-angular-translate-extract');
-
-module.exports = {
+var angularTranslate = require( 'gulp-angular-translate-extract' );
+var mergeJson        = require( './plugins/merge-json' );
+module.exports       = {
   init: init
 };
 
-function init(gulp, plugins, config, _) {
-  var anySpace = '\\s*';  //0 or more spaces
-  var pipex2 = '\\|\\|'; //two pipes
-  var anything = '.+';  //1 or more non-space chars
+function init( gulp, plugins, config, _ ) {
+  var anySpace                = '\\s*';  //0 or more spaces
+  var pipex2                  = '\\|\\|'; //two pipes
+  var anything                = '.+';  //1 or more non-space chars
   var captureAnythingInQuotes = `["'](${anything})["']`; //in single or double quotes
   //tests: "{{ ( "
   //tests: "{{ "
@@ -44,62 +44,76 @@ function init(gulp, plugins, config, _) {
 
     // translation: "Patient Page"  #used by state config
     // REGEX: `\\s*translationKey\\s*:\\s*['"](.+)['"]`
-    AngularStateConfigTranslationKey: `${anySpace}translationKey${anySpace}:${anySpace}${captureAnythingInQuotes}`
+    AngularStateConfigTranslationKey: `${anySpace}translationKey${anySpace}:${anySpace}${captureAnythingInQuotes}`,
+
+    // translation: config-item-translation-key="my literal"
+    // REGEX: `\\s*config-item-translation-key\=['"](.+)['"]`
+    HtmlConfigItemConfigKey: `${anySpace}config-item-translation-key\=${captureAnythingInQuotes}`
+
   };
 
-  gulp.task('i18nExtract:common', function () {
+  gulp.task( 'i18nExtract:common', function() {
 
     var files = _.concat(
       config.common.module.modules, config.common.module.js,
       config.common.module.html,
-      "!**/svg/*.html");
+      "!**/svg/*.html" );
 
-    return extract(files, "-common");
+    return extract( files, "-common" );
 
-  });
+  } );
 
-  gulp.task('i18nExtract:components', function () {
+  gulp.task( 'i18nExtract:components', function() {
 
     var files = _.concat(
       config.component.module.modules, config.component.module.js,
       config.component.module.html,
-      "!**/svg/*.html");
+      "!**/svg/*.html" );
 
-    return extract(files, "-components");
+    return extract( files, "-components" );
 
-  });
+  } );
 
-  gulp.task('i18nExtract:app', function () {
+  gulp.task( 'i18nExtract:app', function() {
 
     var files = _.concat(
       config.app.module.modules, config.app.module.js,
       config.app.module.html,
-      "!**/svg/*.html");
+      "!**/svg/*.html" );
 
-    return extract(files, "-app");
+    return extract( files, "-app" );
 
-  });
+  } );
 
 
-  gulp.task('i18nExtract', function () {
+  gulp.task( 'i18nExtract', function() {
 
-    return    plugins.seq(["i18nExtract:common", "i18nExtract:components", "i18nExtract:app"]);
+    return plugins.seq( ["i18nExtract:common", "i18nExtract:components", "i18nExtract:app"] );
 
-  });
+  } );
 
-  function extract(files, suffix){
-    if( !_.get( config, "app.dest.i18nExtract" ) ){
+  function extract( files, suffix ) {
+    if ( !_.get( config, "app.dest.i18nExtract" ) ) {
       throw new Error( 'Missing config.app.js key: dest.i18nExtract' );
     }
 
     suffix = suffix || "";
     return gulp
-      .src(files)
-      .pipe(angularTranslate({
-        lang: ['en-us'+suffix],
+      .src( files )
+      .pipe( angularTranslate( {
+        lang       : ['en-us' + suffix],
         customRegex: customRegex
-      }))
-      .pipe(gulp.dest(config.app.dest.i18nExtract))
-      .pipe(plugins.filelog());
+      } ) )
+      .pipe( gulp.dest( config.app.dest.i18nExtract ) )
+      .pipe( mergeJson( 'en-us' + suffix + '-greek-text.json', {
+        parsers: {
+          "*": function wrap( source, replacer, key, sourceParent, replacerParent ) {
+            if ( _.isString( replacer ) ) {
+              sourceParent[key] = ("英" + replacer + "文");
+            }
+          }
+        }
+      } ) )
+      .pipe( gulp.dest( config.app.dest.i18nExtract ) );
   }
 }
