@@ -18,10 +18,10 @@
 
        <div class="grid-block menu-group-right medium-6 large-6 show-for-medium">
          <ul class="icon-left menu-bar condense large-expand">
-           <li ng-show="navbarCtrl.sessionModel.isAuthenticated()"><a><i class="fa fa-cog fa-fw"></i>Settings</a></li>
-           <li><a><i class="fa fa-question-circle fa-fw"></i>Help</a></li>
-           <li ng-show="!navbarCtrl.sessionModel.isAuthenticated()"><a ui-sref="unauthenticated.login"><i class="fa fa-sign-in fa-fw"></i>Login</a></li>
-           <li ng-show="navbarCtrl.sessionModel.isAuthenticated()"><a ng-click="navbarCtrl.logout()"><i class="fa fa-sign-out fa-fw"></i>Logout</a></li>
+           <li ng-show="navbarCtrl.sessionModel.isAuthenticated()"><a><i class="fa fa-cog fa-fw"></i>{{ 'Settings' | translate }}</a></li>
+           <li><a><i class="fa fa-question-circle fa-fw"></i>{{ "Help" | translate }}</a></li>
+           <li ng-show="!navbarCtrl.sessionModel.isAuthenticated()"><a ui-sref="unauthenticated.login"><i class="fa fa-sign-in fa-fw"></i>{{ 'Login' | translate }}</a></li>
+           <li ng-show="navbarCtrl.sessionModel.isAuthenticated()"><a ng-click="navbarCtrl.logout()"><i class="fa fa-sign-out fa-fw"></i>{{ 'Logout' | translate }}</a></li>
          </ul>
        </div>
 
@@ -34,10 +34,10 @@
        <div zf-panel="" id="primary-mobile-nav" position="right" class="panel-fixed">
          <ul class="icon-left menu-bar vertical">
            <li><a zf-close="" class="close"><i class="fa fa-times" aria-hidden="true"></i></a></li>
-           <li ng-show="navbarCtrl.sessionModel.isAuthenticated()"><a><i class="fa fa-cog fa-fw"></i>Settings</a></li>
-           <li><a><i class="fa fa-question-circle fa-fw"></i>Help</a></li>
-           <li ng-show="!navbarCtrl.sessionModel.isAuthenticated()"><a ui-sref="unauthenticated.login"><i class="fa fa-sign-in fa-fw"></i>Login</a></li>
-           <li ng-show="navbarCtrl.sessionModel.isAuthenticated()"><a ng-click="navbarCtrl.logout()"><i class="fa fa-sign-out fa-fw"></i>Logout</a></li>
+           <li ng-show="navbarCtrl.sessionModel.isAuthenticated()"><a><i class="fa fa-cog fa-fw"></i>{{ "Settings" | translate }}</a></li>
+           <li><a><i class="fa fa-question-circle fa-fw"></i>{{ "Help" | translate }}</a></li>
+           <li ng-show="!navbarCtrl.sessionModel.isAuthenticated()"><a ui-sref="unauthenticated.login"><i class="fa fa-sign-in fa-fw"></i>{{ 'Login' | translate }}</a></li>
+           <li ng-show="navbarCtrl.sessionModel.isAuthenticated()"><a ng-click="navbarCtrl.logout()"><i class="fa fa-sign-out fa-fw"></i>{{ 'Logout' | translate }}</a></li>
          </ul>
        </div>
      </div>
