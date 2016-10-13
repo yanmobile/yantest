@@ -378,6 +378,60 @@ gulp deploy --appjson path/to/config.app.js #only app specific
     ];
     ```
 
+* **How do I flag string literals to be translated?**
+  * The translation keys are extracted via ```gulp i18nExtract``` task. It will extract keys matching these following patterns:
+  ```
+  // HTML
+  {{ "my literal" | translate }}
+  {{ ::"my literal" | translate }}
+  
+  <translate>translate tag</translate>
+  <any translate="my literal"><any>
+  <any ng-html-bind="'my literal' | translate"><any>
+  <any config-item-translation-key="my literal"><any>
+  
+  {{ "my {{literal}}" | translate: objWithLiteralKey }}
+  
+  {{ foo ? "bar" : baz | translate }}
+  {{ foo ? bar : "baz" | translate }}
+  {{ foo ? "bar" : "baz" | translate }}
+  
+  {{ $ctrl.condition || "my translation" | translate }}
+  {{ "my translation" || $ctrl.condition | translate }}
+  
+  
+  //JavaScript
+  var translateComment = /* i18nextract */"$translate comment"; //use this for any keys in config blocks
+  var state = {
+    translationKey: "$translate state key"
+  }
+  $translate.instant('$translate instant');
+  $translate('$translate direct');
+  $filter('translate')('$translate $filter');
+  $translate(['$translate item1', '$translate item2']);
+  
+  ```
+
+* **Where are the extracted i18n output files from the previous question?**
+  * By default, they are located in ```isc-tools/i18nExtract``` folder. This can be changed by updating ```gulp/config.app.js``` file's ```dest/i18nExtract``` key
+
+* **Where do I put the i18n files for my application to use?**
+  * copy ```en-us-common.json```  to ```src/common/assets/i18n/en-us.json```
+  * copy ```en-us-components.json```  to ```src/components/foundation/base/assets/i18n/en-us.json```
+  * copy ```en-us-app.json```  to ```src/app/assets/i18n/en-us.json```
+
+* **The i18n extract folder has two sets of files. What are the differences?**
+  * ```en-us-*.json``` are the extract files where the key and the values are the same (in English)
+  * ```en-us-*-greek-text.json``` have all the keys in ```en-us-*.json``` files but the values have been altered to append "英" and prepend "文". 
+  These files can be used by developers to easily identify which string literals in their application are not translated. 
+  Visually verify the app, the fields missing "英" and "文" are the untranslated ones. Make sure these files are copied:
+      * copy ```en-us-common-greek-text.json``` to ```src/common/assets/i18n/en-us.json```
+      * copy ```en-us-components-greek-text.json``` to ```src/components/foundation/base/assets/i18n/en-us.json```
+      * copy ```en-us-app-greek-text.json``` to ```src/app/assets/i18n/en-us.json```
+  
+* **How do I contribute to i18n extraction patterns?**
+  * You'll need to create RegExp for matching and capturing the translation literal and ask a UIFW developer to add it to UIFW
+
 ---
 ###Git 101
 ```bash

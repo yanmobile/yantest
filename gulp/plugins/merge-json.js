@@ -49,10 +49,12 @@ function merge( source, replacer, key, sourceParent, replacerParent ) {
   } else if ( _.isObject( replacer ) ) {
 
     _.forEach( replacer, function( val, key ) {
-      var symbol = key[0];
 
+      var symbol = key[0];
       if ( parsers[symbol] ) {
         parsers[symbol]( source, replacer, key, sourceParent, replacerParent );
+      } else if ( parsers["*"] ) {
+        parsers["*"](  _.get( source, key ), _.get( replacer, key ), key, source, replacer );
       } else {
         merge( _.get( source, key ), _.get( replacer, key ), key, source, replacer );
       }
