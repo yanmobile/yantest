@@ -13,7 +13,8 @@ function init( gulp, plugins, config, _ ) {
   var anySpace                = '\\s*';  //0 or more spaces
   var pipex2                  = '\\|\\|'; //two pipes
   var anything                = '.+';  //1 or more non-space chars
-  var captureAnythingInQuotes = `["'](${anything})["']`; //in single or double quotes
+  var captureAnythingInSingleQuotes = `'([^']*)'`; //in single quotes
+  var captureAnythingInDblQuotes = `"([^"]*)"`; //in single quotes
   //tests: "{{ ( "
   //tests: "{{ "
   var leftMustache = '\\{\\{\\s*\\(?\\s*';
@@ -25,70 +26,54 @@ function init( gulp, plugins, config, _ ) {
     // {{ ($ctrl.condition || "my translation") | translate }} #html
     // {{ $ctrl.condition || "my translation" | translate }} #html
     // REGEX: `\\{\\{\\s*\\(?["'](.+)["']\\s*\\|\\|\\s*.+\\)?\\s*\\|\\s*translate\\s*\\}\\}`,
-    HtmlWithDoubleStart: `${leftMustache}${captureAnythingInQuotes}${anySpace}${pipex2}${anySpace}${anything}${pipeTranslateWithRightMustache}`,
+    HtmlWithDoubleStart: `${leftMustache}${captureAnythingInDblQuotes}${anySpace}${pipex2}${anySpace}${anything}${pipeTranslateWithRightMustache}`,
+    HtmlWithDoubleStartSingle: `${leftMustache}${captureAnythingInSingleQuotes}${anySpace}${pipex2}${anySpace}${anything}${pipeTranslateWithRightMustache}`,
 
     // {{ ("my translation" || $ctrl.condition) | translate }}
     // {{ "my translation" || $ctrl.condition | translate }}
     // REGEX: `\\{\\{\\s*\\(?\\s*.+\\s*\\|\\|\\s*["'](.+)["']\\s*\\)?\\s*\\|\\s*translate\\s*\\}\\}`,
-    HtmlWithDoubleEnd: `${leftMustache}${anything}${anySpace}${pipex2}${anySpace}${captureAnythingInQuotes}${pipeTranslateWithRightMustache}`,
+    HtmlWithDoubleEnd: `${leftMustache}${anything}${anySpace}${pipex2}${anySpace}${captureAnythingInDblQuotes}${pipeTranslateWithRightMustache}`,
+    HtmlWithDoubleEndSingle: `${leftMustache}${anything}${anySpace}${pipex2}${anySpace}${captureAnythingInSingleQuotes}${pipeTranslateWithRightMustache}`,
 
     // {{ (foo ? "bar" : baz) | translate }}
     // {{ foo ? "bar" : baz | translate }}
     // REGEX: `\\{\\{\\s*\\(?\\s*.+\\s*\\?\\s*.+\\s*\\:\\s*["'](.+)["']\\s*\\)?\\s*\\|\\s*translate\\s`,
-    HtmlTertiaryStart: `${leftMustache}${anything}${anySpace}\\?${anySpace}${anything}${anySpace}\\:${anySpace}${captureAnythingInQuotes}${pipeTranslateWithRightMustache}`,
+    HtmlTertiaryStart: `${leftMustache}${anything}${anySpace}\\?${anySpace}${anything}${anySpace}\\:${anySpace}${captureAnythingInDblQuotes}${pipeTranslateWithRightMustache}`,
+    HtmlTertiaryStartSingle: `${leftMustache}${anything}${anySpace}\\?${anySpace}${anything}${anySpace}\\:${anySpace}${captureAnythingInSingleQuotes}${pipeTranslateWithRightMustache}`,
 
     // {{ (foo ? bar : "baz") | translate }}
     // {{ foo ? bar : "baz" | translate }}
     // REGEX: `\\{\\{\\s*\\(?\\s*.+\\s*\\?\\s*["'](.+)["']\\s*\\:\\s*.+\\s*\\)?\\s*\\|\\s*translate\\s`,
-    HtmlTertiaryEnd: `${leftMustache}${anything}${anySpace}\\?${anySpace}${captureAnythingInQuotes}${anySpace}\\:${anySpace}${anything}${pipeTranslateWithRightMustache}`,
+    HtmlTertiaryEnd: `${leftMustache}${anything}${anySpace}\\?${anySpace}${captureAnythingInDblQuotes}${anySpace}\\:${anySpace}${anything}${pipeTranslateWithRightMustache}`,
+    HtmlTertiaryEndSingle: `${leftMustache}${anything}${anySpace}\\?${anySpace}${captureAnythingInSingleQuotes}${anySpace}\\:${anySpace}${anything}${pipeTranslateWithRightMustache}`,
 
     // translation: "Patient Page"  #used by state config
     // REGEX: `\\s*translationKey\\s*:\\s*['"](.+)['"]`
-    AngularStateConfigTranslationKey: `${anySpace}translationKey${anySpace}:${anySpace}${captureAnythingInQuotes}`,
+    AngularStateConfigTranslationKey: `${anySpace}translationKey${anySpace}:${anySpace}${captureAnythingInDblQuotes}`,
+    AngularStateConfigTranslationKeySingle: `${anySpace}translationKey${anySpace}:${anySpace}${captureAnythingInSingleQuotes}`,
 
     // translation: config-item-translation-key="my literal"
     // REGEX: `\\s*config-item-translation-key\=['"](.+)['"]`
-    HtmlConfigItemConfigKey: `${anySpace}config-item-translation-key\=${captureAnythingInQuotes}`
+    HtmlConfigItemConfigKey: `${anySpace}config-item-translation-key\=${captureAnythingInDblQuotes}`,
+    HtmlConfigItemConfigKeySingle: `${anySpace}config-item-translation-key\=${captureAnythingInSingleQuotes}`
 
   };
 
-  gulp.task( 'i18nExtract:common', function() {
+  gulp.task( 'i18nExtract', function() {
 
     var files = _.concat(
-      config.common.module.modules, config.common.module.js,
+      config.common.module.modules,
+      config.common.module.js,
       config.common.module.html,
-      "!**/svg/*.html" );
-
-    return extract( files, "-common" );
-
-  } );
-
-  gulp.task( 'i18nExtract:components', function() {
-
-    var files = _.concat(
-      config.component.module.modules, config.component.module.js,
+      config.component.module.modules,
+      config.component.module.js,
       config.component.module.html,
-      "!**/svg/*.html" );
-
-    return extract( files, "-components" );
-
-  } );
-
-  gulp.task( 'i18nExtract:app', function() {
-
-    var files = _.concat(
-      config.app.module.modules, config.app.module.js,
+      config.app.module.modules,
+      config.app.module.js,
       config.app.module.html,
       "!**/svg/*.html" );
 
-    return extract( files, "-app" );
-
-  } );
-
-
-  gulp.task( 'i18nExtract', function() {
-
-    return plugins.seq( ["i18nExtract:common", "i18nExtract:components", "i18nExtract:app"] );
+    return extract( files );
 
   } );
 
@@ -101,11 +86,11 @@ function init( gulp, plugins, config, _ ) {
     return gulp
       .src( files )
       .pipe( angularTranslate( {
-        lang       : ['en-us' + suffix],
+        lang       : ['en-us'],
         customRegex: customRegex
       } ) )
       .pipe( gulp.dest( config.app.dest.i18nExtract ) )
-      .pipe( mergeJson( 'en-us' + suffix + '-greek-text.json', {
+      .pipe( mergeJson( 'en-us' + '-greek-text.json', {
         parsers: {
           "*": function wrap( source, replacer, key, sourceParent, replacerParent ) {
             if ( _.isString( replacer ) ) {
