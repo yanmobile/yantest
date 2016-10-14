@@ -7,12 +7,6 @@ module.exports = {
   init: init
 };
 
-var filelog   = require( "gulp-filelog" );
-var fs        = require( 'fs' );
-var mergeJson = require( './plugins/merge-json' );
-var convert   = require( './i18n.xml.converter' );
-var filter    = require( 'gulp-filter' );
-
 function init( gulp, plugins, config, _ ) {
 
   /**
@@ -20,16 +14,12 @@ function init( gulp, plugins, config, _ ) {
    *
    * This is the order of file overrides: App overrides Components which overrides Common => _.merge({}, common, components, app);
    */
-  gulp.task( 'i18n', ['i18nExtract'], function( done ) {
+  gulp.task( 'i18n', function( done ) {
 
-    var domain = _.get( config, "app.module.assets.i18nDomain" );
-    var file   = "en-us.json";
-
-    gulp
-      .src( file, { cwd: config.app.dest.i18nExtract } )
-      .pipe( convert( { domain: domain } ) )
-      .pipe( gulp.dest( config.app.dest.i18nXml ) )
-      .pipe( filelog() );
+    return gulp
+      .src( "*.json", { cwd: config.app.module.assets.i18nDir } )
+      .pipe( gulp.dest( config.app.dest.i18n ) )
+      .pipe( plugins.filelog() );
 
   } );
 }
