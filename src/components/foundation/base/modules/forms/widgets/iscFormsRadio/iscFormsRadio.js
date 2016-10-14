@@ -56,8 +56,9 @@
           options       = ctrl.options,
           isObjectModel = ctrl.isObjectModel;
 
-      scope.displayProp = _.get( options, 'data.displayField', 'name' );
-      scope.groupProp   = _.get( options, 'data.groupField', 'group' );
+      scope.displayProp  = _.get( options, 'data.displayField', 'name' );
+      scope.groupProp    = _.get( options, 'data.groupField', 'group' );
+      scope.isHorizontal = _.get( options, 'data.layout.orientation' ) === 'horizontal';
 
       ngModel.$render = function() {
         if ( ngModel.$viewValue ) {
