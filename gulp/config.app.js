@@ -88,6 +88,7 @@ function getAppConfig() {
       "folder"        : "www",
       "comments"      : "i18nXml is used for specifying destination location of converted i18n files",
       "fdn"           : "www/assets/FDN/",
+      "i18n"          : "www/assets/i18n/",
       "i18nXml"       : "isc-tools/localize",
       "i18nExtract"   : "isc-tools/i18nExtract",
       // for specifying which files are to be copied over.
