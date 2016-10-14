@@ -416,21 +416,17 @@ gulp deploy --appjson path/to/config.app.js #only app specific
   * By default, they are located in ```isc-tools/i18nExtract``` folder. This can be changed by updating ```gulp/config.app.js``` file's ```dest/i18nExtract``` key
 
 * **Where do I put the i18n files for my application to use?**
-  * copy ```en-us-common.json```  to ```src/common/assets/i18n/en-us.json```
-  * copy ```en-us-components.json```  to ```src/components/foundation/base/assets/i18n/en-us.json```
-  * copy ```en-us-app.json```  to ```src/app/assets/i18n/en-us.json```
+  * copy ```en-us.json```  to ```src/app/assets/i18n/en-us.json```
 
-* **The i18n extract folder has two sets of files. What are the differences?**
-  * ```en-us-*.json``` are the extract files where the key and the values are the same (in English)
-  * ```en-us-*-greek-text.json``` have all the keys in ```en-us-*.json``` files but the values have been altered to append "英" and prepend "文". 
+* **The i18n extract folder has two files. What are the differences?**
+  * ```en-us.json``` is the extract file where the key and the values are the same (in English)
+  * ```en-us-greek-text.json``` have all the keys in ```en-us.json``` file but the values have been altered to append "英" and prepend "文". 
   These files can be used by developers to easily identify which string literals in their application are not translated. 
-  Visually verify the app, the fields missing "英" and "文" are the untranslated ones. Make sure these files are copied:
-      * copy ```en-us-common-greek-text.json``` to ```src/common/assets/i18n/en-us.json```
-      * copy ```en-us-components-greek-text.json``` to ```src/components/foundation/base/assets/i18n/en-us.json```
-      * copy ```en-us-app-greek-text.json``` to ```src/app/assets/i18n/en-us.json```
+  Visually verify the app, the fields missing "英" and "文" are the untranslated literals.. Make sure these files are copied:
+      * copy ```en-us-greek-text.json``` to ```src/app/assets/i18n/en-us.json```
   
 * **How do I contribute to i18n extraction patterns?**
-  * You'll need to create RegExp for matching and capturing the translation literal and ask a UIFW developer to add it to UIFW
+  * You'll need to create RegExp for matching and capturing the translation literals and ask a UIFW developer to add it to UIFW for you.
 
 ---
 ###Git 101
