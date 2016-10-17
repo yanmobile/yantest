@@ -146,6 +146,18 @@ gulp deploy --appjson path/to/config.app.js #only app specific
       // e.g., "src/components/foundation/base/node_modules/font-awesome/fonts/fontawesome-webfont.*"
     ]
   },
+  "customer"     : { // app specific. Used by customer to override application code
+    "assets": {
+      "i18n": [  //order matters
+        // to replace default with this, add this to the json file: "UifwMergeAlgorithm": "replace"
+        // e.g., "customer/assets/i18n/**/*.json"
+      ],
+      "FDN" : [
+        // to replace default with this, add this to the json file: "UifwMergeAlgorithm": "replace"
+        // e.g., "customer/assets/FDN/**/*.json"
+      ]
+    }
+  },
   "module" : {
     "modules": [
       // This is where we specify our own module files
@@ -163,6 +175,14 @@ gulp deploy --appjson path/to/config.app.js #only app specific
       // e.g., "src/components/foundation/base/assets/**/*.html"
     ],
     "assets" : {
+      "FDN" : [  
+         // This is where we specify FDN files
+         // e.g., "src/app/assets/FDN/**/*.json"
+      ],
+      "i18n" : [
+        // This is where we specify i18n files                   
+        // e.g., "src/app/assets/i18n/**/*.json"
+      ],
       "images" : [
         // This is where we specify image files. 
         // They'll compressed and moved into "www/images/"
@@ -200,6 +220,14 @@ gulp deploy --appjson path/to/config.app.js #only app specific
       "path" : "src/components/foundation/UK/config.components.js"
     }
   ],
+  "dest" : { // application specific
+     "folder"       : "www",
+     "comments"     : "i18nXml is used for specifying destination location of converted i18n files",
+     "fdn"          : "www/assets/FDN/",
+     "i18n"         : "www/assets/i18n/",
+     "i18nXml"      : "isc-tools/localize",
+     "i18nExtract"  : "isc-tools/i18nExtract"
+  },
   "comments"      : "JavaScript files can't be overridden like css selector cascading or Angular's templateCache templates.",
   "comments"      : "If we want to override lower level JS files, we must exclude them from the list.",
   "comments"      : "The overrides below are used to exclude base files by specifying glob patterns.",
