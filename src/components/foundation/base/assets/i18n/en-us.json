@@ -40,6 +40,7 @@
   "Forms_Collections_Move_Up"   : "Move Up",
   "Forms_Collections_Move_Down" : "Move Down",
   "Forms_Collections_Invalid"   : "! invalid",
+  "Forms_Help"                  : "Help",
 
   "Forms_DateComponents_Day"    : "DD",
   "Forms_DateComponents_Month"  : "MM",
