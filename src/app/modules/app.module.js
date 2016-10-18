@@ -46,6 +46,14 @@
 
     var log = devlog.channel( 'app.module' );
 
+    /*
+     this will be triggered if, for example
+     you open the browser on an iPad in Chrome in incognito mode
+     */
+    if ( detectUnsupportedBrowserMode() ) {
+      return; // boot from the startup process since any further attempt to write to sessionStorage will cause a crash
+    }
+
     // Configure notification defaults
     iscNotificationService.setDefaults( {
       position : NOTIFICATION.position.topRight,
@@ -180,7 +188,33 @@
       log.debug( 'destroySession..' );
       iscSessionModel.destroy();
       _.defer( iscNavContainerModel.navigateToUserLandingPage, 0 );
+    }
 
+    // ------------------------
+    function detectUnsupportedBrowserMode() {
+
+      var unsupportedMode = false;
+      try {
+        $window.sessionStorage.setItem( 'test', 'exists' );
+      }
+      catch ( error ) {
+        unsupportedMode = true;
+        $window.alert( 'sessionStorage is not available' );
+      }
+
+      try {
+        iscCookieManager.set( 'test', 'true', {} );
+      }
+      catch ( error ) {
+        unsupportedMode = true;
+        $window.alert( 'cookies are unsupported' );
+      }
+
+      if ( unsupportedMode ) {
+        $state.go( 'errorUnsupportedMode' );
+      }
+
+      return unsupportedMode;
     }
   }
 
