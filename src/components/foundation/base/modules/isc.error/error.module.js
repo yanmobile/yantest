@@ -28,6 +28,13 @@
         templateUrl   : 'isc.error/errorNoNetwork.html',
         translationKey: 'No Network',
         roles         : ['*']
+      },
+      'errorUnsupportedMode': {
+        url           : '/unsupportedMode',
+        state         : 'errorUnsupportedMode',
+        templateUrl   : 'isc.error/errorUnsupportedMode.html',
+        translationKey: 'Unsupported Browswer Mode',
+        roles         : ['*']
       }
     };
   }
