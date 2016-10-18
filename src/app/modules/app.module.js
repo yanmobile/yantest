@@ -207,7 +207,7 @@
 
       // attempt to set a cookie
       try {
-        $window.document.cookie = "test=exists; path=/;expires=Thu, 01 Jan 1970 00:00:01 GMT"
+        $window.document.cookie = "test=exists;path=/;expires=Thu, 01 Jan 1970 00:00:01 GMT"
       }
       catch ( error ) {
         unsupportedMode = true;
