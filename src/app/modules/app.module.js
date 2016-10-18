@@ -203,7 +203,7 @@
       }
 
       try {
-        iscCookieManager.set( 'test', 'true', {} );
+        $window.document.cookie = "test=exists; path=/";
       }
       catch ( error ) {
         unsupportedMode = true;
