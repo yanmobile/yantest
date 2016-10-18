@@ -1,5 +1,10 @@
 <div class="error-page-container">
 
+  <!--
+  this page is to warn the user about unsupported browser modes
+  for example, on iPad Chrome and Safari, incognito tabs cant access sessionStorage
+  -->
+
   <div class="error-title">
     {{'Error' | translate}}
   </div>
@@ -13,7 +18,8 @@
   </div>
 
   <div class="seperator">
-    <div>{{"It looks like your current browser settings are unsupported." | translate}}</div>
-    <div>{{"Try opening the tab in something other than incognito mode." | translate}}</div>
+    <div>{{"It appears that your current browser settings are not supported." | translate}}</div>
+    <div>{{"The application does not support incognito browsing on mobile devices." | translate}}</div>
+    <div>{{"Try opening the application in a tab that is in regular browsing mode." | translate}}</div>
   </div>
 </div>
