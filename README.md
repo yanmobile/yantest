@@ -148,12 +148,12 @@ gulp deploy --appjson path/to/config.app.js #only app specific
   },
   "customer"     : { // app specific. Used by customer to override application code
     "assets": {
-      "i18n": [  //order matters
-        // to replace default with this, add this to the json file: "UifwMergeAlgorithm": "replace"
+      "i18n": [ 
+        // default will replace the entire file, to change this add "_UifwMergeAlgorithm": "merge" to the json file 
         // e.g., "customer/assets/i18n/**/*.json"
       ],
       "FDN" : [
-        // to replace default with this, add this to the json file: "UifwMergeAlgorithm": "replace"
+        // default will replace the entire file, to change this add "_UifwMergeAlgorithm": "merge" to the json file 
         // e.g., "customer/assets/FDN/**/*.json"
       ]
     }

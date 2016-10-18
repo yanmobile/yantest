@@ -24,7 +24,7 @@ function init( gulp, plugins, config, _ ) {
 
     var sources = _.concat( componentsFDN, appFDN, customerFDN );
 
-    gulp.src( sources )
+    return gulp.src( sources )
       .pipe( groupAggregate( {
         group    : ( file ) => plugins.path.basename( file.path ),
         aggregate: ( group, files ) => {
@@ -41,18 +41,19 @@ function init( gulp, plugins, config, _ ) {
       var response = _.reduce( files, ( result, file ) => {
 
         var json = JSON.parse( _.get( file, "_contents", "{}" ) );
-        switch ( json.UifwMergeAlgorithm ) {
-          case "replace":
-            result = json;
+        switch ( json._UifwMergeAlgorithm ) {
+          case "merge":
+            delete result._UifwMergeAlgorithm;
+            delete json._UifwMergeAlgorithm;
+            jsonMerger.merge( result, json );
             break;
           default:
-            jsonMerger.merge( result, json );
+            result = json;
             break;
         }
         return result;
       }, {} );
 
-      delete response.UifwMergeAlgorithm;
       return JSON.stringify( response, null, '\t' );
     }
 

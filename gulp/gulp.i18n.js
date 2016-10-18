@@ -19,7 +19,7 @@ function init( gulp, plugins, config, _ ) {
 
     var sources = _.concat( config.app.module.assets.i18n, config.app.customer.assets.i18n );
 
-    gulp.src( sources )
+    return gulp.src( sources )
       .pipe( groupAggregate( {
         group    : ( file ) => plugins.path.basename( file.path ),
         aggregate: ( group, files ) => {
@@ -29,24 +29,25 @@ function init( gulp, plugins, config, _ ) {
           };
         }
       } ) )
-      .pipe( plugins.filelog() )
-      .pipe( gulp.dest( config.app.dest.i18nExtract ) );
+      .pipe( gulp.dest( config.app.dest.i18n ) )
+      .pipe( plugins.filelog() );
 
     function processFiles( group, files ) {
       var response = _.reduce( files, ( result, file ) => {
         var json = JSON.parse( _.get( file, "_contents", "{}" ) );
-        switch ( json.UifwMergeAlgorithm ) {
-          case "replace":
-            result = json;
+        switch ( json._UifwMergeAlgorithm ) {
+          case "merge":
+            delete result._UifwMergeAlgorithm;
+            delete json._UifwMergeAlgorithm;
+            jsonMerger.merge( result, json );
             break;
           default:
-            jsonMerger.merge( result, json );
+            result = json;
             break;
         }
         return result;
       }, {} );
 
-      delete response.UifwMergeAlgorithm;
       return JSON.stringify( response, null, '\t' );
     }
 
