@@ -2,7 +2,7 @@
  * Created by hzou on 12/8/15.
  */
 
-( function() {
+(function() {
   'use strict';
   angular
     .module( 'app', [
@@ -45,6 +45,14 @@
     iscRouterDefaultEventService, iscExternalRouteApi, iscStateInit, iscVersionApi, iscCustomConfigService ) {
 
     var log = devlog.channel( 'app.module' );
+
+    /*
+     this will be triggered if, for example
+     you open the browser on an iPad in Chrome in incognito mode
+     */
+    if ( detectUnsupportedBrowserMode() ) {
+      return; // boot from the startup process since any further attempt to write to sessionStorage will cause a crash
+    }
 
     // Configure notification defaults
     iscNotificationService.setDefaults( {
@@ -180,8 +188,38 @@
       log.debug( 'destroySession..' );
       iscSessionModel.destroy();
       _.defer( iscNavContainerModel.navigateToUserLandingPage, 0 );
+    }
 
+    // ------------------------
+    function detectUnsupportedBrowserMode() {
+
+      var unsupportedMode = false;
+
+      // attempt to write to sessionStorage
+      try {
+        $window.sessionStorage.setItem( 'test', 'exists' );
+        $window.sessionStorage.removeItem( 'test' );
+      }
+      catch ( error ) {
+        unsupportedMode = true;
+        $window.alert( 'sessionStorage is not available' );
+      }
+
+      // attempt to set a cookie
+      try {
+        $window.document.cookie = "test=exists;path=/;expires=Thu, 01 Jan 1970 00:00:01 GMT"
+      }
+      catch ( error ) {
+        unsupportedMode = true;
+        $window.alert( 'cookies are unsupported' );
+      }
+
+      if ( unsupportedMode ) {
+        $state.go( 'errorUnsupportedMode' );
+      }
+
+      return unsupportedMode;
     }
   }
 
-} )();
+})();
