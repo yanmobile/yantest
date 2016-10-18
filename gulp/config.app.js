@@ -44,11 +44,11 @@ function getAppConfig() {
     "customer"     : {
       "assets": {
         "i18n": [  //order matters
-          // to replace default with this, add this to the json file: "UifwMergeAlgorithm": "replace"
+          // The default algorithm is "replace". In order to specify "merge", be sure to add "_UifwMergeAlgorithm" : "merge"' as a property in the json files.
           "customer/assets/i18n/**/*.json"
         ],
         "FDN" : [
-          // to replace default with this, add this to the json file: "UifwMergeAlgorithm": "replace"
+          // The default algorithm is "replace". In order to specify "merge", be sure to add "_UifwMergeAlgorithm" : "merge"' as a property in the json files.
           "customer/assets/FDN/**/*.json"
         ]
       }
