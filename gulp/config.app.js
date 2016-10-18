@@ -41,6 +41,18 @@ function getAppConfig() {
       "mocks": [],
       "fonts": []
     },
+    "customer"     : {
+      "assets": {
+        "i18n": [  //order matters
+          // The default algorithm is "replace". In order to specify "merge", be sure to add "_UifwMergeAlgorithm" : "merge"' as a property in the json files.
+          "customer/assets/i18n/**/*.json"
+        ],
+        "FDN" : [
+          // The default algorithm is "replace". In order to specify "merge", be sure to add "_UifwMergeAlgorithm" : "merge"' as a property in the json files.
+          "customer/assets/FDN/**/*.json"
+        ]
+      }
+    },
     "module"       : {
       "modules"      : [
         "src/app/modules/**/app.module.js",
@@ -60,8 +72,12 @@ function getAppConfig() {
         "src/app/modules/**/*.html"
       ],
       "assets"       : {
-        "FDN"              : "src/app/assets/FDN/",
-        "i18nDir"          : "src/app/assets/i18n/",
+        "FDN"              : [  //order matters
+          "src/app/assets/FDN/**/*.json"
+        ],
+        "i18n"             : [  //order matters
+          "src/app/assets/i18n/**/*.json"
+        ],
         "comments"         : "i18nDomain value will be used as a part of the generated i18n XML",
         "i18nDomain"       : "hs-temp-app-scaffold",
         // for specifying a filename prefix that should be project-specific
@@ -85,16 +101,16 @@ function getAppConfig() {
       ]
     },
     "dest"         : {
-      "folder"        : "www",
-      "comments"      : "i18nXml is used for specifying destination location of converted i18n files",
-      "fdn"           : "www/assets/FDN/",
-      "i18n"          : "www/assets/i18n/",
-      "i18nXml"       : "isc-tools/localize",
-      "i18nExtract"   : "isc-tools/i18nExtract",
+      "folder"       : "www",
+      "comments"     : "i18nXml is used for specifying destination location of converted i18n files",
+      "fdn"          : "www/assets/FDN/",
+      "i18n"         : "www/assets/i18n/",
+      "i18nXml"      : "isc-tools/localize",
+      "i18nExtract"  : "isc-tools/i18nExtract",
       // for specifying which files are to be copied over.
       // Since development only uses "en-us.json", no need t// o update the gulp task to account for
       // multiple translation files: e.g. "en-us.json", "en-uk.json" and "en.json".
-      "i18nXmlFilter" : "**/en-us.xml"
+      "i18nXmlFilter": "**/en-us.xml"
     },
     "cordova"      : false,
     "excludeConfig": "!src/app/modules/app.config.js",
@@ -110,7 +126,7 @@ function getAppConfig() {
     // e.g. ```common: ['!src/modules/isc.filters/myFilter.js']```
     // update: common and components config can now be directly modified by this file.
     "overrides"    : {
-      "js": {
+      "js"      : {
         "common"    : [],
         "components": []
       },
