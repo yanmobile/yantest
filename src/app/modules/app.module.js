@@ -2,7 +2,7 @@
  * Created by hzou on 12/8/15.
  */
 
-( function() {
+(function() {
   'use strict';
   angular
     .module( 'app', [
@@ -194,16 +194,20 @@
     function detectUnsupportedBrowserMode() {
 
       var unsupportedMode = false;
+
+      // attempt to write to sessionStorage
       try {
         $window.sessionStorage.setItem( 'test', 'exists' );
+        $window.sessionStorage.removeItem( 'test' );
       }
       catch ( error ) {
         unsupportedMode = true;
         $window.alert( 'sessionStorage is not available' );
       }
 
+      // attempt to set a cookie
       try {
-        $window.document.cookie = "test=exists; path=/";
+        $window.document.cookie = "test=exists; path=/;expires=Thu, 01 Jan 1970 00:00:01 GMT"
       }
       catch ( error ) {
         unsupportedMode = true;
@@ -218,4 +222,4 @@
     }
   }
 
-} )();
+})();
