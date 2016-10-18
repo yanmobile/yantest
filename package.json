@@ -19,6 +19,7 @@
     "gulp-cssmin": "0.1.7",
     "gulp-filelog": "0.4.1",
     "gulp-filter": "4.0.0",
+    "gulp-group-aggregate": "^0.1.1",
     "gulp-header": "1.8.7",
     "gulp-imagemin": "3.0.2",
     "gulp-inject": "4.1.0",
@@ -68,7 +69,9 @@
   },
   "scripts": {
     "precommit": "gulp jsformat",
-    "prepush": "gulp test --single --skip-coverage"
+    "prepush": "gulp test --single --skip-coverage",
+    "debug-gulp": "iron-node node_modules/gulp/bin/gulp.js"
+
   },
   "engines": {
     "node": "5.5.0",
