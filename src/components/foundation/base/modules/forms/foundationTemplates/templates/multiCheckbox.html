@@ -1,5 +1,7 @@
-<div class="check-list">
-  <div ng-repeat="(key, option) in to.options" class="checkbox">
+<div class="check-list" ng-class="{ 'grid-block' : isHorizontal }">
+  <div ng-repeat="(key, option) in to.options"
+       class="checkbox"
+       ng-class="{ 'grid-block' : !isHorizontal, 'grid-content shrink' : isHorizontal }">
     <label>
       <input type="checkbox"
              id="{{id + '_'+ $index}}"

@@ -174,6 +174,8 @@
             change : setModel
           };
 
+          $scope.isHorizontal = _.get( opts, 'data.layout.orientation' ) === 'horizontal';
+
           // initialize the checkboxes check property
           var modelValue = _.get( $scope.model, opts.key );
           if ( angular.isArray( modelValue ) ) {
