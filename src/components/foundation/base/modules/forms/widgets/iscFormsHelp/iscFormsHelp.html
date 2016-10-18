@@ -1,0 +1,17 @@
+<div class="vertical grid-block formly-help-wrapper">
+  <div class="grid-block shrink">
+    <div ng-transclude></div>
+
+    <a class="button icon formly-help-icon margin-left"
+       ng-if="::helpCtrl.helpContent"
+       ng-click="helpCtrl.toggleHelp()"
+       title="{{'Forms_Help' | translate}}">
+      <i class="fa fa-question-circle"></i>
+    </a>
+  </div>
+
+  <div ng-if="::helpCtrl.helpContent"
+       class="grid-block shrink formly-help-content"
+       ng-show="helpCtrl.showHelp"
+       ng-bind-html="::helpCtrl.getHelpContent()"></div>
+</div>
