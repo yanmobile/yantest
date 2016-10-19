@@ -25,11 +25,12 @@ function includeUiModules( uiModuleNames ) {
   _.forEach( uiModuleNames, injectModuleFiles );
 
   function injectModuleFiles( uiModuleName ) {
-    var uiModulePath = `src/hs-ui-modules/src/modules/${uiModuleName}/**`;
+    var uiModulePath = `src/uifw-modules/src/modules/${uiModuleName}/**/*`;
+    console.log( 'uiModulePath:', uiModulePath );
     module.exports.app.module.modules.push( uiModulePath + ".module.js" );
     module.exports.app.module.js.push( uiModulePath + ".js" );
-    module.exports.app.module.scss.push( uiModulePath + ".scss" );
-    module.exports.app.module.html.push( uiModulePath + ".html" );
+    module.exports.app.module.scssInjectSrc.push( uiModulePath + ".scss" );
+    // module.exports.app.module.html.push( uiModulePath + ".html" );
   }
 }
 
