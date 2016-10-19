@@ -24,7 +24,7 @@ function init( gulp, plugins, config, _ ) {
       .pipe( plugins.sourcemaps.init() )
       .pipe( inject( injectSrc, {
         starttag : '// <!-- inject:scss -->',
-        endtag   : '// <!-- endinject -->',
+        endtag   : '// <!-- endinject:scss -->',
         transform: function( filepath ) {
 
           if(filepath.startsWith("/src/app")){
