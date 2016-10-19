@@ -26,7 +26,14 @@ function init( gulp, plugins, config, _ ) {
         starttag : '// <!-- inject:scss -->',
         endtag   : '// <!-- endinject -->',
         transform: function( filepath ) {
-          return `@import "${process.cwd() + filepath}";`;
+
+          if(filepath.startsWith("/src/app")){
+            var importStr = '@import "' + filepath.replace( '/src/app', '../..' ) + '";';
+          } else if(filepath.startsWith("/src/uifw-modules")){
+            var importStr = '@import "' + filepath.replace( '/src/uifw-modules', '../../../uifw-modules' ) + '";';
+          }
+
+          return importStr;
         }
       } ) )
       .pipe( sass.sync( { errLogToConsole: true } ) )
