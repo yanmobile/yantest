@@ -8,7 +8,7 @@
     .factory( 'iscAuthenticationInterceptor', iscAuthenticationInterceptor );
 
   /* @ngInject */
-  function iscAuthenticationInterceptor( $rootScope, $q, $injector, $timeout, AUTH_EVENTS, statusCode ) {
+  function iscAuthenticationInterceptor( $rootScope, $q, $injector, AUTH_EVENTS, statusCode ) {
 
     var $http; //dynamically injecting it to prevent circular Dependency Injections.
     var factory = {
@@ -71,8 +71,12 @@
       }
 
       function isUrlAllowed( url ) {
-        var ignoredUrls = ['api/v1/auth/status', 'api/v1/auth/logout'];
-        return !_.includes( ignoredUrls, url );
+        var ignoredUrls = [/api\/v1\/auth\/status$/, /api\/v1\/auth\/logout$/];
+
+        var isIgnored = _.some( ignoredUrls, function( ignoredUrl ) {
+          return ignoredUrl.test( url );
+        } );
+        return !isIgnored;
       }
     }
 
