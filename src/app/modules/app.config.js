@@ -53,6 +53,8 @@
         'port'    : 3030,
         'path'    : 'api/v1'
       }
+      },
+      useHttpBackup: false //Used for working offline. see: https://www.npmjs.com/package/angular-http-backup
     };
   }
 
