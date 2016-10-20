@@ -11,9 +11,6 @@
 
     /* @ngInject */
     .config( function( iscStateProvider, $urlRouterProvider ) {
-      $urlRouterProvider.when( '', '/login' );
-      $urlRouterProvider.when( '/', '/login' );
-
       iscStateProvider.state( getStates() );
     } );
 

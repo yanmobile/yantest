@@ -15,9 +15,9 @@ module.exports.common       = require( "./config.common" );
 module.exports.component    = require( "../src/components/foundation/base/config.components" );
 module.exports.app          = getAppConfig();
 
-//folder names inside of submodule, hs-ui-modules/src/modules, folder
-// src/hs-ui-modules/src/modules/timeline
-// src/hs-ui-modules/src/modules/inbox
+//folder names inside of submodule, uifw-modules/src/modules, folder
+// src/uifw-modules/src/modules/timeline
+// src/uifw-modules/src/modules/inbox
 // includeUiModules( ["timeline", "inbox"] );
 includeUiModules( [] );
 
@@ -30,7 +30,7 @@ function includeUiModules( uiModuleNames ) {
     module.exports.app.module.modules.push( uiModulePath + ".module.js" );
     module.exports.app.module.js.push( uiModulePath + ".js" );
     module.exports.app.module.scssInjectSrc.push( uiModulePath + ".scss" );
-    // module.exports.app.module.html.push( uiModulePath + ".html" );
+    // module.exports.app.module.html.push( uiModulePath + ".html" ); //alternative way of including templates. this will require templateUrls to be changed
   }
 }
 
@@ -38,7 +38,9 @@ function getAppConfig() {
   return {
     "modulePath"   : "src/app/modules/",
     "vendor"       : {
-      "js"   : [],
+      "js"   : [
+        'src/app/node_modules/angular-http-backup/dist/httpbackup.js'
+      ],
       "mocks": [],
       "fonts": []
     },
@@ -67,10 +69,11 @@ function getAppConfig() {
       ],
       "scssInjectSrc": [
         // uncomment this following line if you want to dynamically inject scss files inside of modules folder into your main.scss file
-        // "src/app/modules/**/*.scss"
+        "src/app/modules/**/*.scss"
       ],
       "html"         : [
-        "src/app/modules/**/*.html"
+        "src/app/modules/**/*.html",
+        // "src/uifw-modules/src/modules/**/*.html" //uncomment this if using uifw-modules' module
       ],
       "assets"       : {
         "FDN"              : [  //order matters

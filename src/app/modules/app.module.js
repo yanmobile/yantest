@@ -2,7 +2,7 @@
  * Created by hzou on 12/8/15.
  */
 
-(function() {
+( function() {
   'use strict';
   angular
     .module( 'app', [
@@ -10,14 +10,19 @@
       'isc.components',
       'isc.socket',
       'isc.templates',
-      'app.config'
+      'app.config',
+      'devtools'
     ] )
     .config( config )
     .run( run );
 
-  function config( $translateProvider, $httpProvider, $compileProvider,
-    devlogProvider, iscCustomConfigServiceProvider,
-    coreConfig, componentsConfig, appConfig ) {
+  function config( $translateProvider, $httpProvider, $compileProvider, $urlRouterProvider,
+    devlogProvider, iscCustomConfigServiceProvider, coreConfig, componentsConfig, appConfig ) {
+
+    //update below to change the default URL
+    $urlRouterProvider.when( '', '/login' );
+    $urlRouterProvider.when( '/', '/login' );
+
     _.defaults( appConfig, componentsConfig, coreConfig );
 
     iscCustomConfigServiceProvider.loadConfig( appConfig );
@@ -39,11 +44,9 @@
     }
   }
 
-  function run( $rootScope, $state, $window, $timeout, FoundationApi,
-    devlog, loginApi, AUTH_EVENTS, NOTIFICATION,
-    iscNavContainerModel, iscConfirmationService, iscNotificationService, iscSessionModel,
-    iscRouterDefaultEventService, iscExternalRouteApi, iscStateInit, iscVersionApi, iscCustomConfigService,
-    $translate) {
+  function run( $rootScope, $state, $window, $timeout, $translate, FoundationApi,
+    devlog, loginApi, AUTH_EVENTS, NOTIFICATION, iscNavContainerModel, iscConfirmationService, iscNotificationService, iscSessionModel,
+    iscRouterDefaultEventService, iscExternalRouteApi, iscStateInit, iscVersionApi, iscCustomConfigService) {
 
     var log = devlog.channel( 'app.module' );
 
@@ -75,8 +78,8 @@
     if ( !Boolean( isManualLogOut ) && Boolean( isAutoLogOut ) ) {
       $timeout( function() {
         FoundationApi.publish( 'main-notifications', {
-          title: $translate.instant('Session Expired'),
-          content: $translate.instant('You were automatically logged out.')
+          title  : $translate.instant( 'Session Expired' ),
+          content: $translate.instant( 'You were automatically logged out.' )
         } );
       } );
     }
@@ -121,9 +124,9 @@
 
     $rootScope.$on( AUTH_EVENTS.notAuthenticated, function() {
       log.debug( 'AUTH_EVENTS.notAuthenticated...' );
-      loginApi
-        .logout()
+      loginApi.logout()
         .finally( destroySession );
+
     } );
 
     // ----------------------
@@ -131,7 +134,9 @@
     $rootScope.$on( AUTH_EVENTS.logout, function() {
       log.debug( 'AUTH_EVENTS.logout...' );
       $window.sessionStorage.setItem( 'isManualLogOut', true );
-      loginApi.logout().then( destroySession );
+      loginApi.logout()
+        .finally( destroySession );
+
     } );
 
     // ------------------------
@@ -139,7 +144,7 @@
     $rootScope.$on( AUTH_EVENTS.sessionTimeoutWarning, function() {
       log.debug( 'AUTH_EVENTS.sessionTimeoutWarning...' );
       iscConfirmationService
-        .show( $translate.instant('Session is about to expire. Continue working?') )
+        .show( $translate.instant( 'Session is about to expire. Continue working?' ) )
         .then( _onYes, _onNo );
 
       function _onYes() {
@@ -171,8 +176,8 @@
     // login failed
     $rootScope.$on( AUTH_EVENTS.loginFailed, function loginFailedHandler() {
       FoundationApi.publish( 'main-notifications', {
-        title: $translate.instant('Login Failed'),
-        content: $translate.instant('Please check your username and password and try again')
+        title  : $translate.instant( 'Login Failed' ),
+        content: $translate.instant( 'Please check your username and password and try again' )
       } );
     } );
 
@@ -214,7 +219,7 @@
 
       // attempt to set a cookie
       try {
-        $window.document.cookie = "test=exists;path=/;expires=Thu, 01 Jan 1970 00:00:01 GMT"
+        $window.document.cookie = "test=exists;path=/;expires=Thu, 01 Jan 1970 00:00:01 GMT";
       }
       catch ( error ) {
         unsupportedMode = true;
@@ -229,4 +234,4 @@
     }
   }
 
-})();
+} )();
