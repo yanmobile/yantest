@@ -8,7 +8,7 @@
     .factory( 'iscAuthenticationInterceptor', iscAuthenticationInterceptor );
 
   /* @ngInject */
-  function iscAuthenticationInterceptor( $rootScope, $q, $injector, AUTH_EVENTS, statusCode ) {
+  function iscAuthenticationInterceptor( $rootScope, $q, $injector, AUTH_EVENTS, statusCode, iscAuthenticationInterceptorConfig ) {
 
     var $http; //dynamically injecting it to prevent circular Dependency Injections.
     var factory = {
@@ -50,8 +50,7 @@
         var deferred = $q.defer();
 
         if ( isUrlAllowed( response.config.url ) ) {
-
-          var url = 'api/v1/auth/status';  //TODO: make configurable?
+          var url = iscAuthenticationInterceptorConfig.getConfig( 'statusApiUrl' );
           $http   = $http || $injector.get( '$http' );  //dynamically injecting it to prevent circular Dependency Injections.
 
           // check if user session is still valid
@@ -63,7 +62,6 @@
         return deferred.promise;
 
         function statusError( res ) {
-          console.log( 'statusError' );
           $rootScope.$emit( AUTH_EVENTS.notAuthenticated, res ); //sends back the original response
           deferred.reject( response );
         }
@@ -71,7 +69,7 @@
       }
 
       function isUrlAllowed( url ) {
-        var ignoredUrls = [/api\/v1\/auth\/status$/, /api\/v1\/auth\/logout$/];
+        var ignoredUrls = iscAuthenticationInterceptorConfig.getConfig( "ignoredUrls" );
 
         var isIgnored = _.some( ignoredUrls, function( ignoredUrl ) {
           return ignoredUrl.test( url );
