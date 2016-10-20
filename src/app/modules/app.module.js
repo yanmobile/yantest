@@ -45,11 +45,9 @@
     }
   }
 
-  function run( $rootScope, $state, $window, $timeout, FoundationApi,
-    devlog, loginApi, AUTH_EVENTS, NOTIFICATION,
-    iscNavContainerModel, iscConfirmationService, iscNotificationService, iscSessionModel,
-    iscRouterDefaultEventService, iscExternalRouteApi, iscStateInit, iscVersionApi, iscCustomConfigService,
-    $translate) {
+  function run( $rootScope, $state, $window, $timeout, $translate, FoundationApi,
+    devlog, loginApi, AUTH_EVENTS, NOTIFICATION, iscNavContainerModel, iscConfirmationService, iscNotificationService, iscSessionModel,
+    iscRouterDefaultEventService, iscExternalRouteApi, iscStateInit, iscVersionApi, iscCustomConfigService) {
 
     var log = devlog.channel( 'app.module' );
 

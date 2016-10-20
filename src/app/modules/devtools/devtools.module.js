@@ -14,7 +14,7 @@
 
   function config( $httpProvider, httpBackupCacheProvider, appConfig ) {
     _appConfig = appConfig;
-    if ( _appConfig.useHttpBackup ) {
+    if ( _appConfig.useCachedHttpResponses ) {
       $httpProvider.interceptors.push( 'httpBackupInterceptor' );
       httpBackupCacheProvider.setCachingRules( [
         new RegExp( "^(?!.*[.]html$).*$" )  //ignore file ending with "*.html"
@@ -24,7 +24,7 @@
 
   function run( $rootScope, AUTH_EVENTS, iscNotificationService, httpBackupCache ) {
 
-    if ( _appConfig.useHttpBackup ) {
+    if ( _appConfig.useCachedHttpResponses ) {
       $rootScope.$on( 'HttpBackup_activated', function( response, data ) {
         iscNotificationService.showAlert( {
           title  : "Ajax failed. Switching to backup",
@@ -34,7 +34,7 @@
 
       // ------------------------
       // sessionTimeout event
-      $rootScope.$on( AUTH_EVENTS.logoutSuccess, function() {
+      $rootScope.$on( AUTH_EVENTS.logout, function() {
         httpBackupCache.clear();
       } );
     }
