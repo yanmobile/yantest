@@ -16,9 +16,8 @@
     .config( config )
     .run( run );
 
-  function config( $translateProvider, $httpProvider, $compileProvider,
-    devlogProvider, iscCustomConfigServiceProvider,
-    coreConfig, componentsConfig, appConfig, $urlRouterProvider ) {
+  function config( $translateProvider, $httpProvider, $compileProvider, $urlRouterProvider,
+    devlogProvider, iscCustomConfigServiceProvider, coreConfig, componentsConfig, appConfig ) {
 
     //update below to change the default URL
     $urlRouterProvider.when( '', '/login' );
