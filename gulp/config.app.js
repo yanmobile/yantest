@@ -73,7 +73,7 @@ function getAppConfig() {
       ],
       "html"         : [
         "src/app/modules/**/*.html",
-        // "src/uifw-modules/src/modules/**/*.html" //uncomment this if using uifw-modules' module
+        "src/uifw-modules/src/modules/**/*.html" //uncomment this if using uifw-modules' module
       ],
       "assets"       : {
         "FDN"              : [  //order matters
