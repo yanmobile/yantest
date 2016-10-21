@@ -19,7 +19,7 @@ module.exports.app          = getAppConfig();
 // src/uifw-modules/src/modules/timeline
 // src/uifw-modules/src/modules/inbox
 // includeUiModules( ["timeline", "inbox"] );
-includeUiModules( [] );
+includeUiModules( module.exports.app.submoduleComponents );
 
 function includeUiModules( uiModuleNames ) {
   _.forEach( uiModuleNames, injectModuleFiles );
@@ -29,21 +29,15 @@ function includeUiModules( uiModuleNames ) {
     console.log( 'uiModulePath:', uiModulePath );
     module.exports.app.module.modules.push( uiModulePath + ".module.js" );
     module.exports.app.module.js.push( uiModulePath + ".js" );
-    module.exports.app.module.scssInjectSrc.push( uiModulePath + ".scss" );
-    // module.exports.app.module.html.push( uiModulePath + ".html" ); //alternative way of including templates. this will require templateUrls to be changed
+    module.exports.app.module.scssInjectSrc.push( uiModulePath + ".scss" ); //scss files are auto injected to have access to vars and mixins
+    module.exports.app.module.html.push( uiModulePath + ".html" );
   }
 }
 
 function getAppConfig() {
   return {
     "modulePath"   : "src/app/modules/",
-    "vendor"       : {
-      "js"   : [
-        'src/app/node_modules/angular-http-backup/dist/httpbackup.js'
-      ],
-      "mocks": [],
-      "fonts": []
-    },
+    "submoduleComponents": [], //Simply include the module folder name. For example: ["timeline", "inbox", "admin.user"]
     "customer"     : {
       "assets": {
         "i18n": [  //order matters
@@ -55,6 +49,13 @@ function getAppConfig() {
           "customer/assets/FDN/**/*.json"
         ]
       }
+    },
+    "vendor"       : {
+      "js"   : [
+        'src/app/node_modules/angular-http-backup/dist/httpbackup.js'
+      ],
+      "mocks": [],
+      "fonts": []
     },
     "module"       : {
       "modules"      : [
@@ -72,8 +73,7 @@ function getAppConfig() {
         "src/app/modules/**/*.scss"
       ],
       "html"         : [
-        "src/app/modules/**/*.html",
-        // "src/uifw-modules/src/modules/**/*.html" //uncomment this if using uifw-modules' module
+        "src/app/modules/**/*.html"
       ],
       "assets"       : {
         "FDN"              : [  //order matters
