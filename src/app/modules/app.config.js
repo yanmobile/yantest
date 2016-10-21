@@ -42,16 +42,13 @@
   function getConfig() {
     return {
       //'customConfigUrl': 'path/to/external/config/api', //uncomment to call external api for custom config
-      'production': false,
-      'login'     : {
+      'production'          : false,
+      'login'               : {
         "useCacheLogin": true,
         'requiresOrg'  : false
       },
-      'api'       : {
-        'protocol': 'http',
-        'hostname': 'localhost',
-        'port'    : 3030,
-        'path'    : 'api/v1'
+      'api'                 : {
+        'path': 'api/v1'
       },
       useCachedHttpResponses: false //Used for working offline. see: https://www.npmjs.com/package/angular-http-backup
     };
