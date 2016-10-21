@@ -26,6 +26,7 @@ var plugins = {
   path         : require( 'path' ),
   pngcrush     : require( 'imagemin-pngcrush' ),  //img resizer
   rename       : require( 'gulp-rename' ),  //rename files
+  simpleRename : require( 'gulp-simple-rename' ),  //rename files
   replace      : require( 'gulp-replace' ),
   sass         : require( 'gulp-sass' ), //sass => css
   seq          : require( 'run-sequence' ), //run tasks in parallel
