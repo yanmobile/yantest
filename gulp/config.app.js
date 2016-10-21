@@ -19,7 +19,7 @@ module.exports.app          = getAppConfig();
 // src/uifw-modules/src/modules/timeline
 // src/uifw-modules/src/modules/inbox
 // includeUiModules( ["timeline", "inbox"] );
-includeUiModules( [] );
+includeUiModules( module.exports.app.submoduleComponents );
 
 function includeUiModules( uiModuleNames ) {
   _.forEach( uiModuleNames, injectModuleFiles );
@@ -37,13 +37,7 @@ function includeUiModules( uiModuleNames ) {
 function getAppConfig() {
   return {
     "modulePath"   : "src/app/modules/",
-    "vendor"       : {
-      "js"   : [
-        'src/app/node_modules/angular-http-backup/dist/httpbackup.js'
-      ],
-      "mocks": [],
-      "fonts": []
-    },
+    "submoduleComponents": [], //Simply include the module folder name. For example: ["timeline", "inbox", "admin.user"]
     "customer"     : {
       "assets": {
         "i18n": [  //order matters
@@ -55,6 +49,13 @@ function getAppConfig() {
           "customer/assets/FDN/**/*.json"
         ]
       }
+    },
+    "vendor"       : {
+      "js"   : [
+        'src/app/node_modules/angular-http-backup/dist/httpbackup.js'
+      ],
+      "mocks": [],
+      "fonts": []
     },
     "module"       : {
       "modules"      : [
