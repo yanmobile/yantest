@@ -44,7 +44,7 @@
     }
   }
 
-  function run( $rootScope, $state, $window, $timeout, $translate, FoundationApi,
+  function run( $rootScope, $state, $window, $timeout, $translate, FoundationApi, iscAuthenticationInterceptorConfig, apiHelper,
     devlog, loginApi, AUTH_EVENTS, NOTIFICATION, iscNavContainerModel, iscConfirmationService, iscNotificationService, iscSessionModel,
     iscRouterDefaultEventService, iscExternalRouteApi, iscStateInit, iscVersionApi, iscCustomConfigService) {
 
