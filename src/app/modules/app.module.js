@@ -49,6 +49,9 @@
     iscRouterDefaultEventService, iscExternalRouteApi, iscStateInit, iscVersionApi, iscCustomConfigService) {
 
     var log = devlog.channel( 'app.module' );
+    iscAuthenticationInterceptorConfig.configure( {
+      statusApiUrl: apiHelper.getUrl( 'auth/status' )
+    } );
 
     /*
      this will be triggered if, for example
