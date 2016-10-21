@@ -29,8 +29,8 @@ function includeUiModules( uiModuleNames ) {
     console.log( 'uiModulePath:', uiModulePath );
     module.exports.app.module.modules.push( uiModulePath + ".module.js" );
     module.exports.app.module.js.push( uiModulePath + ".js" );
-    module.exports.app.module.scssInjectSrc.push( uiModulePath + ".scss" );
-    // module.exports.app.module.html.push( uiModulePath + ".html" ); //alternative way of including templates. this will require templateUrls to be changed
+    module.exports.app.module.scssInjectSrc.push( uiModulePath + ".scss" ); //scss files are auto injected to have access to vars and mixins
+    module.exports.app.module.html.push( uiModulePath + ".html" );
   }
 }
 
@@ -72,8 +72,7 @@ function getAppConfig() {
         "src/app/modules/**/*.scss"
       ],
       "html"         : [
-        "src/app/modules/**/*.html",
-        // "src/uifw-modules/src/modules/**/*.html" //uncomment this if using uifw-modules' module
+        "src/app/modules/**/*.html"
       ],
       "assets"       : {
         "FDN"              : [  //order matters
