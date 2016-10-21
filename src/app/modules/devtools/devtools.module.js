@@ -32,6 +32,15 @@
         } );
       } );
 
+      $rootScope.$on( 'HttpBackup_cached', function( response, data ) {
+        if ( data.url.endsWith( "auth/login" ) ) {
+          //automatically setCache for 'auth/status' when 'auth/login' is called.
+          //this is needed because auth/login response with 303 to redirects to auth/status
+          var statusUrl = data.url.replace( 'auth/login', 'auth/status' );
+          httpBackupCache.setItem( statusUrl, data.response );
+        }
+      } );
+
       // ------------------------
       // sessionTimeout event
       $rootScope.$on( AUTH_EVENTS.logout, function() {

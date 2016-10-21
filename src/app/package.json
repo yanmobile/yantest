@@ -4,6 +4,6 @@
   "private": true,
   "dependencies": {},
   "devDependencies": {
-    "angular-http-backup": "^0.3.7"
+    "angular-http-backup": "^0.3.8"
   }
 }
