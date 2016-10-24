@@ -26,10 +26,11 @@
 
     if ( _appConfig.useCachedHttpResponses ) {
       $rootScope.$on( 'HttpBackup_activated', function( response, data ) {
-        iscNotificationService.showAlert( {
-          title  : "Ajax failed. Switching to backup",
-          content: "Using Cached for: " + data.url
-        } );
+        if ( !data.url.endsWith( "auth/status" ) ) {  //ignoring status urls because it gets fired for each api call
+          iscNotificationService.showAlert( {
+            content: "Using Cached for: " + data.url
+          } );
+        }
       } );
 
       $rootScope.$on( 'HttpBackup_cached', function( response, data ) {
