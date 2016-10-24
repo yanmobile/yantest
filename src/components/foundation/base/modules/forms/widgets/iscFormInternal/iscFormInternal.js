@@ -146,7 +146,7 @@
 
         function watchPage() {
           $scope.$watch(
-            "formInternalCtrl.currentPage",
+            "formInternalCtrl.mainFormConfig.currentPage",
             function() {
               if ( self.options.formState._model.isDirty ) {
                 callSaveApi();
