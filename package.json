@@ -70,7 +70,7 @@
   },
   "scripts": {
     "precommit": "gulp jsformat",
-    "prepush": "gulp test --single --skip-coverage",
+    "prepush": "gulp test:prepush --single --skip-coverage",
     "debug-gulp": "iron-node node_modules/gulp/bin/gulp.js"
   },
   "engines": {
