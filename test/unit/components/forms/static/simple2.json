@@ -2,11 +2,11 @@
   "name"       : "Simple Form",
   "validateOn" : "blur",
   "autosave"   : {
-    "trigger" : "pageChange"
+    "trigger" : "sectionChange"
   },
-  "pages"      : [
+  "sections"   : [
     {
-      "name"   : "Page 1",
+      "name"   : "Section 1",
       "fields" : [
         {
           "key"  : "aField",

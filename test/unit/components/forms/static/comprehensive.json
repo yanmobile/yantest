@@ -1,14 +1,14 @@
 {
   "name"                : "Sample Comprehensive Form",
   "additionalModelInit" : "loadPatient",
-  "pageLayout"          : "scrolling",
+  "sectionLayout"       : "scrolling",
   "validateOn"          : "change",
   "autosave"            : {
-    "trigger" : "pageChange"
+    "trigger" : "sectionChange"
   },
-  "pages"               : [
+  "sections"            : [
     {
-      "name"   : "Page 1 - Built-in Templates",
+      "name"   : "Section 1 - Built-in Templates",
       "fields" : [
         {
           "key"             : "form.components",
@@ -17,21 +17,21 @@
             "label" : "Testing for built-in components"
           },
           "data"            : {
-            "embeddedType"  : "builtinComponents",
-            "embeddedLabel" : "Component form",
-            "embeddedPage"  : 0
+            "embeddedType"    : "builtinComponents",
+            "embeddedLabel"   : "Component form",
+            "embeddedSection" : 0
           }
         }
       ]
     },
     {
-      "name"   : "Page 2 - Embedded Forms and Collections",
+      "name"   : "Section 2 - Embedded Forms and Collections",
       "fields" : [
         {
-          "className"  : "EmbeddedForms-exercising-embeddedPage",
+          "className"  : "EmbeddedForms-exercising-embeddedSection",
           "fieldGroup" : [
             {
-              "key"             : "sampleEmbeddedFullFormNoPage",
+              "key"             : "sampleEmbeddedFullFormNoSection",
               "type"            : "embeddedForm",
               "templateOptions" : {
                 "label" : "Embedded Full Form"
@@ -42,27 +42,27 @@
               }
             },
             {
-              "key"             : "sampleEmbeddedFullFormPage1",
+              "key"             : "sampleEmbeddedFullFormSection1",
               "type"            : "embeddedForm",
               "templateOptions" : {
                 "label" : "Embedded Full Form"
               },
               "data"            : {
-                "embeddedType"  : "embeddableFullForm",
-                "embeddedLabel" : "Embedded Form",
-                "embeddedPage"  : 1
+                "embeddedType"    : "embeddableFullForm",
+                "embeddedLabel"   : "Embedded Form",
+                "embeddedSection" : 1
               }
             },
             {
-              "key"             : "sampleEmbeddedFullFormLastPage",
+              "key"             : "sampleEmbeddedFullFormLastSection",
               "type"            : "embeddedForm",
               "templateOptions" : {
                 "label" : "Embedded Full Form"
               },
               "data"            : {
-                "embeddedType"  : "embeddableFullForm",
-                "embeddedLabel" : "Embedded Form",
-                "embeddedPage"  : "Last Page"
+                "embeddedType"    : "embeddableFullForm",
+                "embeddedLabel"   : "Embedded Form",
+                "embeddedSection" : "Last Section"
               }
             }
           ]
@@ -87,7 +87,7 @@
           "className"  : "EmbeddedFormCollections-exercising-editAs",
           "fieldGroup" : [
             {
-              "key"  : "test.SubformPage",
+              "key"  : "test.SubformSection",
               "type" : "embeddedFormCollection",
               "data" : {
                 "embeddedType" : "simple1",
@@ -149,9 +149,9 @@
                 "label" : "Testing for built-in components in a subform"
               },
               "data"            : {
-                "embeddedType"  : "builtinComponents",
-                "embeddedLabel" : "Built-in component subform",
-                "embeddedPage"  : 0
+                "embeddedType"    : "builtinComponents",
+                "embeddedLabel"   : "Built-in component subform",
+                "embeddedSection" : 0
               }
             }
           ]
@@ -159,7 +159,7 @@
       ]
     },
     {
-      "name"   : "Page 3 - Custom backend templates",
+      "name"   : "Section 3 - Custom backend templates",
       "fields" : [
         {
           "key"             : "sampleCustomField",
@@ -198,7 +198,7 @@
       ]
     },
     {
-      "name"   : "Page 4 - Validation",
+      "name"   : "Section 4 - Validation",
       "fields" : [
         {
           "key"             : "RequiredInput",
@@ -221,13 +221,13 @@
       ]
     },
     {
-      "name"           : "Page 5 - Page Hide Expressions",
+      "name"           : "Section 5 - Section Hide Expressions",
       "hideExpression" : "!model.RequiredInput",
       "fields"         : [
       ]
     },
     {
-      "name"   : "Page 6 - Misc",
+      "name"   : "Section 6 - Misc",
       "fields" : [
         {
           "comments"   : "These are comments on a field group",

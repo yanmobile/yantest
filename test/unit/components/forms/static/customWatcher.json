@@ -1,6 +1,6 @@
 {
-  "name"       : "Form testing a custom widget that has a watcher defined in the widget definition, not in the FDN",
-  "pages"      : [
+  "name"     : "Form testing a custom widget that has a watcher defined in the widget definition, not in the FDN",
+  "sections" : [
     {
       "fields" : [
         {

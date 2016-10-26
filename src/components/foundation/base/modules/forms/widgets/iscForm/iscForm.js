@@ -166,7 +166,7 @@
           formLiteral: self.internalFormConfig.formLiteral
         } )
           .then( function( validationDefinition ) {
-            var defaultButtonConfig   = iscFormsTemplateService.getButtonDefaults( self.mode, self.formDefinition.form.pageLayout );
+            var defaultButtonConfig   = iscFormsTemplateService.getButtonDefaults( self.mode, self.formDefinition.form.sectionLayout );
             self.internalButtonConfig = _.defaultsDeep( self.buttonConfig || {}, defaultButtonConfig );
 
             self.validationDefinition = validationDefinition;

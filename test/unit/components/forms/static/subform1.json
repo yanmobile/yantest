@@ -1,5 +1,5 @@
 {
-  "pages" : [
+  "sections" : [
     {
       "fields" : [
         {
@@ -16,8 +16,8 @@
             "label" : "More fields"
           },
           "data"            : {
-            "embeddedType" : "subform2",
-            "embeddedPage" : 0
+            "embeddedType"    : "subform2",
+            "embeddedSection" : 0
           }
         }
       ]

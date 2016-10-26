@@ -1,9 +1,9 @@
 {
-  "name"    : "Sample Form with Function Library",
-  "library" : "libraryScript",
-  "pages"   : [
+  "name"     : "Sample Form with Function Library",
+  "library"  : "libraryScript",
+  "sections" : [
     {
-      "name"   : "Page 1",
+      "name"   : "Section 1",
       "fields" : [
         {
           "key"             : "inputField",
@@ -13,11 +13,11 @@
           }
         },
         {
-          "key" : "embeddedLibraryTest",
-          "type"                 : "embeddedForm",
+          "key"  : "embeddedLibraryTest",
+          "type" : "embeddedForm",
           "data" : {
-            "embeddedType" : "libraryEmbedded",
-            "embeddedPage" : 0
+            "embeddedType"    : "libraryEmbedded",
+            "embeddedSection" : 0
           }
         }
       ]

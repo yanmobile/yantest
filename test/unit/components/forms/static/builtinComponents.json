@@ -1,8 +1,8 @@
 {
-  "name"  : "Testing for built-in components",
-  "pages" : [
+  "name"     : "Testing for built-in components",
+  "sections" : [
     {
-      "name"   : "Page 1",
+      "name"   : "Section 1",
       "fields" : [
         {
           "key"             : "templates.section",
@@ -39,7 +39,7 @@
           }
         },
         {
-          "className" : "button-fieldgroup",
+          "className"  : "button-fieldgroup",
           "fieldGroup" : [
             {
               "type"            : "button",
