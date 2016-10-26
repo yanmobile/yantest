@@ -118,7 +118,7 @@
           formVersion: formVersion
         } )
           .then( function( formDefinition ) {
-            _.forEach( formDefinition.form.section, function( section ) {
+            _.forEach( formDefinition.form.sections, function( section ) {
               getEmbeddedForms( section.fields, formDefinition.subforms );
             } );
 
@@ -218,7 +218,7 @@
               primaryPromises.push( libraryPromise );
             }
 
-            _.forEach( form.section, function( section ) {
+            _.forEach( form.sections, function( section ) {
               if ( !_.includes( omitTransforms, 'layout' ) ) {
                 iscFormFieldLayoutService.transformContainer( section );
               }
@@ -263,7 +263,7 @@
               };
 
               // Replace templates in the view mode with readonly versions
-              _.forEach( viewMode.form.section, function( section ) {
+              _.forEach( viewMode.form.sections, function( section ) {
                 replaceTemplates( section.fields );
               } );
 
@@ -431,7 +431,7 @@
                           };
                         }
 
-                        _.forEach( subform.section, function( section ) {
+                        _.forEach( subform.sections, function( section ) {
                           var fields = section.fields;
                           // Force inheritance of the data property
                           forceDataInheritance( fields );

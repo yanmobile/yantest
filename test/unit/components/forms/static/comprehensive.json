@@ -87,7 +87,7 @@
           "className"  : "EmbeddedFormCollections-exercising-editAs",
           "fieldGroup" : [
             {
-              "key"  : "test.SubformSection",
+              "key"  : "test.SubformPage",
               "type" : "embeddedFormCollection",
               "data" : {
                 "embeddedType" : "simple1",
