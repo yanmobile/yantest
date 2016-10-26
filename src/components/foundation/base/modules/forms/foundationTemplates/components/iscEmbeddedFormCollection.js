@@ -23,9 +23,9 @@
    * @returns {{restrict: string, replace: boolean, require: string, controllerAs: string, scope: {id: string, formState: string, options: string}, bindToController: boolean, controller: controller, link: link, templateUrl: string}}
    */
   /* @ngInject */
-  function iscEmbeddedFormCollection( $filter, $timeout, FoundationApi, iscCustomConfigService, FORMS_EVENTS,
+  function iscEmbeddedFormCollection( $filter, $timeout, $translate, FoundationApi, iscCustomConfigService, iscConfirmationService, FORMS_EVENTS,
     iscFormsTemplateService, iscFormsValidationService,
-    iscScrollContainerService, $translate ) {//jshint ignore:line
+    iscScrollContainerService ) {//jshint ignore:line
 
     // ----------------------------
     // vars
@@ -77,6 +77,7 @@
           editAs           = _.get( opts, 'data.collections.editAs' ),
           viewAs           = _.get( opts, 'data.collections.viewAs' ),
           allowReordering  = _.get( opts, 'data.collections.allowReordering' ),
+          confirmDeletion  = _.get( opts, 'data.collections.confirmDeletion' ),
           subforms         = self.formState._subforms,
           useDynamicFields = _.get( opts, 'data.collections.useDynamicFields' ),
           embeddedType     = _.get( opts, 'data.embeddedType' ),
@@ -413,11 +414,22 @@
       }
 
       function removeForm( row ) {
-        var index = _.indexOf( self.collectionModel, row );
+        if ( confirmDeletion ) {
+          iscConfirmationService
+            .show( $translate.instant( 'Are you sure you want to delete this {{ItemLabel}}?', { ItemLabel: self.label } ) )
+            .then( onYes );
+        }
+        else {
+          onYes();
+        }
 
-        self.collectionModel.splice( index, 1 );
-        $scope.$emit( FORMS_EVENTS.collectionItemRemoved, row );
-        onCollectionModified();
+        function onYes() {
+          var index = _.indexOf( self.collectionModel, row );
+
+          self.collectionModel.splice( index, 1 );
+          $scope.$emit( FORMS_EVENTS.collectionItemRemoved, row );
+          onCollectionModified();
+        }
       }
 
       function moveUp( row ) {

@@ -33,6 +33,7 @@
 
     beforeEach( inject( function( $rootScope, $compile, $window, $httpBackend, $timeout,
       formlyApiCheck, formlyConfig, keyCode,
+      iscConfirmationService,
       iscFormDataApi, iscNotificationService, iscFormsValidationService ) {
       formlyConfig.disableWarnings   = true;
       formlyApiCheck.config.disabled = true;
@@ -44,6 +45,7 @@
         $timeout    : $timeout,
         $rootScope  : $rootScope,
 
+        iscConfirmationService   : iscConfirmationService,
         keyCode                  : keyCode,
         iscFormDataApi           : iscFormDataApi,
         iscNotificationService   : iscNotificationService,
@@ -171,7 +173,7 @@
         testEdit( 'test.PrimitiveCollection', { isPrimitive: true } );
 
         // Delete a row for each subform type
-        testDelete( 'test.SubformPage' );
+        testDelete( 'test.SubformPage', true );
         testDelete( 'test.SubformInline' );
         testDelete( 'test.SubformModal' );
         testDelete( 'test.PrimitiveCollection' );
@@ -381,7 +383,7 @@
           }
         }
 
-        function testDelete( subformName ) {
+        function testDelete( subformName, confirmDeletion ) {
           var suite        = suiteSubform,
               subform      = getControlByName( suite, subformName ).filter( '.subform' ),
               deleteButton = subform.find( 'button.embedded-form-delete' ).last(),
@@ -393,6 +395,9 @@
 
           // Delete the record
           deleteButton.click();
+          if ( confirmDeletion ) {
+            suiteMain.iscConfirmationService.resolve();
+          }
           digest( suite );
           selectElements();
 
