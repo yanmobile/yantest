@@ -90,7 +90,10 @@
               "key"  : "test.SubformPage",
               "type" : "embeddedFormCollection",
               "data" : {
-                "embeddedType" : "simple1"
+                "embeddedType" : "simple1",
+                "collections"  : {
+                  "confirmDeletion" : true
+                }
               }
             },
             {
