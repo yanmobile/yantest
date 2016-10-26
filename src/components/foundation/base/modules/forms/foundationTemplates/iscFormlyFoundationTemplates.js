@@ -87,6 +87,12 @@
         templateUrl: 'forms/foundationTemplates/templates/instructions.html'
       } );
 
+      // Divider (line / hr)
+      iscFormsTemplateService.registerType( {
+        name       : 'divider',
+        templateUrl: 'forms/foundationTemplates/templates/divider.html'
+      } );
+
       // Button (supports templateOptions.onClick and data.userScript)
       iscFormsTemplateService.registerType( {
         name       : 'button',
