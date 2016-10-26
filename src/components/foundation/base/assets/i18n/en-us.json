@@ -41,6 +41,7 @@
   "Forms_Collections_Move_Down" : "Move Down",
   "Forms_Collections_Invalid"   : "! invalid",
   "Forms_Help"                  : "Help",
+  "Forms_Delete_Confirmation"   : "Are you sure you want to delete this {{ItemLabel}}?",
 
   "Forms_DateComponents_Day"    : "DD",
   "Forms_DateComponents_Month"  : "MM",
