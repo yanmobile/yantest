@@ -333,19 +333,30 @@
 
       $month.on( 'input', function onChange() {
         if ( this.value.length === 2 ) {
-          $day.focus();
+          focusNext( $month );
         }
       } );
 
       $day.on( 'input', function onChange() {
         if ( this.value.length === 2 ) {
-          $year.focus();
+          focusNext( $day );
         }
       } );
 
       $year.on( 'blur', function onBlur() {
+        if ( this.value.length === 4 ) {
+          focusNext( $year );
+        }
         ngModel.$setTouched();
       } );
+
+      // Focuses on the next component input, if there is one
+      function focusNext( input ) {
+        var next = input.parentsUntil( '.date-container' ).next().find( 'input' );
+        if ( next.length ) {
+          next.focus();
+        }
+      }
     }
 
   }//END CLASS
