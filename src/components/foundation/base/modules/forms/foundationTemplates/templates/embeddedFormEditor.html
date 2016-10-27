@@ -13,7 +13,7 @@
       <button class="cancel float-left small flat embedded-form-cancel"
               type="button"
               ng-click="efCollectionCtrl.cancel()">
-        {{'Forms_Cancel_Button' | translate}}
+        {{ "Cancel" | translate }}
       </button>
 
       <button class="float-right small flat embedded-form-save"
@@ -21,7 +21,7 @@
               ng-class="{'disabled' : efCollectionCtrl.isSubmitDisabled() }"
               ng-disabled="efCollectionCtrl.isSubmitDisabled()"
               ng-click="efCollectionCtrl.saveForm()">
-        {{'Forms_Save_Button' | translate}} {{efCollectionCtrl.label}}
+        {{ "Save" | translate }} {{efCollectionCtrl.label}}
       </button>
     </div>
   </form>

@@ -8,14 +8,11 @@
     .factory( 'iscAuthenticationInterceptor', iscAuthenticationInterceptor );
 
   /* @ngInject */
-  function iscAuthenticationInterceptor( $q, $rootScope, AUTH_EVENTS, statusCode, iscConfirmationService ) {//jshint ignore:line
-    // ----------------------------
-    // factory class
-    // ----------------------------
+  function iscAuthenticationInterceptor( $rootScope, $q, $injector, AUTH_EVENTS, statusCode, iscAuthenticationInterceptorConfig ) {
 
+    var $http; //dynamically injecting it to prevent circular Dependency Injections.
     var factory = {
-      responseError         : responseError,
-      iscConfirmationService: iscConfirmationService
+      responseError: responseError
     };
 
     return factory;
@@ -33,40 +30,54 @@
      *  Promises is the callback for dialog dismissal
      */
     function responseError( response ) {
+      switch ( response.status ) {
+        case statusCode.Unauthorized:
+          // this will happen if you just leave your computer on for a long time
+          $rootScope.$emit( AUTH_EVENTS.notAuthenticated, response );
+          break;
 
-      var preventDefault = response.config.preventDefault;
-      preventDefault     = preventDefault || [];
+        case statusCode.Forbidden:
+          //display not-authorized modal
+          $rootScope.$emit( AUTH_EVENTS.notAuthorized, response );
+          break;
 
-      if ( preventDefault !== true && !_.includes( preventDefault, response.status ) ) {
-        switch ( response.status ) {
-          case statusCode.Unauthorized:
-            // this will happen if you just leave your computer on for a long time
-            $rootScope.$emit( AUTH_EVENTS.notAuthenticated, response );
-            break;
-          case statusCode.Forbidden:
-            //display not-authorized modal
-            $rootScope.$emit( AUTH_EVENTS.notAuthorized, response );
-            break;
-          case statusCode.NotFound:
-            response.dialogPromise = getDialogPromise( response.status );
-            break;
-          default:
-            response.dialogPromise = getDialogPromise( 'generic' );
-        }
+        case statusCode.NotFound:
+          return handle404( response );
       }
-
-      function getDialogPromise( code ) {
-        return iscConfirmationService.show( {
-          title        : 'StatusCode_' + code + '_title',
-          message      : 'StatusCode_' + code + '_message',
-          btnCancelText: false, //hides the cancel (reject) button
-          btnOkText    : 'StatusCode_ok_btn'
-        } );
-      }
-
-      // $q.reject is needed in order to invoke the next responseError interceptor in the array
       return $q.reject( response );
+
+      function handle404( response ) {
+        var deferred = $q.defer();
+
+        if ( isUrlAllowed( response.config.url ) ) {
+          var url = iscAuthenticationInterceptorConfig.getConfig( 'statusApiUrl' );
+          $http   = $http || $injector.get( '$http' );  //dynamically injecting it to prevent circular Dependency Injections.
+
+          // check if user session is still valid
+          $http.get( url ).then( deferred.reject.bind( undefined, response ), statusError );
+
+        } else {
+          deferred.reject( response );
+        }
+        return deferred.promise;
+
+        function statusError( res ) {
+          $rootScope.$emit( AUTH_EVENTS.notAuthenticated, res ); //sends back the original response
+          deferred.reject( response );
+        }
+
+      }
+
+      function isUrlAllowed( url ) {
+        var ignoredUrls = iscAuthenticationInterceptorConfig.getConfig( "ignoredUrls" );
+
+        var isIgnored = _.some( ignoredUrls, function( ignoredUrl ) {
+          return ignoredUrl.test( url );
+        } );
+        return !isIgnored;
+      }
     }
+
   }// END CLASS
 
-} )();
+}() );

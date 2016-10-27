@@ -67,8 +67,8 @@
 
       });
 
-      it("should return ISC_UNKNOWN_LOCATION if locationString is 2.16 or '2.16' and showMessage is truthy", function () {
-        var expected = 'ISC_UNKNOWN_LOCATION';
+      it("should return 'Unknown Location' if locationString is 2.16 or '2.16' and showMessage is truthy", function () {
+        var expected = 'Unknown Location';
         var actual   = filter(2.16, 1);
         expect(actual).toBe(expected);
 

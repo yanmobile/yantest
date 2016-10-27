@@ -23,7 +23,7 @@ Online training videos are shared internally [//iscinternal.com/isc/public/Learn
     git clone https://github.com/intersystems/uifw.git 
     cd uifw
     
-    #install dependencies (bower/npm)
+    #install npm dependencies
     slush isc:install
 ```    
 ### For app developers (new project)
@@ -44,7 +44,7 @@ Online training videos are shared internally [//iscinternal.com/isc/public/Learn
 *note:* app specific commands requires app code
 
 ```bash
-slush isc:install #installs npm and bower packages
+slush isc:install #installs npm packages
 gulp serve       #only app specific
 ```
 
@@ -96,19 +96,19 @@ gulp deploy --appjson path/to/config.app.js #only app specific
     |   |   |-- assets
     |   |   |-- modules
     |   |   |   |__ isc.common.module.js
-    |   |   |__ bower.json    
+    |   |   |__ package.json    
     |   |-- components
     |   |   |-- foundation
     |   |   |   |__ base //default edition
     |   |   |   |   |-- assets
     |   |   |   |   |-- modules
     |   |   |   |   |   |__ isc.components.module.js
-    |   |   |   |   |-- bower.json
+    |   |   |   |   |-- package.json
     |   |   |   |   |__ config.components.js
     |   |-- app     //application specific
     |   |   |-- assets
     |   |   |-- modules
-    |   |   |-- bower.json  
+    |   |   |-- package.json  
     |-- test
     |   |-- unit
     |   |   |-- common
@@ -133,18 +133,30 @@ gulp deploy --appjson path/to/config.app.js #only app specific
 {
   "vendor" : {
     "js" : [
-      // This is where we specify bower files
+      // This is where we specify npm files
       // Exceptions: If files need to be loaded after all 3 "vendor/js", be sure to place it in the "module/assets/vendor/js" section
-      // e.g., "src/common/bower_components/jquery/dist/jquery.js"
+      // e.g., "src/common/node_modules/jquery/dist/jquery.js"
     ],
     "mocks" : [
       // This is where we specify vendor mock files
-      // e.g., "src/common/bower_components/angular-mocks/angular-mocks.js"
+      // e.g., "src/common/node_modules/angular-mocks/angular-mocks.js"
     ],
     "fonts" : [
       // This is where we specify vendor font files
-      // e.g., "src/components/foundation/base/bower_components/font-awesome/fonts/fontawesome-webfont.*"
+      // e.g., "src/components/foundation/base/node_modules/font-awesome/fonts/fontawesome-webfont.*"
     ]
+  },
+  "customer"     : { // app specific. Used by customer to override application code
+    "assets": {
+      "i18n": [ 
+        // default will replace the entire file, to change this add "_UifwMergeAlgorithm": "merge" to the json file 
+        // e.g., "customer/assets/i18n/**/*.json"
+      ],
+      "FDN" : [
+        // default will replace the entire file, to change this add "_UifwMergeAlgorithm": "merge" to the json file 
+        // e.g., "customer/assets/FDN/**/*.json"
+      ]
+    }
   },
   "module" : {
     "modules": [
@@ -163,6 +175,14 @@ gulp deploy --appjson path/to/config.app.js #only app specific
       // e.g., "src/components/foundation/base/assets/**/*.html"
     ],
     "assets" : {
+      "FDN" : [  
+         // This is where we specify FDN files
+         // e.g., "src/app/assets/FDN/**/*.json"
+      ],
+      "i18n" : [
+        // This is where we specify i18n files                   
+        // e.g., "src/app/assets/i18n/**/*.json"
+      ],
       "images" : [
         // This is where we specify image files. 
         // They'll compressed and moved into "www/images/"
@@ -200,6 +220,14 @@ gulp deploy --appjson path/to/config.app.js #only app specific
       "path" : "src/components/foundation/UK/config.components.js"
     }
   ],
+  "dest" : { // application specific
+     "folder"       : "www",
+     "comments"     : "i18nXml is used for specifying destination location of converted i18n files",
+     "fdn"          : "www/assets/FDN/",
+     "i18n"         : "www/assets/i18n/",
+     "i18nXml"      : "isc-tools/localize",
+     "i18nExtract"  : "isc-tools/i18nExtract"
+  },
   "comments"      : "JavaScript files can't be overridden like css selector cascading or Angular's templateCache templates.",
   "comments"      : "If we want to override lower level JS files, we must exclude them from the list.",
   "comments"      : "The overrides below are used to exclude base files by specifying glob patterns.",
@@ -231,14 +259,14 @@ gulp deploy --appjson path/to/config.app.js #only app specific
   * "src/components" is a framework code and should only be updated directly by framework and edition developers. It defines different UI-Components (bootstrap, foundation for apps, angular material) and the different editions (US, UK, Chinese) utilizing for the selected UI-Component. 
   * "src/app" is application code should only be updated by application developers.  It contains application specific logic and pages.
   
-* **I want to include a new bower package to my application, where should I install it?**
-  * Application specific bower packages should be installed under "src/app/" folder (don't install it in "src/common" and "src/components")
+* **I want to include a new npm package to my application, where should I install it?**
+  * Application specific npm packages should be installed under "src/app/" folder (don't install it in "src/common" and "src/components")
    
-* **Now that I have bower package successfully installed in "src/app/" folder, how do I add it to the application?**
-  * We use Gulp to automate our build tasks. Application specific gulp configuration can be found at "gulp/config.app.js". You'll need to specify the file path of your bower package in "vendor/js" json property which is line 3 of "gulp/config.app.js" file.
+* **Now that I have npm package successfully installed in "src/app/" folder, how do I add it to the application?**
+  * We use Gulp to automate our build tasks. Application specific gulp configuration can be found at "gulp/config.app.js". You'll need to specify the file path of your npm package in "vendor/js" json property which is line 3 of "gulp/config.app.js" file.
   
-* **How do I add a new javascript package which is not available through bower?**
-  * You'll need to paste your non-bower library js files in "src/app/assets/vendors/" folder. If this folder doesn't exist, create one.
+* **How do I add a new javascript package which is not available through npm?**
+  * You'll need to paste your non-npm library js files in "src/app/assets/vendors/" folder. If this folder doesn't exist, create one.
   * You'll have to reference your js file in "gulp/config.app.js" configuration file under this key path: "module/assets/vendor/js" array.
   
 * **How do I include a 3rd party css file in my application?**
@@ -303,7 +331,7 @@ gulp deploy --appjson path/to/config.app.js #only app specific
   2. create a new branch off remote master ```git checkout -b framework-update-<date> origin/master```
   3. pull the framework into your branch ```git pull uifw master```
   4. resolve conflicts (if any) and commit
-  5. update your node and bower packages (we recommend using [uifw-tools] ```slush isc:install```)
+  5. update your npm packages (we recommend using [uifw-tools] ```slush isc:install```)
   6. Smoke test your application ```gulp serve```
   7. commit your changes (if any)
   8. push to origin ```git push origin framework-update-<date>```
@@ -377,6 +405,56 @@ gulp deploy --appjson path/to/config.app.js #only app specific
       }
     ];
     ```
+
+* **How do I flag string literals to be translated?**
+  * The translation keys are extracted via ```gulp i18nExtract``` task. It will extract keys matching these following patterns:
+  ```
+  // HTML
+  {{ "my literal" | translate }}
+  {{ ::"my literal" | translate }}
+  
+  <translate>translate tag</translate>
+  <any translate="my literal"><any>
+  <any ng-html-bind="'my literal' | translate"><any>
+  <any config-item-translation-key="my literal"><any>
+  
+  {{ "my {{literal}}" | translate: objWithLiteralKey }}
+  
+  {{ foo ? "bar" : baz | translate }}
+  {{ foo ? bar : "baz" | translate }}
+  {{ foo ? "bar" : "baz" | translate }}
+  
+  {{ $ctrl.condition || "my translation" | translate }}
+  {{ "my translation" || $ctrl.condition | translate }}
+  
+  
+  //JavaScript
+  var translateComment = /* i18nextract */"$translate comment"; //use this for any keys in config blocks
+  var state = {
+    translationKey: "$translate state key"
+  }
+  $translate.instant('$translate instant');
+  $translate('$translate direct');
+  $filter('translate')('$translate $filter');
+  $translate(['$translate item1', '$translate item2']);
+  
+  ```
+
+* **Where are the extracted i18n output files from the previous question?**
+  * By default, they are located in ```isc-tools/i18nExtract``` folder. This can be changed by updating ```gulp/config.app.js``` file's ```dest/i18nExtract``` key
+
+* **Where do I put the i18n files for my application to use?**
+  * copy ```en-us.json```  to ```src/app/assets/i18n/en-us.json```
+
+* **The i18n extract folder has two files. What are the differences?**
+  * ```en-us.json``` is the extract file where the key and the values are the same (in English)
+  * ```en-us-greek-text.json``` have all the keys in ```en-us.json``` file but the values have been altered to append "英" and prepend "文". 
+  These files can be used by developers to easily identify which string literals in their application are not translated. 
+  Visually verify the app, the fields missing "英" and "文" are the untranslated literals.. Make sure these files are copied:
+      * copy ```en-us-greek-text.json``` to ```src/app/assets/i18n/en-us.json```
+  
+* **How do I contribute to i18n extraction patterns?**
+  * You'll need to create RegExp for matching and capturing the translation literals and ask a UIFW developer to add it to UIFW for you.
 
 ---
 ###Git 101

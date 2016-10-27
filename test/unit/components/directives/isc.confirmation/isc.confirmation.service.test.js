@@ -38,7 +38,7 @@
     describe( "iscConfirmationServiceProvider", function() {
       it( 'can set app level config using provider', function() {
         suite.iscConfirmationService.show();
-        expect( suite.iscConfirmationService.options.title ).toBe( 'ISC_CONFIRM_DEFAULT_TITLE' );
+        expect( suite.iscConfirmationService.options.title ).toBe( 'Please confirm your decision' );
 
         suite.iscConfirmationServiceProvider.setOptions( { title: "my custom title" } );
         suite.iscConfirmationService.show();
@@ -83,7 +83,7 @@
 
           suite.iscConfirmationService.show();
           suite.$rootScope.$apply();
-          expect( suite.iscConfirmationService.options.title ).toBe( "ISC_CONFIRM_DEFAULT_TITLE" );
+          expect( suite.iscConfirmationService.options.title ).toBe( "Please confirm your decision" );
 
           suite.iscConfirmationService.show( { title: "Custom Title" } );
           suite.$rootScope.$apply();

@@ -110,10 +110,10 @@
      */
     function getDefaultOptions() {
       return {
-        title        : 'ISC_CONFIRM_DEFAULT_TITLE',
-        message      : 'ISC_CONFIRM_DEFAULT_MESSAGE',
-        btnOkText    : 'ISC_CONFIRM_BTN_CONFIRM',
-        btnCancelText: 'ISC_CONFIRM_BTN_CANCEL'
+        title        : /* i18nextract */'Please confirm your decision',
+        message      : /* i18nextract */'Are you sure you want continue?',
+        btnOkText    : /* i18nextract */"OK",
+        btnCancelText: /* i18nextract */"Cancel"
       };
     }
   }//END CLASS

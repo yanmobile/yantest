@@ -7,7 +7,8 @@ module.exports = {
 };
 
 function init(gulp, plugins, config, _, util) {
-  var configOverride = util.getArg( '--config' );
+  var argv           = require( 'yargs' ).argv;
+  var configOverride = argv.config;
 
   gulp.task('scripts:vendor', function () {
     var vendors = _.concat(config.common.vendor.js,
@@ -67,12 +68,12 @@ function init(gulp, plugins, config, _, util) {
   });
 
   gulp.task('scripts:app', function () {
-    var src = _.concat(config.app.module.modules, config.app.module.js);
-
+    var src = [];
     if (configOverride) {
       src.push(configOverride);
       src.push(config.app.excludeConfig);
     }
+    src = _.concat(src, config.app.module.modules, config.app.module.js);
 
     return gulp.src(src)
       .pipe(plugins.plumber())

@@ -15,8 +15,8 @@
       SeeOther          : 303,
       NotModified       : 304,
       BadRequest        : 400,
-      Unauthorized      : 401,
-      Forbidden         : 403,
+      Unauthorized      : 401,  // Authenticated Error
+      Forbidden         : 403,  // Authorization Error
       NotFound          : 404,
       MethodNotAllowed  : 405,
       Conflict          : 409,

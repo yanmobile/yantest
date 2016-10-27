@@ -63,13 +63,13 @@
 
     useDefaultTranslateBeforeEach();
 
-    // setup devlog
-    beforeEach( module( 'isc.core', function( devlogProvider, $provide ) {
-      devlogProvider.loadConfig( customConfig );
-
+    // setup devlog    // setup devlog
+    beforeEach( module( 'isc.core', 'isc.configuration', function( $provide, devlogProvider, iscCustomConfigServiceProvider ) {
       // show $log statements
       $provide.value( '$log', mock$log );
 
+      devlogProvider.loadConfig( customConfig );
+      iscCustomConfigServiceProvider.loadConfig( customConfig );
     } ) );
 
     var moduleNames = _.toArray( arguments );

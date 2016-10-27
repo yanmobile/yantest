@@ -51,7 +51,7 @@
    *
    */
   /* @ngInject */
-  function iscFormsTemplateService( $filter, $window, $sce, $q,
+  function iscFormsTemplateService( $filter, $window, $sce, $q, $translate,
     iscNavContainerModel, iscCustomConfigService, iscSessionModel,
     formlyConfig, iscFormDataApi, iscFormsSectionLayoutService, hsModelUtils ) {
     var baseType = '__iscFormsBase__';
@@ -125,14 +125,14 @@
               onClick   : _.noop,
               afterClick: afterCancel,
               cssClass  : 'cancel button large float-left',
-              text      : mode === 'view' ? 'Forms_Back_Button' : 'Forms_Cancel_Button',
+              text      : mode === 'view' ? $translate.instant( 'Back' ) : $translate.instant( 'Cancel' ),
               order     : 1
             },
             submit: {
               onClick   : onSubmit,
               afterClick: afterSubmit,
               cssClass  : 'button large float-right',
-              text      : 'Forms_Submit_Button',
+              text      : $translate.instant( 'Submit' ),
               hide      : mode === 'view',
               order     : 2
             }

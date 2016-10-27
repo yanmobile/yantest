@@ -24,7 +24,7 @@ module.exports.app          = {
       // "src/app/modules/**/*.html"
     ],
     "assets" : {
-      // "i18nDir": "src/app/assets/i18n/",
+      // "i18n": "src/app/assets/i18n/",
       "mocks" : [
         // "src/app/assets/mockData/**"
       ],
