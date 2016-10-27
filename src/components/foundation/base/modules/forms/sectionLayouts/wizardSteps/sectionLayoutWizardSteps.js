@@ -6,10 +6,10 @@
   'use strict';
 
   angular.module( 'isc.forms' )
-    .directive( 'pageLayoutWizardSteps', pageLayoutWizardSteps );
+    .directive( 'sectionLayoutWizardSteps', sectionLayoutWizardSteps );
 
   /* @ngInject */
-  function pageLayoutWizardSteps() {
+  function sectionLayoutWizardSteps() {
     return {
       restrict        : 'E',
       replace         : true,
@@ -20,7 +20,7 @@
       controllerAs    : 'wizardStepsCtrl',
       controller      : _.noop,
       templateUrl     : function( elem, attrs ) {
-        return attrs.templateUrl || 'forms/pageLayouts/wizardSteps/pageLayoutWizardSteps.html';
+        return attrs.templateUrl || 'forms/sectionLayouts/wizardSteps/sectionLayoutWizardSteps.html';
       }
     };
   }

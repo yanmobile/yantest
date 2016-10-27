@@ -8,18 +8,18 @@
   <!--Parent Form Container-->
   <div ng-hide="subformCtrl.childConfig.renderForm">
 
-    <!--Main form (has pages with fields)-->
+    <!--Main form (has sections with fields)-->
     <div ng-if="subformCtrl.mainFormConfig">
 
       <!--Main Form Title-->
       <h2 class="form-title"><span>{{ subformCtrl.formTitle | translate }}</span></h2>
 
-      <!--Page layout-->
+      <!--Section layout-->
       <div ng-if="subformCtrl.mainFormConfig.layout">
-        <div ng-include="'forms/pageLayouts/' + subformCtrl.mainFormConfig.layout + '.html'"></div>
+        <div ng-include="'forms/sectionLayouts/' + subformCtrl.mainFormConfig.layout + '.html'"></div>
       </div>
       <div ng-if="!subformCtrl.mainFormConfig.layout">
-        <div ng-include="'forms/pageLayouts/scrolling.html'"></div>
+        <div ng-include="'forms/sectionLayouts/scrolling.html'"></div>
       </div>
 
       <!--Main form Buttons-->

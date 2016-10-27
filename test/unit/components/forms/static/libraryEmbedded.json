@@ -1,9 +1,9 @@
 {
-  "name"    : "Sample Embedded Form with Function Library",
-  "library" : "libraryEmbeddedScript",
-  "pages"   : [
+  "name"     : "Sample Embedded Form with Function Library",
+  "library"  : "libraryEmbeddedScript",
+  "sections" : [
     {
-      "name"   : "Page 1",
+      "name"   : "Section 1",
       "fields" : [
         {
           "type"                 : "instructions",

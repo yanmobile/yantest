@@ -21,8 +21,8 @@
     );
 
     beforeEach( inject( function( $rootScope, $compile, $window, $httpBackend, $timeout,
-                                  formlyApiCheck, formlyConfig,
-                                  iscFormDataApi, iscNotificationService, iscFormsValidationService ) {
+      formlyApiCheck, formlyConfig,
+      iscFormDataApi, iscNotificationService, iscFormsValidationService ) {
       formlyConfig.disableWarnings   = true;
       formlyApiCheck.config.disabled = true;
 
@@ -53,26 +53,26 @@
       suiteInternal.controller = suiteInternal.$isolateScope.formInternalCtrl;
     } ) );
 
-    
+
     //--------------------
-    it( 'should change page when the selector is changed', function() {
+    it( 'should change section when the selector is changed', function() {
       var suite         = suiteInternal,
           subformConfig = suite.controller.mainFormConfig,
           model         = suite.controller.model,
-          lastPage      = subformConfig.pages[4],
+          lastSection   = subformConfig.sections[4],
           value         = 'something';
 
-      spyOn( subformConfig, 'selectPage' ).and.callThrough();
+      spyOn( subformConfig, 'selectSection' ).and.callThrough();
 
-      expect( getPageIndex() ).toEqual( 0 );
-      subformConfig.selectPage( 1 );
-      expect( getPageIndex() ).toEqual( 1 );
+      expect( getSectionIndex() ).toEqual( 0 );
+      subformConfig.selectSection( 1 );
+      expect( getSectionIndex() ).toEqual( 1 );
 
-      // Once the model has been updated, page 5 should become visible
+      // Once the model has been updated, section 5 should become visible
       spyOn( suiteMain.iscFormDataApi, 'post' ).and.callThrough();
 
       expect( model.RequiredInput ).toBeUndefined();
-      expect( lastPage._isHidden ).toBe( true );
+      expect( lastSection._isHidden ).toBe( true );
 
       // Enter a value for RequiredInput
       getControlByName( suite, 'RequiredInput' )
@@ -81,18 +81,18 @@
       digest( suite );
 
       expect( model.RequiredInput ).toEqual( value );
-      expect( lastPage._isHidden ).toBe( false );
-      // This form is configured to autosave on page change
+      expect( lastSection._isHidden ).toBe( false );
+      // This form is configured to autosave on section change
       expect( suiteMain.iscFormDataApi.post ).not.toHaveBeenCalled();
 
-      // Change page to trigger saving and cover page watches
-      subformConfig.selectPage( 2 );
+      // Change section to trigger saving and cover section watches
+      subformConfig.selectSection( 2 );
       digest( suite );
       expect( suiteMain.iscFormDataApi.post ).toHaveBeenCalled();
 
 
-      function getPageIndex() {
-        return _.indexOf( subformConfig.selectablePages, subformConfig.currentPage );
+      function getSectionIndex() {
+        return _.indexOf( subformConfig.selectableSections, subformConfig.currentSection );
       }
     } );
   } );

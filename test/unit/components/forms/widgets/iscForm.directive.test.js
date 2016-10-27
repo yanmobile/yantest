@@ -51,8 +51,8 @@
 
     var literalFormConfig = {
       formLiteral: {
-        name : 'Literal FDN',
-        pages: [
+        name    : 'Literal FDN',
+        sections: [
           {
             fields: [
               {
@@ -112,7 +112,7 @@
       formlyConfig,
       iscFormDataApi,
       iscNotificationService,
-      iscFormsPageLayoutService,
+      iscFormsSectionLayoutService,
       iscFormsValidationService ) {
       formlyConfig.disableWarnings   = true;
       formlyApiCheck.config.disabled = true;
@@ -125,10 +125,10 @@
         $rootScope  : $rootScope,
         $q          : $q,
 
-        iscFormsPageLayoutService: iscFormsPageLayoutService,
-        iscFormDataApi           : iscFormDataApi,
-        iscNotificationService   : iscNotificationService,
-        iscFormsValidationService: iscFormsValidationService
+        iscFormsSectionLayoutService: iscFormsSectionLayoutService,
+        iscFormDataApi              : iscFormDataApi,
+        iscNotificationService      : iscNotificationService,
+        iscFormsValidationService   : iscFormsValidationService
       } );
       mockFormResponses( suiteMain.$httpBackend );
     } ) );
@@ -530,7 +530,7 @@
       beforeEach( function() {
         suiteLayout = createDirective( getMinimalForm( 'wizard' ),
           {
-            localButtonConfig: suiteMain.iscFormsPageLayoutService.getWizardButtonConfig()
+            localButtonConfig: suiteMain.iscFormsSectionLayoutService.getWizardButtonConfig()
           }
         );
         suiteMain.$httpBackend.flush();
@@ -543,7 +543,7 @@
             prevButton,
             submitButton;
 
-        // wizard.json is 2 pages
+        // wizard.json is 2 sections
         getControls();
         expect( nextButton.length ).toBe( 1 );
         expect( prevButton.length ).toBe( 0 );

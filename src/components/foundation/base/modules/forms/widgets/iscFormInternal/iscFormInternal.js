@@ -44,9 +44,9 @@
       var self = this;
 
       _.merge( self, {
-        forms       : [],
-        debugDisplay: _.get( iscCustomConfigService.getConfig(), 'debugDisplay.forms', {} ),
-        options     : {
+        forms        : [],
+        debugDisplay : _.get( iscCustomConfigService.getConfig(), 'debugDisplay.forms', {} ),
+        options      : {
           formState: {
             _validation                : {},
             _disableSubmitIfFormInvalid: _.get( self, 'formConfig.disableSubmitIfFormInvalid', false ),
@@ -56,10 +56,10 @@
             }
           }
         },
-        childConfig : {},
-        formConfig  : {},
-        buttonConfig: {},
-        selectPage  : selectPage
+        childConfig  : {},
+        formConfig   : {},
+        buttonConfig : {},
+        selectSection: selectSection
       }, self );
 
       initScopedLibrary( self.options.formState.lib );
@@ -88,7 +88,7 @@
 
         iscNotificationService.init();
         initAutosaveConfig();
-        watchPages();
+        watchSections();
       }
 
       /**
@@ -111,9 +111,9 @@
             watchModel( callSaveApi );
             break;
 
-          case 'pageChange':
+          case 'sectionChange':
             watchModel( dirtify );
-            watchPage();
+            watchSection();
             break;
 
           // default behavior is to only save when the form is submitted (post validation)
@@ -144,9 +144,9 @@
           );
         }
 
-        function watchPage() {
+        function watchSection() {
           $scope.$watch(
-            "formInternalCtrl.mainFormConfig.currentPage",
+            "formInternalCtrl.mainFormConfig.currentSection",
             function() {
               if ( self.options.formState._model.isDirty ) {
                 callSaveApi();
@@ -237,37 +237,37 @@
       /**
        * @memberOf iscFormInternal
        * @description
-       * Sets up watches on pages having a hideExpression property
+       * Sets up watches on sections having a hideExpression property
        */
-      function watchPages() {
+      function watchSections() {
         // Throttle for initial load or large model changes
-        var throttledFilter = _.throttle( filterPages, 100 );
-        _.forEach( self.formDefinition.form.pages, function( page ) {
-          var hideExp = page.hideExpression;
+        var throttledFilter = _.throttle( filterSections, 100 );
+        _.forEach( self.formDefinition.form.sections, function( section ) {
+          var hideExp = section.hideExpression;
           if ( hideExp ) {
             $scope.$watch(
               function() {
                 return $scope.$eval( hideExp, self );
               },
-              function( hidePage ) {
-                page._isHidden = hidePage;
+              function( hideSection ) {
+                section._isHidden = hideSection;
                 throttledFilter();
               } );
           }
         } );
 
-        self.pages          = self.formDefinition.form.pages;
-        self.currentPage    = _.head( self.pages );
+        self.sections       = self.formDefinition.form.sections;
+        self.currentSection = _.head( self.sections );
         self.mainFormConfig = {
-          pages           : self.pages,
-          layout          : self.formDefinition.form.pageLayout,
-          currentPage     : self.currentPage,
-          selectablePages : [],
-          forms           : self.forms,
-          buttonConfig    : self.buttonConfig || {},
-          buttonContext   : self,
-          selectPage      : selectPage,
-          isSubmitDisabled: isSubmitDisabled
+          sections          : self.sections,
+          layout            : self.formDefinition.form.sectionLayout,
+          currentSection    : self.currentSection,
+          selectableSections: [],
+          forms             : self.forms,
+          buttonConfig      : self.buttonConfig || {},
+          buttonContext     : self,
+          selectSection     : selectSection,
+          isSubmitDisabled  : isSubmitDisabled
         };
 
         throttledFilter();
@@ -275,19 +275,19 @@
 
       /**
        * @memberOf iscFormInternal
-       * @param index - The index of the page to select/go to. Indexed from selectablePages, not all pages.
+       * @param index - The index of the section to select/go to. Indexed from selectableSections, not all sections.
        */
-      function selectPage( index ) {
-        self.currentPage                = self.mainFormConfig.selectablePages[index];
-        self.mainFormConfig.currentPage = self.currentPage;
+      function selectSection( index ) {
+        self.currentSection                = self.mainFormConfig.selectableSections[index];
+        self.mainFormConfig.currentSection = self.currentSection;
       }
 
       /**
        * @memberOf iscFormInternal
        */
-      function filterPages() {
-        self.mainFormConfig.selectablePages = _.filter( self.formDefinition.form.pages, function( page ) {
-          return !page._isHidden;
+      function filterSections() {
+        self.mainFormConfig.selectableSections = _.filter( self.formDefinition.form.sections, function( section ) {
+          return !section._isHidden;
         } );
       }
 
@@ -301,15 +301,15 @@
       function onSubmit() {
         self.options.formState._validation.$submitted = true;
 
-        // iscFormsValidationService.validateForm parses the outer forms on each page.
+        // iscFormsValidationService.validateForm parses the outer forms on each section.
         var containingFormIsValid = true,
             $error                = [],
             index                 = 0;
-        _.forEach( self.pages, function( page ) {
-          // Force each form (page) to validate if it is not hidden
+        _.forEach( self.sections, function( section ) {
+          // Force each form (section) to validate if it is not hidden
           // Forms are generated by formly by index
           var form = self.forms[index++];
-          if ( !page._isHidden ) {
+          if ( !section._isHidden ) {
             var formValidation    = iscFormsValidationService.validateForm( form );
             containingFormIsValid = formValidation.isValid && containingFormIsValid;
             $error                = $error.concat( formValidation.$error );
@@ -358,7 +358,7 @@
        */
       function initScopedLibrary() {
         _.defaults( self.options.formState.lib, {
-          _goToPage: self.selectPage
+          _goToSection: self.selectSection
         } );
       }
     }

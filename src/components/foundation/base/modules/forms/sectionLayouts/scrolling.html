@@ -1,0 +1,13 @@
+<div ng-repeat="section in subformCtrl.mainFormConfig.sections track by $index" class="grid-content collapse form-section">
+
+  <div ng-hide="section._isHidden">
+    <h4>{{section.name | translate}}</h4>
+
+    <formly-form model="subformCtrl.model"
+                 class="{{section.className}}"
+                 options="subformCtrl.options"
+                 form="subformCtrl.mainFormConfig.forms[$index]"
+                 fields="section.fields">
+    </formly-form>
+  </div>
+</div>

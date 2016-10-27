@@ -118,8 +118,8 @@
           formVersion: formVersion
         } )
           .then( function( formDefinition ) {
-            _.forEach( formDefinition.form.pages, function( page ) {
-              getEmbeddedForms( page.fields, formDefinition.subforms );
+            _.forEach( formDefinition.form.sections, function( section ) {
+              getEmbeddedForms( section.fields, formDefinition.subforms );
             } );
 
             _.set( _validationCache, cacheKey, validations );
@@ -218,12 +218,12 @@
               primaryPromises.push( libraryPromise );
             }
 
-            _.forEach( form.pages, function( page ) {
+            _.forEach( form.sections, function( section ) {
               if ( !_.includes( omitTransforms, 'layout' ) ) {
-                iscFormFieldLayoutService.transformContainer( page );
+                iscFormFieldLayoutService.transformContainer( section );
               }
               primaryPromises = primaryPromises.concat(
-                processFields( page.fields )
+                processFields( section.fields )
               );
             } );
           }
@@ -263,8 +263,8 @@
               };
 
               // Replace templates in the view mode with readonly versions
-              _.forEach( viewMode.form.pages, function( page ) {
-                replaceTemplates( page.fields );
+              _.forEach( viewMode.form.sections, function( section ) {
+                replaceTemplates( section.fields );
               } );
 
               // Cache it separately
@@ -421,18 +421,18 @@
 
                         // If this is a bare array of fields (subform-only definition),
                         // then the response form is only the fields [] for this form.
-                        // Wrap this in a simple form and page for a consistent interface.
-                        // The specific page to use will be looked up in the field controller.
+                        // Wrap this in a simple form and section for a consistent interface.
+                        // The specific section to use will be looked up in the field controller.
                         if ( _.isArray( subform ) ) {
                           subform = {
-                            pages: [
+                            sections: [
                               { fields: subform }
                             ]
                           };
                         }
 
-                        _.forEach( subform.pages, function( page ) {
-                          var fields = page.fields;
+                        _.forEach( subform.sections, function( section ) {
+                          var fields = section.fields;
                           // Force inheritance of the data property
                           forceDataInheritance( fields );
 
@@ -443,7 +443,7 @@
 
                           // Transform layouts on the embedded form
                           if ( !_.includes( omitTransforms, 'layout' ) ) {
-                            iscFormFieldLayoutService.transformContainer( page, true );
+                            iscFormFieldLayoutService.transformContainer( section, true );
                           }
                         } );
 
@@ -536,7 +536,7 @@
             /**
              * @memberOf iscFormsModel
              * @description
-             * Fetches the stylesheet for the template and adds it to the page.
+             * Fetches the stylesheet for the template and adds it to the section.
              * Adapted from: https://medium.com/opinionated-angularjs/angular-dynamically-injecting-css-file-using-route-resolve-and-promises-7bfcb8ccd05b#.djlx7z6on
              * but modified to write in a dynamic style tag rather than a static file.
              * @private

@@ -1,5 +1,5 @@
 {
-  "pages" : [
+  "sections" : [
     {
       "fields" : [
         {
@@ -18,7 +18,7 @@
           "data"            : {
             "embeddedType"    : "subform1",
             "embeddedVersion" : "version1",
-            "embeddedPage"    : 0
+            "embeddedSection" : 0
           }
         }
       ]
