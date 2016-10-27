@@ -531,31 +531,31 @@ git config --global alias.last 'log -1 --oneline HEAD'
 ```bash
 
 # delete the word immediately before, or to the left of, the cursor
-Control + W
+Control + w
 
 # allow you to find a previously used commands that you may need to access again
-Control + R
+Control + r
 
 # take you to the end, or the far right, of the line where your cursor is
-Control + A
+Control + a
 
 # take you back to the beginning, or the far left, of the line where your cursor is
-Control + E
+Control + e
  
 # clears the entirety of the line before the cursor
-Control + U
+Control + u
 
 # his will clear the line that appears after the cursor
-Control + K
+Control + k
 
 # clear the entire Terminal screen you're working on, deleting everything
-Command + K
+Command + k
 
 # the cursor forward by one word
-Escape + F
+Escape + f
 
 # the cursor back by one word
-Escape + B
+Escape + b
 
 ```
 
