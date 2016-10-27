@@ -527,6 +527,38 @@ git config --global alias.last 'log -1 --oneline HEAD'
 ```
 
 ---
+###Mac Terminal shortcuts (OS X only)
+```bash
+
+# delete the word immediately before, or to the left of, the cursor
+Control + w
+
+# allow you to find a previously used commands that you may need to access again
+Control + r
+
+# take you to the end, or the far right, of the line where your cursor is
+Control + a
+
+# take you back to the beginning, or the far left, of the line where your cursor is
+Control + e
+ 
+# clears the entirety of the line before the cursor
+Control + u
+
+# his will clear the line that appears after the cursor
+Control + k
+
+# clear the entire Terminal screen you're working on, deleting everything
+Command + k
+
+# the cursor forward by one word
+Escape + f
+
+# the cursor back by one word
+Escape + b
+
+```
+
 ###Bash 101 (OS X only)
 ```bash
 # go to home (same as cd ~)
@@ -588,6 +620,7 @@ tail -f <file>
 
 # output the content of a file
 less <filename>
+
 
 ```
 [uifw-tools]: https://github.com/intersystems/uifw-tools
