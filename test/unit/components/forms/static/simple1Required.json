@@ -4,13 +4,13 @@
   "autosave"   : {
     "trigger" : "modelChange"
   },
-  "pages"      : [
+  "sections"   : [
     {
-      "name"   : "Page 1",
+      "name"   : "Section 1",
       "fields" : [
         {
-          "key"  : "aField",
-          "type" : "input",
+          "key"             : "aField",
+          "type"            : "input",
           "templateOptions" : {
             "required" : true
           }

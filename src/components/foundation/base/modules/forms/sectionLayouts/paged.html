@@ -1,0 +1,24 @@
+<!--sectionr-->
+<div class="grid-block large-12 section-select">
+  <select name="section" id="section"
+          class="section-select"
+          ng-model="subformCtrl.mainFormConfig.currentSection"
+          ng-options="section.name for section in subformCtrl.mainFormConfig.selectableSections">
+  </select>
+</div>
+
+<hr/>
+
+<div ng-repeat="section in subformCtrl.mainFormConfig.sections track by $index"
+     ng-show="section === subformCtrl.mainFormConfig.currentSection"
+     class="grid-content collapse form-section">
+
+  <h4>{{section.name | translate}}</h4>
+
+  <formly-form model="subformCtrl.model"
+               class="{{section.className}}"
+               options="subformCtrl.options"
+               form="subformCtrl.mainFormConfig.forms[$index]"
+               fields="section.fields">
+  </formly-form>
+</div>

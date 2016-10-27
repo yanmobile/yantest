@@ -75,7 +75,7 @@
       // Base type overrides
       iscFormsTemplateService.registerBaseType();
 
-      // Section (header for a section within a page)
+      // Section (static text)
       iscFormsTemplateService.registerType( {
         name       : 'section',
         templateUrl: 'forms/foundationTemplates/templates/section.html'

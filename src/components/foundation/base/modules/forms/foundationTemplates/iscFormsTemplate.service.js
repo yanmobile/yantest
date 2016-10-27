@@ -10,7 +10,7 @@
    * _                  : makes lodash available in FDN expressions
    * moment             : makes moment available in FDN expressions
    * formModel          : a reference to the root formly model. This is useful for expressions that may need to modify
-   *                      model values outside their own control or page scope
+   *                      model values outside their own control or section scope
    * hasCustomValidator : a function that takes a custom validator name and returns whether that validator is used on
    *                      this control. This is useful for making custom validators reusable by defining them once on
    *                      the control template and then including them by name in controls that should use them.
@@ -43,7 +43,7 @@
    * _                  : makes lodash available in FDN expressions
    * moment             : makes moment available in FDN expressions
    * formModel          : a reference to the root formly model. This is useful for expressions that may need to modify
-   *                      model values outside their own control or page scope
+   *                      model values outside their own control or section scope
    * hasCustomValidator : a function that takes a custom validator name and returns whether that validator is used on
    *                      this control. This is useful for making custom validators reusable by defining them once on
    *                      the control template and then including them by name in controls that should use them.
@@ -53,7 +53,7 @@
   /* @ngInject */
   function iscFormsTemplateService( $filter, $window, $sce, $q,
     iscNavContainerModel, iscCustomConfigService, iscSessionModel,
-    formlyConfig, iscFormDataApi, iscFormsPageLayoutService, hsModelUtils ) {
+    formlyConfig, iscFormDataApi, iscFormsSectionLayoutService, hsModelUtils ) {
     var baseType = '__iscFormsBase__';
 
     var config           = iscCustomConfigService.getConfig(),
@@ -76,23 +76,23 @@
     formlyConfig.extras.fieldTransform.push( fixWatchers );
 
     var service = {
-      appendWrapper           : appendWrapper,
-      getButtonDefaults       : getButtonDefaults,
-      getFieldsForEmbeddedForm: getFieldsForEmbeddedForm,
-      getFormDefaults         : getFormDefaults,
-      getGlobalFunctionLibrary: getGlobalFunctionLibrary,
-      getPageForEmbeddedForm  : getPageForEmbeddedForm,
-      getRegisteredType       : getRegisteredType,
-      getWidgetList           : getWidgetList,
-      isTypeRegistered        : isTypeRegistered,
-      isWrapperRegistered     : isWrapperRegistered,
-      overrideWidgetList      : overrideWidgetList,
-      registerBaseType        : registerBaseType,
-      registerButtonDefaults  : registerButtonDefaults,
-      registerFormDefaults    : registerFormDefaults,
-      registerGlobalLibrary   : registerGlobalLibrary,
-      registerType            : registerType,
-      registerWrapper         : formlyConfig.setWrapper
+      appendWrapper            : appendWrapper,
+      getButtonDefaults        : getButtonDefaults,
+      getFieldsForEmbeddedForm : getFieldsForEmbeddedForm,
+      getFormDefaults          : getFormDefaults,
+      getGlobalFunctionLibrary : getGlobalFunctionLibrary,
+      getSectionForEmbeddedForm: getSectionForEmbeddedForm,
+      getRegisteredType        : getRegisteredType,
+      getWidgetList            : getWidgetList,
+      isTypeRegistered         : isTypeRegistered,
+      isWrapperRegistered      : isWrapperRegistered,
+      overrideWidgetList       : overrideWidgetList,
+      registerBaseType         : registerBaseType,
+      registerButtonDefaults   : registerButtonDefaults,
+      registerFormDefaults     : registerFormDefaults,
+      registerGlobalLibrary    : registerGlobalLibrary,
+      registerType             : registerType,
+      registerWrapper          : formlyConfig.setWrapper
     };
 
     return service;
@@ -101,7 +101,7 @@
      * @description Registers default buttons for all forms using this service. These will automatically be
      * retrieved by instances of iscForm, or may be programmatically retrieved with getButtonDefaults and extended.
      * @param {Object|Function} defaults - default options for buttons. If a function, takes arguments for
-     * the form mode (edit or view) and the pageLayout, and it should return a buttonConfig object.
+     * the form mode (edit or view) and the sectionLayout, and it should return a buttonConfig object.
      * If an object, it should be a buttonConfig object.
      */
     function registerButtonDefaults( defaults ) {
@@ -112,15 +112,15 @@
      * @memberOf iscFormsTemplateService
      * @description Gets the default configuration for form buttons. If no custom configuration is registered
      * with registerButtonDefaults, this will return an object with a cancel button that navigates back one
-     * history page, and a submit button which calls the configured formDataApi.submit function.
+     * history section, and a submit button which calls the configured formDataApi.submit function.
      * @param {String} mode - The edit/view mode of the containing form
-     * @param {String} pageLayout - The pageLayout setting of the containing form
+     * @param {String} sectionLayout - The sectionLayout setting of the containing form
      * @returns {{cancel: {onClick: function, afterClick: function, cssClass: string, text: string}, submit: {onClick: function, afterClick: function, cssClass: string, text: string}}}
      */
-    function getButtonDefaults( mode, pageLayout ) {
+    function getButtonDefaults( mode, sectionLayout ) {
       var customDefaults,
-          pageLayoutDefaults  = {},
-          defaultButtonConfig = {
+          sectionLayoutDefaults = {},
+          defaultButtonConfig   = {
             cancel: {
               onClick   : _.noop,
               afterClick: afterCancel,
@@ -141,22 +141,22 @@
       // Handle custom service-level defaults
       if ( customButtonDefaults ) {
         if ( _.isFunction( customButtonDefaults ) ) {
-          customDefaults = customButtonDefaults.call( this, mode, pageLayout );
+          customDefaults = customButtonDefaults.call( this, mode, sectionLayout );
         }
         else if ( _.isObject( customButtonDefaults ) ) {
           customDefaults = customButtonDefaults;
         }
       }
 
-      // Additional defaults by page layout type
-      switch ( pageLayout ) {
+      // Additional defaults by section layout type
+      switch ( sectionLayout ) {
         case 'wizard' :
-          pageLayoutDefaults = iscFormsPageLayoutService.getWizardButtonConfig();
+          sectionLayoutDefaults = iscFormsSectionLayoutService.getWizardButtonConfig();
           break;
       }
 
-      // Custom defaults override all system defaults, including pageLayout-specific buttons
-      return customDefaults || _.defaultsDeep( {}, pageLayoutDefaults, defaultButtonConfig );
+      // Custom defaults override all system defaults, including sectionLayout-specific buttons
+      return customDefaults || _.defaultsDeep( {}, sectionLayoutDefaults, defaultButtonConfig );
 
       function onSubmit( context ) {
         var configuredDataApi = context.formConfig.formDataApi;
@@ -275,38 +275,38 @@
      * @returns {Array}
      */
     function getFieldsForEmbeddedForm( field, subforms ) {
-      var page = getPageForEmbeddedForm( field, subforms );
-      return _.get( page, 'fields', [] );
+      var section = getSectionForEmbeddedForm( field, subforms );
+      return _.get( section, 'fields', [] );
     }
 
     /**
-     * Returns the page that an embeddedForm(Collection) refers to.
+     * Returns the section that an embeddedForm(Collection) refers to.
      * @param field - The field definition
      * @param subforms - The list of subforms
      * @returns {Object}
      */
-    function getPageForEmbeddedForm( field, subforms ) {
-      var embeddedPage = _.get( field, 'data.embeddedPage' ),
-          embeddedType = _.get( field, 'data.embeddedType' ),
-          subform      = subforms[embeddedType],
-          pages        = _.get( subform, 'pages', [] ),
-          page;
+    function getSectionForEmbeddedForm( field, subforms ) {
+      var embeddedSection = _.get( field, 'data.embeddedSection' ),
+          embeddedType    = _.get( field, 'data.embeddedType' ),
+          subform         = subforms[embeddedType],
+          sections        = _.get( subform, 'sections', [] ),
+          section;
 
-      // Page lookup can be either a 0-based index or a page name
-      if ( embeddedPage !== undefined ) {
-        if ( _.isNumber( embeddedPage ) ) {
-          page = _.get( pages, embeddedPage );
+      // Section lookup can be either a 0-based index or a section name
+      if ( embeddedSection !== undefined ) {
+        if ( _.isNumber( embeddedSection ) ) {
+          section = _.get( sections, embeddedSection );
         }
         else {
-          page = _.find( pages, { name: embeddedPage } );
+          section = _.find( sections, { name: embeddedSection } );
         }
       }
-      // If no page was provided, use the first one
+      // If no section was provided, use the first one
       else {
-        page = _.get( pages, '0' );
+        section = _.get( sections, '0' );
       }
 
-      return angular.copy( page ) || {};
+      return angular.copy( section ) || {};
     }
 
     /**

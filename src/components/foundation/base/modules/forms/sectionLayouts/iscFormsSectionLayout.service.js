@@ -6,10 +6,10 @@
   'use strict';
 
   angular.module( 'isc.forms' )
-    .factory( 'iscFormsPageLayoutService', iscFormsPageLayoutService );
+    .factory( 'iscFormsSectionLayoutService', iscFormsSectionLayoutService );
 
   /* @ngInject */
-  function iscFormsPageLayoutService() {
+  function iscFormsSectionLayoutService() {
     var wizardButtonConfig = {
       cancel: {
         cssClass: 'button cancel float-left wizard-cancel-btn',
@@ -20,21 +20,21 @@
         cssClass: 'button float-right wizard-prev-btn',
         text    : 'Forms_Prev_Button',
         order   : 2,
-        hide    : isFirstPage,
-        onClick : _.partialRight( changePage, -1 )
+        hide    : isFirstSection,
+        onClick : _.partialRight( changeSection, -1 )
       },
       next  : {
         cssClass: 'button float-right wizard-next-btn',
         text    : 'Forms_Next_Button',
         order   : 3,
-        hide    : isLastPage,
-        onClick : _.partialRight( changePage, +1 )
+        hide    : isLastSection,
+        onClick : _.partialRight( changeSection, +1 )
       },
       submit: {
         cssClass: 'button float-right wizard-submit-btn',
         text    : 'Forms_Submit_Button',
         order   : 4,
-        hide    : isNotLastPage
+        hide    : isNotLastSection
       }
     };
 
@@ -48,24 +48,24 @@
 
     function getCurrentIndex( context ) {
       return _.indexOf(
-        _.get( context, 'mainFormConfig.selectablePages', [] ),
-        context.currentPage
+        _.get( context, 'mainFormConfig.selectableSections', [] ),
+        context.currentSection
       );
     }
 
-    function changePage( context, numPages ) {
-      context.selectPage( getCurrentIndex( context ) + numPages );
+    function changeSection( context, numSections ) {
+      context.selectSection( getCurrentIndex( context ) + numSections );
     }
 
-    function isLastPage( context ) {
-      return getCurrentIndex( context ) === _.get( context, 'mainFormConfig.selectablePages', [] ).length - 1;
+    function isLastSection( context ) {
+      return getCurrentIndex( context ) === _.get( context, 'mainFormConfig.selectableSections', [] ).length - 1;
     }
 
-    function isNotLastPage( context ) {
-      return !isLastPage( context );
+    function isNotLastSection( context ) {
+      return !isLastSection( context );
     }
 
-    function isFirstPage( context ) {
+    function isFirstSection( context ) {
       return getCurrentIndex( context ) === 0;
     }
   }

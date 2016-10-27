@@ -10,7 +10,7 @@
           }
         },
         mockMode             = 'edit',
-        mockPageLayout       = 'wizard';
+        mockSectionLayout    = 'wizard';
 
 
     window.useDefaultTranslateBeforeEach();
@@ -107,7 +107,7 @@
         suiteMain.iscFormsTemplateService.registerButtonDefaults( customButtonDefaults );
         var expectedDefaults = suiteMain.iscFormsTemplateService.getButtonDefaults(
           mockMode,
-          mockPageLayout
+          mockSectionLayout
         );
         expect( customButtonDefaults ).toEqual( expectedDefaults );
       } );
@@ -116,13 +116,13 @@
         suiteMain.iscFormsTemplateService.registerButtonDefaults( defaultsAsFunction );
         var expectedDefaults = suiteMain.iscFormsTemplateService.getButtonDefaults(
           mockMode,
-          mockPageLayout
+          mockSectionLayout
         );
         expect( customButtonDefaults ).toEqual( expectedDefaults );
 
-        function defaultsAsFunction( mode, pageLayout ) {
+        function defaultsAsFunction( mode, sectionLayout ) {
           expect( mode ).toEqual( mockMode );
-          expect( pageLayout ).toEqual( mockPageLayout );
+          expect( sectionLayout ).toEqual( mockSectionLayout );
           return customButtonDefaults;
         }
       } );
