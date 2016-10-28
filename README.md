@@ -413,30 +413,30 @@ gulp deploy --appjson path/to/config.app.js #only app specific
   {{ "my literal" | translate }}
   {{ ::"my literal" | translate }}
   
-  <translate>translate tag</translate>
+  <translate>my literal</translate>
   <any translate="my literal"><any>
   <any ng-html-bind="'my literal' | translate"><any>
   <any config-item-translation-key="my literal"><any>
   
   {{ "my {{literal}}" | translate: objWithLiteralKey }}
   
-  {{ foo ? "bar" : baz | translate }}
-  {{ foo ? bar : "baz" | translate }}
-  {{ foo ? "bar" : "baz" | translate }}
+  {{ foo ? "my literal" : baz | translate }}
+  {{ foo ? bar : "my literal" | translate }}
+  {{ foo ? "my literal" : "my literal2" | translate }}
   
-  {{ $ctrl.condition || "my translation" | translate }}
-  {{ "my translation" || $ctrl.condition | translate }}
+  {{ $ctrl.condition || "my literal" | translate }}
+  {{ "my literal" || $ctrl.condition | translate }}
   
   
   //JavaScript
-  var translateComment = /* i18nextract */"$translate comment"; //use this for any keys in config blocks
+  var translateComment = /* i18nextract */"my literal"; //use this for any keys in config blocks
   var state = {
-    translationKey: "$translate state key"
+    translationKey: "my literal"
   }
-  $translate.instant('$translate instant');
-  $translate('$translate direct');
-  $filter('translate')('$translate $filter');
-  $translate(['$translate item1', '$translate item2']);
+  $translate.instant('my literal');
+  $translate('my literal');
+  $filter('translate')('my literal');
+  $translate(['my literal1', 'my literal2']);
   
   ```
 
