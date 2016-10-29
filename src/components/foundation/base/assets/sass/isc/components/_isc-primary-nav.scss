@@ -14,12 +14,12 @@ $app-bar-text-color:   $light-text !default;
 
 /* Branding */
 $logo-color: #fff !default;
-$logo-height: 1.75rem !default;
-$logo-width: 1.95rem !default;
-$logo-height-medium: 1.5rem !default;
-$logo-width-medium: 1.5rem !default;
-$logo-height-small: 1.85rem !default;
-$logo-width-small: 1.85rem !default;
+$logo-height: 30px !default;
+$logo-width: 12px !default;
+$logo-height-medium: 30px !default;
+$logo-width-medium: 12px !default;
+$logo-height-small: 30px !default;
+$logo-width-small: 12px !default;
 $app-name-font-size: 1.375rem !default;
 $app-name-font-size-medium: 1.25rem !default;
 $app-name-font-size-small: 1.125rem !default;
@@ -100,7 +100,7 @@ $app-name-font-weight: $font-weight-normal !default;
           font-weight: $app-name-font-weight;
           font-size: $app-name-font-size;
           text-transform: none;
-          margin-left: 0.65rem;
+          margin-left: 0.5rem;
           height: auto;
           line-height: 1.25;
           overflow-y: hidden;
