@@ -227,6 +227,10 @@
    * USAGE: _.sum(collection, iteratee, [customizer])
    *
    * Examples:
+   * _.sum([1.5, 'NaN', 3.3, [], new Date()])
+   * // => NaN
+   *
+   * Examples:
    * _.sum([1.5, 2.1, 3.3, 4.2, 5.5])
    * // => 15.6
    *
@@ -241,22 +245,21 @@
    * _.sum(array, 'count')
    * // => 15
    *
-   * var array  = [{ count: { value: 1 } }, { count: { value: 2 } }, { count: { value: 3 } }, { count: { value: 4 } }, { count: { value: 5 } }];
+   * var array  = [{ count: { value: 1 } }, { count: { value: 2 } }, { count: { value: 3 } }, { count: { value: "0.04e2" } }, { count: { value: 5 } }];
    * _.sum( array, 'count.value' );
    * // => 15
    *
-   *
-   * var array  = [{ count: { value: Number( 1 ) } }, { count: { value: 2 } }, { count: { value: "3" } }, { count: { value: 4 } }, { count: { value: 5 } }];
+   * var array  = [{ count: { value: Number( 1 ) } }, { count: { value: 2 } }, { count: { value: "3" } }, { count: { value: "0.04e2" } }, { count: { value: 5 } }];
    * _.sum( array, function( item ) { return item.count.value; } );
    * // => 15
    *
    */
   function sum( collection, iteratee, customizer ) {
     return _.reduce( collection, function( result, item ) {
-      if ( !_.isObjectLike( item ) ) {  //primitive value (string/number);
+      if ( _.isNil( iteratee ) || !_.isObjectLike( item ) ) {  //primitive value (string/number);
         result += ( customizer || _.identity )( _.toNumber( item ) );
       } else {
-        result += ( customizer || _.identity )( _.isString( iteratee ) ? _.toNumber( _.get( item, iteratee ) ) : iteratee( item ) );
+        result += ( customizer || _.identity )( _.isString( iteratee ) ? _.toNumber( _.get( item, iteratee ) ) : _.toNumber( iteratee( item ) ) );
       }
 
       return result;

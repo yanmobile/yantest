@@ -368,6 +368,12 @@
     } );
 
     describe( '_.sum(collection, iteratee, [customizer])', function() {
+      it( 'should return NaN when array contains non-number value', function() {
+        var array  = [1.5, 'NaN', 3.3, [], new Date() ];
+        var actual = _.sum( array );
+        expect( NaN ).toEqual( actual );
+      } );
+
       it( 'should sum simple integer array', function() {
         var array  = [1.5, 2.1, 3.3, 4.2, 5.5];
         var actual = _.sum( array );
@@ -393,21 +399,21 @@
       } );
 
       it( 'should sum using string nested iteratee ', function() {
-        var array  = [{ count: { value: Number( 1 ) } }, { count: { value: 2 } }, { count: { value: "3" } }, { count: { value: 4 } }, { count: { value: 5 } }];
+        var array  = [{ count: { value: Number( 1 ) } }, { count: { value: 2 } }, { count: { value: "3" } }, { count: { value: "0.04e2" } }, { count: { value: 5 } }];
         var actual = _.sum( array, 'count.value' );
         expect( 15 ).toBe( actual );
       } );
 
       it( 'should sum using function iteratee', function() {
-        var array  = [{ count: { value: Number( 1 ) } }, { count: { value: 2 } }, { count: { value: "3" } }, { count: { value: 4 } }, { count: { value: 5 } }];
+        var array  = [{ count: { value: Number( 1 ) } }, { count: { value: 2 } }, { count: { value: "3" } }, { count: { value: "0.04e2" } }, { count: { value: 5 } }];
         var actual = _.sum( array, function( item ) {
-          return +item.count.value;
+          return item.count.value;
         } );
         expect( 15 ).toBe( actual );
       } );
 
       it( 'should use customizer as part of the sum', function() {
-        var array  = [{ count: { value: Number( 1 ) } }, { count: { value: 2 } }, { count: { value: "3" } }, { count: { value: 4 } }, { count: { value: 5 } }];
+        var array  = [{ count: { value: Number( 1 ) } }, { count: { value: 2 } }, { count: { value: "3" } }, { count: { value: "0.04e2" } }, { count: { value: 5 } }];
         var actual = _.sum( array, 'count.value', function( value ) {
           return value * 3;
         } );
