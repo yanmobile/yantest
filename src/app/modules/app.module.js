@@ -30,6 +30,7 @@
 
     $httpProvider.interceptors.push( 'iscAuthenticationInterceptor' );
     $httpProvider.interceptors.push( 'iscLoggingInterceptor' );
+    $httpProvider.interceptors.push( 'iscSessionInterceptor' );
 
     $translateProvider.useStaticFilesLoader( {
       prefix: 'assets/i18n/',
