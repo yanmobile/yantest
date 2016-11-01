@@ -5,15 +5,12 @@
 ( function() {
   'use strict';
 
-  // ----------------------------
-  // injection
-  // ----------------------------
   angular.module( 'isc.http' )
-    .factory( 'iscInterceptorSession', iscInterceptorSession );
+    .factory( 'iscSessionInterceptor', iscSessionInterceptor );
 
   /* @ngInject */
-  function iscInterceptorSession( $q, devlog ) {//jshint ignore:line
-    var log = devlog.channel( 'iscInterceptorSession' );
+  function iscSessionInterceptor( $q, $injector, devlog ) {//jshint ignore:line
+    var log = devlog.channel( 'iscSessionInterceptor' );
 
     // ----------------------------
     // factory class
@@ -30,13 +27,13 @@
     // ----------------------------
 
     function response( response ) {
-      log.debug( 'hspcAppIntercptor.response' );
+      log.debug( 'iscSessionInterceptor.response' );
       log.debug( '...response ', response );
 
       var iscSessionModel = $injector.get( 'iscSessionModel' );
 
       // no need to reset storage on calls to the templateCache
-      if ( !_.get( response, 'config.cache' ) && iscSessionModel.isAuthenticated() ) {
+      if ( iscSessionModel.isAuthenticated() && !_.get( response, 'config.cache' ) ) {
         log.debug( '...http call' );
         iscSessionModel.resetSessionTimeout();
       }
