@@ -23,7 +23,7 @@
       'sanity check',
       function() {
         it( 'should have interceptor defined', function() {
-          expect( suite.interceptor ).toBeDefined();
+          expect( suite.iscSessionInterceptor ).toBeDefined();
         } );
       } );
 
