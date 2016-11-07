@@ -417,6 +417,35 @@
       } );
 
       //--------------------
+      it( 'should load qdTags in the FDN', function() {
+        var suite  = suiteConfigured,
+            fdn    = suite.controller.formDefinition.subforms.builtinComponents,
+            qdTags = getQdTags( fdn.sections[0].fields );
+
+        // Expect some fields to have qdTags in the static mock FDN
+        expect(qdTags.length).toBeGreaterThan(0);
+
+        // Expect all of those qdTags in the mock FDN to be rendered
+        _.forEach( qdTags, function( qdTag ) {
+          expect( suite.element.find( '[qd-tag="' + qdTag + '"]' ).length ).toBe( 1 );
+        } );
+
+        function getQdTags( fields ) {
+          var tags = [];
+
+          _.forEach( fields, function( field ) {
+            tags.push( _.get( field, 'templateOptions.qdTag' ) );
+
+            if ( field.fieldGroup ) {
+              tags = _.concat( tags, getQdTags( field.fieldGroup ) );
+            }
+          } );
+
+          return _.compact( tags );
+        }
+      } );
+
+      //--------------------
       it( 'should fail validation in a subform when it contains invalid records', function() {
         var suite              = suiteConfigured,
             submitButton       = getButton( suite, 'submit' ),
