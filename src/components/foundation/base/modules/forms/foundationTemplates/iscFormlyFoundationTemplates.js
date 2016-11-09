@@ -99,6 +99,8 @@
         templateUrl: 'forms/foundationTemplates/templates/button.html',
         /* @ngInject */
         controller : function( $scope ) {
+          $scope._qdTagSelector = 'button';
+
           // data.userModel is the parsed and evaled data.userScript
           var userScript   = _.get( $scope.options, 'data.userModel', {} ),
               fdnOnClick   = userScript.onClick,
@@ -129,7 +131,8 @@
               $scope.$eval( handler );
             }
           }
-        }
+        },
+        link       : setQdTagManually
       } );
 
       // Input
@@ -165,6 +168,7 @@
           // Setting skipNgModelAttrsManipulator to true prevents this and allows a local model
           // to be used for more complex components.
           $scope.options.extras.skipNgModelAttrsManipulator = true;
+          $scope._qdTagSelector                             = '.check-list';
 
           var templateOptions = $scope.to,
               opts            = $scope.options,
@@ -206,7 +210,8 @@
               }
             } );
           }
-        }
+        },
+        link          : setQdTagManually
       } );
 
       // Radio button
@@ -319,7 +324,8 @@
         name       : 'typeahead',
         templateUrl: 'forms/foundationTemplates/templates/typeahead.html',
         wrapper    : ['templateLabel', 'templateHasError'],
-        controller : typeaheadController
+        controller : typeaheadController,
+        link       : setQdTagManually
       } );
 
       // Typeahead with third-party user script support
@@ -327,7 +333,8 @@
         name       : 'typeaheadWithScript',
         templateUrl: 'forms/foundationTemplates/templates/typeaheadWithScript.html',
         wrapper    : ['templateLabel', 'templateHasError'],
-        controller : typeaheadController
+        controller : typeaheadController,
+        link       : setQdTagManually
       } );
 
       // Embedded form
@@ -469,6 +476,7 @@
         // Setting skipNgModelAttrsManipulator to true prevents this and allows a local model
         // to be used for more complex components.
         $scope.options.extras.skipNgModelAttrsManipulator = true;
+        $scope._qdTagSelector                             = 'isc-forms-typeahead';
 
         var key  = $scope.options.key,
             data = _.get( $scope.options, 'data', {} );
@@ -496,6 +504,15 @@
         var initialModel = _.get( $scope.model, $scope.options.key, '' );
         if ( initialModel ) {
           $scope.onSelect( initialModel );
+        }
+      }
+
+      function setQdTagManually( scope, elt ) {
+        var selector = scope._qdTagSelector,
+            qdTag    = _.get( scope, 'to.qdTag' );
+
+        if ( selector && qdTag ) {
+          elt.find( selector ).attr( 'qd-tag', qdTag );
         }
       }
     }

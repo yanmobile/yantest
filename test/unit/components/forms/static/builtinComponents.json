@@ -25,17 +25,22 @@
           }
         },
         {
+          "type" : "divider"
+        },
+        {
           "key"             : "templates.input.date",
           "type"            : "input",
           "templateOptions" : {
-            "label" : "An input component showing a date"
+            "label" : "An input component showing a date",
+            "qdTag" : "inputDate"
           }
         },
         {
           "key"             : "templates.input.text",
           "type"            : "input",
           "templateOptions" : {
-            "label" : "An input component showing text"
+            "label" : "An input component showing text",
+            "qdTag" : "inputText"
           }
         },
         {
@@ -44,7 +49,8 @@
             {
               "type"            : "button",
               "templateOptions" : {
-                "onClick" : "model.templates.button.input = 'Set from the button click'"
+                "onClick" : "model.templates.button.input = 'Set from the button click'",
+                "qdTag"   : "button"
               },
               "data"            : {
                 "userScript" : "buttonScript",
@@ -64,7 +70,8 @@
           "key"             : "templates.checkbox",
           "type"            : "checkbox",
           "templateOptions" : {
-            "label" : "A checkbox"
+            "label" : "A checkbox",
+            "qdTag" : "checkbox"
           }
         },
         {
@@ -72,6 +79,7 @@
           "type"            : "multiCheckbox",
           "templateOptions" : {
             "label"   : "A multi-select checkbox",
+            "qdTag"   : "multiCheckboxPrimitive",
             "options" : [
               "1",
               "2",
@@ -84,6 +92,7 @@
           "type"            : "multiCheckbox",
           "templateOptions" : {
             "label"   : "A multi-select checkbox",
+            "qdTag"   : "multiCheckboxObject",
             "options" : [
               {
                 "name"  : "MultiCheckbox 1",
@@ -105,6 +114,7 @@
           "type"            : "radio",
           "templateOptions" : {
             "label"   : "A radio button - primitive values",
+            "qdTag"   : "radioPrimitive",
             "options" : [
               "Radio 1",
               "Radio 2",
@@ -117,6 +127,7 @@
           "type"            : "radio",
           "templateOptions" : {
             "label"   : "A radio button - object values",
+            "qdTag"   : "radioObject",
             "options" : [
               {
                 "name"  : "Radio 1",
@@ -138,6 +149,7 @@
           "type"            : "select",
           "templateOptions" : {
             "label"   : "A dropdown - primitive values",
+            "qdTag"   : "selectPrimitive",
             "options" : [
               "Select 1",
               "Select 2",
@@ -150,6 +162,7 @@
           "type"            : "select",
           "templateOptions" : {
             "label"   : "A dropdown - object values",
+            "qdTag"   : "selectObject",
             "options" : [
               {
                 "name"  : "Select 1",
@@ -170,21 +183,24 @@
           "key"             : "templates.textarea",
           "type"            : "textarea",
           "templateOptions" : {
-            "label" : "A textarea"
+            "label" : "A textarea",
+            "qdTag" : "textarea"
           }
         },
         {
           "key"             : "templates.dateComponents",
           "type"            : "dateComponents",
           "templateOptions" : {
-            "label" : "A date components widget"
+            "label" : "A date components widget",
+            "qdTag" : "dateComponents"
           }
         },
         {
           "key"             : "templates.dateComponentsPartial",
           "type"            : "dateComponentsPartial",
           "templateOptions" : {
-            "label" : "A date components widget that allows partial dates"
+            "label" : "A date components widget that allows partial dates",
+            "qdTag" : "dateComponentsPartial"
           }
         },
         {
@@ -192,6 +208,7 @@
           "type"            : "typeahead",
           "templateOptions" : {
             "label"   : "A typeahead widget, primitive values",
+            "qdTag"   : "typeaheadPrimitive",
             "options" : [
               "Typeahead 1",
               "Typeahead 2",
@@ -204,6 +221,7 @@
           "type"            : "typeahead",
           "templateOptions" : {
             "label"   : "A typeahead widget, object values",
+            "qdTag"   : "typeaheadObject",
             "options" : [
               {
                 "name"  : "Typeahead 1",
@@ -229,7 +247,8 @@
           "key"             : "templates.typeaheadWithScript",
           "type"            : "typeaheadWithScript",
           "templateOptions" : {
-            "label" : "A typeahead widget supporting user-defined scripts"
+            "label" : "A typeahead widget supporting user-defined scripts",
+            "qdTag" : "typeaheadWithScript"
           },
           "data"            : {
             "displayField"        : "name",
@@ -243,6 +262,7 @@
           "type"            : "controlFlowOnly",
           "templateOptions" : {
             "label"   : "A widget for control flow only -- this field's data is not stored in the data model",
+            "qdTag"   : "controlFlowOnly",
             "options" : [
               "opt 1",
               "opt 2"
