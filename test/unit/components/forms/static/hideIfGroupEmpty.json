@@ -1,0 +1,33 @@
+{
+  "name"     : "Form testing the hideIfGroupEmpty functionality",
+  "sections" : [
+    {
+      "fields" : [
+        {
+          "fieldGroup" : [
+            {
+              "key"             : "headerToHide",
+              "type"            : "input",
+              "templateOptions" : {
+                "label" : "This will be hidden when the other fields are hidden"
+              },
+              "data"            : {
+                "hideIfGroupEmpty" : true
+              }
+            },
+            {
+              "key"            : "field1",
+              "type"           : "input",
+              "hideExpression" : "!!model.hideField1"
+            },
+            {
+              "key"            : "field2",
+              "type"           : "input",
+              "hideExpression" : "!!model.hideField2"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
