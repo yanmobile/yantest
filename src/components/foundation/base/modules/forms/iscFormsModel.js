@@ -41,7 +41,7 @@
     };
 
     function defaultGetCacheKey( formKey, formVersion ) {
-      return [formVersion || 'current', formKey].join( '.' );
+      return formKey ? [formVersion || 'current', formKey].join( '.' ) : undefined;
     }
 
     /**
@@ -122,7 +122,9 @@
               getEmbeddedForms( section.fields, formDefinition.subforms );
             } );
 
-            _.set( _validationCache, cacheKey, validations );
+            if ( cacheKey ) {
+              _.set( _validationCache, cacheKey, validations );
+            }
             deferred.resolve( angular.copy( validations ) );
           } );
       }
@@ -209,7 +211,7 @@
             );
           }
           else {
-            if ( form.library ) {
+            if ( form.library && !_.isObject( form.library ) ) {
               var libraryPromise = iscFormsApi.getUserScript( form.library )
                 .then( function( response ) {
                   var script = parseScript( response );
@@ -253,7 +255,9 @@
               };
 
               // Cache the editable version
-              _formsCache[cacheKey] = editMode;
+              if ( cacheKey ) {
+                _formsCache[cacheKey] = editMode;
+              }
 
               // Make a deep copy for the view mode version
               var viewMode = {
@@ -268,7 +272,9 @@
               } );
 
               // Cache it separately
-              _viewModeFormsCache[cacheKey] = viewMode;
+              if ( cacheKey ) {
+                _viewModeFormsCache[cacheKey] = viewMode;
+              }
 
               // Resolve the requested version
               switch ( mode ) {
