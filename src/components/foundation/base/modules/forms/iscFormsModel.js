@@ -14,14 +14,14 @@
    * @param $window
    * @param $filter
    * @param iscHttpapi
-   * @param iscFormsApi
    * @param iscFormsTemplateService
    * @param iscFormFieldLayoutService
+   * @param iscFormsApi
    * @returns {{getForms, getActiveForm, getActiveForms, setFormStatus, getFormDefinition, getValidationDefinition}}
    */
   function iscFormsModel( $q, $templateCache, $window, $filter,
     iscHttpapi, // needed for user script closures
-    iscFormsTemplateService, iscFormFieldLayoutService , iscFormsApi ) {
+    iscFormsTemplateService, iscFormFieldLayoutService, iscFormsApi ) {
     var _formsCache         = {};
     var _viewModeFormsCache = {};
     var _validationCache    = {};

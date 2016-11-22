@@ -832,8 +832,8 @@
           codeTableOptions = codeTable ? iscFormsCodeTableApi.get( codeTable ) : [],
           listOptions      = [].concat( explicitOptions ).concat( codeTableOptions );
 
-      scope.isObjectModel = ( data.isObject === undefined && listOptions.length )
-        ? _.isObject( _.head( listOptions ) )
+      scope.isObjectModel = ( data.isObject === undefined && listOptions.length ) ?
+        _.isObject( _.head( listOptions ) )
         : data.isObject;
 
       scope.listOptions = listOptions;
