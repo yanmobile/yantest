@@ -53,7 +53,7 @@
   /* @ngInject */
   function iscFormsTemplateService( $filter, $window, $sce, $q, $translate,
     iscNavContainerModel, iscCustomConfigService, iscSessionModel,
-    formlyConfig, iscFormDataApi, iscFormsSectionLayoutService, hsModelUtils ) {
+    formlyConfig, iscFormDataApi, iscFormsCodeTableApi, iscFormsSectionLayoutService, hsModelUtils ) {
     var baseType = '__iscFormsBase__';
 
     var config           = iscCustomConfigService.getConfig(),
@@ -85,6 +85,7 @@
       getSectionForEmbeddedForm: getSectionForEmbeddedForm,
       getRegisteredType        : getRegisteredType,
       getWidgetList            : getWidgetList,
+      initListControlWidget    : initListControlWidget,
       isTypeRegistered         : isTypeRegistered,
       isWrapperRegistered      : isWrapperRegistered,
       overrideWidgetList       : overrideWidgetList,
@@ -815,6 +816,27 @@
         _.set( template, 'wrapper', wrappers );
         registerType( template );
       }
+    }
+
+    /**
+     * @memberOf iscFormsTemplateService
+     * @description Initializes the given formly-field scope with a listOptions property. This property is an array
+     * of the options in the scope's templateOptions.options (if specified), plus the resolved list of its data.codetable
+     * options (if specified). This function also determines data.isObject based on the results of initializing this list.
+     * @param scope
+     */
+    function initListControlWidget( scope ) {
+      var data             = _.get( scope, 'options.data', {} ),
+          codeTable        = data.codeTable,
+          explicitOptions  = _.get( scope, 'to.options', [] ),
+          codeTableOptions = codeTable ? iscFormsCodeTableApi.get( codeTable ) : [],
+          listOptions      = [].concat( explicitOptions ).concat( codeTableOptions );
+
+      scope.isObjectModel = ( data.isObject === undefined && listOptions.length )
+        ? _.isObject( _.head( listOptions ) )
+        : data.isObject;
+
+      scope.listOptions = listOptions;
     }
 
   }

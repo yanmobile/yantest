@@ -170,13 +170,14 @@
           $scope.options.extras.skipNgModelAttrsManipulator = true;
           $scope._qdTagSelector                             = '.check-list';
 
-          var templateOptions = $scope.to,
-              opts            = $scope.options,
-              data            = opts.data;
+          iscFormsTemplateService.initListControlWidget( $scope );
+
+          var opts            = $scope.options,
+              data            = opts.data,
+              listOptions     = $scope.listOptions;
 
           angular.extend( $scope, {
-            displayField : data.displayField,
-            isObjectModel: data.isObject
+            displayField: data.displayField
           } );
 
           $scope.multiCheckbox = {
@@ -189,7 +190,7 @@
           // initialize the checkboxes check property
           var modelValue = _.get( $scope.model, opts.key );
           if ( angular.isArray( modelValue ) ) {
-            angular.forEach( templateOptions.options, function( option, index ) {
+            angular.forEach( listOptions, function( option, index ) {
               if ( $scope.isObjectModel ) {
                 $scope.multiCheckbox.checked[index] = !!_.find( modelValue, function( value ) {
                   return angular.equals( value, option );
@@ -206,7 +207,7 @@
             _.set( $scope.model, opts.key, array );
             angular.forEach( $scope.multiCheckbox.checked, function( checkbox, index ) {
               if ( checkbox ) {
-                array.push( templateOptions.options[index] );
+                array.push( listOptions[index] );
               }
             } );
           }
@@ -221,9 +222,7 @@
         wrapper    : ['templateLabel', 'templateHasError'],
         /*@ngInject*/
         controller : function( $scope ) {
-          var data = _.get( $scope, 'options.data', {} );
-
-          $scope.isObjectModel = _.get( data, 'isObject' );
+          iscFormsTemplateService.initListControlWidget( $scope );
         }
       } );
 
@@ -234,11 +233,18 @@
         wrapper    : ['templateLabel', 'templateHasError'],
         /*@ngInject*/
         controller : function( $scope ) {
-          var data             = _.get( $scope, 'options.data', {} );
-          $scope.displayProp   = _.get( data, 'displayField', 'name' );
-          $scope.groupProp     = _.get( data, 'groupField', 'group' );
-          $scope.isObjectModel = _.get( data, 'isObject' );
-          $scope.stringify     = JSON.stringify;
+          iscFormsTemplateService.initListControlWidget( $scope );
+
+          var data = _.get( $scope, 'options.data', {} );
+          _.extend( $scope, {
+            displayProp: _.get( data, 'displayField', 'name' ),
+            groupProp  : _.get( data, 'groupField', 'group' ),
+            stringify  : stringify
+          } );
+
+          function stringify( json ) {
+            return JSON.stringify( angular.copy( json ) );
+          }
         }
       } );
 
@@ -477,6 +483,8 @@
         // to be used for more complex components.
         $scope.options.extras.skipNgModelAttrsManipulator = true;
         $scope._qdTagSelector                             = 'isc-forms-typeahead';
+
+        iscFormsTemplateService.initListControlWidget( $scope );
 
         var key  = $scope.options.key,
             data = _.get( $scope.options, 'data', {} );

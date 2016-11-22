@@ -1,6 +1,6 @@
 <div class="grid-block expand">
   <select
     ng-model="model[options.key]"
-    ng-options="option as (isObjectModel ? option[displayProp] : option) group by (isObjectModel ? option[groupProp] : undefined) for option in to.options track by (isObjectModel ? stringify(option) : option)">
+    ng-options="option as (isObjectModel ? option[displayProp] : option) group by (isObjectModel ? option[groupProp] : undefined) for option in listOptions track by (isObjectModel ? stringify(option) : option)">
   </select>
 </div>
