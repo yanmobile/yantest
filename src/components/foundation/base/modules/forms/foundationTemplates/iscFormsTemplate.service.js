@@ -831,7 +831,7 @@
           codeTable        = data.codeTable,
           explicitOptions  = _.get( scope, 'to.options', [] ),
           codeTableOptions = codeTable ? iscFormsCodeTableApi.get( codeTable ) : [],
-          listOptions      = [].concat( explicitOptions ).concat( codeTableOptions );
+          listOptions      = _.concat( [], explicitOptions, codeTableOptions );
 
       scope.isObjectModel = ( data.isObject === undefined && listOptions.length ) ?
         _.isObject( _.head( listOptions ) )

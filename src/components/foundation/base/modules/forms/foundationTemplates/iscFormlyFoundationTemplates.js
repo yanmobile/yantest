@@ -236,11 +236,28 @@
           iscFormsTemplateService.initListControlWidget( $scope );
 
           var data = _.get( $scope, 'options.data', {} );
+
+          var isObjectModel = $scope.isObjectModel,
+              displayProp   = _.get( data, 'displayField', 'name' ),
+              groupProp     = _.get( data, 'groupField', 'group' );
+
           _.extend( $scope, {
-            displayProp: _.get( data, 'displayField', 'name' ),
-            groupProp  : _.get( data, 'groupField', 'group' ),
-            stringify  : stringify
+            select: select,
+            group : group,
+            track : track
           } );
+
+          function select( option ) {
+            return (isObjectModel ? option[displayProp] : option);
+          }
+
+          function group( option ) {
+            return (isObjectModel ? option[groupProp] : undefined);
+          }
+
+          function track( option ) {
+            return (isObjectModel ? stringify( option ) : option);
+          }
 
           function stringify( json ) {
             return JSON.stringify( angular.copy( json ) );
