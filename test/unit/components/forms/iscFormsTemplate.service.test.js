@@ -196,25 +196,21 @@
 
         // N.B.: scope.to is a alias for scope.options.templateOptions, created by angular-formly
         var mockCodeTable        = {
-              options: {
-                data: {
-                  codeTable: codeTable
-                }
+              data: {
+                codeTable: codeTable
               }
             },
             mockPrimitiveOptions = {
-              to: {
+              templateOptions: {
                 options: primitiveOptions
               }
             },
             mockMixedOptions     = {
-              to     : {
+              templateOptions: {
                 options: objectOptions
               },
-              options: {
-                data: {
-                  codeTable: codeTable
-                }
+              data           : {
+                codeTable: codeTable
               }
             };
 
@@ -236,7 +232,12 @@
         expect( mockFieldScope.isObjectModel ).toBe( true );
 
         function getMockFieldScope( options ) {
-          var mockScope = options;
+          var mockScope = {
+            options    : options,
+            $watchGroup: function( expressions, callback ) {
+              callback( {} );
+            }
+          };
           suiteMain.iscFormsTemplateService.initListControlWidget( mockScope );
           return mockScope;
         }

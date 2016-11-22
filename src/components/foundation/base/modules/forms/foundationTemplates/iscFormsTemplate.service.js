@@ -827,18 +827,37 @@
      * @param scope
      */
     function initListControlWidget( scope ) {
-      var data             = _.get( scope, 'options.data', {} ),
-          codeTable        = data.codeTable,
-          explicitOptions  = _.get( scope, 'to.options', [] ),
-          codeTableOptions = codeTable ? iscFormsCodeTableApi.get( codeTable ) : [],
-          listOptions      = _.concat( [], explicitOptions, codeTableOptions );
+      scope.$watchGroup( [getCodeTable, getOptions], setProperties );
+      setProperties();
 
-      scope.isObjectModel = ( data.isObject === undefined && listOptions.length ) ?
-        _.isObject( _.head( listOptions ) )
-        : data.isObject;
+      function setProperties( options ) {
+        options = options || {};
 
-      scope.listOptions = listOptions;
+        var data             = _.get( scope, 'options.data', {} ),
+            codeTable        = options[0] || getCodeTable(),
+            explicitOptions  = options[1] || getOptions() || [],
+            codeTableOptions = codeTable ? iscFormsCodeTableApi.get( codeTable ) : [],
+            listOptions      = _.concat( [], explicitOptions, codeTableOptions );
+
+        _.extend( scope, {
+          isObjectModel: getObjectFlag(),
+          listOptions  : listOptions
+        } );
+
+        function getObjectFlag() {
+          return ( data.isObject === undefined && listOptions.length ) ?
+            _.isObject( _.head( listOptions ) )
+            : data.isObject;
+        }
+      }
+
+      function getOptions() {
+        return _.get( scope, 'options.templateOptions.options' );
+      }
+
+      function getCodeTable() {
+        return _.get( scope, 'options.data.codeTable' );
+      }
     }
-
   }
 } )();

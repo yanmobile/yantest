@@ -173,8 +173,7 @@
           iscFormsTemplateService.initListControlWidget( $scope );
 
           var opts            = $scope.options,
-              data            = opts.data,
-              listOptions     = $scope.listOptions;
+              data            = opts.data;
 
           angular.extend( $scope, {
             displayField: data.displayField
@@ -190,7 +189,7 @@
           // initialize the checkboxes check property
           var modelValue = _.get( $scope.model, opts.key );
           if ( angular.isArray( modelValue ) ) {
-            angular.forEach( listOptions, function( option, index ) {
+            angular.forEach( $scope.listOptions, function( option, index ) {
               if ( $scope.isObjectModel ) {
                 $scope.multiCheckbox.checked[index] = !!_.find( modelValue, function( value ) {
                   return angular.equals( value, option );
@@ -207,7 +206,7 @@
             _.set( $scope.model, opts.key, array );
             angular.forEach( $scope.multiCheckbox.checked, function( checkbox, index ) {
               if ( checkbox ) {
-                array.push( listOptions[index] );
+                array.push( $scope.listOptions[index] );
               }
             } );
           }
@@ -248,15 +247,15 @@
           } );
 
           function select( option ) {
-            return (isObjectModel ? option[displayProp] : option);
+            return ( isObjectModel ? option[displayProp] : option );
           }
 
           function group( option ) {
-            return (isObjectModel ? option[groupProp] : undefined);
+            return ( isObjectModel ? option[groupProp] : undefined );
           }
 
           function track( option ) {
-            return (isObjectModel ? stringify( option ) : option);
+            return ( isObjectModel ? stringify( option ) : option );
           }
 
           function stringify( json ) {
