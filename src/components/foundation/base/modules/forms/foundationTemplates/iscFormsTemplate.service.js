@@ -822,7 +822,8 @@
      * @memberOf iscFormsTemplateService
      * @description Initializes the given formly-field scope with a listOptions property. This property is an array
      * of the options in the scope's templateOptions.options (if specified), plus the resolved list of its data.codetable
-     * options (if specified). This function also determines data.isObject based on the results of initializing this list.
+     * options (if specified).
+     * This function also sets an inferred isObjectModel property based on the results of initializing this list.
      * @param scope
      */
     function initListControlWidget( scope ) {
