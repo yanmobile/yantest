@@ -88,8 +88,6 @@
         input.focus();
       };
 
-      list.width( input.outerWidth() );
-
       // ----------------------------
       // functions
       // ----------------------------
