@@ -675,7 +675,9 @@
             // Collections handle view mode on their own.
             // field.key is the data path into the model, so if this is not present,
             // there is no model (e.g., an "instructions" template or arbitrary html).
-            if ( field.type && field.type !== 'embeddedFormCollection' && extendsType !== 'embeddedFormCollection' && field.key ) {
+            if ( field.type && field.key
+              && field.type !== 'embeddedFormCollection' && extendsType !== 'embeddedFormCollection'
+              && field.type !== 'embeddedForm' && extendsType !== 'embeddedForm' ) {
               var viewModeType       = viewModePrefix + field.type;
               var registeredViewType = iscFormsTemplateService.getRegisteredType( viewModeType );
               if ( !registeredViewType ) {
