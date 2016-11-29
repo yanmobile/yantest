@@ -51,6 +51,7 @@
       scope           : {
         id       : '@',
         formState: '=',
+        fields   : '=',
         options  : '='
       },
       bindToController: true,
@@ -194,6 +195,7 @@
        * @memberOf iscEmbeddedFormCollection
        */
       function createTableFields() {
+        // Flatten field groups down for table header and cell iteration
         self.flattenedFields = $filter( 'iscFormsFlattenedFields' )( self.fields );
 
         // Table configuration
@@ -246,11 +248,15 @@
        * @param dynamicArray
        */
       function processFieldsArray( dynamicArray ) {
-        // Flatten field groups down for table header and cell iteration
+        var explicitFields = _.isArray( self.fields ) ? self.fields : [];
+
         if ( self.isPrimitive ) {
           self.fields = {
             '0': PRIMITIVE_OBJECT
           };
+        }
+        else if ( explicitFields.length ) {
+          self.fields = explicitFields;
         }
         else {
           self.fields = angular.copy(
