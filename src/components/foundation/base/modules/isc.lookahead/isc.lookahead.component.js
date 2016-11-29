@@ -36,9 +36,9 @@
     log.info( 'isc.lookahead.js LOADED' );
 
     var self   = this;
-    self.props = {};
 
     _.extend( self, {
+      props      : {},
       $onChanges : $onChanges,
       $onInit    : $onInit,
       $postLink  : $postLink,
@@ -83,28 +83,28 @@
     function tagAdded( $tag ) {
       initRules();
       self.onAdd( { $event: { tags: self.tags } } );
-    };
+    }
 
     function tagAdding( $tag ) {
       self.onAdding( { $event: { tag: $tag } } );
-    };
+    }
 
     function tagRemoved( $tag ) {
       initRules();
       self.onRemove( { $event: { tags: self.tags } } );
-    };
+    }
 
     function tagRemoving( $tag ) {
       self.onRemoving( { $event: { tag: $tag } } );
-    };
+    }
 
     function invalidTag( $tag ) {
       self.onInvalid( { $event: { tag: $tag } } );
-    };
+    }
 
     function tagClicked( $tag ) {
       self.onClicked( { $event: { tag: $tag } } );
-    };
+    }
 
     // ****************************************
     // COMPONENT FUNCTIONS

@@ -38,9 +38,9 @@
       "resolved": "https://registry.npmjs.org/angular-translate-loader-static-files/-/angular-translate-loader-static-files-2.11.1.tgz"
     },
     "angular-ui-router": {
-      "version": "0.2.18",
-      "from": "angular-ui-router@0.2.18",
-      "resolved": "https://registry.npmjs.org/angular-ui-router/-/angular-ui-router-0.2.18.tgz"
+      "version": "0.3.2",
+      "from": "angular-ui-router@latest",
+      "resolved": "https://registry.npmjs.org/angular-ui-router/-/angular-ui-router-0.3.2.tgz"
     },
     "jquery": {
       "version": "2.2.4",

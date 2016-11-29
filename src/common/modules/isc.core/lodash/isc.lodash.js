@@ -26,7 +26,8 @@
     wrapText        : wrapText,
     interpolate     : interpolate,
     getRemainingTime: getRemainingTime,
-    findNested      : findNested
+    findNested      : findNested,
+    sum             : sum
   } );
 
   function getAge( dob, format ) {
@@ -209,6 +210,60 @@
     }
 
     return result;
+  }
+
+  /**
+   * @description Sums the value of each array item
+   *
+   * The iteratee value can also be piped through an optional customizer value
+   * @param collection
+   * @param iteratee (Undefined, String, Function):
+   *    Undefined: for simple value array.
+   *    String: for object path
+   *    Function: for custom retrieve function
+   * @param [customizer] (Function): The function to customize assigned values.
+   * @returns sum
+   *
+   * USAGE: _.sum(collection, iteratee, [customizer])
+   *
+   * Examples:
+   * _.sum([1.5, 'NaN', 3.3, [], new Date()])
+   * // => NaN
+   *
+   * Examples:
+   * _.sum([1.5, 2.1, 3.3, 4.2, 5.5])
+   * // => 15.6
+   *
+   * // each value is piped through customizer
+   * _.sum([1.5, 2.1, 3.3, 4.2, 5.5], null, _.floor);
+   * // => 15
+   *
+   * _.sum([1, "2", 3, Number( 4 ), 5])
+   * // => 15
+   *
+   * var array = [{ count: 1 }, { count: 2 }, { count: 3 }, { count: 4 }, { count: 5 }]
+   * _.sum(array, 'count')
+   * // => 15
+   *
+   * var array  = [{ count: { value: 1 } }, { count: { value: 2 } }, { count: { value: 3 } }, { count: { value: "0.04e2" } }, { count: { value: 5 } }];
+   * _.sum( array, 'count.value' );
+   * // => 15
+   *
+   * var array  = [{ count: { value: Number( 1 ) } }, { count: { value: 2 } }, { count: { value: "3" } }, { count: { value: "0.04e2" } }, { count: { value: 5 } }];
+   * _.sum( array, function( item ) { return item.count.value; } );
+   * // => 15
+   *
+   */
+  function sum( collection, iteratee, customizer ) {
+    return _.reduce( collection, function( result, item ) {
+      if ( _.isNil( iteratee ) || !_.isObjectLike( item ) ) {  //primitive value (string/number);
+        result += ( customizer || _.identity )( _.toNumber( item ) );
+      } else {
+        result += ( customizer || _.identity )( _.isString( iteratee ) ? _.toNumber( _.get( item, iteratee ) ) : _.toNumber( iteratee( item ) ) );
+      }
+
+      return result;
+    }, 0 );
   }
 
   //END CLASS

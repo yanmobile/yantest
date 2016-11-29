@@ -9,30 +9,30 @@
     .factory( 'iscFormsSectionLayoutService', iscFormsSectionLayoutService );
 
   /* @ngInject */
-  function iscFormsSectionLayoutService() {
+  function iscFormsSectionLayoutService( $translate ) {
     var wizardButtonConfig = {
       cancel: {
         cssClass: 'button cancel float-left wizard-cancel-btn',
-        text    : 'Forms_Cancel_Button',
+        text    : $translate.instant( 'Cancel' ),
         order   : 1
       },
       prev  : {
         cssClass: 'button float-right wizard-prev-btn',
-        text    : 'Forms_Prev_Button',
+        text    : $translate.instant( 'Previous' ),
         order   : 2,
         hide    : isFirstSection,
         onClick : _.partialRight( changeSection, -1 )
       },
       next  : {
         cssClass: 'button float-right wizard-next-btn',
-        text    : 'Forms_Next_Button',
+        text    : $translate.instant( 'Next' ),
         order   : 3,
         hide    : isLastSection,
         onClick : _.partialRight( changeSection, +1 )
       },
       submit: {
         cssClass: 'button float-right wizard-submit-btn',
-        text    : 'Forms_Submit_Button',
+        text    : $translate.instant( 'Submit' ),
         order   : 4,
         hide    : isNotLastSection
       }

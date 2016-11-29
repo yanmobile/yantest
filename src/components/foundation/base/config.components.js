@@ -35,7 +35,7 @@ module.exports = {
       "src/components/foundation/base/assets/**/*.html"
     ],
     "assets" : {
-      "FDN": "src/components/foundation/base/assets/FDN/",
+      "FDN": ["src/components/foundation/base/assets/FDN/**/*.json"],
       "i18nDir": "src/components/foundation/base/assets/i18n/",
       "images" : [
         "src/components/foundation/base/assets/images/**/*",

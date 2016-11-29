@@ -1,7 +1,7 @@
 <div ng-class="{ 'grid-block' : isHorizontal }">
-  <div ng-repeat="option in radioCtrl.options.templateOptions.options track by $index"
+  <div ng-repeat="option in radioCtrl.listOptions track by $index"
        class="radio-list"
-       ng-class="{ 'grid-block' : !isHorizontal, 'grid-content shrink' : isHorizontal }">
+       ng-class="{ 'grid-block' : !isHorizontal, 'grid-content collapse-left shrink' : isHorizontal }">
     <label class="radio">
       <input type="radio"
              id="{{id + '_'+ $index}}"

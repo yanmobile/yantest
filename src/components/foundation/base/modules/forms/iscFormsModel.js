@@ -12,16 +12,16 @@
    * @param $q
    * @param $templateCache
    * @param $window
+   * @param $filter
    * @param iscHttpapi
-   * @param iscFormsCodeTableApi
    * @param iscFormsTemplateService
+   * @param iscFormFieldLayoutService
    * @param iscFormsApi
    * @returns {{getForms, getActiveForm, getActiveForms, setFormStatus, getFormDefinition, getValidationDefinition}}
    */
   function iscFormsModel( $q, $templateCache, $window, $filter,
     iscHttpapi, // needed for user script closures
-    iscFormsCodeTableApi, iscFormsTemplateService,
-    iscFormsApi, iscFormFieldLayoutService ) {
+    iscFormsTemplateService, iscFormFieldLayoutService, iscFormsApi ) {
     var _formsCache         = {};
     var _viewModeFormsCache = {};
     var _validationCache    = {};
@@ -41,7 +41,7 @@
     };
 
     function defaultGetCacheKey( formKey, formVersion ) {
-      return [formVersion || 'current', formKey].join( '.' );
+      return formKey ? [formVersion || 'current', formKey].join( '.' ) : undefined;
     }
 
     /**
@@ -122,7 +122,9 @@
               getEmbeddedForms( section.fields, formDefinition.subforms );
             } );
 
-            _.set( _validationCache, cacheKey, validations );
+            if ( cacheKey ) {
+              _.set( _validationCache, cacheKey, validations );
+            }
             deferred.resolve( angular.copy( validations ) );
           } );
       }
@@ -209,7 +211,7 @@
             );
           }
           else {
-            if ( form.library ) {
+            if ( form.library && !_.isObject( form.library ) ) {
               var libraryPromise = iscFormsApi.getUserScript( form.library )
                 .then( function( response ) {
                   var script = parseScript( response );
@@ -253,7 +255,9 @@
               };
 
               // Cache the editable version
-              _formsCache[cacheKey] = editMode;
+              if ( cacheKey ) {
+                _formsCache[cacheKey] = editMode;
+              }
 
               // Make a deep copy for the view mode version
               var viewMode = {
@@ -268,7 +272,9 @@
               } );
 
               // Cache it separately
-              _viewModeFormsCache[cacheKey] = viewMode;
+              if ( cacheKey ) {
+                _viewModeFormsCache[cacheKey] = viewMode;
+              }
 
               // Resolve the requested version
               switch ( mode ) {
@@ -341,21 +347,6 @@
                 var expLabel = expProps['templateOptions.label'];
                 if ( label && !expLabel ) {
                   _.set( field, 'templateOptions.label', $filter( 'translate' )( label ) );
-                }
-
-                // If this field uses a code table, look it up and push it into the field's options
-                if ( data.codeTable ) {
-                  // Include any custom options for this field that have been explicitly entered
-                  var explicitOptions = _.get( field, 'templateOptions.options', [] );
-                  _.set( field, 'templateOptions.options',
-                    [].concat( explicitOptions ).concat( iscFormsCodeTableApi.get( data.codeTable ) )
-                  );
-                }
-
-                // If data.isObject is not set, infer object/primitive mode based on first option in options list
-                var options = _.get( field, 'templateOptions.options', [] );
-                if ( data.isObject === undefined && options ) {
-                  _.set( field, 'data.isObject', _.isObject( _.head( options ) ) );
                 }
 
                 // If the type is not already registered, load it and register it with formly

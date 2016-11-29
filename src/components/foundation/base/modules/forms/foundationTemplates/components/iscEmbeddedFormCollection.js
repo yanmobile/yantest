@@ -23,7 +23,7 @@
    * @returns {{restrict: string, replace: boolean, require: string, controllerAs: string, scope: {id: string, formState: string, options: string}, bindToController: boolean, controller: controller, link: link, templateUrl: string}}
    */
   /* @ngInject */
-  function iscEmbeddedFormCollection( $filter, $timeout, FoundationApi, iscCustomConfigService, iscConfirmationService, FORMS_EVENTS,
+  function iscEmbeddedFormCollection( $filter, $timeout, $translate, FoundationApi, iscCustomConfigService, iscConfirmationService, FORMS_EVENTS,
     iscFormsTemplateService, iscFormsValidationService,
     iscScrollContainerService ) {//jshint ignore:line
 
@@ -36,7 +36,7 @@
       key            : PRIMITIVE_KEY,
       type           : 'input',
       templateOptions: {
-        label: 'Forms_Collections_Primitive_Label'
+        label: $translate.instant( 'Value' )
       }
     };
 
@@ -416,7 +416,7 @@
       function removeForm( row ) {
         if ( confirmDeletion ) {
           iscConfirmationService
-            .show( $filter( 'translate' )( 'Forms_Delete_Confirmation', { ItemLabel: self.label } ) )
+            .show( $translate.instant( 'Are you sure you want to delete this {{ItemLabel}}?', { ItemLabel: self.label } ) )
             .then( onYes );
         }
         else {

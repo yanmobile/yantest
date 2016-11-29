@@ -11,11 +11,11 @@
       <p class="text-center">{{iscConfirmCtrl.service.options.message | translate}}</p>
 
       <div class="clearfix">
-        <button class="cancel float-left" ng-if="iscConfirmCtrl.service.options.btnCancelText"
+        <button class="cancel float-left" qd-tag="isc-confirmation-reject" ng-if="iscConfirmCtrl.service.options.btnCancelText"
                 ng-click="iscConfirmCtrl.service.reject()">
           {{ iscConfirmCtrl.service.options.btnCancelText| translate}}
         </button>
-        <button class="float-right" ng-if="iscConfirmCtrl.service.options.btnOkText"
+        <button class="float-right" qd-tag="isc-confirmation-resolve" ng-if="iscConfirmCtrl.service.options.btnOkText"
                 ng-click="iscConfirmCtrl.service.resolve()">
           {{iscConfirmCtrl.service.options.btnOkText | translate}}
         </button>

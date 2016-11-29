@@ -28,7 +28,6 @@
         // useful for dynamic typeahead lists that are produced
         // from an API call
       },
-      replace         : true,
       transclude      : true,
       link            : link,
       controller      : controller,
@@ -88,8 +87,6 @@
       ctrl.focusInput = function() {
         input.focus();
       };
-
-      list.width( input.outerWidth() );
 
       // ----------------------------
       // functions
