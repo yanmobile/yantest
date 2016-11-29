@@ -10,7 +10,7 @@
     "angular-sanitize"                      : "1.5.8",
     "angular-translate"                     : "2.11.1",
     "angular-translate-loader-static-files" : "2.11.1",
-    "angular-ui-router"                     : "0.2.18",
+    "angular-ui-router"                     : "^0.3.2",
     "jquery"                                : "2.2.4",
     "lodash"                                : "4.15.0",
     "mobile-angular-ui"                     : "1.2.1",
