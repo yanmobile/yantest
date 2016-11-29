@@ -53,7 +53,7 @@
   /* @ngInject */
   function iscFormsTemplateService( $filter, $window, $sce, $q, $translate,
     iscNavContainerModel, iscCustomConfigService, iscSessionModel,
-    formlyConfig, iscFormDataApi, iscFormsSectionLayoutService, hsModelUtils ) {
+    formlyConfig, iscFormDataApi, iscFormsCodeTableApi, iscFormsSectionLayoutService, hsModelUtils ) {
     var baseType = '__iscFormsBase__';
 
     var config           = iscCustomConfigService.getConfig(),
@@ -85,6 +85,7 @@
       getSectionForEmbeddedForm: getSectionForEmbeddedForm,
       getRegisteredType        : getRegisteredType,
       getWidgetList            : getWidgetList,
+      initListControlWidget    : initListControlWidget,
       isTypeRegistered         : isTypeRegistered,
       isWrapperRegistered      : isWrapperRegistered,
       overrideWidgetList       : overrideWidgetList,
@@ -817,5 +818,46 @@
       }
     }
 
+    /**
+     * @memberOf iscFormsTemplateService
+     * @description Initializes the given formly-field scope with a listOptions property. This property is an array
+     * of the options in the scope's templateOptions.options (if specified), plus the resolved list of its data.codetable
+     * options (if specified).
+     * This function also sets an inferred isObjectModel property based on the results of initializing this list.
+     * @param scope
+     */
+    function initListControlWidget( scope ) {
+      scope.$watchGroup( [getCodeTable, getOptions], setProperties );
+      setProperties();
+
+      function setProperties( options ) {
+        options = options || {};
+
+        var data             = _.get( scope, 'options.data', {} ),
+            codeTable        = options[0] || getCodeTable(),
+            explicitOptions  = options[1] || getOptions() || [],
+            codeTableOptions = codeTable ? iscFormsCodeTableApi.get( codeTable ) : [],
+            listOptions      = _.concat( [], explicitOptions, codeTableOptions );
+
+        _.extend( scope, {
+          isObjectModel: getObjectFlag(),
+          listOptions  : listOptions
+        } );
+
+        function getObjectFlag() {
+          return ( data.isObject === undefined && listOptions.length ) ?
+            _.isObject( _.head( listOptions ) )
+            : data.isObject;
+        }
+      }
+
+      function getOptions() {
+        return _.get( scope, 'options.templateOptions.options' );
+      }
+
+      function getCodeTable() {
+        return _.get( scope, 'options.data.codeTable' );
+      }
+    }
   }
 } )();
