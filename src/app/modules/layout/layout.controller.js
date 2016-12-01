@@ -16,8 +16,12 @@
     // vars
     // ----------------------------
     var self = this;
+
+    warnIfDeprecatedLayout( $state.next );
+
     _.merge( self, {
-      layout     : $state.next.layout,
+      //adding additional support for placing layout property in "state.data" (backwards compatible)
+      layout     : $state.next.layout || _.get( $state, 'next.data.layout' ),
       layoutClass: getSecondLevelStateName()
     } );
 
@@ -25,7 +29,11 @@
      * updates the layout and layoutClass based on the next state
      */
     $rootScope.$on( '$stateChangeStart', function( event, state, params ) {
-      self.layout      = state.layout;
+
+      warnIfDeprecatedLayout( state );
+
+      //adding additional support for placing layout property in "state.data" (backwards compatible)
+      self.layout      = state.layout || _.get( state, 'data.layout' );
       self.layoutClass = getSecondLevelStateName();
     } );
 
@@ -36,6 +44,13 @@
      */
     function getSecondLevelStateName() {
       return _.kebabCase( $state.next.name.split( '.' )[1] || '' );
+    }
+
+    function warnIfDeprecatedLayout( state ) {
+      if ( state.layout ) {
+        log.warn( '[deprecated] "state.layout" property has been deprecated. Please use "state.data.layout" at the highest applicable state level to allow data propagation to descendant states.' );
+        log.warn( 'state ... ' + state.state );
+      }
     }
   }// END CLASS
 
