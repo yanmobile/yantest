@@ -71,11 +71,10 @@
     function controller( $scope ) {
       var self = this;
 
-      self.config = self.config || {};
-
       var opts             = self.options,
           templateOptions  = opts.templateOptions,
           key              = opts.key,
+          collectionConfig = _.get( opts, 'data.collections.config', {} ),
           dateFormat       = _.get( iscCustomConfigService.getConfig(), 'formats.date.shortDate', 'date' ),
           editAs           = _.get( opts, 'data.collections.editAs' ),
           modelType        = _.get( opts, 'data.collections.modelType', 'array' ),
@@ -87,6 +86,18 @@
           useDynamicFields = _.get( opts, 'data.collections.useDynamicFields' ),
           embeddedType     = _.get( opts, 'data.embeddedType' ),
           embeddedSection  = iscFormsTemplateService.getSectionForEmbeddedForm( opts, subforms );
+
+      self.config = _.defaultsDeep( self.config, {
+        fields   : _.get( opts, 'data.embeddedFields' ),
+        callbacks: {
+          beforeUpdate: _.get( collectionConfig, 'callbacks.beforeUpdate' ),
+          beforeDelete: _.get( collectionConfig, 'callbacks.beforeDelete' )
+        },
+        model    : {
+          maxSize    : _.get( collectionConfig, 'model.maxSize' ),
+          defaultItem: _.get( collectionConfig, 'model.defaultItem' )
+        }
+      } );
 
       _.extend( self, {
         editAs          : editAs,
@@ -245,19 +256,18 @@
        */
       function mergeBuiltInTemplates( fields ) {
         _.forEach( fields, function( field ) {
-          var type = _.get( field, 'type', '' );
-          if ( type && !_.startsWith( type, 'embeddedForm' ) ) {
-            // Recurse for fieldGroups
-            if ( field.fieldGroup ) {
-              mergeBuiltInTemplates( field.fieldGroup );
-            }
-            else {
+          // Recurse for fieldGroups
+          if ( field.fieldGroup ) {
+            mergeBuiltInTemplates( field.fieldGroup );
+          }
+          else {
+            var type = _.get( field, 'type', '' );
+            if ( type && !_.startsWith( type, 'embeddedForm' ) ) {
               var options = _.get( iscFormsTemplateService.getRegisteredType( field.type ), 'defaultOptions' );
               if ( options ) {
                 angular.merge( field, options, field );
               }
             }
-
           }
         } );
       }
@@ -504,15 +514,30 @@
         }
 
         var currentSize = self.collectionModel.length,
-            maxSize     = _.get( self.config, 'model.maxSize' ),
-            getMaxSize  = _.get( self.config, 'model.getMaxSize' );
+            maxSizeProp = _.get( self.config, 'model.maxSize' );
 
-        if ( maxSize !== undefined ) {
-          return currentSize >= maxSize;
-        }
-        else if ( getMaxSize !== undefined && _.isFunction( getMaxSize ) ) {
-          maxSize = parseInt( getMaxSize() );
-          return _.isInteger( maxSize ) && currentSize >= maxSize;
+        if ( maxSizeProp !== undefined ) {
+          var maxSize;
+
+          // Function
+          if ( _.isFunction( maxSizeProp ) ) {
+            var result = parseInt( maxSizeProp( self.collectionModel ) );
+            if ( !_.isNaN( result ) ) {
+              maxSize = result;
+            }
+          }
+          // Number
+          else if ( _.isNumber( maxSizeProp ) ) {
+            maxSize = maxSizeProp;
+          }
+          // Possible expression
+          else {
+            maxSize = $scope.$eval( maxSizeProp, {
+              formState      : self.formState,
+              collectionModel: self.collectionModel
+            } );
+          }
+          return ( maxSize !== undefined ) && currentSize >= maxSize;
         }
         return false;
       }
@@ -529,14 +554,24 @@
           self.originalModel = undefined;
 
           // Set local model from configured default if provided
-          var defaultItem    = _.get( self.config, 'model.defaultItem' ),
-              getDefaultItem = _.get( self.config, 'model.getDefaultItem' );
+          var defaultItem = _.get( self.config, 'model.defaultItem' );
 
           if ( defaultItem !== undefined ) {
-            self.editModel = angular.copy( defaultItem );
-          }
-          else if ( getDefaultItem !== undefined && _.isFunction( getDefaultItem ) ) {
-            self.editModel = getDefaultItem( self.collectionModel );
+            // Function
+            if ( _.isFunction( defaultItem ) ) {
+              self.editModel = defaultItem( self.collectionModel );
+            }
+            // Possible expression
+            else if ( _.isString( defaultItem ) ) {
+              self.editModel = $scope.$eval( defaultItem, {
+                formState      : self.formState,
+                collectionModel: self.collectionModel
+              } );
+            }
+            // Everything else
+            else {
+              self.editModel = angular.copy( defaultItem );
+            }
           }
           else {
             self.editModel = {};
@@ -587,8 +622,17 @@
 
           // Invoke callback
           var updateCallback = _.get( self.config, 'callbacks.beforeUpdate' );
-          if ( updateCallback && _.isFunction( updateCallback ) ) {
-            updateCallback( self.collectionModel, self.editModel );
+          if ( updateCallback ) {
+            if ( _.isFunction( updateCallback ) ) {
+              updateCallback( self.collectionModel, self.editModel );
+            }
+            else {
+              $scope.$eval( updateCallback, {
+                formState      : self.formState,
+                collectionModel: self.collectionModel,
+                item           : self.editModel
+              } );
+            }
           }
 
           // Update ng-model
@@ -646,8 +690,17 @@
 
           // Invoke callback
           var deleteCallback = _.get( self.config, 'callbacks.beforeDelete' );
-          if ( deleteCallback && _.isFunction( deleteCallback ) ) {
-            deleteCallback( self.collectionModel, row );
+          if ( deleteCallback ) {
+            if ( _.isFunction( deleteCallback ) ) {
+              deleteCallback( self.collectionModel, row );
+            }
+            else {
+              $scope.$eval( deleteCallback, {
+                formState      : self.formState,
+                collectionModel: self.collectionModel,
+                item           : row
+              } );
+            }
           }
 
           // Update ng-model
