@@ -33,7 +33,8 @@
     <!--tbody-->
     <div class="grid-block tbody">
       <div ng-repeat="row in fauxTblCtrl.data | filter:{} | orderBy:fauxTblCtrl.sortBy:fauxTblCtrl.sortDirection"
-           class="{{column.cssTRClass || 'grid-block tr'}}">
+           class="{{column.cssTRClass || 'grid-block tr'}}"
+           ng-click="fauxTblCtrl.config.onRowClick(row)">
         <div ng-repeat="column in fauxTblCtrl.config.columns"
              class="{{column.cssTDClass || 'grid-block td'}}"
              data-title="{{column.key| translate}}"
