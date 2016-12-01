@@ -51,7 +51,7 @@
       scope           : {
         id       : '@',
         formState: '=',
-        fields   : '=',
+        config   : '=?',
         options  : '='
       },
       bindToController: true,
@@ -60,7 +60,6 @@
       templateUrl     : function( elem, attrs ) {
         return attrs.templateUrl || 'forms/foundationTemplates/components/iscEmbeddedFormCollection.html';
       }
-
     };
 
     return directive;
@@ -72,10 +71,15 @@
     function controller( $scope ) {
       var self = this;
 
+      self.config = self.config || {};
+
       var opts             = self.options,
           templateOptions  = opts.templateOptions,
           key              = opts.key,
+          dateFormat       = _.get( iscCustomConfigService.getConfig(), 'formats.date.shortDate', 'date' ),
           editAs           = _.get( opts, 'data.collections.editAs' ),
+          modelType        = _.get( opts, 'data.collections.modelType', 'array' ),
+          modelTypeOptions = _.get( opts, 'data.collections.modelTypeOptions', {} ),
           viewAs           = _.get( opts, 'data.collections.viewAs' ),
           allowReordering  = _.get( opts, 'data.collections.allowReordering' ),
           confirmDeletion  = _.get( opts, 'data.collections.confirmDeletion' ),
@@ -84,33 +88,39 @@
           embeddedType     = _.get( opts, 'data.embeddedType' ),
           embeddedSection  = iscFormsTemplateService.getSectionForEmbeddedForm( opts, subforms );
 
-      self.editAs = editAs;
+      _.extend( self, {
+        editAs          : editAs,
+        modelType       : modelType,
+        modelTypeOptions: modelTypeOptions,
+        keyProp         : modelTypeOptions.key,
+        valueProp       : modelTypeOptions.value,
+        dateFormat      : dateFormat,
+        isNew           : false,
+        renderForm      : false,
+        modalName       : 'editCollection_' + key,
+        formName        : 'form_' + key,
+        mode            : self.formState._mode,
 
-      // Track whether this is a collection of primitives or objects
-      self.isPrimitive = opts.type === 'primitiveCollection' || opts.extends === 'primitiveCollection';
+        // Track whether this is a collection of primitives or objects
+        isPrimitive  : opts.type === 'primitiveCollection' || opts.extends === 'primitiveCollection',
+        isObjectBased: modelType !== 'array',
+        isHashtable  : modelType === 'hashtable' && !!modelTypeOptions.value,
 
-      // Inherit formState for subform
-      self.subformOptions = {
-        formState: _.extend( {}, self.formState )
-      };
-      self.subform        = {};
+        // Local model of validation errors set by iscFormsValidationService
+        validationErrors: getValidation(),
 
-      self.dateFormat = _.get( iscCustomConfigService.getConfig(), 'formats.date.shortDate', 'date' );
+        // The data model for editing a single subform instance
+        editModel: {},
 
-      self.isNew      = false;
-      self.renderForm = false;
-      self.modalName  = 'editCollection_' + key;
-      self.formName   = 'form_' + key;
-      self.mode       = self.formState._mode;
+        // The (singular) label for each subform instance
+        label: _.get( opts, 'data.embeddedLabel', templateOptions.label ),
 
-      // Local model of validation errors set by iscFormsValidationService
-      self.validationErrors = getValidation();
-
-      // The data model for editing a single subform instance
-      self.editModel = {};
-
-      // The (singular) label for each subform instance
-      self.label = _.get( opts, 'data.embeddedLabel', templateOptions.label );
+        // Inherit formState for subform
+        subformOptions: {
+          formState: _.extend( {}, self.formState )
+        },
+        subform       : {}
+      } );
 
       processFieldsArray();
       if ( useDynamicFields ) {
@@ -121,62 +131,19 @@
         } );
       }
 
-      // Callbacks
-      self.hasValidationError = hasValidationError;
-
-      self.newForm = function() {
-        if ( !self.renderForm ) {
-          self.isNew = true;
-
-          self.editModel = {};
-
-          showSubform();
-          $scope.$emit( FORMS_EVENTS.collectionEditStarted, self.editModel );
-          // Defer the update until the formly-form has finished being initialized;
-          // otherwise a race condition can prevent the broadcast message from being heard
-          $timeout( updateModel, 0 );
-        }
-      };
-
-      self.editForm = editForm;
-
-      self.cancel = function() {
-        self.subformOptions.formState._validation.$submitted = false;
-        hideSubform();
-        $scope.$emit( FORMS_EVENTS.collectionEditCanceled, self.editModel );
-      };
-
-      self.saveForm = function() {
-        self.subformOptions.formState._validation.$submitted = true;
-
-        var isSubformValid = self.isPrimitive || iscFormsValidationService.validateForm( self.subform.form ).isValid;
-
-        // If this subform is valid, save the data and return
-        if ( isSubformValid ) {
-          if ( self.isNew ) {
-            self.collectionModel.push( self.editModel );
-          }
-          else {
-            var model = self.collectionModel[self.editIndex];
-            _.remove( self.validationErrors, model );
-
-            _.set( self.collectionModel, self.editIndex, self.editModel );
-          }
-          self.editIndex = undefined;
-          hideSubform();
-          $scope.$emit( FORMS_EVENTS.collectionEditSaved, self.editModel );
-
-          onCollectionModified();
-        }
-        return isSubformValid;
-      };
-
-      self.removeForm = removeForm;
-
-      self.isSubmitDisabled = function() {
-        return self.subformOptions.formState._disableSubmitIfFormInvalid && self.subform.form.$invalid;
-      };
-
+      // Functions and callbacks
+      _.extend( self, {
+        cancel                    : cancel,
+        editForm                  : editForm,
+        hasValidationError        : hasValidationError,
+        isAddItemDisabled         : isAddItemDisabled,
+        isSubmitDisabled          : isSubmitDisabled,
+        newForm                   : newForm,
+        removeForm                : removeForm,
+        saveForm                  : saveForm,
+        transformCollectionToModel: transformCollectionToModel,
+        transformModelToCollection: transformModelToCollection
+      } );
 
       // Watches
       $scope.$watch( getValidation, function( value ) {
@@ -248,7 +215,7 @@
        * @param dynamicArray
        */
       function processFieldsArray( dynamicArray ) {
-        var explicitFields = _.isArray( self.fields ) ? self.fields : [];
+        var explicitFields = _.isArray( self.config.fields ) ? self.config.fields : [];
 
         if ( self.isPrimitive ) {
           self.fields = {
@@ -301,6 +268,106 @@
       function onCollectionModified() {
         self.subformOptions.formState._validation.$submitted = false;
 
+        self.transformCollectionToModel();
+        self.ngModelCtrl.$commitViewValue();
+        self.ngModelCtrl.$setTouched();
+        self.ngModelCtrl.$setDirty();
+        self.ngModelCtrl.$validate();
+      }
+
+
+      /**
+       * @memberOf iscEmbeddedFormCollection
+       * @description The following data model types are supported: primitive, array, hashtable, object.
+       * All of these types are handled by the iteration and editing process as an array,
+       * so we need to transform object and hashtable types into an array for self.collectionModel.
+       *
+       * For an 'object' type, assuming ctrl.keyProp = 'key':
+       {
+         "myKey1" : {
+           "myProp1" : "value1",
+           "myProp2" : "value2"
+         },
+         "myKey2" : {
+           "myProp1" : "value3",
+           "myProp2" : "value4"
+         }
+       }
+       * is transformed into:
+       [
+       {
+         "key"     : "myKey1",
+         "myProp1" : "value1",
+         "myProp2" : "value2"
+       },
+       {
+         "key"     : "myKey2",
+         "myProp1" : "value3",
+         "myProp2" : "value4"
+       }
+       ]
+
+       * For a 'hashtable' type, assuming ctrl.keyProp = 'key' and ctrl.valueProp = 'value':
+       {
+         "myKey1" : "myValue1",
+         "myKey2" : "myValue2"
+       }
+       * is transformed into:
+       [
+       {
+         "key"   : "myKey1",
+         "value" : "myValue1"
+       },
+       {
+         "key"   : "myKey2",
+         "value" : "myValue2"
+       }
+       ]
+       */
+      function transformModelToCollection( model ) {
+        // Primitive collection -- an array of primitive values
+        if ( self.isPrimitive ) {
+          self.collectionModel = _.map( model, function( value ) {
+            var primitiveWrapper            = {};
+            primitiveWrapper[PRIMITIVE_KEY] = value;
+            return primitiveWrapper;
+          } );
+        }
+
+        else if ( self.isObjectBased && _.isObject( model ) ) {
+          var data = [];
+
+          _.forOwn( model, function( value, key ) {
+            var baseObj           = {};
+            baseObj[self.keyProp] = key;
+
+            // Hashtable type -- an object with key/value pairs
+            if ( self.isHashtable ) {
+              baseObj[self.valueProp] = value;
+              data.push( baseObj );
+            }
+            // Object type -- an object with property keys and object values
+            else {
+              data.push( _.extend( {}, value, baseObj ) );
+            }
+          } );
+
+          self.collectionModel = data;
+        }
+
+        // Array type -- an array with object values
+        else {
+          self.collectionModel = model;
+        }
+
+      }
+
+      /**
+       * @memberOf iscEmbeddedFormCollection
+       * @description Reverses the transformation performed in transformModelToCollection.
+       */
+      function transformCollectionToModel() {
+        // Primitive collection -- an array of primitive values
         if ( self.isPrimitive ) {
           self.ngModelCtrl.$setViewValue(
             _.map( self.collectionModel, function( item ) {
@@ -308,13 +375,33 @@
             } )
           );
         }
+
+        else if ( self.isObjectBased ) {
+          var objectValue = {};
+
+          _.forEach( self.collectionModel, function( item ) {
+            var key = item[self.keyProp],
+                value;
+
+            // Hashtable type -- an object with key/value pairs
+            if ( self.isHashtable ) {
+              value = item[self.valueProp];
+            }
+            // Object type -- an object with property keys and object values
+            else {
+              value = _.omit( item, self.keyProp );
+            }
+
+            objectValue[key] = value;
+          } );
+
+          self.ngModelCtrl.$setViewValue( objectValue );
+        }
+
+        // Array type -- an array with object values
         else {
           self.ngModelCtrl.$setViewValue( self.collectionModel );
         }
-        self.ngModelCtrl.$commitViewValue();
-        self.ngModelCtrl.$setTouched();
-        self.ngModelCtrl.$setDirty();
-        self.ngModelCtrl.$validate();
       }
 
       /**
@@ -401,7 +488,122 @@
         }
       }
 
+      /**
+       * @memberOf iscEmbeddedFormCollection
+       */
+      function isSubmitDisabled() {
+        return self.subformOptions.formState._disableSubmitIfFormInvalid && self.subform.form.$invalid;
+      }
+
+      /**
+       * @memberOf iscEmbeddedFormCollection
+       */
+      function isAddItemDisabled() {
+        if ( self.disabled ) {
+          return true;
+        }
+
+        var currentSize = self.collectionModel.length,
+            maxSize     = _.get( self.config, 'model.maxSize' ),
+            getMaxSize  = _.get( self.config, 'model.getMaxSize' );
+
+        if ( maxSize !== undefined ) {
+          return currentSize >= maxSize;
+        }
+        else if ( getMaxSize !== undefined && _.isFunction( getMaxSize ) ) {
+          maxSize = parseInt( getMaxSize() );
+          return _.isInteger( maxSize ) && currentSize >= maxSize;
+        }
+        return false;
+      }
+
+      // --------------------------------------------------
       // Table/collection actions
+
+      /**
+       * @memberOf iscEmbeddedFormCollection
+       */
+      function newForm() {
+        if ( !self.renderForm ) {
+          self.isNew         = true;
+          self.originalModel = undefined;
+
+          // Set local model from configured default if provided
+          var defaultItem    = _.get( self.config, 'model.defaultItem' ),
+              getDefaultItem = _.get( self.config, 'model.getDefaultItem' );
+
+          if ( defaultItem !== undefined ) {
+            self.editModel = angular.copy( defaultItem );
+          }
+          else if ( getDefaultItem !== undefined && _.isFunction( getDefaultItem ) ) {
+            self.editModel = getDefaultItem( self.collectionModel );
+          }
+          else {
+            self.editModel = {};
+          }
+
+          // Notify with event
+          showSubform();
+          $scope.$emit( FORMS_EVENTS.collectionEditStarted, self.editModel );
+
+          // Defer the update until the formly-form has finished being initialized;
+          // otherwise a race condition can prevent the broadcast message from being heard
+          $timeout( updateModel, 0 );
+        }
+      }
+
+      /**
+       * @memberOf iscEmbeddedFormCollection
+       */
+      function cancel() {
+        self.subformOptions.formState._validation.$submitted = false;
+
+        // Notify with event
+        hideSubform();
+        $scope.$emit( FORMS_EVENTS.collectionEditCanceled, self.editModel );
+      }
+
+      /**
+       * @memberOf iscEmbeddedFormCollection
+       */
+      function saveForm() {
+        self.subformOptions.formState._validation.$submitted = true;
+
+        var isSubformValid = self.isPrimitive || iscFormsValidationService.validateForm( self.subform.form ).isValid;
+
+        // If this subform is valid, save the data and return
+        if ( isSubformValid ) {
+          // Update local model
+          if ( self.isNew ) {
+            self.collectionModel.push( self.editModel );
+          }
+          else {
+            var model = self.collectionModel[self.editIndex];
+            _.remove( self.validationErrors, model );
+
+            _.set( self.collectionModel, self.editIndex, self.editModel );
+          }
+          self.editIndex = undefined;
+
+          // Invoke callback
+          var updateCallback = _.get( self.config, 'callbacks.beforeUpdate' );
+          if ( updateCallback && _.isFunction( updateCallback ) ) {
+            updateCallback( self.collectionModel, self.editModel );
+          }
+
+          // Update ng-model
+          onCollectionModified();
+
+          // Notify with event
+          hideSubform();
+          $scope.$emit( FORMS_EVENTS.collectionEditSaved, self.editModel );
+        }
+        return isSubformValid;
+      }
+
+      /**
+       * @memberOf iscEmbeddedFormCollection
+       */
       function editForm( row ) {
         if ( !self.renderForm ) {
           var index = _.indexOf( self.collectionModel, row );
@@ -409,16 +611,23 @@
           self.isNew     = false;
           self.editIndex = index;
 
+          // Set local model
           self.editModel = {};
           _.merge( self.editModel, self.collectionModel[index] );
+
+          // Notify with event
           showSubform();
           $scope.$emit( FORMS_EVENTS.collectionEditStarted, self.editModel );
+
           // Defer the update until the formly-form has finished being initialized;
           // otherwise a race condition can prevent the broadcast message from being heard
           $timeout( updateModelWithValidation, 0 );
         }
       }
 
+      /**
+       * @memberOf iscEmbeddedFormCollection
+       */
       function removeForm( row ) {
         if ( confirmDeletion ) {
           iscConfirmationService
@@ -430,22 +639,43 @@
         }
 
         function onYes() {
+          // Make local change
           var index = _.indexOf( self.collectionModel, row );
 
           self.collectionModel.splice( index, 1 );
-          $scope.$emit( FORMS_EVENTS.collectionItemRemoved, row );
+
+          // Invoke callback
+          var deleteCallback = _.get( self.config, 'callbacks.beforeDelete' );
+          if ( deleteCallback && _.isFunction( deleteCallback ) ) {
+            deleteCallback( self.collectionModel, row );
+          }
+
+          // Update ng-model
           onCollectionModified();
+
+          // Notify with event
+          $scope.$emit( FORMS_EVENTS.collectionItemRemoved, row );
         }
       }
 
+      // Row reordering
+      /**
+       * @memberOf iscEmbeddedFormCollection
+       */
       function moveUp( row ) {
         move( row, -1 );
       }
 
+      /**
+       * @memberOf iscEmbeddedFormCollection
+       */
       function moveDown( row ) {
         move( row, +1 );
       }
 
+      /**
+       * @memberOf iscEmbeddedFormCollection
+       */
       function move( row, offset ) {
         var index = _.indexOf( self.collectionModel, row );
 
@@ -457,6 +687,9 @@
         onCollectionModified();
       }
 
+      /**
+       * @memberOf iscEmbeddedFormCollection
+       */
       function hasValidationError( row ) {
         return _.includes( self.validationErrors, row );
       }
@@ -473,16 +706,7 @@
       // Initialize model value for collection rows in $render
       ngModelCtrl.$render = function() {
         var model = ngModelCtrl.$modelValue || [];
-        if ( ctrl.isPrimitive ) {
-          ctrl.collectionModel = _.map( model, function( value ) {
-            var primitiveWrapper            = {};
-            primitiveWrapper[PRIMITIVE_KEY] = value;
-            return primitiveWrapper;
-          } );
-        }
-        else {
-          ctrl.collectionModel = model;
-        }
+        ctrl.transformModelToCollection( model );
       };
     }
 

@@ -393,7 +393,9 @@
           wrapper    : ['templateLabel', 'templateHasError'],
           /*@ngInject*/
           controller : function( $scope, iscFormsValidationService ) {
-            $scope.fields = _.get( $scope.options, 'data.embeddedFields', [] );
+            $scope.config = {
+              fields : _.get( $scope.options, 'data.embeddedFields' )
+            };
 
             iscFormsValidationService.registerCollection(
               $scope.options.key, {
