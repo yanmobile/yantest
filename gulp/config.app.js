@@ -26,11 +26,10 @@ function includeUiModules( uiModuleNames ) {
 
   function injectModuleFiles( uiModuleName ) {
     var uiModulePath = `src/uifw-modules/src/modules/${uiModuleName}/**/*`;
-    console.log( 'uiModulePath:', uiModulePath );
-    module.exports.app.module.modules.push( uiModulePath + ".module.js" );
-    module.exports.app.module.js.push( uiModulePath + ".js" );
-    module.exports.app.module.scssInjectSrc.push( uiModulePath + ".scss" ); //scss files are auto injected to have access to vars and mixins
-    module.exports.app.module.html.push( uiModulePath + ".html" );
+    module.exports.app.module.modules.unshift( uiModulePath + ".module.js" );
+    module.exports.app.module.js.unshift( uiModulePath + ".js" );
+    module.exports.app.module.scssInjectSrc.unshift( uiModulePath + ".scss" ); //scss files are auto injected to have access to vars and mixins
+    module.exports.app.module.html.unshift( uiModulePath + ".html" );
   }
 }
 
