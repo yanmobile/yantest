@@ -16,7 +16,7 @@
               ng-disabled="efCollectionCtrl.isAddItemDisabled()"
               ng-if="efCollectionCtrl.mode != 'view'"
               ng-click="efCollectionCtrl.newForm()">
-        <i class="fa fa-plus"></i> {{'Forms_Collections_Add' | translate}} {{efCollectionCtrl.label | translate}}
+        <i class="fa fa-plus"></i> {{'Add' | translate}} {{efCollectionCtrl.label | translate}}
       </button>
     </div>
   </div>
@@ -30,7 +30,7 @@
        overlay-close="false">
     <div class="primary title-bar">
       <div class="center title">
-        {{ ((efCollectionCtrl.isNew ? 'Forms_Collections_Add' : 'Forms_Collections_Edit') | translate ) + ' ' + (efCollectionCtrl.label | translate) }}
+        {{ ((efCollectionCtrl.isNew ? 'Add' : 'Edit') | translate ) + ' ' + (efCollectionCtrl.label | translate) }}
       </div>
     </div>
 
