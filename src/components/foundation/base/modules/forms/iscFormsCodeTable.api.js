@@ -43,7 +43,7 @@
           _.set(
             codeTableCache,
             [name, codeTable.Scheme || defaultScheme].join( '.' ),
-            codeTable
+            codeTable.Items
           );
         } );
         return codeTables;

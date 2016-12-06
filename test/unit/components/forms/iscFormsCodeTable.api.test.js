@@ -30,7 +30,7 @@
     describe( 'api.loadAll', function() {
       it( 'should get the code tables from the API', function() {
         suite.api.loadAll().then( function( response ) {
-          expect( response.usStates.length ).toBe( 50 );
+          expect( response.usStates.Items.length ).toBe( 50 );
         } );
         suite.httpBackend.flush();
       } );

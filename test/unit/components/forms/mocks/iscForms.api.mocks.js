@@ -229,7 +229,10 @@ var mockFormResponses = function( httpBackend ) {
           json = getJSONFile( path );
 
       var response = {
-        "usStates": json
+        "usStates": {
+          "Scheme": "$",
+          "Items" : json
+        }
       };
 
       return [200, response, {}];
