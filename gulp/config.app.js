@@ -25,7 +25,7 @@ function includeUiModules( uiModuleNames ) {
   _.forEach( uiModuleNames, injectModuleFiles );
 
   function injectModuleFiles( uiModuleName ) {
-    var uiModulePath = `src/uifw-modules/src/modules/${uiModuleName}/**/*`;
+    var uiModulePath = `src/uifw-modules/src/app/modules/${uiModuleName}/**/*`;
     module.exports.app.module.modules.unshift( uiModulePath + ".module.js" );
     module.exports.app.module.js.unshift( uiModulePath + ".js" );
     module.exports.app.module.scssInjectSrc.unshift( uiModulePath + ".scss" ); //scss files are auto injected to have access to vars and mixins
