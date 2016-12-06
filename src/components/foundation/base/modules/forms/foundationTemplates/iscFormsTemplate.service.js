@@ -833,11 +833,17 @@
       function setProperties( options ) {
         options = options || {};
 
-        var data             = _.get( scope, 'options.data', {} ),
-            codeTable        = options[0] || getCodeTable(),
-            explicitOptions  = options[1] || getOptions() || [],
-            codeTableOptions = codeTable ? iscFormsCodeTableApi.get( codeTable ) : [],
-            listOptions      = _.concat( [], explicitOptions, codeTableOptions );
+        var data                = _.get( scope, 'options.data', {} ),
+            codeTable           = options[0] || getCodeTable(),
+            explicitOptions     = options[1] || getOptions() || [],
+            codeTableOptions    = codeTable ? iscFormsCodeTableApi.get( codeTable ) : [],
+            defaultDisplayField = formsConfig.defaultDisplayField,
+            listOptions         = _.concat( [], explicitOptions, codeTableOptions );
+
+        // Set default display field, if it exists and the field does not override it
+        if ( defaultDisplayField && !data.displayField ) {
+          _.set( scope, 'options.data.displayField', defaultDisplayField );
+        }
 
         _.extend( scope, {
           isObjectModel: getObjectFlag(),

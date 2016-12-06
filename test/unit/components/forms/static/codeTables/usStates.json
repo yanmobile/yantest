@@ -1,202 +1,202 @@
 [
   {
-    "name" : "Alabama",
-    "value" : "AL"
+    "displayField" : "Alabama",
+    "value"        : "AL"
   },
   {
-    "name" : "Alaska",
-    "value" : "AK"
+    "displayField" : "Alaska",
+    "value"        : "AK"
   },
   {
-    "name" : "Arizona",
-    "value" : "AZ"
+    "displayField" : "Arizona",
+    "value"        : "AZ"
   },
   {
-    "name" : "Arkansas",
-    "value" : "AR"
+    "displayField" : "Arkansas",
+    "value"        : "AR"
   },
   {
-    "name" : "California",
-    "value" : "CA"
+    "displayField" : "California",
+    "value"        : "CA"
   },
   {
-    "name" : "Colorado",
-    "value" : "CO"
+    "displayField" : "Colorado",
+    "value"        : "CO"
   },
   {
-    "name" : "Connecticut",
-    "value" : "CT"
+    "displayField" : "Connecticut",
+    "value"        : "CT"
   },
   {
-    "name" : "Delaware",
-    "value" : "DE"
+    "displayField" : "Delaware",
+    "value"        : "DE"
   },
   {
-    "name" : "Florida",
-    "value" : "FL"
+    "displayField" : "Florida",
+    "value"        : "FL"
   },
   {
-    "name" : "Georgia",
-    "value" : "GA"
+    "displayField" : "Georgia",
+    "value"        : "GA"
   },
   {
-    "name" : "Hawaii",
-    "value" : "HI"
+    "displayField" : "Hawaii",
+    "value"        : "HI"
   },
   {
-    "name" : "Idaho",
-    "value" : "ID"
+    "displayField" : "Idaho",
+    "value"        : "ID"
   },
   {
-    "name" : "Illinois",
-    "value" : "IL"
+    "displayField" : "Illinois",
+    "value"        : "IL"
   },
   {
-    "name" : "Indiana",
-    "value" : "IN"
+    "displayField" : "Indiana",
+    "value"        : "IN"
   },
   {
-    "name" : "Iowa",
-    "value" : "IA"
+    "displayField" : "Iowa",
+    "value"        : "IA"
   },
   {
-    "name" : "Kansas",
-    "value" : "KS"
+    "displayField" : "Kansas",
+    "value"        : "KS"
   },
   {
-    "name" : "Kentucky",
-    "value" : "KY"
+    "displayField" : "Kentucky",
+    "value"        : "KY"
   },
   {
-    "name" : "Louisiana",
-    "value" : "LA"
+    "displayField" : "Louisiana",
+    "value"        : "LA"
   },
   {
-    "name" : "Maine",
-    "value" : "ME"
+    "displayField" : "Maine",
+    "value"        : "ME"
   },
   {
-    "name" : "Maryland",
-    "value" : "MD"
+    "displayField" : "Maryland",
+    "value"        : "MD"
   },
   {
-    "name" : "Massachusetts",
-    "value" : "MA"
+    "displayField" : "Massachusetts",
+    "value"        : "MA"
   },
   {
-    "name" : "Michigan",
-    "value" : "MI"
+    "displayField" : "Michigan",
+    "value"        : "MI"
   },
   {
-    "name" : "Minnesota",
-    "value" : "MN"
+    "displayField" : "Minnesota",
+    "value"        : "MN"
   },
   {
-    "name" : "Mississippi",
-    "value" : "MS"
+    "displayField" : "Mississippi",
+    "value"        : "MS"
   },
   {
-    "name" : "Missouri",
-    "value" : "MO"
+    "displayField" : "Missouri",
+    "value"        : "MO"
   },
   {
-    "name" : "Montana",
-    "value" : "MT"
+    "displayField" : "Montana",
+    "value"        : "MT"
   },
   {
-    "name" : "Nebraska",
-    "value" : "NE"
+    "displayField" : "Nebraska",
+    "value"        : "NE"
   },
   {
-    "name" : "Nevada",
-    "value" : "NV"
+    "displayField" : "Nevada",
+    "value"        : "NV"
   },
   {
-    "name" : "New Hampshire",
-    "value" : "NH"
+    "displayField" : "New Hampshire",
+    "value"        : "NH"
   },
   {
-    "name" : "New Jersey",
-    "value" : "NJ"
+    "displayField" : "New Jersey",
+    "value"        : "NJ"
   },
   {
-    "name" : "New Mexico",
-    "value" : "NM"
+    "displayField" : "New Mexico",
+    "value"        : "NM"
   },
   {
-    "name" : "New York",
-    "value" : "NY"
+    "displayField" : "New York",
+    "value"        : "NY"
   },
   {
-    "name" : "North Carolina",
-    "value" : "NC"
+    "displayField" : "North Carolina",
+    "value"        : "NC"
   },
   {
-    "name" : "North Dakota",
-    "value" : "ND"
+    "displayField" : "North Dakota",
+    "value"        : "ND"
   },
   {
-    "name" : "Ohio",
-    "value" : "OH"
+    "displayField" : "Ohio",
+    "value"        : "OH"
   },
   {
-    "name" : "Oklahoma",
-    "value" : "OK"
+    "displayField" : "Oklahoma",
+    "value"        : "OK"
   },
   {
-    "name" : "Oregon",
-    "value" : "OR"
+    "displayField" : "Oregon",
+    "value"        : "OR"
   },
   {
-    "name" : "Pennsylvania",
-    "value" : "PA"
+    "displayField" : "Pennsylvania",
+    "value"        : "PA"
   },
   {
-    "name" : "Rhode Island",
-    "value" : "RI"
+    "displayField" : "Rhode Island",
+    "value"        : "RI"
   },
   {
-    "name" : "South Carolina",
-    "value" : "SC"
+    "displayField" : "South Carolina",
+    "value"        : "SC"
   },
   {
-    "name" : "South Dakota",
-    "value" : "SD"
+    "displayField" : "South Dakota",
+    "value"        : "SD"
   },
   {
-    "name" : "Tennessee",
-    "value" : "TN"
+    "displayField" : "Tennessee",
+    "value"        : "TN"
   },
   {
-    "name" : "Texas",
-    "value" : "TX"
+    "displayField" : "Texas",
+    "value"        : "TX"
   },
   {
-    "name" : "Utah",
-    "value" : "UT"
+    "displayField" : "Utah",
+    "value"        : "UT"
   },
   {
-    "name" : "Vermont",
-    "value" : "VT"
+    "displayField" : "Vermont",
+    "value"        : "VT"
   },
   {
-    "name" : "Virginia",
-    "value" : "VA"
+    "displayField" : "Virginia",
+    "value"        : "VA"
   },
   {
-    "name" : "Washington",
-    "value" : "WA"
+    "displayField" : "Washington",
+    "value"        : "WA"
   },
   {
-    "name" : "West Virginia",
-    "value" : "WV"
+    "displayField" : "West Virginia",
+    "value"        : "WV"
   },
   {
-    "name" : "Wisconsin",
-    "value" : "WI"
+    "displayField" : "Wisconsin",
+    "value"        : "WI"
   },
   {
-    "name" : "Wyoming",
-    "value" : "WY"
+    "displayField" : "Wyoming",
+    "value"        : "WY"
   }
 ]

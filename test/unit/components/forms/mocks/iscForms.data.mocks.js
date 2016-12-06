@@ -184,11 +184,11 @@ var mockComponentData = {
       ],
       "objectValue"   : [
         {
-          "name" : "MultiCheckbox 1",
+          "displayFieldOverride" : "MultiCheckbox 1",
           "value": "1"
         },
         {
-          "name" : "MultiCheckbox 3",
+          "displayFieldOverride" : "MultiCheckbox 3",
           "value": "3"
         }
       ]
@@ -196,25 +196,25 @@ var mockComponentData = {
     "radio"                : {
       "primitiveValue": "Radio 3",
       "objectValue"   : {
-        "name" : "Radio 2",
+        "displayField" : "Radio 2",
         "value": "2"
       }
     },
     "typeahead"            : {
       "primitiveValue": "Typeahead 3",
       "objectValue"   : {
-        "name" : "Typeahead 2",
+        "displayField" : "Typeahead 2",
         "value": "2"
       }
     },
     "typeaheadWithScript"  : {
-      "name" : "TypeaheadWithScript 1",
+      "displayField" : "TypeaheadWithScript 1",
       "value": "3"
     },
     "select"               : {
       "primitiveValue": "Select 3",
       "objectValue"   : {
-        "name" : "Select 2",
+        "displayField" : "Select 2",
         "value": "2"
       }
     },

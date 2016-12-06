@@ -36,6 +36,15 @@
       } );
     } );
 
+    describe( 'api.load', function() {
+      it( 'should get a single code table from the API', function() {
+        suite.api.load( 'usStates' ).then( function( response ) {
+          expect( response.length ).toBe( 50 );
+        } );
+        suite.httpBackend.flush();
+      } );
+    } );
+
     describe( 'api.get', function() {
       it( 'should return a code table synchronously', function() {
         // First code tables must be loaded from the server

@@ -222,6 +222,7 @@ var mockFormResponses = function( httpBackend ) {
     } );
 
   // CodeTable API
+  // loadAll
   httpBackend.when( 'GET', 'codeTables' )
     .respond( function response( method, url ) {
       var path = [staticPath, 'codeTables', 'usStates'].join( '/' ),
@@ -232,6 +233,16 @@ var mockFormResponses = function( httpBackend ) {
       };
 
       return [200, response, {}];
+    } );
+
+  // load (single by name)
+  httpBackend.when( 'GET', /^codeTables\/\w+\/\$$/ )
+    .respond( function response( method, url ) {
+      var codeTableName = url.replace( /^codeTables\//, '' ).replace( /\/\$$/, '' ),
+          path          = [staticPath, 'codeTables', codeTableName].join( '/' ),
+          json          = getJSONFile( path );
+
+      return [200, json, {}];
     } );
 
   // Public APIs for testing

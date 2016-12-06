@@ -414,7 +414,8 @@
               subform        = getControlByName( suite, subformName ).filter( '.subform' ),
               formModel      = _.get( suite.controller.model, subformName ),
               formState      = suite.controller.options.formState,
-              formDefinition = suiteInternal.controller.formDefinition.subforms.builtinComponents.sections[0].fields;
+              formDefinition = suiteInternal.controller.formDefinition.subforms.builtinComponents.sections[0].fields,
+              displayField   = _.get(customConfig, 'forms.defaultDisplayField', 'name');
 
           testInput( 'templates.input.text' );
           testInput( 'templates.input.date' );
@@ -598,11 +599,12 @@
 
           function testTypeahead( controlName, isScript ) {
             var control      = getControlByName( suite, controlName ).filter( 'input' ),
-                model        = _.get( formModel, controlName ),
-                modelDisplay = _.isObject( model ) ? model.name : model,
                 newText      = 'Typea',
                 limitToList  = getFieldProperty( controlName, 'data.limitToList' ),
-                keyCodes     = suiteMain.keyCode;
+                keyCodes     = suiteMain.keyCode,
+                model, modelDisplay;
+
+            getModel();
 
             expect( control.length ).toBe( 1 );
             expect( control.val() ).toEqual( modelDisplay );
@@ -642,8 +644,7 @@
             sendEnter( secondItem );
             digest( suite );
 
-            model        = _.get( formModel, controlName );
-            modelDisplay = _.isObject( model ) ? model.name : model;
+            getModel();
             expect( modelDisplay ).toEqual( secondItemDisplay );
             expect( control.val() ).toEqual( secondItemDisplay );
 
@@ -651,10 +652,8 @@
             control.val( newText ).trigger( 'input' ).trigger( 'blur' );
             digest( suite );
 
-            model        = _.get( formModel, controlName );
-            modelDisplay = _.isObject( model ) ? model.name : model;
-
             // The model should not change if limitToList is truthy
+            getModel();
             if ( limitToList ) {
               expect( modelDisplay ).toEqual( secondItemDisplay );
               expect( control.val() ).toEqual( secondItemDisplay );
@@ -669,7 +668,7 @@
             control.val( '' ).trigger( 'input' ).trigger( 'blur' );
             digest( suite );
 
-            model = _.get( formModel, controlName );
+            getModel();
             expect( model ).toBeUndefined();
             expect( control.val() ).toEqual( '' );
 
@@ -682,11 +681,14 @@
             sendEnter( control );
             digest( suite );
 
-            model        = _.get( formModel, controlName );
-            modelDisplay = _.isObject( model ) ? model.name : model;
+            getModel();
             expect( modelDisplay ).toEqual( firstItemDisplay );
             expect( control.val() ).toEqual( firstItemDisplay );
 
+            function getModel() {
+              model        = _.get( formModel, controlName );
+              modelDisplay = _.isObject( model ) ? model[displayField] : model;
+            }
 
             function sendEnter( control ) {
               control.trigger( {
