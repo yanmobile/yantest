@@ -30,9 +30,9 @@ function init( gulp, plugins, config, _ ) {
     'src/app/assets/mockData/**/*' : ['mocks', 'scripts'],
     'src/app/assets/vendors/**/*'  : ['scripts'],
     'src/app/modules/**/*.js'      : ['test:app', 'jshint:app', 'scripts:app'],
-    'src/uifw-modules/src/modules/**/*.js'       : ['test:app', 'jshint:app', 'scripts:app'],
-    'src/uifw-modules/src/modules/**/*.html'     : ['templates'],
-    'src/uifw-modules/src/modules/**/*.scss'     : ['sass'],
+    'src/uifw-modules/src/modules/app/**/*.js'       : ['test:app', 'jshint:app', 'scripts:app'],
+    'src/uifw-modules/src/modules/app/**/*.html'     : ['templates'],
+    'src/uifw-modules/src/modules/app/**/*.scss'     : ['sass'],
     'src/app/modules/**/*.html'    : ['templates'],
     'test/unit/app/**/*.js'        : ['test:app'],
     'src/index.html'               : ['html']
