@@ -456,6 +456,13 @@ gulp deploy --appjson path/to/config.app.js #only app specific
 * **How do I contribute to i18n extraction patterns?**
   * You'll need to create RegExp for matching and capturing the translation literals and ask a UIFW developer to add it to UIFW for you.
 
+* **How do I override 404 status-code traffic so I can stay on my page instead of get redirected to login?
+  * In order to control 404 status-code inside your application, the framework exposes interface to allow the application inject an array of REGEX that will capture the url to ignore by the interceptor.
+    To add items to the application follow these steps:
+    1. Open the "app.module.js" file and go to the "run()" function.
+    2. To config the interceptor, we provide an object, please add a new property "ignoredUrls" to the object.
+    3. By default, "ignoredUrl" has 2 items (/api\/v1\/auth\/status$/, /api\/v1\/auth\/logout$/), make sure that in your new
+       object, you add these items first, and then add your custom regext to the array.
 ---
 ###Git 101
 ```bash
