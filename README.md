@@ -463,6 +463,25 @@ gulp deploy --appjson path/to/config.app.js #only app specific
     2. To config the interceptor, we provide an object, please add a new property "ignoredUrls" to the object.
     3. By default, "ignoredUrl" has 2 items (/api\/v1\/auth\/status$/, /api\/v1\/auth\/logout$/), make sure that in your new
        object, you add these items first, and then add your custom regext to the array.
+
+       ```javascript
+       function run( ...... ){
+         ....
+         ....
+         iscAuthenticationInterceptorConfig.configure( {
+               statusApiUrl: apiHelper.getUrl( 'auth/status' ),
+               ignoredUrls: [
+                 /api\/v1\/auth\/status$/,
+                 /api\/v1\/auth\/logout$/,
+                 /api\/v1\/mobile\/accessCode/,
+                 /cordova\.js$/
+               ]
+             } );
+
+         ....
+         ....
+       }
+       ```
 ---
 ###Git 101
 ```bash
