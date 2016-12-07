@@ -95,18 +95,21 @@
             "qdTag"   : "multiCheckboxObject",
             "options" : [
               {
-                "name"  : "MultiCheckbox 1",
-                "value" : "1"
+                "displayFieldOverride" : "MultiCheckbox 1",
+                "value"        : "1"
               },
               {
-                "name"  : "MultiCheckbox 2",
-                "value" : "2"
+                "displayFieldOverride" : "MultiCheckbox 2",
+                "value"        : "2"
               },
               {
-                "name"  : "MultiCheckbox 3",
-                "value" : "3"
+                "displayFieldOverride" : "MultiCheckbox 3",
+                "value"        : "3"
               }
             ]
+          },
+          "data" : {
+            "displayField" : "displayFieldOverride"
           }
         },
         {
@@ -130,16 +133,16 @@
             "qdTag"   : "radioObject",
             "options" : [
               {
-                "name"  : "Radio 1",
-                "value" : "1"
+                "displayField" : "Radio 1",
+                "value"        : "1"
               },
               {
-                "name"  : "Radio 2",
-                "value" : "2"
+                "displayField" : "Radio 2",
+                "value"        : "2"
               },
               {
-                "name"  : "Radio 3",
-                "value" : "3"
+                "displayField" : "Radio 3",
+                "value"        : "3"
               }
             ]
           }
@@ -165,16 +168,16 @@
             "qdTag"   : "selectObject",
             "options" : [
               {
-                "name"  : "Select 1",
-                "value" : "1"
+                "displayField" : "Select 1",
+                "value"        : "1"
               },
               {
-                "name"  : "Select 2",
-                "value" : "2"
+                "displayField" : "Select 2",
+                "value"        : "2"
               },
               {
-                "name"  : "Select 3",
-                "value" : "3"
+                "displayField" : "Select 3",
+                "value"        : "3"
               }
             ]
           }
@@ -224,23 +227,22 @@
             "qdTag"   : "typeaheadObject",
             "options" : [
               {
-                "name"  : "Typeahead 1",
-                "value" : "1"
+                "displayField" : "Typeahead 1",
+                "value"        : "1"
               },
               {
-                "name"  : "Typeahead 2",
-                "value" : "2"
+                "displayField" : "Typeahead 2",
+                "value"        : "2"
               },
               {
-                "name"  : "Typeahead 3",
-                "value" : "3"
+                "displayField" : "Typeahead 3",
+                "value"        : "3"
               }
             ]
           },
           "data"            : {
-            "displayField"        : "name",
-            "resultsDisplayField" : "name",
-            "limitToList"         : true
+            "limitToList"         : true,
+            "resultsDisplayField" : "displayField"
           }
         },
         {
@@ -251,10 +253,9 @@
             "qdTag" : "typeaheadWithScript"
           },
           "data"            : {
-            "displayField"        : "name",
             "userScript"          : "typeaheadScript",
-            "resultsDisplayField" : "name",
-            "limitToList"         : true
+            "limitToList"         : true,
+            "resultsDisplayField" : "displayField"
           }
         },
         {
