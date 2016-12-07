@@ -10,7 +10,8 @@
   /* @ngInject */
   function iscAuthenticationInterceptor( $rootScope, $q, $injector, AUTH_EVENTS, statusCode, iscAuthenticationInterceptorConfig ) {
 
-    var $http; //dynamically injecting it to prevent circular Dependency Injections.
+    var $http;  //dynamically injecting it to prevent circular Dependency Injections.
+    var $state; //dynamically injecting it to prevent circular Dependency Injections.
     var factory = {
       responseError: responseError
     };
@@ -30,6 +31,9 @@
      *  Promises is the callback for dialog dismissal
      */
     function responseError( response ) {
+      $state = $state || $injector.get( '$state' );  //dynamically injecting it to prevent circular Dependency Injections.
+      $http  = $http || $injector.get( '$http' );  //dynamically injecting it to prevent circular Dependency Injections.
+
       switch ( response.status ) {
         case statusCode.Unauthorized:
           // this will happen if you just leave your computer on for a long time
@@ -42,7 +46,10 @@
           break;
 
         case statusCode.NotFound:
-          return handle404( response );
+          //if the current state is accessible by anonymous users, do not redirect the user to login page
+          if ( !_.includes( $state.current.roles, '*' ) ) {
+            return handle404( response );
+          }
       }
       return $q.reject( response );
 
@@ -51,7 +58,6 @@
 
         if ( isUrlAllowed( response.config.url ) ) {
           var url = iscAuthenticationInterceptorConfig.getConfig( 'statusApiUrl' );
-          $http   = $http || $injector.get( '$http' );  //dynamically injecting it to prevent circular Dependency Injections.
 
           // check if user session is still valid
           $http.get( url ).then( deferred.reject.bind( undefined, response ), statusError );

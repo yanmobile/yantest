@@ -12,9 +12,9 @@
     var AUTH_EVENTS;
     var statusCode;
 
-    useDefaultModules( 'isc.http' );
+    useDefaultModules( 'ui.router', 'isc.http' );
 
-    beforeEach( inject( function( iscAuthenticationInterceptor, $http, $httpBackend, $timeout, _$rootScope_, _AUTH_EVENTS_, _statusCode_ ) {
+    beforeEach( inject( function( iscAuthenticationInterceptor, $http, $state, $httpBackend, $timeout, _$rootScope_, _AUTH_EVENTS_, _statusCode_ ) {
       suite              = {};
       suite.$http        = $http;
       suite.interceptor  = iscAuthenticationInterceptor;
@@ -23,6 +23,9 @@
       suite.statusCode   = _statusCode_;
       suite.$timeout     = $timeout;
       suite.$httpBackend = $httpBackend;
+      suite.$state       = $state;
+
+      _.set(suite, '$state.current.roles', ['not-anonymous']);
     } ) );
 
 
@@ -47,6 +50,7 @@
 
     describe( 'status code 403', function() {
       it( 'should broadcast AUTH_EVENTS.notAuthenticated', function() {
+        console.log( 'suite.$state.current.roles:', suite.$state.current.roles );
         spyOn( suite.$rootScope, '$emit' );
         var response = { status: suite.statusCode.Forbidden, config: {} };
         suite.interceptor.responseError( response );
@@ -57,7 +61,18 @@
 
     describe( 'status code 404', function() {
 
-      it( 'should reject original response when url is ignored', function() {
+
+      it( 'should reject original response when state is anonymous and url is not ignored', function() {
+
+        suite.$state.current.roles = ['*'];
+        var response = { status: suite.statusCode.NotFound, config: { url: "url/not-igored" } };
+        var actual   = suite.interceptor.responseError( response );
+        suite.$rootScope.$digest();
+        expect( actual['$$state'].value ).toBe( response );
+
+      } );
+
+      it( 'should reject original response when state is not anonymous and url is ignored', function() {
 
         var response = { status: suite.statusCode.NotFound, config: { url: "api/v1/auth/status" } };
         var actual   = suite.interceptor.responseError( response );
@@ -66,7 +81,7 @@
 
       } );
 
-      it( 'should reject original response when url is ignored #2', function() {
+      it( 'should reject original response when state is not anonymous and url is ignored #2', function() {
 
         var response = { status: suite.statusCode.NotFound, config: { url: "api/v1/auth/logout" } };
         var actual   = suite.interceptor.responseError( response );
