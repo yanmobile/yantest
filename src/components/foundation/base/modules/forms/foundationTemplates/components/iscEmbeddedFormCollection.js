@@ -205,7 +205,11 @@
             templateUrl: field.templateUrl,
             display    : field.display,
             type       : field.type,
-            dateFormat : self.dateFormat
+            dateFormat : self.dateFormat,
+
+            // Computed fields
+            computedTemplate   : field.computedTemplate,
+            computedTemplateUrl: field.computedTemplateUrl
           };
         } );
 
@@ -223,13 +227,14 @@
         // Callbacks to actions defined in this directive need to be linked in the tableConfig object
         // The isolation level of the faux-table prevents it from reaching this controller
         self.tableConfig = {
-          sortable : true,
-          columns  : tableColumns,
-          emptyText: _.get( self.options, 'data.emptyCollectionMessage' ),
-          options  : {
+          sortable   : true,
+          columns    : tableColumns,
+          emptyText  : _.get( self.options, 'data.emptyCollectionMessage' ),
+          evalContext: $scope.$eval,
+          options    : {
             allowReordering: allowReordering
           },
-          callbacks: {
+          callbacks  : {
             editForm          : editForm,
             removeForm        : removeForm,
             moveUp            : moveUp,

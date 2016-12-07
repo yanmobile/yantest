@@ -47,7 +47,7 @@
    *    templateLabel<br />
    *    templateHasError
    */
-  function iscFormlyFoundationTemplates( $filter, iscCustomConfigService, iscFormsTemplateService ) {
+  function iscFormlyFoundationTemplates( $filter, $sce, iscCustomConfigService, iscFormsTemplateService ) {
     var service = {
       init: init
     };
@@ -328,6 +328,28 @@
         templateUrl: 'forms/foundationTemplates/templates/typeaheadWithScript.html',
         wrapper    : ['templateLabel', 'templateHasError'],
         controller : typeaheadController
+      } );
+
+
+      // Computed Table Field
+      // Allows marked-up display of computed sibling fields in the tabular view of a collection
+      iscFormsTemplateService.registerType( {
+        name          : 'computedTableField',
+        // This field should not display as its own field, but should only show in the collection table
+        template      : '<span></span>',
+        defaultOptions: {
+          data: {
+            computedField: {
+              display: function( model, field, evalContext ) {
+                var template        = _.get( field, 'computedTemplate' ),
+                    markedUpDisplay = evalContext( template, {
+                      model: model
+                    } );
+                return $sce.trustAsHtml( markedUpDisplay );
+              }
+            }
+          }
+        }
       } );
 
       // Embedded form
