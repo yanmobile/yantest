@@ -1,0 +1,102 @@
+{
+  "sections" : [
+    {
+      "fields" : [
+        {
+          "key"  : "explicitlyDefinedCollectionFields",
+          "type" : "embeddedFormCollection",
+          "data" : {
+            "embeddedFields" : [
+              {
+                "fieldGroup" : [
+                  {
+                    "key"  : "explicitInput",
+                    "type" : "input"
+                  }
+                ]
+              }
+            ],
+            "collections"    : {
+              "config" : {
+                "model" : {
+                  "maxSize"     : 1,
+                  "defaultItem" : {
+                    "explicitInput" : "Default Value"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "key"  : "objectTypeCollection",
+          "type" : "embeddedFormCollection",
+          "data" : {
+            "collections"    : {
+              "editAs"           : "inline",
+              "modelType"        : "object",
+              "modelTypeOptions" : {
+                "key" : "keyField"
+              },
+              "config"           : {
+                "callbacks" : {
+                  "beforeDelete" : "formState.lib.callbacks.beforeDelete()",
+                  "beforeUpdate" : "formState.lib.callbacks.beforeUpdate()"
+                },
+                "model"     : {
+                  "maxSize"     : "formState.lib.model.getMaxSize()",
+                  "defaultItem" : "formState.lib.model.getDefaultItem()"
+                }
+              }
+            },
+            "embeddedFields" : [
+              {
+                "key"  : "keyField",
+                "type" : "input"
+              },
+              {
+                "key"  : "valueProp1",
+                "type" : "input"
+              },
+              {
+                "key"  : "valueProp2",
+                "type" : "input"
+              }
+            ]
+          }
+        },
+        {
+          "key"  : "hashtableTypeCollection",
+          "type" : "customEmbeddedFormCollection",
+          "data" : {
+            "collections"    : {
+              "editAs"           : "inline",
+              "modelType"        : "hashtable",
+              "modelTypeOptions" : {
+                "key"   : "keyField",
+                "value" : "valueField"
+              },
+              "config"           : {
+                "model" : {
+                  "COMMENTS"    : "these will be overridden by configured functions",
+                  "maxSize"     : 9001,
+                  "defaultItem" : "'this should not be called'"
+                }
+              }
+            },
+            "embeddedFields" : [
+              {
+                "key"  : "keyField",
+                "type" : "input"
+              },
+              {
+                "key"  : "valueField",
+                "type" : "input"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
