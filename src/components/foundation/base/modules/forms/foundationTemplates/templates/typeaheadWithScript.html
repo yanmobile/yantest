@@ -9,6 +9,7 @@
            ng-disabled="to.disabled"
            id="{{id}}"
            name="{{name||id}}"
+           placeholder="{{to.placeholder}}"
            class="typeahead"
            ng-focus="taBridgeCtrl.invokeApi(model, localModel.input, options.data.userModel.api)"
            ng-change="taBridgeCtrl.invokeApi(model, localModel.input, options.data.userModel.api)">
