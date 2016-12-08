@@ -78,24 +78,28 @@
       // Section (static text)
       iscFormsTemplateService.registerType( {
         name       : 'section',
+        wrapper    : ['templateLabel'],
         templateUrl: 'forms/foundationTemplates/templates/section.html'
       } );
 
       // Instructions (static text)
       iscFormsTemplateService.registerType( {
         name       : 'instructions',
+        wrapper    : ['templateLabel'],
         templateUrl: 'forms/foundationTemplates/templates/instructions.html'
       } );
 
       // Divider (line / hr)
       iscFormsTemplateService.registerType( {
         name       : 'divider',
+        wrapper    : ['templateLabel'],
         templateUrl: 'forms/foundationTemplates/templates/divider.html'
       } );
 
       // Button (supports templateOptions.onClick and data.userScript)
       iscFormsTemplateService.registerType( {
         name       : 'button',
+        wrapper    : ['templateLabel'],
         templateUrl: 'forms/foundationTemplates/templates/button.html',
         /* @ngInject */
         controller : function( $scope ) {
