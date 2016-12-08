@@ -86,10 +86,10 @@
               details = _.get( $scope, 'options.data.details' );
 
           if ( content ) {
-            $scope.htmlContent = $sce.trustAsHtml( $filter('translate')( content ) );
+            $scope.htmlContent = $sce.trustAsHtml( $filter( 'translate' )( content ) );
           }
           if ( details ) {
-            $scope.htmlDetails = $sce.trustAsHtml( $filter('translate')( details ) );
+            $scope.htmlDetails = $sce.trustAsHtml( $filter( 'translate' )( details ) );
           }
         }
       } );
@@ -103,7 +103,7 @@
         controller : function( $scope ) {
           var content = _.get( $scope, 'options.data.content' );
           if ( content ) {
-            $scope.htmlContent = $sce.trustAsHtml( $filter('translate')( content ) );
+            $scope.htmlContent = $sce.trustAsHtml( $filter( 'translate' )( content ) );
           }
         }
       } );
