@@ -351,6 +351,10 @@
       return fields;
 
       function inheritClassNames( field ) {
+        if ( !field.type ) {
+          return;
+        }
+
         var isControlFlowOnly = field.type === 'controlFlowOnly',
             type              = isControlFlowOnly ? _.get( field, 'data.controlFlowOnly.templateType' ) : field.type,
             className         = isControlFlowOnly ? 'formly-field-' + type : '',
