@@ -189,9 +189,10 @@
       it( 'should load function library definitions in subforms, overriding function definitions that are closer to the form', function() {
         var suite         = suiteLibrary,
             instructions  = suite.element.find( '.formly-field-instructions' ),
-            instructions1 = instructions.filter( '.script1' ).find( '.ng-binding' ),
-            instructions2 = instructions.filter( '.script2' ).find( '.ng-binding' ),
-            instructions3 = instructions.filter( '.script3' ).find( '.ng-binding' );
+            // instructions can have labels, so take the last binding for the field
+            instructions1 = instructions.filter( '.script1' ).find( '.ng-binding' ).last(),
+            instructions2 = instructions.filter( '.script2' ).find( '.ng-binding' ).last(),
+            instructions3 = instructions.filter( '.script3' ).find( '.ng-binding' ).last();
 
         expect( instructions1.length ).toBe( 1 );
         expect( instructions2.length ).toBe( 1 );
