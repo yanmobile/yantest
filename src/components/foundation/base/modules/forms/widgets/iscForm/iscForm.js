@@ -42,6 +42,9 @@
       var parsedId          = parseInt( self.formDataId );
       self.parsedFormDataId = _.isNaN( parsedId ) ? undefined : parsedId;
 
+      // Default mode is 'edit'
+      self.mode = self.mode || 'edit';
+
       _.merge( self, {
         formDefinition        : {},
         internalFormDefinition: {},

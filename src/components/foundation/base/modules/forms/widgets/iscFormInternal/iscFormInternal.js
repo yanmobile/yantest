@@ -260,7 +260,7 @@
         self.currentSection = _.head( self.sections );
 
         var sectionLayout = _.get( self.formDefinition.form, 'sectionLayout', 'scrolling' ),
-            mode          = _.get( self.options, 'formState._mode', 'view' ),
+            mode          = _.get( self.options, 'formState._mode', 'edit' ),
             modeLayout    = _.get( sectionLayout, mode, sectionLayout );
 
         self.mainFormConfig = {
