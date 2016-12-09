@@ -12,7 +12,7 @@
     <div ng-if="subformCtrl.mainFormConfig">
 
       <!--Main Form Title-->
-      <h2 class="form-title"><span>{{ subformCtrl.formTitle | translate }}</span></h2>
+      <h2 class="form-title" ng-if="subformCtrl.mainFormConfig.displayConfig.showTitle"><span>{{ subformCtrl.formTitle | translate }}</span></h2>
 
       <!--Section layout-->
       <div ng-if="subformCtrl.mainFormConfig.layout">
