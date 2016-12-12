@@ -1,8 +1,8 @@
 <div class="grid-block small-12 medium-12 large-12 section-title">
-  <h4 ng-bind-html="htmlContent"></h4>
+  <h4 ng-bind-html="getHtml('options.data.content')"></h4>
 </div>
 
 <div ng-if="!!options.data.details"
      class="grid-block small-12 medium-12 large-12 instructions">
-  <p ng-bind-html="htmlDetails"></p>
+  <p ng-bind-html="getHtml('options.data.details')"></p>
 </div>

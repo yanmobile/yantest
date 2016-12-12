@@ -80,18 +80,7 @@
         name       : 'section',
         wrapper    : ['templateLabel'],
         templateUrl: 'forms/foundationTemplates/templates/section.html',
-        /* @ngInject */
-        controller : function( $scope ) {
-          var content = _.get( $scope, 'options.data.content' ),
-              details = _.get( $scope, 'options.data.details' );
-
-          if ( content ) {
-            $scope.htmlContent = $sce.trustAsHtml( $filter( 'translate' )( content ) );
-          }
-          if ( details ) {
-            $scope.htmlDetails = $sce.trustAsHtml( $filter( 'translate' )( details ) );
-          }
-        }
+        controller : htmlController
       } );
 
       // Instructions (static text)
@@ -99,13 +88,7 @@
         name       : 'instructions',
         wrapper    : ['templateLabel'],
         templateUrl: 'forms/foundationTemplates/templates/instructions.html',
-        /* @ngInject */
-        controller : function( $scope ) {
-          var content = _.get( $scope, 'options.data.content' );
-          if ( content ) {
-            $scope.htmlContent = $sce.trustAsHtml( $filter( 'translate' )( content ) );
-          }
-        }
+        controller : htmlController
       } );
 
       // Divider (line / hr)
@@ -541,6 +524,18 @@
         var initialModel = _.get( $scope.model, $scope.options.key, '' );
         if ( initialModel ) {
           $scope.onSelect( initialModel );
+        }
+      }
+
+      /* @ngInject */
+      function htmlController( $scope ) {
+        $scope.getHtml = function( propName ) {
+          var content = _.get( $scope, propName );
+
+          if ( content ) {
+            return $sce.trustAsHtml( $filter( 'translate' )( content ) );
+          }
+          return '';
         }
       }
     }
