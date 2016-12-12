@@ -138,6 +138,13 @@
         }
       } );
 
+      // Image
+      iscFormsTemplateService.registerType( {
+        name       : 'image',
+        templateUrl: 'forms/foundationTemplates/templates/image.html',
+        wrapper    : ['templateLabel']
+      } );
+
       // Input
       iscFormsTemplateService.registerType( {
         name          : 'input',
