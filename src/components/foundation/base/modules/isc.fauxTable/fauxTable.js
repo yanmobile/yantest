@@ -57,8 +57,9 @@
       var self = this;
 
       angular.extend( self, {
-        sort   : sort,
-        getSort: getSort
+        sort           : sort,
+        getSort        : getSort,
+        getEmptyMessage: getEmptyMessage
       } );
 
       /*========================================
@@ -91,6 +92,14 @@
           sortState = self.sortDirection ? 'asc' : 'desc';
         }
         return sortState;
+      }
+
+      /**
+       * Gets the message to display (if any) when the collection is empty
+       */
+      function getEmptyMessage() {
+        var configuredMessage = _.get( self, 'config.emptyText' );
+        return configuredMessage === undefined ? 'ISC_NO_ITEMS' : configuredMessage;
       }
     }
 

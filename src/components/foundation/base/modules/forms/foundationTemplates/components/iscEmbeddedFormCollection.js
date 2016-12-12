@@ -230,6 +230,7 @@
           sortable   : true,
           columns    : tableColumns,
           emptyText  : _.get( self.options, 'data.emptyCollectionMessage' ),
+          hideHeader : _.get( self.options, 'data.collections.hideTableHeader' ),
           evalContext: $scope.$eval,
           options    : {
             allowReordering: allowReordering
