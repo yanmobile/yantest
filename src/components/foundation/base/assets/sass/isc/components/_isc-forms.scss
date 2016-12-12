@@ -86,34 +86,20 @@ $form-label-font-weight: $font-weight-semi-bold !default;
 }
 
 // Classes for data.layout columns
-$field-flex-percentages : (
-        10 : 10%,
-        20 : 20%,
-        30 : 30%,
-        40 : 40%,
-        50 : 50%,
-        60 : 60%,
-        70 : 70%,
-        80 : 80%,
-        90 : 90%,
-        100:100%
-);
-
 $breakpoint-percentages : (
-        'medium' : $medium-up,
-        'large' : $large-up,
-        'xlarge' : $xlarge-up
+  'medium' : $medium-up,
+  'large'  : $large-up,
+  'xlarge' : $xlarge-up
 );
 
 @each $breakpoint in map-keys($breakpoints) {
-  @each $flex-amount in map-keys($field-flex-percentages) {
-    $percentage : map-get($field-flex-percentages, $flex-amount);
+  @for $flex-amount from 1 through 100 {
+    $percentage : percentage($flex-amount / 100);
     $bp-percentage : map-get($breakpoint-percentages, $breakpoint);
     $media : $bp-percentage;
     @if $breakpoint == 'small' {
       $media : "only screen and (min-width: 0)";
     }
-
     @if $media {
       @media #{$media} {
         .formly-field-#{$breakpoint}-#{$flex-amount} {
@@ -121,7 +107,6 @@ $breakpoint-percentages : (
         }
       }
     }
-
   }
 }
 
