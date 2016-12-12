@@ -419,6 +419,85 @@
           excludeFromWidgetLibrary: true
         } );
 
+      /**
+       * @description A collection that consists only of selections from a code table.
+       * The data model for this widget type is an array of the selected coded items.
+       */
+      iscFormsTemplateService.registerType( {
+        name          : 'codedItemCollection',
+        extends       : 'embeddedFormCollection',
+        templateUrl   : 'forms/foundationTemplates/templates/codedItemCollection.html',
+        defaultOptions: {
+          data: {
+            listItemSelectionType: 'select',
+            collections          : {
+              editAs: 'inline'
+            }
+          }
+        },
+        /* @ngInject */
+        controller    : function( $scope ) {
+          $scope.options.extras.skipNgModelAttrsManipulator = true;
+
+          var codeItemKey = '__CODE_ITEM__',
+              key         = $scope.options.key,
+              data        = _.get( $scope.options, 'data', {} ),
+              mode        = _.get( $scope.formState, '_mode' );
+
+          if ( mode === 'view' ) {
+            _.set( $scope.options, 'data.collections.hideTableHeader', true );
+          }
+
+          // Create an embedded field for selecting the code item
+          var codeTableSelector = {
+            key            : codeItemKey,
+            type           : data.listItemSelectionType,
+            templateOptions: {
+              label: data.embeddedLabel
+            }
+          };
+          _.extend( codeTableSelector, {
+            data: data
+          } );
+
+          _.set( $scope.options, 'data.embeddedFields', [
+            codeTableSelector
+          ] );
+
+          // Set up a local model for the collection
+          var localModel = {},
+              model      = _.get( $scope.model, key, [] );
+
+          _.set( localModel, key,
+            _.map( model, function( item ) {
+                // Add an intermediate key for the embeddedFormCollection
+                var obj          = {};
+                obj[codeItemKey] = item;
+                return obj;
+              }
+            )
+          );
+          $scope.localModel = _.get( localModel, key );
+
+          // When changes are made to the collection's model, remove the unneeded key
+          $scope.$watch(
+            function() {
+              return $scope.localModel;
+            },
+            function( newValue, oldValue ) {
+              // flatten localModel to remove the intermediate key
+              if ( newValue && !angular.equals( newValue, oldValue ) ) {
+                var flattenedModel = _.map( newValue, function( item ) {
+                  return item[codeItemKey] || item;
+                } );
+                _.set( $scope.model, key, flattenedModel );
+              }
+            },
+            true
+          );
+        }
+      } );
+
       // Embedded Form Listener
       // This field will not be rendered in the DOM, but will listen for FORMS_EVENTS
       // This is useful for communication in embedded subforms
