@@ -405,6 +405,10 @@ gulp deploy --appjson path/to/config.app.js #only app specific
       }
     ];
     ```
+    * NOTE - in the proxy.js file, be sure to put a leading slash, e.g. 
+    ```"/public/api/v1"```
+    but in the app.config.js file, omit the leading slash, e.g.
+     ```"public/api/v1"```
 
 * **How do I flag string literals to be translated?**
   * The translation keys are extracted via ```gulp i18nExtract``` task. It will extract keys matching these following patterns:
