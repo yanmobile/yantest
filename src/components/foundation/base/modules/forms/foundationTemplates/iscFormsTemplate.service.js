@@ -237,7 +237,6 @@
 
         // Wrap data with additional information and metadata
         return {
-          formDefinition  : formDefinition,
           additionalModels: formScope.additionalModels,
           formData        : {
             formKey    : formState._formKey,
