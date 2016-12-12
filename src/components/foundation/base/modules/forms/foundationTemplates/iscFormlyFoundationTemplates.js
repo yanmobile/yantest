@@ -536,7 +536,7 @@
             return $sce.trustAsHtml( $filter( 'translate' )( content ) );
           }
           return '';
-        }
+        };
       }
     }
 
