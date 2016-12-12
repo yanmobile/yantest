@@ -264,6 +264,7 @@
           currentSection    : self.currentSection,
           selectableSections: [],
           forms             : self.forms,
+          displayConfig     : self.formConfig.display || {},
           buttonConfig      : self.buttonConfig || {},
           buttonContext     : self,
           selectSection     : selectSection,
