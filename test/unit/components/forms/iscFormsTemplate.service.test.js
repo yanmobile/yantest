@@ -29,7 +29,7 @@
 
     beforeEach( inject( function( $rootScope, $compile, $httpBackend, $timeout,
       formlyApiCheck, formlyConfig,
-      iscFormsTemplateService ) {
+      iscFormsTemplateService, iscFormsCodeTableApi ) {
 
       formlyConfig.disableWarnings   = true;
       formlyApiCheck.config.disabled = true;
@@ -40,7 +40,8 @@
         $rootScope  : $rootScope,
         $compile    : $compile,
 
-        iscFormsTemplateService: iscFormsTemplateService
+        iscFormsTemplateService: iscFormsTemplateService,
+        iscFormsCodeTableApi   : iscFormsCodeTableApi
       } );
       mockFormResponses( suiteMain.$httpBackend );
     } ) );
@@ -170,6 +171,75 @@
 
         function expectHidden( controlName ) {
           expect( getControlByName( suite, controlName ).length ).toBe( 0 );
+        }
+      } );
+    } );
+
+    describe( 'list control initialization', function() {
+      beforeEach( function() {
+        suiteMain.iscFormsCodeTableApi.loadAll();
+        suiteMain.$httpBackend.flush();
+      } );
+
+      it( 'should set a listOptions property on the field scope', function() {
+        spyOn( suiteMain.iscFormsTemplateService, 'initListControlWidget' ).and.callThrough();
+
+        var primitiveOptions = ['1', '2', '3'],
+            objectOptions    = [
+              { name: 'one', value: '1' },
+              { name: 'two', value: '2' },
+              { name: 'three', value: '3' }
+            ],
+            codeTable        = 'usStates',
+            codeTableOptions = suiteMain.iscFormsCodeTableApi.get( codeTable ),
+            mockFieldScope;
+
+        // N.B.: scope.to is a alias for scope.options.templateOptions, created by angular-formly
+        var mockCodeTable        = {
+              data: {
+                codeTable: codeTable
+              }
+            },
+            mockPrimitiveOptions = {
+              templateOptions: {
+                options: primitiveOptions
+              }
+            },
+            mockMixedOptions     = {
+              templateOptions: {
+                options: objectOptions
+              },
+              data           : {
+                codeTable: codeTable
+              }
+            };
+
+        // Populate code table and set the object flag to true
+        mockFieldScope = getMockFieldScope( mockCodeTable );
+        expect( mockFieldScope.listOptions ).toEqual( codeTableOptions );
+        expect( mockFieldScope.isObjectModel ).toBe( true );
+
+        // Populate explicit primitive options and set the object flag to false
+        mockFieldScope = getMockFieldScope( mockPrimitiveOptions );
+        expect( mockFieldScope.listOptions ).toEqual( primitiveOptions );
+        expect( mockFieldScope.isObjectModel ).toBe( false );
+
+        // Populate the code table and explicit object options and set the object flag to true
+        mockFieldScope = getMockFieldScope( mockMixedOptions );
+        expect( mockFieldScope.listOptions ).toEqual(
+          [].concat( objectOptions ).concat( codeTableOptions )
+        );
+        expect( mockFieldScope.isObjectModel ).toBe( true );
+
+        function getMockFieldScope( options ) {
+          var mockScope = {
+            options    : options,
+            $watchGroup: function( expressions, callback ) {
+              callback( {} );
+            }
+          };
+          suiteMain.iscFormsTemplateService.initListControlWidget( mockScope );
+          return mockScope;
         }
       } );
     } );

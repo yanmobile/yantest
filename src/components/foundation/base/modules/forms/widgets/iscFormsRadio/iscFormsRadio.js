@@ -27,6 +27,7 @@
         id           : '=',
         model        : '=',
         options      : '=',
+        listOptions  : '=',
         isObjectModel: '=',
         disabled     : '='
       },
