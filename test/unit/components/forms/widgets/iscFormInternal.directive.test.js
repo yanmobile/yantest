@@ -8,14 +8,11 @@
 
     window.useDefaultTranslateBeforeEach();
 
+    useDefaultFormsModules();
+
     beforeEach( module(
-      'formly', 'foundation',
-      'isc.http', 'isc.forms', 'iscNavContainer', 'isc.authorization', 'isc.notification', 'isc.directives',
-      'isc.templates',
+      'foundation', 'isc.authorization', 'isc.notification', 'isc.directives',
       function( $provide, devlogProvider ) {
-        $provide.value( '$log', console );
-        $provide.value( 'apiHelper', mockApiHelper );
-        $provide.value( 'iscCustomConfigService', mockCustomConfigService );
         devlogProvider.loadConfig( mockCustomConfigService.getConfig() );
       } )
     );
