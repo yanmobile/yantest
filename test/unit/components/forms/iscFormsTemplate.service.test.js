@@ -128,5 +128,51 @@
       } );
     } );
 
+    describe( 'hideIfGroupEmpty functionality', function() {
+      beforeEach( function() {
+        suite = createDirective( getMinimalForm( 'hideIfGroupEmpty' ) );
+        suiteMain.$httpBackend.flush();
+      } );
+
+      it( 'should hide the field with hideIfGroupEmpty if all other fields are hidden', function() {
+        var model        = suite.controller.internalModel,
+            headerToHide = 'headerToHide',
+            field1       = 'field1',
+            field2       = 'field2';
+
+        expectVisible( headerToHide );
+        expectVisible( field1 );
+        expectVisible( field2 );
+
+        setModel( 'hideField1', true );
+        expectVisible( headerToHide );
+        expectHidden( field1 );
+        expectVisible( field2 );
+
+        setModel( 'hideField2', true );
+        expectHidden( headerToHide );
+        expectHidden( field1 );
+        expectHidden( field2 );
+
+        setModel( 'hideField1', false );
+        expectVisible( headerToHide );
+        expectVisible( field1 );
+        expectHidden( field2 );
+
+        function setModel( field, value ) {
+          model[field] = value;
+          digest( suite );
+        }
+
+        function expectVisible( controlName ) {
+          expect( getControlByName( suite, controlName ).length ).toBe( 1 );
+        }
+
+        function expectHidden( controlName ) {
+          expect( getControlByName( suite, controlName ).length ).toBe( 0 );
+        }
+      } );
+    } );
+    
   } );
 })();
