@@ -74,6 +74,7 @@
     formlyConfig.extras.fieldTransform.push( addDataModelDependencies );
     formlyConfig.extras.fieldTransform.push( addInheritedClassNames );
     formlyConfig.extras.fieldTransform.push( fixWatchers );
+    formlyConfig.extras.fieldTransform.push( addQdTag );
 
     var service = {
       appendWrapper            : appendWrapper,
@@ -410,6 +411,30 @@
         } );
       } );
 
+      return fields;
+    }
+
+    /**
+     * @description Wires up the "templateOptions.qdTag" property in the FDN using formly's
+     * ngModelAttrs feature.
+     * @memberOf iscFormsTemplateService
+     * @param fields
+     * @returns {*}
+     */
+    function addQdTag( fields ) {
+      _.forEach( fields, function( field ) {
+        if ( field.fieldGroup ) {
+          addQdTag( field.fieldGroup );
+        }
+        else {
+          if ( _.get( field, 'templateOptions.qdTag' ) ) {
+            _.set( field, 'ngModelAttrs.qdTag', {
+              bound    : 'ng-qd-tag',
+              attribute: 'qd-tag'
+            } );
+          }
+        }
+      } );
       return fields;
     }
 
