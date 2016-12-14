@@ -53,7 +53,7 @@
   /* @ngInject */
   function iscFormsTemplateService( $filter, $window, $sce, $q,
     iscNavContainerModel, iscCustomConfigService, iscSessionModel,
-    formlyConfig, iscFormDataApi, iscFormsSectionLayoutService, hsModelUtils ) {
+    formlyConfig, iscFormDataApi, iscFormsCodeTableApi, iscFormsSectionLayoutService, hsModelUtils ) {
     var baseType = '__iscFormsBase__';
 
     var config           = iscCustomConfigService.getConfig(),
@@ -74,6 +74,7 @@
     formlyConfig.extras.fieldTransform.push( addDataModelDependencies );
     formlyConfig.extras.fieldTransform.push( addInheritedClassNames );
     formlyConfig.extras.fieldTransform.push( fixWatchers );
+    formlyConfig.extras.fieldTransform.push( addQdTag );
 
     var defaultViewConfig = {
       getValue   : defaultGetValue,
@@ -90,6 +91,7 @@
       getSectionForEmbeddedForm: getSectionForEmbeddedForm,
       getRegisteredType        : getRegisteredType,
       getWidgetList            : getWidgetList,
+      initListControlWidget    : initListControlWidget,
       isTypeRegistered         : isTypeRegistered,
       isWrapperRegistered      : isWrapperRegistered,
       overrideWidgetList       : overrideWidgetList,
@@ -439,6 +441,30 @@
     }
 
     /**
+     * @description Wires up the "templateOptions.qdTag" property in the FDN using formly's
+     * ngModelAttrs feature.
+     * @memberOf iscFormsTemplateService
+     * @param fields
+     * @returns {*}
+     */
+    function addQdTag( fields ) {
+      _.forEach( fields, function( field ) {
+        if ( field.fieldGroup ) {
+          addQdTag( field.fieldGroup );
+        }
+        else {
+          if ( _.get( field, 'templateOptions.qdTag' ) ) {
+            _.set( field, 'ngModelAttrs.qdTag', {
+              bound    : 'ng-qd-tag',
+              attribute: 'qd-tag'
+            } );
+          }
+        }
+      } );
+      return fields;
+    }
+
+    /**
      * @memberOf iscFormsTemplateService
      * @description Applies form configuration to each formly field, including
      * external validation systems.
@@ -615,6 +641,8 @@
             hsValidation: hsValidation
           } );
 
+          registerHideGroups( $scope );
+
           // Helper functions
           function getFormlyRoot( scope ) {
             if ( scope.formInternalCtrl ) {
@@ -625,6 +653,78 @@
               return getFormlyRoot( parent );
             }
             return {};
+          }
+
+          function getContainingScope( scope ) {
+            if ( _.get( scope, 'field.fieldGroup' ) ) {
+              return scope;
+            }
+            var parent = scope.$parent;
+            if ( parent ) {
+              return getContainingScope( parent );
+            }
+            return {};
+          }
+
+          function registerHideGroups( scope ) {
+            var hideExpression   = _.get( scope, 'options.hideExpression' ),
+                hideIfGroupEmpty = _.get( scope, 'options.data.hideIfGroupEmpty' ),
+                fieldGroup;
+
+            if ( hideExpression || hideIfGroupEmpty ) {
+              fieldGroup = getContainingScope( scope );
+
+              // If no containing fieldGroup, abort
+              if ( _.isEmpty( fieldGroup ) ) {
+                return;
+              }
+
+              // Init visibility tracker
+              if ( !fieldGroup.visibilityRegistry ) {
+                fieldGroup.visibilityRegistry = [];
+              }
+
+              // Any field in this field group with a hideExpression should register with that field group
+              if ( hideExpression ) {
+                registerWithFieldGroup();
+              }
+
+              // Any field with a hideIfGroupEmpty flag should watch that registry
+              // hideIfGroupEmpty and hideExpression are mutually exclusive
+              else if ( hideIfGroupEmpty ) {
+                watchContainer();
+              }
+            }
+
+            function registerWithFieldGroup() {
+              // Because hideExpressions use ng-if, if we are instantiating a field's scope that has a
+              // hideExpression, it must have evaluated to true or we would not be instantiating field scope.
+              var registry = fieldGroup.visibilityRegistry,
+                  id       = scope.$id;
+
+              // Notify the containing field group that this scope is visible.
+              registry.push( id );
+
+              // When this field is hidden (by being removed from the DOM), remove its id from the registry.
+              scope.$on( '$destroy', function() {
+                _.pull( registry, id );
+              } );
+            }
+
+            function watchContainer() {
+              // Set up a watch on the fieldGroup to toggle the property on this field.
+              // The watch needs to be on the container because this field will be destroyed if it is hidden.
+              var deregisterWatch = fieldGroup.$watch( function() {
+                  return fieldGroup.visibilityRegistry.length;
+                },
+                function( visibleChildren ) {
+                  _.set( scope, 'options.hide', visibleChildren === 0 );
+                }
+              );
+              fieldGroup.$on( '$destroy', function() {
+                deregisterWatch();
+              } );
+            }
           }
 
           function hasCustomValidator( validatorName ) {
@@ -638,29 +738,6 @@
                 wrapContent = defaultViewConfig.wrapContent;
 
             return wrapContent( getValue( value, $scope.options ) );
-          }
-        },
-
-        link: function( scope, element, attrs ) {
-          // If the field's data.hideIfGroupEmpty property is truthy,
-          // this field will be hidden if all of its sibling fields are hidden.
-          // This is useful for section headers within a fieldGroup,
-          // where all members of that section have different hideExpressions.
-          if ( _.get( scope, 'options.data.hideIfGroupEmpty' ) ) {
-            var unregisterModelWatch = scope.$watch(
-              'model',
-              onModelChange,
-              true
-            );
-            scope.$on( '$destroy', unregisterModelWatch );
-          }
-
-          function onModelChange() {
-            // $applyAsync to allow slightly more time for other fields' hideExpressions to be evaluated
-            // The other fields are the ones checked as element.siblings()
-            scope.$applyAsync( function() {
-              element.css( 'display', element.siblings( '[formly-field]' ).length ? 'block' : 'none' );
-            } );
           }
         }
       } );
@@ -772,5 +849,52 @@
       }
     }
 
+    /**
+     * @memberOf iscFormsTemplateService
+     * @description Initializes the given formly-field scope with a listOptions property. This property is an array
+     * of the options in the scope's templateOptions.options (if specified), plus the resolved list of its data.codetable
+     * options (if specified).
+     * This function also sets an inferred isObjectModel property based on the results of initializing this list.
+     * @param scope
+     */
+    function initListControlWidget( scope ) {
+      scope.$watchGroup( [getCodeTable, getOptions], setProperties );
+      setProperties();
+
+      function setProperties( options ) {
+        options = options || {};
+
+        var data                = _.get( scope, 'options.data', {} ),
+            codeTable           = options[0] || getCodeTable(),
+            explicitOptions     = options[1] || getOptions() || [],
+            codeTableOptions    = codeTable ? iscFormsCodeTableApi.get( codeTable ) : [],
+            defaultDisplayField = formsConfig.defaultDisplayField,
+            listOptions         = _.concat( [], explicitOptions, codeTableOptions );
+
+        // Set default display field, if it exists and the field does not override it
+        if ( defaultDisplayField && !data.displayField ) {
+          _.set( scope, 'options.data.displayField', defaultDisplayField );
+        }
+
+        _.extend( scope, {
+          isObjectModel: getObjectFlag(),
+          listOptions  : listOptions
+        } );
+
+        function getObjectFlag() {
+          return ( data.isObject === undefined && listOptions.length ) ?
+            _.isObject( _.head( listOptions ) )
+            : data.isObject;
+        }
+      }
+
+      function getOptions() {
+        return _.get( scope, 'options.templateOptions.options' );
+      }
+
+      function getCodeTable() {
+        return _.get( scope, 'options.data.codeTable' );
+      }
+    }
   }
 } )();

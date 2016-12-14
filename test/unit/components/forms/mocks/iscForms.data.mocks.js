@@ -49,7 +49,9 @@ var resetMockFormStore = function() {
     formData  : [
       sampleCloseout,
       sampleDDPData,
-      sampleIntake
+      sampleIntake,
+      sampleConfigurableCollectionData,
+      placeholderData
     ]
   }
 };
@@ -184,11 +186,11 @@ var mockComponentData = {
       ],
       "objectValue"   : [
         {
-          "name" : "MultiCheckbox 1",
+          "displayFieldOverride" : "MultiCheckbox 1",
           "value": "1"
         },
         {
-          "name" : "MultiCheckbox 3",
+          "displayFieldOverride" : "MultiCheckbox 3",
           "value": "3"
         }
       ]
@@ -196,25 +198,25 @@ var mockComponentData = {
     "radio"                : {
       "primitiveValue": "Radio 3",
       "objectValue"   : {
-        "name" : "Radio 2",
+        "displayField" : "Radio 2",
         "value": "2"
       }
     },
     "typeahead"            : {
       "primitiveValue": "Typeahead 3",
       "objectValue"   : {
-        "name" : "Typeahead 2",
+        "displayField" : "Typeahead 2",
         "value": "2"
       }
     },
     "typeaheadWithScript"  : {
-      "name" : "TypeaheadWithScript 1",
+      "displayField" : "TypeaheadWithScript 1",
       "value": "3"
     },
     "select"               : {
       "primitiveValue": "Select 3",
       "objectValue"   : {
-        "name" : "Select 2",
+        "displayField" : "Select 2",
         "value": "2"
       }
     },
@@ -264,3 +266,28 @@ var sampleIntake = {
   }
 };
 
+var sampleConfigurableCollectionData = {
+  "id" : 4,
+  "data" : {
+    "objectTypeCollection" : {
+      "key1" : {
+        "valueProp1" : 1,
+        "valueProp2" : 2
+      },
+      "key2" : {
+        "valueProp1" : 3,
+        "valueProp2" : 4
+      }
+    },
+    "hashtableTypeCollection" : {
+      "key1" : "value1",
+      "key2" : "value2"
+    }
+  }
+};
+
+// Sets the max id in use by the mock db to 1000
+var placeholderData = {
+  "id" : 1000,
+  "data" : {}
+};

@@ -247,16 +247,21 @@ $breakpoint-percentages : (
     border-radius: $global-radius;
     border: $input-border;
     margin-bottom: $input-bottom-margin;
+    line-height: 1.3;
 
     &:hover {
-      background: $select-background-hover;
+      background: $select-background-hover url(image-triangle($select-arrow-color)) right 10px center no-repeat;
+      background-size: 8px 8px;
+      padding-right: rem-calc(18px) + $form-padding;
     }
 
     &:focus {
       outline: 0;
       border: $input-border-focus;
-      background: $input-background-focus;
+      background: $input-background-focus url(image-triangle($select-arrow-color)) right 10px center no-repeat;
       color: $input-color-focus;
+      background-size: 8px 8px;
+      padding-right: rem-calc(18px) + $form-padding;
     }
 
     &[disabled], &.disabled {

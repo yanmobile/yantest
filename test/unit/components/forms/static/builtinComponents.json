@@ -25,17 +25,22 @@
           }
         },
         {
+          "type" : "divider"
+        },
+        {
           "key"             : "templates.input.date",
           "type"            : "input",
           "templateOptions" : {
-            "label" : "An input component showing a date"
+            "label" : "An input component showing a date",
+            "qdTag" : "inputDate"
           }
         },
         {
           "key"             : "templates.input.text",
           "type"            : "input",
           "templateOptions" : {
-            "label" : "An input component showing text"
+            "label" : "An input component showing text",
+            "qdTag" : "inputText"
           }
         },
         {
@@ -44,7 +49,8 @@
             {
               "type"            : "button",
               "templateOptions" : {
-                "onClick" : "model.templates.button.input = 'Set from the button click'"
+                "onClick" : "model.templates.button.input = 'Set from the button click'",
+                "qdTag"   : "button"
               },
               "data"            : {
                 "userScript" : "buttonScript",
@@ -64,7 +70,8 @@
           "key"             : "templates.checkbox",
           "type"            : "checkbox",
           "templateOptions" : {
-            "label" : "A checkbox"
+            "label" : "A checkbox",
+            "qdTag" : "checkbox"
           }
         },
         {
@@ -72,6 +79,7 @@
           "type"            : "multiCheckbox",
           "templateOptions" : {
             "label"   : "A multi-select checkbox",
+            "qdTag"   : "multiCheckboxPrimitive",
             "options" : [
               "1",
               "2",
@@ -84,20 +92,24 @@
           "type"            : "multiCheckbox",
           "templateOptions" : {
             "label"   : "A multi-select checkbox",
+            "qdTag"   : "multiCheckboxObject",
             "options" : [
               {
-                "name"  : "MultiCheckbox 1",
-                "value" : "1"
+                "displayFieldOverride" : "MultiCheckbox 1",
+                "value"                : "1"
               },
               {
-                "name"  : "MultiCheckbox 2",
-                "value" : "2"
+                "displayFieldOverride" : "MultiCheckbox 2",
+                "value"                : "2"
               },
               {
-                "name"  : "MultiCheckbox 3",
-                "value" : "3"
+                "displayFieldOverride" : "MultiCheckbox 3",
+                "value"                : "3"
               }
             ]
+          },
+          "data"            : {
+            "displayField" : "displayFieldOverride"
           }
         },
         {
@@ -105,6 +117,7 @@
           "type"            : "radio",
           "templateOptions" : {
             "label"   : "A radio button - primitive values",
+            "qdTag"   : "radioPrimitive",
             "options" : [
               "Radio 1",
               "Radio 2",
@@ -117,18 +130,19 @@
           "type"            : "radio",
           "templateOptions" : {
             "label"   : "A radio button - object values",
+            "qdTag"   : "radioObject",
             "options" : [
               {
-                "name"  : "Radio 1",
-                "value" : "1"
+                "displayField" : "Radio 1",
+                "value"        : "1"
               },
               {
-                "name"  : "Radio 2",
-                "value" : "2"
+                "displayField" : "Radio 2",
+                "value"        : "2"
               },
               {
-                "name"  : "Radio 3",
-                "value" : "3"
+                "displayField" : "Radio 3",
+                "value"        : "3"
               }
             ]
           }
@@ -138,6 +152,7 @@
           "type"            : "select",
           "templateOptions" : {
             "label"   : "A dropdown - primitive values",
+            "qdTag"   : "selectPrimitive",
             "options" : [
               "Select 1",
               "Select 2",
@@ -150,18 +165,19 @@
           "type"            : "select",
           "templateOptions" : {
             "label"   : "A dropdown - object values",
+            "qdTag"   : "selectObject",
             "options" : [
               {
-                "name"  : "Select 1",
-                "value" : "1"
+                "displayField" : "Select 1",
+                "value"        : "1"
               },
               {
-                "name"  : "Select 2",
-                "value" : "2"
+                "displayField" : "Select 2",
+                "value"        : "2"
               },
               {
-                "name"  : "Select 3",
-                "value" : "3"
+                "displayField" : "Select 3",
+                "value"        : "3"
               }
             ]
           }
@@ -170,21 +186,24 @@
           "key"             : "templates.textarea",
           "type"            : "textarea",
           "templateOptions" : {
-            "label" : "A textarea"
+            "label" : "A textarea",
+            "qdTag" : "textarea"
           }
         },
         {
           "key"             : "templates.dateComponents",
           "type"            : "dateComponents",
           "templateOptions" : {
-            "label" : "A date components widget"
+            "label" : "A date components widget",
+            "qdTag" : "dateComponents"
           }
         },
         {
           "key"             : "templates.dateComponentsPartial",
           "type"            : "dateComponentsPartial",
           "templateOptions" : {
-            "label" : "A date components widget that allows partial dates"
+            "label" : "A date components widget that allows partial dates",
+            "qdTag" : "dateComponentsPartial"
           }
         },
         {
@@ -192,6 +211,7 @@
           "type"            : "typeahead",
           "templateOptions" : {
             "label"   : "A typeahead widget, primitive values",
+            "qdTag"   : "typeaheadPrimitive",
             "options" : [
               "Typeahead 1",
               "Typeahead 2",
@@ -204,38 +224,38 @@
           "type"            : "typeahead",
           "templateOptions" : {
             "label"   : "A typeahead widget, object values",
+            "qdTag"   : "typeaheadObject",
             "options" : [
               {
-                "name"  : "Typeahead 1",
-                "value" : "1"
+                "displayField" : "Typeahead 1",
+                "value"        : "1"
               },
               {
-                "name"  : "Typeahead 2",
-                "value" : "2"
+                "displayField" : "Typeahead 2",
+                "value"        : "2"
               },
               {
-                "name"  : "Typeahead 3",
-                "value" : "3"
+                "displayField" : "Typeahead 3",
+                "value"        : "3"
               }
             ]
           },
           "data"            : {
-            "displayField"        : "name",
-            "resultsDisplayField" : "name",
-            "limitToList"         : true
+            "limitToList"         : true,
+            "resultsDisplayField" : "displayField"
           }
         },
         {
           "key"             : "templates.typeaheadWithScript",
           "type"            : "typeaheadWithScript",
           "templateOptions" : {
-            "label" : "A typeahead widget supporting user-defined scripts"
+            "label" : "A typeahead widget supporting user-defined scripts",
+            "qdTag" : "typeaheadWithScript"
           },
           "data"            : {
-            "displayField"        : "name",
             "userScript"          : "typeaheadScript",
-            "resultsDisplayField" : "name",
-            "limitToList"         : true
+            "limitToList"         : true,
+            "resultsDisplayField" : "displayField"
           }
         },
         {
@@ -243,6 +263,7 @@
           "type"            : "controlFlowOnly",
           "templateOptions" : {
             "label"   : "A widget for control flow only -- this field's data is not stored in the data model",
+            "qdTag"   : "controlFlowOnly",
             "options" : [
               "opt 1",
               "opt 2"
