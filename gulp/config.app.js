@@ -15,29 +15,119 @@ module.exports.common       = require( "./config.common" );
 module.exports.component    = require( "../src/components/foundation/base/config.components" );
 module.exports.app          = getAppConfig();
 
-//folder names inside of submodule, uifw-modules/src/modules, folder
-// src/uifw-modules/src/modules/timeline
-// src/uifw-modules/src/modules/inbox
-// includeUiModules( ["timeline", "inbox"] );
+var appBasePath = "src/uifw-modules/"; // change this value to empty string for uifw-modules application
+
 includeUiModules( module.exports.app.submoduleComponents );
 
+/**
+ * @Description
+ * Automatically include components inside of uifw-modules as part of the applciation's gulp build process
+ *
+ * folder names inside of submodule, uifw-modules/src/modules, folder
+ *  src/uifw-modules/src/app/modules/timeline
+ *  src/uifw-modules/src/app/modules/inbox
+ *  includeUiModules( ["timeline", "inbox"] );
+ */
 function includeUiModules( uiModuleNames ) {
+
+  var configBasePath = `../${appBasePath || ''}src/app/modules/`;
+
+  var masterDepConfig = readJson( `${configBasePath}build.json`, null );
+  if ( masterDepConfig ) {
+    _.forEach( uiModuleNames, injectDependencies );
+  }
+
   _.forEach( uiModuleNames, injectModuleFiles );
 
+  function injectDependencies( uiModuleName ) {
+    var individualModuleConfig = readJson( `${configBasePath}${uiModuleName}/build.json`, {} );
+    _.forEach( individualModuleConfig.dependencies, function( dependency ) {
+      recursivelyPrefixAppPath( masterDepConfig[dependency], appBasePath );
+      _.mergeWith( module.exports.app, masterDepConfig[dependency], concatArrays );
+    } );
+  }
+
   function injectModuleFiles( uiModuleName ) {
-    var uiModulePath = `src/uifw-modules/src/app/modules/${uiModuleName}/**/*`;
+    var uiModulePath = `${appBasePath}src/app/modules/${uiModuleName}/**/*`;
     module.exports.app.module.modules.unshift( uiModulePath + ".module.js" );
     module.exports.app.module.js.unshift( uiModulePath + ".js" );
     module.exports.app.module.scssInjectSrc.unshift( uiModulePath + ".scss" ); //scss files are auto injected to have access to vars and mixins
     module.exports.app.module.html.unshift( uiModulePath + ".html" );
   }
+
+  function concatArrays( a, b ) {
+    if ( _.isArray( a ) ) {
+      return a.concat( b );
+    }
+  }
+
+  /**
+   * @Description
+   *
+   * This recursive function will automatically prefix "src/uifw-modules/" to each and every string value in the object.
+   * It assumes the contents of the arrays are primative types
+   *
+   * see jsbin link with runnable a example: http://jsbin.com/vasuzoxaza/1/edit?js,console
+   *
+   * @Examples:
+   * var source = {
+   *  "angular-cookies": {
+   *    "module": {
+   *      "modules": [
+   *        "src/app/modules/app.module.js",
+   *        "src/app/modules/admin.user/admin.user.module.js"
+   *      ],
+   *      "js": [],
+   *      "scss": [],
+   *      "scssInjectSrc": [],
+   *      "html": "hello/world.html"
+   *    }
+   *  }
+   * }
+   *
+   * var output = {
+   *  "angular-cookies": {
+   *    "module": {
+   *      "modules": [
+   *        "src/uifw-modules/src/app/modules/app.module.js",
+   *        "src/uifw-modules/src/app/modules/admin.user/admin.user.module.js"
+   *      ],
+   *      "js": [],
+   *      "scss": [],
+   *      "scssInjectSrc": [],
+   *      "html": "src/uifw-modules/hello/world.html"
+   *    }
+   *  }
+   * }
+   *
+   */
+  function recursivelyPrefixAppPath( config, prefix, level ) {
+    level = level || 0;
+    if ( level > 15 ) {
+      throw new Error( 'The current recursion is at 15 levels. This is an indication of a infinite recursion' );
+    }
+
+    if ( _.isString( config ) ) {
+      return prefix + config;
+    } else if ( _.isArray( config ) ) {
+      return _.map( config, function( value ) {
+        return recursivelyPrefixAppPath( value, prefix, level + 1 );
+      } );
+    }
+
+    _.forEach( config, function( value, nestedKey ) {
+      config[nestedKey] = recursivelyPrefixAppPath( value, prefix, level + 1 );
+    } );
+    return config;
+  }
+
 }
 
 function getAppConfig() {
   return {
-    "modulePath"   : "src/app/modules/",
+    "modulePath"         : "src/app/modules/",
     "submoduleComponents": [], //Simply include the module folder name. For example: ["timeline", "inbox", "admin.user"]
-    "customer"     : {
+    "customer"           : {
       "assets": {
         "i18n": [  //order matters
           // The default algorithm is "replace". In order to specify "merge", be sure to add "_UifwMergeAlgorithm" : "merge"' as a property in the json files.
@@ -49,14 +139,14 @@ function getAppConfig() {
         ]
       }
     },
-    "vendor"       : {
+    "vendor"             : {
       "js"   : [
         'src/app/node_modules/angular-http-backup/dist/httpbackup.js'
       ],
       "mocks": [],
       "fonts": []
     },
-    "module"       : {
+    "module"             : {
       "modules"      : [
         "src/app/modules/**/app.module.js",
         "src/app/modules/**/*.module.js"
@@ -103,7 +193,7 @@ function getAppConfig() {
         "test/unit/app/**/*Tests.js"
       ]
     },
-    "dest"         : {
+    "dest"               : {
       "folder"       : "www",
       "comments"     : "i18nXml is used for specifying destination location of converted i18n files",
       "fdn"          : "www/assets/FDN/",
@@ -115,9 +205,9 @@ function getAppConfig() {
       // multiple translation files: e.g. "en-us.json", "en-uk.json" and "en.json".
       "i18nXmlFilter": "**/en-us.xml"
     },
-    "cordova"      : false,
-    "excludeConfig": "!src/app/modules/app.config.js",
-    "edition"      : [
+    "cordova"            : false,
+    "excludeConfig"      : "!src/app/modules/app.config.js",
+    "edition"            : [
       {
         "name": "base",
         "path": "src/components/foundation/base/config.components.js"
@@ -128,7 +218,7 @@ function getAppConfig() {
     // The overrides below are used to exclude base files by specifying glob patterns.
     // e.g. ```common: ['!src/modules/isc.filters/myFilter.js']```
     // update: common and components config can now be directly modified by this file.
-    "overrides"    : {
+    "overrides"          : {
       "js"      : {
         "common"    : [],
         "components": []
@@ -140,4 +230,23 @@ function getAppConfig() {
       }
     }
   };
+}
+
+/**
+ * Reads the json file and returns its content. If the file is not found, it will return defaults or {}
+ *
+ * @param filePath
+ * @returns {*}
+ */
+function readJson( filePath, defaults ) {
+  var path = require( 'path' );
+  var fs   = require( 'fs' );
+  var json = defaults;
+  filePath = path.join( __dirname, filePath );
+
+  if ( fs.existsSync( filePath ) ) {
+    json = require( filePath );
+  }
+
+  return json;
 }
