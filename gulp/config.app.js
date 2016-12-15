@@ -65,7 +65,7 @@ function includeUiModules( uiModuleNames ) {
    * @Description
    *
    * This recursive function will automatically prefix "src/uifw-modules/" to each and every string value in the object.
-   * It assumes the contents of the arrays are primative types
+   * It assumes the contents of the arrays are strings
    *
    * see jsbin link with runnable a example: http://jsbin.com/vasuzoxaza/1/edit?js,console
    *
