@@ -104,7 +104,7 @@ function includeUiModules( uiModuleNames ) {
   function recursivelyPrefixAppPath( config, prefix, level ) {
     level = level || 0;
     if ( level > 15 ) {
-      throw new Error( 'The current recursion is at 15 levels. This is an indication of a infinite recursion' );
+      throw new Error( 'More than 15 levels of recursion are not supported. This is an indication of infinite recursion caused by circular reference.' );
     }
 
     if ( _.isString( config ) ) {
