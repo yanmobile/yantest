@@ -7,23 +7,23 @@
 
   angular.module( 'isc.components',
     [
-      'isc.common',
-      // third party modules
-      'angularUtils.directives.dirPagination',
-      '720kb.datepicker',
-      'foundation',
-      'angucomplete-alt',
-      'formly',
-      'n3-line-chart',
-      'isc.forms',
-      'isc.directives',
-      'isc.table',
-      'isc.fauxTable',
-      'isc.notification',
-      'isc.spinner',
-      'iscNavContainer',
-      'isc.error',
-      'isc.lookahead'
+        'isc.common',
+        // third party modules,
+        'ui.select',
+        'angularUtils.directives.dirPagination',
+        '720kb.datepicker',
+        'foundation',
+        'angucomplete-alt',
+        'formly',
+        'n3-line-chart',
+        'isc.forms',
+        'isc.directives',
+        'isc.table',
+        'isc.fauxTable',
+        'isc.notification',
+        'isc.spinner',
+        'iscNavContainer',
+        'isc.error'
     ] );
 
 } )();
