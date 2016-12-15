@@ -34,6 +34,10 @@
     } );
 
     describe( 'model.configureCache', function() {
+      it ('should not change the default behavior if nothing is configured', function() {
+        suite.model.configureCache();
+      });
+
       it( 'should configure the scope of the FDN cache', function() {
         var cacheKeyCounterWasCalled = false;
 

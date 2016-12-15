@@ -51,7 +51,8 @@ var resetMockFormStore = function() {
       sampleDDPData,
       sampleIntake,
       sampleConfigurableCollectionData,
-      placeholderData
+      placeholderData,
+      codedItemCollectionData
     ]
   }
 };
@@ -283,6 +284,18 @@ var sampleConfigurableCollectionData = {
       "key1" : "value1",
       "key2" : "value2"
     }
+  }
+};
+
+var codedItemCollectionData = {
+  "id" : 5,
+  "data" : {
+    "collection" : [
+      {
+        "displayField" : "Alabama",
+        "value"        : "AL"
+      }
+    ]
   }
 };
 

@@ -50,6 +50,7 @@
      * @param {{ getCacheKey : function(formKey, formVersion) }} config
      */
     function configureCache( config ) {
+      config = config || {};
       getCacheKey = config.getCacheKey || defaultGetCacheKey;
     }
 

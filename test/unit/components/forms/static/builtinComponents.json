@@ -11,7 +11,8 @@
             "label" : "A section component"
           },
           "data"            : {
-            "content" : "A Section Header"
+            "content" : "A Section Header",
+            "details" : "<p>Section details</p><p>More details</p>"
           }
         },
         {
@@ -26,6 +27,13 @@
         },
         {
           "type" : "divider"
+        },
+        {
+          "type" : "image",
+          "data" : {
+            "src" : "images/logo.png",
+            "alt" : "This is an image"
+          }
         },
         {
           "key"             : "templates.input.date",
