@@ -332,6 +332,11 @@
       "version": "4.1.4",
       "from": "tooltipster@4.1.4",
       "resolved": "https://registry.npmjs.org/tooltipster/-/tooltipster-4.1.4.tgz"
+    },
+    "ui-select": {
+      "version": "0.19.6",
+      "from": "ui-select@latest",
+      "resolved": "https://registry.npmjs.org/ui-select/-/ui-select-0.19.6.tgz"
     }
   }
 }
