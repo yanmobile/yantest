@@ -295,11 +295,16 @@
           spyOn( submitButtonConfig, 'afterClick' ).and.callThrough();
           spyOn( suiteMain.iscFormDataApi, 'submit' ).and.callThrough();
           spyOn( suiteMain.iscFormDataApi, 'post' ).and.callThrough();
+          spyOn( suiteMain.iscFormDataApi, 'put' ).and.callThrough();
 
           // simple1 autosaves on model change
           model.aField = 'some value';
-          suiteMain.$httpBackend.flush();
+          digest( suite );
           expect( suiteMain.iscFormDataApi.post ).toHaveBeenCalled();
+
+          model.aField = 'some other value';
+          digest( suite );
+          // expect( suiteMain.iscFormDataApi.put ).toHaveBeenCalled();
 
           // clicking submit should call the submit api
           submitButton.click();
@@ -424,7 +429,7 @@
             qdTags = getQdTags( fdn.sections[0].fields );
 
         // Expect some fields to have qdTags in the static mock FDN
-        expect(qdTags.length).toBeGreaterThan(0);
+        expect( qdTags.length ).toBeGreaterThan( 0 );
 
         // Expect all of those qdTags in the mock FDN to be rendered
         _.forEach( qdTags, function( qdTag ) {

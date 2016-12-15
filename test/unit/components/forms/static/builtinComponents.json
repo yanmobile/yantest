@@ -66,6 +66,15 @@
               }
             },
             {
+              "type"            : "button",
+              "templateOptions" : {
+                "disabled" : true
+              },
+              "data"            : {
+                "content" : "I am disabled"
+              }
+            },
+            {
               "key"             : "templates.button.input",
               "type"            : "input",
               "templateOptions" : {
