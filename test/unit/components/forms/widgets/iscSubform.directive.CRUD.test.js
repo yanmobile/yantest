@@ -427,7 +427,7 @@
                 model     = _.get( formModel, inputName, '' ),
                 state     = _.get( formState, stateName );
 
-            expect( button.length ).toBe( 1 );
+            expect( button.length ).toBe( 2 );
             expect( input.length ).toBe( 1 );
             expect( input.val() ).toEqual( model );
             expect( state ).toBeUndefined();
