@@ -114,27 +114,7 @@
         var layout = suiteInternal.controller.mainFormConfig.layout;
         expect( layout ).toBe( 'scrolling' );
       } );
-
-      // it( 'should render a custom view mode when configured', function() {
-      //   suiteMain.iscFormsTemplateService.configureDefaultViewMode( {
-      //     getValue   : getValue,
-      //     wrapContent: wrapContent
-      //   } );
-      //
-      //   initForm( 'view' );
-      //
-      //   var aField = getControlByName(suiteInternal, 'aField');
-      //   expect(aField.length).toBe(1);
-      //
-      //   function getValue( value ) {
-      //     return 'test';
-      //   }
-      //
-      //   function wrapContent( value ) {
-      //     return suiteMain.$sce.trustAsHtml( '<p>' + value + '</p>' );
-      //   }
-      // } );
-
+      
       function initForm( mode ) {
         // Create an isc-form to get what would normally be passed to isc-form-internal
         suiteForm = createDirective( getMinimalForm( {

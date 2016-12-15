@@ -295,7 +295,6 @@
           spyOn( submitButtonConfig, 'afterClick' ).and.callThrough();
           spyOn( suiteMain.iscFormDataApi, 'submit' ).and.callThrough();
           spyOn( suiteMain.iscFormDataApi, 'post' ).and.callThrough();
-          spyOn( suiteMain.iscFormDataApi, 'put' ).and.callThrough();
 
           // simple1 autosaves on model change
           model.aField = 'some value';
@@ -304,7 +303,6 @@
 
           model.aField = 'some other value';
           digest( suite );
-          // expect( suiteMain.iscFormDataApi.put ).toHaveBeenCalled();
 
           // clicking submit should call the submit api
           submitButton.click();
