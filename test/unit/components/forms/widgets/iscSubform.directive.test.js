@@ -9,6 +9,31 @@
         suiteInternal,
         suiteSubform;
 
+    var callbackResults = {};
+
+    var mockFormCollectionCallbacks = {
+      beforeUpdate: function updated() {
+        callbackResults.updated = true;
+      },
+      beforeDelete: function deleted() {
+        callbackResults.deleted = true;
+      }
+    };
+
+    var mockLibrary = {
+      model    : {
+        getMaxSize    : function() {
+          return 3;
+        },
+        getDefaultItem: function() {
+          return {
+            keyField: 'Default Object Key'
+          };
+        }
+      },
+      callbacks: mockFormCollectionCallbacks
+    };
+
     window.useDefaultTranslateBeforeEach();
 
     beforeEach( module(
@@ -33,7 +58,7 @@
 
     beforeEach( inject( function( $rootScope, $compile, $window, $httpBackend, $timeout,
       formlyApiCheck, formlyConfig, keyCode,
-      iscConfirmationService,
+      iscConfirmationService, iscFormsTemplateService,
       iscFormDataApi, iscNotificationService, iscFormsValidationService ) {
       formlyConfig.disableWarnings   = true;
       formlyApiCheck.config.disabled = true;
@@ -51,6 +76,30 @@
         iscNotificationService   : iscNotificationService,
         iscFormsValidationService: iscFormsValidationService
       } );
+
+      iscFormsTemplateService.registerType( {
+        name      : 'customEmbeddedFormCollection',
+        extends   : 'embeddedFormCollection',
+        controller: function( $scope ) {
+          $scope.config = {
+            callbacks: {
+              beforeUpdate: mockFormCollectionCallbacks.beforeUpdate,
+              beforeDelete: mockFormCollectionCallbacks.beforeDelete
+            },
+            model    : {
+              maxSize    : function() {
+                return 3;
+              },
+              defaultItem: function() {
+                return {
+                  keyField: 'Default Hashtable Key'
+                };
+              }
+            }
+          };
+        }
+      } );
+
       mockFormResponses( suiteMain.$httpBackend );
     } ) );
 
@@ -414,7 +463,8 @@
               subform        = getControlByName( suite, subformName ).filter( '.subform' ),
               formModel      = _.get( suite.controller.model, subformName ),
               formState      = suite.controller.options.formState,
-              formDefinition = suiteInternal.controller.formDefinition.subforms.builtinComponents.sections[0].fields;
+              formDefinition = suiteInternal.controller.formDefinition.subforms.builtinComponents.sections[0].fields,
+              displayField   = _.get(customConfig, 'forms.defaultDisplayField', 'name');
 
           testInput( 'templates.input.text' );
           testInput( 'templates.input.date' );
@@ -598,11 +648,12 @@
 
           function testTypeahead( controlName, isScript ) {
             var control      = getControlByName( suite, controlName ).filter( 'input' ),
-                model        = _.get( formModel, controlName ),
-                modelDisplay = _.isObject( model ) ? model.name : model,
                 newText      = 'Typea',
                 limitToList  = getFieldProperty( controlName, 'data.limitToList' ),
-                keyCodes     = suiteMain.keyCode;
+                keyCodes     = suiteMain.keyCode,
+                model, modelDisplay;
+
+            getModel();
 
             expect( control.length ).toBe( 1 );
             expect( control.val() ).toEqual( modelDisplay );
@@ -642,8 +693,7 @@
             sendEnter( secondItem );
             digest( suite );
 
-            model        = _.get( formModel, controlName );
-            modelDisplay = _.isObject( model ) ? model.name : model;
+            getModel();
             expect( modelDisplay ).toEqual( secondItemDisplay );
             expect( control.val() ).toEqual( secondItemDisplay );
 
@@ -651,10 +701,8 @@
             control.val( newText ).trigger( 'input' ).trigger( 'blur' );
             digest( suite );
 
-            model        = _.get( formModel, controlName );
-            modelDisplay = _.isObject( model ) ? model.name : model;
-
             // The model should not change if limitToList is truthy
+            getModel();
             if ( limitToList ) {
               expect( modelDisplay ).toEqual( secondItemDisplay );
               expect( control.val() ).toEqual( secondItemDisplay );
@@ -669,7 +717,7 @@
             control.val( '' ).trigger( 'input' ).trigger( 'blur' );
             digest( suite );
 
-            model = _.get( formModel, controlName );
+            getModel();
             expect( model ).toBeUndefined();
             expect( control.val() ).toEqual( '' );
 
@@ -682,11 +730,14 @@
             sendEnter( control );
             digest( suite );
 
-            model        = _.get( formModel, controlName );
-            modelDisplay = _.isObject( model ) ? model.name : model;
+            getModel();
             expect( modelDisplay ).toEqual( firstItemDisplay );
             expect( control.val() ).toEqual( firstItemDisplay );
 
+            function getModel() {
+              model        = _.get( formModel, controlName );
+              modelDisplay = _.isObject( model ) ? model[displayField] : model;
+            }
 
             function sendEnter( control ) {
               control.trigger( {
@@ -882,11 +933,228 @@
 
     } );
 
-    function createDirectives( rootForm ) {
+    //--------------------
+    describe( 'iscSubform - configurable properties', function() {
+      var existingModel = sampleConfigurableCollectionData.data;
+
+      beforeEach( function() {
+        createDirectives( getMinimalForm( 'subformConfigurable', 4 ), {
+          formConfig: {
+            library: mockLibrary
+          }
+        } );
+
+        callbackResults = {
+          updated: false,
+          deleted: false
+        };
+      } );
+
+      it( 'should load in explicitly defined fields from the FDN', function() {
+        var subformName = 'explicitlyDefinedCollectionFields',
+            suite       = suiteSubform,
+            subform     = getControlByName( suite, subformName ).filter( '.subform' ),
+            addButton   = subform.find( 'button.embedded-form-add' ),
+            model       = _.get( suite.controller.model, subformName ),
+            saveButton  = null,
+            inputField  = null;
+
+        expect( addButton.length ).toBe( 1 );
+        expect( subform.length ).toBe( 1 );
+
+        // Open the subform
+        expect( addButton.is( ':disabled' ) ).toBe( false );
+        addButton.click();
+        digest( suite );
+        selectElements();
+
+        // The defaultItem specified in the FDN should have loaded
+        expect( inputField.length ).toBe( 1 );
+        expect( inputField.val() ).toEqual( 'Default Value' );
+
+        expect( saveButton.length ).toBe( 1 );
+        saveButton.click();
+        digest( suite );
+        selectElements();
+
+        // Since the FDN has a maxSize of 1, the add button should now be disabled
+        expect( model.length ).toBe( 1 );
+        expect( addButton.is( ':disabled' ) ).toBe( true );
+
+        function selectElements() {
+          inputField = getControlByName( suite, 'explicitInput' );
+          saveButton = suite.element.find( '.embedded-form-save' );
+          model      = _.get( suite.controller.model, subformName );
+        }
+      } );
+
+      it( 'should save data to the model as an object', function() {
+        var subformName = 'objectTypeCollection',
+            suite       = suiteSubform,
+            subform     = getControlByName( suite, subformName ).filter( '.subform' ),
+            addButton   = subform.find( 'button.embedded-form-add' ),
+            model       = _.get( suite.controller.model, subformName ),
+            saveButton  = null,
+            keyField    = null,
+            valueProp1  = null,
+            valueProp2  = null;
+
+        // This is an 'object' type, so expect the editable model to be transformed
+        // from this:
+        var editedModel      = {
+          keyField  : 'myKey',
+          valueProp1: 'value 1',
+          valueProp2: 'value 2'
+        };
+        // to this:
+        var transformedModel = {
+          myKey: {
+            valueProp1: 'value 1',
+            valueProp2: 'value 2'
+          }
+        };
+
+        var expectedModel = _.extend( transformedModel, existingModel[subformName] );
+
+        expect( addButton.length ).toBe( 1 );
+        expect( subform.length ).toBe( 1 );
+
+        // Open the subform
+        expect( addButton.is( ':disabled' ) ).toBe( false );
+        addButton.click();
+        digest( suite );
+        selectElements();
+
+        // Fields should be present
+        expect( keyField.length ).toBe( 1 );
+        expect( valueProp1.length ).toBe( 1 );
+        expect( valueProp2.length ).toBe( 1 );
+
+        // The defaultItem specified in the FDN should have loaded
+        expect( keyField.val() ).toEqual( 'Default Object Key' );
+
+        // Set values in the fields
+        keyField.val( editedModel.keyField ).trigger( 'change' );
+        valueProp1.val( editedModel.valueProp1 ).trigger( 'change' );
+        valueProp2.val( editedModel.valueProp2 ).trigger( 'change' );
+        digest( suite );
+
+        // Save the subform
+        expect( callbackResults.updated ).toBe( false );
+        expect( saveButton.length ).toBe( 1 );
+        saveButton.click();
+        digest( suite );
+        selectElements();
+
+        // Expect updated model to match the original model + the added item
+        expect( angular.equals( model, expectedModel ) ).toBe( true );
+
+        // Expect the callback specified in the config to have been invoked
+        expect( callbackResults.updated ).toBe( true );
+
+        // Since the FDN has a maxSize of 3, the add button should now be disabled
+        expect( _.keys( model ).length ).toBe( 3 );
+        expect( addButton.is( ':disabled' ) ).toBe( true );
+
+        // Exercise the delete callback
+        var deleteButton = subform.find( '.embedded-form-delete' ).first();
+        expect( callbackResults.deleted ).toBe( false );
+        deleteButton.click();
+        expect( callbackResults.deleted ).toBe( true );
+
+        function selectElements() {
+          keyField   = getControlByName( suite, 'keyField' );
+          valueProp1 = getControlByName( suite, 'valueProp1' );
+          valueProp2 = getControlByName( suite, 'valueProp2' );
+
+          model      = _.get( suite.controller.model, subformName );
+          saveButton = subform.find( '.embedded-form-save' );
+        }
+      } );
+
+      it( 'should save data to the model as a hashtable', function() {
+        var subformName = 'hashtableTypeCollection',
+            suite       = suiteSubform,
+            subform     = getControlByName( suite, subformName ).filter( '.subform' ),
+            addButton   = subform.find( 'button.embedded-form-add' ),
+            model       = _.get( suite.controller.model, subformName ),
+            saveButton  = null,
+            keyField    = null,
+            valueField  = null;
+
+        // This is a 'hashtable' type, so expect the editable model to be transformed
+        // from this:
+        var editableModel    = {
+          keyField  : 'myKey',
+          valueField: 'myValue'
+        };
+        // to this:
+        var transformedModel = {
+          myKey: 'myValue'
+        };
+
+        var expectedModel = _.extend( transformedModel, existingModel[subformName] );
+
+        expect( addButton.length ).toBe( 1 );
+        expect( subform.length ).toBe( 1 );
+
+        // Open the subform
+        expect( addButton.is( ':disabled' ) ).toBe( false );
+        addButton.click();
+        digest( suite );
+        selectElements();
+
+        // Fields should be present
+        expect( keyField.length ).toBe( 1 );
+        expect( valueField.length ).toBe( 1 );
+
+        // The defaultItem specified in the FDN should have loaded
+        expect( keyField.val() ).toEqual( 'Default Hashtable Key' );
+
+        // Set values in the fields
+        keyField.val( editableModel.keyField ).trigger( 'change' );
+        valueField.val( editableModel.valueField ).trigger( 'change' );
+        digest( suite );
+
+        // Save the subform
+        expect( callbackResults.updated ).toBe( false );
+        expect( saveButton.length ).toBe( 1 );
+        saveButton.click();
+        digest( suite );
+        selectElements();
+
+        // Expect updated model to match the original model + the added item
+        expect( angular.equals( model, expectedModel ) ).toBe( true );
+
+        // Expect the callback specified in the config to have been invoked
+        expect( callbackResults.updated ).toBe( true );
+
+        // Since the FDN has a maxSize of 3, the add button should now be disabled
+        expect( _.keys( model ).length ).toBe( 3 );
+        expect( addButton.is( ':disabled' ) ).toBe( true );
+
+        // Exercise the delete callback
+        var deleteButton = subform.find( '.embedded-form-delete' ).first();
+        expect( callbackResults.deleted ).toBe( false );
+        deleteButton.click();
+        expect( callbackResults.deleted ).toBe( true );
+
+        function selectElements() {
+          keyField   = getControlByName( suite, 'keyField' );
+          valueField = getControlByName( suite, 'valueField' );
+
+          model      = _.get( suite.controller.model, subformName );
+          saveButton = subform.find( '.embedded-form-save' );
+        }
+      } );
+    } );
+
+    function createDirectives( rootForm, config ) {
+      config    = config || {};
       // Create an isc-form to get what would normally be passed to isc-form-internal
       suiteForm = createDirective( rootForm, {
-        localFormConfig  : {},
-        localButtonConfig: {}
+        localFormConfig  : config.formConfig || {},
+        localButtonConfig: config.buttonConfig || {}
       } );
       suiteMain.$httpBackend.flush();
 

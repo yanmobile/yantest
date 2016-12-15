@@ -80,7 +80,7 @@
 
     describe( 'api.post', function() {
       it( 'should save a new form to the API', function() {
-        var expectedId = 4,
+        var expectedId = 1001,
             formData   = {
               test: 'test'
             };

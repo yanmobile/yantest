@@ -7,12 +7,13 @@
                 data="efCollectionCtrl.collectionModel">
     </faux-table>
 
-    <div class="grid-content collapse clearfix">
+    <div class="grid-content collapse clearfix"
+         ng-hide="efCollectionCtrl.renderForm">
       <!--Add Button-->
       <button class="button float-left small embedded-form-add"
               type="button"
-              ng-class="{'disabled' : efCollectionCtrl.disabled}"
-              ng-disabled="efCollectionCtrl.disabled"
+              ng-class="{'disabled' : efCollectionCtrl.isAddItemDisabled()}"
+              ng-disabled="efCollectionCtrl.isAddItemDisabled()"
               ng-if="efCollectionCtrl.mode != 'view'"
               ng-click="efCollectionCtrl.newForm()">
         <i class="fa fa-plus"></i> {{'Forms_Collections_Add' | translate}} {{efCollectionCtrl.label | translate}}

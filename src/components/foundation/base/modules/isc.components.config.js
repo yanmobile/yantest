@@ -33,12 +33,14 @@
         }
       },
       'forms'          : {
-        'initCodeTables'       : false,
-        'debounce'             : 0,
-        'useExternalValidation': false,
-        'allowInvalid'         : false,
-        'updateOn'             : 'change',
-        'updateOnExcluded'     : [
+        'initCodeTables'        : false,
+        'defaultCodeTableScheme': '$',
+        'defaultDisplayField'   : 'Description',
+        'debounce'              : 0,
+        'useExternalValidation' : false,
+        'allowInvalid'          : false,
+        'updateOn'              : 'change',
+        'updateOnExcluded'      : [
           'checkbox',
           'multiCheckbox',
           'radio',
@@ -46,7 +48,7 @@
           'dateComponents',
           'dateComponentsPartial'
         ],
-        'fieldLayout'          : {
+        'fieldLayout'           : {
           'breakpoints': [
             'small',
             'medium',

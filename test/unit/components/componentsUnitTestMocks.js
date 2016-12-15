@@ -42,12 +42,14 @@ function getCustomConfig() {
         'path': 'codeTables'
       }
     },
-    'forms'          : {
-      'initCodeTables'  : true,
-      'debounce'        : 75,
-      'allowInvalid'    : true,
-      'updateOn'        : 'change',
-      'updateOnExcluded': [
+    'forms': {
+      'initCodeTables'        : true,
+      'defaultCodeTableScheme': '$',
+      'defaultDisplayField'   : 'displayField',
+      'debounce'              : 75,
+      'allowInvalid'          : true,
+      'updateOn'              : 'change',
+      'updateOnExcluded'      : [
         'checkbox',
         'multiCheckbox',
         'radio',
@@ -55,7 +57,7 @@ function getCustomConfig() {
         'dateComponents',
         'dateComponentsPartial'
       ],
-      'fieldLayout'     : {
+      'fieldLayout'           : {
         'breakpoints': [
           'small',
           'medium',

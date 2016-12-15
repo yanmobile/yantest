@@ -1,10 +1,10 @@
 /**
  * Created by Trevor Hudson on 10/27/15.
  */
-  // This filter contains standards for Date display for consistency
-  // for custom formatting, please refer to http://momentjs.com/docs/#/displaying/format/
-  // First option takes in custom format strings, 'date', 'dateWithTime', or 'fromNow'
-  // Second option is UTC: true indicates to use UTC mode
+// This filter contains standards for Date display for consistency
+// for custom formatting, please refer to http://momentjs.com/docs/#/displaying/format/
+// First option takes in custom format strings, 'date', 'dateWithTime', or 'fromNow'
+// Second option is UTC: true indicates to use UTC mode
 
 ( function() {
   'use strict';
@@ -40,7 +40,7 @@
         return iscMoment( date ).format( 'LL' );
       }
       else if ( format === 'dateWithTime' ) { // 9/26/1986 9:00 AM
-        return  iscMoment( date ).format( 'L' ) + ' ' + iscMoment( date ).format( 'LT' );
+        return iscMoment( date ).format( 'L' ) + ' ' + iscMoment( date ).format( 'LT' );
       }
       else if ( format === 'fromNow' ) { // 29 years ago
         return iscMoment( date ).fromNow();
