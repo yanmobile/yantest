@@ -163,6 +163,16 @@ $breakpoint-percentages : (
     }
   }
 
+  /* Formly Field Groups */
+  .formly-field-group, .form-section {
+    .formly[role='form'] > [formly-field] {
+      padding: 0;
+      > :not([is-field-group]) {
+        padding: 0 2rem 0 0;
+      }
+    }
+  }
+
   /* Form Inputs */
 
   /* Textual Input Types */
