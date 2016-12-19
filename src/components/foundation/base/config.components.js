@@ -15,7 +15,8 @@ module.exports = {
       "src/components/foundation/base/node_modules/tooltipster/dist/js/tooltipster.bundle.js",
       "src/components/foundation/base/node_modules/n3-charts/build/LineChart.js",
       "src/components/foundation/base/node_modules/leaflet/dist/leaflet.js",
-      "src/components/foundation/base/node_modules/ng-tags-input/build/ng-tags-input.js"
+      "src/components/foundation/base/node_modules/ng-tags-input/build/ng-tags-input.js",
+      "src/components/foundation/base/node_modules/ui-select/dist/select.js"
     ],
 
     "mocks": [],
