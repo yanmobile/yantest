@@ -4,6 +4,10 @@
   "autosave"   : {
     "trigger" : "modelChange"
   },
+  "sectionLayout" : {
+    "edit" : "wizard",
+    "view" : "scrolling"
+  },
   "sections"   : [
     {
       "name"   : "Section 1",

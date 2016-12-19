@@ -88,8 +88,9 @@
      * @returns {{}}
      */
     function getCustomDisplayOptions( field ) {
-      var options = {},
-          data    = _.get( field, 'data', {} );
+      var options       = {},
+          data          = _.get( field, 'data', {} ),
+          computedField = _.get( data, 'computedField', {} );
 
       if ( data.tableCellType ) {
         options.type = data.tableCellType;
@@ -98,6 +99,13 @@
       if ( data.tableCellDisplay ) {
         options.templateUrl = 'forms/foundationTemplates/tableTemplates/data.tableCellDisplay.html';
         options.display     = data.tableCellDisplay;
+      }
+
+      if ( computedField.display ) {
+        options.display             = computedField.display;
+        options.computedTemplate    = computedField.template;
+        options.computedTemplateUrl = computedField.templateUrl;
+        options.templateUrl         = 'forms/foundationTemplates/tableTemplates/data.computedField.html';
       }
       return options;
     }

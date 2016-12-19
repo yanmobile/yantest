@@ -50,7 +50,7 @@ $text-input-selectors: 'input[type="text"], input[type="password"], input[type="
 
 /* Form Typography */
 $form-title-margin: 0 0 2rem 0 !default;
-$form-section-title-margin: 0 0 1.5rem 0 !default;
+$form-section-title-margin: 0 0 2rem 0 !default;
 
 //Labels for non-radio/checkbox inputs
 $form-label-margin: 1rem !default;
@@ -86,34 +86,20 @@ $form-label-font-weight: $font-weight-semi-bold !default;
 }
 
 // Classes for data.layout columns
-$field-flex-percentages : (
-        10 : 10%,
-        20 : 20%,
-        30 : 30%,
-        40 : 40%,
-        50 : 50%,
-        60 : 60%,
-        70 : 70%,
-        80 : 80%,
-        90 : 90%,
-        100:100%
-);
-
 $breakpoint-percentages : (
-        'medium' : $medium-up,
-        'large' : $large-up,
-        'xlarge' : $xlarge-up
+  'medium' : $medium-up,
+  'large'  : $large-up,
+  'xlarge' : $xlarge-up
 );
 
 @each $breakpoint in map-keys($breakpoints) {
-  @each $flex-amount in map-keys($field-flex-percentages) {
-    $percentage : map-get($field-flex-percentages, $flex-amount);
+  @for $flex-amount from 1 through 100 {
+    $percentage : percentage($flex-amount / 100);
     $bp-percentage : map-get($breakpoint-percentages, $breakpoint);
     $media : $bp-percentage;
     @if $breakpoint == 'small' {
       $media : "only screen and (min-width: 0)";
     }
-
     @if $media {
       @media #{$media} {
         .formly-field-#{$breakpoint}-#{$flex-amount} {
@@ -121,7 +107,6 @@ $breakpoint-percentages : (
         }
       }
     }
-
   }
 }
 
@@ -263,11 +248,11 @@ $breakpoint-percentages : (
     border: $input-border;
     margin-bottom: $input-bottom-margin;
     line-height: 1.3;
+    padding-right: rem-calc(18px) + $form-padding;
 
     &:hover {
       background: $select-background-hover url(image-triangle($select-arrow-color)) right 10px center no-repeat;
       background-size: 8px 8px;
-      padding-right: rem-calc(18px) + $form-padding;
     }
 
     &:focus {
@@ -276,7 +261,6 @@ $breakpoint-percentages : (
       background: $input-background-focus url(image-triangle($select-arrow-color)) right 10px center no-repeat;
       color: $input-color-focus;
       background-size: 8px 8px;
-      padding-right: rem-calc(18px) + $form-padding;
     }
 
     &[disabled], &.disabled {
@@ -459,9 +443,15 @@ $breakpoint-percentages : (
 
   /* Form instructions (contextual help text) */
   .instructions {
+    margin: $form-section-title-margin;
+
     p {
-      font-size: 1.125rem;
-      margin: $form-section-title-margin;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
     }
   }
 
@@ -492,6 +482,13 @@ $breakpoint-percentages : (
     &.radio, &.checkbox, .checkbox & {
       margin-left: 0.125rem; // no cut-off
       font-weight: $font-weight-normal;
+    }
+
+    &.required {
+      &:after {
+        content: " * ";
+        color: $alert-color;
+      }
     }
   }
 

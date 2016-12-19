@@ -5,16 +5,17 @@
   </div>
 
   <!--empty data message-->
-  <div ng-if="fauxTblCtrl.data.length === 0" class="grid-block">
+  <div ng-if="fauxTblCtrl.data.length === 0 && fauxTblCtrl.getEmptyMessage()"
+       class="grid-block">
     <p class="{{column.cssEmptyClass || 'empty-message'}}">
-      {{ (fauxTblCtrl.config.emptyText || "No content available") | translate}}
+      {{ (fauxTblCtrl.getEmptyMessage()) | translate}}
     </p>
   </div>
 
   <div ng-if="fauxTblCtrl.data.length > 0" class="grid-block grid-table">
 
     <!--thead-->
-    <div class="grid-block thead">
+    <div class="grid-block thead" ng-if="!fauxTblCtrl.config.hideHeader">
       <div class="grid-block tr">
         <div ng-repeat="column in fauxTblCtrl.config.columns"
              ng-init="sortable = fauxTblCtrl.config.sortable && column.sortable !== false"

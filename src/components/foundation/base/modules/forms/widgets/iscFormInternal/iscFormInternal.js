@@ -258,12 +258,18 @@
 
         self.sections       = self.formDefinition.form.sections;
         self.currentSection = _.head( self.sections );
+
+        var sectionLayout = _.get( self.formDefinition.form, 'sectionLayout', 'scrolling' ),
+            mode          = _.get( self.options, 'formState._mode', 'edit' ),
+            modeLayout    = _.get( sectionLayout, mode, sectionLayout );
+
         self.mainFormConfig = {
           sections          : self.sections,
-          layout            : self.formDefinition.form.sectionLayout,
+          layout            : modeLayout,
           currentSection    : self.currentSection,
           selectableSections: [],
           forms             : self.forms,
+          displayConfig     : self.formConfig.display || {},
           buttonConfig      : self.buttonConfig || {},
           buttonContext     : self,
           selectSection     : selectSection,

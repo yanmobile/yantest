@@ -1,0 +1,22 @@
+{
+  "sections" : [
+    {
+      "fields" : [
+        {
+          "key"             : "collection",
+          "type"            : "codedItemCollection",
+          "templateOptions" : {
+            "label" : "States"
+          },
+          "data"            : {
+            "embeddedLabel"          : "States",
+            "codeTable"              : "usStates",
+            "listItemSelectionType"  : "select",
+            "resultsDisplayField"    : "displayField",
+            "displayField"           : "displayField"
+          }
+        }
+      ]
+    }
+  ]
+}

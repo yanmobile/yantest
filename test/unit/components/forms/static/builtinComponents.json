@@ -11,7 +11,8 @@
             "label" : "A section component"
           },
           "data"            : {
-            "content" : "A Section Header"
+            "content" : "A Section Header",
+            "details" : "<p>Section details</p><p>More details</p>"
           }
         },
         {
@@ -26,6 +27,13 @@
         },
         {
           "type" : "divider"
+        },
+        {
+          "type" : "image",
+          "data" : {
+            "src" : "images/logo.png",
+            "alt" : "This is an image"
+          }
         },
         {
           "key"             : "templates.input.date",
@@ -55,6 +63,15 @@
               "data"            : {
                 "userScript" : "buttonScript",
                 "content"    : "Click me"
+              }
+            },
+            {
+              "type"            : "button",
+              "templateOptions" : {
+                "disabled" : true
+              },
+              "data"            : {
+                "content" : "I am disabled"
               }
             },
             {
@@ -96,19 +113,19 @@
             "options" : [
               {
                 "displayFieldOverride" : "MultiCheckbox 1",
-                "value"        : "1"
+                "value"                : "1"
               },
               {
                 "displayFieldOverride" : "MultiCheckbox 2",
-                "value"        : "2"
+                "value"                : "2"
               },
               {
                 "displayFieldOverride" : "MultiCheckbox 3",
-                "value"        : "3"
+                "value"                : "3"
               }
             ]
           },
-          "data" : {
+          "data"            : {
             "displayField" : "displayFieldOverride"
           }
         },

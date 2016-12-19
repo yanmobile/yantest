@@ -34,6 +34,39 @@
     } );
 
     describe( 'model.configureCache', function() {
+      it( 'should not change the default behavior if nothing is configured', function() {
+        // Configuring with no object should do nothing
+        suite.model.configureCache();
+
+        // The cache behavior should be unchanged
+        var formKey   = 'simple1';
+        var getApi    = suite.api.getFormDefinition,
+            callCount = 0;
+        spyOn( suite.api, 'getFormDefinition' ).and.callFake( function() {
+          callCount++;
+          return getApi.apply( this, arguments );
+        } );
+
+        test( 'edit' );
+        suite.httpBackend.flush();
+
+        // definition is now cached
+        test( 'view' );
+        suite.timeout.flush();
+
+        function test( mode ) {
+          suite.model.getFormDefinition( {
+            formKey: formKey,
+            mode   : mode
+          } )
+            .then( function() {
+              expect( suite.api.getFormDefinition ).toHaveBeenCalled();
+              // This should not exceed 1 since the definition has been cached
+              expect( callCount ).toBe( 1 );
+            } );
+        }
+      } );
+
       it( 'should configure the scope of the FDN cache', function() {
         var cacheKeyCounterWasCalled = false;
 

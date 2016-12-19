@@ -189,9 +189,10 @@
       it( 'should load function library definitions in subforms, overriding function definitions that are closer to the form', function() {
         var suite         = suiteLibrary,
             instructions  = suite.element.find( '.formly-field-instructions' ),
-            instructions1 = instructions.filter( '.script1' ).find( '.ng-binding' ),
-            instructions2 = instructions.filter( '.script2' ).find( '.ng-binding' ),
-            instructions3 = instructions.filter( '.script3' ).find( '.ng-binding' );
+            // instructions can have labels, so take the last binding for the field
+            instructions1 = instructions.filter( '.script1' ).find( '.ng-binding' ).last(),
+            instructions2 = instructions.filter( '.script2' ).find( '.ng-binding' ).last(),
+            instructions3 = instructions.filter( '.script3' ).find( '.ng-binding' ).last();
 
         expect( instructions1.length ).toBe( 1 );
         expect( instructions2.length ).toBe( 1 );
@@ -297,8 +298,11 @@
 
           // simple1 autosaves on model change
           model.aField = 'some value';
-          suiteMain.$httpBackend.flush();
+          digest( suite );
           expect( suiteMain.iscFormDataApi.post ).toHaveBeenCalled();
+
+          model.aField = 'some other value';
+          digest( suite );
 
           // clicking submit should call the submit api
           submitButton.click();
@@ -423,7 +427,7 @@
             qdTags = getQdTags( fdn.sections[0].fields );
 
         // Expect some fields to have qdTags in the static mock FDN
-        expect(qdTags.length).toBeGreaterThan(0);
+        expect( qdTags.length ).toBeGreaterThan( 0 );
 
         // Expect all of those qdTags in the mock FDN to be rendered
         _.forEach( qdTags, function( qdTag ) {

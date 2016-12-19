@@ -76,8 +76,14 @@
     formlyConfig.extras.fieldTransform.push( fixWatchers );
     formlyConfig.extras.fieldTransform.push( addQdTag );
 
+    var defaultViewConfig = {
+      getValue   : defaultGetValue,
+      wrapContent: defaultWrapContent
+    };
+
     var service = {
       appendWrapper            : appendWrapper,
+      configureDefaultViewMode : configureDefaultViewMode,
       getButtonDefaults        : getButtonDefaults,
       getFieldsForEmbeddedForm : getFieldsForEmbeddedForm,
       getFormDefaults          : getFormDefaults,
@@ -98,6 +104,22 @@
     };
 
     return service;
+
+    /**
+     * @description Configures the default view mode functions
+     * @param {Object} config - Takes getValue(value, fieldDefinition) and wrapContent(value) functions.
+     * getValue takes the raw data model value (which may be an object) and the fdn definition for the field
+     * and should return a string to display.
+     * wrapContent takes this string to display and should return a string or sanitized html to render on the form.
+     */
+    function configureDefaultViewMode( config ) {
+      extendConfig( 'getValue' );
+      extendConfig( 'wrapContent' );
+
+      function extendConfig( name ) {
+        defaultViewConfig[name] = _.isFunction( config[name] ) ? config[name] : defaultViewConfig[name];
+      }
+    }
 
     /**
      * @description Registers default buttons for all forms using this service. These will automatically be
@@ -217,7 +239,6 @@
 
         // Wrap data with additional information and metadata
         return {
-          formDefinition  : formDefinition,
           additionalModels: formScope.additionalModels,
           formData        : {
             formKey    : formState._formKey,
@@ -331,6 +352,10 @@
       return fields;
 
       function inheritClassNames( field ) {
+        if ( !field.type ) {
+          return;
+        }
+
         var isControlFlowOnly = field.type === 'controlFlowOnly',
             type              = isControlFlowOnly ? _.get( field, 'data.controlFlowOnly.templateType' ) : field.type,
             className         = isControlFlowOnly ? 'formly-field-' + type : '',
@@ -708,33 +733,39 @@
           }
 
           function getDefaultViewValue() {
-            var value = _.get( $scope.model, $scope.options.key );
+            var value       = _.get( $scope.model, $scope.options.key ),
+                getValue    = defaultViewConfig.getValue,
+                wrapContent = defaultViewConfig.wrapContent;
 
-            if ( _.isObject( value ) ) {
-              var displayField = _.get( $scope.options, 'data.displayField', 'name' );
-              return wrap( value[displayField] );
-            }
-            else {
-              if ( value && isoRE.test( value ) ) {
-                var mValue = moment( value );
-                if ( mValue.isValid() ) {
-                  return wrap( $filter( 'iscDate' )( mValue, _.get( config, 'formats.date.shortDate', 'date' ) ) );
-                }
-              }
-              return wrap( value );
-            }
-
-            function wrap( value ) {
-              if ( value === undefined ) {
-                return $sce.trustAsHtml( '<p class="not-specified">Not specified</p>' );
-              }
-              else {
-                return $sce.trustAsHtml( '<p>' + value + '</p>' );
-              }
-            }
+            return wrapContent( getValue( value, $scope.options ) );
           }
         }
       } );
+    }
+
+    function defaultGetValue( value, fieldDefinition ) {
+      if ( _.isObject( value ) ) {
+        var displayField = _.get( fieldDefinition, 'data.displayField', 'name' );
+        return value[displayField];
+      }
+      else {
+        if ( value && isoRE.test( value ) ) {
+          var mValue = moment( value );
+          if ( mValue.isValid() ) {
+            return $filter( 'iscDate' )( mValue, _.get( config, 'formats.date.shortDate', 'date' ) );
+          }
+        }
+        return value;
+      }
+    }
+
+    function defaultWrapContent( value ) {
+      if ( value === undefined ) {
+        return $sce.trustAsHtml( '<p class="not-specified">' + $translate.instant( 'Not specified' ) + '</p>' );
+      }
+      else {
+        return $sce.trustAsHtml( '<p>' + value + '</p>' );
+      }
     }
 
     /**

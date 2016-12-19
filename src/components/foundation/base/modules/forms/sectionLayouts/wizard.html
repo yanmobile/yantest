@@ -2,6 +2,9 @@
      ng-show="section === subformCtrl.mainFormConfig.currentSection"
      class="grid-content collapse form-section">
 
+  <section-layout-wizard-steps context="subformCtrl.mainFormConfig">
+  </section-layout-wizard-steps>
+
   <h4>{{section.name | translate}}</h4>
 
   <formly-form model="subformCtrl.model"
@@ -11,6 +14,4 @@
                fields="section.fields">
   </formly-form>
 
-  <section-layout-wizard-steps context="subformCtrl.mainFormConfig">
-  </section-layout-wizard-steps>
 </div>

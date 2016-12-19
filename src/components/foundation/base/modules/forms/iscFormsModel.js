@@ -12,14 +12,14 @@
    * @param $q
    * @param $templateCache
    * @param $window
-   * @param $filter
+   * @param $translate
    * @param iscHttpapi
    * @param iscFormsTemplateService
    * @param iscFormFieldLayoutService
    * @param iscFormsApi
    * @returns {{getForms, getActiveForm, getActiveForms, setFormStatus, getFormDefinition, getValidationDefinition}}
    */
-  function iscFormsModel( $q, $templateCache, $window, $filter,
+  function iscFormsModel( $q, $templateCache, $window, $translate,
     iscHttpapi, // needed for user script closures
     iscFormsTemplateService, iscFormFieldLayoutService, iscFormsApi ) {
     var _formsCache         = {};
@@ -50,6 +50,7 @@
      * @param {{ getCacheKey : function(formKey, formVersion) }} config
      */
     function configureCache( config ) {
+      config = config || {};
       getCacheKey = config.getCacheKey || defaultGetCacheKey;
     }
 
@@ -346,7 +347,7 @@
                 // Translate the label if no label expression has been set
                 var expLabel = expProps['templateOptions.label'];
                 if ( label && !expLabel ) {
-                  _.set( field, 'templateOptions.label', $filter( 'translate' )( label ) );
+                  _.set( field, 'templateOptions.label', $translate.instant( label ) );
                 }
 
                 // If the type is not already registered, load it and register it with formly
@@ -375,7 +376,7 @@
                   if ( getApi ) {
                     script.api.get = ( function( iscHttpapi ) {
                       return getApi;
-                    } )();
+                    } )( iscHttpapi );
                   }
                   _.set( field, 'data.userModel', script );
                   return true;
@@ -665,11 +666,17 @@
           var data            = _.get( field, 'data.viewMode', {} ),
               viewTemplate    = data.template,
               viewTemplateUrl = data.templateUrl;
+          // formly rejects a field if it specifies both a type and a template or templateUrl
+          // So import the wrappers for that type and unbind the type for view mode
           if ( viewTemplate ) {
             field.template = viewTemplate;
+            field.wrapper  = field.wrapper || registeredType.wrapper;
+            delete field.type;
           }
           else if ( viewTemplateUrl ) {
             field.templateUrl = viewTemplateUrl;
+            field.wrapper     = field.wrapper || registeredType.wrapper;
+            delete field.type;
           }
           else {
             // Collections handle view mode on their own.
