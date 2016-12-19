@@ -1,0 +1,42 @@
+{
+  "sections" : [
+    {
+      "fields" : [
+        {
+          "key" : "collection",
+          "type" : "embeddedFormCollection",
+          "data" : {
+            "collections" : {
+              "editAs" : "inline"
+            },
+            "emptyCollectionMessage" : "",
+            "embeddedFields" : [
+              {
+                "key" : "name.first",
+                "type" : "input"
+              },
+              {
+                "key" : "name.middle",
+                "type" : "input"
+              },
+              {
+                "key" : "name.last",
+                "type" : "input"
+              },
+              {
+                "key" : "computedName",
+                "type" : "computedTableField",
+                "data" : {
+                  "computedField" : {
+                    "template" : "['<p>', model.name.first, model.name.middle, model.name.last, '</p>'].join( ' ' )"
+                  },
+                  "tableHeaderLabel" : "Name"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

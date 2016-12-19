@@ -50,6 +50,7 @@
      * @param {{ getCacheKey : function(formKey, formVersion) }} config
      */
     function configureCache( config ) {
+      config = config || {};
       getCacheKey = config.getCacheKey || defaultGetCacheKey;
     }
 
@@ -665,11 +666,17 @@
           var data            = _.get( field, 'data.viewMode', {} ),
               viewTemplate    = data.template,
               viewTemplateUrl = data.templateUrl;
+          // formly rejects a field if it specifies both a type and a template or templateUrl
+          // So import the wrappers for that type and unbind the type for view mode
           if ( viewTemplate ) {
             field.template = viewTemplate;
+            field.wrapper  = field.wrapper || registeredType.wrapper;
+            delete field.type;
           }
           else if ( viewTemplateUrl ) {
             field.templateUrl = viewTemplateUrl;
+            field.wrapper     = field.wrapper || registeredType.wrapper;
+            delete field.type;
           }
           else {
             // Collections handle view mode on their own.

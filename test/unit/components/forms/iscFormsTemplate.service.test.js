@@ -244,5 +244,25 @@
       } );
     } );
 
+    describe( 'registerGlobalLibrary', function() {
+      it( 'should register a function with the global library', function() {
+        suiteMain.iscFormsTemplateService.registerGlobalLibrary( {
+          myFunction: _.noop
+        } );
+
+        var globalLibrary = suiteMain.iscFormsTemplateService.getGlobalFunctionLibrary();
+        expect( globalLibrary.myFunction ).toEqual( _.noop );
+      } )
+    } );
+
+    describe( 'appendWrapper', function() {
+      it( "should append a wrapper to the given template's wrapper array", function() {
+        suiteMain.iscFormsTemplateService.appendWrapper( 'customWrapper', 'input' );
+
+        var template = suiteMain.iscFormsTemplateService.getRegisteredType( 'input' );
+        expect( template.wrapper ).toContain( 'customWrapper' );
+      } );
+    } );
+
   } );
 })();

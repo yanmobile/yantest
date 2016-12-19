@@ -34,13 +34,30 @@ function digest( suite ) {
 
 
 // Form template generators
-function getMinimalForm( formKey, formDataId ) {
+function getMinimalForm( config ) {
+  var formKey     = '',
+      formVersion = '',
+      formDataId  = '',
+      mode        = 'edit';
+
+  if ( _.isObject( config ) ) {
+    formKey     = config.formKey;
+    formVersion = config.formVersion || '';
+    formDataId  = config.formDataId || '';
+    mode        = config.mode || 'edit';
+  }
+  else {
+    formKey = config;
+  }
+
   return '<isc-form ' +
     'form-key="' + formKey + '" ' +
-    'form-data-id="' + (formDataId || '' ) + '" ' +
+    'form-version="' + formVersion + '" ' +
+    'form-data-id="' + formDataId + '" ' +
     'form-config="localFormConfig"' +
+    'mode="' + mode + '"' +
     'button-config="localButtonConfig"' +
-    '></isc-form>'
+    '></isc-form>';
 }
 
 function getConfiguredForm() {

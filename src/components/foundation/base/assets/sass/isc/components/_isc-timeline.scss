@@ -10,7 +10,7 @@
 */
 
 /* Timeline Settings */
-$timeline-margin: 2rem !default;
+$timeline-margin: 0 0 3.5rem 0 !default;
 $timeline-color: $primary-color !default;
 
 /* Timeline Styles */
@@ -19,8 +19,7 @@ $timeline-color: $primary-color !default;
   /* Wizard Step Timeline */
   .wizard-timeline {
     display       : flex;
-    margin-top    : $timeline-margin;
-    margin-bottom : $timeline-margin;
+    margin    : $timeline-margin;
 
     .circle {
       background-color : $timeline-color;
@@ -44,7 +43,7 @@ $timeline-color: $primary-color !default;
         background-color : transparent;
         border           : none;
         margin           : 0;
-        padding: 0 0 0.25rem 0;
+        padding: 0;
         font-weight: $font-weight-semi-bold;
       }
 

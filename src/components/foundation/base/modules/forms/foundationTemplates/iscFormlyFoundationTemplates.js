@@ -47,7 +47,7 @@
    *    templateLabel<br />
    *    templateHasError
    */
-  function iscFormlyFoundationTemplates( $filter, iscCustomConfigService, iscFormsTemplateService ) {
+  function iscFormlyFoundationTemplates( $filter, $sce, iscCustomConfigService, iscFormsTemplateService ) {
     var service = {
       init: init
     };
@@ -78,24 +78,30 @@
       // Section (static text)
       iscFormsTemplateService.registerType( {
         name       : 'section',
-        templateUrl: 'forms/foundationTemplates/templates/section.html'
+        wrapper    : ['templateLabel'],
+        templateUrl: 'forms/foundationTemplates/templates/section.html',
+        controller : htmlController
       } );
 
       // Instructions (static text)
       iscFormsTemplateService.registerType( {
         name       : 'instructions',
-        templateUrl: 'forms/foundationTemplates/templates/instructions.html'
+        wrapper    : ['templateLabel'],
+        templateUrl: 'forms/foundationTemplates/templates/instructions.html',
+        controller : htmlController
       } );
 
       // Divider (line / hr)
       iscFormsTemplateService.registerType( {
         name       : 'divider',
+        wrapper    : ['templateLabel'],
         templateUrl: 'forms/foundationTemplates/templates/divider.html'
       } );
 
       // Button (supports templateOptions.onClick and data.userScript)
       iscFormsTemplateService.registerType( {
         name       : 'button',
+        wrapper    : ['templateLabel'],
         templateUrl: 'forms/foundationTemplates/templates/button.html',
         /* @ngInject */
         controller : function( $scope ) {
@@ -133,6 +139,13 @@
           }
         },
         link       : setQdTagManually
+      } );
+
+      // Image
+      iscFormsTemplateService.registerType( {
+        name       : 'image',
+        templateUrl: 'forms/foundationTemplates/templates/image.html',
+        wrapper    : ['templateLabel']
       } );
 
       // Input
@@ -359,6 +372,28 @@
         link       : setQdTagManually
       } );
 
+
+      // Computed Table Field
+      // Allows marked-up display of computed sibling fields in the tabular view of a collection
+      iscFormsTemplateService.registerType( {
+        name          : 'computedTableField',
+        // This field should not display as its own field, but should only show in the collection table
+        template      : '<span></span>',
+        defaultOptions: {
+          data: {
+            computedField: {
+              display: function( model, field, evalContext ) {
+                var template        = _.get( field, 'computedTemplate' ),
+                    markedUpDisplay = evalContext( template, {
+                      model: model
+                    } );
+                return $sce.trustAsHtml( markedUpDisplay );
+              }
+            }
+          }
+        }
+      } );
+
       // Embedded form
       iscFormsTemplateService.registerType( {
           name       : 'embeddedForm',
@@ -419,6 +454,85 @@
         {
           excludeFromWidgetLibrary: true
         } );
+
+      /**
+       * @description A collection that consists only of selections from a code table.
+       * The data model for this widget type is an array of the selected coded items.
+       */
+      iscFormsTemplateService.registerType( {
+        name          : 'codedItemCollection',
+        extends       : 'embeddedFormCollection',
+        templateUrl   : 'forms/foundationTemplates/templates/codedItemCollection.html',
+        defaultOptions: {
+          data: {
+            listItemSelectionType: 'select',
+            collections          : {
+              editAs: 'inline'
+            }
+          }
+        },
+        /* @ngInject */
+        controller    : function( $scope ) {
+          $scope.options.extras.skipNgModelAttrsManipulator = true;
+
+          var codeItemKey = '__CODE_ITEM__',
+              key         = $scope.options.key,
+              data        = _.get( $scope.options, 'data', {} ),
+              mode        = _.get( $scope.formState, '_mode' );
+
+          if ( mode === 'view' ) {
+            _.set( $scope.options, 'data.collections.hideTableHeader', true );
+          }
+
+          // Create an embedded field for selecting the code item
+          var codeTableSelector = {
+            key            : codeItemKey,
+            type           : data.listItemSelectionType,
+            templateOptions: {
+              label: data.embeddedLabel
+            }
+          };
+          _.extend( codeTableSelector, {
+            data: data
+          } );
+
+          _.set( $scope.options, 'data.embeddedFields', [
+            codeTableSelector
+          ] );
+
+          // Set up a local model for the collection
+          var localModel = {},
+              model      = _.get( $scope.model, key, [] );
+
+          _.set( localModel, key,
+            _.map( model, function( item ) {
+                // Add an intermediate key for the embeddedFormCollection
+                var obj          = {};
+                obj[codeItemKey] = item;
+                return obj;
+              }
+            )
+          );
+          $scope.localModel = _.get( localModel, key );
+
+          // When changes are made to the collection's model, remove the unneeded key
+          $scope.$watch(
+            function() {
+              return $scope.localModel;
+            },
+            function( newValue, oldValue ) {
+              // flatten localModel to remove the intermediate key
+              if ( newValue && !angular.equals( newValue, oldValue ) ) {
+                var flattenedModel = _.map( newValue, function( item ) {
+                  return item[codeItemKey] || item;
+                } );
+                _.set( $scope.model, key, flattenedModel );
+              }
+            },
+            true
+          );
+        }
+      } );
 
       // Embedded Form Listener
       // This field will not be rendered in the DOM, but will listen for FORMS_EVENTS
@@ -531,15 +645,26 @@
         }
       }
 
-      function setQdTagManually( scope, elt ) {
-        var selector = scope._qdTagSelector,
-            qdTag    = _.get( scope, 'to.qdTag' );
+      /* @ngInject */
+      function htmlController( $scope ) {
+        $scope.getHtml = function( propName ) {
+          var content = _.get( $scope, propName );
 
-        if ( selector && qdTag ) {
-          elt.find( selector ).attr( 'qd-tag', qdTag );
-        }
+          if ( content ) {
+            return $sce.trustAsHtml( $filter( 'translate' )( content ) );
+          }
+          return '';
+        };
       }
     }
 
+    function setQdTagManually( scope, elt ) {
+      var selector = scope._qdTagSelector,
+          qdTag    = _.get( scope, 'to.qdTag' );
+
+      if ( selector && qdTag ) {
+        elt.find( selector ).attr( 'qd-tag', qdTag );
+      }
+    }
   }
 } )();
