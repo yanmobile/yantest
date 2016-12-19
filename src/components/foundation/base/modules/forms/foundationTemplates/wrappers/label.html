@@ -1,9 +1,8 @@
 <div class="vertical grid-block">
 
   <isc-forms-help help-content="options.data.helpText">
-    <label for="{{id}}" class="form-label">
+    <label for="{{id}}" ng-class="{'required':to.required}" class="form-label">
       {{to.label | translate}}
-      {{to.required ? '*' : ''}}
     </label>
   </isc-forms-help>
 

@@ -42,6 +42,9 @@
       var parsedId          = parseInt( self.formDataId );
       self.parsedFormDataId = _.isNaN( parsedId ) ? undefined : parsedId;
 
+      // Default mode is 'edit'
+      self.mode = self.mode || 'edit';
+
       _.merge( self, {
         formDefinition        : {},
         internalFormDefinition: {},
@@ -166,7 +169,11 @@
           formLiteral: self.internalFormConfig.formLiteral
         } )
           .then( function( validationDefinition ) {
-            var defaultButtonConfig   = iscFormsTemplateService.getButtonDefaults( self.mode, self.formDefinition.form.sectionLayout );
+            var sectionLayout = _.get( self.formDefinition.form, 'sectionLayout', 'scrolling' ),
+                mode          = self.mode,
+                modeLayout    = _.get( sectionLayout, mode, sectionLayout );
+
+            var defaultButtonConfig   = iscFormsTemplateService.getButtonDefaults( mode, modeLayout );
             self.internalButtonConfig = _.defaultsDeep( self.buttonConfig || {}, defaultButtonConfig );
 
             self.validationDefinition = validationDefinition;
