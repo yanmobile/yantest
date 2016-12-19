@@ -4,6 +4,9 @@
     {
       "fields" : [
         {
+          "templateOptions" : {
+            "label" : "Label for Field Group"
+          },
           "fieldGroup" : [
             {
               "key"             : "headerToHide",
