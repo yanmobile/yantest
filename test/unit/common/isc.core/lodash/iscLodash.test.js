@@ -369,7 +369,7 @@
 
     describe( '_.sum(collection, iteratee, [customizer])', function() {
       it( 'should return NaN when array contains non-number value', function() {
-        var array  = [1.5, 'NaN', 3.3, [], new Date() ];
+        var array  = [1.5, 'NaN', 3.3, [], new Date()];
         var actual = _.sum( array );
         expect( NaN ).toEqual( actual );
       } );
@@ -421,6 +421,100 @@
       } );
 
     } );
+
+    describe( '_.generateGetterAndSetters(obj)', function() {
+      it( 'should return original string if param is string type', function() {
+        var expected = 'echo this back';
+
+        var actual = _.generateGettersAndSetters( expected );
+
+        expect( actual ).toBe( expected );
+      } );
+
+      it( 'should return original date if param is a date', function() {
+        var expected = new Date();
+
+        var actual = _.generateGettersAndSetters( expected );
+
+        expect( actual ).toBe( expected );
+      } );
+
+      it( 'should return original date if param is an array', function() {
+        var expected = [];
+
+        var actual = _.generateGettersAndSetters( expected );
+
+        expect( actual ).toBe( expected );
+      } );
+
+      it( 'should return original date if param is a function', function() {
+        var expected = _.noop;
+
+        var actual = _.generateGettersAndSetters( expected );
+
+        expect( actual ).toBe( expected );
+      } );
+
+      it( 'should return getters and setters if an object is passed', function() {
+        var properties = { prop1: 1, prop2: 2 };
+
+        var actual = _.generateGettersAndSetters( properties );
+
+        expect( actual.getProp1 ).toBeDefined();
+        expect( actual.getProp2 ).toBeDefined();
+        expect( actual.setProp1 ).toBeDefined();
+        expect( actual.setProp1 ).toBeDefined();
+      } );
+
+      it( 'should not modify the original object (it should be a pure function)', function() {
+
+        var properties = { prop1: 1, prop2: 2 };
+        properties     = Object.freeze( properties );
+
+        var actual = _.generateGettersAndSetters( properties );
+
+
+        var size = _.size( properties );
+        expect( size ).toEqual( 2 );
+        expect( properties.prop1 ).toBe( 1 );
+        expect( properties.prop2 ).toBe( 2 );
+
+      } );
+
+
+      it( 'should return an object with only 4 functions', function() {
+
+        var properties = { prop1: 1, prop2: 2 };
+
+        var actual = _.generateGettersAndSetters( properties );
+
+        var size = _.size( actual );
+
+        expect( size ).toEqual( 4 );
+
+      } );
+
+
+      it( 'should update original object when setter is invoked', function() {
+
+        var properties = { prop1: 1, prop2: 2 };
+
+        var actual = _.generateGettersAndSetters( properties );
+
+        //Getters
+        expect( actual.getProp1() ).toBe( 1 );
+        expect( actual.getProp2() ).toBe( 2 );
+
+        //Setters
+        actual.setProp1( 123 );
+        expect( actual.getProp1() ).toBe( 123 );
+
+        actual.setProp2( 555 );
+        expect( actual.getProp2() ).toBe( 555 );
+
+        expect( properties ).toEqual( { prop1: 123, prop2: 555 } );
+
+      } );
+    } );
   } );
 })();
-

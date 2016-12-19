@@ -17,17 +17,18 @@
   //save the original _.get
 
   _.mixin( {
-    getAge          : getAge,
-    areSameDate     : areSameDate,
-    nullifyObj      : nullifyObj,
-    isTypeOf        : isTypeOf,
-    makeObj         : makeObj,
-    get             : advancedGet,
-    wrapText        : wrapText,
-    interpolate     : interpolate,
-    getRemainingTime: getRemainingTime,
-    findNested      : findNested,
-    sum             : sum
+    getAge                   : getAge,
+    areSameDate              : areSameDate,
+    nullifyObj               : nullifyObj,
+    isTypeOf                 : isTypeOf,
+    makeObj                  : makeObj,
+    get                      : advancedGet,
+    wrapText                 : wrapText,
+    interpolate              : interpolate,
+    getRemainingTime         : getRemainingTime,
+    findNested               : findNested,
+    sum                      : sum,
+    generateGettersAndSetters: generateGettersAndSetters
   } );
 
   function getAge( dob, format ) {
@@ -265,6 +266,51 @@
       return result;
     }, 0 );
   }
+
+  /**
+   * Generate setters and getters based from an object's own properties
+   *
+   * Prerequisite: Good understand of passing by reference and passing by value
+   *
+   * EXAMPLE:
+   * _.generateGettersAndSetters({ prop1: 1, prop2: 2 });
+   *  => {
+   *       getProp1: function() {...},
+   *       setProp1: function( val ) {...},
+   *       getProp2: function() {...},
+   *       setProp2: function( val ) {...}
+   *     }
+   *
+   *
+   * @param plainObject
+   * @returns {{}} - a new object containing setters and getters functions
+   *
+   */
+  function generateGettersAndSetters( plainObject ) {
+    if ( !_.isPlainObject( plainObject ) ) {
+      return plainObject;
+    }
+
+    var retObjGettersAndSetters = {};
+
+    _.forIn( plainObject, function( val, key ) {
+      var newKey = key[0].toUpperCase() + key.substr( 1 );
+
+      retObjGettersAndSetters["set" + newKey] = _.partial( setter, plainObject, key );
+      retObjGettersAndSetters["get" + newKey] = _.partial( getter, plainObject, key );
+    } );
+
+    return retObjGettersAndSetters;
+
+    function setter( obj, key, val ) {
+      _.set( obj, key, val );
+    }
+
+    function getter( obj, key ) {
+      return obj[key];
+    }
+  }
+
 
   //END CLASS
 } )();
