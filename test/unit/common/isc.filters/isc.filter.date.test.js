@@ -35,19 +35,19 @@
       it( 'should return the right date string - some day', function() {
         var dateStr = '2014-12-07 04:57:00';
         var actual  = filter( dateStr );
-        expect( actual ).toBe( 'December 7th, 2014 4:57 AM' );
+        expect( actual ).toBe( 'December 7, 2014 4:57 AM' );
       } );
 
       it( 'should return the right date string - date', function() {
         var dateStr = '2014-12-07 04:57:00';
         var actual  = filter( dateStr, 'date' );
-        expect( actual ).toBe( 'December 7th, 2014' );
+        expect( actual ).toBe( 'December 7, 2014' );
       } );
 
       it( 'should return the right date string - dateWithTime', function() {
         var dateStr = '2014-12-07 04:57:00';
         var actual  = filter( dateStr, 'dateWithTime' );
-        expect( actual ).toBe( '12/7/14 4:57 AM' );
+        expect( actual ).toBe( '12/07/2014 4:57 AM' );
       } );
 
       it( 'should return the right date string - custom', function() {
