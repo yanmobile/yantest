@@ -12,14 +12,14 @@
    * @param $q
    * @param $templateCache
    * @param $window
-   * @param $filter
+   * @param $translate
    * @param iscHttpapi
    * @param iscFormsTemplateService
    * @param iscFormFieldLayoutService
    * @param iscFormsApi
    * @returns {{getForms, getActiveForm, getActiveForms, setFormStatus, getFormDefinition, getValidationDefinition}}
    */
-  function iscFormsModel( $q, $templateCache, $window, $filter,
+  function iscFormsModel( $q, $templateCache, $window, $translate,
     iscHttpapi, // needed for user script closures
     iscFormsTemplateService, iscFormFieldLayoutService, iscFormsApi ) {
     var _formsCache         = {};
@@ -347,7 +347,7 @@
                 // Translate the label if no label expression has been set
                 var expLabel = expProps['templateOptions.label'];
                 if ( label && !expLabel ) {
-                  _.set( field, 'templateOptions.label', $filter( 'translate' )( label ) );
+                  _.set( field, 'templateOptions.label', $translate.instant( label ) );
                 }
 
                 // If the type is not already registered, load it and register it with formly
@@ -376,7 +376,7 @@
                   if ( getApi ) {
                     script.api.get = ( function( iscHttpapi ) {
                       return getApi;
-                    } )();
+                    } )( iscHttpapi );
                   }
                   _.set( field, 'data.userModel', script );
                   return true;

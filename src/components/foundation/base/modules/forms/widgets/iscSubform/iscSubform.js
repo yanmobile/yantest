@@ -15,7 +15,7 @@
    * @param iscConfirmationService
    * @returns {{restrict: string, replace: boolean, controllerAs: string, scope: {model: string, options: string, formTitle: string, breadcrumbs: string, mainFormConfig: string, subformConfig: string}, bindToController: boolean, controller: controller, link: link, templateUrl: directive.templateUrl}}
    */
-  function iscSubform( FORMS_EVENTS, $q, $filter, iscScrollContainerService, iscConfirmationService ) {//jshint ignore:line
+  function iscSubform( FORMS_EVENTS, $q, $filter, $translate, iscScrollContainerService, iscConfirmationService ) {//jshint ignore:line
 
     // ----------------------------
     // vars
@@ -108,7 +108,7 @@
 
         if ( dirtyBreadcrumb ) {
           iscConfirmationService
-            .show( dirtyBreadcrumb.childName + ' ' + $filter( 'translate' )( 'contains unsaved data. Proceed?' ) )
+            .show( dirtyBreadcrumb.childName + ' ' + $translate.instant( 'contains unsaved data. Proceed?' ) )
             .then( onYes );
         }
         else {
@@ -122,8 +122,8 @@
       // Event listeners
       $scope.$on( FORMS_EVENTS.showSubform, function( event, subformParams ) {
         var childName =
-              $filter( 'translate' )( subformParams.isNew ? 'Add' : 'Edit' ) + ' ' +
-              $filter( 'translate' )( subformParams.itemLabel );
+              $translate.instant( subformParams.isNew ? 'Add' : 'Edit' ) + ' ' +
+              $translate.instant( subformParams.itemLabel );
 
         _.extend( self.childConfig, subformParams );
 

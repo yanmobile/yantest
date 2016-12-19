@@ -761,7 +761,7 @@
 
     function defaultWrapContent( value ) {
       if ( value === undefined ) {
-        return $sce.trustAsHtml( '<p class="not-specified">' + $filter( 'translate' )( 'Not specified' ) + '</p>' );
+        return $sce.trustAsHtml( '<p class="not-specified">' + $translate.instant( 'Not specified' ) + '</p>' );
       }
       else {
         return $sce.trustAsHtml( '<p>' + value + '</p>' );
