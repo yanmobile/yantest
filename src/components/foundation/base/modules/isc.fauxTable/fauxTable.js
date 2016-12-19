@@ -99,7 +99,7 @@
        */
       function getEmptyMessage() {
         var configuredMessage = _.get( self, 'config.emptyText' );
-        return configuredMessage === undefined ? 'ISC_NO_ITEMS' : configuredMessage;
+        return configuredMessage === undefined ? 'No content available' : configuredMessage;
       }
     }
 

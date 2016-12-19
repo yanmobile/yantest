@@ -10,12 +10,12 @@
    * @memberOf isc.forms
    * @param FORMS_EVENTS
    * @param $q
-   * @param $filter
+   * @param $translate
    * @param iscScrollContainerService
    * @param iscConfirmationService
    * @returns {{restrict: string, replace: boolean, controllerAs: string, scope: {model: string, options: string, formTitle: string, breadcrumbs: string, mainFormConfig: string, subformConfig: string}, bindToController: boolean, controller: controller, link: link, templateUrl: directive.templateUrl}}
    */
-  function iscSubform( FORMS_EVENTS, $q, $filter, $translate, iscScrollContainerService, iscConfirmationService ) {//jshint ignore:line
+  function iscSubform( FORMS_EVENTS, $q, $translate, iscScrollContainerService, iscConfirmationService ) {//jshint ignore:line
 
     // ----------------------------
     // vars
