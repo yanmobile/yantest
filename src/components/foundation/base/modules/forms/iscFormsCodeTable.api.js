@@ -12,63 +12,37 @@
    * @param iscHttpapi
    * @param apiHelper
    * @param iscCustomConfigService
-   * @returns {{loadAll: loadAll, get: get}}
+   * @returns {{getAsync: function, getSync: function}}
    */
   function iscFormsCodeTableApi( iscHttpapi, apiHelper, iscCustomConfigService ) {
     var config        = iscCustomConfigService.getConfig(),
-        moduleConfig  = _.get( config, 'moduleApi', {} ),
-        defaultScheme = _.get( config, 'forms.defaultCodeTableScheme', '$' );
+        moduleConfig  = _.get( config, 'moduleApi', {} );
 
     var codeTableUrl = apiHelper.getConfigUrl( moduleConfig.formCodeTables );
 
     var codeTableCache = {};
 
     return {
-      loadAll: loadAll,
-      load   : load,
-      get    : get
+      getAsync: getAsync,
+      getSync : getSync
     };
 
     /**
      * @memberOf iscFormsCodeTableApi
      * @description
-     * Loads all the code tables from the server and caches them locally.
-     * @returns {Promise}
-     */
-    function loadAll() {
-      // Server responds with an object containing all code tables, with one property per table.
-      // The property key is the code table name, while the property value is the code table.
-      return iscHttpapi.get( codeTableUrl ).then( function( codeTables ) {
-        _.forEach( codeTables, function( codeTable, name ) {
-          _.set(
-            codeTableCache,
-            [name, codeTable.Scheme || defaultScheme].join( '.' ),
-            codeTable.Items
-          );
-        } );
-        return codeTables;
-      } );
-    }
-
-    /**
-     * @memberOf iscFormsCodeTableApi
-     * @description
-     * Loads a single code table from the server and caches it.
+     * Loads a single code table from the server by name and caches it by name.
+     * This call is guaranteed to cache at least an empty array.
      * @param {String} name - The code table name
-     * @param {String=} scheme - The code table scheme
      * @returns {Promise}
      */
-    function load( name, scheme ) {
-      scheme = scheme || defaultScheme;
-
-      // Server responds with an object containing all code tables, with one property per table.
-      // The property key is the code table name, while the property value is the code table.
-      return iscHttpapi.get( [codeTableUrl, name, scheme].join( '/' ) ).then(
+    function getAsync( name ) {
+      return iscHttpapi.get( [codeTableUrl, name, '$'].join( '/' ) ).then(
         function( codeTable ) {
+          var tableToCache = codeTable && _.isArray( codeTable ) ? codeTable : [];
           _.set(
             codeTableCache,
-            [name, scheme].join( '.' ),
-            codeTable
+            name,
+            tableToCache
           );
           return codeTable;
         }
@@ -80,14 +54,13 @@
      * @description
      * Synchronously returns a single code table from the cache by name.
      * @param {String} name - The code table name
-     * @param {String=} scheme - The code table scheme
-     * @returns {Array}
+     * @returns {Array} - If this call returns undefined, then the codeTable with
+     * "name" does not exist in the cache.
      */
-    function get( name, scheme ) {
+    function getSync( name ) {
       return _.get(
         codeTableCache,
-        [name, scheme || defaultScheme].join( '.' ),
-        []
+        name
       );
     }
   }

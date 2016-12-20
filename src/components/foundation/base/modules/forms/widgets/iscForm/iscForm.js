@@ -6,7 +6,7 @@
 
   /* @ngInject */
   function iscForm( $stateParams, $q,
-    iscFormsModel, iscFormsValidationService, iscFormsTemplateService ) {//jshint ignore:line
+    iscFormsModel, iscFormsValidationService, iscFormsTemplateService, iscFormsCodeTableApi ) {//jshint ignore:line
     var directive = {
       restrict        : 'E',
       replace         : true,
@@ -104,15 +104,19 @@
           formLiteral: self.internalFormConfig.formLiteral,
           formVersion: self.formVersion
         } )
-          .then( function( formDefinition ) {
-            self.formDefinition                = formDefinition;
-            self.options.formState._validateOn = formDefinition.form.validateOn;
+          .then( afterFormDefinitionLoad )
+          .then( loadCodeTables )
+          .then( getValidationDefinition );
 
-            populateAdditionalModels( self.formDefinition.form.additionalModelInit );
-            initializeUserLibrary( self.formDefinition.form.library );
+        function afterFormDefinitionLoad( formDefinition ) {
+          self.formDefinition                = formDefinition;
+          self.options.formState._validateOn = formDefinition.form.validateOn;
 
-            getValidationDefinition();
-          } );
+          populateAdditionalModels( self.formDefinition.form.additionalModelInit );
+          initializeUserLibrary( self.formDefinition.form.library );
+
+          return formDefinition;
+        }
       }
 
       /**
@@ -161,9 +165,54 @@
 
       /**
        * @memberOf iscForm
+       * @param formDefinition
+       * @description
+       * Loads all code tables which are needed for formDefinition and which are not already cached
+       * by iscFormsCodeTableApi.
+       */
+      function loadCodeTables( formDefinition ) {
+        var codeTableNames    = [],
+            codeTablePromises = [];
+
+        // Scrape formDefinition response for any needed code tables.
+        // This includes data.codeTable in the definition's form or in any of its subforms.
+        // Code tables linked in other ways, such as expressionProperties['data.codeTable'] or as
+        // default properties on custom widgets, should either be pre-loaded by the containing module
+        // or will be loaded as-needed by initListControlWidget in iscFormsTemplateService.
+
+        _.forEach( formDefinition.form.sections, queueCodeTableLoad );
+        _.forEach( formDefinition.subforms, function( subform ) {
+          _.forEach( subform.sections, queueCodeTableLoad );
+        } );
+
+        _.forEach( _.uniq( _.compact( codeTableNames ) ), function( codeTableName ) {
+          // If the code table has not been fetched yet, do so
+          if ( !iscFormsCodeTableApi.getSync( codeTableName ) ) {
+            codeTablePromises.push( iscFormsCodeTableApi.getAsync( codeTableName ) );
+          }
+        } );
+
+        return $q.all( codeTablePromises );
+
+        function queueCodeTableLoad( container ) {
+          // Recurse for these mutually-exclusive cases:
+          //   fields (by section);
+          //   fieldGroup (by fieldGroup);
+          //   data.embeddedFields (literal field definitions for embedded forms/collections).
+          var fields = container.fields || container.fieldGroup || _.get( container, 'data.embeddedFields', [] );
+
+          _.forEach( fields, function( field ) {
+            codeTableNames.push( _.get( field, 'data.codeTable' ) );
+            queueCodeTableLoad( field );
+          } );
+        }
+      }
+
+      /**
+       * @memberOf iscForm
        */
       function getValidationDefinition() {
-        iscFormsModel.getValidationDefinition( {
+        return iscFormsModel.getValidationDefinition( {
           formKey    : self.formKey,
           formVersion: self.formVersion,
           formLiteral: self.internalFormConfig.formLiteral
