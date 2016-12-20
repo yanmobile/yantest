@@ -222,22 +222,6 @@ var mockFormResponses = function( httpBackend ) {
     } );
 
   // CodeTable API
-  // loadAll
-  httpBackend.when( 'GET', 'codeTables' )
-    .respond( function response( method, url ) {
-      var path = [staticPath, 'codeTables', 'usStates'].join( '/' ),
-          json = getJSONFile( path );
-
-      var response = {
-        "usStates": {
-          "Scheme": "$",
-          "Items" : json
-        }
-      };
-
-      return [200, response, {}];
-    } );
-
   // load (single by name)
   httpBackend.when( 'GET', /^codeTables\/\w+\/\$$/ )
     .respond( function response( method, url ) {

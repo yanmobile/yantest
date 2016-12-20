@@ -500,11 +500,9 @@
     //--------------------
     describe( 'iscSubform - codedItemCollection widget', function() {
       beforeEach( function() {
-        suiteMain.iscFormsCodeTableApi.loadAll();
-
         createDirectives( getMinimalForm( {
-          formKey : 'codedItemCollectionTestForm',
-          formDataId : 5
+          formKey   : 'codedItemCollectionTestForm',
+          formDataId: 5
         } ) );
       } );
 
@@ -513,7 +511,7 @@
             suite       = suiteForm,
             subform     = getControlByName( suite, subformName ).filter( '.subform' ),
             addButton   = subform.find( 'button.embedded-form-add' ),
-            codeTable   = suiteMain.iscFormsCodeTableApi.get( 'usStates' ),
+            codeTable   = suiteMain.iscFormsCodeTableApi.getSync( 'usStates' ),
             model       = null,
             select      = null,
             saveButton  = null,

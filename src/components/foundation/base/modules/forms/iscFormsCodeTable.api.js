@@ -38,7 +38,7 @@
     function getAsync( name ) {
       return iscHttpapi.get( [codeTableUrl, name, '$'].join( '/' ) ).then(
         function( codeTable ) {
-          var tableToCache = codeTable && _.isArray( codeTable ) ? codeTable : [];
+          var tableToCache = (codeTable && _.isArray( codeTable )) ? codeTable : [];
           _.set(
             codeTableCache,
             name,
