@@ -81,9 +81,14 @@
     };
 
     var goodButtonConfig = {
-      testButton: {
-        hide: function() {
-          return false;
+      className: 'button-container',
+      buttons  : {
+        testButton: {
+          hide     : function() {
+            return false;
+          },
+          text     : 'Test button',
+          className: 'test-button'
         }
       }
     };
@@ -243,7 +248,7 @@
 
           function testSuite( suite ) {
             var buttonConfig = getButtonConfig( suite );
-            expect( _.isFunction( buttonConfig.submit.onClick ) ).toBe( true );
+            expect( _.isFunction( buttonConfig.buttons.submit.onClick ) ).toBe( true );
           }
         } );
       } );
@@ -289,7 +294,7 @@
               submitButton       = getButton( suite, 'submit' ),
               model              = suite.controller.internalModel,
               buttonConfig       = getButtonConfig( suite ),
-              submitButtonConfig = buttonConfig.submit;
+              submitButtonConfig = buttonConfig.buttons.submit;
 
           spyOn( submitButtonConfig, 'onClick' ).and.callThrough();
           spyOn( submitButtonConfig, 'afterClick' ).and.callThrough();
@@ -316,7 +321,7 @@
         //--------------------
         it( 'should go back when cancel is clicked', function() {
           var suite              = suiteSimple1,
-              cancelButtonConfig = getButtonConfig( suite ).cancel;
+              cancelButtonConfig = getButtonConfig( suite ).buttons.cancel;
 
           spyOn( cancelButtonConfig, 'onClick' ).and.callThrough();
           spyOn( cancelButtonConfig, 'afterClick' ).and.callThrough();
@@ -360,7 +365,7 @@
         var suite              = suiteSimple3,
             submitButton       = getButton( suite, 'submit' ),
             buttonConfig       = getButtonConfig( suite ),
-            submitButtonConfig = buttonConfig.submit;
+            submitButtonConfig = buttonConfig.buttons.submit;
 
         var mockedRejection = suiteMain.$q.defer();
         mockedRejection.reject( 'Flagrant system error' );
@@ -384,7 +389,7 @@
         var suite              = suiteSimple3,
             submitButton       = getButton( suite, 'submit' ),
             buttonConfig       = getButtonConfig( suite ),
-            submitButtonConfig = buttonConfig.submit;
+            submitButtonConfig = buttonConfig.buttons.submit;
 
         spyOn( submitButtonConfig, 'onClick' ).and.callThrough();
         spyOn( submitButtonConfig, 'afterClick' ).and.callThrough();
@@ -416,8 +421,22 @@
       it( 'should load configuration passed to the directive', function() {
         var suite      = suiteConfigured,
             formConfig = getFormConfig( suite );
+        expect( formConfig.additionalModels.configuredModel.foo ).toEqual( 'bar' );
+      } );
 
-        expect( formConfig.additionalModels.configuredModel.foo ).toEqual( "bar" );
+      //--------------------
+      it( 'should load custom buttons or a container class passed to buttonConfig', function() {
+        var suite = suiteConfigured;
+
+        // A custom button container wrapper class should be rendered
+        var buttonContainer = suite.element.find( '.button-container' );
+        expect( buttonContainer.length ).toBe( 1 );
+
+        // Custom buttons should be rendered
+        var testButton = suite.element.find( '.test-button' );
+
+        expect( testButton.length ).toBe( 1 );
+        expect( testButton.html().trim() ).toEqual( 'Test button' );
       } );
 
       //--------------------
@@ -454,7 +473,7 @@
         var suite              = suiteConfigured,
             submitButton       = getButton( suite, 'submit' ),
             buttonConfig       = getButtonConfig( suite ),
-            submitButtonConfig = buttonConfig.submit,
+            submitButtonConfig = buttonConfig.buttons.submit,
             model              = suite.controller.internalModel,
             subformRecord1     = {},
             subformRecord2     = {};
@@ -552,7 +571,7 @@
       it( 'should fall back to default behaviors for poorly configured forms', function() {
         var suite        = suiteMisconfigured,
             buttonConfig = getButtonConfig( suite );
-        expect( _.isFunction( buttonConfig.submit.onClick ) ).toBe( true );
+        expect( _.isFunction( buttonConfig.buttons.submit.onClick ) ).toBe( true );
         // TODO -- extend
       } );
     } );
@@ -620,7 +639,7 @@
 
         expect( expectedModel.form.components.templates )
           .toEqual( mockData.form.components.templates );
-        expect( buttonConfig.submit.onClick ).toBeDefined();
+        expect( buttonConfig.buttons.submit.onClick ).toBeDefined();
       } );
 
     } );
@@ -637,7 +656,7 @@
         var suite        = suiteWithData,
             buttonConfig = getButtonConfig( suite );
 
-        expect( buttonConfig.submit.hide ).toBe( true );
+        expect( buttonConfig.buttons.submit.hide ).toBe( true );
 
         var subform   = getControlByName( suite, 'subform.components' ).filter( '.subform' ),
             fauxTable = subform.find( 'faux-table' ),
