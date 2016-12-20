@@ -35,8 +35,12 @@
      * @param {String} name - The code table name
      * @returns {Promise}
      */
-    function getAsync( name ) {
-      return iscHttpapi.get( [codeTableUrl, name, '$'].join( '/' ) ).then(
+    function getAsync( name, order ) {
+      var url = [codeTableUrl, name, '$'].join( '/' );
+      if ( order ) {
+        url += ( '?orderBy=' + order );
+      }
+      return iscHttpapi.get( url ).then(
         function( codeTable ) {
           var tableToCache = ( codeTable && _.isArray( codeTable ) ) ? codeTable : [];
           _.set(

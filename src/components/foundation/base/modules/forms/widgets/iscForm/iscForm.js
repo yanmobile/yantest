@@ -171,7 +171,7 @@
        * by iscFormsCodeTableApi.
        */
       function loadCodeTables( formDefinition ) {
-        var codeTableNames    = [],
+        var codeTables        = [],
             codeTablePromises = [];
 
         // Scrape formDefinition response for any needed code tables.
@@ -185,10 +185,10 @@
           _.forEach( subform.sections, queueCodeTableLoad );
         } );
 
-        _.forEach( _.uniq( _.compact( codeTableNames ) ), function( codeTableName ) {
+        _.forEach( _.uniqBy( codeTables, 'name' ), function( codeTable ) {
           // If the code table has not been fetched yet, do so
-          if ( !iscFormsCodeTableApi.getSync( codeTableName ) ) {
-            codeTablePromises.push( iscFormsCodeTableApi.getAsync( codeTableName ) );
+          if ( !iscFormsCodeTableApi.getSync( codeTable.name ) ) {
+            codeTablePromises.push( iscFormsCodeTableApi.getAsync( codeTable.name, codeTable.order ) );
           }
         } );
 
@@ -202,7 +202,14 @@
           var fields = container.fields || container.fieldGroup || _.get( container, 'data.embeddedFields', [] );
 
           _.forEach( fields, function( field ) {
-            codeTableNames.push( _.get( field, 'data.codeTable' ) );
+            var name  = _.get( field, 'data.codeTable' ),
+                order = _.get( field, 'data.orderField' );
+            if ( name ) {
+              codeTables.push( {
+                name : name,
+                order: order
+              } );
+            }
             queueCodeTableLoad( field );
           } );
         }

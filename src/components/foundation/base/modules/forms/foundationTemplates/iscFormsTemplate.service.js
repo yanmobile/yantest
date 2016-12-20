@@ -902,7 +902,7 @@
         // If a code table is specified but it has not been loaded from the server yet,
         // call the server API and resume the field's function after it completes.
         if ( codeTable && !codeTableOptions ) {
-          iscFormsCodeTableApi.getAsync( codeTable ).then( function() {
+          iscFormsCodeTableApi.getAsync( codeTable, data.orderField ).then( function() {
             setProperties( options );
           } );
         }

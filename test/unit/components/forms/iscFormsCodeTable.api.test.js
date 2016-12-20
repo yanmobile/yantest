@@ -35,6 +35,32 @@
       } );
     } );
 
+    describe( 'api.getAsync with optional orderBy', function() {
+      it( 'should order the results if the order param is included', function() {
+        suite.api.getAsync( 'usStates' ).then( function( response ) {
+          expect( response[2] ).toEqual( {
+            displayField: 'Arizona',
+            value       : 'AZ'
+          } );
+          expect( response[3] ).toEqual( {
+            displayField: 'Arkansas',
+            value       : 'AR'
+          } );
+        } );
+
+        suite.api.getAsync( 'usStates', 'value' ).then( function( response ) {
+          expect( response[2] ).toEqual( {
+            displayField: 'Arkansas',
+            value       : 'AR'
+          } );
+          expect( response[3] ).toEqual( {
+            displayField: 'Arizona',
+            value       : 'AZ'
+          } );
+        } );
+      } );
+    } );
+
     describe( 'api.getAsync and api.getSync', function() {
       it( 'should get a single code table from the API', function() {
         suite.api.getAsync( 'usStates' ).then( function( response ) {

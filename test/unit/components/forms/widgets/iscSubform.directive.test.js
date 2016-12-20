@@ -594,7 +594,7 @@
         digest( suite );
 
         // The code table API should now be called
-        expect( suiteMain.iscFormsCodeTableApi.getAsync ).toHaveBeenCalled();
+        expect( suiteMain.iscFormsCodeTableApi.getAsync ).toHaveBeenCalledWith( 'usStates', 'value' );
         suiteMain.$httpBackend.flush();
 
         // The select should have the default blank option plus the 50 states

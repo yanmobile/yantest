@@ -223,11 +223,23 @@ var mockFormResponses = function( httpBackend ) {
 
   // CodeTable API
   // load (single by name)
-  httpBackend.when( 'GET', /^codeTables\/\w+\/\$$/ )
+  httpBackend.when( 'GET', /^codeTables\/\w+\/\$(\?orderBy=\w+)?$/ )
     .respond( function response( method, url ) {
+      var orderParamRE = /\?orderBy=\w+$/,
+          orderBy      = url.match( orderParamRE );
+
+      if ( orderBy ) {
+        orderBy = _.head( orderBy ).replace( '?orderBy=', '' );
+        url     = url.replace( orderParamRE, '' );
+      }
+
       var codeTableName = url.replace( /^codeTables\//, '' ).replace( /\/\$$/, '' ),
           path          = [staticPath, 'codeTables', codeTableName].join( '/' ),
           json          = getJSONFile( path );
+
+      if ( orderBy ) {
+        json = _.sortBy( json, orderBy );
+      }
 
       return [200, json, {}];
     } );

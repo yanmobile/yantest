@@ -11,6 +11,9 @@
           "type"                 : "select",
           "expressionProperties" : {
             "data.codeTable" : "model.useCodeTable ? 'usStates' : ''"
+          },
+          "data" : {
+            "orderField" : "value"
           }
         }
       ]
