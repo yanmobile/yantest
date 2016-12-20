@@ -178,7 +178,7 @@
         // This includes data.codeTable in the definition's form or in any of its subforms.
         // Code tables linked in other ways, such as expressionProperties['data.codeTable'] or as
         // default properties on custom widgets, should either be pre-loaded by the containing module
-        // or will be loaded as-needed by initListControlWidget in iscFormsTemplateService.
+        // or will be loaded as needed by initListControlWidget in iscFormsTemplateService.
 
         _.forEach( formDefinition.form.sections, queueCodeTableLoad );
         _.forEach( formDefinition.subforms, function( subform ) {
@@ -196,8 +196,8 @@
 
         function queueCodeTableLoad( container ) {
           // Recurse for these mutually-exclusive cases:
-          //   fields (by section);
-          //   fieldGroup (by fieldGroup);
+          //   fields              (by section);
+          //   fieldGroup          (by fieldGroup);
           //   data.embeddedFields (literal field definitions for embedded forms/collections).
           var fields = container.fields || container.fieldGroup || _.get( container, 'data.embeddedFields', [] );
 

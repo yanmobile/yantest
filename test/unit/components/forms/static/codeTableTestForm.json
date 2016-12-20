@@ -1,0 +1,19 @@
+{
+  "sections" : [
+    {
+      "fields" : [
+        {
+          "key"  : "useCodeTable",
+          "type" : "checkbox"
+        },
+        {
+          "key"                  : "codeTableSelect",
+          "type"                 : "select",
+          "expressionProperties" : {
+            "data.codeTable" : "model.useCodeTable ? 'usStates' : ''"
+          }
+        }
+      ]
+    }
+  ]
+}
