@@ -74,7 +74,7 @@
           theForm           = suiteForm.element.find( 'form' ),
           localButtonConfig = getButtonConfig( suiteForm );
 
-      spyOn( localButtonConfig.submit, 'onClick' ).and.callThrough();
+      spyOn( localButtonConfig.buttons.submit, 'onClick' ).and.callThrough();
 
       expect( input.length ).toBe( 1 );
       expect( textarea.length ).toBe( 1 );
@@ -89,12 +89,12 @@
 
       suite.$scope.$digest();
 
-      expect( localButtonConfig.submit.onClick ).not.toHaveBeenCalled();
+      expect( localButtonConfig.buttons.submit.onClick ).not.toHaveBeenCalled();
 
       // Only submitting the form should call the submit API
       theForm.triggerHandler( 'submit' );
 
-      expect( localButtonConfig.submit.onClick ).toHaveBeenCalled();
+      expect( localButtonConfig.buttons.submit.onClick ).toHaveBeenCalled();
 
       function wireKeypress( control ) {
         control.sendKeypress = function( key ) {
