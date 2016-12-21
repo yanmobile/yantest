@@ -222,28 +222,24 @@ var mockFormResponses = function( httpBackend ) {
     } );
 
   // CodeTable API
-  // loadAll
-  httpBackend.when( 'GET', 'codeTables' )
-    .respond( function response( method, url ) {
-      var path = [staticPath, 'codeTables', 'usStates'].join( '/' ),
-          json = getJSONFile( path );
-
-      var response = {
-        "usStates": {
-          "Scheme": "$",
-          "Items" : json
-        }
-      };
-
-      return [200, response, {}];
-    } );
-
   // load (single by name)
-  httpBackend.when( 'GET', /^codeTables\/\w+\/\$$/ )
+  httpBackend.when( 'GET', /^codeTables\/\w+\/\$(\?orderBy=\w+)?$/ )
     .respond( function response( method, url ) {
+      var orderParamRE = /\?orderBy=\w+$/,
+          orderBy      = url.match( orderParamRE );
+
+      if ( orderBy ) {
+        orderBy = _.head( orderBy ).replace( '?orderBy=', '' );
+        url     = url.replace( orderParamRE, '' );
+      }
+
       var codeTableName = url.replace( /^codeTables\//, '' ).replace( /\/\$$/, '' ),
           path          = [staticPath, 'codeTables', codeTableName].join( '/' ),
           json          = getJSONFile( path );
+
+      if ( orderBy ) {
+        json = _.sortBy( json, orderBy );
+      }
 
       return [200, json, {}];
     } );

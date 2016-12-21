@@ -25,7 +25,7 @@
               "label" : "State"
             },
             "data"            : {
-              "codeTable" : "US_states"
+              "codeTable" : "usStates"
             }
           },
           {

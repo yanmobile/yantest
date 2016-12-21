@@ -33,8 +33,6 @@
         }
       },
       'forms'          : {
-        'initCodeTables'        : false,
-        'defaultCodeTableScheme': '$',
         'defaultDisplayField'   : 'Description',
         'debounce'              : 0,
         'useExternalValidation' : false,

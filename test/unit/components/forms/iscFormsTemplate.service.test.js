@@ -182,7 +182,7 @@
 
     describe( 'list control initialization', function() {
       beforeEach( function() {
-        suiteMain.iscFormsCodeTableApi.loadAll();
+        suiteMain.iscFormsCodeTableApi.getAsync( 'usStates' );
         suiteMain.$httpBackend.flush();
       } );
 
@@ -196,7 +196,7 @@
               { name: 'three', value: '3' }
             ],
             codeTable        = 'usStates',
-            codeTableOptions = suiteMain.iscFormsCodeTableApi.get( codeTable ),
+            codeTableOptions = suiteMain.iscFormsCodeTableApi.getSync( codeTable ),
             mockFieldScope;
 
         // N.B.: scope.to is a alias for scope.options.templateOptions, created by angular-formly
