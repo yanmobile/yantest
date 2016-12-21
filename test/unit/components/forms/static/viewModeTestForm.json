@@ -1,0 +1,23 @@
+{
+  "sections" : [
+    {
+      "fields" : [
+        {
+          "key"       : "date1",
+          "type"      : "input",
+          "className" : "date1"
+        },
+        {
+          "key"       : "date2",
+          "type"      : "input",
+          "className" : "date2"
+        },
+        {
+          "key"       : "date3",
+          "type"      : "input",
+          "className" : "date3"
+        }
+      ]
+    }
+  ]
+}

@@ -52,7 +52,8 @@ var resetMockFormStore = function() {
       sampleIntake,
       sampleConfigurableCollectionData,
       placeholderData,
-      codedItemCollectionData
+      codedItemCollectionData,
+      viewModeMockData
     ]
   }
 };
@@ -296,6 +297,15 @@ var codedItemCollectionData = {
         "value"        : "AL"
       }
     ]
+  }
+};
+
+var viewModeMockData = {
+  "id" : 6,
+  "data" : {
+    "date1" : "2016-12-21T20:35:02.000Z",
+    "date2" : "2016-12-21 20:35:02",
+    "date3" : "2016-12-21 20:35:02.123456"
   }
 };
 
