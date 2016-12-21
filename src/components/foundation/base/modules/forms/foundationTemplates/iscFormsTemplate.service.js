@@ -75,6 +75,7 @@
     formlyConfig.extras.fieldTransform.push( addInheritedClassNames );
     formlyConfig.extras.fieldTransform.push( fixWatchers );
     formlyConfig.extras.fieldTransform.push( addQdTag );
+    formlyConfig.extras.fieldTransform.push( wrapFieldGroups );
 
     var defaultViewConfig = {
       getValue   : defaultGetValue,
@@ -337,7 +338,8 @@
      * @description formly will automatically create a 'formly-field-{type}' class
      * for each field, but it will not inherit those classes from the field's
      * ancestor types. This method explicitly causes those classes to inherit.
-     * @param fields
+     * @param {Array} fields
+     * @returns {Array}
      */
     function addInheritedClassNames( fields ) {
       _.forEach( fields, function( field ) {
@@ -401,7 +403,8 @@
      * This also corrects the issue that formly allows watcher listeners to be expressions,
      * while Angular does not.
      *
-     * @param fields
+     * @param {Array} fields
+     * @returns {Array}
      */
     function fixWatchers( fields ) {
       var typesWithDefaultWatchers  = _.pickBy( formlyConfig.getTypes(), 'defaultOptions.watcher' ),
@@ -444,8 +447,8 @@
      * @description Wires up the "templateOptions.qdTag" property in the FDN using formly's
      * ngModelAttrs feature.
      * @memberOf iscFormsTemplateService
-     * @param fields
-     * @returns {*}
+     * @param {Array} fields
+     * @returns {Array}
      */
     function addQdTag( fields ) {
       _.forEach( fields, function( field ) {
@@ -461,6 +464,31 @@
           }
         }
       } );
+      return fields;
+    }
+
+    /**
+     * @memberOf iscFormsTemplateService
+     * @description Adds the default label wrapper to field groups that have a label defined
+     * with "templateOptions.label".
+     *
+     * @param {Array} fields
+     * @returns {Array}
+     */
+    function wrapFieldGroups( fields ) {
+      _.forEach( fields, wrap );
+
+      function wrap( field ) {
+        if ( field.fieldGroup ) {
+          if ( _.get( field, 'templateOptions.label' ) ) {
+            var wrapper = field.wrapper || [];
+            wrapper.push( 'templateLabel' );
+            field.wrapper = _.uniq( wrapper );
+          }
+
+          wrapFieldGroups( field.fieldGroup );
+        }
+      }
       return fields;
     }
 
