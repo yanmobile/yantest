@@ -344,7 +344,7 @@
        * @memberOf iscFormInternal
        */
       function submitForm() {
-        var submitConfig  = _.get( self.buttonConfig, 'submit', {} ),
+        var submitConfig  = _.get( self.buttonConfig, 'buttons.submit', {} ),
             onSubmit      = submitConfig.onClick || _.noop,
             afterSubmit   = submitConfig.afterClick || _.noop,
             onSubmitError = submitConfig.onError || onError;

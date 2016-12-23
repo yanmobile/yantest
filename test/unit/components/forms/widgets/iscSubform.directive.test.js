@@ -500,11 +500,9 @@
     //--------------------
     describe( 'iscSubform - codedItemCollection widget', function() {
       beforeEach( function() {
-        suiteMain.iscFormsCodeTableApi.loadAll();
-
         createDirectives( getMinimalForm( {
-          formKey : 'codedItemCollectionTestForm',
-          formDataId : 5
+          formKey   : 'codedItemCollectionTestForm',
+          formDataId: 5
         } ) );
       } );
 
@@ -513,7 +511,7 @@
             suite       = suiteForm,
             subform     = getControlByName( suite, subformName ).filter( '.subform' ),
             addButton   = subform.find( 'button.embedded-form-add' ),
-            codeTable   = suiteMain.iscFormsCodeTableApi.get( 'usStates' ),
+            codeTable   = suiteMain.iscFormsCodeTableApi.getSync( 'usStates' ),
             model       = null,
             select      = null,
             saveButton  = null,
@@ -559,6 +557,48 @@
           select     = subform.find( 'select[ng-model]' );
           model      = suiteForm.controller.internalModel.collection;
         }
+      } );
+
+    } );
+
+    //--------------------
+    describe( 'iscSubform - late-bound code table', function() {
+      // Code tables specified through expressionProperties or other dynamic means cannot be
+      // accurately evaluated at the time the form definition is fetched (which is when code
+      // tables are normally resolved and cached). So they may be fetched asynchronously by
+      // a list control widget if they are not already cached.
+      beforeEach( function() {
+        spyOn( suiteMain.iscFormsCodeTableApi, 'getAsync' ).and.callThrough();
+
+        createDirectives( getMinimalForm( {
+          formKey: 'codeTableTestForm'
+        } ) );
+      } );
+
+      it( 'should load the code table very lazily if that table is expressed dynamically', function() {
+        var suite                = suiteForm,
+            useCodeTableCheckbox = getControlByName( suite, 'useCodeTable' ),
+            codeTableSelect      = getControlByName( suite, 'codeTableSelect' );
+
+        expect( useCodeTableCheckbox.length ).toBe( 1 );
+        expect( codeTableSelect.length ).toBe( 1 );
+
+        // The code table API should not have been called yet
+        expect( suiteMain.iscFormsCodeTableApi.getAsync ).not.toHaveBeenCalled();
+
+        // The select should only have the default blank option
+        expect( codeTableSelect.find( 'option' ).length ).toBe( 1 );
+
+        // Click the checkbox, which sets the code table dynamically
+        useCodeTableCheckbox.click().trigger( 'change' );
+        digest( suite );
+
+        // The code table API should now be called
+        expect( suiteMain.iscFormsCodeTableApi.getAsync ).toHaveBeenCalledWith( 'usStates', 'value' );
+        suiteMain.$httpBackend.flush();
+
+        // The select should have the default blank option plus the 50 states
+        expect( codeTableSelect.find( 'option' ).length ).toBe( 51 );
       } );
 
     } );

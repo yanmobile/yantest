@@ -75,6 +75,7 @@
     formlyConfig.extras.fieldTransform.push( addInheritedClassNames );
     formlyConfig.extras.fieldTransform.push( fixWatchers );
     formlyConfig.extras.fieldTransform.push( addQdTag );
+    formlyConfig.extras.fieldTransform.push( wrapFieldGroups );
 
     var defaultViewConfig = {
       getValue   : defaultGetValue,
@@ -139,26 +140,29 @@
      * history section, and a submit button which calls the configured formDataApi.submit function.
      * @param {String} mode - The edit/view mode of the containing form
      * @param {String} sectionLayout - The sectionLayout setting of the containing form
-     * @returns {{cancel: {onClick: function, afterClick: function, cssClass: string, text: string}, submit: {onClick: function, afterClick: function, cssClass: string, text: string}}}
+     * @returns {{cancel: {onClick: function, afterClick: function, className: string, text: string}, submit: {onClick: function, afterClick: function, cssClass: string, text: string}}}
      */
     function getButtonDefaults( mode, sectionLayout ) {
       var customDefaults,
           sectionLayoutDefaults = {},
-          defaultButtonConfig   = {
-            cancel: {
-              onClick   : _.noop,
-              afterClick: afterCancel,
-              cssClass  : 'cancel button large float-left',
-              text      : mode === 'view' ? $translate.instant( 'Back' ) : $translate.instant( 'Cancel' ),
-              order     : 1
-            },
-            submit: {
-              onClick   : onSubmit,
-              afterClick: afterSubmit,
-              cssClass  : 'button large float-right',
-              text      : $translate.instant( 'Submit' ),
-              hide      : mode === 'view',
-              order     : 2
+          defaultButtonConfig = {
+            className: '',
+            buttons  : {
+              cancel: {
+                onClick   : _.noop,
+                afterClick: afterCancel,
+                className : 'cancel button large float-left',
+                text      : mode === 'view' ? 'Forms_Back_Button' : 'Forms_Cancel_Button',
+                order     : 1
+              },
+              submit: {
+                onClick   : onSubmit,
+                afterClick: afterSubmit,
+                className : 'button large float-right',
+                text      : 'Forms_Submit_Button',
+                hide      : mode === 'view',
+                order     : 2
+              }
             }
           };
 
@@ -337,7 +341,8 @@
      * @description formly will automatically create a 'formly-field-{type}' class
      * for each field, but it will not inherit those classes from the field's
      * ancestor types. This method explicitly causes those classes to inherit.
-     * @param fields
+     * @param {Array} fields
+     * @returns {Array}
      */
     function addInheritedClassNames( fields ) {
       _.forEach( fields, function( field ) {
@@ -401,7 +406,8 @@
      * This also corrects the issue that formly allows watcher listeners to be expressions,
      * while Angular does not.
      *
-     * @param fields
+     * @param {Array} fields
+     * @returns {Array}
      */
     function fixWatchers( fields ) {
       var typesWithDefaultWatchers  = _.pickBy( formlyConfig.getTypes(), 'defaultOptions.watcher' ),
@@ -444,8 +450,8 @@
      * @description Wires up the "templateOptions.qdTag" property in the FDN using formly's
      * ngModelAttrs feature.
      * @memberOf iscFormsTemplateService
-     * @param fields
-     * @returns {*}
+     * @param {Array} fields
+     * @returns {Array}
      */
     function addQdTag( fields ) {
       _.forEach( fields, function( field ) {
@@ -461,6 +467,31 @@
           }
         }
       } );
+      return fields;
+    }
+
+    /**
+     * @memberOf iscFormsTemplateService
+     * @description Adds the default label wrapper to field groups that have a label defined
+     * with "templateOptions.label".
+     *
+     * @param {Array} fields
+     * @returns {Array}
+     */
+    function wrapFieldGroups( fields ) {
+      _.forEach( fields, wrap );
+
+      function wrap( field ) {
+        if ( field.fieldGroup ) {
+          if ( _.get( field, 'templateOptions.label' ) ) {
+            var wrapper = field.wrapper || [];
+            wrapper.push( 'templateLabel' );
+            field.wrapper = _.uniq( wrapper );
+          }
+
+          wrapFieldGroups( field.fieldGroup );
+        }
+      }
       return fields;
     }
 
@@ -867,19 +898,29 @@
         var data                = _.get( scope, 'options.data', {} ),
             codeTable           = options[0] || getCodeTable(),
             explicitOptions     = options[1] || getOptions() || [],
-            codeTableOptions    = codeTable ? iscFormsCodeTableApi.get( codeTable ) : [],
+            codeTableOptions    = codeTable ? iscFormsCodeTableApi.getSync( codeTable ) : [],
             defaultDisplayField = formsConfig.defaultDisplayField,
             listOptions         = _.concat( [], explicitOptions, codeTableOptions );
 
-        // Set default display field, if it exists and the field does not override it
-        if ( defaultDisplayField && !data.displayField ) {
-          _.set( scope, 'options.data.displayField', defaultDisplayField );
+        // If a code table is specified but it has not been loaded from the server yet,
+        // call the server API and resume the field's function after it completes.
+        if ( codeTable && !codeTableOptions ) {
+          iscFormsCodeTableApi.getAsync( codeTable, data.orderField ).then( function() {
+            setProperties( options );
+          } );
         }
+        else {
+          // Set default display field, if it exists and the field does not override it
+          if ( defaultDisplayField && !data.displayField ) {
+            _.set( scope, 'options.data.displayField', defaultDisplayField );
+          }
 
-        _.extend( scope, {
-          isObjectModel: getObjectFlag(),
-          listOptions  : listOptions
-        } );
+          _.extend( scope, {
+            isObjectModel: getObjectFlag(),
+            listOptions  : listOptions
+          } );
+
+        }
 
         function getObjectFlag() {
           return ( data.isObject === undefined && listOptions.length ) ?
@@ -887,7 +928,6 @@
             : data.isObject;
         }
       }
-
       function getOptions() {
         return _.get( scope, 'options.templateOptions.options' );
       }

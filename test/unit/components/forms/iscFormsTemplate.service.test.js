@@ -129,10 +129,15 @@
       } );
     } );
 
-    describe( 'hideIfGroupEmpty functionality', function() {
+    describe( 'field groups', function() {
       beforeEach( function() {
         suite = createDirective( getMinimalForm( 'hideIfGroupEmpty' ) );
         suiteMain.$httpBackend.flush();
+      } );
+
+      it( 'should render a label on the field group', function() {
+        var label = suite.element.find( '.form-label' ).first();
+        expect( label.html().trim() ).toEqual( 'Label for Field Group' );
       } );
 
       it( 'should hide the field with hideIfGroupEmpty if all other fields are hidden', function() {
@@ -177,7 +182,7 @@
 
     describe( 'list control initialization', function() {
       beforeEach( function() {
-        suiteMain.iscFormsCodeTableApi.loadAll();
+        suiteMain.iscFormsCodeTableApi.getAsync( 'usStates' );
         suiteMain.$httpBackend.flush();
       } );
 
@@ -191,7 +196,7 @@
               { name: 'three', value: '3' }
             ],
             codeTable        = 'usStates',
-            codeTableOptions = suiteMain.iscFormsCodeTableApi.get( codeTable ),
+            codeTableOptions = suiteMain.iscFormsCodeTableApi.getSync( codeTable ),
             mockFieldScope;
 
         // N.B.: scope.to is a alias for scope.options.templateOptions, created by angular-formly

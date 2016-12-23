@@ -11,30 +11,32 @@
   /* @ngInject */
   function iscFormsSectionLayoutService( $translate ) {
     var wizardButtonConfig = {
-      cancel: {
-        cssClass: 'button cancel float-left wizard-cancel-btn',
-        text    : $translate.instant( 'Cancel' ),
-        order   : 1
-      },
-      prev  : {
-        cssClass: 'button float-right wizard-prev-btn',
-        text    : $translate.instant( 'Previous' ),
-        order   : 2,
-        hide    : isFirstSection,
-        onClick : _.partialRight( changeSection, -1 )
-      },
-      next  : {
-        cssClass: 'button float-right wizard-next-btn',
-        text    : $translate.instant( 'Next' ),
-        order   : 3,
-        hide    : isLastSection,
-        onClick : _.partialRight( changeSection, +1 )
-      },
-      submit: {
-        cssClass: 'button float-right wizard-submit-btn',
-        text    : $translate.instant( 'Submit' ),
-        order   : 4,
-        hide    : isNotLastSection
+      buttons: {
+        cancel: {
+          className: 'button cancel float-left wizard-cancel-btn',
+          text     : 'Forms_Cancel_Button',
+          order    : 1
+        },
+        prev  : {
+          className: 'button float-right wizard-prev-btn',
+          text     : 'Forms_Prev_Button',
+          order    : 2,
+          hide     : isFirstSection,
+          onClick  : _.partialRight( changeSection, -1 )
+        },
+        next  : {
+          className: 'button float-right wizard-next-btn',
+          text     : 'Forms_Next_Button',
+          order    : 3,
+          hide     : isLastSection,
+          onClick  : _.partialRight( changeSection, +1 )
+        },
+        submit: {
+          className: 'button float-right wizard-submit-btn',
+          text     : 'Forms_Submit_Button',
+          order    : 4,
+          hide     : isNotLastSection
+        }
       }
     };
 
