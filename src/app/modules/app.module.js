@@ -16,7 +16,7 @@
     .config( config )
     .run( run );
 
-  function config( $translateProvider, $httpProvider, $compileProvider, $urlRouterProvider,
+  function config( $translateProvider, $httpProvider, $compileProvider, $urlRouterProvider, uiSelectConfig,
     devlogProvider, iscCustomConfigServiceProvider, coreConfig, componentsConfig, appConfig ) {
 
     //update below to change the default URL
