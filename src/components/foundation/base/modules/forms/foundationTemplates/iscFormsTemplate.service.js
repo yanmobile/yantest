@@ -899,19 +899,29 @@
         var data                = _.get( scope, 'options.data', {} ),
             codeTable           = options[0] || getCodeTable(),
             explicitOptions     = options[1] || getOptions() || [],
-            codeTableOptions    = codeTable ? iscFormsCodeTableApi.get( codeTable ) : [],
+            codeTableOptions    = codeTable ? iscFormsCodeTableApi.getSync( codeTable ) : [],
             defaultDisplayField = formsConfig.defaultDisplayField,
             listOptions         = _.concat( [], explicitOptions, codeTableOptions );
 
-        // Set default display field, if it exists and the field does not override it
-        if ( defaultDisplayField && !data.displayField ) {
-          _.set( scope, 'options.data.displayField', defaultDisplayField );
+        // If a code table is specified but it has not been loaded from the server yet,
+        // call the server API and resume the field's function after it completes.
+        if ( codeTable && !codeTableOptions ) {
+          iscFormsCodeTableApi.getAsync( codeTable, data.orderField ).then( function() {
+            setProperties( options );
+          } );
         }
+        else {
+          // Set default display field, if it exists and the field does not override it
+          if ( defaultDisplayField && !data.displayField ) {
+            _.set( scope, 'options.data.displayField', defaultDisplayField );
+          }
 
-        _.extend( scope, {
-          isObjectModel: getObjectFlag(),
-          listOptions  : listOptions
-        } );
+          _.extend( scope, {
+            isObjectModel: getObjectFlag(),
+            listOptions  : listOptions
+          } );
+
+        }
 
         function getObjectFlag() {
           return ( data.isObject === undefined && listOptions.length ) ?
@@ -919,7 +929,6 @@
             : data.isObject;
         }
       }
-
       function getOptions() {
         return _.get( scope, 'options.templateOptions.options' );
       }

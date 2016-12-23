@@ -43,8 +43,6 @@ function getCustomConfig() {
       }
     },
     'forms': {
-      'initCodeTables'        : true,
-      'defaultCodeTableScheme': '$',
       'defaultDisplayField'   : 'displayField',
       'debounce'              : 75,
       'allowInvalid'          : true,
