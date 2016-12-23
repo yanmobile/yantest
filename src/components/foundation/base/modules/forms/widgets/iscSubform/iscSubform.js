@@ -71,7 +71,7 @@
       } );
 
       function getFormButtons() {
-        var buttons     = _.get( self, 'mainFormConfig.buttonConfig', {} );
+        var buttons     = _.get( self, 'mainFormConfig.buttonConfig.buttons', {} );
         var buttonArray = _.map( buttons, function( button, name ) {
             return _.merge( {}, button, {
               name: name

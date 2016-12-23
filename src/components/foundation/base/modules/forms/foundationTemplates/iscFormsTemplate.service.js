@@ -140,26 +140,29 @@
      * history section, and a submit button which calls the configured formDataApi.submit function.
      * @param {String} mode - The edit/view mode of the containing form
      * @param {String} sectionLayout - The sectionLayout setting of the containing form
-     * @returns {{cancel: {onClick: function, afterClick: function, cssClass: string, text: string}, submit: {onClick: function, afterClick: function, cssClass: string, text: string}}}
+     * @returns {{cancel: {onClick: function, afterClick: function, className: string, text: string}, submit: {onClick: function, afterClick: function, cssClass: string, text: string}}}
      */
     function getButtonDefaults( mode, sectionLayout ) {
       var customDefaults,
           sectionLayoutDefaults = {},
-          defaultButtonConfig   = {
-            cancel: {
-              onClick   : _.noop,
-              afterClick: afterCancel,
-              cssClass  : 'cancel button large float-left',
-              text      : mode === 'view' ? 'Forms_Back_Button' : 'Forms_Cancel_Button',
-              order     : 1
-            },
-            submit: {
-              onClick   : onSubmit,
-              afterClick: afterSubmit,
-              cssClass  : 'button large float-right',
-              text      : 'Forms_Submit_Button',
-              hide      : mode === 'view',
-              order     : 2
+          defaultButtonConfig = {
+            className: '',
+            buttons  : {
+              cancel: {
+                onClick   : _.noop,
+                afterClick: afterCancel,
+                className : 'cancel button large float-left',
+                text      : mode === 'view' ? 'Forms_Back_Button' : 'Forms_Cancel_Button',
+                order     : 1
+              },
+              submit: {
+                onClick   : onSubmit,
+                afterClick: afterSubmit,
+                className : 'button large float-right',
+                text      : 'Forms_Submit_Button',
+                hide      : mode === 'view',
+                order     : 2
+              }
             }
           };
 
