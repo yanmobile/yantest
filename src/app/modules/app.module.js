@@ -23,6 +23,8 @@
     $urlRouterProvider.when( '', '/login' );
     $urlRouterProvider.when( '/', '/login' );
 
+    uiSelectConfig.theme = 'selectize';
+
     _.defaults( appConfig, componentsConfig, coreConfig );
 
     iscCustomConfigServiceProvider.loadConfig( appConfig );
