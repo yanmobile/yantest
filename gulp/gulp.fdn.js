@@ -34,7 +34,7 @@ function init( gulp, plugins, config, _ ) {
           };
         }
       } ) )
-      .pipe( plugins.filelog() )
+      // .pipe( plugins.filelog() )
       .pipe( gulp.dest( config.app.dest.fdn ) );
 
     function processFiles( group, files ) {
