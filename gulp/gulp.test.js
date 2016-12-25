@@ -12,19 +12,10 @@ function init( gulp, plugins, config, _, util ) {
   // --------------------------------
   // run all the tests
   // --------------------------------
-  gulp.task( 'test:prepush', function( done ) {
+  gulp.task( 'test', function( done ) {
     if ( _.has( config, 'app.modulePath' ) ) {
       // only running the tests that are related to the development being done
       return plugins.seq( 'test:app', done );
-    } else {
-      return plugins.seq( ['test:components', 'test:common'], done );
-    }
-  } );
-
-  gulp.task( 'test', function( done ) {
-    if ( config.app.modulePath ) {
-      // separating out the test:app task because it has logic which which depends on the previous two tests to finish first
-      return plugins.seq( ['test:components', 'test:common'], 'test:app', done );
     } else {
       return plugins.seq( ['test:components', 'test:common'], done );
     }

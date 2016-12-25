@@ -26,7 +26,7 @@ function init( gulp, plugins, config, _ ) {
     return gulp
       .src( templates )
       .pipe( plugins.plumber() )
-      // .pipe( plugins.filelog() )
+      // // .pipe( plugins.filelog() )
       .pipe( plugins.simpleRename( function( path, file ) {
 
         var moduleLength      = 'modules/'.length;

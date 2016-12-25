@@ -30,7 +30,7 @@ function init( gulp, plugins, config, _ ) {
         }
       } ) )
       .pipe( gulp.dest( config.app.dest.i18n ) )
-      .pipe( plugins.filelog() );
+      // .pipe( plugins.filelog() );
 
     function processFiles( group, files ) {
       var response = _.reduce( files, ( result, file ) => {

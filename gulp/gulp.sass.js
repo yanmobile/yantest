@@ -16,7 +16,7 @@ function init( gulp, plugins, config, _ ) {
     var sass         = require( 'gulp-sass' ); //sass => css
 
 
-    var injectSrc = gulp.src( _.get( config, "app.module.scssInjectSrc", [] ) ).pipe( plugins.filelog() );
+    var injectSrc = gulp.src( _.get( config, "app.module.scssInjectSrc", [] ) )// .pipe( plugins.filelog() );
 
     return gulp
       .src( config.app.module.scss )

@@ -93,7 +93,7 @@ function init( gulp, plugins, config, _ ) {
       } ) )
       .pipe( gulp.dest( config.app.dest.i18nExtract ) )
 
-      .pipe( plugins.filelog() );
+      // .pipe( plugins.filelog() );
 
     json.pipe( mergeJson( 'en-us' + '-greek-text.json', {
       parsers: {
@@ -106,11 +106,11 @@ function init( gulp, plugins, config, _ ) {
     } ) )
       .pipe( gulp.dest( config.app.dest.i18nExtract ) )
 
-      .pipe( plugins.filelog() );
+      // .pipe( plugins.filelog() );
 
     json.pipe( convert( { domain: domain } ) )
       .pipe( gulp.dest( config.app.dest.i18nXml ) )
-      .pipe( plugins.filelog() );
+      // .pipe( plugins.filelog() );
 
     return done();
   }
