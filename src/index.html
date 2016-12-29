@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="app" ng-strict-di>
   <head lang="en">
     <meta charset="UTF-8">
-    <title>HealthShare</title>
+    <title ng-bind="$state.current.data.title || 'HealthShare'"></title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 
     <!-- inject:css -->
@@ -16,7 +16,7 @@
     }</style>
   </head>
 
-  <body ng-app="app" ng-strict-di>
+  <body >
 
       <isc-critical-banner message="{{mainCtrl.criticalMessage}}"></isc-critical-banner>
 
