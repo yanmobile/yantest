@@ -485,7 +485,26 @@ gulp deploy --appjson path/to/config.app.js #only app specific
          ....
          ....
        }
-       ```
+       ```  
+* **How do I dynamically set the page title based on ui-router state config?**
+  * simply add a ```data.title``` property to your state config
+  
+       ```javascript
+         function getStates() {
+           return {
+             'authenticated.dashboard': {
+               url           : 'dashboard',
+               state         : 'authenticated.dashboard',
+               ...
+               //unless explicitly overriden, ui-router's data object will be inherited by descendant states
+               data          : { 
+                  title : "Patient Dashboard" 
+               }
+             }
+           };
+         }
+       ```  
+
 ---
 ###Git 101
 ```bash
