@@ -9,13 +9,9 @@
     "angular-utils-pagination": "0.11.1",
     "angularjs-datepicker": "2.1.6",
     "api-check": "7.5.5",
-    "d3": "3.5.12",
     "font-awesome": "4.6.3",
     "foundation-apps": "1.2.0",
     "jquery": "2.2.4",
-    "leaflet": "0.7.7",
-    "n3-charts": "2.0.28",
-    "ng-tags-input": "3.1.1",
     "tooltipster": "4.1.4",
     "ui-select": "0.19.6"
   },
