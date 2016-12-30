@@ -48,11 +48,12 @@ function includeUiModules( uiModuleNames ) {
   }
 
   function injectModuleFiles( uiModuleName ) {
-    var uiModulePath = `${appBasePath}src/app/modules/${uiModuleName}/**/*`;
-    module.exports.app.module.modules.unshift( uiModulePath + ".module.js" );
-    module.exports.app.module.js.unshift( uiModulePath + ".js" );
-    module.exports.app.module.scssInjectSrc.unshift( uiModulePath + ".scss" ); //scss files are auto injected to have access to vars and mixins
-    module.exports.app.module.html.unshift( uiModulePath + ".html" );
+    var uiModulePath = `${appBasePath}src/app/modules/${uiModuleName}/`;
+    module.exports.app.module.modules.unshift( uiModulePath + "**/*.module.js" );
+    module.exports.app.module.js.unshift( uiModulePath + "**/*.js" );
+    module.exports.app.module.scssInjectSrc.unshift( uiModulePath + "**/*.scss" ); //scss files are auto injected to have access to vars and mixins
+    module.exports.app.module.html.unshift( uiModulePath + "**/*.html" );
+    module.exports.app.module.assets.images.unshift( uiModulePath + "/assets/images/**/*" );
   }
 
   function concatArrays( a, b ) {
