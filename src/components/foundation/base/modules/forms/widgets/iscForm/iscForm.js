@@ -5,8 +5,8 @@
     .directive( 'iscForm', iscForm );
 
   /* @ngInject */
-  function iscForm( $stateParams, $q,
-    iscFormsModel, iscFormsValidationService, iscFormsTemplateService, iscFormsCodeTableApi ) {//jshint ignore:line
+  function iscForm( $stateParams,
+    iscFormsModel, iscFormsValidationService, iscFormsTemplateService ) {//jshint ignore:line
     var directive = {
       restrict        : 'E',
       replace         : true,
@@ -105,7 +105,7 @@
           formVersion: self.formVersion
         } )
           .then( afterFormDefinitionLoad )
-          .then( loadCodeTables )
+          .then( iscFormsTemplateService.loadCodeTables )
           .then( getValidationDefinition );
 
         function afterFormDefinitionLoad( formDefinition ) {
@@ -160,58 +160,6 @@
 
         function mergeLibrary( library ) {
           _.extend( self.options.formState.lib, library );
-        }
-      }
-
-      /**
-       * @memberOf iscForm
-       * @param formDefinition
-       * @description
-       * Loads all code tables which are needed for formDefinition and which are not already cached
-       * by iscFormsCodeTableApi.
-       */
-      function loadCodeTables( formDefinition ) {
-        var codeTables        = [],
-            codeTablePromises = [];
-
-        // Scrape formDefinition response for any needed code tables.
-        // This includes data.codeTable in the definition's form or in any of its subforms.
-        // Code tables linked in other ways, such as expressionProperties['data.codeTable'] or as
-        // default properties on custom widgets, should either be pre-loaded by the containing module
-        // or will be loaded as needed by initListControlWidget in iscFormsTemplateService.
-
-        _.forEach( formDefinition.form.sections, queueCodeTableLoad );
-        _.forEach( formDefinition.subforms, function( subform ) {
-          _.forEach( subform.sections, queueCodeTableLoad );
-        } );
-
-        _.forEach( _.uniqBy( codeTables, 'name' ), function( codeTable ) {
-          // If the code table has not been fetched yet, do so
-          if ( !iscFormsCodeTableApi.getSync( codeTable.name ) ) {
-            codeTablePromises.push( iscFormsCodeTableApi.getAsync( codeTable.name, codeTable.order ) );
-          }
-        } );
-
-        return $q.all( codeTablePromises );
-
-        function queueCodeTableLoad( container ) {
-          // Recurse for these mutually-exclusive cases:
-          //   fields              (by section);
-          //   fieldGroup          (by fieldGroup);
-          //   data.embeddedFields (literal field definitions for embedded forms/collections).
-          var fields = container.fields || container.fieldGroup || _.get( container, 'data.embeddedFields', [] );
-
-          _.forEach( fields, function( field ) {
-            var name  = _.get( field, 'data.codeTable' ),
-                order = _.get( field, 'data.orderField' );
-            if ( name ) {
-              codeTables.push( {
-                name : name,
-                order: order
-              } );
-            }
-            queueCodeTableLoad( field );
-          } );
         }
       }
 
