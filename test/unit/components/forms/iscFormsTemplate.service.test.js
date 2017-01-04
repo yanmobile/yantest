@@ -336,32 +336,5 @@
       } );
     } );
 
-    describe( 'viewMode date parsing', function() {
-      beforeEach( function() {
-        suite = createDirective( getMinimalForm( {
-          formKey   : 'viewModeTestForm',
-          formDataId: 6,
-          mode      : 'view'
-        } ) );
-        suiteMain.$httpBackend.flush();
-      } );
-
-      it( 'should parse the data into dates correctly', function() {
-        var expectedFormat = getCustomConfig().formats.date.shortDate,
-            data           = viewModeMockData.data;
-
-        var expectDate1 = moment( data.date1 ).format( expectedFormat ),
-            expectDate2 = moment( data.date2 ).format( expectedFormat ),
-            expectDate3 = moment( data.date3 ).format( expectedFormat );
-
-        var date1 = suite.element.find( '.date1 .ng-binding > p' ),
-            date2 = suite.element.find( '.date2 .ng-binding > p' ),
-            date3 = suite.element.find( '.date3 .ng-binding > p' );
-
-        expect( date1.html() ).toEqual( expectDate1 );
-        expect( date2.html() ).toEqual( expectDate2 );
-        expect( date3.html() ).toEqual( expectDate3 );
-      } );
-    } );
   } );
 })();
