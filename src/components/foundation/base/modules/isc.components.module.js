@@ -15,7 +15,6 @@
         'foundation',
         'angucomplete-alt',
         'formly',
-        'n3-line-chart',
         'isc.forms',
         'isc.directives',
         'isc.table',
