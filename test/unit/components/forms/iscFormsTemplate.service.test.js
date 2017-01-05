@@ -269,5 +269,72 @@
       } );
     } );
 
+    describe( 'loadCodeTables', function() {
+      it( 'should load code tables in a form definition', function() {
+        var mockFdn = {
+          form    : {
+            sections: [
+              {
+                fields: [
+                  {
+                    // Test field group recursion
+                    fieldGroup: [
+                      makeMockCodeTableReference( 'formCodeTable' )
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          subforms: {
+            subform1: {
+              sections: [
+                {
+                  // Test base field definitions
+                  fields: [
+                    makeMockCodeTableReference( 'subform1CodeTable' )
+                  ]
+                }
+              ]
+            },
+            subform2: {
+              sections: [
+                {
+                  fields: [
+                    {
+                      data: {
+                        // Test explicitly embedded field recursion
+                        embeddedFields: [
+                          makeMockCodeTableReference( 'subform2CodeTable' )
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        };
+
+        spyOn( suiteMain.iscFormsCodeTableApi, 'getAsync' ).and.returnValue( [] );
+
+        suiteMain.iscFormsTemplateService.loadCodeTables( mockFdn ).then( function() {
+          expect( suiteMain.iscFormsCodeTableApi.getAsync ).toHaveBeenCalledWith( 'formCodeTable', undefined );
+          expect( suiteMain.iscFormsCodeTableApi.getAsync ).toHaveBeenCalledWith( 'subform1CodeTable', undefined );
+          expect( suiteMain.iscFormsCodeTableApi.getAsync ).toHaveBeenCalledWith( 'subform2CodeTable', undefined );
+        } );
+
+        suiteMain.$timeout.flush();
+
+        function makeMockCodeTableReference( codeTableName ) {
+          return {
+            data: {
+              codeTable: codeTableName
+            }
+          };
+        }
+      } );
+    } );
+
   } );
 })();
