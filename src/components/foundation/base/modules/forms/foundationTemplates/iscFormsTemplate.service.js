@@ -70,7 +70,7 @@
     // YYYY-MM-DDThh:mm:ss.xxxZ   or
     // YYYY-MM-DD hh:mm:ss.xxxxxx or
     // YYYY-MM-DD hh:mm:ss
-    var isoRE = /^\d{4}[-\/]{1}\d{2}[-\/]{1}\d{2}[T ]{1}\d{2}:{1}\d{2}:{1}\d{2}(.{1}\d{3}Z{1})?$/;
+    var isoRE = /^\d{4}[-\/]{1}\d{2}[-\/]{1}\d{2}[T ]{1}\d{2}:{1}\d{2}:{1}\d{2}(.{1}\d{3,}Z?)?$/;
 
     formlyConfig.extras.fieldTransform.push( addDataModelDependencies );
     formlyConfig.extras.fieldTransform.push( addInheritedClassNames );
