@@ -3,6 +3,8 @@
  */
 
 ( function() {
+  'use strict';
+
   _.extend( moment.fn, {
     isDifferent: isDifferent
   } );
