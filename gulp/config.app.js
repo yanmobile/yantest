@@ -54,6 +54,7 @@ function includeUiModules( uiModuleNames ) {
     module.exports.app.module.scssInjectSrc.unshift( uiModulePath + "**/*.scss" ); //scss files are auto injected to have access to vars and mixins
     module.exports.app.module.html.unshift( uiModulePath + "**/*.html" );
     module.exports.app.module.assets.images.unshift( uiModulePath + "/assets/images/**/*" );
+    module.exports.app.module.assets.FDN.unshift( uiModulePath + "/assets/FDN/**/*" );
   }
 
   function concatArrays( a, b ) {
