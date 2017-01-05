@@ -2,7 +2,6 @@
  * Created by hzou on 3/3/16.
  */
 
-var inject = require( 'gulp-inject' );
 
 module.exports = {
   init: init
@@ -10,21 +9,34 @@ module.exports = {
 
 function init( gulp, plugins, config, _ ) {
   gulp.task( 'sass', [], function() {
-    var autoprefixer = require( 'gulp-autoprefixer' );
 
-    var injectSrc = gulp.src( _.get( config, "app.module.scssInjectSrc", [] ) ).pipe( plugins.filelog() );
+    // var cssmin       = require( 'gulp-cssmin' );  //minifies css
+    var autoprefixer = require( 'gulp-autoprefixer' );
+    var inject       = require( 'gulp-inject' );
+    var sass         = require( 'gulp-sass' ); //sass => css
+
+
+    var injectSrc = gulp.src( _.get( config, "app.module.scssInjectSrc", [] ) )// .pipe( plugins.filelog() );
+
     return gulp
       .src( config.app.module.scss )
       .pipe( plugins.plumber() )
       .pipe( plugins.sourcemaps.init() )
       .pipe( inject( injectSrc, {
         starttag : '// <!-- inject:scss -->',
-        endtag   : '// <!-- endinject -->',
+        endtag   : '// <!-- endinject:scss -->',
         transform: function( filepath ) {
-          return '@import "' + filepath.replace( '/src/app', '../..' ) + '";';
+
+          if(filepath.startsWith("/src/app")){
+            var importStr = '@import "' + filepath.replace( '/src/app', '../..' ) + '";';
+          } else if(filepath.startsWith("/src/uifw-modules")){
+            var importStr = '@import "' + filepath.replace( '/src/uifw-modules', '../../../uifw-modules' ) + '";';
+          }
+
+          return importStr;
         }
       } ) )
-      .pipe( plugins.sass.sync( { errLogToConsole: true } ) )
+      .pipe( sass.sync( { errLogToConsole: true } ) )
       .pipe( plugins.mobilizer( 'app.css', {
         'app.css'  : {
           hover  : 'exclude',

@@ -4,7 +4,6 @@ module.exports = {
   "modulePath": "src/components/foundation/base/modules",
   "vendor"    : {
     "js"   : [
-      "src/components/foundation/base/node_modules/d3/d3.js",
       "src/components/foundation/base/node_modules/angular-utils-pagination/dirPagination.js",
       "src/components/foundation/base/node_modules/angucomplete-alt/angucomplete-alt.js",
       "src/components/foundation/base/node_modules/angularjs-datepicker/dist/angular-datepicker.min.js",
@@ -13,9 +12,7 @@ module.exports = {
       "src/components/foundation/base/node_modules/api-check/dist/api-check.min.js",
       "src/components/foundation/base/node_modules/angular-formly/dist/formly.min.js",
       "src/components/foundation/base/node_modules/tooltipster/dist/js/tooltipster.bundle.js",
-      "src/components/foundation/base/node_modules/n3-charts/build/LineChart.js",
-      "src/components/foundation/base/node_modules/leaflet/dist/leaflet.js",
-      "src/components/foundation/base/node_modules/ng-tags-input/build/ng-tags-input.js"
+      "src/components/foundation/base/node_modules/ui-select/dist/select.js"
     ],
 
     "mocks": [],
@@ -35,7 +32,7 @@ module.exports = {
       "src/components/foundation/base/assets/**/*.html"
     ],
     "assets" : {
-      "FDN": "src/components/foundation/base/assets/FDN/",
+      "FDN": ["src/components/foundation/base/assets/FDN/**/*.json"],
       "i18nDir": "src/components/foundation/base/assets/i18n/",
       "images" : [
         "src/components/foundation/base/assets/images/**/*",

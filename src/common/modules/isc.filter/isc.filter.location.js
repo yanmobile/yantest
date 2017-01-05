@@ -22,7 +22,7 @@
         return '';
       }
       else if ( parseFloat( locationString ) === iscNullValCode ) {
-        return !!showMessage ? $filter( 'translate' )( 'ISC_UNKNOWN_LOCATION' ) : '';
+        return !!showMessage ? $filter( 'translate' )( 'Unknown Location' ) : '';
       }
 
       return locationString;

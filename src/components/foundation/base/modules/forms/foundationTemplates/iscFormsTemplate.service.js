@@ -51,7 +51,7 @@
    *
    */
   /* @ngInject */
-  function iscFormsTemplateService( $filter, $window, $sce, $q,
+  function iscFormsTemplateService( $filter, $window, $sce, $q, $translate,
     iscNavContainerModel, iscCustomConfigService, iscSessionModel,
     formlyConfig, iscFormDataApi, iscFormsCodeTableApi, iscFormsSectionLayoutService, hsModelUtils ) {
     var baseType = '__iscFormsBase__';
@@ -794,7 +794,7 @@
 
     function defaultWrapContent( value ) {
       if ( value === undefined ) {
-        return $sce.trustAsHtml( '<p class="not-specified">' + $filter( 'translate' )( 'Not specified' ) + '</p>' );
+        return $sce.trustAsHtml( '<p class="not-specified">' + $translate.instant( 'Not specified' ) + '</p>' );
       }
       else {
         return $sce.trustAsHtml( '<p>' + value + '</p>' );

@@ -78,7 +78,7 @@
         <button class="cancel float-left flat embedded-form-cancel"
                 type="button"
                 ng-click="subformCtrl.subformConfig.onCancel()">
-          {{'Forms_Cancel_Button' | translate}}
+          {{'Cancel' | translate}}
         </button>
 
         <div class="float-right">
@@ -87,7 +87,7 @@
                   ng-class="{'disabled' : subformCtrl.subformConfig.isSubmitDisabled() }"
                   ng-disabled="subformCtrl.subformConfig.isSubmitDisabled()"
                   ng-click="subformCtrl.subformConfig.onSubmit()">
-            {{'Forms_Save_Button' | translate}} {{subformCtrl.subformConfig.itemLabel}}
+            {{'Save' | translate}} {{subformCtrl.subformConfig.itemLabel}}
           </button>
 
           <button class="flat embedded-form-save-all"
@@ -96,7 +96,7 @@
                   ng-disabled="subformCtrl.subformConfig.isSubmitDisabled()"
                   ng-if="subformCtrl.breadcrumbs.length > 2"
                   ng-click="subformCtrl.subformConfig.onSubmitAll()">
-            {{'Forms_Save_All_Button' | translate}}
+            {{'Save All' | translate}}
           </button>
         </div>
       </div>

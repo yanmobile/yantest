@@ -11,6 +11,10 @@
     'isc.core',
     'isc.authentication',
     'isc.authorization',
-    'isc.states'] );
+    'isc.states'] )
+    .run( function( $rootScope, $state ) {
+      //needed for support dynamic title change
+      $rootScope.$state = $state;
+    } );
 
 } )();

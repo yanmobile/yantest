@@ -1,21 +1,24 @@
 <div class="grid-block vertical" isc-table-popup-indicator>
   <!--Header-->
   <div class="primary title-bar">
-    <div class="center title">{{iscRowCtrl.isAddRow ? (iscTblCtrl.tableConfig.popupAddTitle || "Add New") : (iscTblCtrl.tableConfig.popupEditTitle ||
-      "Edit") | translate}}
+    <div class="center title">
+      <span ng-if="iscRowCtrl.isAddRow">
+        {{(iscTblCtrl.tableConfig.popupAddTitle || "Add New" ) | translate }}
+      </span>
+      <span ng-if="!iscRowCtrl.isAddRow">
+        {{(iscTblCtrl.tableConfig.popupEditTitle || "Edit" ) | translate }}
+      </span>
     </div>
   </div>
   <div class="grid-content" style="padding-top: 1rem;">
     <ng-form ng-include="iscTblCtrl.tableConfig.popupContentTemplate || 'table/popup/iscTablePopupContent.html'">
     </ng-form>
     <div class="clearfix">
-      <button class="info float-left"
-              ng-click="iscRowCtrl.onCommand('cancelEdit', $event, iscTblIndic.commands.cancelEdit.callback)">
-        {{(iscTblIndic.commands.cancelEdit.translationKey || 'no key') | translate}}
+      <button class="info float-left" ng-click="iscRowCtrl.onCommand('cancelEdit', $event, iscTblIndic.commands.cancelEdit.callback)">
+        {{ (iscTblIndic.commands.cancelEdit.translationKey || "Cancel" ) | translate }}
       </button>
-      <button class="float-right"
-              ng-click="iscRowCtrl.onCommand('save', $event, iscTblIndic.save.callback)">
-        {{(iscTblIndic.commands.save.translationKey || 'no key') | translate}}
+      <button class="float-right" ng-click="iscRowCtrl.onCommand('save', $event, iscTblIndic.save.callback)">
+        {{ (iscTblIndic.commands.save.translationKey || "Save") | translate }}
       </button>
     </div>
   </div>

@@ -17,16 +17,18 @@
   //save the original _.get
 
   _.mixin( {
-    getAge          : getAge,
-    areSameDate     : areSameDate,
-    nullifyObj      : nullifyObj,
-    isTypeOf        : isTypeOf,
-    makeObj         : makeObj,
-    get             : advancedGet,
-    wrapText        : wrapText,
-    interpolate     : interpolate,
-    getRemainingTime: getRemainingTime,
-    findNested      : findNested
+    getAge                   : getAge,
+    areSameDate              : areSameDate,
+    nullifyObj               : nullifyObj,
+    isTypeOf                 : isTypeOf,
+    makeObj                  : makeObj,
+    get                      : advancedGet,
+    wrapText                 : wrapText,
+    interpolate              : interpolate,
+    getRemainingTime         : getRemainingTime,
+    findNested               : findNested,
+    sum                      : sum,
+    generateGettersAndSetters: generateGettersAndSetters
   } );
 
   function getAge( dob, format ) {
@@ -210,6 +212,105 @@
 
     return result;
   }
+
+  /**
+   * @description Sums the value of each array item
+   *
+   * The iteratee value can also be piped through an optional customizer value
+   * @param collection
+   * @param iteratee (Undefined, String, Function):
+   *    Undefined: for simple value array.
+   *    String: for object path
+   *    Function: for custom retrieve function
+   * @param [customizer] (Function): The function to customize assigned values.
+   * @returns sum
+   *
+   * USAGE: _.sum(collection, iteratee, [customizer])
+   *
+   * Examples:
+   * _.sum([1.5, 'NaN', 3.3, [], new Date()])
+   * // => NaN
+   *
+   * Examples:
+   * _.sum([1.5, 2.1, 3.3, 4.2, 5.5])
+   * // => 15.6
+   *
+   * // each value is piped through customizer
+   * _.sum([1.5, 2.1, 3.3, 4.2, 5.5], null, _.floor);
+   * // => 15
+   *
+   * _.sum([1, "2", 3, Number( 4 ), 5])
+   * // => 15
+   *
+   * var array = [{ count: 1 }, { count: 2 }, { count: 3 }, { count: 4 }, { count: 5 }]
+   * _.sum(array, 'count')
+   * // => 15
+   *
+   * var array  = [{ count: { value: 1 } }, { count: { value: 2 } }, { count: { value: 3 } }, { count: { value: "0.04e2" } }, { count: { value: 5 } }];
+   * _.sum( array, 'count.value' );
+   * // => 15
+   *
+   * var array  = [{ count: { value: Number( 1 ) } }, { count: { value: 2 } }, { count: { value: "3" } }, { count: { value: "0.04e2" } }, { count: { value: 5 } }];
+   * _.sum( array, function( item ) { return item.count.value; } );
+   * // => 15
+   *
+   */
+  function sum( collection, iteratee, customizer ) {
+    return _.reduce( collection, function( result, item ) {
+      if ( _.isNil( iteratee ) || !_.isObjectLike( item ) ) {  //primitive value (string/number);
+        result += ( customizer || _.identity )( _.toNumber( item ) );
+      } else {
+        result += ( customizer || _.identity )( _.isString( iteratee ) ? _.toNumber( _.get( item, iteratee ) ) : _.toNumber( iteratee( item ) ) );
+      }
+
+      return result;
+    }, 0 );
+  }
+
+  /**
+   * Generate setters and getters based from an object's own properties
+   *
+   * Prerequisite: Good understand of passing by reference and passing by value
+   *
+   * EXAMPLE:
+   * _.generateGettersAndSetters({ prop1: 1, prop2: 2 });
+   *  => {
+   *       getProp1: function() {...},
+   *       setProp1: function( val ) {...},
+   *       getProp2: function() {...},
+   *       setProp2: function( val ) {...}
+   *     }
+   *
+   *
+   * @param plainObject
+   * @returns {{}} - a new object containing setters and getters functions
+   *
+   */
+  function generateGettersAndSetters( plainObject ) {
+    if ( !_.isPlainObject( plainObject ) ) {
+      return plainObject;
+    }
+
+    var retObjGettersAndSetters = {};
+
+    _.forIn( plainObject, function( val, key ) {
+      var newKey = key[0].toUpperCase() + key.substr( 1 );
+
+      retObjGettersAndSetters["set" + newKey] = _.partial( setter, plainObject, key );
+      retObjGettersAndSetters["get" + newKey] = _.partial( getter, plainObject, key );
+    } );
+
+    return retObjGettersAndSetters;
+
+    function setter( obj, key, val ) {
+      _.set( obj, key, val );
+    }
+
+    function getter( obj, key ) {
+      return obj[key];
+    }
+  }
+
 
   //END CLASS
 } )();

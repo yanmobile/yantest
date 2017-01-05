@@ -9,7 +9,7 @@
     .factory( 'iscFormsSectionLayoutService', iscFormsSectionLayoutService );
 
   /* @ngInject */
-  function iscFormsSectionLayoutService() {
+  function iscFormsSectionLayoutService( $translate ) {
     var wizardButtonConfig = {
       buttons: {
         cancel: {

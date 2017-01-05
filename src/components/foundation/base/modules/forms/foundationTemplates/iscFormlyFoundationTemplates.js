@@ -47,7 +47,7 @@
    *    templateLabel<br />
    *    templateHasError
    */
-  function iscFormlyFoundationTemplates( $filter, $sce, iscCustomConfigService, iscFormsTemplateService ) {
+  function iscFormlyFoundationTemplates( $filter, $translate, $sce, iscCustomConfigService, iscFormsTemplateService ) {
     var service = {
       init: init
     };
@@ -651,7 +651,7 @@
           var content = _.get( $scope, propName );
 
           if ( content ) {
-            return $sce.trustAsHtml( $filter( 'translate' )( content ) );
+            return $sce.trustAsHtml( $translate.instant( content ) );
           }
           return '';
         };
