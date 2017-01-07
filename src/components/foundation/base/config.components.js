@@ -5,7 +5,6 @@ module.exports = {
   "vendor"    : {
     "js"   : [
       "src/components/foundation/base/node_modules/angular-utils-pagination/dirPagination.js",
-      "src/components/foundation/base/node_modules/angucomplete-alt/angucomplete-alt.js",
       "src/components/foundation/base/node_modules/angularjs-datepicker/dist/angular-datepicker.min.js",
       "src/components/foundation/base/node_modules/foundation-apps/dist/js/foundation-apps.js",
       "src/components/foundation/base/node_modules/foundation-apps/dist/js/foundation-apps-templates.js",
