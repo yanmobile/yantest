@@ -79,5 +79,8 @@
   "repository": {
     "type": "git",
     "url": "git:/github.com/intersystems/uifw.git"
+  },
+ "optionalDependencies" : {
+    "fsevents" : "*"
   }
 }

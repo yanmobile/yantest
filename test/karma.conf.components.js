@@ -17,7 +17,7 @@
           { type: "html", dir : 'coverage/component' }
         ]
       },
-      browserNoActivityTimeout : 30000,
+      browserNoActivityTimeout : 45000,
       frameworks: ['jasmine', 'fixture'],
 
       browsers: ['PhantomJS'],
