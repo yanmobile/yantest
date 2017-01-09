@@ -98,9 +98,11 @@
        * Gets the message to display (if any) when the collection is empty
        */
       function getEmptyMessage() {
-        var configuredMessage = _.get( self, 'config.emptyText' ),
-            message           = configuredMessage === undefined ? 'No content available' : configuredMessage;
-        return $translate.instant( message );
+        var configuredMessage = _.get( self, 'config.emptyText' );
+
+        return configuredMessage === undefined
+          ? $translate.instant( 'No content available' )
+          : $translate.instant( configuredMessage );
       }
     }
 
