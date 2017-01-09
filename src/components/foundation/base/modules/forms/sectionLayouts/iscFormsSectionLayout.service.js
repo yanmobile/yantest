@@ -14,26 +14,26 @@
       buttons: {
         cancel: {
           className: 'button cancel float-left wizard-cancel-btn',
-          text     : 'Forms_Cancel_Button',
+          text     : $translate.instant( 'Cancel' ),
           order    : 1
         },
         prev  : {
           className: 'button float-right wizard-prev-btn',
-          text     : 'Forms_Prev_Button',
+          text     : $translate.instant( 'Prev' ),
           order    : 2,
           hide     : isFirstSection,
           onClick  : _.partialRight( changeSection, -1 )
         },
         next  : {
           className: 'button float-right wizard-next-btn',
-          text     : 'Forms_Next_Button',
+          text     : $translate.instant( 'Next' ),
           order    : 3,
           hide     : isLastSection,
           onClick  : _.partialRight( changeSection, +1 )
         },
         submit: {
           className: 'button float-right wizard-submit-btn',
-          text     : 'Forms_Submit_Button',
+          text     : $translate.instant( 'Submit' ),
           order    : 4,
           hide     : isNotLastSection
         }
