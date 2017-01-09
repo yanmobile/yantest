@@ -29,7 +29,7 @@
    * }
    * @returns {{restrict: string, controller: controller, controllerAs: string, bindToController: {config: string, data: string}, scope: boolean, templateUrl: directive.templateUrl}}
    */
-  function fauxTable() {//jshint ignore:line
+  function fauxTable( $translate ) {//jshint ignore:line
 
     // ----------------------------
     // class factory
@@ -99,7 +99,10 @@
        */
       function getEmptyMessage() {
         var configuredMessage = _.get( self, 'config.emptyText' );
-        return configuredMessage === undefined ? 'No content available' : configuredMessage;
+
+        return configuredMessage === undefined
+          ? $translate.instant( 'No content available' )
+          : $translate.instant( configuredMessage );
       }
     }
 
