@@ -147,21 +147,21 @@
     function getButtonDefaults( mode, sectionLayout ) {
       var customDefaults,
           sectionLayoutDefaults = {},
-          defaultButtonConfig = {
+          defaultButtonConfig   = {
             className: '',
             buttons  : {
               cancel: {
                 onClick   : _.noop,
                 afterClick: afterCancel,
                 className : 'cancel button large float-left',
-                text      : mode === 'view' ? 'Forms_Back_Button' : 'Forms_Cancel_Button',
+                text      : mode === 'view' ? $translate.instant( 'Back' ) : $translate.instant( 'Cancel' ),
                 order     : 1
               },
               submit: {
                 onClick   : onSubmit,
                 afterClick: afterSubmit,
                 className : 'button large float-right',
-                text      : 'Forms_Submit_Button',
+                text      : $translate.instant( 'Submit' ),
                 hide      : mode === 'view',
                 order     : 2
               }
