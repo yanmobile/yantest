@@ -41,6 +41,14 @@ function includeUiModules( uiModuleNames ) {
 
   function injectDependencies( uiModuleName ) {
     var individualModuleConfig = readJson( `${configBasePath}${uiModuleName}/build.json`, {} );
+
+    // For each peer dependency (uifw-module component), push to the uiModuleNames' array
+    _.forEach( individualModuleConfig.peerDependencies, function( peer ) {
+      // push peerDep into uiModuleNames array as we are looping through it via for each
+      // as the array grows, the loop will visit the newly added item
+      uiModuleNames.push( peer );
+    } );
+
     _.forEach( individualModuleConfig.dependencies, function( dependency ) {
       recursivelyPrefixAppPath( masterDepConfig[dependency], appBasePath );
       _.mergeWith( module.exports.app, masterDepConfig[dependency], concatArrays );
