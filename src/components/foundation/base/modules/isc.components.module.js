@@ -13,7 +13,6 @@
         'angularUtils.directives.dirPagination',
         '720kb.datepicker',
         'foundation',
-        'angucomplete-alt',
         'formly',
         'isc.forms',
         'isc.directives',
