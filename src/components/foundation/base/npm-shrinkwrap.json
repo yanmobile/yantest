@@ -2,11 +2,6 @@
   "name": "uifw-components-base",
   "version": "2.0.0",
   "dependencies": {
-    "angucomplete-alt": {
-      "version": "2.4.2",
-      "from": "angucomplete-alt@2.4.2",
-      "resolved": "https://registry.npmjs.org/angucomplete-alt/-/angucomplete-alt-2.4.2.tgz"
-    },
     "angular": {
       "version": "1.5.8",
       "from": "angular@1.5.8",
@@ -54,7 +49,7 @@
     },
     "ui-select": {
       "version": "0.19.6",
-      "from": "ui-select@latest",
+      "from": "ui-select@0.19.6",
       "resolved": "https://registry.npmjs.org/ui-select/-/ui-select-0.19.6.tgz"
     }
   }

@@ -3,7 +3,6 @@
   "version": "2.0.0",
   "private": true,
   "dependencies": {
-    "angucomplete-alt": "2.4.2",
     "angular": "1.5.8",
     "angular-formly": "8.3.0",
     "angular-utils-pagination": "0.11.1",
