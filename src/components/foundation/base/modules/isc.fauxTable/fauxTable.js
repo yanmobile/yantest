@@ -100,8 +100,8 @@
       function getEmptyMessage() {
         var configuredMessage = _.get( self, 'config.emptyText' );
 
-        return configuredMessage === undefined
-          ? $translate.instant( 'No content available' )
+        return configuredMessage === undefined ?
+          $translate.instant( 'No content available' )
           : $translate.instant( configuredMessage );
       }
     }
