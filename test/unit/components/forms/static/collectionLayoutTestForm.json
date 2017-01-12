@@ -1,0 +1,111 @@
+{
+  "sectionLayout" : "scrolling",
+  "sections"      : [
+    {
+      "name"   : "Contact Information",
+      "fields" : [
+        {
+          "key"             : "contact.addresses",
+          "type"            : "embeddedFormCollection",
+          "templateOptions" : {
+            "label" : "Addresses"
+          },
+          "data"            : {
+            "collections"    : {
+              "className" : {
+                "view" : "customLayoutContainerClass"
+              },
+              "layout"    : {
+                "view" : "card"
+              }
+            },
+            "embeddedLabel"  : "Address",
+            "embeddedFields" : [
+              {
+                "className"  : "grid-block",
+                "fieldGroup" : [
+                  {
+                    "key"             : "isPrimary",
+                    "type"            : "checkbox",
+                    "className"       : "grid-block small-6 medium-3 large-3",
+                    "templateOptions" : {
+                      "label" : "Primary Address"
+                    }
+                  }
+                ]
+              },
+              {
+                "className"  : "grid-block",
+                "fieldGroup" : [
+                  {
+                    "key"             : "streetNumber",
+                    "type"            : "input",
+                    "className"       : "grid-block small-4 medium-3 large-3 padding-right",
+                    "templateOptions" : {
+                      "label"    : "Street #",
+                      "required" : true,
+                      "type"     : "number"
+                    }
+                  },
+                  {
+                    "key"             : "street",
+                    "type"            : "input",
+                    "className"       : "grid-block small-5 medium-6 large-6",
+                    "templateOptions" : {
+                      "label"    : "Address",
+                      "required" : true
+                    }
+                  },
+                  {
+                    "key"             : "street2",
+                    "type"            : "input",
+                    "className"       : "grid-block small-3 medium-3 large-3 padding-left",
+                    "templateOptions" : {
+                      "label" : "Apt #"
+                    }
+                  }
+                ]
+              },
+              {
+                "className"  : "grid-block",
+                "fieldGroup" : [
+                  {
+                    "key"             : "city",
+                    "type"            : "input",
+                    "className"       : "grid-block small-4 medium-4 large-4 padding-right",
+                    "templateOptions" : {
+                      "label" : "City"
+                    }
+                  },
+                  {
+                    "key"             : "state",
+                    "type"            : "select",
+                    "className"       : "grid-block small-4 medium-4 large-4",
+                    "templateOptions" : {
+                      "label"    : "State",
+                      "required" : true
+                    },
+                    "data"            : {
+                      "codeTable"    : "usStates",
+                      "displayField" : "displayField"
+                    }
+                  },
+                  {
+                    "key"             : "zip",
+                    "type"            : "input",
+                    "className"       : "grid-block small-4 medium-4 large-4 padding-left",
+                    "templateOptions" : {
+                      "label"    : "Zipcode",
+                      "required" : true
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "name"          : "Demo Form"
+}

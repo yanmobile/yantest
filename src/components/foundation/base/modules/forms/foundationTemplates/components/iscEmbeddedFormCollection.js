@@ -74,16 +74,16 @@
       var opts             = self.options,
           templateOptions  = opts.templateOptions,
           key              = opts.key,
-          collectionConfig = _.get( opts, 'data.collections.config', {} ),
+          collectionOpts   = _.get( opts, 'data.collections', {} ),
+          collectionConfig = _.get( collectionOpts, 'config', {} ),
           dateFormat       = _.get( iscCustomConfigService.getConfig(), 'formats.date.shortDate', 'date' ),
-          editAs           = _.get( opts, 'data.collections.editAs' ),
-          modelType        = _.get( opts, 'data.collections.modelType', 'array' ),
-          modelTypeOptions = _.get( opts, 'data.collections.modelTypeOptions', {} ),
-          viewAs           = _.get( opts, 'data.collections.viewAs' ),
-          allowReordering  = _.get( opts, 'data.collections.allowReordering' ),
-          confirmDeletion  = _.get( opts, 'data.collections.confirmDeletion' ),
+          editAs           = _.get( collectionOpts, 'editAs' ),
+          modelType        = _.get( collectionOpts, 'modelType', 'array' ),
+          modelTypeOptions = _.get( collectionOpts, 'modelTypeOptions', {} ),
+          allowReordering  = _.get( collectionOpts, 'allowReordering' ),
+          confirmDeletion  = _.get( collectionOpts, 'confirmDeletion' ),
           subforms         = self.formState._subforms,
-          useDynamicFields = _.get( opts, 'data.collections.useDynamicFields' ),
+          useDynamicFields = _.get( collectionOpts, 'useDynamicFields' ),
           embeddedType     = _.get( opts, 'data.embeddedType' ),
           embeddedSection  = iscFormsTemplateService.getSectionForEmbeddedForm( opts, subforms );
 
@@ -133,7 +133,10 @@
         subform       : {}
       } );
 
+      setCollectionConfiguration();
+
       processFieldsArray();
+
       if ( useDynamicFields ) {
         $scope.$on( FORMS_EVENTS.subformDefinitionChanged, function( event, def ) {
           processFieldsArray( def );
@@ -199,7 +202,7 @@
             {
               key        : 'Actions',
               sortable   : false,
-              templateUrl: 'forms/foundationTemplates/components/iscEmbeddedFormCollection.table-actions.html'
+              templateUrl: 'forms/collectionLayouts/actions/' + ( self.collectionLayout || 'table' ) + '-actions.html'
             }
           );
         }
@@ -223,6 +226,29 @@
             hasValidationError: hasValidationError
           }
         };
+      }
+
+      /**
+       * @memberOf iscEmbeddedFormCollection
+       * @description
+       * Sets the internal values for configurable properties related to how the collection is rendered.
+       */
+      function setCollectionConfiguration() {
+        // Layout and className may be specified as strings (applies to all modes) or objects (to apply to specific modes)
+        var mode                = self.mode,
+            collectionLayout    = _.get( collectionOpts, 'layout' ),
+            collectionClassName = _.get( collectionOpts, 'className' ),
+            modeLayout          = _.get( collectionLayout, mode, collectionLayout ),
+            modeClassName       = _.get( collectionClassName, mode, collectionClassName );
+
+        // In case layout or className is specified for only one mode
+        modeLayout    = _.isObject( modeLayout ) ? undefined : modeLayout;
+        modeClassName = _.isObject( modeClassName ) ? undefined : modeClassName;
+
+        _.extend( self, {
+          collectionLayout   : modeLayout,
+          collectionClassName: modeClassName
+        } );
       }
 
       /**

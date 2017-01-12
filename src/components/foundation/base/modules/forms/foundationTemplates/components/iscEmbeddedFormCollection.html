@@ -1,15 +1,21 @@
 <div class="subform embedded-collection">
   <!--Table Display-->
-  <div class="grid-block">
+  <div class="grid-block vertical">
 
-    <faux-table config="efCollectionCtrl.tableConfig"
-                class="expand"
-                data="efCollectionCtrl.collectionModel">
-    </faux-table>
+    <!--Collection layout-->
+    <div class="grid-block"
+         ng-if="efCollectionCtrl.collectionLayout"
+         ng-include="'forms/collectionLayouts/' + efCollectionCtrl.collectionLayout + '.html'">
+    </div>
 
-    <div class="grid-content collapse clearfix"
+    <div class="grid-block"
+         ng-if="!efCollectionCtrl.collectionLayout"
+         ng-include="'forms/collectionLayouts/table.html'">
+    </div>
+
+    <!--Add Button-->
+    <div class="grid-block grid-content collapse clearfix"
          ng-hide="efCollectionCtrl.renderForm">
-      <!--Add Button-->
       <button class="button float-left small embedded-form-add"
               type="button"
               ng-class="{'disabled' : efCollectionCtrl.isAddItemDisabled()}"

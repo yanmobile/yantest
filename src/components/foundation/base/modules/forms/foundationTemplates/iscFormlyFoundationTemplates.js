@@ -467,7 +467,10 @@
           data: {
             listItemSelectionType: 'select',
             collections          : {
-              editAs: 'inline'
+              className : {
+                view : 'borderless'
+              },
+              editAs    : 'inline'
             }
           }
         },
