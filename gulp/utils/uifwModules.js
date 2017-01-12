@@ -30,10 +30,10 @@ function includeUiModules( uiModuleNames, appBasePath, appConfig  ) {
     var individualModuleConfig = readJson( `${configBasePath}${uiModuleName}/build.json`, {} );
 
     // For each peer dependency (uifw-module component), push to the uiModuleNames' array
-    _.forEach( individualModuleConfig.peerDependencies, function( peer ) {
+    _.forEach( individualModuleConfig.peerDependencies, function( peerDep ) {
       // push peerDep into uiModuleNames array as we are looping
       // this will continue to work as the array mutates while a simple for loop may not
-      uiModuleNames.push( peer );
+      uiModuleNames.push( peerDep );
     } );
 
     _.forEach( individualModuleConfig.dependencies, function( dependency ) {
