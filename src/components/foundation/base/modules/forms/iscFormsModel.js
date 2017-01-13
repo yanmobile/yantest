@@ -301,9 +301,7 @@
             var fieldPromises = [];
 
             _.forEach( fields, function( field ) {
-              var expProps       = _.get( field, 'expressionProperties', {} ),
-                  label          = _.get( field, 'templateOptions.label' ),
-                  type           = _.get( field, 'type' ),
+              var type           = _.get( field, 'type' ),
                   comments       = _.get( field, 'comments' ),
                   wrappers       = _.get( field, 'wrapper' ),
                   fieldGroup     = _.get( field, 'fieldGroup' ),
@@ -342,12 +340,6 @@
                 // If a user script is provided, this needs to be loaded and parsed
                 if ( data.userScript ) {
                   processUserScript( field, data.userScript );
-                }
-
-                // Translate the label if no label expression has been set
-                var expLabel = expProps['templateOptions.label'];
-                if ( label && !expLabel ) {
-                  _.set( field, 'templateOptions.label', $translate.instant( label ) );
                 }
 
                 // If the type is not already registered, load it and register it with formly

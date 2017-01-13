@@ -1,0 +1,266 @@
+/**
+ * Created by probbins on 1/12/2017
+ */
+
+( function() {
+  'use strict';
+
+  /* @ngInject */
+  angular
+    .module( 'isc.forms' )
+    .factory( 'iscFormsTransformService', iscFormsTransformService );
+
+  /**
+   * @description Service for transforming FDN before it is passed to a formly-form.
+   * @param $translate
+   * @param iscCustomConfigService
+   * @param formlyConfig
+   * @returns {{initTransforms: initTransforms}}
+   */
+  /* @ngInject */
+  function iscFormsTransformService( $translate,
+    iscCustomConfigService, formlyConfig ) {
+    var config           = iscCustomConfigService.getConfig(),
+        templateConfig   = {},
+        formsConfig      = _.get( config, 'forms', {} ),
+        updateOnExcluded = formsConfig.updateOnExcluded;
+
+    return {
+      initTransforms : initTransforms
+    };
+
+
+    function initTransforms( transformConfig ) {
+      _.merge( templateConfig, transformConfig );
+      formlyConfig.extras.fieldTransform.push( addDataModelDependencies );
+      formlyConfig.extras.fieldTransform.push( addInheritedClassNames );
+      formlyConfig.extras.fieldTransform.push( addQdTag );
+      formlyConfig.extras.fieldTransform.push( fixWatchers );
+      formlyConfig.extras.fieldTransform.push( translateLabels );
+      formlyConfig.extras.fieldTransform.push( wrapFieldGroups );
+    }
+
+    /**
+     * @memberOf iscFormsTransformService
+     * @param fields
+     * @returns {*}
+     */
+    function translateLabels( fields ) {
+      return forEachField( fields, function( field ) {
+        var label    = _.get( field, 'templateOptions.label' ),
+            expProps = _.get( field, 'expressionProperties', {} ),
+            expLabel = expProps['templateOptions.label'];
+
+        if ( label && !expLabel ) {
+          _.set( field, 'templateOptions.label', $translate.instant( label ) );
+        }
+      } );
+    }
+
+    /**
+     * @memberOf iscFormsTransformService
+     * @description formly will automatically create a 'formly-field-{type}' class
+     * for each field, but it will not inherit those classes from the field's
+     * ancestor types. This method explicitly causes those classes to inherit.
+     * @param {Array} fields
+     * @returns {Array}
+     */
+    function addInheritedClassNames( fields ) {
+      return forEachField( fields, function( field ) {
+        if ( !field.type ) {
+          return;
+        }
+
+        var isControlFlowOnly = field.type === 'controlFlowOnly',
+            type              = isControlFlowOnly ? _.get( field, 'data.controlFlowOnly.templateType' ) : field.type,
+            className         = isControlFlowOnly ? 'formly-field-' + type : '',
+            inheritedClasses  = getInheritedClassName( type );
+
+        field.className = [inheritedClasses, className || '', field.className].join( ' ' );
+
+        function getInheritedClassName( type ) {
+          var template    = getRegisteredType( type ),
+              extendsType = getAncestorType( template );
+
+          return [
+            ( !!extendsType ? getInheritedClassName( extendsType ) : '' ),
+            getClassName( template )
+          ].join( ' ' );
+
+          function getClassName( field ) {
+            var type;
+            if ( field.name === 'controlFlowOnly' ) {
+              type = _.get( field, 'defaultOptions.data.controlFlowOnly.templateType' );
+            }
+            else {
+              type = field.name;
+            }
+            return type ? 'formly-field-' + type : '';
+          }
+
+          function getAncestorType( type ) {
+            return type.extends !== templateConfig.baseType && type.extends;
+          }
+        }
+      } );
+    }
+
+    /**
+     * @memberOf iscFormsTransformService
+     * @description Due to the timing of field initialization and the need to attach
+     * field watchers to the $scope of the form (and not of the field), formly does not
+     * set up any watchers that are defined on custom templates as defaultOptions.watcher.
+     * This method explicitly pushes those default watchers into each instance so that the
+     * watchers are set up during formly's form initialization.
+     *
+     * This also corrects the issue that formly allows watcher listeners to be expressions,
+     * while Angular does not.
+     *
+     * @param {Array} fields
+     * @returns {Array}
+     */
+    function fixWatchers( fields ) {
+      var typesWithDefaultWatchers  = _.pickBy( formlyConfig.getTypes(), 'defaultOptions.watcher' ),
+          typeKeys                  = _.keys( typesWithDefaultWatchers ),
+          fieldsWithDefaultWatchers = _.filter( fields, function( field ) {
+            return _.includes( typeKeys, field.type );
+          } );
+
+      _.forEach( fieldsWithDefaultWatchers, function( field ) {
+        var watcher = _.concat(
+          _.get( field, 'watcher' ),
+          _.get( typesWithDefaultWatchers[field.type], 'defaultOptions.watcher' )
+        );
+        _.set( field, 'watcher', _.compact( watcher ) );
+      } );
+
+      _.forEach( fields, function( field ) {
+        _.forEach( field.watcher, function( watch ) {
+          // Angular does not support $watch listeners as expressions, but formly thinks it does.
+          // So we need to wrap any watch listener that is an expression in a function.
+          if ( watch.listener && !_.isFunction( watch.listener ) ) {
+            var watchListener = watch.listener;
+            // The formly watcher signature takes additional args of field and the watch's deregistration function.
+            watch.listener    = function( field, newVal, oldVal, scope, stop ) {
+              scope.$eval( watchListener, {
+                field : field,
+                newVal: newVal,
+                oldVal: oldVal,
+                stop  : stop
+              } );
+            };
+          }
+        } );
+      } );
+
+      return fields;
+    }
+
+    /**
+     * @memberOf iscFormsTransformService
+     * @description Wires up the "templateOptions.qdTag" property in the FDN using formly's
+     * ngModelAttrs feature.
+     * @param {Array} fields
+     * @returns {Array}
+     */
+    function addQdTag( fields ) {
+      return forEachField( fields, function( field ) {
+        if ( _.get( field, 'templateOptions.qdTag' ) ) {
+          _.set( field, 'ngModelAttrs.qdTag', {
+            bound    : 'ng-qd-tag',
+            attribute: 'qd-tag'
+          } );
+        }
+      } );
+    }
+
+    /**
+     * @memberOf iscFormsTransformService
+     * @description Adds the default label wrapper to field groups that have a label defined
+     * with "templateOptions.label".
+     * @param {Array} fields
+     * @returns {Array}
+     */
+    function wrapFieldGroups( fields ) {
+      return forEachField( fields, function( field ) {
+        if ( field.fieldGroup ) {
+          if ( _.get( field, 'templateOptions.label' ) ) {
+            var wrapper = field.wrapper || [];
+            wrapper.push( 'templateLabel' );
+            field.wrapper = _.uniq( wrapper );
+          }
+
+          wrapFieldGroups( field.fieldGroup );
+        }
+      } );
+    }
+
+    /**
+     * @memberOf iscFormsTransformService
+     * @description Applies form configuration to each formly field, including
+     * external validation systems.
+     * @param fields
+     * @returns {*}
+     */
+    function addDataModelDependencies( fields ) {
+      return forEachField( fields, function( field ) {
+        if ( field.key ) {
+          field.modelOptions = {
+            // Set ng-model-options.updateOn:blur to limit excessive validation
+            updateOn    : excludeUpdateOn( field.type ) ? undefined : formsConfig.updateOn,
+            // Debounce for UI responsiveness if updating on change
+            debounce    : formsConfig.debounce,
+            // Allow invalid so external validations can use the form model for evaluation
+            allowInvalid: formsConfig.allowInvalid
+          };
+
+          if ( formsConfig.useExternalValidation ) {
+            var validators          = field.validators || ( field.validators = {} );
+            // Executes external/HS validation api
+            validators.hsValidation = {
+              expression: 'hsValidation.getError(options.key)',
+              message   : 'hsValidation.$error.text'
+            };
+          }
+        }
+      } );
+
+      function excludeUpdateOn( type ) {
+        if ( _.includes( updateOnExcluded, type ) ) {
+          return true;
+        }
+        // If no match, check the type hierarchy above this type
+        var baseType = _.get( getRegisteredType( type ), 'extends' );
+        return !!baseType && excludeUpdateOn( baseType );
+      }
+    }
+
+    /**
+     * Utility transformation function that applies transformFunction recursively to fieldGroups.
+     * @private
+     * @param {Array} fields
+     * @param {Function} transformFunction
+     * @returns {Array}
+     */
+    function forEachField( fields, transformFunction ) {
+      _.forEach( fields, function( field ) {
+        transformFunction( field );
+
+        if ( field.fieldGroup ) {
+          forEachField( field.fieldGroup, transformFunction );
+        }
+      } );
+
+      return fields;
+    }
+
+    /**
+     * @private
+     * @param type
+     * @returns {*}
+     */
+    function getRegisteredType( type ) {
+      return formlyConfig.getType( type );
+    }
+  }
+} )();

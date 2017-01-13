@@ -99,8 +99,8 @@
             formDataApi = _.get( self.formConfig, 'formDataApi', {} ),
             saveApi     = formDataApi.save || function() {
               },
-            wrapApi     = formDataApi.wrap || function( data ) {
-                return data;
+            wrapApi     = formDataApi.wrap || function( scope ) {
+                return scope.model;
               };
 
         var callSaveApi = _.throttle( wrapAndSaveData, 500, { trailing: true } );
