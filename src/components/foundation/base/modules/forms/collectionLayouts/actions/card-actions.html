@@ -1,0 +1,44 @@
+<ul class="icon-list">
+  <li>
+    <button class="icon embedded-form-edit"
+            type="button"
+            title="{{'Edit' | translate}}"
+            ng-click="efCollectionCtrl.tableConfig.callbacks.editForm(row);">
+      <i class="fa fa-pencil"></i>
+    </button>
+  </li>
+  <li>
+    <button class="icon alert embedded-form-delete"
+            type="button"
+            title="{{'Remove' | translate}}"
+            ng-click="efCollectionCtrl.tableConfig.callbacks.removeForm(row);">
+      <i class="fa fa-remove"></i>
+    </button>
+  </li>
+  <li ng-show="efCollectionCtrl.tableConfig.options.allowReordering">
+    <button class="icon embedded-form-move-up"
+            type="button"
+            title="{{'Move up' | translate}}"
+            ng-disabled="$parent.$parent.$first"
+            ng-class="{ 'disabled': $parent.$parent.$first }"
+            ng-click="efCollectionCtrl.tableConfig.callbacks.moveUp(row);">
+      <i class="fa fa-arrow-up"></i>
+    </button>
+  </li>
+  <li ng-show="efCollectionCtrl.tableConfig.options.allowReordering">
+    <button class="icon embedded-form-move-down"
+            type="button"
+            title="{{'Move down' | translate}}"
+            ng-disabled="$parent.$parent.$last"
+            ng-class="{ 'disabled': $parent.$parent.$last }"
+            ng-click="efCollectionCtrl.tableConfig.callbacks.moveDown(row);">
+      <i class="fa fa-arrow-down"></i>
+    </button>
+  </li>
+</ul>
+<span class="has-error">
+  <label class="error-message"
+         ng-if="efCollectionCtrl.tableConfig.callbacks.hasValidationError(row);">
+    {{ '! invalid' | translate }}
+  </label>
+</span>

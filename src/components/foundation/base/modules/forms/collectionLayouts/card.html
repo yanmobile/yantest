@@ -1,0 +1,21 @@
+<div class="vertical grid-block sub-section">
+  <div class="grid-block card-group {{ efCollectionCtrl.collectionClassName || '' }}">
+    <div class="grid-block small-up-2 medium-up-2 large-up-3">
+      <div ng-repeat="row in efCollectionCtrl.collectionModel track by $index"
+           class="grid-block">
+        <div class="card">
+          <div class="card-divider"></div>
+          <div class="card-section">
+            <div class="vertical grid-block open-field">
+              <div ng-repeat="column in efCollectionCtrl.tableConfig.columns track by $index">
+                <div class="grid-block detail">
+                  {{ column.key | translate }} : <ng-include src="column.templateUrl || 'isc.fauxTable/cells/cell.'+ (column.type || 'string') + '.html'"></ng-include>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

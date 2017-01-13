@@ -53,7 +53,8 @@ var resetMockFormStore = function() {
       sampleConfigurableCollectionData,
       placeholderData,
       codedItemCollectionData,
-      viewModeMockData
+      viewModeMockData,
+      collectionLayoutMockData
     ]
   }
 };
@@ -188,38 +189,38 @@ var mockComponentData = {
       ],
       "objectValue"   : [
         {
-          "displayFieldOverride" : "MultiCheckbox 1",
-          "value": "1"
+          "displayFieldOverride": "MultiCheckbox 1",
+          "value"               : "1"
         },
         {
-          "displayFieldOverride" : "MultiCheckbox 3",
-          "value": "3"
+          "displayFieldOverride": "MultiCheckbox 3",
+          "value"               : "3"
         }
       ]
     },
     "radio"                : {
       "primitiveValue": "Radio 3",
       "objectValue"   : {
-        "displayField" : "Radio 2",
-        "value": "2"
+        "displayField": "Radio 2",
+        "value"       : "2"
       }
     },
     "typeahead"            : {
       "primitiveValue": "Typeahead 3",
       "objectValue"   : {
-        "displayField" : "Typeahead 2",
-        "value": "2"
+        "displayField": "Typeahead 2",
+        "value"       : "2"
       }
     },
     "typeaheadWithScript"  : {
-      "displayField" : "TypeaheadWithScript 1",
-      "value": "3"
+      "displayField": "TypeaheadWithScript 1",
+      "value"       : "3"
     },
     "select"               : {
       "primitiveValue": "Select 3",
       "objectValue"   : {
-        "displayField" : "Select 2",
-        "value": "2"
+        "displayField": "Select 2",
+        "value"       : "2"
       }
     },
     "textarea"             : "more text",
@@ -246,22 +247,22 @@ var sampleIntake = {
       ]
     },
     "test"   : {
-      "SubformPage"  : [
+      "SubformPage"        : [
         {
           "aField": "SubformPage: some data"
         }
       ],
-      "SubformInline": [
+      "SubformInline"      : [
         {
           "aField": "SubformPage: some data"
         }
       ],
-      "SubformModal" : [
+      "SubformModal"       : [
         {
           "aField": "SubformPage: some data"
         }
       ],
-      "PrimitiveCollection" : [
+      "PrimitiveCollection": [
         "1"
       ]
     }
@@ -269,48 +270,115 @@ var sampleIntake = {
 };
 
 var sampleConfigurableCollectionData = {
-  "id" : 4,
-  "data" : {
-    "objectTypeCollection" : {
-      "key1" : {
-        "valueProp1" : 1,
-        "valueProp2" : 2
+  "id"  : 4,
+  "data": {
+    "objectTypeCollection"   : {
+      "key1": {
+        "valueProp1": 1,
+        "valueProp2": 2
       },
-      "key2" : {
-        "valueProp1" : 3,
-        "valueProp2" : 4
+      "key2": {
+        "valueProp1": 3,
+        "valueProp2": 4
       }
     },
-    "hashtableTypeCollection" : {
-      "key1" : "value1",
-      "key2" : "value2"
+    "hashtableTypeCollection": {
+      "key1": "value1",
+      "key2": "value2"
     }
   }
 };
 
 var codedItemCollectionData = {
-  "id" : 5,
-  "data" : {
-    "collection" : [
+  "id"  : 5,
+  "data": {
+    "collection": [
       {
-        "displayField" : "Alabama",
-        "value"        : "AL"
+        "displayField": "Alabama",
+        "value"       : "AL"
       }
     ]
   }
 };
 
 var viewModeMockData = {
-  "id" : 6,
-  "data" : {
-    "date1" : "2016-12-21T20:35:02.000Z",
-    "date2" : "2016-12-21 20:35:02",
-    "date3" : "2016-12-21 20:35:02.123456"
+  "id"  : 6,
+  "data": {
+    "date1": "2016-12-21T20:35:02.000Z",
+    "date2": "2016-12-21 20:35:02",
+    "date3": "2016-12-21 20:35:02.123456"
   }
 };
 
+var collectionLayoutMockData = {
+  "id"  : 7,
+  "data": {
+    "contact": {
+      "addresses": [
+        {
+          "streetNumber": "123",
+          "street"      : "Sesame St",
+          "street2"     : "4A",
+          "city"        : "Oscar",
+          "state"       : {
+            "displayField": "Alaska",
+            "value"       : "AK"
+          },
+          "zip"         : "12345",
+          "isPrimary"   : true
+        },
+        {
+          "streetNumber": "456",
+          "street"      : "Sesame St",
+          "street2"     : "4A",
+          "city"        : "Oscar",
+          "state"       : {
+            "displayField": "Alaska",
+            "value"       : "AK"
+          },
+          "zip"         : "12345"
+        },
+        {
+          "streetNumber": "789",
+          "street"      : "Sesame St",
+          "street2"     : "4A",
+          "city"        : "Oscar",
+          "state"       : {
+            "displayField": "Alaska",
+            "value"       : "AK"
+          },
+          "zip"         : "12345"
+        },
+        {
+          "streetNumber": "ABC",
+          "street"      : "Sesame St",
+          "street2"     : "4A",
+          "city"        : "Oscar",
+          "state"       : {
+            "displayField": "Alaska",
+            "value"       : "AK"
+          },
+          "zip"         : "12345"
+        },
+        {
+          "streetNumber": "DEF",
+          "street"      : "Sesame St",
+          "street2"     : "4A",
+          "city"        : "Oscar",
+          "state"       : {
+            "displayField": "Alaska",
+            "value"       : "AK"
+          },
+          "zip"         : "12345"
+        }
+      ]
+    }
+  }
+};
+
+
 // Sets the max id in use by the mock db to 1000
 var placeholderData = {
-  "id" : 1000,
-  "data" : {}
+  "id"  : 1000,
+  "data": {}
 };

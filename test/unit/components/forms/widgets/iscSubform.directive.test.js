@@ -612,8 +612,8 @@
         } );
 
         createDirectives( getMinimalForm( {
-          formKey : 'simple1',
-          mode : 'view'
+          formKey: 'simple1',
+          mode   : 'view'
         } ) );
 
         var aField = suiteSubform.element.find( '.find-me' );
@@ -632,6 +632,43 @@
 
         function wrapContent( value ) {
           return suiteMain.$sce.trustAsHtml( '<p class="find-me">' + value + '</p>' );
+        }
+      } );
+    } );
+
+    //--------------------
+    describe( 'iscSubform - card-based collection layout', function() {
+      it( 'should render view mode as a card with a custom class', function() {
+        var customClass = '.customLayoutContainerClass',
+            cardClass   = '.card';
+
+        var customClassCount, cardCount;
+
+        // Edit mode should render as a table (the default)
+        createDirectives( getMinimalForm( {
+          formKey   : 'collectionLayoutTestForm',
+          formDataId: 7,
+          mode      : 'edit'
+        } ) );
+
+        inspectDOM();
+        expect( customClassCount ).toBe( 0 );
+        expect( cardCount ).toBe( 0 );
+
+        // View mode should render as a card (specified in FDN)
+        createDirectives( getMinimalForm( {
+          formKey   : 'collectionLayoutTestForm',
+          formDataId: 7,
+          mode      : 'view'
+        } ) );
+
+        inspectDOM();
+        expect( customClassCount ).toBe( 1 );
+        expect( cardCount ).toBe( 5 );
+
+        function inspectDOM() {
+          customClassCount = suiteSubform.element.find( customClass ).length;
+          cardCount        = suiteSubform.element.find( cardClass ).length;
         }
       } );
     } );
