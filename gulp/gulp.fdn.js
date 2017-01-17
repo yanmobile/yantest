@@ -26,7 +26,7 @@ function init( gulp, plugins, config, _ ) {
 
     return gulp.src( sources )
       .pipe( groupAggregate( {
-        group    : ( file ) => plugins.path.basename( file.path ),
+        group    : ( file ) => file.path.replace( file.base, '' ),
         aggregate: ( group, files ) => {
           return {
             path    : group,
