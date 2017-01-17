@@ -1,0 +1,25 @@
+{
+  "sectionLayout"        : "scrolling",
+  "expressionProperties" : {
+    "name" : "model.formName"
+  },
+  "sections"             : [
+    {
+      "name"                 : "Contact Information",
+      "className"            : "expression-section",
+      "expressionProperties" : {
+        "name" : "model.sectionName"
+      },
+      "fields"               : [
+        {
+          "key"  : "formName",
+          "type" : "input"
+        },
+        {
+          "key"  : "sectionName",
+          "type" : "input"
+        }
+      ]
+    }
+  ]
+}
