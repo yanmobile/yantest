@@ -99,10 +99,11 @@
        */
       function getFormDefinition() {
         iscFormsModel.getFormDefinition( {
-          formKey    : self.formKey,
-          mode       : self.mode,
-          formLiteral: self.internalFormConfig.formLiteral,
-          formVersion: self.formVersion
+          formKey        : self.formKey,
+          formVersion    : self.formVersion,
+          mode           : self.mode,
+          formLiteral    : self.internalFormConfig.formLiteral,
+          loadFormAsAsset: self.internalFormConfig.loadFormAsAsset
         } )
           .then( afterFormDefinitionLoad )
           .then( iscFormsTemplateService.loadCodeTables )

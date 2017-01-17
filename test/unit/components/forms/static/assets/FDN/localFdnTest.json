@@ -1,0 +1,17 @@
+{
+  "name"     : "Asset Form",
+  "sections" : [
+    {
+      "name"   : "Form loaded as an FDN asset",
+      "fields" : [
+        {
+          "key"          : "local.subform",
+          "type"         : "embeddedForm",
+          "data" : {
+            "embeddedType" : "subforms/localFdnSubformTest"
+          }
+        }
+      ]
+    }
+  ]
+}
