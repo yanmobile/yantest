@@ -99,10 +99,11 @@
      * @returns {*}
      */
     function getValidationDefinition( config ) {
-      var formKey     = config.formKey,
-          formVersion = config.formVersion,
-          formLiteral = config.formLiteral,
-          cacheKey    = getCacheKey( formKey, formVersion );
+      var formKey         = config.formKey,
+          formVersion     = config.formVersion,
+          formLiteral     = config.formLiteral,
+          loadFormAsAsset = config.loadFormAsAsset,
+          cacheKey        = getCacheKey( formKey, formVersion );
 
       var cachedValidation = _.get( _validationCache, cacheKey );
       var validations      = [];
@@ -114,9 +115,10 @@
       }
       else {
         getFormDefinition( {
-          formKey    : formKey,
-          formLiteral: formLiteral,
-          formVersion: formVersion
+          formKey        : formKey,
+          formVersion    : formVersion,
+          formLiteral    : formLiteral,
+          loadFormAsAsset: loadFormAsAsset
         } )
           .then( function( formDefinition ) {
             _.forEach( formDefinition.form.sections, function( section ) {
@@ -166,6 +168,7 @@
       var formKey            = config.formKey,
           mode               = config.mode,
           formLiteral        = config.formLiteral,
+          loadFormAsAsset    = config.loadFormAsAsset,
           formVersion        = config.formVersion,
           subformDefinitions = config.subformDefinitions,
           library            = config.library || [],
@@ -194,6 +197,9 @@
         var formPromise;
         if ( formLiteral ) {
           formPromise = $q.when( formLiteral );
+        }
+        else if ( loadFormAsAsset ) {
+          formPromise = iscFormsApi.getFdnAsset( formKey );
         }
         else {
           formPromise = iscFormsApi.getFormDefinition( formKey, formVersion );
@@ -392,6 +398,7 @@
                     getFormDefinition( {
                       formKey           : embeddedType,
                       formVersion       : embeddedVersion,
+                      loadFormAsAsset   : loadFormAsAsset,
                       mode              : mode,
                       subformDefinitions: subforms,
                       library           : library

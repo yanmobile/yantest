@@ -21,6 +21,7 @@
 
     describe( 'iscFormApi', function() {
       it( 'should have revealed functions', function() {
+        expect( _.isFunction( suite.api.getFdnAsset ) ).toBe( true );
         expect( _.isFunction( suite.api.getFormDefinition ) ).toBe( true );
         expect( _.isFunction( suite.api.getTemplate ) ).toBe( true );
         expect( _.isFunction( suite.api.getUserScript ) ).toBe( true );
@@ -33,6 +34,20 @@
         suite.api.listForms().then( function( forms ) {
           expect( forms ).toEqual( mockFormStore.formStatus );
         } );
+        suite.httpBackend.flush();
+      } );
+    } );
+
+    describe( 'api.getFdnAsset', function() {
+      it( 'should get the form definition from local assets', function() {
+        var fdnName = 'localFdnTest';
+
+        suite.api.getFdnAsset(fdnName).then(function (response) {
+          var formDefinition = suite.model.unwrapFormDefinitionResponse( response );
+
+          expect( _.isObject( formDefinition ) ).toBe( true );
+          expect( formDefinition.name ).toEqual( 'Asset Form' );
+        });
         suite.httpBackend.flush();
       } );
     } );

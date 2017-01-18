@@ -25,7 +25,10 @@
 
     var scriptsUrl = [templatesUrl, 'userScripts'].join( '/' );
 
+    var fdnAssetPath = 'assets/FDN/';
+
     var api = {
+      getFdnAsset      : getFdnAsset,
       getFormDefinition: getFormDefinition,
       getTemplate      : getTemplate,
       getUserScript    : getUserScript,
@@ -36,7 +39,7 @@
 
     /**
      * @memberOf iscFormsApi
-     * @returns {*}
+     * @returns {Promise}
      */
     function listForms() {
       channel.debug( 'iscFormsApi.listForms' );
@@ -45,9 +48,18 @@
 
     /**
      * @memberOf iscFormsApi
+     * @param {String} fdnName
+     * @returns {Promise}
+     */
+    function getFdnAsset( fdnName ) {
+      return iscHttpapi.get( [fdnAssetPath, fdnName, '.json'].join( '' ) );
+    }
+
+    /**
+     * @memberOf iscFormsApi
      * @param {String} formKey
      * @param {=String} formVersion
-     * @returns {*}
+     * @returns {Promise}
      */
     function getFormDefinition( formKey, formVersion ) {
       channel.debug( 'iscFormsApi.getFormDefinition' );
@@ -57,7 +69,7 @@
     /**
      * @memberOf iscFormsApi
      * @param scriptName
-     * @returns {*}
+     * @returns {Promise}
      */
     function getUserScript( scriptName ) {
       channel.debug( 'iscFormsApi.getUserScript' );
@@ -67,7 +79,7 @@
     /**
      * @memberOf iscFormsApi
      * @param templateName
-     * @returns {*}
+     * @returns {Promise}
      */
     function getTemplate( templateName ) {
       channel.debug( 'iscFormsApi.getTemplate' );

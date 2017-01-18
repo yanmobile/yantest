@@ -61,6 +61,16 @@ var mockFormResponses = function( httpBackend ) {
       return [200, getJSONFile( path ), {}];
     } );
 
+  // Form Definition, as local asset
+  // GET assets/FDN/:fdnName
+  httpBackend.when( 'GET', /^assets\/FDN\/[\w./]*$/ )
+    .respond( function response( method, url ) {
+      var assetUrl = url.replace( /\.json$/, '' ),
+          path     = [staticPath, assetUrl].join( '/' );
+
+      return [200, getJSONFile( path ), {}];
+    } );
+
   // User Scripts
   // GET formTemplates/userScripts/:scriptName
   httpBackend.when( 'GET', /^formTemplates\/userScripts\/\w*$/ )

@@ -12,7 +12,8 @@
         suiteSimple2,
         suiteSimple3,
         suiteLayout,
-        suiteLiteral;
+        suiteLiteral,
+        suiteLocalAssets;
 
     // Some intentional mis-configurations to exercise safety nets
     var badFormConfig = {
@@ -115,6 +116,7 @@
       $q,
       formlyApiCheck,
       formlyConfig,
+      iscFormsApi,
       iscFormDataApi,
       iscNotificationService,
       iscFormsSectionLayoutService,
@@ -131,6 +133,7 @@
         $q          : $q,
 
         iscFormsSectionLayoutService: iscFormsSectionLayoutService,
+        iscFormsApi                 : iscFormsApi,
         iscFormDataApi              : iscFormDataApi,
         iscNotificationService      : iscNotificationService,
         iscFormsValidationService   : iscFormsValidationService
@@ -711,6 +714,44 @@
       } );
 
     } );
+
+    describe( 'suiteLocalAssets', function() {
+      it( 'should load an FDN definition from assets', function() {
+        spyOn( suiteMain.iscFormsApi, 'getFdnAsset' ).and.callThrough();
+        spyOn( suiteMain.iscFormsApi, 'getFormDefinition' );
+
+        suiteLocalAssets = createDirective( getMinimalForm( {
+          formKey: 'localFdnTest'
+        } ), {
+          localFormConfig: {
+            loadFormAsAsset: true
+          }
+        } );
+
+        suiteMain.$httpBackend.flush();
+        suiteMain.$timeout.flush();
+
+        var suite        = suiteLocalAssets,
+            formTitle    = suite.element.find( '.form-title' ),
+            sectionTitle = suite.element.find( '.form-section' ),
+            instructions = suite.element.find( '.instructions' );
+
+        // Asset-based FDN goes through getFdnAsset
+        // Linked subforms share the "loadFormAsAsset" configuration
+        expect( suiteMain.iscFormsApi.getFdnAsset ).toHaveBeenCalledWith( 'localFdnTest' );
+        expect( suiteMain.iscFormsApi.getFdnAsset ).toHaveBeenCalledWith( 'subforms/localFdnSubformTest' );
+        expect( suiteMain.iscFormsApi.getFormDefinition ).not.toHaveBeenCalled();
+
+        expect( formTitle.length ).toBe( 1 );
+        expect( formTitle.html() ).toContain( 'Asset Form' );
+
+        expect( sectionTitle.length ).toBe( 1 );
+        expect( sectionTitle.html() ).toContain( 'Form loaded as an FDN asset' );
+
+        expect( instructions.length ).toBe( 1 );
+        expect( instructions.html() ).toContain( 'Subform loaded as an FDN asset' );
+      } );
+    } )
 
   } );
 })();
