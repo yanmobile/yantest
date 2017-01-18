@@ -98,7 +98,6 @@
       } );
     } );
 
-
     //--------------------
     describe( 'simple1 - sectionLayout by mode', function() {
       it( 'should render edit mode as wizard', function() {
@@ -114,7 +113,7 @@
         var layout = suiteInternal.controller.mainFormConfig.layout;
         expect( layout ).toBe( 'scrolling' );
       } );
-      
+
       function initForm( mode ) {
         // Create an isc-form to get what would normally be passed to isc-form-internal
         suiteForm = createDirective( getMinimalForm( {
@@ -130,6 +129,62 @@
         suiteInternal.controller = suiteInternal.$isolateScope.formInternalCtrl;
       }
     } );
+
+    //--------------------
+    describe( 'expressionProperties', function() {
+      it( 'should work on sections and forms', function() {
+        initForm( 'edit' );
+
+        var formName    = 'My Form',
+            sectionName = 'My Section';
+
+        var suite            = suiteForm,
+            formNameInput    = getControlByName( suite, 'formName' ),
+            sectionNameInput = getControlByName( suite, 'sectionName' ),
+            formNameElement, sectionNameElement;
+
+        expect( formNameInput.length ).toBe( 1 );
+        expect( sectionNameInput.length ).toBe( 1 );
+
+        // expressionProperty-based properties are not set yet
+        selectElements();
+        expect( formNameElement.html() ).not.toContain( formName );
+        expect( sectionNameElement.html() ).not.toContain( sectionName );
+
+        // Change model values through UI
+        formNameInput.val( formName ).trigger( 'change' );
+        sectionNameInput.val( sectionName ).trigger( 'change' );
+        digest( suiteForm );
+        selectElements();
+
+        // Expect expression-based properties to have updated
+        expect( formNameElement.html() ).toContain( formName );
+        expect( sectionNameElement.html() ).toContain( sectionName );
+
+        function selectElements() {
+          formNameElement    = suite.element.find( '.form-title' );
+          sectionNameElement = suite.element.find( '.form-section' );
+          expect( formNameElement.length ).toBe( 1 );
+          expect( sectionNameElement.length ).toBe( 1 );
+        }
+      } );
+
+      function initForm( mode ) {
+        // Create an isc-form to get what would normally be passed to isc-form-internal
+        suiteForm = createDirective( getMinimalForm( {
+          formKey: 'expressionPropertiesTestForm',
+          mode   : mode
+        } ) );
+        suiteMain.$httpBackend.flush();
+
+        suiteInternal = createDirective( getInternalForm(), {
+          formCtrl: suiteForm.controller
+        } );
+
+        suiteInternal.controller = suiteInternal.$isolateScope.formInternalCtrl;
+      }
+    } );
+
   } );
 
 

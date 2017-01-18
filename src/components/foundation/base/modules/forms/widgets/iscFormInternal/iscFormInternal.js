@@ -12,9 +12,10 @@
    * @param iscCustomConfigService
    * @param iscNotificationService
    * @param iscFormsValidationService
-   * @returns {{restrict: string, replace: boolean, controllerAs: string, scope: {formDefinition: string, model: string, options: string, formConfig: string, validateFormApi: string, buttonConfig: string}, bindToController: boolean, controller: controller, templateUrl: directive.templateUrl}}
+   * @returns {{restrict: string, replace: boolean, controllerAs: string, scope: {formDefinition: string, model: string, options: string, formConfig: string, validateFormApi: string, buttonConfig: string}, bindToController: boolean, controller: controller, templateUrl: function}}
    */
   function iscFormInternal( $q,
+    $parse,
     iscCustomConfigService,
     iscNotificationService,
     iscFormsValidationService ) {
@@ -233,39 +234,30 @@
         }
       }
 
-      //
       /**
        * @memberOf iscFormInternal
        * @description
        * Sets up watches on sections having a hideExpression property
+       * or other expressionProperties.
        */
       function watchSections() {
         // Throttle for initial load or large model changes
         var throttledFilter = _.throttle( filterSections, 100 );
+
+        // Watch expression properties on forms
+        watchExpProps( self.formDefinition.form, setRuntimeProps );
+
+        // Sections
         _.forEach( self.formDefinition.form.sections, function( section ) {
-          var hideExp = section.hideExpression;
-          if ( hideExp ) {
-            $scope.$watch(
-              function() {
-                return $scope.$eval( hideExp, self );
-              },
-              function( hideSection ) {
-                section._isHidden = hideSection;
-                throttledFilter();
-              } );
-          }
+          watchHideExp( section );
+          watchExpProps( section );
         } );
 
         self.sections       = self.formDefinition.form.sections;
         self.currentSection = _.head( self.sections );
 
-        var sectionLayout = _.get( self.formDefinition.form, 'sectionLayout', 'scrolling' ),
-            mode          = _.get( self.options, 'formState._mode', 'edit' ),
-            modeLayout    = _.get( sectionLayout, mode, sectionLayout );
-
         self.mainFormConfig = {
           sections          : self.sections,
-          layout            : modeLayout,
           currentSection    : self.currentSection,
           selectableSections: [],
           forms             : self.forms,
@@ -276,7 +268,50 @@
           isSubmitDisabled  : isSubmitDisabled
         };
 
+        setRuntimeProps();
+
         throttledFilter();
+
+        function watchHideExp( container ) {
+          var hideExp = container.hideExpression;
+          if ( hideExp ) {
+            $scope.$watch(
+              function() {
+                return $scope.$eval( hideExp, self );
+              },
+              function( hideSection ) {
+                container._isHidden = hideSection;
+                throttledFilter();
+              } );
+          }
+        }
+
+        function watchExpProps( container, callback ) {
+          _.forEach( container.expressionProperties, function( expression, prop ) {
+            var setter = $parse( prop ).assign;
+            $scope.$watch(
+              function() {
+                return $scope.$eval( expression, self );
+              },
+              function expressionPropertyListener( value ) {
+                setter( container, value );
+                if ( _.isFunction( callback ) ) {
+                  callback();
+                }
+              } );
+          } );
+        }
+
+        function setRuntimeProps() {
+          var sectionLayout = _.get( self.formDefinition.form, 'sectionLayout', 'scrolling' ),
+              mode          = _.get( self.options, 'formState._mode', 'edit' ),
+              modeLayout    = _.get( sectionLayout, mode, sectionLayout );
+
+          // In case layout is specified for only one mode
+          modeLayout = _.isObject( modeLayout ) ? undefined : modeLayout;
+
+          self.mainFormConfig.layout = modeLayout;
+        }
       }
 
       /**
