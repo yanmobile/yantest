@@ -269,13 +269,14 @@
               // Make a deep copy for the view mode version
               var viewMode = {
                 form    : angular.merge( {}, form ),
-                subforms: subforms,
+                subforms: angular.merge( {}, subforms ),
                 metadata: metadata
               };
 
               // Replace templates in the view mode with readonly versions
-              _.forEach( viewMode.form.sections, function( section ) {
-                replaceTemplates( section.fields );
+              viewModeifySections( viewMode.form.sections );
+              _.forEach( viewMode.subforms, function( subform ) {
+                viewModeifySections( subform.sections );
               } );
 
               // Cache it separately
@@ -291,6 +292,12 @@
 
                 default:
                   deferred.resolve( angular.copy( editMode ) );
+              }
+
+              function viewModeifySections( sections ) {
+                _.forEach( sections, function( section ) {
+                  replaceTemplates( section.fields );
+                } );
               }
             } );
           } );
@@ -399,7 +406,6 @@
                       formKey           : embeddedType,
                       formVersion       : embeddedVersion,
                       loadFormAsAsset   : loadFormAsAsset,
-                      mode              : mode,
                       subformDefinitions: subforms,
                       library           : library
                     } )
