@@ -15,7 +15,9 @@
    * @returns {Function}
    */
   /* @ngInject */
-  function iscFormsFlattenedFields( $filter ) {
+  function iscFormsFlattenedFields( iscCustomConfigService ) {
+    var defaultDisplayField = _.get( iscCustomConfigService.getConfig(), 'forms.defaultDisplayField' );
+
     return function( fields ) {
       var flattenedFields = flattenFields( fields );
       return flattenedFields;
@@ -44,6 +46,8 @@
         return flattenFields( field.fieldGroup );
       }
       else if ( showInTable( field ) ) {
+        resolveDisplayField( field );
+
         return [].concat(
           angular.extend(
             {
@@ -63,6 +67,21 @@
       }
       else {
         return [];
+      }
+
+      function resolveDisplayField( field ) {
+        // A field is a list control if it has templateOptions.options, data.codeTable, or an expressionProperty on either of these
+        var expProps = _.get( field, 'expressionProperties', {} );
+
+        if ( _.get( field, 'templateOptions.options' ) ||
+          _.get( field, 'data.codeTable' ) ||
+          expProps['templateOptions.options'] ||
+          expProps['data.codeTable'] ) {
+          // If this is a list control and the displayField has not been set yet, set as the configured default
+          if ( !_.get( field, 'data.displayField' ) && defaultDisplayField ) {
+            _.set( field, 'data.displayField', defaultDisplayField );
+          }
+        }
       }
 
       function showInTable( field ) {
