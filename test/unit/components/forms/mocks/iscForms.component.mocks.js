@@ -17,9 +17,10 @@ var mockCustomConfigService = {
   }
 };
 
-function useDefaultFormsModules() {
+function useDefaultFormsModules( altConfig ) {
   useDefaultModules( 'formly', 'isc.http', 'isc.forms', 'isc.templates', 'iscNavContainer',
     function( $provide ) {
+      _.merge( customConfig, altConfig );
       $provide.value( 'apiHelper', mockApiHelper );
       $provide.value( 'iscCustomConfigService', mockCustomConfigService );
     } );
