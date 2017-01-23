@@ -22,20 +22,20 @@ function init( gulp, plugins, config, _ ) {
     'src/components/**/modules/**/*.html'  : ['templates'],
     'test/unit/components/**/*.js'         : ['test:components'],
 
-    'src/app/assets/FDN/**/*'      : ['FDN'],
-    'src/app/assets/i18n/**/*'     : ['i18n'],
-    'src/app/assets/images/**/*'   : ['images'],
-    'src/app/assets/sass/**/*.scss': ['sass'],
-    'src/app/modules/**/*.scss'    : ['sass'],
-    'src/app/assets/mockData/**/*' : ['mocks', 'scripts'],
-    'src/app/assets/vendors/**/*'  : ['scripts'],
-    'src/app/modules/**/*.js'      : ['test:app', 'jshint:app', 'scripts:app'],
-    'src/uifw-modules/src/app/modules/**/*.js'       : ['test:app', 'jshint:app', 'scripts:app'],
-    'src/uifw-modules/src/app/modules/**/*.html'     : ['templates'],
-    'src/uifw-modules/src/app/modules/**/*.scss'     : ['sass'],
-    'src/app/modules/**/*.html'    : ['templates'],
-    'test/unit/app/**/*.js'        : ['test:app'],
-    'src/index.html'               : ['html']
+    'src/app/assets/FDN/**/*'                   : ['fdn'],
+    'src/app/assets/i18n/**/*'                  : ['i18n'],
+    'src/app/assets/images/**/*'                : ['images'],
+    'src/app/assets/sass/**/*.scss'             : ['sass'],
+    'src/app/modules/**/*.scss'                 : ['sass'],
+    'src/app/assets/mockData/**/*'              : ['mocks', 'scripts'],
+    'src/app/assets/vendors/**/*'               : ['scripts'],
+    'src/app/modules/**/*.js'                   : ['test:app', 'jshint:app', 'scripts:app'],
+    'src/uifw-modules/src/app/modules/**/*.js'  : ['test:app', 'jshint:app', 'scripts:app'],
+    'src/uifw-modules/src/app/modules/**/*.html': ['templates'],
+    'src/uifw-modules/src/app/modules/**/*.scss': ['sass'],
+    'src/app/modules/**/*.html'                 : ['templates'],
+    'test/unit/app/**/*.js'                     : ['test:app'],
+    'src/index.html'                            : ['html']
   };
 
 
