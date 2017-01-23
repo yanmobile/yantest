@@ -690,23 +690,54 @@
             if ( field.type && field.key &&
               field.type !== 'embeddedFormCollection' && extendsType !== 'embeddedFormCollection' &&
               field.type !== 'embeddedForm' && extendsType !== 'embeddedForm' ) {
+              var isControlFlowOnly = extendsType === 'controlFlowOnly';
+
               var viewModeType       = viewModePrefix + field.type;
               var registeredViewType = iscFormsTemplateService.getRegisteredType( viewModeType );
               if ( !registeredViewType ) {
-                iscFormsTemplateService.registerType(
-                  {
-                    'name'       : viewModeType,
-                    'extends'    : field.type,
-                    'templateUrl': defaultViewTemplateUrl
-                  },
-                  {
-                    excludeFromWidgetLibrary: true
+                // controlFlowOnly widgets should override their impersonated template only
+                if ( isControlFlowOnly ) {
+                  var defaultOptions = angular.copy( registeredType.defaultOptions );
+
+                  var controlFlowPropName = 'data.controlFlowOnly.templateType';
+
+                  var impersonatedType = _.get( defaultOptions, controlFlowPropName );
+                  if ( impersonatedType ) {
+                    _.set( defaultOptions, controlFlowPropName, viewModePrefix + impersonatedType );
                   }
-                );
+
+                  iscFormsTemplateService.registerType(
+                    {
+                      'name'          : viewModeType,
+                      'extends'       : field.type,
+                      'defaultOptions': defaultOptions
+                    },
+                    {
+                      excludeFromWidgetLibrary: true
+                    }
+                  );
+                }
+
+                // other widget types override their main templateUrl
+                else {
+                  iscFormsTemplateService.registerType(
+                    {
+                      'name'       : viewModeType,
+                      'extends'    : field.type,
+                      'templateUrl': defaultViewTemplateUrl
+                    },
+                    {
+                      excludeFromWidgetLibrary: true
+                    }
+                  );
+                }
               }
+
               field.type = viewModeType;
-              delete field.template;
-              delete field.templateUrl;
+              if ( !isControlFlowOnly ) {
+                delete field.template;
+                delete field.templateUrl;
+              }
             }
           }
         }
