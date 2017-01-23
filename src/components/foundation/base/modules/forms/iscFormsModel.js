@@ -690,11 +690,13 @@
             if ( field.type && field.key &&
               field.type !== 'embeddedFormCollection' && extendsType !== 'embeddedFormCollection' &&
               field.type !== 'embeddedForm' && extendsType !== 'embeddedForm' ) {
+              var isControlFlowOnly = extendsType === 'controlFlowOnly';
+
               var viewModeType       = viewModePrefix + field.type;
               var registeredViewType = iscFormsTemplateService.getRegisteredType( viewModeType );
               if ( !registeredViewType ) {
                 // controlFlowOnly widgets should override their impersonated template only
-                if ( extendsType === 'controlFlowOnly' ) {
+                if ( isControlFlowOnly ) {
                   var defaultOptions = angular.copy( registeredType.defaultOptions );
 
                   var controlFlowPropName = 'data.controlFlowOnly.templateType';
@@ -728,12 +730,14 @@
                       excludeFromWidgetLibrary: true
                     }
                   );
-                  delete field.template;
-                  delete field.templateUrl;
                 }
               }
 
               field.type = viewModeType;
+              if ( !isControlFlowOnly ) {
+                delete field.template;
+                delete field.templateUrl;
+              }
             }
           }
         }
