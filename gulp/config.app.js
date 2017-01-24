@@ -87,7 +87,8 @@ function getAppConfig() {
       ],
       "tests"        : [
         "test/unit/app/**/*.test.js",
-        "test/unit/app/**/*Tests.js"
+        "test/unit/app/**/*Tests.js",
+        "src/app/modules/**/*.spec.js"
       ]
     },
     "dest"               : {
