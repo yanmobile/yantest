@@ -6,6 +6,7 @@ var Karma               = require( 'karma' ).Server;
 var componentTestConfig = require( './gulp.test.components' );
 var _                   = require( 'lodash' );
 var argv                = require( 'yargs' ).argv;
+var utils               = require( './utils/uifwModules' );
 
 var reportCoverage = true;
 
@@ -69,15 +70,19 @@ function init( gulp, plugins, config, _ ) {
     // This is a way to force it to exit. This approach will also kill any other tasks in the gulp chain.
     // It should only be used when executing test task individually
     var forceQuitWhenDone = argv.single;
-    var reporters = !argv.skipCoverage && reportCoverage ? ['progress', 'coverage'] : ['progress'];
+    var reporters         = !argv.skipCoverage && reportCoverage ? ['progress', 'coverage'] : ['progress'];
     reportCoverage        = false; //only report coverage on the first pass
 
-    var configPath = plugins.path.join( __dirname, "../test/karma.conf.app.js" );
+    //since, karma doesn't use the same glob pattern to exclude as gulp.
+    //this logic separates the srcFiles into include and exclude list
+    var [includedFiles, excludedFiles] = utils.separateKarmaFiles( srcFiles );
 
-    var server = new Karma( {
+    var configPath = plugins.path.join( __dirname, "../test/karma.conf.app.js" );
+    var server     = new Karma( {
       reporters : reporters,
       configFile: configPath,
-      files     : srcFiles,
+      files     : includedFiles,
+      exclude   : excludedFiles,
       singleRun : true
     }, forceQuitWhenDone ? undefined : done );
 
@@ -99,11 +104,17 @@ function init( gulp, plugins, config, _ ) {
     // It should only be used when executing test task individually
     var forceQuitWhenDone = argv.single;
     console.log( 'forceQuitWhenDone:', forceQuitWhenDone );
+
+    //since, karma doesn't use the same glob pattern to exclude as gulp.
+    //this logic separates the srcFiles into include and exclude list
+    var [includedFiles, excludedFiles] = utils.separateKarmaFiles( srcFiles );
+
     var configPath = plugins.path.join( __dirname, "../test/karma.conf.app.js" );
     var server     = new Karma( {
       reporters : ["coverage"],
       configFile: configPath,
-      files     : srcFiles,
+      files     : includedFiles,
+      exclude   : excludedFiles,
       singleRun : true
     }, forceQuitWhenDone ? undefined : done );
 
