@@ -29,7 +29,10 @@ function wallaby() {
       .concat( src.appModuleJs )
       .concat( src.commonModuleHtml )
       .concat( src.componentsModuleHtml )
-      .concat( src.appModuleHtml ),
+      .concat( src.appModuleHtml )
+      .concat( _.map( src.appModuleTests, function( testGlob ) {
+        return "!" + testGlob;  //exclude test files from srcs
+      } ) ),
     'tests'        : src.appModuleTests,
     'preprocessors': {
       'src/common/modules/**/*.html'       : function( file ) {
