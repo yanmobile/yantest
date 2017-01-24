@@ -258,8 +258,7 @@
             ]
           },
           "data"            : {
-            "limitToList"         : true,
-            "resultsDisplayField" : "displayField"
+            "limitToList" : true
           }
         },
         {
@@ -270,9 +269,9 @@
             "qdTag" : "typeaheadWithScript"
           },
           "data"            : {
-            "userScript"          : "typeaheadScript",
-            "limitToList"         : true,
-            "resultsDisplayField" : "displayField"
+            "userScript"  : "typeaheadScript",
+            "limitToList" : true,
+            "isObject"    : true
           }
         },
         {
