@@ -48,7 +48,8 @@ function getAppConfig() {
         "src/app/modules/**/*.module.js"
       ],
       "js"           : [
-        "src/app/modules/**/*.js"
+        "src/app/modules/**/*.js",
+        "!src/uifw-modules/src/app/modules/**/*.spec.js"
       ],
       "scss"         : [
         "src/app/assets/sass/main.scss"
