@@ -36,7 +36,7 @@
      */
     function login( credentials ) {
       log.debug( 'loginApi.login' );
-      return iscHttpapi.post( baseUrl + 'login', credentials );
+      return iscHttpapi.post( baseUrl + 'login', credentials, { showLoader: true } );
     }
 
     /**
@@ -49,7 +49,7 @@
 
       var formData = "CacheUserName=" + credentials.username + '&CachePassword=' + credentials.password + '&CacheNoRedirect=1';
 
-      return iscHttpapi.formPost( baseUrl + 'login', formData );
+      return iscHttpapi.formPost( baseUrl + 'login', formData, { showLoader: true } );
     }
 
     /**
