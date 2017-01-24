@@ -2,9 +2,32 @@
  * Created by hzou on 1/11/17.
  */
 
-const _           = require( 'lodash' );
+const _ = require( 'lodash' );
 
-module.exports.includeUiModules = includeUiModules;
+module.exports.includeUiModules   = includeUiModules;
+module.exports.separateKarmaFiles = separateKarmaFiles;
+
+/**
+ * takes a list of gulp glob patterns and separate included and excluded files into two separate arrays to pass to karma
+ * @param srcFiles
+ * @returns {[*,*]}
+ */
+function separateKarmaFiles( srcFiles ) {
+  var includedFiles = new Set(); //ensures uniqueness
+  var excludedFiles = new Set();
+
+  //since, karma doesn't use the same glob pattern to exclude as gulp.
+  //this logic separates the srcFiles into include and exclude list
+  _.forEach( srcFiles, function( file ) {
+    if ( file[0] === '!' ) {
+      excludedFiles.add( file.substr( 1 ) );//remove "!"
+    } else {
+      includedFiles.add( file );
+    }
+  } );
+
+  return [_.toArray( includedFiles ), _.toArray( excludedFiles )];
+}
 
 /**
  * @Description
@@ -15,7 +38,7 @@ module.exports.includeUiModules = includeUiModules;
  *  src/uifw-modules/src/app/modules/inbox
  *  includeUiModules( ["timeline", "inbox"] );
  */
-function includeUiModules( uiModuleNames, appBasePath, appConfig  ) {
+function includeUiModules( uiModuleNames, appBasePath, appConfig ) {
 
   var configBasePath = `../../${appBasePath || ''}src/app/modules/`;
 
