@@ -35,6 +35,7 @@ function init( gulp, plugins, config, _ ) {
     'src/uifw-modules/src/app/modules/**/*.scss': ['sass'],
     'src/app/modules/**/*.html'                 : ['templates'],
     'test/unit/app/**/*.js'                     : ['test:app'],
+    'src/app/modules/**/*.spec.js'              : ['test:app'],
     'src/index.html'                            : ['html']
   };
 
