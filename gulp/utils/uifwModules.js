@@ -19,7 +19,7 @@ function separateKarmaFiles( srcFiles ) {
   //since, karma doesn't use the same glob pattern to exclude as gulp.
   //this logic separates the srcFiles into include and exclude list
   _.forEach( srcFiles, function( file ) {
-    if ( file[0] === '!' ) {
+    if ( file.startsWith( '!' ) ) {
       excludedFiles.add( file.substr( 1 ) );//remove "!"
     } else {
       includedFiles.add( file );
