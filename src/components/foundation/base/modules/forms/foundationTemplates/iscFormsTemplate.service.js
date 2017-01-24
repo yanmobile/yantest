@@ -771,13 +771,22 @@
           } );
         }
         else {
+          var isObject = getObjectFlag();
+
           // Set default display field, if it exists and the field does not override it
-          if ( defaultDisplayField && !data.displayField ) {
-            _.set( scope, 'options.data.displayField', defaultDisplayField );
+          if ( defaultDisplayField && isObject ) {
+            // displayField is used by hard list controls like selects or radios
+            if ( !data.displayField ) {
+              _.set( scope, 'options.data.displayField', defaultDisplayField );
+            }
+            // resultsDisplayField is used by soft list controls like typeaheads
+            if ( !data.resultsDisplayField ) {
+              _.set( scope, 'options.data.resultsDisplayField', defaultDisplayField );
+            }
           }
 
           _.extend( scope, {
-            isObjectModel: getObjectFlag(),
+            isObjectModel: isObject,
             listOptions  : listOptions
           } );
 
