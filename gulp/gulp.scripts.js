@@ -73,10 +73,13 @@ function init(gulp, plugins, config, _, util) {
       src.push(configOverride);
       src.push(config.app.excludeConfig);
     }
-    src = _.concat(src, config.app.module.modules, config.app.module.js);
+    src = _.concat(src, config.app.module.modules, config.app.module.js, _.map(config.app.module.tests, function(testGlob){
+      return "!"+testGlob;
+    }));
 
     return gulp.src(src)
       .pipe(plugins.plumber())
+      // .pipe(plugins.filelog())
       .pipe(plugins.sourcemaps.init())
       .pipe(plugins.ngAnnotate())
       .pipe(plugins.concat('7.app.min.js', { newLine: ';' }))

@@ -21,6 +21,7 @@
   "eqnull": false,
   "laxbreak": true,
   "globals": {
+    "window": false,
     "angular": false,
     "_": false,
     "d3": false,
