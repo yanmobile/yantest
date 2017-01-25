@@ -1,6 +1,5 @@
 <div class="grid-block">
   <input type="{{options.templateOptions.type || 'text' }}"
-         ng-model="model[options.key]"
-         ng-required="options.templateOptions.required"
-         ng-disabled="options.templateOptions.disabled">
+         placeholder="{{to.placeholder | translate}}"
+         ng-model="model[options.key]">
 </div>

@@ -6,7 +6,8 @@
                        list-field="{{options.data.resultsDisplayField}}">
     <input ng-model="localModel.input"
            ng-disabled="to.disabled"
-           placeholder="{{to.placeholder}}"
+           ng-required="to.required"
+           placeholder="{{to.placeholder | translate}}"
            id="{{id}}"
            name="{{name||id}}"
            class="typeahead">
