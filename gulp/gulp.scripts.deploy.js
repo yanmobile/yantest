@@ -33,13 +33,16 @@ function init(gulp, plugins, config, _, util) {
       jsSrc.push(_.get(config.app, configPath, []));
     });
 
-    jsSrc = _.flatten(jsSrc);
-    jsSrc
+    jsSrc = _.chain(jsSrc)
+      .flatten(jsSrc)
       .concat(config.masterConfig.overrides.common)
-      .concat(config.masterConfig.overrides.components);
+      .concat(config.masterConfig.overrides.components)
+      .concat(_.map(config.app.module.tests, function(testGlob){
+        return "!"+testGlob;
+      })).compact().value();
 
     return gulp.src(jsSrc)
-      //.pipe(plugins.filelog())
+      // .pipe(plugins.filelog())
       .pipe(plugins.ngAnnotate())
       .pipe(plugins.concat('app.min.js'))
       .pipe(plugins.uglify())
