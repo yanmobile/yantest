@@ -29,18 +29,37 @@
     });
 
     describe('method test ', function () {
-      it('should work', function () {
+      it('appends timestamp to standard request', function () {
 
         var myResult = interceptor.request({})
 
         expect(myResult.params.ts).not.toBe(undefined);
 
-        myResult = interceptor.request({url: 'foo.html'});
+      });
 
-       //html does not get a cache bust
+      it('appends does not append to HTML request', function () {
+
+        var myResult = interceptor.request({url: 'foo.html'});
+
+        //html does not get a cache bust
         expect(myResult.params).toBe(undefined);
       });
+
+      it('appends does not append to tinselsOp function', function () {
+
+        function tinselsOp() {
+          this.a = 1;
+        }
+
+        var myResult = interceptor.request(new tinselsOp);
+
+        //invalid request does not get cache bust
+        expect(myResult.params).toBe(undefined);
+      });
+
     });
+
+
 
   });
 }());
