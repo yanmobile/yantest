@@ -45,21 +45,18 @@
         expect(myResult.params).toBe(undefined);
       });
 
-      it('appends does not append to tinselsOp function', function () {
+      it('ignores and repairs invalid request', function () {
 
         function tinselsOp() {
           this.a = 1;
         }
 
-        var myResult = interceptor.request(new tinselsOp);
+        var myResult = interceptor.request({params:tinselsOp});
 
         //invalid request does not get cache bust
-        expect(myResult.params).toBe(undefined);
+        expect(myResult.params.ts).not.toBe(undefined);
       });
 
     });
-
-
-
   });
 }());
