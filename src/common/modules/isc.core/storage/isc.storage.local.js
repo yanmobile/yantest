@@ -9,10 +9,18 @@
     .module( 'isc.core' )
     .factory( 'storage', storage );
 
-  /*========================================
-   =               function                =
-   ========================================*/
-  function storage( $window, devlog ) {
+
+  /**
+   * Intentionally using "window" instead of "$window" to prevent automatically invoking $digest().
+   * This causes an "$digest is already in progress" error.
+   *
+   * By using window and manually invoking $evalAsync() fixes the error.
+   *
+   * @param $rootScope
+   * @param devlog
+   * @returns {{clear: clear, get: get, remove: remove, set: set}}
+   */
+  function storage( $rootScope, devlog ) {
     var channel = devlog.channel( 'storage' );
     var service = {
       clear : clear,
@@ -34,6 +42,7 @@
         val = _.get( val, entityPath );  //get nested object
       }
 
+      $rootScope.$evalAsync();
       return val;
     }
 
@@ -49,17 +58,20 @@
         _.set( savedObj, entityPath, value );
         saveToStorage( storageKey, savedObj );
       }
+      $rootScope.$evalAsync();
     }
 
     function remove( storageKey ) {
       channel.logFn( 'remove' );
       channel.debug( "storageKey", storageKey );
       removeFromStorage( storageKey );
+      $rootScope.$evalAsync();
     }
 
     function clear() {
       channel.logFn( 'clear' );
-      $window.localStorage.clear();
+      window.localStorage.clear();
+      $rootScope.$evalAsync();
     }
 
     /*========================================
@@ -67,7 +79,7 @@
      =======================================*/
     function getFromStorage( storageKey ) {
       channel.logFn( 'getFromStorage' );
-      var rawVal = $window.localStorage.getItem( storageKey );
+      var rawVal = window.localStorage.getItem( storageKey );
       var value;
       try {
         value = _.isNil( rawVal ) ? undefined : JSON.parse( rawVal );
@@ -81,12 +93,12 @@
     function saveToStorage( storageKey, value ) {
       channel.logFn( 'saveToStorage' );
       var stringified = JSON.stringify( value );
-      $window.localStorage.setItem( storageKey, stringified );
+      window.localStorage.setItem( storageKey, stringified );
     }
 
     function removeFromStorage( storageKey ) {
       channel.logFn( 'removeFromStorage' );
-      $window.localStorage.removeItem( storageKey );
+      window.localStorage.removeItem( storageKey );
     }
   }
 
