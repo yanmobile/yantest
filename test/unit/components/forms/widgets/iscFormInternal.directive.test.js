@@ -11,7 +11,7 @@
     useDefaultFormsModules();
 
     beforeEach( module(
-      'foundation', 'isc.authorization', 'isc.notification', 'isc.directives',
+      'foundation', 'ui.select', 'isc.authorization', 'isc.notification', 'isc.directives',
       function( $provide, devlogProvider ) {
         devlogProvider.loadConfig( mockCustomConfigService.getConfig() );
       } )

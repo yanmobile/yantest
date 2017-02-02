@@ -1,7 +1,11 @@
 (function() {
   return {
     "api": {
-      "minlength": 3,
+      "minlength": 1,
+
+      "threshold" : function (model, input ) {
+        return true;
+      },
 
       "get"          : function( model, input ) {
         // Keeping the zippo call for a promise
@@ -9,15 +13,15 @@
           .then( function( results ) {
             return [
               {
-                "displayField": "TypeaheadWithScript 1",
+                "displayField": "Typeahead 1",
                 "value"       : "1"
               },
               {
-                "displayField": "TypeaheadWithScript 2",
+                "displayField": "Typeahead 2",
                 "value"       : "2"
               },
               {
-                "displayField": "TypeaheadWithScript 3",
+                "displayField": "Typeahead 3",
                 "value"       : "3"
               }
             ];
@@ -29,10 +33,6 @@
     },
 
     "onSelect": function( model, item ) {
-      if ( !item ) {
-        return;
-      }
-      model.templates.typeaheadWithScript = item;
     }
   }
 })();

@@ -213,7 +213,7 @@ var mockComponentData = {
       }
     },
     "typeaheadWithScript"  : {
-      "displayField": "TypeaheadWithScript 1",
+      "displayField": "Typeahead 1",
       "value"       : "1"
     },
     "select"               : {
