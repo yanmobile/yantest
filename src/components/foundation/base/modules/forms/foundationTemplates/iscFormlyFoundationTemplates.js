@@ -185,8 +185,8 @@
 
           iscFormsTemplateService.initListControlWidget( $scope );
 
-          var opts            = $scope.options,
-              data            = opts.data;
+          var opts = $scope.options,
+              data = opts.data;
 
           angular.extend( $scope, {
             displayField: data.displayField
@@ -355,22 +355,28 @@
       } );
 
       // Typeahead (text input with lookup)
-      iscFormsTemplateService.registerType( {
+      var typeaheadType = {
         name       : 'typeahead',
         templateUrl: 'forms/foundationTemplates/templates/typeahead.html',
         wrapper    : ['templateLabel', 'templateHasError'],
         controller : typeaheadController,
         link       : setQdTagManually
-      } );
+      };
+      iscFormsTemplateService.registerType( typeaheadType );
 
-      // Typeahead with third-party user script support
-      iscFormsTemplateService.registerType( {
-        name       : 'typeaheadWithScript',
-        templateUrl: 'forms/foundationTemplates/templates/typeaheadWithScript.html',
-        wrapper    : ['templateLabel', 'templateHasError'],
-        controller : typeaheadController,
-        link       : setQdTagManually
-      } );
+      // Typeahead with third-party/user script support
+      // Post-1.6.0 this is synonymous with the 'typeahead' type. Both support the same full API.
+      // The 'typeaheadWithScript' type is maintained for backwards compatibility but it functions
+      // exactly the same as the 'typeahead' type.
+      iscFormsTemplateService.registerType(
+        _.extend( {}, typeaheadType,
+          {
+            name: 'typeaheadWithScript'
+          }
+        ),
+        {
+          excludeFromWidgetLibrary: true
+        } );
 
 
       // Computed Table Field
@@ -467,10 +473,10 @@
           data: {
             listItemSelectionType: 'select',
             collections          : {
-              className : {
-                view : 'borderless'
+              className: {
+                view: 'borderless'
               },
-              editAs    : 'inline'
+              editAs   : 'inline'
             }
           }
         },
@@ -607,46 +613,142 @@
         }
       } );
 
-      /*@ngInject*/
-      function typeaheadController( $scope ) {
-        // When using a template that has an ng-model attribute which is not part of the form model
-        // and which is dotted (i.e., "some.dotted.property"), angular-formly will automatically
-        // change the ng-model attribute to the model of the formly field.
-        // Setting skipNgModelAttrsManipulator to true prevents this and allows a local model
-        // to be used for more complex components.
-        $scope.options.extras.skipNgModelAttrsManipulator = true;
-        $scope._qdTagSelector                             = 'isc-forms-typeahead';
-
+      /* @ngInject */
+      function typeaheadController( $scope, $q, $filter ) {
         iscFormsTemplateService.initListControlWidget( $scope );
+
+        var DEFAULT_MIN_INPUT_LENGTH = 3;
 
         var key  = $scope.options.key,
             data = _.get( $scope.options, 'data', {} );
 
-        $scope.displayField   = data.displayField || '';
-        $scope.localModel     = {};
-        $scope.limitToList    = data.limitToList;
-        $scope.minInputLength = parseInt( data.minInputLength );
-        if ( _.isNaN( $scope.minInputLength ) ) {
-          $scope.minInputLength = 3;
+        // Properties for user-defined/async scripts
+        var userScript       = _.get( data, 'userModel', {} ),
+            onSelect         = userScript.onSelect,
+            api              = userScript.api || {},
+            apiResultsFilter = _.get( api, 'resultsFilter' ),
+            apiMinLength     = _.get( api, 'minlength' ),
+            apiThreshold     = _.get( api, 'threshold' );
+
+        var minInputLength = parseInt( apiMinLength );
+
+        if ( _.isNaN( minInputLength ) ) {
+          minInputLength = DEFAULT_MIN_INPUT_LENGTH;
         }
 
-        $scope.onSelect = function( item ) {
-          if ( _.isObject( item ) ) {
-            var copiedItem = angular.copy( item );
-            _.set( $scope.model, key, copiedItem );
-            $scope.localModel.input = $scope.displayField ? copiedItem[$scope.displayField] : copiedItem;
+        _.extend( $scope, {
+          displayField       : data.displayField || '',
+          getMinInputLength  : getMinInputLength,
+          hasApiThreshold    : !!apiThreshold,
+          limitToList        : data.limitToList,
+          minInputLength     : minInputLength,
+          onSelect           : _.isFunction( onSelect ) ? onSelect : _.noop,
+          onTag              : onTag,
+          refresh            : refresh,
+          resultsDisplayField: data.resultsDisplayField || ''
+        } );
+
+        // api.threshold returns a bool (i.e., whether the search has reached the threshold to call api.get)
+        function getMinInputLength( search ) {
+          if ( _.isFunction( apiThreshold ) ) {
+            var minLength = _.get( search, 'length', 0 );
+
+            if ( apiThreshold( _.get( $scope.model, key ), search ) ) {
+              return minLength;
+            }
+            else {
+              return minLength + 1;
+            }
           }
           else {
-            _.set( $scope.model, key, item );
-            $scope.localModel.input = item;
+            return $scope.minInputLength;
           }
-        };
+        }
 
-        var initialModel = _.get( $scope.model, $scope.options.key, '' );
-        if ( initialModel ) {
-          $scope.onSelect( initialModel );
+        function onTag( item ) {
+          // ui-select's clear via allow-clear does not reliably clear the model when using tagging,
+          // so we must manually null the model if trying to save an empty string
+          if ( item === '' ) {
+            _.unset( $scope.model, key );
+            return '';
+          }
+
+          // Other than manually clearing, if we are limiting to the options list, we should short-circuit.
+          // Otherwise the search string will be saved as the value, which is counter to limitToList.
+          else if ( $scope.limitToList ) {
+            return undefined;
+          }
+
+          // data.limitToList should ideally be restricted to primitive option lists, but in case it is used
+          // with object options, wrap in an object with the displayField property set to the selected value.
+          else if ( $scope.isObjectModel ) {
+            var itemObj = {};
+            _.set( itemObj, $scope.displayField, item );
+            return itemObj;
+          }
+
+          // Otherwise the user entered a primitive, non-empty string in a limitToList=false widget
+          else {
+            return item;
+          }
+        }
+
+        function refresh( search ) {
+          var model = _.get( $scope.model, key );
+          // If an async API is used, call it and transform the results as configured
+          if ( api.get ) {
+            // If there is an api.threshold function, only call the API if it is satisfied
+            if ( !apiThreshold || ( _.isFunction( apiThreshold ) && apiThreshold( model, search ) ) ) {
+              return api
+                .get( model, search )
+                .then( function( results ) {
+                  return $scope.selectOptions = ( apiResultsFilter ? apiResultsFilter( results ) : results );
+                } );
+            }
+          }
+          // Otherwise just return a promise with the search criteria applied as a filter
+          else {
+            return $q
+              .when( $scope.listOptions )
+              .then( function( results ) {
+                $scope.selectOptions = applyFilter( results, search );
+                return $scope.selectOptions;
+              } );
+          }
+        }
+
+        // Applies a filter to async results using the search string
+        // The search string is tokenized for a smarter filter
+        function applyFilter( results, search ) {
+          var tokenFilter;
+
+          // Object-based lists filter on the displayField property
+          if ( $scope.isObjectModel ) {
+            tokenFilter = function( token ) {
+              var filterObject = {};
+              _.set( filterObject, $scope.displayField, token );
+              return $filter( 'filter' )( results, filterObject );
+            };
+          }
+          // Primitives filter by simple value
+          else {
+            tokenFilter = function( token ) {
+              return $filter( 'filter' )( results, token );
+            };
+          }
+
+          // This tokenizes the search string by space (' ') and returns the compound result.
+          // e.g., if the options list is:
+          //   [ 'One', 'Two', 'Three', 'Twelve', 'Twenty', 'Twenty One' ]
+          // searching with 'Tw' returns:
+          //   [ 'Two', 'Twelve', 'Twenty', 'Twenty One' ]
+          // searching with 'Tw One' returns:
+          //   [ 'Twenty One' ]
+          var filteredResults = _.map( search.split( ' ' ), tokenFilter );
+          return _.intersection.apply( this, filteredResults );
         }
       }
+
 
       /* @ngInject */
       function htmlController( $scope ) {

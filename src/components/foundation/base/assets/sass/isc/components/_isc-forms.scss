@@ -185,6 +185,10 @@ $breakpoint-percentages : (
     border-radius: $global-radius;
     border: $input-border;
 
+    &.ui-select-search {
+      height: inherit;
+    }
+
     &:hover {
       border: $input-border-hover;
       background: $input-background-hover;
@@ -276,6 +280,13 @@ $breakpoint-percentages : (
     &[disabled], &.disabled {
       cursor: $input-cursor-disabled;
       background-color: $input-background-disabled;
+    }
+  }
+
+  /* Typeaheads */
+  .ui-select-container {
+    & .ui-select-no-choice {
+      font-style : italic;
     }
   }
 
