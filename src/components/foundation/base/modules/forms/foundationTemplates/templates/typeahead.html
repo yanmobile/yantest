@@ -10,7 +10,7 @@
                    allow-clear=true>
     {{ isObjectModel ? $select.selected[displayField] : $select.selected }}
   </ui-select-match>
-  <!--need to a filter here or results can erroneously be empty-->
+  <!--need to always filter here or results can erroneously be empty-->
   <ui-select-choices repeat="option in selectOptions | uiSelectMinLength : $select.search : getMinInputLength($select.search)"
                      minimum-input-length="{{hasApiThreshold ? getMinInputLength($select.search) : minInputLength}}"
                      refresh="refresh($select.search)"

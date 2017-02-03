@@ -101,7 +101,6 @@
         $timeout( function() {
           var focusedElement = $( element.find( ':focus' ).first().context );
           if ( focusedElement.hasClass( 'ui-select-container' ) ) {
-            // $select.focusSearchInput();
             searchInput.focus();
           }
         }, 25 );
