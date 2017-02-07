@@ -1,3 +1,60 @@
+# Changes since UIFW 1.5
+###Gulp automation changes:
+* Replacing bower with npm
+  * src/common/bower.json => src/common/package.json
+  * src/components/foundation/base/bower.json => src/components/foundation/base/package.json
+  * src/app/bower.json => src/common/package.json
+
+* Adding reverse proxy
+  * This removes the need for applications to deal with CORS issues
+  * This removes the need for applications to change the api url for different targets
+   
+* Replacing hard coded i18n files with build time extractors
+* Adding an easy way for customers to easily customize FDN and i18n files
+  * see readme files in "customer/assets/(FDN|i18n)"
+
+* Adding "gulp i18nExtract" task to extract i18n literals
+
+* Updating build task (gulp build/server/deploy) to automatically include uifw-modules related files
+  * Must be referenced in gulp/config.app.js and add the corresponding Angular dependency
+* Adding support for feature-folder scss files
+  * scss files can now live in the same feature folder
+  * feature folder scss files will automatically be injected and compiled
+
+* Adding support for feature-folder test/spec files
+  * app spec files can now live in the same feature folder (only src/app folder is supported)
+  * app feature folder test file names must have "*.spec.js" format
+
+* Removing npm packages: Husky
+  * because Husky does not play nice with Windows machines
+  * manually execute "slush isc:addGitHooks" instead
+  
+###Feature changes: 
+* Automatically check user session when server returns 404 response (often indicates session timed out)
+  * will redirect the user to the login if session has expired
+
+* Adding cache-buster - an automatic way to invalidate cache
+  * can be disabled by removing the "iscCacheBusterInterceptor" from app.module.js
+
+* Adding submodule UIFW-Modules, an optional components repository
+  * Housing large and prevalent components
+  * It is meant to be re-used across apps, but not all apps uses it
+  * The components in here may have been designed specifically target apps
+
+* Emptying i18n files and embed i18n string literals in the html and js code
+  * run "gulp i18nExtract" to get the file
+
+###Dependency changes:
+* Updating ui-router to 0.3.2
+  * Supporting using "$resolve" in the state template config
+* Adding ui-select component
+  * adding typeahead and multi-select support
+* Removing angucomplete-alt package
+
+### Environments
+* Fixing windows related build errors
+  * Adding optional dependencies
+
 
 # Core Changes
 ### 06/03/2016
