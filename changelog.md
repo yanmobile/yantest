@@ -1,5 +1,47 @@
 # Changes since UIFW 1.5
-###Gulp automation changes:
+
+## Breaking changes
+### Forms
+The form's `buttonConfig` has been changed so that button definitions are now under a "buttons" property instead of in the root config object, and a "className" property is exposed for styling the button container. Also, the "cssClass" property on each button definition was renamed to "className" to be consistent with other forms properties.
+
+As an example to handle this change, change this:
+``` javascript
+{
+  submit : {
+    onClick  : myFunction(),
+    text     : "My Submit Button",
+    cssClass : "button my-submit-button"
+  },
+  cancel : {
+    hide : true
+  }
+}
+```
+
+to this:
+``` javascript
+{
+  buttons  : {
+    submit : {
+      onClick   : myFunction(),
+      text      : "My Submit Button",
+      className : "button my-submit-button"
+    },
+    cancel : {
+      hide : true
+    }
+  },
+  className: "my-container-style"
+}
+```
+
+
+Any applications using custom `buttonConfig` objects need to:
+1. Update their objects so that the button definitions are in a `buttonConfig.buttons` object instead of `buttonConfig`;
+2. Change the property name for custom classes on those button definitions (if it is specified) from "cssClass" to "className".
+
+## Non-breaking changes
+### Gulp automation changes:
 * Replacing bower with npm
   * src/common/bower.json => src/common/package.json
   * src/components/foundation/base/bower.json => src/components/foundation/base/package.json
@@ -15,6 +57,8 @@
 
 * Adding "gulp i18nExtract" task to extract i18n literals
 
+* Added "gulp fdn" task to build and deploy scripts 
+
 * Updating build task (gulp build/server/deploy) to automatically include uifw-modules related files
   * Must be referenced in gulp/config.app.js and add the corresponding Angular dependency
 * Adding support for feature-folder scss files
@@ -29,7 +73,7 @@
   * because Husky does not play nice with Windows machines
   * manually execute "slush isc:addGitHooks" instead
   
-###Feature changes: 
+### Feature changes: 
 * Automatically check user session when server returns 404 response (often indicates session timed out)
   * will redirect the user to the login if session has expired
 
@@ -44,7 +88,54 @@
 * Emptying i18n files and embed i18n string literals in the html and js code
   * run "gulp i18nExtract" to get the file
 
-###Dependency changes:
+### Form changes:
+
+* Display
+	* Fixed a display bug with arrow in select dropdown
+	* Fixed a display issue with horizontal radio buttons
+	* Fixed problem with view mode of embeddedForms
+	* Extended "data.layout" percentage classes to work with all integer percentages instead of just in increments of 10
+	* Removed extraneous padding from around formly fieldGroups
+
+* FDN
+	* Added support for "templateOptions.qdTag" in FDN
+	* Improved support for literal FDN definitions (i.e., those defined in UI code) by bypassing the standard FDN cache process and not making an API call for literal library objects
+	* Added support for arbitrary form definitions inside embeddedForms or embeddedFormCollections. This is an array of field definitions exposed as "data.embeddedFields"
+	* Added support for "object" and "hashtable" model types for "embeddedFormCollection" widgets
+	* Added support for "sectionLayout" to be provided as an object, with one layout specified per mode (view/edit)
+	* Added "data.collections.hideTableHeader" property to allow hiding the header row for collections in a fauxTable
+	* Added support for "templateOptions.label" to fieldGroups
+	* Added support for expressionProperties to be defined on "form" and "section" FDN objects, rather than just "field" and "fieldGroup" objects
+	* Added support for using local FDN assets in `isc-form` instances. This is done by passing the asset file name (without the .json extension) as the "formKey" and "loadFormAsAsset" as true in the form's `formConfig` object.
+	
+
+* Built-in Widgets
+	* New widgets
+		* Added "computedTableField" widget for displaying concatenated strings in the list/tabular view of a collection
+		* Added "codedItemCollection" widget for collecting an array of code table driven items
+		* Added "image" widget for an img tag with an optional "templateOptions.label"
+
+	* Enhanced widgets
+		* Added support for "templateOptions.label" to "section", "instructions", "divider", and "button" widgets
+		* Added support for marked up text (html) in "data.content" and "data.details"
+		* Added placeholder support to "typeahead" widgets
+		* Enabled expressionProperties for fields that may be bound to html
+		* Made the view mode of "dateComponents" more tolerant of dates that are not strictly ISO
+		* Added i18n translation support to placeholder text on "input", "textarea", and "typeahead" widgets
+
+* Code Tables
+	* Moved code table lookups from being performed during form definition resolution to being performed as-needed by individual fields
+	* Updated the code table API to make individual asynchronous API calls with "load" (the API's "get" is synchronous)
+	* Added a "forms.defaultDisplayField" property to the app configuration
+	* Added "data.orderField" for list controls that need to sort code table results by a non-default order
+	* Added support for transforming code table responses, if the response is not the code table array itself. This is available in `app.config` under "moduleApi.formCodeTables.responseTransform"
+
+* Other forms functionality
+	* Made the default view mode text/display for a field configurable at the app level
+	* Fixed a bug where the Enter key does not add a new line in textareas in forms
+	* Added support for user-defined collection layouts. An example "card" layout is provided, and the default layout is "table"
+
+### Dependency changes:
 * Updating ui-router to 0.3.2
   * Supporting using "$resolve" in the state template config
 * Adding ui-select component
