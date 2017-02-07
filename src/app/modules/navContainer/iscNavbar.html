@@ -54,6 +54,7 @@
           ng-repeat="tab in navbarCtrl.getTabs() | orderBy: 'displayOrder'"
           ng-class="{'active': tab.active }">
         <a ng-class="{'active': tab.active }"
+           qd-tag="tab_banner_{{tab.state}}"
            ng-click="navbarCtrl.setTabActive( tab )"
            ui-sref="{{tab.state}}">{{tab.translationKey | translate}}</a>
       </li>
@@ -73,6 +74,7 @@
           ng-repeat="tab in navbarCtrl.getTabs() | orderBy: 'displayOrder'"
           ng-class="{'active': tab.active }">
         <a ng-class="{'active': tab.active }"
+           qd-tag="tab_mobile_banner_{{tab.state}}"
            ng-click="navbarCtrl.setTabActive( tab )"
            ui-sref="{{tab.state}}">{{tab.translationKey | translate}}</a>
       </li>
