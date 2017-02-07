@@ -1,15 +1,31 @@
-<div>
-  <isc-forms-typeahead list-data="listOptions"
-                       on-select="onSelect"
-                       minlength="minInputLength"
-                       limit-to-list="{{limitToList}}"
-                       list-field="{{options.data.resultsDisplayField}}">
-    <input ng-model="localModel.input"
-           ng-disabled="to.disabled"
-           ng-required="to.required"
-           placeholder="{{to.placeholder | translate}}"
-           id="{{id}}"
-           name="{{name||id}}"
-           class="typeahead">
-  </isc-forms-typeahead>
-</div>
+<ui-select isc-forms-ui-select-shim="{{limitToList}}"
+           theme="selectize"
+           on-select="onSelect($model, $item)"
+           ng-model="model[options.key]"
+           tagging="onTag"
+           tagging-label="false"
+           tagging-tokens="['TAB','ENTER']"
+           reset-search-input="{{limitToList}}">
+  <ui-select-match placeholder="{{to.placeholder}}"
+                   allow-clear=true>
+    {{ isObjectModel ? $select.selected[displayField] : $select.selected }}
+  </ui-select-match>
+  <!--need to always filter here or results can erroneously be empty-->
+  <ui-select-choices repeat="option in selectOptions | uiSelectMinLength : $select.search : getMinInputLength($select.search)"
+                     minimum-input-length="{{hasApiThreshold ? getMinInputLength($select.search) : minInputLength}}"
+                     refresh="refresh($select.search)"
+                     refresh-delay="0">
+    <div ng-bind-html="isObjectModel ? option[resultsDisplayField] : option | highlight: $select.search"></div>
+  </ui-select-choices>
+
+  <!--ui-select concats this ng-show expression to its own transcluded content, so we have to end this ng-show expression with an operator-->
+  <ui-select-no-choice ng-show="$select.open && ">
+    <div ng-hide="hasApiThreshold ? getMinInputLength($select.search) : _.get($select.search, 'length', 0) >= minInputLength">
+      {{ 'Enter search criteria...' | translate }}
+    </div>
+    <div ng-show="hasApiThreshold ? getMinInputLength($select.search) : _.get($select.search, 'length', 0) >= minInputLength">
+      {{ 'No results' | translate }}
+    </div>
+
+  </ui-select-no-choice>
+</ui-select>

@@ -229,11 +229,15 @@
           "templateOptions" : {
             "label"   : "A typeahead widget, primitive values",
             "qdTag"   : "typeaheadPrimitive",
+            "placeholder" : "Primitive typeahead",
             "options" : [
               "Typeahead 1",
               "Typeahead 2",
               "Typeahead 3"
             ]
+          },
+          "data" : {
+            "userScript" : "typeaheadScriptPrimitive"
           }
         },
         {
@@ -242,6 +246,7 @@
           "templateOptions" : {
             "label"   : "A typeahead widget, object values",
             "qdTag"   : "typeaheadObject",
+            "placeholder" : "Object typeahead",
             "options" : [
               {
                 "displayField" : "Typeahead 1",
@@ -258,6 +263,11 @@
             ]
           },
           "data"            : {
+            "userModel" : {
+              "api" : {
+                "minlength" : 0
+              }
+            },
             "limitToList" : true
           }
         },
@@ -266,6 +276,7 @@
           "type"            : "typeaheadWithScript",
           "templateOptions" : {
             "label" : "A typeahead widget supporting user-defined scripts",
+            "placeholder" : "Script typeahead",
             "qdTag" : "typeaheadWithScript"
           },
           "data"            : {

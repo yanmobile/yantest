@@ -23,13 +23,14 @@
     window.useDefaultTranslateBeforeEach();
 
     beforeEach( module(
-      'formly', 'foundation',
+      'formly', 'foundation', 'ui.select',
       'isc.http', 'isc.forms', 'iscNavContainer', 'isc.authorization', 'isc.notification', 'isc.directives',
       'isc.templates', 'isc.fauxTable', 'isc.filters',
-      function( $provide, devlogProvider ) {
+      function( $provide, $sceProvider, devlogProvider ) {
         $provide.value( '$log', console );
         $provide.value( 'apiHelper', mockApiHelper );
         $provide.value( 'iscCustomConfigService', mockCustomConfigService );
+        $sceProvider.enabled( false );
 
         // Mock over _.debounce so it executes during tests
         _.debounce = function( callback, time ) {
@@ -366,7 +367,7 @@
               formModel      = _.get( suite.controller.model, subformName ),
               formState      = suite.controller.options.formState,
               formDefinition = suiteInternal.controller.formDefinition.subforms.builtinComponents.sections[0].fields,
-              displayField   = _.get(customConfig, 'forms.defaultDisplayField', 'name');
+              displayField   = _.get( customConfig, 'forms.defaultDisplayField', 'name' );
 
           testInput( 'templates.input.text' );
           testInput( 'templates.input.date' );
@@ -549,102 +550,119 @@
           }
 
           function testTypeahead( controlName, isScript ) {
-            var control      = getControlByName( suite, controlName ).filter( 'input' ),
-                newText      = 'Typea',
-                limitToList  = getFieldProperty( controlName, 'data.limitToList' ),
-                keyCodes     = suiteMain.keyCode,
-                model, modelDisplay;
+            var control     = getControlByName( suite, controlName ),
+                container   = control.find( '.ui-select-container' ),
+                focusser    = control.find( '.ui-select-focusser' ),
+                input       = control.find( 'input.ui-select-search' ),
+                display     = control.find( '.ui-select-match' ).find( '.ng-binding' ).last(),
+                newText     = 'Typea',
+                limitToList = getFieldProperty( controlName, 'data.limitToList' ),
+                keyCodes    = suiteMain.keyCode,
+                model, modelDisplay,
+                list, listItems, firstItem, secondItem;
 
             getModel();
 
+            expect( subform.length ).toBe( 1 );
             expect( control.length ).toBe( 1 );
-            expect( control.val() ).toEqual( modelDisplay );
+            expect( input.length ).toBe( 1 );
+            expect( focusser.length ).toBe( 1 );
+            expect( display.html().trim() ).toEqual( modelDisplay );
             expect( model ).not.toEqual( newText );
 
-            control.triggerHandler( 'focus' );
-            control.val( newText ).trigger( 'input' ).trigger( 'change' );
-            suite.$scope.$digest();
-
-            // TypeaheadWithScript components submit an http request
-            if ( isScript ) {
-              suiteMain.$httpBackend.flush();
-            }
-
-            // The input is a DOM sibling to the list that appears,
-            // so we have to walk up a bit before finding the list.
-            var list              = control.parentsUntil( '[list-data]' ).parent().find( '.isc-typeahead-list' ),
-                listItems         = list.find( 'li' ),
-                firstItem         = listItems.first(),
-                secondItem        = firstItem.next(),
-                firstItemDisplay  = firstItem.html().trim(),
-                secondItemDisplay = secondItem.html().trim();
-
+            // Enter some search text
+            enterText( newText );
+            selectList();
             expect( listItems.length ).toBe( 3 );
 
-            // Exercise the DOM inspection in the widget:
-            // Go down once and back into the input
-            sendDownArrow( control );
-            sendUpArrow( firstItem );
-
-            // Use down arrow two times and up arrow once to select the second item
-            sendDownArrow( control );
-            sendDownArrow( firstItem );
-            sendUpArrow( secondItem );
-
-            // Pressing enter in the input should select that item
-            sendEnter( secondItem );
-            digest( suite );
-
+            // Select the first item using the keyboard (down arrow and tab or enter)
+            keyboardSelect();
             getModel();
-            expect( modelDisplay ).toEqual( secondItemDisplay );
-            expect( control.val() ).toEqual( secondItemDisplay );
+            expect( modelDisplay ).toEqual( 'Typeahead 1' );
 
-            // Change the value in the control's input then leave the control
-            control.val( newText ).trigger( 'input' ).trigger( 'blur' );
-            digest( suite );
+            // Clear the control
+            backspaceInput();
+            getModel();
+            expect( modelDisplay ).toBeUndefined();
 
-            // The model should not change if limitToList is truthy
+            // Re-enter the search text
+            enterText( newText );
+            selectList();
+
+            // Click on the second option
+            mouseSelect( secondItem );
+            getModel();
+            expect( modelDisplay ).toEqual( 'Typeahead 2' );
+
+            // Enter new text and blur the control
+            enterText( 'A tag' );
+            blurInput();
+            // sendEnter(input);
             getModel();
             if ( limitToList ) {
-              expect( modelDisplay ).toEqual( secondItemDisplay );
-              expect( control.val() ).toEqual( secondItemDisplay );
+              // If limitToList, the value should not change
+              expect( modelDisplay ).toEqual( 'Typeahead 2' );
             }
-            // If limitToList is falsy, then editing the input and blurring *should* update the model
             else {
-              expect( modelDisplay ).toEqual( newText );
-              expect( control.val() ).toEqual( newText );
+              // If not limitToList, the value should be the new text
+              expect( modelDisplay ).toEqual( 'A tag' );
             }
 
-            // Clear the content and blur and the value should be cleared.
-            control.val( '' ).trigger( 'input' ).trigger( 'blur' );
-            digest( suite );
 
-            getModel();
-            expect( model ).toBeUndefined();
-            expect( control.val() ).toEqual( '' );
+            function enterText( text ) {
+              input.click();
+              suite.$scope.$digest();
+              suiteMain.$timeout.flush( 500 );
+              input.val( text ).trigger( 'input' ).trigger( 'change' ).trigger( 'keydown' );
+              digest( suite );
 
-            // Re-focus on the control, enter enough chars to show the list, and press Enter.
-            // The first item should be selected.
-            control.triggerHandler( 'focus' );
-            control.val( newText ).trigger( 'input' ).trigger( 'change' );
-            suite.$scope.$digest();
+              if ( isScript ) {
+                suiteMain.$httpBackend.flush();
+              }
+            }
 
-            sendEnter( control );
-            digest( suite );
+            function keyboardSelect() {
+              sendDownArrow( input );
+              sendTab( input );
+              input.trigger( 'change' );
+              digest( suite );
+            }
 
-            getModel();
-            expect( modelDisplay ).toEqual( firstItemDisplay );
-            expect( control.val() ).toEqual( firstItemDisplay );
+            function mouseSelect( item ) {
+              item.trigger( 'click' );
+              input.trigger( 'change' );
+              digest( suite );
+            }
+
+            function backspaceInput() {
+              input.val( '' ).trigger( 'change' ).trigger( 'keydown' );
+              focusser.triggerHandler( 'focus' );
+              sendBackspace( focusser );
+              digest( suite );
+            }
+
+            function blurInput() {
+              input.triggerHandler( 'focus' );
+              input.trigger( 'change' ).triggerHandler( 'blur' );
+              digest( suite );
+            }
+
+            function selectList() {
+              list       = control.find( '.ui-select-choices' );
+              listItems  = list.find( '.ui-select-choices-row' );
+              firstItem  = listItems.first();
+              secondItem = firstItem.next();
+            }
 
             function getModel() {
               model        = _.get( formModel, controlName );
               modelDisplay = _.isObject( model ) ? model[displayField] : model;
             }
 
-            function sendEnter( control ) {
+            function sendBackspace( control ) {
               control.trigger( {
                 type : 'keydown',
-                which: keyCodes.ENTER
+                which: keyCodes.BACKSPACE
               } )
             }
 
@@ -655,10 +673,10 @@
               } );
             }
 
-            function sendUpArrow( control ) {
+            function sendTab( control ) {
               control.trigger( {
                 type : 'keydown',
-                which: 38
+                which: keyCodes.TAB
               } );
             }
           }
