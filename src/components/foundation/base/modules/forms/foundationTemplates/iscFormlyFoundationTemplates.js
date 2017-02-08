@@ -155,6 +155,15 @@
         wrapper       : ['templateLabel', 'templateHasError'],
         defaultOptions: {
           templateOptions: { type: 'text' }
+        },
+        // IE has an X icon in text inputs that clears the input, but it
+        // only fires an 'input' event, not a 'change' event.
+        // This causes an 'input' event to also trigger the 'change' event.
+        link: function( scope, element ) {
+          var input = element.find( 'input' );
+          input.on( 'input', function() {
+            input.trigger( 'change' );
+          } );
         }
       } );
 
