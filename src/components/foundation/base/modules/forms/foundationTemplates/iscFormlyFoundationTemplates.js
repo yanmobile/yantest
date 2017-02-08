@@ -297,7 +297,11 @@
         wrapper       : ['templateLabel', 'templateHasError'],
         defaultOptions: {
           data: {
-            tableCellTemplateUrl: 'forms/foundationTemplates/tableTemplates/cell.date.html'
+            collections : {
+              tableCell : {
+                templateUrl: 'forms/foundationTemplates/tableTemplates/cell.date.html'
+              }
+            }
           }
         }
       } );
@@ -329,25 +333,34 @@
             }
           },
           data      : {
-            tableCellDisplay: function( row, model ) {
-              // partialDate validator ensures we only have a day if we have a month,
-              // and only have a month if we have a year
-              var obj   = _.get( row, model, {} ),
-                  year  = parseInt( obj.year ),
-                  month = parseInt( obj.month ) - 1, // months are 0-indexed in js dates and moment()
-                  day   = parseInt( obj.day );
+            collections : {
+              tableCell : {
+                display  : function( row, column ) {
+                  // partialDate validator ensures we only have a day if we have a month,
+                  // and only have a month if we have a year
+                  var modelName = column.model,
+                      obj       = _.get( row, modelName, {} ),
+                      year      = parseInt( obj.year ),
+                      month     = parseInt( obj.month ) - 1, // months are 0-indexed in js dates and moment()
+                      day       = parseInt( obj.day ),
+                      displayValue;
 
-              if ( !isNaN( day ) && !isNaN( month ) && !isNaN( year ) ) {
-                return $filter( 'iscDate' )( new Date( year, month, day ), _.get( iscCustomConfigService.getConfig(), 'formats.date.shortDate', 'date' ) );
-              }
-              else if ( !isNaN( month ) && !isNaN( year ) ) {
-                return ( month + 1 ) + '-' + year;
-              }
-              else if ( !isNaN( year ) ) {
-                return year.toString();
-              }
-              else {
-                return '';
+                  if ( !isNaN( day ) && !isNaN( month ) && !isNaN( year ) ) {
+                    displayValue = $filter( 'iscDate' )( new Date( year, month, day ), _.get( iscCustomConfigService.getConfig(), 'formats.date.shortDate', 'date' ) );
+                  }
+                  else if ( !isNaN( month ) && !isNaN( year ) ) {
+                    displayValue = ( month + 1 ) + '-' + year;
+                  }
+                  else if ( !isNaN( year ) ) {
+                    displayValue = year.toString();
+                  }
+                  else {
+                    displayValue = '';
+                  }
+
+                  return $sce.trustAsHtml( displayValue );
+                },
+                template : "{{ column.display(row, column.model) }}"
               }
             }
           }
@@ -387,18 +400,21 @@
         template      : '<span></span>',
         defaultOptions: {
           data: {
-            computedField: {
-              display: function( model, field, evalContext ) {
-                var template        = _.get( field, 'computedTemplate' ),
-                    markedUpDisplay = evalContext( template, {
-                      model: model
-                    } );
-                return $sce.trustAsHtml( markedUpDisplay );
+            collections : {
+              tableCell: {
+                display: function( model, field, evalContext ) {
+                  var template        = _.get( field, 'customTemplate' ),
+                      markedUpDisplay = evalContext( template, {
+                        model: model
+                      } );
+                  return $sce.trustAsHtml( markedUpDisplay );
+                }
               }
             }
           }
         }
       } );
+
 
       // Embedded form
       iscFormsTemplateService.registerType( {

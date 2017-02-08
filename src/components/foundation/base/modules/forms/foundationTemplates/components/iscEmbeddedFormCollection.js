@@ -24,7 +24,7 @@
    */
   /* @ngInject */
   function iscEmbeddedFormCollection( $filter, $timeout, $translate, FoundationApi, iscCustomConfigService, iscConfirmationService, FORMS_EVENTS,
-    iscFormsTemplateService, iscFormsValidationService,
+    iscFormsTemplateService, iscFormsValidationService, iscFormsTransformService,
     iscScrollContainerService ) {//jshint ignore:line
 
     // ----------------------------
@@ -190,9 +190,9 @@
             type       : field.type,
             dateFormat : self.dateFormat,
 
-            // Computed fields
-            computedTemplate   : field.computedTemplate,
-            computedTemplateUrl: field.computedTemplateUrl
+            // Custom templates
+            customTemplate   : field.customTemplate,
+            customTemplateUrl: field.customTemplateUrl
           };
         } );
 
@@ -275,6 +275,11 @@
         }
 
         mergeBuiltInTemplates( self.fields );
+
+        // Manually apply compatibility transform to fields;
+        // this is necessary because formly has not seen them yet.
+        self.fields = iscFormsTransformService.ensureBackwardsCompatibility( self.fields );
+
         createTableFields();
       }
 

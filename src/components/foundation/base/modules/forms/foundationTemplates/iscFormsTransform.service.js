@@ -25,13 +25,30 @@
         formsConfig      = _.get( config, 'forms', {} ),
         updateOnExcluded = formsConfig.updateOnExcluded;
 
+    // This maps legacy names for properties to their new property names
+    var propertyCompatibilityMap = {
+      "data.tableHeaderLabel"         : "data.collections.tableCell.headerLabel",
+      "data.tableCellType"            : "data.collections.tableCell.type",
+      "data.tableCellTemplate"        : "data.collections.tableCell.template",
+      "data.tableCellTemplateUrl"     : "data.collections.tableCell.templateUrl",
+      "data.computedField.template"   : "data.collections.tableCell.template",
+      "data.computedField.templateUrl": "data.collections.tableCell.templateUrl",
+      "data.tableCellDisplay"         : "data.collections.tableCell.display"
+    };
+
     return {
-      initTransforms : initTransforms
+      initTransforms              : initTransforms,
+      ensureBackwardsCompatibility: ensureBackwardsCompatibility
     };
 
 
     function initTransforms( transformConfig ) {
       _.merge( templateConfig, transformConfig );
+
+      // Ensure backwards compatibility first
+      formlyConfig.extras.fieldTransform.push( ensureBackwardsCompatibility );
+
+      // Then potentially dependent transforms
       formlyConfig.extras.fieldTransform.push( addDataModelDependencies );
       formlyConfig.extras.fieldTransform.push( addInheritedClassNames );
       formlyConfig.extras.fieldTransform.push( addQdTag );
@@ -42,8 +59,33 @@
 
     /**
      * @memberOf iscFormsTransformService
+     * @description Ensures backwards compatibility for any renamed FDN properties.
+     * This takes legacy property names and moves them in the FDN to their new locations.
      * @param fields
-     * @returns {*}
+     * @returns {Array}
+     */
+    function ensureBackwardsCompatibility( fields ) {
+      return forEachField( fields, mapLegacyProperties );
+
+      function mapLegacyProperties( field ) {
+        _.map( propertyCompatibilityMap, function( newName, legacyName ) {
+          var newProp    = _.get( field, newName ),
+              legacyProp = _.get( field, legacyName );
+
+          // Only move if new property is not otherwise set
+          if ( legacyProp !== undefined && newProp === undefined ) {
+            _.set( field, newName, legacyProp );
+            _.unset( field, legacyName );
+            console.warn( 'Forms engine: %s has been deprecated and may be removed in the future. Use %s for this property instead.', legacyName, newName );
+          }
+        } );
+      }
+    }
+
+    /**
+     * @memberOf iscFormsTransformService
+     * @param fields
+     * @returns {Array}
      */
     function translateLabels( fields ) {
       return forEachField( fields, function( field ) {
