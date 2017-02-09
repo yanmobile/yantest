@@ -112,6 +112,88 @@
           suite.$httpBackend.flush();
         } );
       } );
+
+      describe( 'bundling async requests', function() {
+        init( {
+          moduleApi: {
+            formCodeTables: {
+              responseTransform: 'ListOfCodes',
+              bundlePath       : 'bundledCodeTables',
+              bundleRequests   : true
+            }
+          }
+        } );
+
+        it( 'should get multiple code tables with a single request', function() {
+          var codeTables = [
+            'colors',
+            'usStates'
+          ];
+
+          spyOn( suite.iscFormsCodeTableApi, 'getAsyncBundle' ).and.callThrough();
+
+          suite.iscFormsCodeTableApi.getAsyncBundle( codeTables ).then( function() {
+            expect( suite.iscFormsCodeTableApi.getAsyncBundle ).toHaveBeenCalledWith( codeTables );
+
+            // The requested tables should have been cached
+            var statesTable = suite.iscFormsCodeTableApi.getSync( 'usStates' );
+            expect( statesTable.length ).toEqual( 50 );
+
+            var colorsTable = suite.iscFormsCodeTableApi.getSync( 'colors' );
+            expect( colorsTable.length ).toEqual( 3 );
+          } );
+
+          suite.$httpBackend.flush();
+        } );
+      } );
+
+      describe( 'bundling async requests with a bundle size', function() {
+        init( {
+          moduleApi: {
+            formCodeTables: {
+              responseTransform: 'ListOfCodes',
+              bundlePath       : 'bundledCodeTables',
+              bundleSize       : 1,
+              bundleRequests   : true
+            }
+          }
+        } );
+
+        it( 'should get multiple code tables with a single request', function() {
+          var mockFdn = {
+            form: {
+              sections: [
+                {
+                  fields: [
+                    {
+                      data: {
+                        codeTable: 'colors'
+                      }
+                    },
+                    {
+                      data: {
+                        codeTable: 'usStates'
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          };
+
+          var callCount = 0;
+
+          spyOn( suite.iscFormsCodeTableApi, 'getAsyncBundle' ).and.callFake( function() {
+            callCount++;
+          } );
+
+          suite.iscFormsTemplateService.loadCodeTables( mockFdn ).then( function() {
+            expect( callCount ).toBe( 2 );
+          } );
+
+          suite.$timeout.flush();
+        } );
+      } );
     } );
 
 
@@ -121,13 +203,17 @@
       mockDefaultFormStates();
 
       beforeEach( inject( function( iscFormsCodeTableApi,
+        iscFormsTemplateService,
         iscCustomConfigService,
-        $httpBackend ) {
+        $httpBackend,
+        $timeout ) {
 
         suite = window.createSuite( {
-          iscFormsCodeTableApi  : iscFormsCodeTableApi,
-          iscCustomConfigService: iscCustomConfigService,
-          $httpBackend          : $httpBackend
+          iscFormsCodeTableApi   : iscFormsCodeTableApi,
+          iscFormsTemplateService: iscFormsTemplateService,
+          iscCustomConfigService : iscCustomConfigService,
+          $httpBackend           : $httpBackend,
+          $timeout               : $timeout
         } );
 
         mockFormResponses( suite.$httpBackend );

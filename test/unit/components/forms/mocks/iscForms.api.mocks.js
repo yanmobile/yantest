@@ -232,7 +232,8 @@ var mockFormResponses = function( httpBackend ) {
     } );
 
   // CodeTable API
-  // load (single by name)
+  // load (single by name) with the scheme ($) at the end
+  // e.g., /codeTables/something/$
   httpBackend.when( 'GET', /^codeTables\/\w+\/\$(\?.*)?$/ )
     .respond( function response( method, url ) {
       var orderParamRE = /\?orderBy=\w+$/,
@@ -252,6 +253,26 @@ var mockFormResponses = function( httpBackend ) {
       }
 
       return [200, json, {}];
+    } );
+
+  // load a bundle (multiple code tables in a single request)
+  // e.g., /bundledCodeTables/HS.Alice,HS.Bob,HS.Carl
+  httpBackend.when( 'GET', /^bundledCodeTables\/([\w.,]+)*(\?.*)?$/ )
+    .respond( function response( method, url ) {
+      var tableList = stripUrl( url ).replace( /^bundledCodeTables\//, '' ),
+          tableNames    = tableList.split( ',' ),
+          tables = [];
+
+      _.forEach( tableNames, function( codeTableName ) {
+        var path = [staticPath, 'codeTables', codeTableName].join( '/' );
+
+        tables.push( {
+          CodeTableName: codeTableName,
+          ListOfCodes  : getJSONFile( path )
+        } );
+      } );
+
+      return [200, { TableResponses: tables }, {}];
     } );
 
   // Public APIs for testing
