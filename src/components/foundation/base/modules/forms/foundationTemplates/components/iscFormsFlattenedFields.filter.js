@@ -15,7 +15,7 @@
    * @returns {Function}
    */
   /* @ngInject */
-  function iscFormsFlattenedFields( iscCustomConfigService ) {
+  function iscFormsFlattenedFields( $sce, iscCustomConfigService ) {
     var defaultDisplayField = _.get( iscCustomConfigService.getConfig(), 'forms.defaultDisplayField' );
 
     return function( fields ) {
@@ -51,15 +51,15 @@
         return [].concat(
           angular.extend(
             {
-              key           : _.get( field, 'data.tableHeaderLabel' ) || _.get( field, 'key', '' ),
-              label         : _.get( field, 'data.tableHeaderLabel' ) || _.get( field, 'templateOptions.label', '' ),
+              key           : _.get( field, 'data.collections.tableCell.headerLabel' ) || _.get( field, 'key', '' ),
+              label         : _.get( field, 'data.collections.tableCell.headerLabel' ) || _.get( field, 'templateOptions.label', '' ),
               model         : _.get( field, 'key', '' ) + (
                 // For data stored as complex objects, get the list field property
                 doesFieldStoreObject( field ) ?
                   ( '.' + _.get( field, 'data.displayField', 'name' ) )
                   : ''
               ),
-              templateUrl   : _.get( field, 'data.tableCellTemplateUrl' )
+              templateUrl   : _.get( field, 'data.collections.tableCell.templateUrl' )
             },
             getCustomDisplayOptions( field )
           )
@@ -107,25 +107,29 @@
      * @returns {{}}
      */
     function getCustomDisplayOptions( field ) {
-      var options       = {},
-          data          = _.get( field, 'data', {} ),
-          computedField = _.get( data, 'computedField', {} );
+      var options = _.get( field, 'data.collections.tableCell', {} );
 
-      if ( data.tableCellType ) {
-        options.type = data.tableCellType;
+      // If a custom template or templateUrl was specified, use the customTableCell wrapper
+      // and redirect the template into the custom properties
+      if ( options.template || options.templateUrl ) {
+        options.customTemplate    = options.template;
+        options.customTemplateUrl = options.templateUrl;
+
+        delete options.template;
+        options.templateUrl = 'forms/foundationTemplates/tableTemplates/data.customTableCell.html';
+
+        // If no display function is specified, add a default that returns row[column.model.model]
+        if ( !_.isFunction( options.display ) ) {
+          options.display = function( row, columnDef ) {
+            var column       = _.get( columnDef, 'model', {} ),
+                modelName    = _.get( column, 'model' ),
+                displayValue = _.get( row, modelName, '' );
+
+            return $sce.trustAsHtml( displayValue );
+          };
+        }
       }
 
-      if ( data.tableCellDisplay ) {
-        options.templateUrl = 'forms/foundationTemplates/tableTemplates/data.tableCellDisplay.html';
-        options.display     = data.tableCellDisplay;
-      }
-
-      if ( computedField.display ) {
-        options.display             = computedField.display;
-        options.computedTemplate    = computedField.template;
-        options.computedTemplateUrl = computedField.templateUrl;
-        options.templateUrl         = 'forms/foundationTemplates/tableTemplates/data.computedField.html';
-      }
       return options;
     }
 
