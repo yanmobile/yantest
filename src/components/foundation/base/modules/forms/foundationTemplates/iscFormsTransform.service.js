@@ -27,6 +27,7 @@
 
     // This maps legacy names for properties to their new property names
     var propertyCompatibilityMap = {
+      "data.emptyCollectionMessage"   : "data.collections.emptyMessage",
       "data.tableHeaderLabel"         : "data.collections.tableCell.headerLabel",
       "data.tableCellType"            : "data.collections.tableCell.type",
       "data.tableCellTemplate"        : "data.collections.tableCell.template",
