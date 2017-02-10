@@ -12,6 +12,8 @@ npm-debug.log
 
 #script for deploy
 isc-tools/local.sh
+
+#folder for localization files
 isc-tools/localize/
 
 # bogus language for testing
@@ -102,4 +104,3 @@ sftp-config.json
 bin/
 tmp/
 coverage/
-isc-tools/
