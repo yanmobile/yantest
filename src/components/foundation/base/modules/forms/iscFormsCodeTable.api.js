@@ -17,15 +17,17 @@
   function iscFormsCodeTableApi( iscHttpapi, apiHelper, iscCustomConfigService ) {
     var config          = iscCustomConfigService.getConfig(),
         moduleConfig    = _.get( config, 'moduleApi', {} ),
-        codeTableConfig = _.get( moduleConfig, 'formCodeTables' );
+        codeTableConfig = _.get( moduleConfig, 'formCodeTables', {} );
 
-    var codeTableUrl = apiHelper.getConfigUrl( codeTableConfig );
+    var codeTableUrl = apiHelper.getConfigUrl( codeTableConfig ),
+        bundleUrl    = codeTableUrl.replace( new RegExp( codeTableConfig.path ), codeTableConfig.bundlePath );
 
     var codeTableCache = {};
 
     return {
-      getAsync: getAsync,
-      getSync : getSync
+      getAsync      : getAsync,
+      getAsyncBundle: getAsyncBundle,
+      getSync       : getSync
     };
 
     /**
@@ -53,6 +55,38 @@
             tableToCache
           );
           return codeTable;
+        }
+      );
+    }
+
+    /**
+     * @memberOf iscFormsCodeTableApi
+     * @description
+     * Loads all the given code tables from the server in a single request.
+     * Each loaded table is then transformed with the configured responseTransform
+     * and cached by name.
+     * For each name provided in names, this call is guaranteed to cache at least an
+     * empty array.
+     * @param {Array} names
+     */
+    function getAsyncBundle( names ) {
+      var url = [bundleUrl, [names].join( ',' )].join( '/' );
+
+      return iscHttpapi.get( url ).then(
+        function( response ) {
+          _.forEach( _.get( response, 'TableResponses', [] ), function( singleResponse ) {
+            var codeTable     = applyResponseTransform( singleResponse ),
+                codeTableName = singleResponse.CodeTableName,
+                tableToCache  = ( codeTable && _.isArray( codeTable ) ) ? codeTable : [];
+
+            _.set(
+              codeTableCache,
+              codeTableName,
+              tableToCache
+            );
+          } );
+
+          return response;
         }
       );
     }

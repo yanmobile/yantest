@@ -1,0 +1,14 @@
+[
+  {
+    "displayField" : "Red",
+    "value"        : "#f00"
+  },
+  {
+    "displayField" : "Green",
+    "value"        : "#0f0"
+  },
+  {
+    "displayField" : "Blue",
+    "value"        : "#00f"
+  }
+]

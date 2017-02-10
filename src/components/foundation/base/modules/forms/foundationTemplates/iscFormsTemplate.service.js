@@ -59,6 +59,7 @@
     var baseType = '__iscFormsBase__';
 
     var config           = iscCustomConfigService.getConfig(),
+        moduleConfig     = _.get( config, 'moduleApi', {} ),
         formsConfig      = _.get( config, 'forms', {} ),
         updateOnExcluded = formsConfig.updateOnExcluded,
         widgetLibrary    = [],
@@ -698,7 +699,11 @@
      */
     function loadCodeTables( formDefinition ) {
       var codeTables        = [],
-          codeTablePromises = [];
+          codeTablePromises = [],
+          codeTableConfig   = _.get( moduleConfig, 'formCodeTables', {} ),
+          bundleRequests    = codeTableConfig.bundleRequests,
+          bundleSize        = codeTableConfig.bundleSize,
+          namesToRequest    = [];
 
       // Scrape formDefinition response for any needed code tables.
       // This includes data.codeTable in the definition's form or in any of its subforms.
@@ -714,11 +719,30 @@
       _.forEach( _.uniqBy( codeTables, 'name' ), function( codeTable ) {
         // If the code table has not been fetched yet, do so
         if ( !iscFormsCodeTableApi.getSync( codeTable.name ) ) {
-          codeTablePromises.push( iscFormsCodeTableApi.getAsync( codeTable.name, codeTable.order ) );
+          if ( bundleRequests ) {
+            namesToRequest.push( codeTable.name );
+            if ( bundleSize && namesToRequest.length >= bundleSize ) {
+              flushBundle();
+            }
+          }
+          else {
+            codeTablePromises.push( iscFormsCodeTableApi.getAsync( codeTable.name, codeTable.order ) );
+          }
         }
       } );
 
+      if ( bundleRequests ) {
+        flushBundle();
+      }
+
       return $q.all( codeTablePromises );
+
+      function flushBundle() {
+        if ( namesToRequest.length ) {
+          codeTablePromises.push( iscFormsCodeTableApi.getAsyncBundle( namesToRequest ) );
+          namesToRequest = [];
+        }
+      }
 
       function queueCodeTableLoad( container ) {
         // Recurse for these mutually-exclusive cases:
