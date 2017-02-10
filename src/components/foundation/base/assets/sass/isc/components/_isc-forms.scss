@@ -165,12 +165,24 @@ $breakpoint-percentages : (
 
   /* Formly Field Groups */
   .formly-field-group, .form-section {
-    .formly[role='form'] > [formly-field] {
-      padding: 0;
+    .formly[role='form'] > [formly-field],formly-field {
+      padding : 0;
       > :not([is-field-group]) {
-        padding: 0 2rem 0 0;
+        padding : 0 2rem 0 0;
+      }
+      > [is-field-group] {
+        & {
+          margin-bottom: 0;
+        }
       }
     }
+  }
+  // Selector class added to flag a div that is added by formly to the end of field groups.
+  // This div is empty except for whitespace contents, and the div itself inherits padding
+  // from the Foundation grid which accumulates, so this eliminates it.
+  // This selector is defined and set in the iscFormsTransformService.wrapFieldGroups function.
+  div[ng-transclude].formly-field-group-ng-transclude {
+    padding : 0 !important;
   }
 
   /* Form Inputs */

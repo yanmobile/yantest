@@ -227,6 +227,11 @@
     function wrapFieldGroups( fields ) {
       return forEachField( fields, function( field ) {
         if ( field.fieldGroup ) {
+          if ( !_.get( field, 'elementAttributes["transclude-class"]' ) ) {
+            // Provides a selector class for the extra ng-transclude that formly adds to field groups
+            _.set( field, 'elementAttributes["transclude-class"]', 'formly-field-group-ng-transclude' );
+          }
+
           if ( _.get( field, 'templateOptions.label' ) ) {
             var wrapper = field.wrapper || [];
             wrapper.push( 'templateLabel' );
