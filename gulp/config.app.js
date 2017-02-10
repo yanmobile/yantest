@@ -97,7 +97,7 @@ function getAppConfig() {
       "fdn"          : "www/assets/FDN/",
       "i18n"         : "www/assets/i18n/",
       "i18nXml"      : "isc-tools/localize",
-      "i18nExtract"  : "isc-tools/i18nExtract",
+      "i18nExtract"  : "isc-tools/localize/i18nExtract",
       // for specifying which files are to be copied over.
       // Since development only uses "en-us.json", no need t// o update the gulp task to account for
       // multiple translation files: e.g. "en-us.json", "en-uk.json" and "en.json".
