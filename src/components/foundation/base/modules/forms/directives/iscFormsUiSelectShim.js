@@ -23,7 +23,7 @@
       // limitToList is passed to the directive attribute.
       // This determines whether the widget should limit its data model to only
       // those options in its dropdown list.
-      var limitToList = attrs.iscFormsUiSelectShim;
+      var limitToList = attrs.iscFormsUiSelectShim === "true";
 
       // Override ui-select's clear function
       var baseClear = $select.clear;
