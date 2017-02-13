@@ -35,7 +35,7 @@
     window.useDefaultTranslateBeforeEach();
 
     beforeEach( module(
-      'formly', 'foundation',
+      'formly', 'foundation', 'angularUtils.directives.dirPagination',
       'isc.http', 'isc.forms', 'iscNavContainer', 'isc.authorization', 'isc.notification', 'isc.directives',
       'isc.templates', 'isc.fauxTable', 'isc.filters',
       function( $provide, devlogProvider ) {
