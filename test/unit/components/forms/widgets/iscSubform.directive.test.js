@@ -2,7 +2,7 @@
   'use strict';
 
   //--------------------
-  describe( 'iscSubform', function() {
+  xdescribe( 'iscSubform', function() {
     var suiteForm,
         suiteInternal,
         suiteSubform;
@@ -466,12 +466,20 @@
         expect( saveButton.length ).toBe( 1 );
         saveButton.click();
         subform.trigger( 'change' );
-        digest( suite );
+
+        suite.$scope.$digest();
 
         // Look at the table row in the collection view
         selectElements();
         expect( tableRows.length ).toBe( 1 );
 
+        digest( suite );
+        console.log( tableRows.find('.td').html() );
+        // console.log( suiteForm.element.find( '.fauxTable .tbody .tr').first().html() );
+        // return $( $( tableRows.find( '.td' )[index] ).find( tag ) )[0].innerHTML;
+        // var tag = 'span';
+        // var index = 0;
+        // console.log( $( $( tableRows.find( '.td' )[index] ).find( tag ) )[0].innerHTML  );
         // The name values entered should display in columns 1-3
         expect( getTableCellValueByTag( 0, 'span' ) ).toEqual( 'Joe' );
         expect( getTableCellValueByTag( 1, 'span' ) ).toEqual( 'Q' );

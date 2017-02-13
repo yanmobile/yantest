@@ -33,9 +33,13 @@
 
     <!--tbody-->
     <div class="grid-block tbody">
-      <div ng-repeat="row in fauxTblCtrl.data | filter:{} | orderBy:fauxTblCtrl.sortBy:fauxTblCtrl.sortDirection"
-           class="{{column.cssTRClass || 'grid-block tr'}}"
-           ng-click="fauxTblCtrl.config.onRowClick(row)">
+      <div
+        dir-paginate="row in fauxTblCtrl.data | itemsPerPage: fauxTblCtrl.config.pager.itemsPerPage || 100 | filter:{} | orderBy:fauxTblCtrl.sortBy:fauxTblCtrl.sortDirection"
+        current-page="fauxTblCtrl.currentPage"
+        total-items="fauxTblCtrl.resultsAvailable"
+        pagination-id="{{fauxTblCtrl.paginationId}}"
+        class="{{column.cssTRClass || 'grid-block tr'}}"
+        ng-click="fauxTblCtrl.config.onRowClick(row)">
         <div ng-repeat="column in fauxTblCtrl.config.columns"
              class="{{column.cssTDClass || 'grid-block td'}}"
              data-title="{{column.key| translate}}"
@@ -45,5 +49,12 @@
     </div>
 
   </div>
+
+  <dir-pagination-controls
+    class="grid-block"
+    max-size="5"
+    pagination-id="{{fauxTblCtrl.paginationId}}"
+    template-url="thirdParty/dirPagination.tpl.html"
+    on-page-change="fauxTblCtrl.changePageNumber( newPageNumber )"></dir-pagination-controls>
 
 </div>

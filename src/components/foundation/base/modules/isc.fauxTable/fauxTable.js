@@ -35,12 +35,13 @@
     // class factory
     // ----------------------------
     var directive = {
-      restrict        : 'EA',
+      restrict        : 'E',
       controller      : controller,
       controllerAs    : 'fauxTblCtrl',
       bindToController: {
-        config: '=',
-        data  : '='
+        config          : '=',
+        data            : '<',
+        resultsAvailable: '<'
       },
       scope           : {},
       templateUrl     : function( elem, attrs ) {
@@ -50,17 +51,38 @@
 
     return directive;
 
-    // ----------------------------
-    // functions
-    // ----------------------------
-    function controller() {
+    /* @ngInject */
+    function controller( devlog ) {
+      var log = devlog.channel( 'fauxTable' );
+
       var self = this;
+      var pager;
 
       angular.extend( self, {
+        $onChanges: $onChanges,
+
         sort           : sort,
         getSort        : getSort,
-        getEmptyMessage: getEmptyMessage
+        getEmptyMessage: getEmptyMessage,
+
+        changePageNumber: changePageNumber
       } );
+
+      function changePageNumber( page ) {
+        log.logFn( 'changePageNumber' );
+        if ( _.get( self, 'config.pager.server' ) ) {
+          self.config.pager.onPageChange( page );
+        }
+      }
+
+      function $onChanges( changes ) {
+        log.logFn( '$onChanges' );
+        pager             = _.get( changes, "config.pager", {} );
+        self.paginationId = 'fauxTable_' + _.camelCase( self.config.title || '' );
+        if ( pager.server && !pager.onPageChange ) {
+          log.error( 'config.pager.onPageChange is required for server paging' );
+        }
+      }
 
       /*========================================
        =                 private               =
