@@ -5,7 +5,7 @@
 (function() {
 
 
-  fdescribe( 'isc.fauxTable directive', function() {
+  describe( 'isc.fauxTable directive', function() {
     var suite;
 
     // show $log statements
