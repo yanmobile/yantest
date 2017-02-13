@@ -89,9 +89,6 @@
         expect( suite.element.find( 'h3' ).text() ).toBe( 'my page title' );
       } );
 
-      it( 'should use config.title as part of pagination id', function() {
-        expect( suite.element.find( '[pagination-id=fauxTable_myPageTitle]' ).length ).toBe( 2 );
-      } );
     } );
 
     describe( 'table getSort', function() {
