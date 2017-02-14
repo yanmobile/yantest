@@ -14,7 +14,7 @@
    * Intentionally using "window" instead of "$window" to prevent automatically invoking $digest().
    * This causes an "$digest is already in progress" error.
    *
-   * By using window and manually invoking $evalAsync() fixes the error.
+   * By using window and manually invoking $evalAsync(), the error is corrected.
    *
    * @param $rootScope
    * @param devlog
