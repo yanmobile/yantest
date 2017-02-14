@@ -2,7 +2,7 @@
  * Created by hzou on 1/13/16.
  */
 
-(function() {
+( function() {
   'use strict';
 
   /**
@@ -30,7 +30,7 @@
     .component( 'fauxTable', {
       controller      : controller,
       controllerAs    : 'fauxTblCtrl',
-      bindings: {
+      bindings        : {
         config          : '=',
         data            : '<',
         resultsAvailable: '<'
@@ -117,4 +117,4 @@
     }
   }
 
-})();
+} )();
