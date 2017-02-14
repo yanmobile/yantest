@@ -32,7 +32,7 @@
       controllerAs    : 'fauxTblCtrl',
       bindings        : {
         config          : '=',
-        data            : '<',
+        data            : '=',
         resultsAvailable: '<'
       },
       templateUrl     : /* @ngInject */ function( $attrs ) {
