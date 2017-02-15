@@ -122,8 +122,16 @@ IF EXIST %uisharedir%\node_modules (
 	RMDIR /S /Q %uisharedir%\node_modules
 )
 
-:: Specify use of local npm cache
+:: Specify various npm configuration options using npm_config_* environment variables
+:: Use local npm cache
 SET npm_config_cache=%uisharedir%\.npm-cache
+:: Use local temp directory
+SET npm_config_tmp=%uisharedir%\.npm-tmp
+:: Increase cache timeouts to try and avoid Windows running into locking problems when multiple npm
+:: projects depend on the same item in the cache
+SET npm_config_cache_min=Infinity
+SET npm_config_cache_lock_stale=2400000
+SET npm_config_cache_lock_wait=30000
 
 :: Remove any existing data in local npm cache
 IF EXIST %npm_config_cache% (
