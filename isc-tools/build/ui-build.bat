@@ -16,7 +16,6 @@
 :: Dependency details - bump when needed; note that this script expects a specific directory naming convention
 SET nodeversion=6.5.0
 SET npmversion=3.10.3
-SET portablegitversion=2.7.2
 
 :: General flag to capture any error states - 0 means OK
 SET RETURNCODE=0
@@ -33,6 +32,7 @@ SET hsprojectname=%2
 SET pythonpath=%3
 SET hsdbname=%4
 SET gulpbuildcommand=%5
+SET portablegitsourcedir=%6
 
 IF "%gulpbuildcommand%"=="" (
 	SET gulpbuildcommand=deploy
@@ -113,8 +113,9 @@ SET PATH=%PATH%;%npmdir%\bin
 ROBOCOPY %npmdir% %nodedir%\node_modules\npm /S /NP %ROBOCOPYLOGGING%
 
 :: Add portablegit cmd directory to PATH
-SET portablegitdir=%uisharedir%\%builddepdir%\portablegit-%portablegitversion%-win-x86-exe
-SET PATH=%PATH%;%portablegitdir%\cmd
+IF NOT "%portablegitsourcedir%"=="" (
+	SET PATH=%PATH%;%portablegitsourcedir%\cmd
+)
 
 :: Remove any existing content in node_modules
 IF EXIST %uisharedir%\node_modules (
