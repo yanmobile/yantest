@@ -1,14 +1,21 @@
 :: Batch script to build a UIFW-derived UI as part of the InterSystems nightly/release build environment
 
-:: Open Questions:
-::   1. Dependencies: how do we want to manage dependencies? At present those include:
-::       a. node
-::       b. npm
-::       c. portablegit
-::       d. python
-::      We already use executables for node and portablegit, so those aren't too complicated to pull in.
-::      The tricky ones are npm, where the source is sufficient, and python, where we need python built on the Windows machine
-::      We have a further question 
+:: Written by Dale du Preez, 9 February 2017
+
+:: !! *WARNING* !!
+:: Python *MUST* be installed for this script to work correctly.
+:: Callers should specify the path to python in argument 6
+
+:: Expected arguments:
+:: 1. Root directory of UI source tree/repo
+:: 2. Build project name, which is used to determine where output should be created and copied to
+:: 3. Path to python
+:: 4. Healthshare database name used to specify localization output location [optional]
+:: 5. Gulp build command, normally 'build' or 'deploy'; defaults to 'deploy' if not specified [optional]
+
+:: Dependency details - bump when needed; note that this script expects a specific directory naming convention
+SET nodeversion=6.5.0
+SET npmversion=3.10.3
 
 :: General flag to capture any error states - 0 means OK
 SET RETURNCODE=0
@@ -22,16 +29,20 @@ IF "%MODE%"=="debug" (
 SET origdir=%CD%
 SET hsuidir=%1%
 SET hsprojectname=%2
-SET hsnodeprojectname=%3
-SET gulpbuildcommand=%4
-SET hsdbname=%5
+SET pythonpath=%3
+SET hsdbname=%4
+SET gulpbuildcommand=%5
+SET portablegitsourcedir=%6
+
 IF "%gulpbuildcommand%"=="" (
 	SET gulpbuildcommand=deploy
 )
+
+SET builddepdir=isc-tools\build-dependencies
+
 SET oldpath=%PATH%
 CD %hsuidir%
 SET hsuidir=%CD%
-SET popdepshare=0
 SET popuishare=0
 SET baseuidir=%hsuidir%\..
 SET builtroot=%origdir%\..\..\built\%PLATFORM%\%MODE%
@@ -39,17 +50,6 @@ PUSHD %builtroot%
 SET builtroot=%CD%
 POPD
 SET builtdir=%builtroot%\%hsprojectname%
-SET nodedir=%builtroot%\%hsnodeprojectname%\node
-IF NOT EXIST %nodedir% (
-	ECHO node directory %nodedir% does not exist
-	SET RETURNCODE=1
-	GOTO End
-)
-
-SET thirdpartydir=%hsuidir%\..\..\thirdparty
-PUSHD %thirdpartydir%
-SET thirdpartydir=%CD%
-POPD
 
 SET copy_loc_strings=0
 IF NOT "%hsdbname%"=="" (
@@ -86,33 +86,52 @@ IF EXIST %builtdir% (
 ROBOCOPY %hsuidir% %builtdir% /S /A-:R /NP %ROBOCOPYLOGGING%
 
 :: Python needs to precede the path to any other versions of python, especially if we're in Cygwin
-SET hsuipython=%builtroot%\hs_ui_python\PCbuild
-SET PATH=%hsuipython%;%PATH%;%nodedir%;
-SET PYTHON=%hsuipython%\python.exe
+:: Also set PYTHON environment variable
+IF NOT "%pythonpath%"=="" (
+	SET PATH=%pythonpath%;%PATH%
+	SET PYTHON=%pythonpath%\python.exe
+)
 
 SET uishare=hsui_%hsprojectname%_%tempsuffix%
-SET depshare=hsdep_%hsprojectname%_%tempsuffix%
 
 :: Use NET SHARE to allocate temp drive letters
-:: For dependencies in thirdparty/
-NET SHARE %depshare%=%thirdpartydir% /GRANT:%USERNAME%,FULL /USERS:1
-PUSHD \\localhost\%depshare%
-SET popdepshare=1
-SET depsharedir=%CD%
-
 :: For the actual source code
 NET SHARE %uishare%=%builtdir% /GRANT:%USERNAME%,FULL /USERS:1
 PUSHD \\localhost\%uishare%
 SET popuishare=1
 SET uisharedir=%CD%
 
+:: Add node executable to PATH
+SET nodedir=%uisharedir%\%builddepdir%\node-%nodeversion%-win-x86-exe
+SET PATH=%PATH%;%nodedir%
+
+:: Add npm bin directory to PATH
+SET npmdir=%uisharedir%\%builddepdir%\npm-%npmversion%
+SET PATH=%PATH%;%npmdir%\bin
+
+:: Copy npm into node\node_modules\npm
+ROBOCOPY %npmdir% %nodedir%\node_modules\npm /S /NP %ROBOCOPYLOGGING%
+
+:: Add portablegit cmd directory to PATH
+IF NOT "%portablegitsourcedir%"=="" (
+	SET PATH=%PATH%;%portablegitsourcedir%\cmd
+)
+
 :: Remove any existing content in node_modules
 IF EXIST %uisharedir%\node_modules (
 	RMDIR /S /Q %uisharedir%\node_modules
 )
 
-:: Specify use of local npm cache
+:: Specify various npm configuration options using npm_config_* environment variables
+:: Use local npm cache
 SET npm_config_cache=%uisharedir%\.npm-cache
+:: Use local temp directory
+SET npm_config_tmp=%uisharedir%\.npm-tmp
+:: Increase cache timeouts to try and avoid Windows running into locking problems when multiple npm
+:: projects depend on the same item in the cache
+SET npm_config_cache_min=Infinity
+SET npm_config_cache_lock_stale=2400000
+SET npm_config_cache_lock_wait=30000
 
 :: Remove any existing data in local npm cache
 IF EXIST %npm_config_cache% (
@@ -122,9 +141,6 @@ IF EXIST %npm_config_cache% (
 :: Build dependencies
 SET NODE_PATH=%nodedir%\node_modules
 SET PATH=%PATH%%CD%node_modules\.bin;
-
-:: Add portable git to path on same line to avoid problems with parentheses in path
-IF EXIST %depsharedir%portablegit-2.7.2-win-x86-exe\cmd\ SET path=%PATH%%depsharedir%portablegit-2.7.2-win-x86-exe\cmd;
 
 SET npmloglevel=warn
 IF "%MODE%"=="debug" (
@@ -212,14 +228,8 @@ IF ERRORLEVEL 1 (
 IF "%popuishare%"=="1" (
 	POPD
 )
-IF "%popdepshare%"=="1" (
-	POPD
-)
 IF NOT "%uishare%" == "" (
 	NET share %uishare% /delete /yes
-)
-IF NOT "%depshare%" == "" (
-	NET share %depshare% /delete /yes
 )
 
 SET path=%oldpath%
