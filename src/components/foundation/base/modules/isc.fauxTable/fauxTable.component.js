@@ -80,9 +80,6 @@
       }
     }
 
-    /*========================================
-     =                 private               =
-     ========================================*/
     /**
      * Place the specified column as sort column
      * sortDirection: true => asc
@@ -108,18 +105,6 @@
       }
     }
 
-    function sortBy( field, a, b ) {
-      var aVal = _.get( a, field );
-      var bVal = _.get( b, field );
-      if ( aVal < bVal ) {
-        return self.sortDirection ? -1 : 1;
-      } else if ( bVal < aVal ) {
-        return self.sortDirection ? 1 : -1;
-      } else {
-        return 0;
-      }
-    }
-
     /**
      * Gets the state of the sort for the specified column
      * @param column
@@ -131,6 +116,22 @@
         sortState = self.sortDirection ? 'asc' : 'desc';
       }
       return sortState;
+    }
+
+    /*========================================
+     =                 private               =
+     ========================================*/
+
+    function sortBy( field, a, b ) {
+      var aVal = _.get( a, field );
+      var bVal = _.get( b, field );
+      if ( aVal < bVal ) {
+        return self.sortDirection ? -1 : 1;
+      } else if ( bVal < aVal ) {
+        return self.sortDirection ? 1 : -1;
+      } else {
+        return 0;
+      }
     }
 
     /**
