@@ -22,24 +22,24 @@
              class="{{column.cssTHClass || 'grid-block th'}}"
              ng-class="{'isc-sortable': sortable}">
 
-          <a ng-click="fauxTblCtrl.sort(column)" ng-if="sortable">{{column.key| translate}}
+          <a ng-if="sortable" ng-click="fauxTblCtrl.sort(column)">{{column.key| translate}}
             <i class="fa"
                ng-class="{'fa-sort':null == fauxTblCtrl.getSort(column), 'fa-sort-asc': 'asc' == fauxTblCtrl.getSort(column), 'fa-sort-desc': 'desc' == fauxTblCtrl.getSort(column)}"></i>
           </a>
-          <a ng-if="!sortable">{{column.key| translate}}</a>
+          <span ng-if="!sortable">{{column.key| translate}}</span>
         </div>
       </div>
     </div>
 
     <!--tbody-->
     <div class="grid-block tbody">
-      <div
-        dir-paginate="row in fauxTblCtrl.data | itemsPerPage: fauxTblCtrl.config.pager.itemsPerPage || 100 | filter:{} | orderBy:fauxTblCtrl.sortBy:fauxTblCtrl.sortDirection"
-        current-page="fauxTblCtrl.currentPage"
-        total-items="fauxTblCtrl.resultsAvailable"
-        pagination-id="fauxTblCtrl.paginationId"
-        class="{{column.cssTRClass || 'grid-block tr'}}"
-        ng-click="fauxTblCtrl.config.onRowClick(row)">
+      <div dir-paginate="row in fauxTblCtrl.data | itemsPerPage: fauxTblCtrl.config.pager.itemsPerPage || 100"
+           current-page="fauxTblCtrl.currentPage"
+           total-items="fauxTblCtrl.resultsAvailable"
+           pagination-id="fauxTblCtrl.paginationId"
+           class="{{column.cssTRClass || 'grid-block tr'}}"
+           ng-click="fauxTblCtrl.config.onRowClick(row)">
+
         <div ng-repeat="column in fauxTblCtrl.config.columns"
              class="{{column.cssTDClass || 'grid-block td'}}"
              data-title="{{column.key| translate}}"

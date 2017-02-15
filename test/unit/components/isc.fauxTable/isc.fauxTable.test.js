@@ -48,7 +48,7 @@
       } );
     } );
 
-    describe( 'table sort', function() {
+    describe( 'table client-side sorting', function() {
       beforeEach( function() {
         compile();
       } );
@@ -76,6 +76,66 @@
         suite.controller.sort( column );
         expect( suite.controller.sortBy ).toBe( column.model );
         expect( suite.controller.sortDirection ).toBe( false );
+      } );
+
+
+      it( 'sort desc ', function() {
+        compile();
+        var column = { model: "Source" };
+
+        expect( suite.$scope.data[0].Source ).toBe( '12345' );
+        expect( suite.$scope.data[1].Source ).toBe( '3DB3-123A-B889' );
+
+        suite.controller.sort( column );
+        suite.$scope.$digest();
+
+        expect( suite.$scope.data[0].Source ).toBe( '3DB3-123A-B889' );
+        expect( suite.$scope.data[1].Source ).toBe( '12345' );
+
+      } );
+
+      it( 'sort asc ', function() {
+        compile();
+        var column = { model: "Source" };
+
+        expect( suite.$scope.data[0].Source ).toBe( '12345' );
+        expect( suite.$scope.data[1].Source ).toBe( '3DB3-123A-B889' );
+
+        suite.controller.sortBy        = column.model;
+        suite.controller.sortDirection = false;
+
+        suite.controller.sort( column );
+        suite.$scope.$digest();
+
+        expect( suite.$scope.data[0].Source ).toBe( '12345' );
+        expect( suite.$scope.data[1].Source ).toBe( '3DB3-123A-B889' );
+
+      } );
+
+
+    } );
+
+    describe( 'table server-side sorting', function() {
+      var taskColumn;
+      beforeEach( function() {
+        compile();
+        taskColumn = _.find( suite.$scope.config.columns, { model: 'TaskId' } );
+      } );
+
+      it( 'should invoke config.pager.onSort DESC', function() {
+        spyOn( taskColumn, "onSort" ).and.callThrough();
+        suite.controller.sort( taskColumn );
+
+        expect( taskColumn.onSort ).toHaveBeenCalledWith( jasmine.objectContaining( taskColumn ), false );
+      } );
+
+      it( 'should invoke config.pager.onSort ASC', function() {
+        spyOn( taskColumn, "onSort" ).and.callThrough();
+        suite.controller.sortBy        = taskColumn.model;
+        suite.controller.sortDirection = false;
+        suite.controller.sort( taskColumn );
+
+        expect( taskColumn.onSort ).toHaveBeenCalledWith( jasmine.objectContaining( taskColumn ), true );
       } );
 
     } );
@@ -208,9 +268,9 @@
         },
         columns: [
           { key: 'Source', model: 'Source' },
-          { key: 'Task Id', model: 'TaskId', sortAs: 'number' },
+          { key: 'Task Id', model: 'TaskId', onSort: _.noop },
           { key: 'Summary', model: 'Summary' },
-          { key: 'Date', model: 'Date', type: 'date', sortAs: 'date' }
+          { key: 'Date', model: 'Date', type: 'date' }
         ]
       };
 

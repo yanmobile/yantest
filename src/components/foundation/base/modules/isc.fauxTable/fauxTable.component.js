@@ -14,13 +14,20 @@
    * {
    *   title   : 'Sortable table by fauxTable',
    *   sortable: true,
+   *   pager  : {
+   *     server      : true, //required for server side paging
+   *     itemsPerPage: 2,
+   *     onPageChange: function( page ) { //used with server side paging
+   *       self.data = model.getData();
+   *     }
+   *   },
    *   columns : [
    *     { key: 'Salads', model: 'Salads', sortable: false },
    *     { key: 'Entrees', model: 'Entrees', type: 'string' },
    *     { key: 'Desserts', model: 'Desserts', cssTHClass: 'grid-block th', cssTDClass: 'grid-block td'  },
    *     { key: 'Soups', model: 'Soups' },
    *     { key: 'Customer', model: 'Customer.Name' },
-   *     { key: 'Order Time', model: 'Customer.Date', type: 'date' },
+   *     { key: 'Order Time', model: 'Customer.Date', type: 'date', onSort: function(column, direction){...} },
    *     { key: 'Age', model: 'Customer.DOB', type: 'integer', templateUrl: 'isc.fauxTable/cells/cell.age.html' }
    *   ]
    * }
@@ -28,14 +35,14 @@
    */
   angular.module( 'isc.fauxTable' )
     .component( 'fauxTable', {
-      controller      : controller,
-      controllerAs    : 'fauxTblCtrl',
-      bindings        : {
+      controller  : controller,
+      controllerAs: 'fauxTblCtrl',
+      bindings    : {
         config          : '=',
         data            : '=',
         resultsAvailable: '<'
       },
-      templateUrl     : /* @ngInject */ function( $attrs ) {
+      templateUrl : /* @ngInject */ function( $attrs ) {
         return $attrs.templateUrl || 'isc.fauxTable/fauxTable.html';
       }
     } );
@@ -84,11 +91,32 @@
      *
      */
     function sort( column ) {
+
       if ( self.sortBy !== column.model ) {
         self.sortBy        = column.model;
         self.sortDirection = false;
       } else { //asc => desc
         self.sortDirection = !self.sortDirection;
+      }
+
+      if ( column.onSort ) {
+        // call custom column sort
+        column.onSort( column, self.sortDirection );
+      } else {
+        //uses in-place sorting algorithm
+        self.data.sort( _.partial( sortBy, column.model ) );
+      }
+    }
+
+    function sortBy( field, a, b ) {
+      var aVal = _.get( a, field );
+      var bVal = _.get( b, field );
+      if ( aVal < bVal ) {
+        return self.sortDirection ? -1 : 1;
+      } else if ( bVal < aVal ) {
+        return self.sortDirection ? 1 : -1;
+      } else {
+        return 0;
       }
     }
 
