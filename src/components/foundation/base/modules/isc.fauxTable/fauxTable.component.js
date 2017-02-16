@@ -27,7 +27,7 @@
    *     { key: 'Desserts', model: 'Desserts', cssTHClass: 'grid-block th', cssTDClass: 'grid-block td'  },
    *     { key: 'Soups', model: 'Soups' },
    *     { key: 'Customer', model: 'Customer.Name' },
-   *     { key: 'Order Time', model: 'Customer.Date', type: 'date', onSort: function(column, direction){...} },
+   *     { key: 'Order Time', model: 'Customer.Date', type: 'date', onSort: function(data, column, direction){...} },
    *     { key: 'Age', model: 'Customer.DOB', type: 'integer', templateUrl: 'isc.fauxTable/cells/cell.age.html' }
    *   ]
    * }
