@@ -101,7 +101,6 @@
         // call custom column sort
         self.data = column.onSort( self.data, column, self.sortDirection );
       } else {
-        //uses in-place sorting algorithm
         self.data = $filter( "orderBy" )( self.data, column.model, !self.sortDirection );
       }
     }
