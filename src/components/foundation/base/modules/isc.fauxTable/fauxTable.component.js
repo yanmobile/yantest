@@ -83,25 +83,25 @@
 
     /**
      * Place the specified column as sort column
-     * sortDirection: true => asc
-     * sortDirection: false => desc
+     * sortReverse: false => asc
+     * sortReverse: true => desc
      * @param column
      *
      */
     function sort( column ) {
 
       if ( self.sortBy !== column.model ) {
-        self.sortBy        = column.model;
-        self.sortDirection = false;
+        self.sortBy      = column.model;
+        self.sortReverse = false;
       } else { //asc => desc
-        self.sortDirection = !self.sortDirection;
+        self.sortReverse = !self.sortReverse;
       }
 
       if ( column.onSort ) {
         // call custom column sort
-        self.data = column.onSort( self.data, column, self.sortDirection );
+        column.onSort( self.data, column, self.sortReverse );
       } else {
-        self.data = $filter( "orderBy" )( self.data, column.model, !self.sortDirection );
+        self.data = $filter( "orderBy" )( self.data, column.model, self.sortReverse );
       }
     }
 
@@ -113,7 +113,7 @@
     function getSort( column ) {
       var sortState = null;
       if ( self.sortBy === column.model ) {
-        sortState = self.sortDirection ? 'asc' : 'desc';
+        sortState = self.sortReverse ? 'desc' : "asc";
       }
       return sortState;
     }

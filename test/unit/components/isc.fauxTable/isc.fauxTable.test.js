@@ -57,58 +57,58 @@
         var column = { model: "Source" };
         suite.controller.sort( column );
         expect( suite.controller.sortBy ).toBe( column.model );
-        expect( suite.controller.sortDirection ).toBe( false );
+        expect( suite.controller.sortReverse ).toBe( false );
       } );
 
-      it( 'should change sort to DESC sorting an pre-sorted column', function() {
-        var column                     = { model: "Source" };
-        suite.controller.sortBy        = column.model;
-        suite.controller.sortDirection = false;
+      it( 'should change sort to DESC sorting column is already sorted asc', function() {
+        var column                   = { model: "Source" };
+        suite.controller.sortBy      = column.model;
+        suite.controller.sortReverse = false;
         suite.controller.sort( column );
         expect( suite.controller.sortBy ).toBe( column.model );
-        expect( suite.controller.sortDirection ).toBe( true );
+        expect( suite.controller.sortReverse ).toBe( true );
       } );
 
       it( 'should change to ASC when column is sorted by DESC', function() {
-        var column                     = { model: "Source" };
-        suite.controller.sortBy        = column.model;
-        suite.controller.sortDirection = true;
+        var column                   = { model: "Source" };
+        suite.controller.sortBy      = column.model;
+        suite.controller.sortReverse = true;
         suite.controller.sort( column );
         expect( suite.controller.sortBy ).toBe( column.model );
-        expect( suite.controller.sortDirection ).toBe( false );
-      } );
-
-
-      it( 'sort desc ', function() {
-        compile();
-        var column = { model: "Source" };
-
-        expect( suite.$scope.data[0].Source ).toBe( '12345' );
-        expect( suite.$scope.data[1].Source ).toBe( '3DB3-123A-B889' );
-
-        suite.controller.sort( column );
-        suite.$scope.$digest();
-
-        expect( suite.$scope.data[0].Source ).toBe( '3DB3-123A-B889' );
-        expect( suite.$scope.data[1].Source ).toBe( '12345' );
-
+        expect( suite.controller.sortReverse ).toBe( false );
       } );
 
       it( 'sort asc ', function() {
         compile();
         var column = { model: "Source" };
 
-        expect( suite.$scope.data[0].Source ).toBe( '12345' );
-        expect( suite.$scope.data[1].Source ).toBe( '3DB3-123A-B889' );
-
-        suite.controller.sortBy        = column.model;
-        suite.controller.sortDirection = false;
+        _.set(suite, "$scope.data[1].Source", 'BCD3' );
+        _.set(suite, "$scope.data[0].Source", 'BCD' );
+        _.set(suite, "$scope.data[2].Source", 'ABC' );
 
         suite.controller.sort( column );
         suite.$scope.$digest();
 
-        expect( suite.$scope.data[0].Source ).toBe( '12345' );
-        expect( suite.$scope.data[1].Source ).toBe( '3DB3-123A-B889' );
+        expect( suite.$scope.data[0].Source ).toBe( 'ABC' );
+        expect( suite.$scope.data[1].Source ).toBe( 'BCD' );
+        expect( suite.$scope.data[2].Source ).toBe( 'BCD3' );
+
+      } );
+
+      it( 'sort desc ', function() {
+        compile();
+        var column = { model: "Source" };
+
+        expect( suite.$scope.data[0].Source ).toBe( 'ABC' );
+        expect( suite.$scope.data[1].Source ).toBe( 'BCD' );
+
+        suite.controller.sortBy      = column.model;
+        suite.controller.sortReverse = false;
+        suite.controller.sort( column );
+        suite.$scope.$digest();
+
+        expect( suite.$scope.data[0].Source ).toBe( 'BCD' );
+        expect( suite.$scope.data[1].Source ).toBe( 'ABC' );
 
       } );
 
@@ -122,28 +122,28 @@
       } );
 
       it( 'should invoke config.pager.onSort DESC', function() {
-        expect( suite.$scope.data[0].Source ).toBe( '12345' );
-        expect( suite.$scope.data[1].Source ).toBe( '3DB3-123A-B889' );
+        expect( suite.$scope.data[0].Source ).toBe( 'ABC' );
+        expect( suite.$scope.data[1].Source ).toBe( 'BCD' );
         spyOn( taskColumn, "onSort" ).and.callThrough();
         suite.controller.sort( taskColumn );
 
         expect( taskColumn.onSort ).toHaveBeenCalledWith( suite.controller.data, jasmine.objectContaining( taskColumn ), false );
-        expect( suite.$scope.data[0].Source ).toBe( '3DB3-123A-B889' );
-        expect( suite.$scope.data[1].Source ).toBe( '12345' );
+        expect( suite.$scope.data[0].Source ).toBe( 'BCD' );
+        expect( suite.$scope.data[1].Source ).toBe( 'ABC' );
       } );
 
       it( 'should invoke config.pager.onSort ASC', function() {
-        expect( suite.$scope.data[0].Source ).toBe( '12345' );
-        expect( suite.$scope.data[1].Source ).toBe( '3DB3-123A-B889' );
+        expect( suite.$scope.data[0].Source ).toBe( 'ABC' );
+        expect( suite.$scope.data[1].Source ).toBe( 'BCD' );
         spyOn( taskColumn, "onSort" ).and.callThrough();
-        suite.controller.sortBy        = taskColumn.model;
-        suite.controller.sortDirection = false;
+        suite.controller.sortBy      = taskColumn.model;
+        suite.controller.sortReverse = false;
         suite.controller.sort( taskColumn );
 
         expect( taskColumn.onSort ).toHaveBeenCalledWith( suite.controller.data, jasmine.objectContaining( taskColumn ), true );
 
-        expect( suite.$scope.data[0].Source ).toBe( '12345' );
-        expect( suite.$scope.data[1].Source ).toBe( '3DB3-123A-B889' );
+        expect( suite.$scope.data[0].Source ).toBe( 'ABC' );
+        expect( suite.$scope.data[1].Source ).toBe( 'BCD' );
       } );
 
     } );
@@ -165,27 +165,27 @@
       } );
 
       it( 'should return null if column is not sorted', function() {
-        var column                     = { model: "Source" };
-        suite.controller.sortBy        = "Jane Doe";
-        suite.controller.sortDirection = true;
-        var actual                     = suite.controller.getSort( column );
+        var column                   = { model: "Source" };
+        suite.controller.sortBy      = "Jane Doe";
+        suite.controller.sortReverse = true;
+        var actual                   = suite.controller.getSort( column );
         expect( actual ).toBe( null );
       } );
 
       it( 'should return "asc" if column is sorted asc', function() {
-        var column                     = { model: "Source" };
-        suite.controller.sortBy        = "Source";
-        suite.controller.sortDirection = true;
-        var actual                     = suite.controller.getSort( column );
-        expect( actual ).toBe( 'asc' );
+        var column                   = { model: "Source" };
+        suite.controller.sortBy      = "Source";
+        suite.controller.sortReverse = true;
+        var actual                   = suite.controller.getSort( column );
+        expect( actual ).toBe( 'desc' );
       } );
 
       it( 'should return "desc" if column is sorted asc', function() {
-        var column                     = { model: "Source" };
-        suite.controller.sortBy        = "Source";
-        suite.controller.sortDirection = false;
-        var actual                     = suite.controller.getSort( column );
-        expect( actual ).toBe( 'desc' );
+        var column                   = { model: "Source" };
+        suite.controller.sortBy      = "Source";
+        suite.controller.sortReverse = false;
+        var actual                   = suite.controller.getSort( column );
+        expect( actual ).toBe( 'asc' );
       } );
 
     } );
@@ -221,16 +221,16 @@
       it( 'should update data through parent scope ', function() {
         compile();
 
-        expect( suite.$scope.data[0].Source ).toBe( '12345' );
-        expect( suite.$scope.data[1].Source ).toBe( '3DB3-123A-B889' );
+        expect( suite.$scope.data[0].Source ).toBe( 'ABC' );
+        expect( suite.$scope.data[1].Source ).toBe( 'BCD' );
 
         spyOn( suite.$scope.config.pager, "onPageChange" ).and.callThrough();
 
         suite.controller.changePageNumber( 2 );
         suite.$scope.$digest();
 
-        expect( suite.$scope.data[0].Source ).toBe( '33344' );
-        expect( suite.$scope.data[1].Source ).toBe( 'NPPES' );
+        expect( suite.$scope.data[0].Source ).toBe( 'DEF' );
+        expect( suite.$scope.data[1].Source ).toBe( 'CDE' );
 
       } );
 
@@ -238,12 +238,12 @@
 
     function getTableData() {
       return [{
-        Source : "12345",
+        Source : "ABC",
         TaskId : 100,
         Summery: "Summary 2",
         Date   : moment( "2012-2-28" )
       }, {
-        Source : "3DB3-123A-B889",
+        Source : "BCD",
         TaskId : 55,
         Summery: "Summary 3",
         Date   : moment( "2016-10-15" )
@@ -252,12 +252,12 @@
 
     function getPage2Data() {
       return [{
-        Source : "33344",
+        Source : "DEF",
         TaskId : 9,
         Summery: "Summary 4",
         Date   : moment( "2012-4-6" )
       }, {
-        Source : "NPPES",
+        Source : "CDE",
         TaskId : 12,
         Summery: "Summary 5",
         Date   : moment( "2012-7-8" )
@@ -286,7 +286,7 @@
     }
 
     function onSort( data, column, direction ) {
-      return direction ? data: data.reverse();
+      return direction ? data : data.reverse();
     }
   } );
 })();
