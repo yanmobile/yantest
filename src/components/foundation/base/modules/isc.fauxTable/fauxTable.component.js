@@ -48,7 +48,7 @@
     } );
 
   /* @ngInject */
-  function controller( $translate, devlog ) {
+  function controller( $translate, $filter, devlog ) {
     var log = devlog.channel( 'fauxTable' );
 
     var self = this;
@@ -73,6 +73,7 @@
 
     function $onChanges( changes ) {
       log.logFn( '$onChanges' );
+
       pager             = _.get( changes, "config.pager", {} );
       self.paginationId = 'fauxTable_' + _.camelCase( self.config.title || '' );
       if ( pager.server && !pager.onPageChange ) {
@@ -98,10 +99,10 @@
 
       if ( column.onSort ) {
         // call custom column sort
-        column.onSort( column, self.sortDirection );
+        self.data = column.onSort( self.data, column, self.sortDirection );
       } else {
         //uses in-place sorting algorithm
-        self.data.sort( _.partial( sortBy, column.model ) );
+        self.data = $filter( "orderBy" )( self.data, column.model, !self.sortDirection );
       }
     }
 
@@ -121,18 +122,6 @@
     /*========================================
      =                 private               =
      ========================================*/
-
-    function sortBy( field, a, b ) {
-      var aVal = _.get( a, field );
-      var bVal = _.get( b, field );
-      if ( aVal < bVal ) {
-        return self.sortDirection ? -1 : 1;
-      } else if ( bVal < aVal ) {
-        return self.sortDirection ? 1 : -1;
-      } else {
-        return 0;
-      }
-    }
 
     /**
      * Gets the message to display (if any) when the collection is empty

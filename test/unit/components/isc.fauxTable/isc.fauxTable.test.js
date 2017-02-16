@@ -54,14 +54,14 @@
       } );
 
       it( 'should first sort ASC', function() {
-        var column = { model: "John Smith" };
+        var column = { model: "Source" };
         suite.controller.sort( column );
         expect( suite.controller.sortBy ).toBe( column.model );
         expect( suite.controller.sortDirection ).toBe( false );
       } );
 
       it( 'should change sort to DESC sorting an pre-sorted column', function() {
-        var column                     = { model: "John Smith" };
+        var column                     = { model: "Source" };
         suite.controller.sortBy        = column.model;
         suite.controller.sortDirection = false;
         suite.controller.sort( column );
@@ -70,7 +70,7 @@
       } );
 
       it( 'should change to ASC when column is sorted by DESC', function() {
-        var column                     = { model: "John Smith" };
+        var column                     = { model: "Source" };
         suite.controller.sortBy        = column.model;
         suite.controller.sortDirection = true;
         suite.controller.sort( column );
@@ -112,7 +112,6 @@
 
       } );
 
-
     } );
 
     describe( 'table server-side sorting', function() {
@@ -123,19 +122,28 @@
       } );
 
       it( 'should invoke config.pager.onSort DESC', function() {
+        expect( suite.$scope.data[0].Source ).toBe( '12345' );
+        expect( suite.$scope.data[1].Source ).toBe( '3DB3-123A-B889' );
         spyOn( taskColumn, "onSort" ).and.callThrough();
         suite.controller.sort( taskColumn );
 
-        expect( taskColumn.onSort ).toHaveBeenCalledWith( jasmine.objectContaining( taskColumn ), false );
+        expect( taskColumn.onSort ).toHaveBeenCalledWith( suite.controller.data, jasmine.objectContaining( taskColumn ), false );
+        expect( suite.$scope.data[0].Source ).toBe( '3DB3-123A-B889' );
+        expect( suite.$scope.data[1].Source ).toBe( '12345' );
       } );
 
       it( 'should invoke config.pager.onSort ASC', function() {
+        expect( suite.$scope.data[0].Source ).toBe( '12345' );
+        expect( suite.$scope.data[1].Source ).toBe( '3DB3-123A-B889' );
         spyOn( taskColumn, "onSort" ).and.callThrough();
         suite.controller.sortBy        = taskColumn.model;
         suite.controller.sortDirection = false;
         suite.controller.sort( taskColumn );
 
-        expect( taskColumn.onSort ).toHaveBeenCalledWith( jasmine.objectContaining( taskColumn ), true );
+        expect( taskColumn.onSort ).toHaveBeenCalledWith( suite.controller.data, jasmine.objectContaining( taskColumn ), true );
+
+        expect( suite.$scope.data[0].Source ).toBe( '12345' );
+        expect( suite.$scope.data[1].Source ).toBe( '3DB3-123A-B889' );
       } );
 
     } );
@@ -157,7 +165,7 @@
       } );
 
       it( 'should return null if column is not sorted', function() {
-        var column                     = { model: "John Smith" };
+        var column                     = { model: "Source" };
         suite.controller.sortBy        = "Jane Doe";
         suite.controller.sortDirection = true;
         var actual                     = suite.controller.getSort( column );
@@ -165,16 +173,16 @@
       } );
 
       it( 'should return "asc" if column is sorted asc', function() {
-        var column                     = { model: "John Smith" };
-        suite.controller.sortBy        = "John Smith";
+        var column                     = { model: "Source" };
+        suite.controller.sortBy        = "Source";
         suite.controller.sortDirection = true;
         var actual                     = suite.controller.getSort( column );
         expect( actual ).toBe( 'asc' );
       } );
 
       it( 'should return "desc" if column is sorted asc', function() {
-        var column                     = { model: "John Smith" };
-        suite.controller.sortBy        = "John Smith";
+        var column                     = { model: "Source" };
+        suite.controller.sortBy        = "Source";
         suite.controller.sortDirection = false;
         var actual                     = suite.controller.getSort( column );
         expect( actual ).toBe( 'desc' );
@@ -268,7 +276,7 @@
         },
         columns: [
           { key: 'Source', model: 'Source' },
-          { key: 'Task Id', model: 'TaskId', onSort: _.noop },
+          { key: 'Task Id', model: 'TaskId', onSort: onSort },
           { key: 'Summary', model: 'Summary' },
           { key: 'Date', model: 'Date', type: 'date' }
         ]
@@ -277,5 +285,8 @@
       return config;
     }
 
+    function onSort( data, column, direction ) {
+      return direction ? data: data.reverse();
+    }
   } );
 })();
