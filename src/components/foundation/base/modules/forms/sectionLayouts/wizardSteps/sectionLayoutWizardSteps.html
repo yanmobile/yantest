@@ -2,7 +2,8 @@
   <div ng-repeat="step in wizardStepsCtrl.context.selectableSections track by $index"
        class="grid-block"
        ng-class="{'line' : !$last, 'shrink' : $last}">
-    <div class="grid-block shrink">
+    <div class="grid-block shrink"
+         title="{{'Step' | translate}} {{ $index + 1 }}: {{step.name}}">
       <div class="circle"
            ng-class="{'hollow' : wizardStepsCtrl.context.currentSection === step}">
         <span>
