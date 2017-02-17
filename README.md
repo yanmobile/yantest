@@ -395,7 +395,10 @@ gulp deploy --appjson path/to/config.app.js #only app specific
     ```javascript
     module.exports = [
       { // When requests are going to “http://localhost:3000/api/v1/** they will be redirected to "http://localhost:3030/api/v1/**"
-        pattern : "/api/v1",
+        pattern : "/api/v1/admin/user",
+        pathRewrite: {
+          "/api/v1/admin/user": "/api/v1/admin" //removing "user" from url
+        }, 
         target  : "http://localhost:3030",
         logLevel: 'debug'
       }, { // When requests are going to “http://localhost:3000/api/** they will be redirected to "http://devrefhspd:7162/healthshare/api/v1/**" 
