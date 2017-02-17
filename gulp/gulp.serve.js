@@ -29,6 +29,7 @@
     var proxies = _.map( proxyConfig, function( proxyConfigItem ) {
       return proxy( proxyConfigItem.pattern, {
         target      : proxyConfigItem.target,
+        pathRewrite : proxyConfigItem.pathRewrite,
         changeOrigin: true,
         logLevel    : proxyConfigItem.logLevel,
         onProxyRes  : function onProxyRes( proxyRes, req, res ) {
