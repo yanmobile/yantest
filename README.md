@@ -391,7 +391,7 @@ gulp deploy --appjson path/to/config.app.js #only app specific
   * Our ```gulp serve``` task reverse-proxy support integrated into BrowserSync. Your application should leverage this to communicate to any backend APIs
     * 1. Make sure your application is using relative path to access those APIs. This requires your application to remove hostname, port, and protocol from your ```src/app/modules/app.config.js``` file
     * 1. Add your proxy patterns to ```gulp/proxy.js``` file. See examples below:
-    
+    * see: https://github.com/chimurai/http-proxy-middleware
     ```javascript
     module.exports = [
       { // When requests are going to “http://localhost:3000/api/v1/** they will be redirected to "http://localhost:3030/api/v1/**"
