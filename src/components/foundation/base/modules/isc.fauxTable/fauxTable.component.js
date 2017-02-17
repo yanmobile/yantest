@@ -14,13 +14,20 @@
    * {
    *   title   : 'Sortable table by fauxTable',
    *   sortable: true,
+   *   pager  : {
+   *     server      : true, //required for server side paging
+   *     itemsPerPage: 2,
+   *     onPageChange: function( page ) { //used with server side paging
+   *       self.data = model.getData();
+   *     }
+   *   },
    *   columns : [
    *     { key: 'Salads', model: 'Salads', sortable: false },
    *     { key: 'Entrees', model: 'Entrees', type: 'string' },
    *     { key: 'Desserts', model: 'Desserts', cssTHClass: 'grid-block th', cssTDClass: 'grid-block td'  },
    *     { key: 'Soups', model: 'Soups' },
    *     { key: 'Customer', model: 'Customer.Name' },
-   *     { key: 'Order Time', model: 'Customer.Date', type: 'date' },
+   *     { key: 'Order Time', model: 'Customer.Date', type: 'date', onSort: function(data, column, direction){...} },
    *     { key: 'Age', model: 'Customer.DOB', type: 'integer', templateUrl: 'isc.fauxTable/cells/cell.age.html' }
    *   ]
    * }
@@ -28,20 +35,20 @@
    */
   angular.module( 'isc.fauxTable' )
     .component( 'fauxTable', {
-      controller      : controller,
-      controllerAs    : 'fauxTblCtrl',
-      bindings        : {
+      controller  : controller,
+      controllerAs: 'fauxTblCtrl',
+      bindings    : {
         config          : '=',
         data            : '=',
         resultsAvailable: '<'
       },
-      templateUrl     : /* @ngInject */ function( $attrs ) {
+      templateUrl : /* @ngInject */ function( $attrs ) {
         return $attrs.templateUrl || 'isc.fauxTable/fauxTable.html';
       }
     } );
 
   /* @ngInject */
-  function controller( $translate, devlog ) {
+  function controller( $translate, $filter, devlog ) {
     var log = devlog.channel( 'fauxTable' );
 
     var self = this;
@@ -66,6 +73,7 @@
 
     function $onChanges( changes ) {
       log.logFn( '$onChanges' );
+
       pager             = _.get( changes, "config.pager", {} );
       self.paginationId = 'fauxTable_' + _.camelCase( self.config.title || '' );
       if ( pager.server && !pager.onPageChange ) {
@@ -73,22 +81,27 @@
       }
     }
 
-    /*========================================
-     =                 private               =
-     ========================================*/
     /**
      * Place the specified column as sort column
-     * sortDirection: true => asc
-     * sortDirection: false => desc
+     * sortReverse: false => asc
+     * sortReverse: true => desc
      * @param column
      *
      */
     function sort( column ) {
+
       if ( self.sortBy !== column.model ) {
-        self.sortBy        = column.model;
-        self.sortDirection = false;
+        self.sortBy      = column.model;
+        self.sortReverse = false;
       } else { //asc => desc
-        self.sortDirection = !self.sortDirection;
+        self.sortReverse = !self.sortReverse;
+      }
+
+      if ( column.onSort ) {
+        // call custom column sort
+        column.onSort( self.data, column, self.sortReverse );
+      } else {
+        self.data = $filter( "orderBy" )( self.data, column.model, self.sortReverse );
       }
     }
 
@@ -100,10 +113,14 @@
     function getSort( column ) {
       var sortState = null;
       if ( self.sortBy === column.model ) {
-        sortState = self.sortDirection ? 'asc' : 'desc';
+        sortState = self.sortReverse ? 'desc' : "asc";
       }
       return sortState;
     }
+
+    /*========================================
+     =                 private               =
+     ========================================*/
 
     /**
      * Gets the message to display (if any) when the collection is empty
