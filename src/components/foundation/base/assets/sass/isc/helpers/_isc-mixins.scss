@@ -1,6 +1,4 @@
-// --------------------------------------------------
-// Shadow
-// --------------------------------------------------
+/* ---------------- Box Shadow ---------------- */
 
 // Material Shadow Depth Mixin
 @mixin shadow($shadow-depth) {
@@ -8,23 +6,31 @@
   box-shadow: $shadow-depth;
 }
 
+// Custom Box Shadow Mixin
 @mixin box-shadow( $type, $h, $v, $blur, $spread, $color ) {
-  -moz-box-shadow: $type $h $v $blur $spread $color;
-  -webkit-box-shadow: $type $h $v $blur $spread $color;
   box-shadow: $type $h $v $blur $spread $color;
 }
 
-// --------------------------------------------------
-// Gradient
-// --------------------------------------------------
+/* ---------------- Gradients ---------------- */
 
-@mixin background-gradient( $from, $to ) {
-  background: $from;
-  background-image: -webkit-linear-gradient(top, $from, $to);
-  background-image: -moz-linear-gradient(top, $from, $to);
-  background-image: -ms-linear-gradient(top, $from, $to);
-  background-image: -o-linear-gradient(top, $from, $to);
-  background-image: linear-gradient(to bottom, $from, $to);
+/* --------------------------------------------------
+ * Horizontal - [Left] to Right, two color stops
+ * Specify color and position for each color stop.
+----------------------------------------------------*/
+
+@mixin gradient-x( $start-color: #555, $end-color: #333, $start-percent: 0%, $end-percent: 100% ) {
+  background-image: linear-gradient(to right, $start-color $start-percent, $end-color $end-percent);
+  background-repeat: repeat-x;
+}
+
+/* --------------------------------------------------
+ * Vertical - [Top] to Bottom, two color stops
+ * Specify color and position for each color stop.
+----------------------------------------------------*/
+
+@mixin gradient-y( $start-color: #555, $end-color: #333, $start-percent: 0%, $end-percent: 100% ) {
+  background-image: linear-gradient(to bottom, $start-color $start-percent, $end-color $end-percent);
+  background-repeat: repeat-x;
 }
 
 // --------------------------------------------------
