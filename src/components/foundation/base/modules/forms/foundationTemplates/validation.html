@@ -13,6 +13,16 @@
          ng-bind="'Maximum length is {{to.maxlength}}' | translate">
   </label>
 </div>
+<div ng-message="number">
+  <label class="error-message"
+         ng-bind="'Invalid number' | translate">
+  </label>
+</div>
+<div ng-message="date">
+  <label class="error-message"
+         ng-bind="'Invalid date' | translate">
+  </label>
+</div>
 <div ng-message="email">
   <label class="error-message"
          ng-bind="'Invalid email address' | translate">
