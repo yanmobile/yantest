@@ -19,7 +19,7 @@
    */
   /* @ngInject */
   function iscFormsTransformService( $translate,
-    iscCustomConfigService, formlyConfig ) {
+    iscCustomConfigService, iscFormFieldLayoutService, formlyConfig ) {
     var config           = iscCustomConfigService.getConfig(),
         templateConfig   = {},
         formsConfig      = _.get( config, 'forms', {} ),
@@ -54,6 +54,7 @@
       formlyConfig.extras.fieldTransform.push( addInheritedClassNames );
       formlyConfig.extras.fieldTransform.push( addQdTag );
       formlyConfig.extras.fieldTransform.push( fixWatchers );
+      formlyConfig.extras.fieldTransform.push( transformLayouts );
       formlyConfig.extras.fieldTransform.push( translateLabels );
       formlyConfig.extras.fieldTransform.push( wrapFieldGroups );
     }
@@ -81,6 +82,13 @@
           }
         } );
       }
+    }
+
+    function transformLayouts( fields ) {
+      iscFormFieldLayoutService.transformContainer( {
+        fields : fields
+      }, true );
+      return fields;
     }
 
     /**
