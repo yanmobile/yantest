@@ -133,9 +133,12 @@
   width: 100%;
 }
 
+
 /*------ Typography ------*/
 
 .highlight {background-color: $gray-light;}
+
+.text-truncate { @include text-truncate; }
 
 
 
