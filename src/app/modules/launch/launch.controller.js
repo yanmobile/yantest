@@ -13,7 +13,7 @@
       iscSessionModel.create( loginResponse, true );
 
     } else {
-      $rootScope.$emit( AUTH_EVENTS.logout );
+      $rootScope.$emit( AUTH_EVENTS.notAuthenticated );
     }
   }// END CLASS
 

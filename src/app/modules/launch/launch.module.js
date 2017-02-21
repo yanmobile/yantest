@@ -23,7 +23,6 @@
         layout         : "layout/tpls/blank.html",
         roles          : ["*"],
         excludeAuthUser: true,
-        displayOrder   : 1,
         controller     : "launchController as launchCtrl",
         resolve        : {
           /* @ngInject */
