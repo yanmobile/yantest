@@ -5,25 +5,30 @@
   angular.module( "isc.oauth" ).factory( "iscOauthApi", iscOauthApi );
 
   /* @ngInject */
-  function iscOauthApi( $window, $http, $httpParamSerializerJQLike, iscHttpapi, iscOauthService ) {
+  function iscOauthApi( $window, $http, $q, $httpParamSerializerJQLike, iscHttpapi, iscOauthService, iscCustomConfigService, iscSessionStorageHelper ) {
 
     var api = {
-      authorize      : authorize,
-      revoke         : revoke,
-      introspect     : introspect,
-      requestToken   : requestToken,
-      refreshToken   : refreshToken,
-      getUserInfo    : getUserInfo
+      authorize       : authorize,
+      revoke          : revoke,
+      introspect      : introspect,
+      requestToken    : requestToken,
+      refreshToken    : refreshToken,
+      getUserInfo     : getUserInfo,
+      configureBaseUrl: configureBaseUrl,
+      doOauthCheck    : doOauthCheck
     };
 
 
 
     function formPost( url, data, headers ) {
       headers = _.assignIn( ( headers || {} ), { "Content-Type" : "application/x-www-form-urlencoded" } );
-      return iscHttpapi.post( url, $httpParamSerializerJQLike( data ), { "headers" : headers } );
+      return iscHttpapi.post( url, $httpParamSerializerJQLike( data ), { "headers" : headers , showLoader : true } );
     }
 
-    var basicAuthHeader = "basic " + $window.btoa( iscOauthService.get( "clientId" ) + ":" + iscOauthService.get( "clientSecret" ) );
+    var basicAuthHeader = function(  ) {
+      var client = iscOauthService.get( "client" );
+      return "basic " + $window.btoa( $window.atob( client ) );
+    };
 
     function formatAndSaveToken( token ) {
       var formattedToken = _.mapKeys( token, function( value, key ) {
@@ -45,7 +50,7 @@
             "code"        : code,
             "redirect_uri": iscOauthService.get( "redirectUrl" )
           }, {
-            "AUTHORIZATION": basicAuthHeader
+            "AUTHORIZATION": basicAuthHeader()
           } ).then( formatAndSaveToken );
 
     }
@@ -57,21 +62,20 @@
           "refresh_token": iscOauthService.get( "refreshToken" )
         },
         {
-          "AUTHORIZATION": basicAuthHeader
+          "AUTHORIZATION": basicAuthHeader()
         } ).then( formatAndSaveToken );
     }
 
-
     function revoke(  ) {
+      var clientId = $window.atob( iscOauthService.get( "clientId" ) ).split( ":" )[0];
       return formPost( iscOauthService.getRevocationUrl(),
         {
           "token"     : iscOauthService.get( "accessToken" ),
-          "client_id" : iscOauthService.get( "clientId" ),
+          "client_id" : clientId,
           "token_type": "revoke"
-        }, {} ).then( function( response ) {
+        }, {} ).finally( function( ) {
           $http.defaults.headers.common.AUTHORIZATION = '';
           iscOauthService.clearOauthConfig();
-          return response;
         } );
     }
 
@@ -81,7 +85,7 @@
           "token": encodeURIComponent( iscOauthService.get( "accessToken" ) )
         },
         {
-          "AUTHORIZATION": basicAuthHeader
+          "AUTHORIZATION": basicAuthHeader()
         } );
     }
 
@@ -91,6 +95,78 @@
           "access_token": encodeURIComponent( iscOauthService.get( "accessToken" ) )
         },
         {} );
+    }
+
+    function doOauthCheck( stateParams ) {
+      // check for query params -- code, state, iss, launch
+      var params = _.pickBy( stateParams, _.identity );
+
+      var isSameState = params.state === iscSessionStorageHelper.getValFromSessionStorage( 'oauthState' ) ;
+
+      // if authorization code and query param available, get token and user
+      if ( params.code && isSameState ) {
+        return api.requestToken( params.code ).then( function( token ) {
+          return api.getUserInfo().then( function( user ) {
+            user = _.assignIn( {}, user , { userRole : 'authenticated' } );
+            var oauthResponse = _.assignIn( {}, {
+              "SessionTimeout" : _.get( token , "expiresIn" , 300 )
+            }, {
+              "UserData": user
+            } );
+            return oauthResponse;
+          } );
+        } );
+      }
+
+      return $q.when( {} );
+    }
+
+    function configureBaseUrl( stateParams ) {
+
+      var appConfig = iscCustomConfigService.getConfig();
+
+      // check for query params -- code, state, iss, launch
+      var params = _.pickBy( stateParams, _.identity );
+
+      var fhirServerUrl;
+      if ( params.iss ) {
+        fhirServerUrl = params.iss;
+      } else {
+        fhirServerUrl = _.get( appConfig, 'fhir.iss', '' );
+      }
+      if ( fhirServerUrl ) {
+        var config = ( appConfig.oauth || appConfig.fhir || {} );
+        return setBaseUriFromFhir( fhirServerUrl, config , params );
+      }else {
+        // save config in appconfig
+        if ( _.get( appConfig, "oauth.oauthBaseUrl", "" ) ) {
+          iscOauthService.configure( appConfig.oauth );
+        }
+
+        return $q.when( _.get( appConfig, "oauth.oauthBaseUrl", "" ) );
+      }
+
+    }
+
+    function setBaseUriFromFhir( fhirServerUrl, oauthConfig, params ) {
+
+      if ( !_.endsWith( fhirServerUrl, 'metadata' ) ) {
+        fhirServerUrl += ( ( fhirServerUrl.substr( -1 ) !== '/' ) ? "/metadata" : "metadata" ) ;
+      }
+
+      return iscHttpapi.get( fhirServerUrl , { showLoader : true } ).then( function( response ) {
+        var smartExtension = response.rest[0].security.extension.filter( function( e ) {
+          return ( e.url === "http://fhir-registry.smarthealthit.org/StructureDefinition/oauth-uris" );
+        } );
+
+        var oauthUri = _.get( smartExtension[0].extension[0], "valueUri", "" );
+        var baseUri  = oauthUri.slice( 0, oauthUri.lastIndexOf( "/" ) );
+        var config = _.assignIn( {}, oauthConfig, params, { "oauthBaseUrl": baseUri } );
+
+        iscOauthService.configure( config );
+        iscSessionStorageHelper.setSessionStorageValue( "fhirMetaData", response );
+        return baseUri;
+      } );
     }
 
     return api;

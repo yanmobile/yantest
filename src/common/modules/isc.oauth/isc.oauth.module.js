@@ -1,106 +1,53 @@
 
 ( function() {
   'use strict';
-
-  angular.module( 'isc.oauth' , ['isc.common', 'angular-md5'] )
-    .config( function( iscStateProvider ) {
-      iscStateProvider.state( getStates() );
-    } );
-
-  /**
-   * @description this is where module specific states are defined.
-   *  Be sure not to make any method name or the structural changes; any changes may prevent ```slush isc:page``` from working properly
-   *
-   * @returns {} -- UI router states
-   */
-  function getStates() {
-    return {
-      'unauthenticated.launch': {
-        url            : 'launch?code&state&iss&launch',
-        template       : '',
-        state          : 'unauthenticated.launch',
-        layout         : "layout/tpls/blank.html",
-        roles          : ["*"],
-        landingPageFor : ["*"],
-        excludeAuthUser: true,
-        displayOrder   : 1,
-        controller     : "iscOauthController as oauthCtrl",
-        resolve        : {
-          /* @ngInject */
-          baseUri    : function( $stateParams, appConfig, iscOauthService, iscHttpapi, iscSessionStorageHelper ) {
-            var storedConfig = iscOauthService.getOauthConfig() || {};
-            // return if baseUrl available in stored config
-            if ( storedConfig.oauthBaseUrl ) {
-              return storedConfig.oauthBaseUrl;
-            }
-
-            // return if baseUrl available in appconfig
-            if ( _.get( appConfig, "oauth.oauthBaseUrl", "" ) ) {
-              iscOauthService.saveOauthConfig( appConfig.oauth );
-              return appConfig.oauth.oauthBaseUrl;
-            }
-
-            var params = _.pickBy( $stateParams, _.identity );
-
-            var fhirServerUrl;
-
-            if ( params.iss ) {
-              fhirServerUrl = params.iss;
-            } else {
-              fhirServerUrl = _.get( appConfig, 'oauth.iss', '' );
-            }
-
-            if ( fhirServerUrl ) {
-
-              if ( !_.endsWith( fhirServerUrl, 'metadata' ) ) {
-                fhirServerUrl += ( ( fhirServerUrl.substr( -1 ) !== '/' ) ? "/metadata" : "metadata" ) ;
-              }
-              return iscHttpapi.get( fhirServerUrl ).then( function( response ) {
-
-                var smartExtension = response.rest[0].security.extension.filter( function( e ) {
-                  return ( e.url === "http://fhir-registry.smarthealthit.org/StructureDefinition/oauth-uris" );
-                } );
-
-                var oauthUri = _.get( smartExtension[0].extension[0], "valueUri", "" );
-                var baseUri  = oauthUri.slice( 0, oauthUri.lastIndexOf( "/" ) );
-                var config = _.assignIn( {}, appConfig.oauth, params, { "oauthBaseUrl": baseUri } );
-
-
-                iscOauthService.saveOauthConfig( config );
-                iscSessionStorageHelper.setSessionStorageValue( "fhirMetaData", response );
-                return baseUri;
-
-              } );
-            }
-          },
-          /* @ngInject */
-          token  : function( $stateParams, iscOauthApi, iscSessionStorageHelper ) {
-
-            var params = _.pickBy( $stateParams, _.identity );
-
-            var isSameState = params.state === iscSessionStorageHelper.getValFromSessionStorage( 'oauthState' ) ;
-
-            if ( params.code && isSameState ) {
-
-              return iscOauthApi.requestToken( params.code );
-            }
-            return {};
-
-          },
-
-          /* @ngInject */
-          user : function( token, iscOauthApi ) {
-
-            if ( !_.isEmpty( token ) ) {
-              return iscOauthApi.getUserInfo();
-            }
-            return {};
-          }
-        }
-
-      }
-    };
-  }
+  /*
+  * oauth module
+  *
+  * To configure oauth, the below properties are required and must be configured externally:
+  *    {
+  *      'oauthBaseUrl'  : 'http://hscpdev1.iscinternal.com:57772/oauth'
+  *      'client'        :  Base-64-encode( clientId : clientSecret ),
+  *      'aud'           : "https://hscpdev1.iscinternal.com/csp/healthshare/hsfhiraccess/fhiraccessoauth"
+  *    }
+  *
+  * It can be configured via the ways below:
+  *   1. Specified in app.Config :
+  *        appConfig : {
+  *        ...
+  *         'oauth' : {
+  *              'oauthBaseUrl'  : 'http://hscpdev1.iscinternal.com:57772/oauth'
+  *              'client'        : Base-64-encode( clientId : clientSecret ),
+  *              'aud'           : "https://hscpdev1.iscinternal.com/csp/healthshare/hsfhiraccess/fhiraccessoauth"
+  *         }
+  *        }
+  *
+  *   2. Custom config url specified in appConfig which returns the JSON below :
+  *        {
+  *         'oauth' : {
+  *              'oauthBaseUrl'  : 'http://hscpdev1.iscinternal.com:57772/oauth',
+  *              'client'        : Base-64-encode( clientId : clientSecret ),
+  *              'aud'           : "https://hscpdev1.iscinternal.com/csp/healthshare/hsfhiraccess/fhiraccessoauth"
+  *         }
+  *        }
+  *   3. FHIR based where oauth base url is provided by FHIR metadata and other properties are specified in appConfig
+  *        appConfig : {
+  *        ...
+  *         'oauth' : {
+  *              'client'        : Base-64-encode( clientId : clientSecret ),
+  *              'aud'           : "https://hscpdev1.iscinternal.com/csp/healthshare/hsfhiraccess/fhiraccessoauth"
+  *         }
+  *        }
+  *   4. Custom config url in appConfig  which returns FHIR server url and oauth properties JSON
+  *        {
+  *         'fhir' : {
+  *              'iss'    : 'http://hscpdev1.iscinternal.com:57772/fhirserver',
+  *              'client' : Base-64-encode( clientId : clientSecret ),
+  *              'aud'    : "https://hscpdev1.iscinternal.com/csp/healthshare/hsfhiraccess/fhiraccessoauth"
+  *         }
+  *        }
+  * */
+  angular.module( 'isc.oauth' , ['isc.common', 'angular-md5'] );
 
 } )();
 

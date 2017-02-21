@@ -16,8 +16,11 @@
 
     beforeEach( inject( function( $httpBackend,
       $window,
+      $q,
       $rootScope,
       iscHttpapi,
+      iscCustomConfigService,
+      iscSessionStorageHelper,
       $httpParamSerializerJQLike,
       iscOauthApi,
       iscOauthService) {
@@ -25,14 +28,23 @@
       suite =  {
         $window                   : $window,
         $rootScope                : $rootScope,
+        $q                        : $q,
         $httpBackend              : $httpBackend,
         iscHttpapi                : iscHttpapi,
+        iscCustomConfigService    : iscCustomConfigService,
+        iscSessionStorageHelper   : iscSessionStorageHelper,
         serializer                : $httpParamSerializerJQLike,
         iscOauthApi               : iscOauthApi,
         iscOauthService           : iscOauthService
       } ;
 
+      spyOn(suite.$window, "btoa").and.callFake(_.identity);
+      spyOn(suite.$window, "atob").and.callFake(_.identity);
+
       spyOn(suite.iscOauthService, 'get').and.callFake(function( query ) {
+        if( query === "client"){
+          return "test-"+query + ":test-clientSecret";
+        }
         return "test-"+query;
       })
     } ) );
@@ -139,6 +151,143 @@
         suite.$httpBackend.flush();
       } );
 
+
+      it( 'configureBaseUrl should set the base url from fhir config', function() {
+        var appConfig = {
+          fhir:{
+            iss : "testIssUrl"
+          }
+        };
+        var sampleConformanceJson = {
+          "rest" : [{
+            "security": {
+              "extension": [
+                {
+                  "extension": [
+                    {
+                      "valueUri": "testOuathServerUrl/authorize",
+                      "url": "authorize"
+                    }
+                  ],
+                  "url": "http://fhir-registry.smarthealthit.org/StructureDefinition/oauth-uris"
+                }
+              ]
+            }
+          }]
+        };
+
+        spyOn(suite.iscCustomConfigService, 'getConfig').and.returnValue(appConfig);
+        spyOn(suite.iscOauthService, 'configure').and.callFake(_.noop);
+
+        suite.$httpBackend.expectGET('testIssUrl/metadata').respond(sampleConformanceJson);
+
+        suite.iscOauthApi.configureBaseUrl({}).then(function( response ) {
+          expect(response).toEqual("testOuathServerUrl");
+          var config = _.assignIn( {}, appConfig.fhir, {}, { "oauthBaseUrl": response } );
+          expect(suite.iscOauthService.configure).toHaveBeenCalledWith(config);
+        });
+        suite.$httpBackend.flush();
+      } );
+
+
+      it( 'configureBaseUrl should set the base url from query params', function() {
+        var appConfig = {
+          fhir:{}
+        };
+        var sampleConformanceJson = {
+          "rest" : [{
+            "security": {
+              "extension": [
+                {
+                  "extension": [
+                    {
+                      "valueUri": "testOuathServerUrl/authorize",
+                      "url": "authorize"
+                    }
+                  ],
+                  "url": "http://fhir-registry.smarthealthit.org/StructureDefinition/oauth-uris"
+                }
+              ]
+            }
+          }]
+        };
+
+        var params = { iss : "testIssUrl" };
+
+        spyOn(suite.iscCustomConfigService, 'getConfig').and.returnValue(appConfig);
+        spyOn(suite.iscOauthService, 'configure').and.callFake(_.noop);
+
+        suite.$httpBackend.expectGET('testIssUrl/metadata').respond(sampleConformanceJson);
+
+        suite.iscOauthApi.configureBaseUrl(params).then(function( response ) {
+          expect(response).toEqual("testOuathServerUrl");
+          var config = _.assignIn( {}, appConfig.fhir, params, { "oauthBaseUrl": response } );
+          expect(suite.iscOauthService.configure).toHaveBeenCalledWith(config);
+        });
+        suite.$httpBackend.flush();
+      } );
+
+
+      it( 'configureBaseUrl should set the base url from oauth config if not fhir based', function() {
+        var appConfig = {
+          oauth:{
+            oauthBaseUrl : "testOauthBaseUrl"
+          }
+        };
+
+        spyOn(suite.iscCustomConfigService, 'getConfig').and.returnValue(appConfig);
+        spyOn(suite.iscOauthService, 'configure').and.callFake(_.noop);
+
+        suite.iscOauthApi.configureBaseUrl({}).then(function( response ) {
+          expect(response).toEqual("testOauthBaseUrl");
+          expect(suite.iscOauthService.configure).toHaveBeenCalledWith(appConfig.oauth);
+        });
+        suite.$rootScope.$digest();
+      } );
+
+
+    it( 'doOauthCheck should not request token and user , return empty object if for wrong query params', function() {
+      spyOn(suite.iscOauthApi, 'requestToken').and.returnValue(suite.$q.when({expiresIn : 60}));
+      spyOn(suite.iscOauthApi, 'getUserInfo').and.returnValue(suite.$q.when({name: "testUser"}));
+      spyOn(suite.iscSessionStorageHelper, 'getValFromSessionStorage').and.returnValue('state123');
+
+      suite.iscOauthApi.doOauthCheck({}).then(function( response ) {
+        expect(response).toEqual({});
+        expect(suite.iscOauthApi.requestToken).not.toHaveBeenCalled();
+        expect(suite.iscOauthApi.getUserInfo).not.toHaveBeenCalled();
+      });
+      suite.$rootScope.$digest();
+
+      suite.iscOauthApi.doOauthCheck({ code : "code123"}).then(function( response ) {
+        expect(response).toEqual({});
+        expect(suite.iscOauthApi.requestToken).not.toHaveBeenCalled();
+        expect(suite.iscOauthApi.getUserInfo).not.toHaveBeenCalled();
+      });
+      suite.$rootScope.$digest();
+
+      suite.iscOauthApi.doOauthCheck({ state : "state123"}).then(function( response ) {
+        expect(response).toEqual({});
+        expect(suite.iscOauthApi.requestToken).not.toHaveBeenCalled();
+        expect(suite.iscOauthApi.getUserInfo).not.toHaveBeenCalled();
+      });
+      suite.$rootScope.$digest();
+
+    } );
+
+
+    it( 'doOauthCheck should request token and user , return oauth response for the right state params', function() {
+      spyOn(suite.iscOauthApi, 'requestToken').and.returnValue(suite.$q.when({expiresIn : 60}));
+      spyOn(suite.iscOauthApi, 'getUserInfo').and.returnValue(suite.$q.when({name: "testUser"}));
+      spyOn(suite.iscSessionStorageHelper, 'getValFromSessionStorage').and.returnValue('state123');
+
+      suite.iscOauthApi.doOauthCheck({ code: "code123", state: "state123"}).then(function( response ) {
+        expect(response).toEqual({SessionTimeout : 60, UserData : { name: "testUser", userRole : "authenticated"}});
+        expect(suite.iscOauthApi.requestToken).toHaveBeenCalledWith("code123");
+        expect(suite.iscOauthApi.getUserInfo).toHaveBeenCalled();
+      });
+      suite.$rootScope.$digest();
+
+    } );
 
 
   } );

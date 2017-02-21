@@ -4,8 +4,7 @@
   var suite;
 
   var oauthConfig = {
-    'clientId'        : "testClientId",
-    'clientSecret'    : "testClientSecret",
+    'client'          : "testClientId:testClientSecret",
     'redirectUrl'     : "testRedirectUrl",
     'scope'           : "user/*.read",
     'responseType'    : 'code',
@@ -25,19 +24,17 @@
     "getIntrospectionUrl"
   ];
 
-  var mockMd5 = jasmine.createSpyObj("mockMd5",["createHash"]);
-  mockMd5.createHash.and.returnValue("state123");
 
-  describe( 'isc.oauth.provider', function() {
+  describe( 'isc.oauth.service', function() {
+    var mockMd5 = jasmine.createSpyObj("mockMd5",["createHash"]);
+    mockMd5.createHash.and.returnValue("state123");
 
     // setup devlog
-    beforeEach (module ('isc.core','isc.common', function (devlogProvider) {
+    beforeEach (module ('isc.core', 'isc.common', 'isc.oauth', function ( devlogProvider, $provide ) {
       devlogProvider.loadConfig ({});
-    }));
-
-    beforeEach(module('isc.oauth', function($provide, iscOauthServiceProvider) {
-      $provide.value("md5",mockMd5);
-      iscOauthServiceProvider.configure( oauthConfig );
+      $provide.factory("md5", function(){
+        return mockMd5;
+      })
     }));
 
     beforeEach( inject( function( $httpBackend,
@@ -56,9 +53,15 @@
         iscOauthService        : iscOauthService
       } ;
 
+      spyOn(suite.$window, "btoa").and.callFake(_.identity);
+      spyOn(suite.$window, "atob").and.callFake(_.identity);
 
-      suite.iscOauthService.saveOauthConfig( oauthConfig );
     } ) );
+
+    beforeEach(function(  ) {
+      suite.iscOauthService.clearOauthConfig( );
+      suite.iscOauthService.saveOauthConfig( oauthConfig );
+    });
 
     it('Should have defined methods', function() {
 
@@ -66,6 +69,8 @@
         expect(suite.iscOauthService[method]).toBeDefined();
       });
       expect(suite.iscOauthService.get).toBeDefined();
+      expect(suite.iscOauthService.configure).toBeDefined();
+      expect(suite.iscOauthService.isOuathConfigured).toBeDefined();
       expect(suite.iscOauthService.getOauthConfig).toBeDefined();
       expect(suite.iscOauthService.saveOauthConfig).toBeDefined();
       expect(suite.iscOauthService.clearOauthConfig).toBeDefined();
@@ -80,7 +85,7 @@
 
     it("Should return the right url values for all get url methods", function(){
       var authUrl = oauthConfig.oauthBaseUrl + '/authorize' + '?' +
-        'client_id=' + encodeURIComponent( oauthConfig.clientId ) + '&' +
+        'client_id=' + encodeURIComponent( "testClientId" ) + '&' +
         'redirect_uri=' + encodeURIComponent( oauthConfig.redirectUrl ) + '&' +
         'response_type=' + encodeURIComponent( oauthConfig.responseType ) + '&' +
         'response_mode=' + encodeURIComponent( oauthConfig.responseMode ) + '&' +
@@ -93,6 +98,16 @@
       expect(suite.iscOauthService.getRequestTokenUrl()).toBe(oauthConfig.oauthBaseUrl + '/token');
       expect(suite.iscOauthService.getIntrospectionUrl()).toBe(oauthConfig.oauthBaseUrl + '/introspection');
       expect(suite.iscOauthService.getUserInfoUrl()).toBe(oauthConfig.oauthBaseUrl + '/userinfo');
+
+    });
+
+    it("Should return the true or false for isOuathConfigured", function(){
+
+      suite.iscOauthService.saveOauthConfig( { oauthBaseUrl : ''} );
+      expect(suite.iscOauthService.isOuathConfigured()).toBe(false);
+
+      suite.iscOauthService.saveOauthConfig( { oauthBaseUrl : 'testOauthBaseUrl'} );
+      expect(suite.iscOauthService.isOuathConfigured()).toBe(true);
 
     });
 
