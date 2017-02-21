@@ -232,7 +232,7 @@
       } );
 
       it( 'should interpolate using different default value', function() {
-        var text = _.interpolate( "Dan's age is: {dan.age}", { dan: {} }, { defaultEmpty: 'unknown' } );
+        var text = _.interpolate( "Dan's age is: {dan.age}", { dan: {} }, { defaultValue: 'unknown' } );
         expect( text ).toBe( "Dan's age is: unknown" );
       } );
 
