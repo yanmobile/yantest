@@ -40,7 +40,7 @@
     }
 
     function authorize(  ) {
-      $window.location.href = iscOauthService.getAuthorizationUrl();
+      $window.location.assign( iscOauthService.getAuthorizationUrl() );
     }
 
     function requestToken( code ) {
