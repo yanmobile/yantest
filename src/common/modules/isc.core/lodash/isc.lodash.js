@@ -172,11 +172,12 @@
   // => "I am 5
   // _.interpolate("I am {0}", [5])
   // => "I am 5
-  function interpolate( template, scope ) {
+  function interpolate( template, scope, options ) {
+    options    = options || {};
     return template.replace( /{([^{}]*)}/g,
-      function( a, b ) {
-        var r = scope[b];
-        return typeof r === 'string' || typeof r === 'number' ? r : a;
+      function( match, path ) {
+        var value = _.get( scope, path, options.defaultEmpty );
+        return ( typeof value === 'string' || typeof value === 'number' ) ? value : match;
       }
     );
   }

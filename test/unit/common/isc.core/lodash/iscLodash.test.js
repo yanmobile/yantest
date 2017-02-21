@@ -226,6 +226,16 @@
         expect( text ).toBe( "I am 5" );
       } );
 
+      it( 'should interpolate nested levels', function() {
+        var text = _.interpolate( "I am {dan.age}", { dan: { age: 5 } } );
+        expect( text ).toBe( "I am 5" );
+      } );
+
+      it( 'should interpolate using different default value', function() {
+        var text = _.interpolate( "Dan's age is: {dan.age}", { dan: {} }, { defaultEmpty: 'unknown' } );
+        expect( text ).toBe( "Dan's age is: unknown" );
+      } );
+
       it( 'should be able to interpolate multiple strings', function() {
         var text = _.interpolate( "I am {0}, but I am like a {1} year old.", [85, 20] );
         expect( text ).toBe( "I am 85, but I am like a 20 year old." );
