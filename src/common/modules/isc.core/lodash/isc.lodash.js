@@ -176,7 +176,7 @@
     options    = options || {};
     return template.replace( /{([^{}]*)}/g,
       function( match, path ) {
-        var value = _.get( scope, path, options.defaultEmpty );
+        var value = _.get( scope, path, options.defaultValue );
         return ( typeof value === 'string' || typeof value === 'number' ) ? value : match;
       }
     );
