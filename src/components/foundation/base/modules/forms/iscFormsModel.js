@@ -12,10 +12,8 @@
    * @param $q
    * @param $templateCache
    * @param $window
-   * @param $translate
    * @param iscHttpapi
    * @param iscFormsTemplateService
-   * @param iscFormFieldLayoutService
    * @param iscFormsApi
    * @returns {{getForms, getActiveForm, getActiveForms, setFormStatus, getFormDefinition, getValidationDefinition}}
    */
@@ -172,7 +170,6 @@
           formVersion        = config.formVersion,
           subformDefinitions = config.subformDefinitions,
           library            = config.library || [],
-          omitTransforms     = config.omitTransforms || [],
           cacheKey           = getCacheKey( formKey, formVersion );
 
       // If form is already cached, return the cached form in a promise
