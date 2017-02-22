@@ -1,4 +1,3 @@
-
 ( function() {
   'use strict';
 
@@ -20,21 +19,21 @@
 
     var service = {
 
-      get : get,
+      get: get,
 
-      configure           : configure,
+      configure: configure,
 
-      getAuthorizationUrl : getAuthorizationUrl,
-      getRequestTokenUrl  : getRequestTokenUrl,
-      getRevocationUrl    : getRevocationUrl,
-      getUserInfoUrl      : getUserInfoUrl,
-      getIntrospectionUrl : getIntrospectionUrl,
+      getAuthorizationUrl: getAuthorizationUrl,
+      getRequestTokenUrl : getRequestTokenUrl,
+      getRevocationUrl   : getRevocationUrl,
+      getUserInfoUrl     : getUserInfoUrl,
+      getIntrospectionUrl: getIntrospectionUrl,
 
-      isOuathConfigured   : isOuathConfigured,
+      isOuathConfigured: isOuathConfigured,
 
-      getOauthConfig      : getOauthConfig,
-      saveOauthConfig     : saveOauthConfig,
-      clearOauthConfig    : clearOauthConfig
+      getOauthConfig  : getOauthConfig,
+      saveOauthConfig : saveOauthConfig,
+      clearOauthConfig: clearOauthConfig
     };
 
     // initialize
@@ -43,19 +42,19 @@
     // functions
 
     function configure( config ) {
-      oauthConfig =  _.assignIn( {}, oauthConfig, config );
+      oauthConfig = _.assignIn( {}, oauthConfig, config );
     }
 
-    function isOuathConfigured(  ) {
+    function isOuathConfigured() {
 
       return !!_.get( getOauthConfig(), "oauthBaseUrl", false );
     }
 
-    function checkOauthState(  ) {
+    function checkOauthState() {
       var state = iscSessionStorageHelper.getValFromSessionStorage( 'oauthState' );
       if ( !state ) {
         var text = ( ( Date.now() + Math.random() ) * Math.random() ).toString().replace( ".", "" );
-        state =  md5.createHash( text );
+        state    = md5.createHash( text );
         iscSessionStorageHelper.setSessionStorageValue( 'oauthState', state );
       }
     }
@@ -66,7 +65,7 @@
 
     function getAuthorizationUrl() {
       var config = getOauthConfig();
-      var state = iscSessionStorageHelper.getValFromSessionStorage( 'oauthState' );
+      var state  = iscSessionStorageHelper.getValFromSessionStorage( 'oauthState' );
 
       var clientId = $window.atob( config.client ).split( ":" )[0];
 
@@ -84,12 +83,12 @@
       return _.get( getOauthConfig(), 'oauthBaseUrl', '' ) + '/revocation';
     }
 
-    function getUserInfoUrl( ) {
+    function getUserInfoUrl() {
       return _.get( getOauthConfig(), 'oauthBaseUrl', '' ) + '/userinfo';
     }
 
-    function getIntrospectionUrl(  ) {
-      return _.get( getOauthConfig(), 'oauthBaseUrl', '' ) + '/introspection' ;
+    function getIntrospectionUrl() {
+      return _.get( getOauthConfig(), 'oauthBaseUrl', '' ) + '/introspection';
     }
 
     function getRequestTokenUrl() {
@@ -101,18 +100,18 @@
       checkOauthState();
       var storedConfig = getOauthConfig();
       var mergedConfig = _.assignIn( {}, storedConfig, config );
-      var state = iscSessionStorageHelper.getValFromSessionStorage( 'oauthState' );
+      var state        = iscSessionStorageHelper.getValFromSessionStorage( 'oauthState' );
       iscSessionStorageHelper.setSessionStorageValue( state, encodeURIComponent( JSON.stringify( mergedConfig ) ) );
 
     }
 
-    function getOauthConfig( ) {
-      var state = iscSessionStorageHelper.getValFromSessionStorage( 'oauthState' );
+    function getOauthConfig() {
+      var state     = iscSessionStorageHelper.getValFromSessionStorage( 'oauthState' );
       var configStr = iscSessionStorageHelper.getValFromSessionStorage( state );
       return configStr ? JSON.parse( decodeURIComponent( configStr ) ) : oauthConfig;
     }
 
-    function clearOauthConfig( ) {
+    function clearOauthConfig() {
       var state = iscSessionStorageHelper.getValFromSessionStorage( 'oauthState' );
       iscSessionStorageHelper.removeFromSessionStorage( state );
       iscSessionStorageHelper.removeFromSessionStorage( 'oauthState' );
