@@ -20,13 +20,17 @@
         url            : 'launch?code&state&iss&launch&error',
         template       : '',
         state          : 'unauthenticated.launch',
-        layout         : "layout/tpls/blank.html",
+        data           : {
+          layout         : "layout/tpls/blank.html"
+        },
         roles          : ["*"],
-        excludeAuthUser: true,
         controller     : "launchController as launchCtrl",
         resolve        : {
           /* @ngInject */
           configureOauthProperties : function( $window, iscOauthService ) {
+            /**
+             * Configure or override default oauth config 
+             **/
             var redirectUrl = $window.location.protocol + "//" +
                               $window.location.hostname +
                               ( $window.location.port ? ":" + $window.location.port : "" ) +

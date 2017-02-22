@@ -9,7 +9,7 @@
   function launchController ( $rootScope, oauthResponse, iscSessionModel, AUTH_EVENTS ) {
     if ( !_.isEmpty( oauthResponse ) ) {
       var loginResponse = angular.copy( oauthResponse );
-      loginResponse.UserData.userRole = "authenticated";
+      _.set( loginResponse, "UserData.userRole", "authenticated" );
       iscSessionModel.create( loginResponse, true );
 
     } else {
