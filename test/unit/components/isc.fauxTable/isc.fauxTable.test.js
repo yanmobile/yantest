@@ -56,25 +56,25 @@
       it( 'should first sort ASC', function() {
         var column = { model: "Source" };
         suite.controller.sort( column );
-        expect( suite.controller.sortBy ).toBe( column.model );
+        expect( suite.controller.sortBy ).toBe( column );
         expect( suite.controller.sortReverse ).toBe( false );
       } );
 
       it( 'should change sort to DESC sorting column is already sorted asc', function() {
         var column                   = { model: "Source" };
-        suite.controller.sortBy      = column.model;
+        suite.controller.sortBy      = column;
         suite.controller.sortReverse = false;
         suite.controller.sort( column );
-        expect( suite.controller.sortBy ).toBe( column.model );
+        expect( suite.controller.sortBy ).toBe( column );
         expect( suite.controller.sortReverse ).toBe( true );
       } );
 
       it( 'should change to ASC when column is sorted by DESC', function() {
         var column                   = { model: "Source" };
-        suite.controller.sortBy      = column.model;
+        suite.controller.sortBy      = column;
         suite.controller.sortReverse = true;
         suite.controller.sort( column );
-        expect( suite.controller.sortBy ).toBe( column.model );
+        expect( suite.controller.sortBy ).toBe( column );
         expect( suite.controller.sortReverse ).toBe( false );
       } );
 
@@ -102,7 +102,7 @@
         expect( suite.$scope.data[0].Source ).toBe( 'ABC' );
         expect( suite.$scope.data[1].Source ).toBe( 'BCD' );
 
-        suite.controller.sortBy      = column.model;
+        suite.controller.sortBy      = column;
         suite.controller.sortReverse = false;
         suite.controller.sort( column );
         suite.$scope.$digest();
@@ -136,7 +136,7 @@
         expect( suite.$scope.data[0].Source ).toBe( 'ABC' );
         expect( suite.$scope.data[1].Source ).toBe( 'BCD' );
         spyOn( taskColumn, "onSort" ).and.callThrough();
-        suite.controller.sortBy      = taskColumn.model;
+        suite.controller.sortBy      = taskColumn;
         suite.controller.sortReverse = false;
         suite.controller.sort( taskColumn );
 
@@ -174,7 +174,7 @@
 
       it( 'should return "asc" if column is sorted asc', function() {
         var column                   = { model: "Source" };
-        suite.controller.sortBy      = "Source";
+        suite.controller.sortBy      = column;
         suite.controller.sortReverse = true;
         var actual                   = suite.controller.getSort( column );
         expect( actual ).toBe( 'desc' );
@@ -182,7 +182,7 @@
 
       it( 'should return "desc" if column is sorted asc', function() {
         var column                   = { model: "Source" };
-        suite.controller.sortBy      = "Source";
+        suite.controller.sortBy      = column;
         suite.controller.sortReverse = false;
         var actual                   = suite.controller.getSort( column );
         expect( actual ).toBe( 'asc' );
@@ -195,11 +195,14 @@
         compile();
 
         spyOn( suite.$scope.config.pager, "onPageChange" ).and.callThrough();
+        var column                   = { model: "Source" };
+        suite.controller.sortBy      = column;
+        suite.controller.sortReverse = false;
 
         suite.controller.changePageNumber( 2 );
         suite.$scope.$digest();
 
-        expect( suite.$scope.config.pager.onPageChange ).toHaveBeenCalledWith( 2 );
+        expect( suite.$scope.config.pager.onPageChange ).toHaveBeenCalledWith( 2, column, false );
 
       } );
 
@@ -270,7 +273,7 @@
         pager  : {
           itemsPerPage: 2,
           server      : true,
-          onPageChange: function( page ) {
+          onPageChange: function( page, column, sortReverse ) {
             suite.$scope.data = getPage2Data();
           }
         },
