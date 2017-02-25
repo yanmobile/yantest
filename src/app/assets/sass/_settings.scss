@@ -213,6 +213,11 @@ $hr-border-style: solid;
 $hr-border-color: $app-border-color;
 $hr-margin: rem-calc(20);
 
+/* Global Language Direction (ltr, rtl or both)
+-----------------------------------------------------*/
+$global-text-direction: ltr;
+
+
 // 3. APP SETTINGS
 /* -------------------------------
  * Primary Nav (Top nav bar)
