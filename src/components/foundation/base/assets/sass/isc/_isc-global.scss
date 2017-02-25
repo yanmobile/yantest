@@ -168,6 +168,9 @@ $motion-delay-default: 0 !default;
 $motion-delay-short: 300ms !default;
 $motion-delay-long: 700ms !default;
 
+/* Language Direction */
+// Sets the text direction of the CSS. Can be either `ltr` or `rtl` or 'both'.
+$global-text-direction: ltr !default;
 
 /* Global Styles */
 @include exports(global) {
