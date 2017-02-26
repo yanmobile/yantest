@@ -33,7 +33,7 @@
 
     describe( 'set setup', function() {
       it( 'should have right dependencies', function() {
-        expect( suite.$rootScope ).toBeDefined()
+        expect( suite.$rootScope ).toBeDefined();
         expect( suite.$scope ).toBeDefined();
         // expect( suite.element ).toBeDefined();
         // expect( suite.$isolateScope ).toBeDefined();

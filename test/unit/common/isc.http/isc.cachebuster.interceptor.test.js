@@ -31,7 +31,7 @@
     describe('method test ', function () {
       it('appends timestamp to standard request', function () {
 
-        var myResult = interceptor.request({})
+        var myResult = interceptor.request({});
 
         expect(myResult.params.ts).not.toBe(undefined);
 

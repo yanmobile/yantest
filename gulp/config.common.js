@@ -13,6 +13,7 @@ module.exports = {
       "src/common/node_modules/angular-translate/dist/angular-translate.js",
       "src/common/node_modules/angular-translate-loader-static-files/angular-translate-loader-static-files.js",
       "src/common/node_modules/angular-ui-router/release/angular-ui-router.js",
+      "src/common/node_modules/angular-md5/angular-md5.js",
       "src/common/node_modules/angular-animate/angular-animate.js",
       "src/common/node_modules/angular-sanitize/angular-sanitize.js",
       "src/common/node_modules/mobile-angular-ui/dist/js/mobile-angular-ui.gestures.js",
