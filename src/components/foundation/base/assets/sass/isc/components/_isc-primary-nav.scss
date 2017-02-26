@@ -31,21 +31,21 @@ $app-name-font-weight: $font-weight-normal !default;
     background: $primary-nav-background;
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
-    padding-left: $horizontal-container-padding;
-    padding-right: $horizontal-container-padding;
+    padding-#{$global-left}: $horizontal-container-padding;
+    padding-#{$global-right}: $horizontal-container-padding;
 
     @media #{$medium} {
       padding-top: 0.5rem;
       padding-bottom: 0.5rem;
-      padding-left: $horizontal-container-padding-small;
-      padding-right: $horizontal-container-padding-small;
+      padding-#{$global-left}: $horizontal-container-padding-small;
+      padding-#{$global-right}: $horizontal-container-padding-small;
     }
 
     @media #{$small} {
       padding-top: 0.5rem;
       padding-bottom: 0.5rem;
-      padding-left: $horizontal-container-padding-small;
-      padding-right: $horizontal-container-padding-small;
+      padding-#{$global-left}: $horizontal-container-padding-small;
+      padding-#{$global-right}: $horizontal-container-padding-small;
     }
 
     .menu-bar, .menu-group, .menu-group-left, .menu-group-right {
@@ -63,7 +63,11 @@ $app-name-font-weight: $font-weight-normal !default;
         }
 
         &.branding {
-          padding-left: 0;
+          padding-#{$global-left}: 0;
+
+          @include bidirectional() {
+            padding-right: 0;
+          }
 
           &:hover, &:focus {
             color: scale-color($logo-color, $lightness: -15%);
@@ -100,10 +104,14 @@ $app-name-font-weight: $font-weight-normal !default;
           font-weight: $app-name-font-weight;
           font-size: $app-name-font-size;
           text-transform: none;
-          margin-left: 0.5rem;
+          margin-#{$global-left}: 0.5rem;
           height: auto;
           line-height: 1.25;
           overflow-y: hidden;
+
+          @include bidirectional() {
+            margin-right: 0.5rem;
+          }
 
           @media #{$medium} {
             font-size: $app-name-font-size-medium;
@@ -111,8 +119,12 @@ $app-name-font-weight: $font-weight-normal !default;
 
           @media #{$small} {
             font-size: $app-name-font-size-small;
-            margin-left: 0.4rem;
+            margin-#{$global-left}: 0.4rem;
             line-height: 1;
+
+            @include bidirectional() {
+              margin-right: 0.4rem;
+            }
           }
         }
 
@@ -125,7 +137,13 @@ $app-name-font-weight: $font-weight-normal !default;
           }
         }
 
-        i.fa {padding-right: 0.25rem;}
+        i.fa {
+          padding-#{$global-right}: 0.25rem;
+
+          @include bidirectional() {
+            padding-left: 0.25rem;
+          }
+        }
       }
 
       &.hamburger {
@@ -136,16 +154,12 @@ $app-name-font-weight: $font-weight-normal !default;
 
         a {
           font-size: $app-name-font-size;
-          padding-right: 0;
-        }
-      }
+          padding-#{$global-right}: 0;
 
-      // Optional Divider (todo)
-      .divider {
-        border-right: 3px solid $logo-color;
-        margin: 0 0.25rem;
-        height: 1rem;
-        width: 0.1875rem;
+          @include bidirectional() {
+            padding-left: 0;
+          }
+        }
       }
     }
 
@@ -177,18 +191,22 @@ $app-name-font-weight: $font-weight-normal !default;
       border: none;
       font-size: 0.9rem;
       height: 2rem;
-      text-transform: capitalize;
     }
 
     //Menu/Proxy Labels
     label {
-      padding: 0.9rem 0.5rem 0 0;
+      padding: dir-values(0.9rem 0.5rem 0 0);
       line-height: 1;
       margin: 0;
-      margin-left: 1rem;
+      margin-#{$global-left}: 1rem;
       font-weight: $font-weight-normal;
       font-size: 0.85rem;
       color: $app-bar-text-color;
+
+      @include bidirectional() {
+        padding:  0.9rem 0 0 0.5rem;
+        margin-right: 1rem;
+      }
     }
 
     .grid-container {
@@ -214,12 +232,20 @@ $app-name-font-weight: $font-weight-normal !default;
     nav {
       ul {
         list-style-type: none;
-        margin-left: 0;
+        margin-#{$global-left}: 0;
+
+        @include bidirectional() {
+          margin-right: 0;
+        }
 
         li {
-          margin-left: 0;
+          margin-#{$global-left}: 0;
           line-height: 2;
           margin-bottom: 0;
+
+          @include bidirectional() {
+            margin-right: 0;
+          }
 
           a {
             padding: 0.75rem 0.5rem;
