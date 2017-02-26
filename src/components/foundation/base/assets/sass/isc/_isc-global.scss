@@ -172,6 +172,10 @@ $motion-delay-long: 700ms !default;
 // Sets the text direction of the CSS. Can be either `ltr` or `rtl` or 'both'.
 $global-text-direction: ltr !default;
 
+// Internal variables used for text direction
+$global-left: if($global-text-direction == rtl, right, left);
+$global-right: if($global-text-direction == rtl, left, right);
+
 /* Global Styles */
 @include exports(global) {
 
