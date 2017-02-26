@@ -9,9 +9,10 @@
 :: Expected arguments:
 :: 1. Root directory of UI source tree/repo
 :: 2. Build project name, which is used to determine where output should be created and copied to
-:: 3. Path to python
+:: 3. Python project name
 :: 4. Healthshare database name used to specify localization output location [optional]
 :: 5. Gulp build command, normally 'build' or 'deploy'; defaults to 'deploy' if not specified [optional]
+:: 6. Path to portablegit [optional]
 
 :: Dependency details - bump when needed; note that this script expects a specific directory naming convention
 SET nodeversion=6.5.0
@@ -29,10 +30,10 @@ IF "%MODE%"=="debug" (
 SET origdir=%CD%
 SET hsuidir=%1%
 SET hsprojectname=%2
-SET pythonpath=%3
+SET pythonprojectname=%~3
 SET hsdbname=%4
 SET gulpbuildcommand=%5
-SET portablegitsourcedir=%6
+SET portablegitsourcedir=%~6
 
 IF "%gulpbuildcommand%"=="" (
 	SET gulpbuildcommand=deploy
@@ -46,17 +47,41 @@ SET hsuidir=%CD%
 SET popuishare=0
 SET baseuidir=%hsuidir%\..
 SET builtroot=%origdir%\..\..\built\%PLATFORM%\%MODE%
+IF NOT EXIST %builtroot% (
+	MKDIR %builtroot%
+)
 PUSHD %builtroot%
 SET builtroot=%CD%
 POPD
 SET builtdir=%builtroot%\%hsprojectname%
+:: Actual built content is in PCbuild directory
+SET pythondir=%builtroot%\%pythonprojectname%\PCbuild
+
+:: Python needs to precede the path to any other versions of python, especially if we're in Cygwin
+:: Also set PYTHON environment variable
+SET PATH=%pythondir%;%PATH%
+SET PYTHON=%pythondir%\python.exe
+
+:: Add portablegit cmd directory to PATH
+SET in_portablegit_dir=0
+IF NOT "%portablegitsourcedir%"=="" (
+	IF EXIST "%portablegitsourcedir%" (
+		PUSHD "%portablegitsourcedir%"
+		SET in_portablegit_dir=1
+	)
+)
+:: Use single line to avoid trouble due to parentheses in PATH
+IF %in_portablegit_dir%==1 SET PATH=%PATH%%CD%\cmd;
+IF %in_portablegit_dir%==1 (
+	POPD
+)
 
 SET copy_loc_strings=0
 IF NOT "%hsdbname%"=="" (
 	SET localizedir=%hsuidir%\..\..\databases\%hsdbname%\localize
 	SET copy_loc_strings=1
 )
-IF %copy_loc_strings% (
+IF "%copy_loc_strings%"=="1" (
 	IF NOT EXIST %localizedir% (
 		MKDIR %localizedir%
 	)
@@ -85,13 +110,6 @@ IF EXIST %builtdir% (
 :: Copy all files to built\projectname and make writable
 ROBOCOPY %hsuidir% %builtdir% /S /A-:R /NP %ROBOCOPYLOGGING%
 
-:: Python needs to precede the path to any other versions of python, especially if we're in Cygwin
-:: Also set PYTHON environment variable
-IF NOT "%pythonpath%"=="" (
-	SET PATH=%pythonpath%;%PATH%
-	SET PYTHON=%pythonpath%\python.exe
-)
-
 SET uishare=hsui_%hsprojectname%_%tempsuffix%
 
 :: Use NET SHARE to allocate temp drive letters
@@ -103,19 +121,16 @@ SET uisharedir=%CD%
 
 :: Add node executable to PATH
 SET nodedir=%uisharedir%\%builddepdir%\node-%nodeversion%-win-x86-exe
-SET PATH=%PATH%;%nodedir%
+SET PATH=%PATH%%nodedir%;
 
 :: Add npm bin directory to PATH
 SET npmdir=%uisharedir%\%builddepdir%\npm-%npmversion%
-SET PATH=%PATH%;%npmdir%\bin
+IF EXIST %npmdir%\bin\npm.cmd (
+	COPY %npmdir%\bin\npm.cmd %nodedir%
+)
 
 :: Copy npm into node\node_modules\npm
 ROBOCOPY %npmdir% %nodedir%\node_modules\npm /S /NP %ROBOCOPYLOGGING%
-
-:: Add portablegit cmd directory to PATH
-IF NOT "%portablegitsourcedir%"=="" (
-	SET PATH=%PATH%;%portablegitsourcedir%\cmd
-)
 
 :: Remove any existing content in node_modules
 IF EXIST %uisharedir%\node_modules (
@@ -232,7 +247,7 @@ IF NOT "%uishare%" == "" (
 	NET share %uishare% /delete /yes
 )
 
-SET path=%oldpath%
+SET PATH=%oldpath%
 CD %origdir%
 
 EXIT /B %RETURNCODE%
@@ -248,6 +263,7 @@ PUSHD %1
 ECHO Running 'npm install --loglevel %npmloglevel%' in directory '%CD%'
 
 CALL npm install --loglevel %npmloglevel% || EXIT /B 1
+:: Ensure that we turn ECHO on, just in case npm turned it off
 @ECHO ON
 
 POPD
