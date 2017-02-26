@@ -1,0 +1,96 @@
+// Logic for handling values
+/* ----------------------------------------------------------
+ * Set of functions to dynamically retrieve and handle values
+ * @function has-value - Determine if a value is not falsey
+ * @function map-deep-get - Finds a value in a nested map
+ * @function map-to-list - Casts a map into a list
+ * @function map-safe-get - Safely return a value from a map
+---------------------------------------------------------- */
+
+// @function has-value
+/* ----------------------------------------------------------------
+/* Determine if a value is not falsey, in CSS terms. Falsey values
+/* are `null`,`none`, `0` with any unit, or an empty list.
+/* $val {Mixed} - Value to check.
+/* returns {Boolean} `true` if `$val` is not falsey.
+/* --------------------------------------------------------------- */
+@function has-value($val) {
+  @if $val == null or $val == none {
+    @return false;
+  }
+  @if type-of($val) == 'number' and strip-unit($val) == 0 {
+    @return false;
+  }
+  @if type-of($val) == 'list' and length($val) == 0 {
+    @return false;
+  }
+  @return true;
+}
+
+// @function map-deep-get
+/* ------------------------------------------------------------------------------
+/* Finds a value in a nested map. https://css-tricks.com/snippets/sass/deep-getset-maps/
+/* $map {Map} - Map to pull a value from.
+/* $keys... {String} - - Keys to use when looking for a value.
+/* returns {Mixed} - The value found in the map.
+/* ---------------------------------------------------------------------------------- */
+@function map-deep-get($map, $keys...) {
+  @each $key in $keys {
+    $map: map-get($map, $key);
+  }
+  @return $map;
+}
+
+// @function map-to-list
+/* ------------------------------------------------------------------------------
+/* Casts a map into a list: http://hugogiraudel.com/2014/04/28/casting-map-into-list/
+/* $map {Map} - Map to pull a value from.
+/* returns {List} Depending on the flag, returns either $keys or $values or both.
+/* ---------------------------------------------------------------------------------- */
+@function map-to-list($map, $keep: 'both') {
+  $keep: if(index('keys' 'values', $keep), $keep, 'both');
+
+  @if type-of($map) == 'map' {
+    $keys: ();
+    $values: ();
+
+    @each $key, $val in $map {
+      $keys: append($keys, $key);
+      $values: append($values, $val);
+    }
+
+    @if $keep == 'keys' {
+      @return $keys;
+    }
+    @else if $keep == 'values' {
+      @return $values;
+    }
+    @else {
+      @return zip($keys, $values);
+    }
+  }
+
+  @return if(type-of($map) != 'list', ($value,), $map);
+
+}
+
+// @function map-safe-get
+/* ------------------------------------------------------------------------------
+/* Safely return a value from a map.
+/* $map {Map} - Map to retrieve a value from.
+/* $key {String} - Name of the map key.
+/* returns {List} - Found value.
+/* ---------------------------------------------------------------------------------- */
+@function map-safe-get($map, $key) {
+  @if (type-of($map) == 'map' or (type-of($map) == 'list' and length($map) == 0)) {
+    @if (map-has-key($map, $key)) {
+      @return map-get($map, $key);
+    }
+    @else {
+      @error 'Key: `#{$key}` is not available in `#{$map}`';
+    }
+  }
+  @else {
+    @error '`#{$map}` is not a valid map';
+  }
+}
