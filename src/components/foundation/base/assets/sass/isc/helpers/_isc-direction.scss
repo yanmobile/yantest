@@ -1,0 +1,91 @@
+// Directional Logic
+/* -----------------------------------------
+ * Set of functions to dynamically handle directional logic
+ * @function direction-opposite - Returns opposite of ANY direction
+ * @function dir-values - Swaps right & left positions in padding/margin values list
+ * @function radius-values - Swaps right & left positions in border-radius values list
+ * @function dir-check - Checks global direction, returns first parameter, else second parameter
+ * @mixin bidirectional - Checks global direction, If true, returns output for opposite direction
+----------------------------------------- */
+
+// @function direction-opposite
+/* -----------------------------------------
+/* Returns the opposite direction of $dir
+/* $dir - Used direction between "top", "right", "bottom" and "left".
+/* ---------------------------------------- */
+@function direction-opposite($dir) {
+  $dirs: (top, right, bottom, left);
+  $place: index($dirs, $dir);
+
+  @if $place == null {
+    @error 'direction-opposite: Invalid $dir parameter, expected a value from "#{$dirs}", found "#{$dir}".';
+    @return null;
+  }
+  // Calculate the opposite place in a circle, with a starting index of 1
+  $length: length($dirs);
+  $demi: $length / 2;
+  $opposite-place: (($place + $demi - 1) % $length) + 1;
+  @return nth($dirs, $opposite-place);
+}
+
+// @function dir-values
+/* -----------------------------------------
+/* Checks global direction & conditionally swaps
+/* right & left positions in padding/margin values list
+/* ---------------------------------------- */
+$dir: $global-text-direction !default;
+
+@function dir-values($values) {
+	@if $dir == rtl and length($values) == 4 {
+		@return nth($values, 1) nth($values, 4) nth($values, 3) nth($values, 2);
+	}
+	@else {
+		@return $values;
+	}
+}
+
+// @function dir-check
+/* -----------------------------------------
+/* Checks if direction equals ltr
+/* returns first parameter, else second parameter
+/* ---------------------------------------- */
+@function dir-check($a, $b) {
+	@if $dir == ltr or $dir == both {
+		@return $a;
+	} @else {
+		@return $b;
+	}
+}
+
+// @function radius-values
+/* -----------------------------------------
+/* Checks global direction & conditionally swaps
+/* right/left positions in border-radius values list
+/* ---------------------------------------- */
+@function radius-values($values) {
+	@if $dir == rtl and length($values) == 4 {
+		@return nth($values, 2) nth($values, 1) nth($values, 4) nth($values, 3);
+	}
+	@else {
+		@return $values;
+	}
+}
+
+// @mixin bidirectional
+/* -------------------------------------------------
+/* Determines if bidirectional support is needed {boolean}
+/* If true, returns output for opposite direction
+/* ---------------------------------------- */
+
+@mixin bidirectional {
+  @if $global-text-direction == both {
+
+    .rtl & {
+      @content;
+    }
+  }
+
+  @else {
+    @content;
+  }
+}
