@@ -92,8 +92,12 @@ $secondary-nav-active-background: $accent-color !default;
 
           a {
             font-size: $app-name-font-size;
-            padding-left: 0;
+            padding-#{$global-left}: 0;
             color: isitlight($secondary-nav-background, $body-font-color, $light-text);
+
+            @include bidirectional() {
+              padding-right: 0;
+            }
 
             &:hover {
               background: transparent;
@@ -136,7 +140,11 @@ $secondary-nav-active-background: $accent-color !default;
             font-size: 1.5rem;
             font-weight: $font-weight-normal;
             display: block;
-            text-align: right;
+            text-align: #{$global-right};
+
+            @include bidirectional() {
+              text-align: left;
+            }
 
             &:hover {
               background: $secondary-nav-background;

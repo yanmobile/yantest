@@ -69,7 +69,7 @@ $sidebar-active-background: $accent-color !default;
       a {
         color: $anchor-font-color;
         font-weight: $font-weight-normal;
-        text-align: left;
+        text-align: dir-check($global-left, $global-right);
         vertical-align: middle;
         display: block;
         z-index: 1;
@@ -80,13 +80,12 @@ $sidebar-active-background: $accent-color !default;
         background-color: transparent;
         padding: 1rem;
 
-        @media only screen and (min-width: 1025px) and (max-width: 1130px){
-          padding: 1rem 0.5rem;
-          display: -ms-flexbox;
+        @include bidirectional() {
+          text-align: right;
         }
 
-        @media #{$large} {
-            display: -ms-flexbox;
+        @media only screen and (min-width: 1025px) and (max-width: 1130px){
+          padding: 1rem 0.5rem;
         }
 
         @media #{$medium}{
@@ -107,7 +106,7 @@ $sidebar-active-background: $accent-color !default;
 
         .isc-sidebar-icon {
           svg {
-            margin: 0 0.5rem 0 0;
+            margin: dir-values(0 0.5rem 0 0);
             vertical-align: middle;
             display: inline-block;
             width: 1.375rem;
@@ -116,24 +115,40 @@ $sidebar-active-background: $accent-color !default;
             line-height: 1.375;
             padding: 0;
 
+            @include bidirectional() {
+              margin:  0 0 0 0.5rem;
+            }
+
             @media #{$medium-down} {
-              margin: 0 0.25rem 0 0;;
+              margin: dir-values(0 0.25rem 0 0);
               width: 1.125rem;
               height: 1.125rem;
               vertical-align: middle;
+
+              @include bidirectional() {
+                margin: 0 0 0 0.25rem;
+              }
             }
           }
 
           img {
-            margin: 0 0.5rem 0 0;
+            margin: dir-values(0 0.5rem 0 0);
             vertical-align: middle;
             display: inline-block;
             line-height: 1.375;
 
+            @include bidirectional() {
+              margin: 0 0 0 0.5rem;
+            }
+
             @media #{$medium-down} {
-              margin: 0 0.25rem 0 0;;
+              margin: dir-values(0 0.25rem 0 0);
               width: 1.125rem;
               height: 1.125rem;
+
+              @include bidirectional() {
+                margin: 0 0 0 0.25rem;
+              }
             }
           }
         }
@@ -141,16 +156,19 @@ $sidebar-active-background: $accent-color !default;
     }
   }
 
-  li.isc-nav-item:last-child a {
-    padding-bottom: 1rem;
+  li {
+    .isc-nav-item {
+      &:last-child a {
+        padding-bottom: 1rem;
 
-    @media #{$medium-down} {
-      padding-bottom: 1rem;
+        @media #{$medium-down} {
+          padding-bottom: 1rem;
+        }
+      }
     }
   }
 
-
-  .isc-sidebar-icon{
+  .isc-sidebar-icon {
     svg {
       margin: auto;
       vertical-align: middle;
@@ -158,7 +176,11 @@ $sidebar-active-background: $accent-color !default;
       width: 1.875rem;
       height: 1.875rem;
       fill: $anchor-font-color;
-      padding-right: 0.5rem;
+      padding-#{$global-right}: 0.5rem;
+
+      @include bidirectional() {
+        padding-left: 0.5rem;
+      }
     }
   }
 
@@ -166,10 +188,14 @@ $sidebar-active-background: $accent-color !default;
   a.isc-nav-item {
     color: $anchor-font-color;
     font-weight: $font-weight-normal;
-    text-align: left;
+    text-align: dir-check($global-left, $global-right);
     z-index: 1;
     cursor: default;
     cursor: pointer;
+
+    @include bidirectional() {
+      text-align: right;
+    }
   }
 
   // States when in ".active" state
