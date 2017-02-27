@@ -71,6 +71,22 @@ $dir: $global-text-direction !default;
 	}
 }
 
+// @function flip-dir
+/* -----------------------------------------
+/* Flips left/right values in padding/margin list
+/* $settings when dual-direction support is needed
+/* For use inside of @mixin bidirectional
+/* ---------------------------------------- */
+
+@function flip-dir($values) {
+	@if length($values) == 4 {
+		@return nth($values, 1) nth($values, 4) nth($values, 3) nth($values, 2);
+	}
+	@else {
+		@return $values;
+	}
+}
+
 // @mixin bidirectional
 /* -------------------------------------------------
 /* Determines if bidirectional support is needed {boolean}

@@ -38,6 +38,10 @@ $tooltip-max-width: 75% !default;
 	/* If you're using the icon option, use this next selector to style them */
 	.tooltipster-icon {
 		cursor: help;
-		margin-left: 4px;
+		margin-#{$global-left}: 0.25rem;
+
+		@include bidirectional() {
+			margin-right: 0.25rem;
+		}
 	}
 }

@@ -7,6 +7,7 @@ $typeahead-font-size: 0.875rem !default;
 $typeahead-column-title-color: $header-font-color !default;
 $typeahead-column-title-size: 0.875rem !default;
 $typeahead-column-title-padding: 0.3125rem 0.25rem 0.25rem 0.25rem !default;
+$typeahead-dropdown-background: #fff !default;
 $typeahead-highlight-color: $alert-color !default;
 $input-bottom-margin: 2rem !default;
 
@@ -14,24 +15,32 @@ $input-bottom-margin: 2rem !default;
 
   /* Typeahead */
   .isc-dropdown-selection-list {
-    background-color: #fff;
-    top:50px;
-    position:absolute;
-    left:550px;
+    background-color: $typeahead-dropdown-background;
+    top: 50px;
+    position: absolute;
+    #{$global-left}: 550px;
     visibility: visible;
     border:1px solid $app-border-color;
     z-index: $modal-z-index !important;
+
+    @include bidirectional() {
+			right: 550px;
+		}
   }
 
   .isc-typeahead-list {
     @extend .isc-dropdown-selection-list;
 
     top: initial !important;
-    left: initial !important;
+    #{$global-left}: initial !important;
     margin: 0;
     margin-top: -2px;
     list-style-type: none;
     width: 100%;
+
+    @include bidirectional() {
+			right: initial  !important;
+		}
 
     li {
       outline: none;
@@ -39,7 +48,7 @@ $input-bottom-margin: 2rem !default;
       padding: 0.25rem;
 
       &:hover, &:focus {
-        background-color: $neutral-color;
+        background-color: smartscale($typeahead-dropdown-background, 4.5%);
       }
     }
   }
