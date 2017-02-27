@@ -12,7 +12,7 @@
 *Note* that if you are creating a modified build of your application, you should not modify these files. If you do, you risk them being overwritten on routine updates.
 ---
 ## Training Videos
-Online training videos are shared internally [//iscinternal.com/isc/public/LearningServices/HealthShare/Henry Zou](//iscinternal.com/isc/public/LearningServices/HealthShare/Henry Zou)
+Online training videos are internally network-shared here: [//iscinternal.com/isc/public/LearningServices/HealthShare/Henry Zou](//iscinternal.com/isc/public/LearningServices/HealthShare/Henry Zou)
 ---
 ## Getting Started
 *WARNING* the following instructions will fail if these [prerequisites](#prerequisites) were not satisfied.
