@@ -12,16 +12,14 @@
    * @param $q
    * @param $templateCache
    * @param $window
-   * @param $translate
    * @param iscHttpapi
    * @param iscFormsTemplateService
-   * @param iscFormFieldLayoutService
    * @param iscFormsApi
    * @returns {{getForms, getActiveForm, getActiveForms, setFormStatus, getFormDefinition, getValidationDefinition}}
    */
-  function iscFormsModel( $q, $templateCache, $window, $translate,
+  function iscFormsModel( $q, $templateCache, $window,
     iscHttpapi, // needed for user script closures
-    iscFormsTemplateService, iscFormFieldLayoutService, iscFormsApi ) {
+    iscFormsTemplateService, iscFormsApi ) {
     var _formsCache         = {};
     var _viewModeFormsCache = {};
     var _validationCache    = {};
@@ -172,7 +170,6 @@
           formVersion        = config.formVersion,
           subformDefinitions = config.subformDefinitions,
           library            = config.library || [],
-          omitTransforms     = config.omitTransforms || [],
           cacheKey           = getCacheKey( formKey, formVersion );
 
       // If form is already cached, return the cached form in a promise
@@ -228,9 +225,6 @@
             }
 
             _.forEach( form.sections, function( section ) {
-              if ( !_.includes( omitTransforms, 'layout' ) ) {
-                iscFormFieldLayoutService.transformContainer( section );
-              }
               primaryPromises = primaryPromises.concat(
                 processFields( section.fields )
               );
@@ -331,9 +325,6 @@
 
               // A field group does not have its own type, but contains fields in the fieldGroup array
               if ( fieldGroup ) {
-                if ( !_.includes( omitTransforms, 'layout' ) ) {
-                  iscFormFieldLayoutService.transformContainer( field );
-                }
                 fieldPromises = fieldPromises.concat(
                   processFields( fieldGroup )
                 );
@@ -436,11 +427,6 @@
                           // Push a subform listener into the fields list if there is not already one
                           if ( isCollection && !_.find( fields, listenerType ) ) {
                             fields.push( listenerType );
-                          }
-
-                          // Transform layouts on the embedded form
-                          if ( !_.includes( omitTransforms, 'layout' ) ) {
-                            iscFormFieldLayoutService.transformContainer( section, true );
                           }
                         } );
 
