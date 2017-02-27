@@ -12,43 +12,52 @@
 /* Timeline Settings */
 $timeline-margin: 0 0 3.5rem 0 !default;
 $timeline-color: $primary-color !default;
+$timeline-circle-size: 2.5rem !default;
 
 /* Timeline Styles */
 @include exports(timeline) {
 
   /* Wizard Step Timeline */
   .wizard-timeline {
-    display       : flex;
-    margin    : $timeline-margin;
+    display: flex;
+    margin: $timeline-margin;
+
+    @include bidirectional() {
+      padding: flip-dir($timeline-margin);
+    }
 
     .circle {
-      background-color : $timeline-color;
-      background-size  : 2.5rem 2.5rem;
-      border-radius    : 50%;
-      width            : 2.5rem;
-      height           : 2.5rem;
-      position         : relative;
-      margin-top       : 0;
-      color            : isitlight($timeline-color, $body-font-color, $light-text);
-      text-align       : center;
-      font-size        : 1.5rem;
-      padding          : 0.25rem;
-      line-height      : 1;
-      vertical-align   : middle;
-      margin-right     : 1rem;
-      border           : 3px solid $timeline-color;
-      z-index          : 1;
+      background-color: $timeline-color;
+      background-size : $timeline-circle-size $timeline-circle-size;
+      border-radius: 50%;
+      width: $timeline-circle-size;
+      height: $timeline-circle-size;
+      position: relative;
+      margin-top: 0;
+      color: isitlight($timeline-color, $body-font-color, $light-text);
+      text-align: center;
+      font-size: 1.5rem;
+      padding: 0.25rem;
+      line-height: 1;
+      vertical-align: middle;
+      margin-#{$global-left}: 1rem;
+      border: 3px solid $timeline-color;
+      z-index: 1;
+
+      @include bidirectional() {
+  			margin-right: 1rem;
+  		}
 
       button {
-        background-color : transparent;
-        border           : none;
-        margin           : 0;
+        background-color: transparent;
+        border: none;
+        margin: 0;
         padding: 0;
         font-weight: $font-weight-semi-bold;
       }
 
       &.hollow {
-        background-color : isitlight($timeline-color, $body-font-color, $light-text);
+        background-color: isitlight($timeline-color, $body-font-color, $light-text);
 
         button {
           color: $timeline-color;
@@ -57,17 +66,21 @@ $timeline-color: $primary-color !default;
     }
 
     .line {
-      padding-top : 0;
+      padding-top: 0;
 
       &:before {
-        content    : "";
-        position   : absolute;
-        height     : 4px;
-        width      : 100%;
-        background : $timeline-color;
-        top        : 50%;
-        left       : 0px;
-        z-index    : 0;
+        content: "";
+        position: absolute;
+        height: 0.25rem;
+        width: 100%;
+        background: $timeline-color;
+        top: 50%;
+        #{$global-left}: 0px;
+        z-index: 0;
+
+        @include bidirectional() {
+    			right: 0px;
+    		}
       }
     }
   }
