@@ -149,15 +149,11 @@ $dir: $global-text-direction !default;
 /* If true, returns output for opposite direction
 /* ---------------------------------------- */
 
-@mixin bidirectional {
+@mixin bidirectional () {
   @if $global-text-direction == both {
 
     .rtl & {
       @content;
     }
-  }
-
-  @else {
-    @content;
   }
 }
