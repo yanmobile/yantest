@@ -2,7 +2,7 @@
 ( function() {
   'use strict';
 
-  angular.module( 'launch', ['ui.router','isc.oauth'] )
+  angular.module( 'launch', ['ui.router', 'isc.oauth'] )
     .config( function( iscStateProvider ) {
       iscStateProvider.state( getStates() );
     } );
@@ -29,7 +29,7 @@
           /* @ngInject */
           configureOauthProperties : function( $window, iscOauthService ) {
             /**
-             * Configure or override default oauth config 
+             * Configure or override default oauth config
              **/
             var redirectUrl = $window.location.protocol + "//" +
                               $window.location.hostname +
