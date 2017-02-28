@@ -168,7 +168,7 @@ $page-title-font-reduction: rem-calc(24);
 $caption-background: transparent;
 $caption-font-size: 0.875rem;
 $caption-color: isitlight($caption-background, $subtext-color, $light-text);
-$caption-align: left;
+$caption-align: if($global-text-direction == rtl, right, left);
 $caption-padding: 0 0 0.5rem 0;
 $caption-margin: 0 0 0.5rem 0;
 $caption-font-reduction: rem-calc(16);
@@ -604,7 +604,7 @@ $table-cell-padding: 0.65rem;
 /* Table Head */
 $th-font-size: 0.875rem;
 $th-font-weight: $font-weight-bold;
-$th-text-align: left;
+$th-text-align: if($global-text-direction == rtl, right, left);
 $th-background: $table-background;
 
 /* Table Foot */
@@ -615,7 +615,7 @@ $tfoot-font-size: 0.75rem;
 $table-title-font-size: 1.25rem;
 $table-title-color: $header-font-color;
 $table-title-weight: inherit;
-$table-title-align: left;
+$table-title-align: if($global-text-direction == rtl, right, left);
 $table-title-margin: 0 0 1rem 0;
 $table-title-padding: 0;
 
@@ -659,3 +659,5 @@ $tooltip-radius: $global-radius;
 $tooltip-line-height: $paragraph-line-height;
 $tooltip-padding: 0.5rem 0.625rem;
 $tooltip-max-width: 75%;
+
+@import "../../../components/foundation/base/assets/sass/isc/helpers/isc-direction";
