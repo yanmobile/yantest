@@ -28,7 +28,7 @@ $table-cell-padding: 0.65rem !default;
 // Table Head
 $th-font-size: 0.875rem !default;
 $th-font-weight: $font-weight-bold !default;
-$th-text-align: left !default;
+$th-text-align: if($global-text-direction == rtl, right, left) !default;
 $th-background: $table-background !default;
 
 // Table Foot
@@ -39,7 +39,7 @@ $tfoot-font-size: 0.75rem !default;
 $table-title-font-size: 1.25rem !default;
 $table-title-color: $header-font-color !default;
 $table-title-weight: inherit !default;
-$table-title-align: left !default;
+$table-title-align: if($global-text-direction == rtl, right, left) !default;
 $table-title-margin: 0 0 1rem 0 !default;
 $table-title-padding: 0 !default;
 
@@ -94,6 +94,10 @@ $table-title-font-reduction: rem-calc(16) !default;
         text-align: $th-text-align;
         background: $table-stripe-background;
         color: $table-stripe-font-color;
+
+        @include bidirectional() {
+          text-align: right;
+        }
       }
     }
   }
@@ -112,6 +116,10 @@ $table-title-font-reduction: rem-calc(16) !default;
       td {
         font-weight: $font-weight-normal;
         text-align: $th-text-align;
+
+        @include bidirectional() {
+          text-align: right;
+        }
       }
     }
   }
@@ -141,6 +149,10 @@ $table-title-font-reduction: rem-calc(16) !default;
       .th, .td {
         font-weight: $th-font-weight;
         text-align: $th-text-align;
+
+        @include bidirectional() {
+          text-align: right;
+        }
       }
     }
   }
@@ -190,8 +202,21 @@ $table-title-font-reduction: rem-calc(16) !default;
 @mixin stacked-table($header: $show-header-for-stacked) {
   @if $header {
     thead {
-      th:first-child {
-        display: block;
+      th {
+
+        &:#{$global-first}-child {
+          display: block;
+        }
+
+        @include bidirectional() {
+          &:last-child {
+            display: block;
+          }
+
+          &:first-child {
+            display: flex;
+          }
+        }
       }
 
       th {
@@ -220,7 +245,12 @@ $table-title-font-reduction: rem-calc(16) !default;
       // For Alignment
       min-width: 6rem; // magic number :( adjust according to your own content
       display: inline-block;
-      padding-right: 0.5rem;
+      padding-#{$global-right}: 0.5rem;
+
+      @include bidirectional() {
+        padding-left: 0.5rem;
+        padding-right: 0;
+      }
 
       @media #{$large} {
         display: none;
@@ -274,8 +304,12 @@ $table-title-font-reduction: rem-calc(16) !default;
         .icon-controls,.icon-list, ul, ol, li, p, a {
           padding-bottom: 0;
           margin-bottom: 0;
-          text-align: left;
+          text-align: $th-text-align;
           vertical-align: middle;
+
+          @include bidirectional() {
+            text-align: right;
+          }
         }
       }
     }
@@ -339,9 +373,14 @@ $table-title-font-reduction: rem-calc(16) !default;
       // For Alignment
       min-width: 6rem; // magic number - adjust according to your own content
       display: inline-block;
-      padding-right: 0.5rem;
-      padding-left: 0.5rem;
+      padding-#{$global-right}: 0.5rem;
       vertical-align: top;
+
+      @include bidirectional() {
+        padding-left: 0.5rem;
+        padding-right: 0;
+      }
+
 
       @media #{$large} {
         display: none;
@@ -351,8 +390,12 @@ $table-title-font-reduction: rem-calc(16) !default;
     .icon-controls, .icon-list, ul, ol, li, p, a {
       padding-bottom: 0;
       margin-bottom: 0;
-      text-align: left;
+      text-align: $th-text-align;
       vertical-align: middle;
+
+      @include bidirectional() {
+        text-align: right;
+      }
     }
   }
 
@@ -382,12 +425,16 @@ $table-title-font-reduction: rem-calc(16) !default;
       th {
         padding: $table-cell-padding;
         text-align: $th-text-align;
-        border-left: $table-column-border;
-        border-right: $table-column-border;
+        border-#{$global-left}: $table-column-border;
+        border-#{$global-right}: $table-column-border;
         font-weight: $th-font-weight;
         white-space: nowrap;
         background: $th-background;
         color: isitlight($th-background, $body-font-color, $light-text);
+
+        @include bidirectional() {
+          text-align: right;
+        }
       }
     }
 
@@ -499,14 +546,24 @@ $table-title-font-reduction: rem-calc(16) !default;
       padding: $table-cell-padding;
       vertical-align: middle;
       line-height: $table-line-height;
-      border-left: $table-column-border;
+      border-#{$global-left}: $table-column-border;
 
       @media #{$small} {
         padding: 0.3125rem;
       }
 
-      &:last-of-type {
-        border-right: $table-column-border;
+      &:#{$global-last}-of-type {
+        border-#{$global-right}: $table-column-border;
+      }
+
+      @include bidirectional() {
+        &:first-of-type {
+          border-right: $table-column-border;
+        }
+
+        &:last-of-type {
+          border-right: none;
+        }
       }
     }
 
@@ -608,6 +665,10 @@ $table-title-font-reduction: rem-calc(16) !default;
       &.table-title, .subheader, .summary-heading {
         @include title($size: $table-title-font-size, $color: $table-title-color, $weight: $table-title-weight, $margin: $table-title-margin, $padding: $table-title-padding, $reduction: $table-title-font-reduction) {
           text-align: $table-title-align;
+
+          @include bidirectional() {
+            text-align: right;
+          }
         }
       }
     }
@@ -719,8 +780,14 @@ $table-title-font-reduction: rem-calc(16) !default;
       font-size: $table-font-size;
       vertical-align: top;
 
-      &:last-of-type {
-        margin-right: 0;
+      &:#{$global-last}-of-type {
+        margin-#{$global-right}: 0;
+      }
+
+      @include bidirectional() {
+        &:first-of-type {
+          margin-right: 0;
+        }
       }
     }
 
@@ -761,15 +828,16 @@ $table-title-font-reduction: rem-calc(16) !default;
   }
 
 
-  /* DO SOMETHING WITH THIS
-   * Clickable, Sortable, Filterable Table Heads
+  /* Clickable, Sortable, Filterable Table Heads
+   * icon output position :before or :after based on
+   * $global-text-direction settings
    ----------------------------------------------*/
   th, .th {
 
     //Clickable Table Head
     a {
       color: isitlight($th-background, $body-font-color, $light-text);
-      cursor: hand;
+      cursor: pointer;
       font-weight: $th-font-weight;
       padding: 0;
       font-size: $th-font-size;
@@ -778,15 +846,29 @@ $table-title-font-reduction: rem-calc(16) !default;
       &.isc-sortable {
         white-space: nowrap;
 
-        @include icon(after, sortable) {
-          padding-left: 0.3125rem;
-          font-size: $th-font-size;
-          font-weight: $font-weight-normal;
+        // if $global-text-direction == 'ltr', returns @content
+        // if $global-text-direction == 'both', returns @content wrapped in .ltr &
+        @include ltr() {
+          @include icon(after, sortable) {
+            padding-#{$global-left}: 0.3125rem;
+            font-size: $th-font-size;
+            font-weight: $font-weight-normal;
 
-          @media #{$medium-down} {
-            padding-left: 0.25rem;
-            font-weight: $font-weight-semi-bold;
-            font-size: $th-font-reduction;
+            @media #{$medium-down} {
+              padding-#{$global-left}: 0.25rem;
+              font-weight: $font-weight-semi-bold;
+              font-size: $th-font-reduction;
+            }
+          }
+        }
+        //only returns if $global-text-direction == 'both', wraps @content in .rtl &
+        @include bidirectional() {
+          @include icon(before, sortable) {
+            padding-right: 0.3125rem;
+
+            @media #{$medium-down} {
+              padding-right: 0.25rem;
+            }
           }
         }
       }
@@ -795,17 +877,33 @@ $table-title-font-reduction: rem-calc(16) !default;
       &.isc-filterable {
         white-space: nowrap;
 
-        @include icon(after, filter) {
-          padding-left: 0.3125rem;
-          font-size: $th-font-size;
-          font-weight: $font-weight-normal;
+        // if $global-text-direction == 'ltr', returns @content
+        // if $global-text-direction == 'both', returns @content wrapped in .ltr &
+        @include ltr() {
+          @include icon(after, filter) {
+            padding-#{$global-left}: 0.3125rem;
+            font-size: $th-font-size;
+            font-weight: $font-weight-normal;
 
-          @media #{$medium-down} {
-            padding-left: 0.25rem;
-            font-weight: $font-weight-semi-bold;
-            font-size: $th-font-reduction;
+            @media #{$medium-down} {
+              padding-#{$global-left}: 0.25rem;
+              font-weight: $font-weight-semi-bold;
+              font-size: $th-font-reduction;
+            }
+          }
+
+          //only returns if $global-text-direction == 'both', wraps @content in .rtl &
+          @include bidirectional() {
+            @include icon(before, filter) {
+              padding-right: 0.3125rem;
+
+              @media #{$medium-down} {
+                padding-right: 0.25rem;
+              }
+            }
           }
         }
+
       }
     }
 

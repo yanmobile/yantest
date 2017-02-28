@@ -8,6 +8,25 @@
  * @mixin bidirectional - Checks global direction, If true, returns output for opposite direction
 ----------------------------------------- */
 
+// Internal variables used for direction
+/* -----------------------------------------
+* If $global-text-direction: 'ltr', or 'both',
+* $global-left is 'left' and $global-right is 'right'.
+* If $global-text-direction: rtl, swap them
+----------------------------------------- */
+$global-left: if($global-text-direction == rtl, right, left);
+$global-right: if($global-text-direction == rtl, left, right);
+
+// Internal variables used for (first/last)-child
+/* ----------------------------------------------
+* If $global-text-direction: 'ltr', or 'both',
+* $global-first is 'first' and $global-last is 'last'.
+* If $global-text-direction: rtl, swap them
+------------------------------------------------ */
+$global-first: if($global-text-direction == rtl, last, first);
+$global-last: if($global-text-direction == rtl, first, last);
+
+
 // @function direction-opposite
 /* -----------------------------------------
 /* Returns the opposite direction of $dir
@@ -85,6 +104,43 @@ $dir: $global-text-direction !default;
 	@else {
 		@return $values;
 	}
+}
+
+// @mixin ltr
+ /* -------------------------------------------------
+ /* If $global-text-direction == 'ltr', returns @content
+ /* If $global-text-direction == 'both', returns @content wrapped in .ltr &
+ /* Use when you need to output conditionally positioned content (like icons)
+ /* based on $global-text-direction setting see isc-tables for example usage
+ /* ---------------------------------------- */
+
+@mixin ltr {
+	@if $global-text-direction == ltr {
+		@content;
+	}
+
+  @else if $global-text-direction == both {
+    .ltr & {
+      @content;
+    }
+  }
+}
+
+// @mixin rtl
+/* -------------------------------------------------
+/* Same as previous mixin but reversed
+/* ---------------------------------------- */
+
+@mixin rtl {
+	@if $global-text-direction == rtl {
+		@content;
+	}
+
+  @else if $global-text-direction == both {
+    .rtl & {
+      @content;
+    }
+  }
 }
 
 // @mixin bidirectional

@@ -168,28 +168,6 @@ $motion-delay-default: 0 !default;
 $motion-delay-short: 300ms !default;
 $motion-delay-long: 700ms !default;
 
-/* Global Language Direction ('ltr', 'rtl' or 'both')
------------------------------------------------------*/
-$global-text-direction: ltr !default;
-
-// Internal variables used for direction
-/* -----------------------------------------
-* If $global-text-direction: 'ltr', or 'both',
-* $global-left is 'left' and $global-right is 'right'.
-* If $global-text-direction: rtl, swap them
------------------------------------------ */
-$global-left: if($global-text-direction == rtl, right, left);
-$global-right: if($global-text-direction == rtl, left, right);
-
-// Internal variables used for (first/last)-child
-/* ----------------------------------------------
-* If $global-text-direction: 'ltr', or 'both',
-* $global-first is 'first' and $global-last is 'last'.
-* If $global-text-direction: rtl, swap them
------------------------------------------------- */
-$global-first: if($global-text-direction == rtl, last, first);
-$global-last: if($global-text-direction == rtl, first, last);
-
 /* Global Styles */
 @include exports(global) {
 
