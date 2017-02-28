@@ -357,6 +357,15 @@ gulp deploy --appjson path/to/config.app.js #only app specific
   * *note:* By default the code uses "base" edition, which is the US edition. Specific Edition config file will be merged with base edition. (using _.mergeWith() where it concatenates arrays)
   * Add a new edition config object in the "edition" array of ```gulp/config.app.js``` configuration
 
+* **How do I add functionality to the faux-table directive?**
+  * You can change the template by passing in an attribuite ```templateUrl```. When specifying the html attribute, be sure to use kebab-case as in ```template-url```.
+  * You can pass in additional configuration properties by creating a config object and passing it in on the ```config``` attribute.
+  * Example html: 
+  ```
+  <faux-table template-url="path/to/the/file.html
+              config="ctrl.myConfigObj"></faux-table>
+   ```
+
 ```javascript
   "edition"       : [
      {
