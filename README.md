@@ -362,7 +362,7 @@ gulp deploy --appjson path/to/config.app.js #only app specific
   * You can pass in additional configuration properties by creating a config object and passing it in on the ```config``` attribute.
   * Example html: 
   ```
-  <faux-table template-url="path/to/the/file.html
+  <faux-table template-url="path/to/the/file.html"
               config="ctrl.myConfigObj"></faux-table>
    ```
 
