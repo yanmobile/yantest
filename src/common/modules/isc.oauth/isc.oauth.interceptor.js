@@ -6,7 +6,7 @@
 
   /* @ngInject */
   function iscOauthInterceptor( $injector, devlog ) {//jshint ignore:line
-    var channel = devlog.channel( 'iscOauthInterceptor' );
+    var log = devlog.channel( 'iscOauthInterceptor' );
 
     var $http;
     var iscSessionModel;
