@@ -13,14 +13,15 @@
     .provider( 'iscState', iscState );
 
   /* @ngInject */
-  function iscState( $stateProvider, iscCustomConfigServiceProvider ) {
+  function iscState( $stateProvider, $urlRouterProvider, iscCustomConfigServiceProvider ) {
 
     // ----------------------------
     // class factory
     // ----------------------------
     var service = {
-      state: state,
-      $get : _.noop
+      state     : state,
+      rewriteUrl: rewriteUrl,
+      $get      : _.noop
     };
 
     return service;
@@ -42,7 +43,6 @@
      */
     function state( tabs ) {
 
-      //todo: decorate $stateProvider.state
       _.forEach( tabs, function( config, state ) {
 
         if ( config.roles ) {
@@ -69,6 +69,37 @@
         // ----------------------------
         $stateProvider.state( state, config );
       } );
+    }
+
+    /**
+     * re-writes the url based on the regexp with the .replace() callback
+
+     * ui-router: https://github.com/angular-ui/ui-router/wiki/URL-Routing#rule-for-custom-url-handling
+     *
+     * @param regexp - the url pattern to match
+     * @param replace - string value use as replacement or callback to handle replacement
+     * @param setup - to pass $inject and $location to the calling method
+     */
+    function rewriteUrl( regexp, replace, setup ) {
+
+      //ui-router doc: https://github.com/angular-ui/ui-router/wiki/URL-Routing#rule-for-custom-url-handling
+      $urlRouterProvider.rule( function( $injector, $location ) {
+        setup = setup || _.noop;
+        setup( $injector, $location );
+
+        //what this function returns will be set as the $location.url
+        var path       = $location.path();
+        var normalized = path.replace( regexp, replace );
+
+        if ( path !== normalized ) {
+          //instead of returning a new url string, I'll just change the $location.path directly
+          //so I don't have to worry about constructing a new url string and so a new state change is not triggered
+          $location.replace().path( normalized );
+        }
+
+        // because we've returned nothing, no state change occurs
+      } );
+
     }
   }
 
