@@ -48,15 +48,15 @@ $default-svg-icon-size: 1.25rem !default;
   // Either a :before or :after pseudo-element, or both, defaulting to :before
   &:#{$position} {
     @if $icon {
-      // A particular icon has been specified
+
       content: "#{map-get($icon-controls, $icon)}";
     }
     @if $color {
-      // A particular color has been specified
+
       color: $color;
     }
     @if $margin {
-      // A particular color has been specified
+
       @if $position == before {
           margin-right: $margin;
       }
@@ -75,8 +75,77 @@ $default-svg-icon-size: 1.25rem !default;
         font-weight: normal;
         font-family: 'FontAwesome';
     }
-    // Include any extra rules supplied for the pseudo-element
+
     @content;
+  }
+}
+
+// Directional Arrow Mixin */
+/* ------------------------------------
+ * Specifically for use with rtl and ltr directions
+ * Arrow output will be determined by $global-text-direction setting
+------------------------------------------------------------------------*/
+
+@mixin directional-arrow($direction: next, $position: after, $icon: false, $color: inherit, $margin: 0.3125rem, $styles: true) {
+  $direction: $direction;
+  $position: $position;
+  $icon: $icon;
+  $color: $color;
+  $margin: $margin;
+  $styles: $styles;
+
+  @if $direction == next {
+    $position: dir-check('after', 'before');
+    $icon: dir-check('\f061', '\f060');
+  }
+  @else if $direction == back {
+    $position: dir-check('before', 'after');
+    $icon: dir-check('\f060', '\f061');
+  }
+
+  // Either :before or :after pseudo-element depending on $global-text-direction
+  &:#{$position} {
+    content: "#{$icon}";
+
+    @if $color {color: $color;}
+
+    @if $margin {
+      $margin: $margin;
+
+      @if $position == before {
+          margin-#{$global-right}: $margin;
+      }
+      @if $position == after {
+          margin-#{$global-left}: $margin;
+      }
+    }
+    @if $styles {
+        speak: none;
+        font-style: normal;
+        font-weight: normal;
+        font-family: 'FontAwesome';
+    }
+
+    @content; // Include any extra rules supplied
+
+    @if $direction == next {
+      @if $position == after {
+        margin-#{$global-left}: $margin;
+      }
+      @else if $position == after {
+        margin-left: $margin;
+      }
+    }
+
+    @if $direction == back {
+      @if $position == before {
+        margin-#{$global-right}: $margin;
+      }
+      @else if $position == after {
+        margin-left: $margin;
+      }
+    }
+
   }
 }
 
@@ -113,7 +182,7 @@ $default-svg-icon-size: 1.25rem !default;
       }
     }
   }
-  // Include any extra rules supplied for the pseudo-element
+
   @content;
 }
 
@@ -164,9 +233,16 @@ $default-svg-icon-size: 1.25rem !default;
       }
     }
 
-    &:last-child {
-      margin-right: 0;
+    &:#{$global-last}-child {
+      margin-#{$global-right}: 0;
     }
+
+    @include bidirectional() {
+      &:first-child {
+        margin-left: 0;
+      }
+    }
+
   }
 }
 
@@ -220,8 +296,14 @@ $default-svg-icon-size: 1.25rem !default;
       }
     }
 
-    &:last-child {
-      margin-right: 0;
+    &:#{$global-last}-child {
+      margin-#{$global-right}: 0;
+    }
+
+    @include bidirectional() {
+      &:first-child {
+        margin-left: 0;
+      }
     }
   }
 }
@@ -250,7 +332,15 @@ $default-svg-icon-size: 1.25rem !default;
       @include icon(before, email) {
       }
     }
+  }
 
+  .arrow-next {
+    @include directional-arrow(next);
+
+  }
+
+  .arrow-back {
+    @include directional-arrow(back);
   }
 
   .svg-icon {
@@ -258,15 +348,17 @@ $default-svg-icon-size: 1.25rem !default;
   }
 
   /* BUTTONS AS ICONS */
-
   button, a.button, input[type="submit"], input[type="button"] {
 
     &.icon {
+
+      :not(.arrow-next), :not(.arrow-back) {
+        padding: 0;
+      }
       background: transparent;
       border: none;
       box-shadow: none;
       color: $anchor-font-color;
-      padding: 0;
 
       @each $color in map-keys($theme-colors) {
         &.#{$color} {
@@ -294,6 +386,14 @@ $default-svg-icon-size: 1.25rem !default;
           }
         }
 
+      }
+
+      &.arrow-next {
+        @include directional-arrow(next);
+      }
+
+      &.arrow-back {
+        @include directional-arrow(back);
       }
 
       &:hover, &:focus {background: transparent;}
