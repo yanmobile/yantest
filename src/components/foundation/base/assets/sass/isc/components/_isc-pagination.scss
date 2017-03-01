@@ -3,7 +3,7 @@
 // Structure
 $pagination-link-padding:        0 0.625rem !default;
 $pagination-margin:              1rem auto !default;
-$pagination-item-spacing:        0.25rem !default; // Right margin to separate pagination items.
+$pagination-item-spacing:        0.25rem !default; // Amount of separatation between pagination items.
 
 // Normal State
 $pagination-font-size:           1.125rem !default;
@@ -30,18 +30,27 @@ $pagination-background-disabled: transparent !default;
     width: 100%;
     border-top: none;
     list-style-type: none;
-    margin: $pagination-margin;
     text-align: center;
+    margin: dir-values($pagination-margin);
+
+    @include bidirectional() {
+      margin: flip-dir($pagination-margin);
+    }
 
     li {
-      padding: $pagination-link-padding;
       min-width: none;
       max-width: none;
       height: auto;
-      margin: 0 $pagination-item-spacing 0 0;
       float: none;
       line-height: 1;
       display: inline-block;
+      padding: dir-values($pagination-link-padding);
+      margin: dir-values(0 $pagination-item-spacing 0 0);
+
+      @include bidirectional() {
+        padding: flip-dir($pagination-link-padding);
+        margin: flip-dir(0 $pagination-item-spacing 0 0);
+      }
 
       a {
         display: inline-block;
@@ -88,8 +97,15 @@ $pagination-background-disabled: transparent !default;
         }
       }
 
-      &:last-child {
-        margin-right: 0;
+      @include ltr() {
+        &:last-child {
+          margin-#{$global-right}: 0;
+        }
+      }
+      @include bidirectional() {
+        &:first-child {
+          margin-left: 0;
+        }
       }
     }
   }

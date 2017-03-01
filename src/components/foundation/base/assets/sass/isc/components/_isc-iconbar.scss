@@ -34,10 +34,22 @@ $iconbar-icon-padding: 1.25rem 1rem !default;
 
   @if $orientation == horizontal {
     > li {
-      border-right: 2px solid scale-color($background, $lightness: -20%);
+      border-#{$global-right}: 2px solid scale-color($background, $lightness: -20%);
 
-      &:last-child {
-        border-right: none;
+      @include bidirectional() {
+        border-left: 2px solid scale-color($background, $lightness: -20%);
+        border-radius: none;
+      }
+
+
+      &:#{$global-last}-child {
+        border-#{$global-right}: none;
+      }
+
+      @include bidirectional() {
+        &:first-child {
+          border-left: none;
+        }
       }
     }
     @include menu-bar-layout(
@@ -48,7 +60,11 @@ $iconbar-icon-padding: 1.25rem 1rem !default;
   @else {
     > li {
       border-bottom: 2px solid scale-color($background, $lightness: -20%);
-      border-right: none;
+      border-#{$global-right}: none;
+
+      @include bidirectional() {
+        border-left: none;
+      }
     }
     @include menu-bar-layout(
       $orientation: vertical,
@@ -79,14 +95,31 @@ $iconbar-icon-padding: 1.25rem 1rem !default;
 
   li {
     a {
-      padding: $iconbar-icon-padding;
+      padding: dir-values($iconbar-icon-padding);
 
-      &:before {
-        display: inline-block;
-        font-size: $icon-size;
-        font-family: 'FontAwesome';
-        margin: 0 auto;
+      @include bidirectional() {
+        padding: flip-dir($iconbar-icon-padding);
       }
+
+      @include ltr() {
+        &:before {
+          display: inline-block;
+          font-size: $icon-size;
+          font-family: 'FontAwesome';
+          margin: 0 auto;
+        }
+      }
+
+      @include bidirectional() {
+        &:after {
+          display: inline-block;
+          font-size: $icon-size;
+          font-family: 'FontAwesome';
+          margin: 0 auto;
+        }
+      }
+
+
 
       &.active {
         background: $background-active;
@@ -152,5 +185,4 @@ $iconbar-icon-padding: 1.25rem 1rem !default;
       @include menu-bar-layout($orientation: horizontal, $stretch: true);
     }
   }
-
 }
