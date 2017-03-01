@@ -22,8 +22,8 @@ $icon-controls: (
   home: "\f015",
   save: "\f0c7",
   cancel: "\f05e",
-  arrowleft: "\f060",
-  arrowright: "\f061",
+  arrowback: "\f060",
+  arrownext: "\f061",
   arrowup: "\f062",
   arrowdown: "\f063",
   checkmark: "\f00c",
@@ -95,17 +95,19 @@ $default-svg-icon-size: 1.25rem !default;
   $styles: $styles;
 
   @if $direction == next {
-    $position: dir-check('after', 'before');
-    $icon: dir-check('\f061', '\f060');
+    $position: default-dir('after', 'before');
+    $icon: default-dir('\f061', '\f060');
   }
-  @else if $direction == back {
-    $position: dir-check('before', 'after');
-    $icon: dir-check('\f060', '\f061');
+  @if $direction == back {
+    $position: default-dir('before', 'after');
+    $icon: default-dir('\f060', '\f061');
   }
 
   // Either :before or :after pseudo-element depending on $global-text-direction
   &:#{$position} {
-    content: "#{$icon}";
+    @if $icon {
+      content: "#{$icon}";
+    }
 
     @if $color {color: $color;}
 
@@ -145,7 +147,6 @@ $default-svg-icon-size: 1.25rem !default;
         margin-left: $margin;
       }
     }
-
   }
 }
 
@@ -335,12 +336,35 @@ $default-svg-icon-size: 1.25rem !default;
   }
 
   .arrow-next {
-    @include directional-arrow(next);
 
+    @if $global-text-direction == both {
+      .ltr & {
+        @include directional-arrow(next);
+      }
+
+      .rtl & {
+        @include directional-arrow(back, arrowback);
+      }
+    }
+    @else {
+      @include directional-arrow(next);
+    }
   }
 
   .arrow-back {
-    @include directional-arrow(back);
+
+    @if $global-text-direction == both {
+      .ltr & {
+        @include directional-arrow(back);
+      }
+
+      .rtl & {
+        @include directional-arrow(next, arrownext);
+      }
+    }
+    @else {
+      @include directional-arrow(back);
+    }
   }
 
   .svg-icon {
@@ -389,11 +413,33 @@ $default-svg-icon-size: 1.25rem !default;
       }
 
       &.arrow-next {
-        @include directional-arrow(next);
+        @if $global-text-direction == both {
+          .ltr & {
+            @include directional-arrow(next);
+          }
+
+          .rtl & {
+            @include directional-arrow(back, arrowback);
+          }
+        }
+        @else {
+          @include directional-arrow(next);
+        }
       }
 
       &.arrow-back {
-        @include directional-arrow(back);
+        @if $global-text-direction == both {
+          .ltr & {
+            @include directional-arrow(back);
+          }
+
+          .rtl & {
+            @include directional-arrow(next, arrownext);
+          }
+        }
+        @else {
+          @include directional-arrow(back);
+        }
       }
 
       &:hover, &:focus {background: transparent;}

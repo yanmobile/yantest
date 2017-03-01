@@ -76,6 +76,19 @@ $dir: $global-text-direction !default;
 	}
 }
 
+// @function default-dir
+/* -----------------------------------------
+/* For use inside of mixin logic to handle bidirectional
+/* support. Checks global direction and returns $a as the default
+/* ---------------------------------------- */
+@function default-dir($a, $b) {
+  @if $global-text-direction == ltr or $global-text-direction == both {
+    @return $a;
+  } @else {
+    @return $b;
+  }
+}
+
 // @function radius-values
 /* -----------------------------------------
 /* Checks global direction & conditionally swaps
@@ -154,6 +167,28 @@ $dir: $global-text-direction !default;
 
     .rtl & {
       @content;
+    }
+  }
+}
+
+// @mixin direction
+/* -------------------------------------------------
+/* Support for "direction" declaration (renders ltr/rtl).
+/* Useful for form elements as they swap the text-indent
+/* property and align the text accordingly.
+/* ---------------------------------------- */
+
+@mixin direction {
+  @if $global-text-direction == ltr or $global-text-direction == rtl {
+		direction: $global-text-direction;
+	}
+
+  @else if $global-text-direction == both {
+    .ltr & {
+      direction: ltr;
+    }
+    .rtl & {
+      direction: rtl;
     }
   }
 }
