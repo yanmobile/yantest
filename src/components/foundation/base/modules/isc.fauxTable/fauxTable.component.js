@@ -67,14 +67,14 @@
     function changePageNumber( page ) {
       log.logFn( 'changePageNumber' );
       if ( _.get( self, 'config.pager.server' ) ) {
-        self.config.pager.onPageChange( page );
+        self.config.pager.onPageChange( page, self.sortBy, self.sortReverse );
       }
     }
 
     function $onChanges( changes ) {
       log.logFn( '$onChanges' );
 
-      pager             = _.get( changes, "config.pager", {} );
+      pager             = _.get( changes, 'config.pager', {} );
       self.paginationId = 'fauxTable_' + _.camelCase( self.config.title || '' );
       if ( pager.server && !pager.onPageChange ) {
         log.error( 'config.pager.onPageChange is required for server paging' );
@@ -89,9 +89,8 @@
      *
      */
     function sort( column ) {
-
-      if ( self.sortBy !== column.model ) {
-        self.sortBy      = column.model;
+      if ( self.sortBy !== column ) {
+        self.sortBy      = column;
         self.sortReverse = false;
       } else { //asc => desc
         self.sortReverse = !self.sortReverse;
@@ -101,7 +100,7 @@
         // call custom column sort
         column.onSort( self.data, column, self.sortReverse );
       } else {
-        self.data = $filter( "orderBy" )( self.data, column.model, self.sortReverse );
+        self.data = $filter( 'orderBy' )( self.data, column.model, self.sortReverse );
       }
     }
 
@@ -112,8 +111,8 @@
      */
     function getSort( column ) {
       var sortState = null;
-      if ( self.sortBy === column.model ) {
-        sortState = self.sortReverse ? 'desc' : "asc";
+      if ( self.sortBy === column ) {
+        sortState = self.sortReverse ? 'desc' : 'asc';
       }
       return sortState;
     }
