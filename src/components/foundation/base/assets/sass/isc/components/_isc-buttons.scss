@@ -4,7 +4,7 @@
   Includes basic style variations for a collection of commonly used button types.
    - Basic Buttons, size & color variations
    - Prefix, Postfix
-   - Button Groups
+   - Button Utilities
 */
 
 /* Button Settings */
@@ -37,14 +37,10 @@ $button-tag-selector: true;
 
     &.dropdown {
       position: relative;
-      padding-right: 2rem; // Placeholder
+      padding-#{$global-right}: 2rem; // Placeholder
 
-      &::after {
-        @include css-triangle(6px, inherit, top);
-        position: absolute;
-        right: 0.7rem;
-        top: 50%;
-        margin-top: -3px;
+      @include bidirectional() {
+        padding-left: 2rem;
       }
     }
 
@@ -60,29 +56,56 @@ $button-tag-selector: true;
 
         &.dropdown {
 
-          &::after {
-            @include css-triangle(6px, isitlight($color-name, $body-font-color, $light-text), top);
-            position: absolute;
-            right: 0.7rem;
-            top: 50%;
-            margin-top: -3px;
+          @include ltr() {
+            &::after {
+              //@include css-triangle(6px, inherit, top);
+              @include css-triangle(6px, isitlight($color-name, $body-font-color, $light-text), top);
+              position: absolute;
+              #{$global-right}: 0.7rem;
+              top: 50%;
+              margin-top: -3px;
+            }
+          }
+
+          @include bidirectional() {
+            &::before {
+              @include css-triangle(6px, isitlight($color-name, $body-font-color, $light-text), top);
+              position: absolute;
+              left: 0.7rem;
+              top: 50%;
+              margin-top: -3px;
+            }
+            &::after {display: none;}
           }
         }
 
         &.hollow {
           @include button-style(
             $background-hover: transparent,
-            $color: scale-color($color-name, $lightness: -15%)
+            $color: scale-color($color-name, $lightness: -10%)
           );
           background: transparent;
-          border-color: scale-color($color-name, $lightness: -15%);
+          border-color: $color-name;
 
           &:hover, &:focus {
-            color: scale-color($color-name, $lightness: -35%);
-            border-color: scale-color($color-name, $lightness: -35%);
+            color: scale-color($color-name, $lightness: -12%);
+            border-color: scale-color($color-name, $lightness: -12%);
+            background: scale-color($body-background, $lightness: -5%);
           }
+
           &.dropdown {
-            &::after {border-top-color: $color-name;}
+            @include ltr() {
+              &::after {
+                border-top-color: $color-name;
+              }
+            }
+
+            @include bidirectional() {
+              &::before {
+                border-top-color: $color-name;
+              }
+              &::after {display: none;}
+            }
           }
         }
       }
@@ -124,111 +147,23 @@ $button-tag-selector: true;
       margin: 0;
       padding: 0.5em 0.75em;
       text-align: center;
-      border-radius: $global-radius 0 0 $global-radius;
     }
 
-    .prefix & {border-radius: $global-radius 0 0 $global-radius;}
-    .postfix & {border-radius: 0 $global-radius $global-radius 0;}
+    &.prefix , .prefix & {
+      border-radius: radius-values($global-radius 0 0 $global-radius);
 
-    &.prefix {border-radius: $global-radius 0 0 $global-radius;}
-    &.postfix {border-radius: 0 $global-radius $global-radius 0;}
-  }
-
-  /* Button Group */
-  .button-group {
-    @extend %button-group;
-
-    > li {
-      flex: 0 0 auto;
-      margin: 0;
-
-      > input + label, input[type="checkbox"] + label, input[type="radio"] + label {margin: 0;}
-
-      // Links become buttons
-      #{$child-selectors} {
-        @extend %button;
-        font-size: inherit;
-        display: block;
-        margin: 0;
-
-
-        &:last-child {border-radius: 0 $global-radius $global-radius 0; border-right: none;}
+      @include bidirectional() {
+        border-radius: 0 $global-radius $global-radius 0;
       }
+    }
+    &.postfix, .postfix & {
+      border-radius: radius-values(0 $global-radius $global-radius 0);
+      flex-wrap: nowrap;
+      white-space: nowrap;
 
-      &:not(:last-child) {
-        #{$child-selectors} {
-          border-right: 1px solid rgba(black, 0.21);
-          border-radius: 0;
-        }
-      }
-
-      &.cancel {
-
-        #{$child-selectors} {
-          @include button-style(
-          $background: $button-cancel-background,
-          $background-hover: auto, // generate dynamically
-          $color: isitlight($button-cancel-background, $body-font-color, $light-text),
-          $style: solid //solid or hollow
-          );
-        }
-      }
-
-      @each $color in map-keys($theme-colors) {
-
-      &.#{$color} {
-        $color-name: map-get($theme-colors, $color);
-
-          #{$child-selectors} {
-            @include button-style(
-              $background: $color-name,
-              $background-hover: scale-color($color-name, $lightness: -15%),
-              $color: isitlight($color-name, $body-font-color, $light-text)
-            );
-          }
-        }
+      @include bidirectional() {
+        border-radius: $global-radius 0 0 $global-radius;
       }
     }
   }
-
-  .button-group {
-    @each $color in map-keys($theme-colors) {
-
-    &.#{$color} {
-      $color-name: map-get($theme-colors, $color);
-
-        > li {
-
-          #{$child-selectors} {
-            @include button-style(
-              $background: $color-name,
-              $background-hover: scale-color($color-name, $lightness: -15%),
-              $color: isitlight($color-name, $body-font-color, $light-text)
-            );
-          }
-        }
-
-        &.segmented {
-          border-color: scale-color($color-name, $lightness: -15%);
-
-          > li {
-            #{$child-selectors} {
-              @include button-style(
-                $background-hover: transparent,
-                $color: scale-color($color-name, $lightness: -15%)
-              );
-              background: transparent;
-              border-color: scale-color($color-name, $lightness: -15%);
-
-              &:hover, &:focus {
-                color: scale-color($color-name, $lightness: -35%);
-                border-color: scale-color($color-name, $lightness: -35%);
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-
 }

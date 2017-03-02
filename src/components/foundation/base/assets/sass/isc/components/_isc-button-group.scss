@@ -1,0 +1,151 @@
+/*
+  BUTTON GROUPS
+  ----------
+  Styles for Button Group Component.
+   - Basic Buttons, size & color variations
+   - Prefix, Postfix
+   - Button Groups
+*/
+
+/* Button Group Settings */
+$btngroup-background: $button-background !default;
+$btngroup-color: #fff !default;
+$btngroup-radius: $button-radius !default;
+$button-hollow-hover-background: #f5f5f5 !default;
+
+$child-selectors: '> a, > label, > button';
+
+/* Style Exports */
+@include exports(buttongroup) {
+
+
+  .button-group {
+    @extend %button-group;
+
+    > li {
+      &:not(:#{$global-last}-child) > a {border-#{$global-right}: 1px solid rgba($dark-text, 0.75);}
+
+      @if $global-text-direction == rtl {
+        &:not(:last-child) > a {
+          border-left: 1px solid rgba($dark-text, 0.75);
+        }
+
+        &:not(:last-child) > a {
+          border-right: none;
+        }
+      }
+    }
+
+    @each $color in map-keys($theme-colors) {
+
+      &.#{$color} {
+        $color-name: map-get($theme-colors, $color);
+
+        > li {
+
+          > #{$child-selectors} {border-color: scale-color($color-name, $lightness: -15%) !important;}
+
+          // Add borders between items
+          &:not(:#{$global-last}-child) {
+            #{$child-selectors} {
+              border-#{$global-right}: 1px solid scale-color($color-name, $lightness: -15%);
+              border-color: scale-color($color-name, $lightness: -15%);
+              border-radius: 0;
+            }
+          }
+
+          @if $global-text-direction == rtl {
+            &:not(:last-child) > a, #{$child-selectors} {
+              border-#{$global-left}: 1px solid scale-color($color-name, $lightness: -15%);
+            }
+
+            &:last-child > a {
+              border-right: none;
+            }
+          }
+
+          @include ltr() {
+            &:not(:#{$global-last}-child) {
+              #{$child-selectors} {
+                //border-#{$global-right}: 1px solid scale-color($color-name, $lightness: -15%);
+                border-color: scale-color($color-name, $lightness: -15%);
+                border-radius: 0;
+              }
+            }
+          }
+
+          @include bidirectional() {
+            &:not(:first-child) {
+              #{$child-selectors} {
+                border-left: 1px solid 1px solid scale-color($color-name, $lightness: -15%);
+                border-color: scale-color($color-name, $lightness: -15%);
+              }
+            }
+
+            &:first-child {
+              #{$child-selectors} {
+                border-right: none;
+              }
+            }
+          }
+
+          #{$child-selectors} {
+            @include button-style(
+              $background: $color-name,
+              $background-hover: scale-color($color-name, $lightness: -15%),
+              $color: isitlight($color-name, $body-font-color, $light-text)
+            );
+            border-color: scale-color($color-name, $lightness: -15%);
+          }
+          &.is-active {
+            #{$child-selectors} {
+              background: scale-color($color-name, $lightness: -15%);
+            }
+          }
+        }
+
+        &.segmented {
+          @extend %button-group-segmented;
+          border-color: $color-name;
+
+          > li {
+
+            #{$child-selectors} {
+              @include button-style(
+                $style: hollow,
+                $background-hover: scale-color($color-name, $lightness: -15%),
+                $color: isitlight($color-name, $body-font-color, $light-text)
+              );
+              margin: 0;
+
+            }
+          }
+
+          > li {
+            // This is the button
+            #{$child-selectors} {
+              border-color: $color-name;
+              color: scale-color($color-name, $lightness: -15%);
+              margin: 0;
+
+              // This is the button being hovered on
+              &:hover {
+                background: $button-hollow-hover-background;
+                color: $color-name;
+              }
+            }
+
+            // This is the button when it's active
+            &.is-active > a,
+            > input:checked + label {
+              &, &:hover {
+                background: $color-name;
+                color: isitlight($color-name, $body-font-color, $light-text);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
