@@ -517,6 +517,9 @@ gulp deploy --appjson path/to/config.app.js #only app specific
          }
        ```  
 
+* **How do I format my JavaScript code to meet the coding guideline?**
+  * execute ```gulp jsformat``` in the git project folder
+
 ---
 ###Git 101
 ```bash
