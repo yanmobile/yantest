@@ -198,13 +198,26 @@
 
         // Actions
         if ( self.mode !== 'view' ) {
-          tableColumns.push(
-            {
-              key        : 'Actions',
-              sortable   : false,
-              templateUrl: 'forms/collectionLayouts/actions/' + ( self.collectionLayout || 'table' ) + '-actions.html'
-            }
-          );
+          var actionsTemplate;
+
+          // Default actions template
+          if ( self.collectionLayoutActions === undefined ) {
+            actionsTemplate = 'actions/' + ( self.collectionLayout || 'table' ) + '-actions.html';
+          }
+          // Custom actions template (if defined)
+          else {
+            actionsTemplate = self.collectionLayoutActions;
+          }
+
+          if ( actionsTemplate ) {
+            tableColumns.push(
+              {
+                key        : 'Actions',
+                sortable   : false,
+                templateUrl: ['forms/collectionLayouts/', actionsTemplate].join( '' )
+              }
+            );
+          }
         }
 
         // Callbacks to actions defined in this directive need to be linked in the tableConfig object
@@ -235,19 +248,21 @@
        */
       function setCollectionConfiguration() {
         // Layout and className may be specified as strings (applies to all modes) or objects (to apply to specific modes)
-        var mode                = self.mode,
-            collectionLayout    = _.get( collectionOpts, 'layout' ),
-            collectionClassName = _.get( collectionOpts, 'className' ),
-            modeLayout          = _.get( collectionLayout, mode, collectionLayout ),
-            modeClassName       = _.get( collectionClassName, mode, collectionClassName );
+        var mode                    = self.mode,
+            collectionLayout        = _.get( collectionOpts, 'layout' ),
+            collectionClassName     = _.get( collectionOpts, 'className' ),
+            collectionLayoutActions = _.get( collectionOpts, 'layoutActions' ),
+            modeLayout              = _.get( collectionLayout, mode, collectionLayout ),
+            modeClassName           = _.get( collectionClassName, mode, collectionClassName );
 
         // In case layout or className is specified for only one mode
         modeLayout    = _.isObject( modeLayout ) ? undefined : modeLayout;
         modeClassName = _.isObject( modeClassName ) ? undefined : modeClassName;
 
         _.extend( self, {
-          collectionLayout   : modeLayout,
-          collectionClassName: modeClassName
+          collectionLayout       : modeLayout,
+          collectionClassName    : modeClassName,
+          collectionLayoutActions: collectionLayoutActions
         } );
       }
 

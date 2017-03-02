@@ -77,8 +77,9 @@
           _.get( field, 'data.codeTable' ) ||
           expProps['templateOptions.options'] ||
           expProps['data.codeTable'] ) {
-          // If this is a list control and the displayField has not been set yet, set as the configured default
-          if ( !_.get( field, 'data.displayField' ) && defaultDisplayField ) {
+          // If this is a list control and the displayField has not been set yet,
+          // and the field is not explicitly set to be primitive, set the configured default.
+          if ( !_.get( field, 'data.displayField' ) && defaultDisplayField && _.get( field, 'data.isObject' ) !== false ) {
             _.set( field, 'data.displayField', defaultDisplayField );
           }
         }
