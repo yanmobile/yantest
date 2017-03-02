@@ -633,11 +633,14 @@ $breakpoint-percentages : (
   //Labels for radios and checkboxes need to wrap
   input[type="checkbox"] + label, input[type="radio"] + label {
     display: inline-block;
-    margin-#{$global-left}: 0.5rem;
-    margin-#{$global-right}: 1rem;
-    margin-bottom: 1rem;
     vertical-align: baseline;
     font-weight: $font-weight-normal;
+
+    &:not(.button-group &) {
+      margin-#{$global-left}: 0.5rem;
+      margin-#{$global-right}: 1rem;
+      margin-bottom: 1rem;
+    }
 
     @include ltr() {
       &:not(:first-child) {
@@ -646,9 +649,11 @@ $breakpoint-percentages : (
     }
 
     @include bidirectional() {
-      border-radius: 0 $global-radius $global-radius 0;
-      margin-right: 0.5rem;
-      margin-left: 1rem;
+      &:not(.button-group &) {
+        border-radius: 0 $global-radius $global-radius 0;
+        margin-right: 0.5rem;
+        margin-left: 1rem;
+      }
 
       &:not(:first-child) {
         border-radius: 0;
