@@ -29,10 +29,10 @@
 .padding-top-double {padding-top: $global-padding * 2;}
 .padding-bottom {padding-bottom: $global-padding;}
 .padding-bottom-double {padding-bottom: $global-padding * 2;}
-.padding-left {padding-left: $global-padding;}
-.padding-left-half {padding-left: $global-padding / 2;}
-.padding-right {padding-right: $global-padding;}
-.padding-right-half {padding-right: $global-padding / 2;}
+.padding-#{$global-left} {padding-#{$global-left}: $global-padding;}
+.padding-#{$global-left}-half {padding-#{$global-left}: $global-padding / 2;}
+.padding-#{$global-right} {padding-#{$global-right}: $global-padding;}
+.padding-#{$global-right}-half {padding-#{$global-right}: $global-padding / 2;}
 
 .small-collapse {
   @media #{$small} {
@@ -55,39 +55,39 @@
   }
 }
 
-.small-padding-left {
+.small-padding-#{$global-left} {
   @media #{$small} {
-    padding-left: 1rem;
+    padding-#{$global-left}: 1rem;
   }
 }
 
-.small-padding-right {
+.small-padding-#{$global-right} {
   @media #{$small} {
-    padding-right: 1rem;
+    padding-#{$global-right}: 1rem;
   }
 }
 
-.medium-padding-left {
+.medium-padding-#{$global-left} {
   @media #{$medium} {
-    padding-left: 1rem;
+    padding-#{$global-left}: 1rem;
   }
 }
 
-.medium-padding-right {
+.medium-padding-#{$global-right} {
   @media #{$medium} {
-    padding-right: 1rem;
+    padding-#{$global-right}: 1rem;
   }
 }
 
-.large-padding-left {
+.large-padding-#{$global-left} {
   @media #{$large} {
-    padding-left: 1rem;
+    padding-#{$global-left}: 1rem;
   }
 }
 
-.large-padding-right {
+.large-padding-#{$global-right} {
   @media #{$large} {
-    padding-right: 1rem;
+    padding-#{$global-right}: 1rem;
   }
 }
 
@@ -96,10 +96,10 @@
 .margin-top-double {margin-top: $global-margin * 2;}
 .margin-bottom {margin-bottom: $global-margin;}
 .margin-bottom-double {margin-bottom: $global-margin * 2;}
-.margin-left {margin-left: $global-margin;}
-.margin-left-half {margin-left: $global-margin / 2;}
-.margin-right {margin-right: $global-margin;}
-.margin-right-half {margin-right: $global-margin / 2;}
+.margin-#{$global-left} {margin-#{$global-left}: $global-margin;}
+.margin-#{$global-left}-half {margin-#{$global-left}: $global-margin / 2;}
+.margin-#{$global-right} {margin-#{$global-right}: $global-margin;}
+.margin-#{$global-right}-half {margin-#{$global-right}: $global-margin / 2;}
 
 //Helpers to Remove Margins and Padding
 .collapse {
@@ -107,14 +107,14 @@
   margin: 0;
 }
 
-.collapse-left {
-  margin-left: 0;
-  padding-left: 0;
+.collapse-#{$global-left} {
+  margin-#{$global-left}: 0;
+  padding-#{$global-left}: 0;
 }
 
-.collapse-right {
-  margin-right: 0;
-  padding-right: 0;
+.collapse-#{$global-right} {
+  margin-#{$global-right}: 0;
+  padding-#{$global-right}: 0;
 }
 
 .collapse-top {
@@ -128,10 +128,7 @@
 }
 
 // Full-Width Helper
-
-.expand {
-  width: 100%;
-}
+.expand {width: 100%;}
 
 
 /*------ Typography ------*/
@@ -140,26 +137,10 @@
 
 .text-truncate { @include text-truncate; }
 
+.clickable {cursor: pointer;}
 
 
 /*------ Color Swatches ------*/
-
-
-
-/* ------ For Devs ------ */
-
-/* Not in model flag
- * Highlights UI elements missing in data model */
-
-.missing-model-flag {
-  border: 2px solid red !important;
-  padding: 0.125rem;
-}
-
-.different-model-flag {
-  border: 2px solid yellow !important;
-  padding: 0.125rem;
-}
 
 
 /* Style Exportss */
