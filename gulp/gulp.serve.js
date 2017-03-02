@@ -31,7 +31,9 @@
         target      : proxyConfigItem.target,
         pathRewrite : proxyConfigItem.pathRewrite,
         changeOrigin: true,
+        secure      : proxyConfigItem.secure,
         logLevel    : proxyConfigItem.logLevel,
+        toProxy     : proxyConfigItem.toProxy,
         onProxyRes  : function onProxyRes( proxyRes, req, res ) {
           var setCookies = proxyRes.headers['set-cookie'];
 
@@ -41,6 +43,9 @@
               return headerCookie.replace( /path=\/.+;/, 'path=/;' );
             } );
           }
+        },
+        onError     : function errorHandler( err ) {
+          console.log( err );
         }
       } );
     } );
