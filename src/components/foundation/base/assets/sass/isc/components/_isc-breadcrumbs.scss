@@ -1,300 +1,86 @@
 /*
-  BREADCRUMBS
+  FORMS
   -----
-  Basic styles for breadcrumb component.
+
+  Basic styles for timeline component.
+
+  Includes:
+   - Horizontal Step timeline used for forms that display in a stepped wizard format.
+   - TO DO: Vertical Timeline
 */
 
-/* Breadcrumb Settings */
-$breadcrumb-container-margin: 0.5rem 0 2.75rem 0 !default;
-$breadcrumb-item-padding: 0.65rem 0 0.65rem 2.75rem;
-$breadcrumb-item-padding-medium: 0.65rem 0 0.65rem 2rem !default;
-$breadcrumb-item-padding-small: 1rem 0 0.3125rem 1.5rem !default;
-$breadcrumb-color: $primary-nav-background !default;
-$breadcrumb-color-inverse: $app-bar-link-color !default;
+/* Timeline Settings */
+$timeline-margin: 0 0 3.5rem 0 !default;
+$timeline-color: $primary-color !default;
+$timeline-circle-size: 2.5rem !default;
 
-/* Breadcrumb Styles */
-@include exports(breadcrumbs) {
+/* Timeline Styles */
+@include exports(timeline) {
 
-  .context {
-    margin: dir-values($breadcrumb-container-margin);
+  /* Wizard Step Timeline */
+  .wizard-timeline {
+    display: flex;
+    margin: $timeline-margin;
 
     @include bidirectional() {
-      margin: flip-dir($breadcrumb-container-margin);
-    }
-  }
-
-  .breadcrumb {
-    list-style: none;
-    overflow: hidden;
-    font-size: 1rem;
-    line-height: 1.5;
-    border: 1px solid $breadcrumb-color;
-    display: inline-block;
-    padding: 0;
-    margin: 0;
-
-    @media #{$medium} {
-      font-size: 0.875rem;
+      padding: flip-dir($timeline-margin);
     }
 
-    @media #{$small} {
-      margin-top: 1rem;
-      font-size: 0.75rem;
-    }
-
-    li {
-      float: #{$global-left};
+    .circle {
+      background-color: $timeline-color;
+      background-size : $timeline-circle-size $timeline-circle-size;
+      border-radius: 50%;
+      width: $timeline-circle-size;
+      height: $timeline-circle-size;
+      position: relative;
+      margin-top: 0;
+      color: isitlight($timeline-color, $body-font-color, $light-text);
+      text-align: center;
+      font-size: 1.5rem;
+      padding: 0.125rem;
+      line-height: 1;
+      vertical-align: middle;
+      margin-#{$global-right}: 1rem;
+      border: 3px solid $timeline-color;
+      z-index: 1;
 
       @include bidirectional() {
-        float: right;
+  			margin-right: 1rem;
+  		}
+
+      button {
+        background-color: transparent;
+        border: none;
+        margin: 0;
+        padding: 0;
+        font-weight: $font-weight-semi-bold;
       }
 
-      @include ltr() {
-        &:#{$global-first}-child a {
-          padding-#{$global-left}: 1rem;
+      &.hollow {
+        background-color: isitlight($timeline-color, $body-font-color, $light-text);
 
-          @media #{$small} {
-            padding-#{$global-left}: 0.5rem;
-          }
-        }
-
-        &:#{$global-last}-child a {
-          padding-#{$global-right}: 1rem;
-
-          @media #{$small} {
-            padding-#{$global-right}: 0.5rem;
-          }
+        button {
+          color: $timeline-color;
         }
       }
+    }
 
-      @include bidirectional() {
+    .line {
+      padding-top: 0;
 
-        &:first-child a {
-          padding-right: 1rem;
-
-          @media #{$small} {
-            padding-right: 0.5rem;
-          }
-        }
-
-        &:last-child a {
-          padding-left: 1rem;
-
-          @media #{$small} {
-            padding-left: 0.5rem;
-          }
-        }
-      }
-
-      &.active {
-
-        .breadcrumb-text {
-          display: inline-block;
-
-          @include bidirectional() {
-            direction: rtl;
-          }
-        }
-
-        a {
-          background: $breadcrumb-color;
-          color: $breadcrumb-color-inverse;
-
-          @include ltr() {
-            &:after {
-              border-#{$global-left}-color: $breadcrumb-color;
-            }
-          }
-
-          @include bidirectional() {
-            &:before {
-              border-right-color: $breadcrumb-color;
-            }
-          }
-
-          &:hover {
-            background: $breadcrumb-color;
-          }
-        }
-      }
-
-      a {
-        color: $breadcrumb-color;
-        text-decoration: none;
-        padding: dir-values($breadcrumb-item-padding);
-        background: $breadcrumb-color-inverse;
-        position: relative;
-        display: block;
-        float: #{$global-left};
-
-        @media #{$medium} {
-          padding: dir-values($breadcrumb-item-padding-medium);
-        }
-
-        @media #{$small} {
-          padding: dir-values($breadcrumb-item-padding-small);
-        }
-
+      &:before {
+        content: "";
+        position: absolute;
+        height: 0.25rem;
+        width: 100%;
+        background: $timeline-color;
+        top: 50%;
+        #{$global-left}: 0px;
+        z-index: 0;
 
         @include bidirectional() {
-          padding: flip-dir($breadcrumb-item-padding);
-          float: right;
-          direction: rtl;
-
-          @media #{$medium} {
-            padding: flip-dir($breadcrumb-item-padding-medium);
-          }
-
-          @media #{$small} {
-            padding: flip-dir($breadcrumb-item-padding-small);
-          }
-        }
-
-        &:focus {outline: none;}
-
-        &:hover, &:focus {
-          background: smartscale($breadcrumb-color-inverse, 3%);
-
-          @include ltr() {
-            &:after {
-              border-#{$global-left}-color: smartscale($breadcrumb-color-inverse, 3%);
-            }
-          }
-
-          @include bidirectional() {
-            &:before {
-              border-right-color: smartscale($breadcrumb-color-inverse, 3%);
-            }
-          }
-        }
-
-        @include ltr() {
-          //White arrow border (in front)
-          &:after {
-            content: " ";
-            display: block;
-            width: 0;
-            height: 0;
-            border-top: 50px solid transparent;
-            /* Go big on the size, and let overflow hide */
-            border-bottom: 50px solid transparent;
-            border-#{$global-left}: 30px solid $breadcrumb-color-inverse;
-            position: absolute;
-            top: 50%;
-            margin-top: -50px;
-            #{$global-left}: 100%;
-            z-index: 2;
-
-            @media #{$medium} {
-              border-top: 30px solid transparent;
-              border-#{$global-left}: 20px solid $breadcrumb-color-inverse;
-              border-bottom: 30px solid transparent;
-              margin-top: -30px;
-            }
-
-            @media #{$small} {
-              border-top: 25px solid transparent;
-              border-#{$global-left}: 15px solid $breadcrumb-color-inverse;
-              border-bottom: 25px solid transparent;
-              margin-top: -25px;
-            }
-          }
-          //Blue arrow item border (behind)
-          &:before {
-            content: " ";
-            display: block;
-            width: 0;
-            height: 0;
-            border-top: 50px solid transparent;
-            /* Go big on the size, and let overflow hide */
-            border-bottom: 50px solid transparent;
-            border-#{$global-left}: 30px solid $breadcrumb-color;
-            position: absolute;
-            top: 50%;
-            margin-top: -50px;
-            margin-#{$global-left}: 1px;
-            #{$global-left}: 100%;
-            z-index: 1;
-
-            @media #{$medium} {
-              border-top: 30px solid transparent;
-              border-#{$global-left}: 20px solid $breadcrumb-color;
-              border-bottom: 30px solid transparent;
-              margin-top: -30px;
-            }
-
-            @media #{$small} {
-              border-top: 25px solid transparent;
-              border-#{$global-left}: 15px solid $breadcrumb-color;
-              border-bottom: 25px solid transparent;
-              margin-top: -25px;
-            }
-          }
-        }
-
-        @include bidirectional() {
-          //White arrow border (in front)
-          &:before {
-            content: " ";
-            display: block;
-            width: 0;
-            height: 0;
-            border-top: 50px solid transparent;
-            /* Go big on the size, and let overflow hide */
-            border-bottom: 50px solid transparent;
-            border-right: 30px solid $breadcrumb-color-inverse;
-            position: absolute;
-            top: 50%;
-            margin-top: -50px;
-            right: 100%;
-            z-index: 2;
-
-            @media #{$medium} {
-              border-top: 30px solid transparent;
-              border-right: 20px solid $breadcrumb-color-inverse;
-              border-bottom: 30px solid transparent;
-              margin-top: -30px;
-            }
-
-            @media #{$small} {
-              border-top: 25px solid transparent;
-              border-right: 15px solid $breadcrumb-color-inverse;
-              border-bottom: 25px solid transparent;
-              margin-top: -25px;
-            }
-          }
-          //Blue arrow item border (behind)
-          &:after {
-            content: " ";
-            display: block;
-            width: 0;
-            height: 0;
-            border-top: 50px solid transparent;
-            /* Go big on the size, and let overflow hide */
-            border-bottom: 50px solid transparent;
-            border-right: 30px solid $breadcrumb-color;
-            position: absolute;
-            top: 50%;
-            margin-top: -50px;
-            margin-right: 1px;
-            right: 100%;
-            z-index: 1;
-
-            @media #{$medium} {
-              border-top: 30px solid transparent;
-              border-right: 20px solid $breadcrumb-color;
-              border-bottom: 30px solid transparent;
-              margin-top: -30px;
-            }
-
-            @media #{$small} {
-              border-top: 25px solid transparent;
-              border-right: 15px solid $breadcrumb-color;
-              border-bottom: 25px solid transparent;
-              margin-top: -25px;
-            }
-          }
-        }
+    			right: 0px;
+    		}
       }
     }
   }
