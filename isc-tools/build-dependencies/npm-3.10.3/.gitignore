@@ -1,3 +1,6 @@
+# include subsidiary node_modules by default
+!node_modules
+!/bin/
 *.swp
 npm-debug.log
 .nyc_output/
@@ -7,7 +10,7 @@ npm-debug.log
 /test/packages/npm-test-depends-on-spark/which-spark.log
 /test/packages/test-package/random-data.txt
 /test/root
-/node_modules/.bin
+#/node_modules/.bin
 /html/doc/
 /man/
 /doc/*/npm-index.md
