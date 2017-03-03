@@ -38,20 +38,59 @@
         } );
       } );
     } );
+
+    describe( 're-writing url', function() {
+
+      it( 'should have a rule()', function() {
+        expect( _.isFunction( suite.iscStateProvider.rewriteUrl ) ).toBe( true );
+      } );
+
+      it( 'should invoke rule when navigating to state', function() {
+        inject( function( $state, $rootScope ) {
+          var pattern   = /\/unauthenticated\/home\/(.+)/ig;
+          suite.rewrite = _.noop;
+
+          spyOn( suite, 'rewrite' );
+
+          suite.iscStateProvider.rewriteUrl( pattern, suite.rewrite );
+
+          $state.go( "unauthenticated.home.livingroom" );
+          $rootScope.$apply();
+          expect( suite.rewrite ).toHaveBeenCalledWith( '/unauthenticated/home/livingRoom', 'livingRoom', 0, '/unauthenticated/home/livingRoom' );
+        } );
+
+      } );
+
+    } );
+
   } );
 
   function getStates() {
     return {
-      'unauthenticated.home': {
-        url           : 'home',
-        templateUrl   : 'home/home.html',
-        controller    : 'homeController as homeCtrl',
-        state         : 'unauthenticated.home',
+      'unauthenticated'                : {
+        url     : 'unauthenticated',
+        template: "<ui-view></ui-view>",
+        roles   : ["*"],
+        state   : 'unauthenticated',
+        data    : {
+          layout: "layout/tpls/default.html",
+        }
+      },
+      'unauthenticated.home'           : {
+        url           : '/home',
+        template      : "<ui-view></ui-view>",
         translationKey: 'Home',
+        state         : 'unauthenticated.home',
         roles         : ["*"],
-        layout        : "layout/tpls/default.html",
         landingPageFor: ["*"],
         displayOrder  : 1
+      },
+      'unauthenticated.home.livingroom': {
+        url           : '/livingRoom',
+        template      : "<living-room></living-room>",
+        state         : 'unauthenticated.home.livingroom',
+        translationKey: 'Living Room',
+        roles         : ["*"]
       }
     };
   }
