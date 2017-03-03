@@ -5,20 +5,11 @@
   Responsive helper classes to assist you in quickly doing basic formatting and layout.
 
   Features:
-   - Visibility
-   - Layout alignment
+   - Layout Helpers
    - Typography
-   - Color Swatches
-   - Dev Helpers
+   - Theming
 */
 
-/*------ Visibility ------*/
-// Makes an element visually hidden, but accessible.
-/*
-.hidden {
-  @include element-invisible;
-}
-*/
 /*------ Layout ------*/
 
 //Adds Global Padding
@@ -33,27 +24,6 @@
 .padding-#{$global-left}-half {padding-#{$global-left}: $global-padding / 2;}
 .padding-#{$global-right} {padding-#{$global-right}: $global-padding;}
 .padding-#{$global-right}-half {padding-#{$global-right}: $global-padding / 2;}
-
-.small-collapse {
-  @media #{$small} {
-    margin: 0;
-    padding: 0;
-  }
-}
-
-.medium-collapse {
-  @media #{$medium} {
-    margin: 0;
-    padding: 0;
-  }
-}
-
-.large-collapse {
-  @media #{$large} {
-    margin: 0;
-    padding: 0;
-  }
-}
 
 .small-padding-#{$global-left} {
   @media #{$small} {
@@ -101,20 +71,28 @@
 .margin-#{$global-right} {margin-#{$global-right}: $global-margin;}
 .margin-#{$global-right}-half {margin-#{$global-right}: $global-margin / 2;}
 
+
 //Helpers to Remove Margins and Padding
-.collapse {
-  padding: 0;
-  margin: 0;
+.collapse {padding: 0; margin: 0;}
+
+.collapse-left {
+  margin-left: 0;
+  padding-left: 0;
+
+  @include bidirectional() {
+    margin-right: 0;
+    padding-right: 0;
+  }
 }
 
-.collapse-#{$global-left} {
-  margin-#{$global-left}: 0;
-  padding-#{$global-left}: 0;
-}
+.collapse-right {
+  margin-right: 0;
+  padding-right: 0;
 
-.collapse-#{$global-right} {
-  margin-#{$global-right}: 0;
-  padding-#{$global-right}: 0;
+  @include bidirectional() {
+    margin-left: 0;
+    padding-left: 0;
+  }
 }
 
 .collapse-top {
@@ -125,6 +103,27 @@
 .collapse-bottom {
   margin-bottom: 0;
   padding-bottom: 0;
+}
+
+.small-collapse {
+  @media #{$small} {
+    margin: 0;
+    padding: 0;
+  }
+}
+
+.medium-collapse {
+  @media #{$medium} {
+    margin: 0;
+    padding: 0;
+  }
+}
+
+.large-collapse {
+  @media #{$large} {
+    margin: 0;
+    padding: 0;
+  }
 }
 
 // Full-Width Helper
@@ -140,8 +139,7 @@
 .clickable {cursor: pointer;}
 
 
-/*------ Color Swatches ------*/
-
+/*------ Theming ------*/
 
 /* Style Exportss */
 @include exports(utilities) {

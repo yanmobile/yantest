@@ -190,7 +190,14 @@ $app-name-font-weight: $font-weight-normal !default;
       border-radius: $global-radius;
       border: none;
       font-size: 0.9rem;
+      padding: dir-values(0.25rem 1.5rem 0.25rem 1.125rem);
       height: 2rem;
+      @include direction;
+
+      @include bidirectional() {
+        padding:  0.25rem 1.125rem 0.25rem 1.5rem;
+        @include direction;
+      }
     }
 
     //Menu/Proxy Labels
