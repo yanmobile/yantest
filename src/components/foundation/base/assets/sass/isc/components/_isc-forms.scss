@@ -273,41 +273,38 @@ $breakpoint-percentages : (
     border-radius: $global-radius;
     border: $input-border;
     margin-bottom: $input-bottom-margin;
-    line-height: 1.3;
-    padding: 0.5rem;
+    line-height: $paragraph-line-height;
+    padding: dir-values(0.25rem 0.5rem 0.25rem 0.5rem);
+    @include direction;
+    color: $input-color;
 
     // if $global-text-direction == 'ltr', returns @content
     // if $global-text-direction == 'both', returns @content wrapped in .ltr &
     @include ltr() {
       background: $select-background-hover url(image-triangle($select-arrow-color)) right 10px center no-repeat;
-      background-size: 10px 10px;
-      direction: ltr;
-      text-align: left;
+      background-size: 8px 8px;
     }
 
     @if $global-text-direction == rtl {
       background: $select-background-hover url(image-triangle($select-arrow-color)) left 10px center no-repeat;
-      background-size: 10px 10px;
-      direction: rtl;
-      text-align: right;
+      background-size: 8px 8px;
   	}
 
     @include bidirectional() {
       background: $select-background-hover url(image-triangle($select-arrow-color)) left 10px center no-repeat;
-      background-size: 10px 10px;
-      direction: rtl;
-      text-align: right;
+      background-size: 8px 8px;
+      @include direction;
     }
 
     &:hover {
       @include ltr() {
         background: $select-background-hover url(image-triangle($select-arrow-color)) #{$global-right} 10px center no-repeat;
-        background-size: 10px 10px;
+        background-size: 8px 8px;
       }
 
       @include bidirectional() {
         background: $select-background-hover url(image-triangle($select-arrow-color)) left 10px center no-repeat;
-        background-size: 10px 10px;
+        background-size: 8px 8px;
       }
     }
 
@@ -318,12 +315,12 @@ $breakpoint-percentages : (
 
       @include ltr() {
         background: $select-background-hover url(image-triangle($select-arrow-color)) #{$global-right} 10px center no-repeat;
-        background-size: 10px 10px;
+        background-size: 8px 8px;
       }
 
       @include bidirectional() {
         background: $select-background-hover url(image-triangle($select-arrow-color)) left 10px center no-repeat;
-        background-size: 10px 10px;
+        background-size: 8px 8px;
       }
     }
 
@@ -334,20 +331,10 @@ $breakpoint-percentages : (
 
     option {
       background-origin: content-box;
-
-      @include ltr() {
-        direction: ltr;
-        text-align: left;
-      }
-
-      @if $global-text-direction == rtl {
-        direction: rtl;
-        text-align: right;
-    	}
+      @include direction;
 
       @include bidirectional() {
-        direction: rtl;
-        text-align: right;
+        @include direction;
       }
     }
   }
@@ -469,23 +456,17 @@ $breakpoint-percentages : (
     input[type="month"], input[type="week"], input[type="time"] {
       padding: dir-values(0.5rem 0.3125rem 0.5rem 0.75rem);
       text-align: center;
-      margin-#{$global-right} : 1.5rem;
 
       @include bidirectional() {
-        margin-left: 1.5rem;
         padding: 0.5rem 0.75rem 0.5rem 0.3125rem;
       }
 
-      &.date-components-year {
-        margin-#{$global-right}: 0;
-
-        @include bidirectional() {
-          padding-left: 0;
-        }
+      &.date-components-month {
+        margin-left: 1.5rem;
+        margin-right: 1.5rem;
       }
     }
   }
-
 
   /* Date Picker - Calendar (720kb)
    * Mostly for backwards compatibility at this point
@@ -636,7 +617,7 @@ $breakpoint-percentages : (
     vertical-align: baseline;
     font-weight: $font-weight-normal;
 
-    &:not(.button-group &) {
+    &:not(.button-group &), &:not(.switch &) {
       margin-#{$global-left}: 0.5rem;
       margin-#{$global-right}: 1rem;
       margin-bottom: 1rem;
@@ -649,7 +630,7 @@ $breakpoint-percentages : (
     }
 
     @include bidirectional() {
-      &:not(.button-group &) {
+      &:not(.button-group &), &:not(.switch &) {
         border-radius: 0 $global-radius $global-radius 0;
         margin-right: 0.5rem;
         margin-left: 1rem;

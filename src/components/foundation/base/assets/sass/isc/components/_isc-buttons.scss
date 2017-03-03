@@ -35,6 +35,16 @@ $button-tag-selector: true;
 
   button, .button, input[type="submit"], input[type="button"] {
 
+    &.chunky {
+      border-bottom: 3px solid scale-color($button-background, $lightness: -14%);
+      box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 1px 0px;
+
+      &:hover, &:focus {
+        border-bottom-color: scale-color($button-background, $lightness: -24%);
+        color: isitlight($button-background, $body-font-color, $light-text);
+      }
+    }
+
     &.dropdown {
       position: relative;
       padding-#{$global-right}: 2rem; // Placeholder
@@ -53,6 +63,16 @@ $button-tag-selector: true;
           $background-hover: scale-color($color-name, $lightness: -15%),
           $color: isitlight($color-name, $body-font-color, $light-text)
         );
+
+        &.chunky {
+          border-bottom: 3px solid scale-color($color-name, $lightness: -14%);
+          box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 1px 0px;
+
+          &:hover, &:focus {
+            border-bottom-color: scale-color($color-name, $lightness: -14%);
+            color: isitlight($button-background-hover, $body-font-color, $light-text);
+          }
+        }
 
         &.dropdown {
 
@@ -127,6 +147,15 @@ $button-tag-selector: true;
         &:hover, &:focus {
           color: scale-color($button-cancel-background, $lightness: -40%);
           border-color: scale-color($button-cancel-background, $lightness: -40%);
+        }
+      }
+
+      &.chunky {
+        border-bottom-color: scale-color($button-cancel-background, $lightness: -14%);
+
+        &:hover, &:focus {
+          border-bottom-color: scale-color($button-cancel-background, $lightness: -24%);
+          color: isitlight($button-cancel-background, $body-font-color, $light-text);
         }
       }
     }
