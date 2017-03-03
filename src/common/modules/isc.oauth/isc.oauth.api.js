@@ -66,7 +66,7 @@
     }
 
     function revoke() {
-      var clientId = $window.atob( iscOauthService.get( "clientId" ) ).split( ":" )[0];
+      var clientId = $window.atob( iscOauthService.get( "client" ) ).split( ":" )[0];
       return formPost( iscOauthService.getRevocationUrl(),
         {
           "token"     : iscOauthService.get( "accessToken" ),
