@@ -3,6 +3,7 @@
 
   var gulp        = require( 'gulp' );
   var util        = require( 'util' );
+  var url         = require( 'url' );
   var browserSync = require( 'browser-sync' );
   var seq         = require( 'run-sequence' );
   var argv        = require( 'yargs' ).argv;
@@ -27,6 +28,9 @@
     }
 
     var proxies = _.map( proxyConfig, function( proxyConfigItem ) {
+      var proxyPath   = url.parse( proxyConfigItem.target ).path,
+          proxyPathRE = new RegExp( '^' + proxyPath );
+
       return proxy( proxyConfigItem.pattern, {
         target      : proxyConfigItem.target,
         pathRewrite : proxyConfigItem.pathRewrite,
@@ -42,6 +46,13 @@
               //re-write cookie path to "/"
               return headerCookie.replace( /path=\/.+;/, 'path=/;' );
             } );
+          }
+
+          // When redirected with a 302, the location to redirect to is relative to the server host.
+          // This is valid and works in a deployed app, but for local UIs, anything in the proxy's target
+          // past the port (i.e., the path) needs to be removed from the beginning of the redirect location.
+          if ( proxyRes.statusCode === 302 && proxyPath ) {
+            proxyRes.headers['location'] = proxyRes.headers['location'].replace( proxyPathRE, '' );
           }
         },
         onError     : function errorHandler( err ) {
