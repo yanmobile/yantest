@@ -37,10 +37,10 @@ $timeline-circle-size: 2.5rem !default;
       color: isitlight($timeline-color, $body-font-color, $light-text);
       text-align: center;
       font-size: 1.5rem;
-      padding: 0.25rem;
+      padding: 0.125rem;
       line-height: 1;
       vertical-align: middle;
-      margin-#{$global-left}: 1rem;
+      margin-#{$global-right}: 1rem;
       border: 3px solid $timeline-color;
       z-index: 1;
 
