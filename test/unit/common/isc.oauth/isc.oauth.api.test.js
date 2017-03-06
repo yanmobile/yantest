@@ -67,10 +67,11 @@
 
       suite.$httpBackend.expectPOST( "test123", suite.serializer( {
         "token"     : 'test-accessToken',
-        "client_id" : "test-clientId",
+        "client_id" : "test-client",
         "token_type": "revoke"
       } ) ).respond( {} );
       suite.iscOauthApi.revoke().then( function() {
+        expect( suite.iscOauthService.get ).toHaveBeenCalledWith( 'client' );
         expect( suite.iscOauthService.clearOauthConfig ).toHaveBeenCalled();
       } );
       suite.$httpBackend.flush();
