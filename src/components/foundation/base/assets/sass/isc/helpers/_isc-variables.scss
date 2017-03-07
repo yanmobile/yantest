@@ -156,6 +156,34 @@ $shadow-22dp: 0px 10px 14px -6px rgba(0, 0, 0, $shadow-key-umbra-opacity), 0px 2
 $shadow-23dp: 0px 11px 14px -7px rgba(0, 0, 0, $shadow-key-umbra-opacity), 0px 23px 36px 3px rgba(0, 0, 0, $shadow-key-penumbra-opacity), 0px 9px 44px 8px rgba(0, 0, 0, $shadow-ambient-shadow-opacity) !default;
 $shadow-24dp: 0px 11px 15px -7px rgba(0, 0, 0, $shadow-key-umbra-opacity), 0px 24px 38px 3px rgba(0, 0, 0, $shadow-key-penumbra-opacity), 0px 9px 46px 8px rgba(0, 0, 0, $shadow-ambient-shadow-opacity) !default;
 
+
+// Easing Curves
+//--------------------------------------------
+$swift-ease-out-duration: 0.4s !default;
+$swift-ease-out-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1) !default;
+$swift-ease-out: all $swift-ease-out-duration $swift-ease-out-timing-function !default;
+
+$swift-ease-in-duration: 0.3s !default;
+$swift-ease-in-timing-function: cubic-bezier(0.55, 0, 0.55, 0.2) !default;
+$swift-ease-in: all $swift-ease-in-duration $swift-ease-in-timing-function !default;
+
+$swift-ease-in-out-duration: 0.5s !default;
+$swift-ease-in-out-timing-function: cubic-bezier(0.35, 0, 0.25, 1) !default;
+$swift-ease-in-out: all $swift-ease-in-out-duration $swift-ease-in-out-timing-function !default;
+
+$swift-linear-duration: 0.08s !default;
+$swift-linear-timing-function: linear !default;
+$swift-linear: all $swift-linear-duration $swift-linear-timing-function !default;
+
+$enter-duration: 0.3s !default;
+$enter-timing-function: cubic-bezier(0.0, 0.0, 0.2, 1) !default;
+$enter: all $enter-duration $enter-timing-function !default;
+
+$leave-duration: 0.3s !default;
+$leave-timing-function: cubic-bezier(0.4, 0.0, 1, 1) !default;
+$leave: all $leave-duration $leave-timing-function !default;
+
+
 // Button Tag Selector
 $button-tag-selector: true;
 

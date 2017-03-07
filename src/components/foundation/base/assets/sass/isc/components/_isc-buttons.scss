@@ -5,6 +5,7 @@
    - Basic Buttons, size & color variations
    - Prefix, Postfix
    - Button Utilities
+   - FAB Button
 */
 
 /* Button Settings */
@@ -26,9 +27,19 @@ $button-opacity-disabled: 0.5 !default;
 $button-cancel-background: $gray !default;
 $button-tag-selector: true;
 
+// Fab button settings
+$button-fab-border-radius: 50% !default;
+$button-fab-padding: 1rem !default;
+$button-fab-line-height: 1.7 !default;
+$button-fab-width: rem-calc(56px) !default;
+$button-fab-height: rem-calc(56px) !default;
+$button-fab-mini-width: rem-calc(40px) !default;
+$button-fab-mini-height: rem-calc(40px) !default;
+$z-index-fab: 20 !default;
+
 /* Style Exports */
 @include exports(buttons) {
-  /* Support for input[type="submit"] and input[type="button"] */
+
   input[type="submit"], input[type="button"] {
     @extend .button;
   }
@@ -193,6 +204,83 @@ $button-tag-selector: true;
       @include bidirectional() {
         border-radius: $global-radius 0 0 $global-radius;
       }
+    }
+  }
+
+  /* FAB Button
+   * ------------------------------------------------------
+   * Material Inspired Floating Action Button
+   * Position Classes: top-right, top-left, bottom-right, bottom-left
+   * https://github.com/angular/material/blob/master/src/components/button/button.scss
+   -----------------------------------------------------------------------------*/
+
+   // Fab mixins
+   @mixin fab-shadow-bottom () {
+     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+   }
+
+   @mixin fab-shadow-bottom-active () {
+     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4);
+   }
+
+   // Position a FAB button.
+   @mixin fab-position($spot, $top: auto, $right: auto, $bottom: auto, $left: auto) {
+     &.#{$spot} {
+       top: $top;
+       right: $right;
+       bottom: $bottom;
+       left: $left;
+       position: absolute;
+     }
+   }
+
+   @mixin fab-all-positions() {
+    @include fab-position(bottom-right, auto, ($button-fab-width - $button-fab-padding)/2, ($button-fab-height - $button-fab-padding)/2, auto);
+    @include fab-position(bottom-left, auto, auto, ($button-fab-height - $button-fab-padding)/2, ($button-fab-width - $button-fab-padding)/2);
+    @include fab-position(top-right, ($button-fab-height - $button-fab-padding)/2, ($button-fab-width - $button-fab-padding)/2, auto, auto);
+    @include fab-position(top-left, ($button-fab-height - $button-fab-padding)/2, auto, auto, ($button-fab-width - $button-fab-padding)/2);
+  }
+
+  button, .button, input[type="submit"], input[type="button"] {
+    &.fab {
+      @include fab-all-positions();
+      z-index: $z-index-fab;
+      line-height: $button-fab-line-height;
+      min-width: 0;
+      width: $button-fab-width;
+      height: $button-fab-height;
+      vertical-align: middle;
+      padding: $button-fab-padding;
+      @include fab-shadow-bottom();
+      border-radius: $button-fab-border-radius;
+      background-clip: padding-box;
+      overflow: hidden;
+      transition: $swift-ease-in;
+      transition-property: background-color, box-shadow, transform;
+      margin-bottom: 0;
+
+      &:not([disabled]) {
+        &.md-raised,
+        &.md-fab {
+          &.md-focused {
+            @include fab-shadow-bottom();
+          }
+          &:active {
+            @include fab-shadow-bottom-active();
+          }
+        }
+      }
+
+     .icon {
+       display: block;
+     }
+
+    }
+
+    &.mini {
+      width: $button-fab-mini-width;
+      height: $button-fab-mini-height;
+      padding: $button-fab-padding/2;
     }
   }
 }
