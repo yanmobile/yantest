@@ -30,6 +30,7 @@
 //  25. Tabs
 //  26. Title Bar
 //  27. Tooltips
+//  28. Widgets
 
 @import "../../../components/foundation/base/node_modules/foundation-apps/scss/helpers/functions";
 @import "../../../components/foundation/base/assets/sass/isc/helpers/isc-variables";
@@ -662,5 +663,30 @@ $tooltip-radius: $global-radius;
 $tooltip-line-height: $paragraph-line-height;
 $tooltip-padding: 0.5rem 0.625rem;
 $tooltip-max-width: 75%;
+
+// 28. WIDGETS
+/* ------------------------------ */
+// Widget Container
+$widget-background: #fff;
+$widget-color: isitlight($widget-background, $body-font-color, $light-text);
+$widget-border: 1px solid $app-border-color;
+$widget-radius: $global-radius;
+$widget-shadow: $card-shadow;
+$widget-padding: $global-padding;
+$widget-margin: 1rem !default;
+$widget-divider-background: smartscale($widget-background, 7%);
+$widget-footer-background: $neutral-color;
+
+// Widget Header
+$widget-header-background: $primary-color;
+$widget-header-padding: 0.75rem 0.75rem;
+$widget-header-icon-color: $gray-dark;
+
+// Widget Menu
+$widget-menu-padding: 0.75rem;
+$widget-menu-width: 250px;
+$widget-menu-link-color: $body-font-color;
+$widget-menu-background-hover: smartscale($widget-background);
+$widget-menu-title-margin: 0.5rem;
 
 @import "../../../components/foundation/base/assets/sass/isc/helpers/isc-direction";
