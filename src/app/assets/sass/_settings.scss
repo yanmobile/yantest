@@ -678,9 +678,9 @@ $widget-divider-background: smartscale($widget-background, 7%);
 $widget-footer-background: $neutral-color;
 
 // Widget Header
-$widget-header-background: $primary-color;
-$widget-header-padding: 0.75rem 0.75rem;
-$widget-header-icon-color: $gray-dark;
+$widget-header-background: #fff;
+$widget-header-padding: 0.75rem 0.5rem;
+$widget-header-icon-color: isitlight($widget-header-background, $gray-dark, $light-text);
 
 // Widget Menu
 $widget-menu-padding: 0.75rem;
