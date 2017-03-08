@@ -841,6 +841,7 @@ $table-title-font-reduction: rem-calc(16) !default;
       font-weight: $th-font-weight;
       padding: 0;
       font-size: $th-font-size;
+      white-space: nowrap;
 
       // Sortable Columns
       &.isc-sortable {
