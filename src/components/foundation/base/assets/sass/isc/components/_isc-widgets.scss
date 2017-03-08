@@ -25,6 +25,7 @@ $widget-footer-background: $neutral-color !default;
 // Widget Header
 $widget-header-background: $primary-color !default;
 $widget-header-padding: 0.75rem 0.75rem !default;
+$widget-header-icon-color: $gray-dark !default;
 
 // Widget Menu
 $widget-menu-padding: 0.75rem !default;
@@ -52,6 +53,7 @@ $widget-menu-title-margin: 0.5rem !default;
   border-radius: $radius;
   box-shadow: $shadow;
   flex-grow: 1;
+  overflow-y: visible;
 
   h1, h2, h3, h4, h5, h6 {
     color: inherit;
@@ -84,13 +86,25 @@ $widget-menu-title-margin: 0.5rem !default;
   color: $title-color;
   font-weight: $font-weight-semi-bold;
   overflow: visible;
-  //border-bottom: 1px solid isitlight($widget-header-background, $gray, $light-text);
+  overflow-y: visible;
+  border-bottom: 1px solid isitlight($widget-header-background, $gray, $light-text);
 
   h1, h2, h3, h4, h5, h6 {
     color: $title-color;
     margin: 0;
     line-height: 1.1;
     font-weight: $font-weight-normal;
+  }
+
+  .icon {
+    color: $widget-header-icon-color;
+    font-size: 0.875rem;
+
+    svg {
+      fill: $widget-header-icon-color;
+      height: 0.875rem;
+      width: 0.875rem;
+    }
   }
 
   a {
@@ -109,10 +123,14 @@ $widget-menu-title-margin: 0.5rem !default;
 
   .menu-bar, .title-bar {
     a {
-      padding:0;
+      padding: 0;
       font-size: 0.875rem;
-      text-align: right;
+      text-align: #{$global-right};
       vertical-align: middle;
+
+      @include bidirectional() {
+        text-align: left;
+      }
     }
   }
 
@@ -139,7 +157,11 @@ $widget-menu-title-margin: 0.5rem !default;
 
     i {
       &:before {
-        margin-right: 0.25rem;
+        margin-#{$global-right}: 0.25rem;
+
+        @include bidirectional() {
+          margin-left: 0.25rem;
+        }
       }
     }
 
@@ -159,7 +181,11 @@ $widget-menu-title-margin: 0.5rem !default;
       margin-top: 0;
       list-style-type: none;
       user-select: none;
-      text-align: left;
+      text-align: #{$global-left};
+
+      @include bidirectional() {
+        text-align: right;
+      }
 
       // If the menu has no content above it
       &:first-child {
