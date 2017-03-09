@@ -126,6 +126,23 @@
 }
 
 // --------------------------------------------------
+// Disabled Element Mixin
+// Useful for icon controls since ng-disabled doesn't
+// work on anchor tags
+// --------------------------------------------------
+
+@mixin disabled($cursor: $input-cursor-disabled, $opacity: $button-opacity-disabled) {
+  $cursor: $cursor;
+  $opacity: $opacity;
+
+  cursor: $cursor;
+  opacity: $opacity;
+  pointer-events: none;
+
+  @content;
+}
+
+// --------------------------------------------------
 // Themable Custom Container
 // --------------------------------------------------
 
