@@ -552,7 +552,7 @@ $table-title-font-reduction: rem-calc(16) !default;
         padding: 0.3125rem;
       }
 
-      &:#{$global-last}-of-type {
+      &:last-of-type {
         border-#{$global-right}: $table-column-border;
       }
 
