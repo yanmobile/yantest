@@ -136,7 +136,12 @@
 
 .text-truncate { @include text-truncate; }
 
+
+/*------ States ------*/
+
 .clickable {cursor: pointer;}
+
+.disabled { @include disabled; }
 
 
 /*------ Theming ------*/
