@@ -210,7 +210,7 @@ $default-svg-icon-size: 1.25rem !default;
     font-size: $size;
     padding: 0;
     line-height: 1;
-    margin: 0 $icon-spacing 0 0;
+    margin: dir-values(0 $icon-spacing 0 0);
 
     > * {display: block;}
 
@@ -234,13 +234,13 @@ $default-svg-icon-size: 1.25rem !default;
       }
     }
 
-    &:#{$global-last}-child {
-      margin-#{$global-right}: 0;
+    &:last-child {
+      margin: 0;
     }
 
     @include bidirectional() {
       &:first-child {
-        margin-left: 0;
+        margin-right: 0;
       }
     }
 
