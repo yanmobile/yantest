@@ -250,7 +250,7 @@
         function testReorder( subformName ) {
           var suite         = suiteSubform,
               subform       = getControlByName( suite, subformName ).filter( '.subform' ),
-              moveUpButton  = subform.find( 'button.embedded-form-move-up' ).last(),
+              moveUpButton  = subform.find( '.embedded-form-move-up' ).last(),
               model         = _.get( suite.controller.model, subformName ),
               rowToMove     = _.last( model ),
               startingIndex = model.length - 1;
@@ -266,7 +266,7 @@
 
           expect( _.indexOf( model, rowToMove ) ).toBe( Math.max( startingIndex - 1, 0 ) );
 
-          var moveDownButton = subform.find( 'button.embedded-form-move-down' ).first();
+          var moveDownButton = subform.find( '.embedded-form-move-down' ).first();
           expect( moveDownButton.length ).toBe( 1 );
 
           // Move the row back down
@@ -283,7 +283,7 @@
         function testEdit( subformName, config ) {
           var suite       = suiteSubform,
               subform     = getControlByName( suite, subformName ).filter( '.subform' ),
-              editButton  = subform.find( 'button.embedded-form-edit' ).last(),
+              editButton  = subform.find( '.embedded-form-edit' ).last(),
               model       = _.get( suite.controller.model, subformName ),
               saveButton  = null,
               shownForm   = null,
@@ -338,7 +338,7 @@
         function testDelete( subformName, confirmDeletion ) {
           var suite        = suiteSubform,
               subform      = getControlByName( suite, subformName ).filter( '.subform' ),
-              deleteButton = subform.find( 'button.embedded-form-delete' ).last(),
+              deleteButton = subform.find( '.embedded-form-delete' ).last(),
               model        = _.get( suite.controller.model, subformName ),
               modelCount   = model.length;
 
