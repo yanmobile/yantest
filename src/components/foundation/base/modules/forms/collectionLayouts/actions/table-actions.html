@@ -1,39 +1,35 @@
 <ul class="icon-list">
   <li>
-    <button class="icon embedded-form-edit"
-            type="button"
+    <a class="icon embedded-form-edit"
             title="{{'Edit' | translate}}"
             ng-click="fauxTblCtrl.config.callbacks.editForm(row);">
       <i class="fa fa-pencil"></i>
-    </button>
+    </a>
   </li>
   <li>
-    <button class="icon alert embedded-form-delete"
-            type="button"
+    <a class="icon alert embedded-form-delete"
             title="{{'Remove' | translate}}"
             ng-click="fauxTblCtrl.config.callbacks.removeForm(row);">
       <i class="fa fa-remove"></i>
-    </button>
+    </a>
   </li>
   <li ng-show="fauxTblCtrl.config.options.allowReordering">
-    <button class="icon embedded-form-move-up"
-            type="button"
+    <a class="icon embedded-form-move-up"
             title="{{'Move up' | translate}}"
             ng-disabled="$parent.$parent.$first"
             ng-class="{ 'disabled': $parent.$parent.$first }"
             ng-click="fauxTblCtrl.config.callbacks.moveUp(row);">
       <i class="fa fa-arrow-up"></i>
-    </button>
+    </a>
   </li>
   <li ng-show="fauxTblCtrl.config.options.allowReordering">
-    <button class="icon embedded-form-move-down"
-            type="button"
+    <a class="icon embedded-form-move-down"
             title="{{'Move down' | translate}}"
             ng-disabled="$parent.$parent.$last"
             ng-class="{ 'disabled': $parent.$parent.$last }"
             ng-click="fauxTblCtrl.config.callbacks.moveDown(row);">
       <i class="fa fa-arrow-down"></i>
-    </button>
+    </a>
   </li>
 </ul>
 <span class="has-error">
