@@ -4,7 +4,7 @@ module.exports = {
     "js"   : [
       "src/common/node_modules/jquery/dist/jquery.js",
       "src/common/node_modules/lodash/lodash.js",
-      "src/common/node_modules/moment/moment.js",
+      "src/common/node_modules/moment/min/moment-with-locales.js",
       "src/common/node_modules/socket.io-client/socket.io.js",
       "src/common/node_modules/angular/angular.js",
       "src/common/node_modules/angular-animate/angular-animate.js",

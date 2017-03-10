@@ -1,4 +1,5 @@
-<div class="vertical grid-block" ng-class="{'has-error': showError}">
+<div class="vertical grid-block"
+     ng-class="{'has-error': showError && (options.formControl[validationShowCondition] || formState._validation.$submitted)}">
   <formly-transclude></formly-transclude>
   <div class="grid-block"
        ng-show="showError && (options.formControl[validationShowCondition] || formState._validation.$submitted)"

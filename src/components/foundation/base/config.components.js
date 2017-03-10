@@ -6,6 +6,7 @@ module.exports = {
     "js"   : [
       "src/components/foundation/base/node_modules/angular-utils-pagination/dirPagination.js",
       "src/components/foundation/base/node_modules/angularjs-datepicker/dist/angular-datepicker.min.js",
+      "src/components/foundation/base/node_modules/angular-moment-picker/dist/angular-moment-picker.js",
       "src/components/foundation/base/node_modules/foundation-apps/dist/js/foundation-apps.js",
       "src/components/foundation/base/node_modules/foundation-apps/dist/js/foundation-apps-templates.js",
       "src/components/foundation/base/node_modules/api-check/dist/api-check.min.js",
