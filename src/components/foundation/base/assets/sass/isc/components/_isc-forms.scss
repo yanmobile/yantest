@@ -28,7 +28,7 @@ $form-section-margin: 0 0 2rem 0 !default;
 
 /* Text Fields */
 $input-color: $body-font-color !default;
-$input-background: $body-background !default;
+$input-background: #fff !default;
 $input-border: 1px solid $app-border-color !default;
 $input-bottom-margin: 2rem !default;
 
@@ -281,17 +281,17 @@ $breakpoint-percentages : (
     // if $global-text-direction == 'ltr', returns @content
     // if $global-text-direction == 'both', returns @content wrapped in .ltr &
     @include ltr() {
-      background: $select-background-hover url(image-triangle($select-arrow-color)) right 10px center no-repeat;
+      background: $input-background url(image-triangle($select-arrow-color)) right 10px center no-repeat;
       background-size: 8px 8px;
     }
 
     @if $global-text-direction == rtl {
-      background: $select-background-hover url(image-triangle($select-arrow-color)) left 10px center no-repeat;
+      background: $input-background url(image-triangle($select-arrow-color)) left 10px center no-repeat;
       background-size: 8px 8px;
   	}
 
     @include bidirectional() {
-      background: $select-background-hover url(image-triangle($select-arrow-color)) left 10px center no-repeat;
+      background: $input-background url(image-triangle($select-arrow-color)) left 10px center no-repeat;
       background-size: 8px 8px;
       @include direction;
     }
