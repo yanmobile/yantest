@@ -671,9 +671,9 @@ $widget-background: #fff;
 $widget-color: isitlight($widget-background, $body-font-color, $light-text);
 $widget-border: 1px solid $app-border-color;
 $widget-radius: $global-radius;
-$widget-shadow: $card-shadow;
+$widget-shadow: $shadow-1dp;
 $widget-padding: $global-padding;
-$widget-margin: 1rem !default;
+$widget-margin: 1rem;
 $widget-divider-background: smartscale($widget-background, 7%);
 $widget-footer-background: $neutral-color;
 
