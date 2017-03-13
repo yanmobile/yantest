@@ -4,6 +4,11 @@
 ## HealthShare UI Framework is intended to be used across multiple projects
 *NOTE*: uifw is not a standalone project -- it only contains common framework code. To become a standalone project, it needs to be complemented with application specific code. see: [Getting started](#getting-started))
 
+## First time git setup
+```
+$ git config --global user.name "John Doe"
+$ git config --global user.email johndoe@example.com
+```
 ---
 ## prerequisites:
 1. Make sure you've read both [uifw-tools](https://github.com/intersystems/uifw-tools/blob/master/README.md) and [uifw](https://github.com/intersystems/uifw/blob/master/README.md) README.md files
