@@ -28,7 +28,8 @@
     getRemainingTime         : getRemainingTime,
     findNested               : findNested,
     sum                      : sum,
-    generateGettersAndSetters: generateGettersAndSetters
+    generateGettersAndSetters: generateGettersAndSetters,
+    getRelativeTime          : getRelativeTime
   } );
 
   function getAge( dob, format ) {
@@ -173,7 +174,7 @@
   // _.interpolate("I am {0}", [5])
   // => "I am 5
   function interpolate( template, scope, options ) {
-    options    = options || {};
+    options = options || {};
     return template.replace( /{([^{}]*)}/g,
       function( match, path ) {
         var value = _.get( scope, path, options.defaultValue );
@@ -312,6 +313,9 @@
     }
   }
 
+  function getRelativeTime( time ) {
+    return moment( time ).fromNow();
+  }
 
   //END CLASS
 } )();
