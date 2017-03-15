@@ -13,12 +13,26 @@
   function iscFormsUiSelectShim( $timeout ) {
     return {
       restrict: 'A',
-      require : 'uiSelect',
+      require : ['uiSelect', 'ngModel'],
       link    : link
     };
 
-    function link( scope, element, attrs, $select ) {
-      var searchInput = element.find( 'input.ui-select-search' );
+    function link( scope, element, attrs, ctrls ) {
+      var $select     = ctrls[0],
+          ngModelCtrl = ctrls[1];
+
+      var searchInput  = element.find( 'input.ui-select-search' ),
+          displayField = attrs.displayField,
+          ngBlur       = attrs.ngBlur;
+
+      // Initializes the search input from the selected value for consistent behavior
+      $timeout( setSearchFromSelected, 250 );
+
+      // Keep ngModelControllers' values in sync
+      scope.$watch( '$select.selected', function( value ) {
+        ngModelCtrl.$setViewValue( value );
+        ngModelCtrl.$commitViewValue();
+      } );
 
       // limitToList is passed to the directive attribute.
       // This determines whether the widget should limit its data model to only
@@ -52,6 +66,10 @@
       } );
 
       searchInput.on( 'blur', function( event ) {
+        if (ngBlur) {
+          scope.$evalAsync( ngBlur );
+        }
+
         $timeout( function() {
           // Only do anything if an option was NOT already selected by clicking on an option
           if ( scope.hasInputFocus ) {
@@ -88,6 +106,13 @@
         scope.hasInputFocus = false;
       } );
 
+      // When the dropdown is closed, set the search input's value to the value of whatever is selected.
+      // If an option was selected from the list, this will be the selected item.
+      // Otherwise it will be a string value provided via ui-select's tag callback.
+      scope.$on( 'uis:close', function( event, item ) {
+        setSearchFromSelected ();
+      });
+
 
       // Clean up
       scope.$on( '$destroy', function() {
@@ -104,6 +129,13 @@
             searchInput.focus();
           }
         }, 25 );
+      }
+
+      // Sets the ui-select's search input element's value to the control's selected value,
+      // taking into account any displayField property for object-based data models.
+      function setSearchFromSelected() {
+        var selected   = displayField ? _.get( $select.selected, displayField ) : $select.selected;
+        $select.search = selected || ''; // needs to be an empty string, not undefined or null
       }
     }
   }

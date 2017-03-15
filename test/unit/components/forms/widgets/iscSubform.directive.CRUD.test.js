@@ -581,7 +581,9 @@
             expect( modelDisplay ).toEqual( 'Typeahead 1' );
 
             // Clear the control
-            backspaceInput();
+            enterText( '' );
+            sendTab( input );
+            blurInput();
             getModel();
             expect( modelDisplay ).toBeUndefined();
 
@@ -596,8 +598,8 @@
 
             // Enter new text and blur the control
             enterText( 'A tag' );
+            sendTab( input );
             blurInput();
-            // sendEnter(input);
             getModel();
             if ( limitToList ) {
               // If limitToList, the value should not change
@@ -612,7 +614,7 @@
             function enterText( text ) {
               input.click();
               suite.$scope.$digest();
-              suiteMain.$timeout.flush( 500 );
+              suiteMain.$timeout.flush();
               input.val( text ).trigger( 'input' ).trigger( 'change' ).trigger( 'keydown' );
               digest( suite );
 
@@ -634,13 +636,6 @@
               digest( suite );
             }
 
-            function backspaceInput() {
-              input.val( '' ).trigger( 'change' ).trigger( 'keydown' );
-              focusser.triggerHandler( 'focus' );
-              sendBackspace( focusser );
-              digest( suite );
-            }
-
             function blurInput() {
               input.triggerHandler( 'focus' );
               input.trigger( 'change' ).triggerHandler( 'blur' );
@@ -657,13 +652,6 @@
             function getModel() {
               model        = _.get( formModel, controlName );
               modelDisplay = _.isObject( model ) ? model[displayField] : model;
-            }
-
-            function sendBackspace( control ) {
-              control.trigger( {
-                type : 'keydown',
-                which: keyCodes.BACKSPACE
-              } )
             }
 
             function sendDownArrow( control ) {
