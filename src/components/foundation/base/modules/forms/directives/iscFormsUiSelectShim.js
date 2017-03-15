@@ -66,7 +66,7 @@
       } );
 
       searchInput.on( 'blur', function( event ) {
-        if (ngBlur) {
+        if ( ngBlur ) {
           scope.$evalAsync( ngBlur );
         }
 
@@ -110,8 +110,8 @@
       // If an option was selected from the list, this will be the selected item.
       // Otherwise it will be a string value provided via ui-select's tag callback.
       scope.$on( 'uis:close', function( event, item ) {
-        setSearchFromSelected ();
-      });
+        setSearchFromSelected();
+      } );
 
 
       // Clean up
