@@ -8,6 +8,7 @@ module.exports = {
       "src/components/foundation/base/node_modules/angularjs-datepicker/dist/angular-datepicker.min.js",
       "src/components/foundation/base/node_modules/foundation-apps/dist/js/foundation-apps.js",
       "src/components/foundation/base/node_modules/foundation-apps/dist/js/foundation-apps-templates.js",
+      "src/components/foundation/base/node_modules/tether/dist/js/tether.min.js",
       "src/components/foundation/base/node_modules/api-check/dist/api-check.min.js",
       "src/components/foundation/base/node_modules/angular-formly/dist/formly.min.js",
       "src/components/foundation/base/node_modules/tooltipster/dist/js/tooltipster.bundle.js",

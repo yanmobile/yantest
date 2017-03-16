@@ -11,6 +11,7 @@
     "font-awesome": "4.6.3",
     "foundation-apps": "1.2.0",
     "jquery": "2.2.4",
+    "tether": "1.4.0",
     "tooltipster": "4.1.4",
     "ui-select": "0.19.6"
   },
