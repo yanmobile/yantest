@@ -525,37 +525,16 @@ gulp deploy --appjson path/to/config.app.js #only app specific
 * **How do I format my JavaScript code to meet the coding guideline?**
   * execute ```gulp jsformat``` in the git project folder
 
-* ** am running “Deploy” operation and my client fails with a message such as “eProvider” not found
-  *This issue is typical to a client script that was “minified” and “uglified”. During the deploy process when we minify and uglify the scripts, all the function’s arguments names are changed to a single letter.
+* **I am running “Deploy” operation and my client fails with a message such as “eProvider” not found
+  *This issue is typical to a client script that was “minified” and “uglified”. During the deploy process when we minify and uglify the scripts,
+   all the function’s arguments names are changed to a single letter.
    If you had an injection of “$scope” for example, after minification, it will change to a single letter like “e”.
 
-   To address the issue you must instruct the tools which preparing the scripts to inject the correct “Angular” services and injectables.
+   To address the issue you must instruct the tools which preparing the scripts to inject the correct “Angular” services and injectables into the
+   functions of the "resolve" section of a "state" definition.
    To do so you need to add the following comment in various locations:
    ```javascript
      /* @ngInject */
-   ```
-
-   CONTROLLER function definition:
-   ==============================
-   ```javascript
-     angular.module(‘a’)
-         .controller(‘controllerName’,controller);
-
-     /* @ngInject */
-     function controller($scope){
-
-     }
-   ```
-   SERVICE/FACTORY function definition:
-   ===================================
-   ```javascript
-     angular.module(‘a’)
-         .factory(factoryName, factory);
-
-    /* @ngInject */
-    function factory( injectables ){
-
-    }
    ```
 
    State definition with “resolve”:
@@ -567,6 +546,19 @@ gulp deploy --appjson path/to/config.app.js #only app specific
    /* @ngInject */
     ```
    before each function of the “resolve” section.
+   ```javascript
+    resolve       :  {
+         /* @ngInject */
+         loadVersion: function( cmcVersionApi ) {
+           return cmcVersionApi.load();
+         },
+
+         /* @ngInject */
+         loadObjectUidModel: function( loadVersion, cmcObjectUidApi ) {
+           return cmcObjectUidApi.loadModel();
+         }
+     }
+   ```
 
 ---
 ###Git 101
