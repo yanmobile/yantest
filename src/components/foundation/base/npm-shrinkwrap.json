@@ -47,6 +47,11 @@
       "from": "tooltipster@4.1.4",
       "resolved": "https://registry.npmjs.org/tooltipster/-/tooltipster-4.1.4.tgz"
     },
+    "tether": {
+      "version": "1.4.0",
+      "from": "tether@1.4.0",
+      "resolved": "https://registry.npmjs.org/tether/-/tether-1.4.0.tgz"
+    },
     "ui-select": {
       "version": "0.19.6",
       "from": "ui-select@0.19.6",
