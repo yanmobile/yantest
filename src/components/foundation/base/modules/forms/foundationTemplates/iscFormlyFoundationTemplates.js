@@ -665,7 +665,7 @@
           displayField       : data.displayField || '',
           getMinInputLength  : getMinInputLength,
           hasApiThreshold    : !!apiThreshold,
-          limitToList        : data.limitToList,
+          limitToList        : !!data.limitToList,
           minInputLength     : minInputLength,
           onSelect           : _.isFunction( onSelect ) ? onSelect : _.noop,
           onTag              : onTag,
