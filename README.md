@@ -578,6 +578,18 @@ git checkout <branch>
 # checkout last branch (good fo toggling between two branches)
 git checkout -
 
+# revert file/folder to specific remote server commit version
+git checkout <remote>/<branch> <path-to-file-or-folder> 
+#example: git checkout uifw/master gulp/proxy.js 
+
+# revert file/folder to specific commit version
+git checkout <branch> <path-to-file-or-folder> 
+#example: git checkout master gulp/proxy.js 
+
+# revert file/folder to original commit version
+git checkout -- <path-to-file-or-folder> 
+#example: git checkout -- gulp/proxy.js
+
 # Check which branch you are currently on (current branch)
 git branch
 
