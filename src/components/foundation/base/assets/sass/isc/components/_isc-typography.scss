@@ -11,73 +11,138 @@
    - Counter Badges
 ---------------------------*/
 
-// Page Title Settings
-$page-title-font-size: 2rem !default;
-$page-title-color: $header-font-color !default;
-$page-title-weight: $font-weight-bold !default;
-$page-title-margin: 0 0 0.65rem 0 !default;
-$page-title-padding: 0 !default;
-$page-title-font-reduction: rem-calc(24) !default;
+// Header font sizes
+$h1-font-size: rem-calc(30) !default;
+$h2-font-size: rem-calc(28) !default;
+$h3-font-size: rem-calc(26) !default;
+$h4-font-size: rem-calc(22) !default;
+$h5-font-size: rem-calc(20) !default;
+$h6-font-size: rem-calc(18) !default;
 
-// Caption Settings
+// Header font weights
+$h1-font-weight: $font-weight-normal !default;
+$h2-font-weight: $font-weight-semi-bold !default;
+$h3-font-weight: $font-weight-normal !default;
+$h4-font-weight: $font-weight-semi-bold !default;
+$h5-font-weight: $font-weight-semi-bold !default;
+$h6-font-weight: $font-weight-bold !default;
+
+// Header font-size reduction on small screens
+$h1-font-reduction: rem-calc(4) !default;
+$h2-font-reduction: rem-calc(4) !default;
+$h3-font-reduction: rem-calc(4) !default;
+$h4-font-reduction: rem-calc(2) !default;
+$h5-font-reduction: rem-calc(2) !default;
+$h6-font-reduction: rem-calc(2) !default;
+
+// Subheaders
+$subheader-line-height: 1.4 !default;
+$subheader-font-color: scale-color($header-font-color, $lightness: 35%) !default;
+$subheader-font-weight: $font-weight-normal !default;
+$subheader-top-margin: .2rem !default;
+$subheader-bottom-margin: .5rem !default;
+
+// Page Titles
+$page-title-font-size: 1.75rem !default;
+$page-title-color: $header-font-color !default;
+$page-title-weight: $font-weight-semi-bold !default;
+$page-title-margin: 0 0 1.5rem 0 !default;
+$page-title-padding: 0 !default;
+$page-title-font-reduction: rem-calc(4) !default;
+
+// Lists
+$list-font-family: $paragraph-font-family !default;
+$list-font-size: $paragraph-font-size !default;
+$list-line-height: $paragraph-line-height !default;
+$list-margin-bottom: $paragraph-margin-bottom !default;
+$list-style-position: outside !default;
+$list-side-margin: 1.1rem !default;
+$list-ordered-side-margin: 1.4rem !default;
+$list-side-margin-no-bullet: 0 !default;
+$list-nested-margin: 0.75rem !default;
+$definition-list-header-weight: $font-weight-semi-bold !default;
+$definition-list-header-margin-bottom: 0.75rem !default;
+$definition-list-margin-bottom: 1rem !default;
+
+// Captions
 $caption-background: transparent !default;
 $caption-font-size: 0.875rem !default;
 $caption-color: isitlight($caption-background, $subtext-color, $light-text) !default;
-$caption-align: left !default;
+$caption-align: #{$global-left} !default;
 $caption-padding: 0 0 0.5rem 0 !default;
 $caption-margin: 0 0 0.5rem 0 !default;
-$caption-font-reduction: rem-calc(16) !default;
+$caption-font-reduction: 0 !default;
 
-// Divider Settings
+// <hr> and Dividers
+$hr-border-width: 1px !default;
+$hr-border-style: solid !default;
+$hr-border-color: $app-border-color !default;
+$hr-margin: 2rem 0 2rem 0 !default;
+
 $divider-color: scale-color($header-font-color, $lightness: 25%) !default;
 $divider-width: 2px !default;
 $divider-margin: 2rem 0 2rem 0 !default;
 
+// General <small> styling
+$small-font-size: 70% !default;
+$small-font-color: scale-color($header-font-color, $lightness: 35%) !default;
+
+// Blockquotes
+$blockquote-font-color: scale-color($header-font-color, $lightness: 35%) !default;
+$blockquote-padding: rem-calc(9 20 0 19) !default;
+$blockquote-border: 2px solid $gray !default;
+$blockquote-cite-font-size: rem-calc(13) !default;
+$blockquote-cite-font-color: scale-color($header-font-color, $lightness: 23%) !default;
+$blockquote-cite-link-color: $blockquote-cite-font-color !default;
+
+// Acronym styles
+$acronym-underline: 1px dotted #ddd !default;
+
+
 /* Typography Mixins */
 
 // @mixin title
-@mixin title($size: inherit, $color: $header-font-color, $weight: inherit, $margin: inherit, $padding: 0, $reduction: inherit) {
-  $size: $size;
-  $color: $color;
-  $weight: $weight;
-  $margin: $margin;
-  $padding: $padding;
-  $reduction: $reduction;
+@mixin title(
+  $size: $page-title-font-size,
+  $color: $page-title-color,
+  $weight: $page-title-weight,
+  $margin: $page-title-margin,
+  $padding: $page-title-padding,
+  $reduction: $page-title-font-reduction
+) {
 
-  font-size: $size;
+  font-size: $size - $reduction; // Mobile First
   color: $color;
   font-weight: $weight;
   margin: $margin;
   padding: $padding;
 
   > a, * {
-    font-size: $size;
+    font-size: $size - $reduction; // Mobile First
     display: block;
+
+    @include breakpoint(medium) {font-size: $size;} // Large Devices
   }
 
-  @media #{$medium-down} {
-    font-size: $reduction;
+  @include breakpoint(medium) {font-size: $size;} // Large Devices
 
-    > a, * {
-      font-size: $reduction;
-    }
-  }
   @content;
 }
 
 // @mixin caption
-@mixin caption($background: $caption-background, $size: $caption-font-size, $line-height: inherit, $color: $caption-color, $align: $caption-align, $padding: $caption-padding, $margin: $caption-margin, $reduction: $caption-font-reduction) {
-  $background: $background;
-  $size: $size;
-  $line-height: $line-height;
-  $color: $color;
-  $align: $align;
-  $padding: $padding;
-  $margin: $margin;
-  $reduction: $reduction;
+@mixin caption(
+  $background: $caption-background,
+  $size: $caption-font-size,
+  $line-height: inherit,
+  $color: $caption-color,
+  $align: $caption-align,
+  $padding: $caption-padding,
+  $margin: $caption-margin,
+  $reduction: $caption-font-reduction
+) {
 
   background: $background;
-  font-size: $size;
+  font-size: $size - $reduction; // Mobile First
   line-height: $line-height;
   color: $color;
   text-align: $align;
@@ -86,34 +151,29 @@ $divider-margin: 2rem 0 2rem 0 !default;
   display: block;
 
   > a, * {
-    font-size: $size;
+    font-size: $size - $reduction; // Mobile First
     display: block;
     line-height: $line-height;
+
+    @include breakpoint(medium) {font-size: $size;} // Large Devices
   }
 
-  @media #{$medium-down} {
-    font-size: $reduction;
+  @include breakpoint(medium) {font-size: $size;} // Large Devices
 
-    > a, * {
-      font-size: $reduction;
-    }
-  }
   @content;
 }
 
 // @mixin divider
 @mixin divider($width: $divider-width, $color: $divider-color, $margin: $divider-margin) {
-  $width: $width;
-  $color: $color;
-  $margin: $margin;
-
   margin: $margin;
   border-width: $width 0 0;
   border-color: $color;
+
+  @content;
 }
 
 /* Typography Styles */
-@include exports(typography) {
+@include exports(isc-typography) {
   html, body {font-size: $base-font-size;}
 
   /* Body Copy */
@@ -132,35 +192,7 @@ $divider-margin: 2rem 0 2rem 0 !default;
     margin-bottom: $paragraph-margin-bottom;
     text-rendering: $paragraph-text-rendering;
 
-    &.lead { @include lead; }
-
-    &.error, &.alert {
-      color: $alert-color;
-    }
-
-    &.success {
-      color: $success-color;
-    }
-
-    &.inline, &.readonly {
-      margin: 0;
-      padding: 0.6rem 0;
-      display: inline-block;
-    }
-
-    //Shows in lieu of empty data
-    &.empty-message {
-      font-size: 1.125rem;
-      font-style: italic;
-      margin: 1rem 0 2rem 0;
-      color: $body-font-color;
-    }
-  }
-
-  /* Links */
-  a {
-    color: $anchor-font-color;
-    text-decoration: $anchor-text-decoration;
+    &.lead {@include lead;}
 
     @each $color in map-keys($theme-colors) {
       &.#{$color} {
@@ -177,10 +209,44 @@ $divider-margin: 2rem 0 2rem 0 !default;
       }
     }
 
-    &.inline {
+    @each $color in map-keys($theme-colors) {
+      &.#{$color} {
+        $color-name: map-get($theme-colors, $color);
+        color: $color-name;
+      }
+    }
+
+    &.error {color: $alert-color;}
+
+    &.inline, &.readonly {
+      margin: 0;
       padding: 0.6rem 0;
       display: inline-block;
     }
+  }
+
+  /* Links */
+  a {
+    color: $anchor-font-color;
+    text-decoration: $anchor-text-decoration;
+
+    &:not(.button) {
+
+      @each $color in map-keys($theme-colors) {
+        &.#{$color} {
+          $color-name: map-get($theme-colors, $color);
+          color: $color-name;
+
+          &:hover, &:focus, &:active {
+            color: smartscale($color-name, 15%);
+
+            svg {fill: smartscale($color-name, 15%);}
+          }
+        }
+      }
+    }
+
+    &.disabled { @include disabled; }
   }
 
   /* Headers */
@@ -198,23 +264,31 @@ $divider-margin: 2rem 0 2rem 0 !default;
       font-size: $small-font-size;
       color: $small-font-color;
     }
-  }
 
-  h1 { font-size: $h1-font-size; font-weight: $font-weight-normal;}
-  h2 { font-size: $h2-font-size; font-weight: $font-weight-bold;}
-  h3 { font-size: $h3-font-size; font-weight: $font-weight-normal;}
-  h4 { font-size: $h4-font-size; font-weight: $font-weight-bold;}
-  h5 { font-size: $h5-font-size; font-weight: $font-weight-semi-bold;}
-  h6 { font-size: $h6-font-size; font-weight: $font-weight-bold;}
-
-  /* Titles */
-  h1, h2, h3, h4, h5, h6 {
-
+    /* Titles */
     &.title {@include title;}
 
-    &.page-title {
-      @include title($size: $page-title-font-size, $color: $page-title-color, $weight: $page-title-weight, $margin: $page-title-margin, $padding: $page-title-padding, $reduction: $page-title-font-reduction);
-    }
+    &.page-title {@include title;}
+  }
+
+  // Mobile First
+  h1 { font-size: $h1-font-size - $h1-font-reduction; font-weight: $h1-font-weight;}
+  h2 { font-size: $h2-font-size - $h2-font-reduction; font-weight: $h2-font-weight;}
+  h3 { font-size: $h3-font-size - $h3-font-reduction; font-weight: $h3-font-weight;}
+  h4 { font-size: $h4-font-size - $h4-font-reduction; font-weight: $h4-font-weight;}
+  h5 { font-size: $h5-font-size - $h5-font-reduction; font-weight: $h5-font-weight;}
+  h6 { font-size: $h6-font-size - $h6-font-reduction; font-weight: $h6-font-weight;}
+
+  // Large Devices
+  @include breakpoint(medium) {
+
+    /* Header Vertical Rhythm */
+    h1 {font-size: $h1-font-size;}
+    h2 {font-size: $h2-font-size;}
+    h3 {font-size: $h3-font-size;}
+    h4 {font-size: $h4-font-size;}
+    h5 {font-size: $h5-font-size;}
+    h6 {font-size: $h6-font-size; }
   }
 
   /* Captions */
@@ -222,159 +296,120 @@ $divider-margin: 2rem 0 2rem 0 !default;
 
   /* hr and Divider */
   hr {
-    margin-bottom: $hr-margin;
+    margin: $hr-margin;
 
-    &.divider {
-      @include divider;
-    }
+    &.divider {@include divider;}
   }
 
-  /* Labels */
-  label, .form-label {
-    font-weight: $font-weight-bold;
-    line-height: $paragraph-line-height;
-    font-family: $body-font-family;
-    display: inline-block;
+  /* Lists */
+  ul, ol, dl {
+    font-size: $list-font-size;
+    line-height: $list-line-height;
+    margin-bottom: $list-margin-bottom;
+    list-style-position: $list-style-position;
+    font-family: $list-font-family;
 
-    &.required {
-      &:after {
-        content: " * ";
-        color: $alert-color;
+    li {
+      margin-bottom: $list-nested-margin / 2;
+
+      &.no-indent {
+        margin-#{$global-left}: 0;
+
+        @include bidirectional() {
+          margin-right: 0;
+        }
       }
-    }
-
-    &.inline {
-      margin: 0;
-      padding: 0.6rem 0;
-      display: inline-block;
-    }
-
-    &.right {
-      float: none;
-      text-align: right;
-    }
-
-    &.error, &.alert {
-      color: $alert-color;
-    }
-
-    &.success {
-      color: $success-color;
-    }
-  }
-
-  .has-error {
-    label {
-      color: $alert-color;
     }
   }
 
   /* Lists */
-  ol{
+  ul, ol {
+    margin-#{$global-left}: $list-side-margin;
 
-    li {
-      margin-left: $list-ordered-side-margin;
-      margin-bottom: $list-margin-bottom;
-
-      ol, ul {
-        margin-top: $list-nested-margin;
-
-        li {
-          margin-bottom: $list-nested-margin;
-        }
-      }
+    @include bidirectional() {
+      margin-right: $list-side-margin;
     }
-  }
 
-  ul {
     li {
-      margin-left: $list-side-margin;
-      margin-bottom: $list-margin-bottom;
 
-      &.no-indent {
-        margin-left: 0;
-      }
-
+      /* Nested */
       ul, ol {
+        margin-#{$global-left}: $list-side-margin;
         margin-top: $list-nested-margin;
+        margin-bottom: $list-nested-margin;
 
-        li {
-          margin-bottom: $list-nested-margin;
+        @include bidirectional() {
+          margin-right: $list-side-margin;
         }
       }
     }
-  }
 
-  /* Inline-Lists & Icon Lists */
-  .inline-list {
-    list-style-type: none;
-    text-align: left;
-    list-style: none;
-    margin-top: 0.25rem;
-    margin-right: 0;
-    overflow: hidden;
-    padding: 0;
-  }
+    /* Inline-Lists */
+    &.inline-list {
+      list-style-type: none;
+      text-align: #{$global-left};
+      list-style: none;
+      margin: dir-values(0 0 1rem -1.125rem);
+      overflow: hidden;
+      padding: 0;
 
-  .inline-list {
-    margin-top: 0;
-    margin-bottom: 1rem;
-    margin-left: -1.125rem;
-  }
+      @include bidirectional() {
+        text-align: right;
+        margin: 0 -1.125rem 1rem 0;
+      }
 
-  .inline-list > li {
-    display: inline-block;
-    list-style: none;
-    margin-left: 1.125rem;
-  }
+      > li {
+        display: inline-block;
+        list-style: none;
+        margin-#{$global-left}: $list-side-margin;
+        margin-bottom: 0;
 
-  .inline-list > li > label {font-weight: $font-weight-semi-bold;}
-  .inline-list > li > * {display: inline-block;}
+        @include bidirectional() {
+          margin-right: $list-side-margin;
+        }
+
+        > label {font-weight: $font-weight-semi-bold;}
+
+        > * {display: inline-block;}
+      }
+    }
+
+    /* Definition Lists */
+    dl {
+      dt {
+        margin-bottom: $definition-list-header-margin-bottom;
+        font-weight: $definition-list-header-weight;
+      }
+      dd { margin-bottom: $definition-list-margin-bottom; }
+    }
+  }
 
   /* Counter Badge */
   .counter-badge {
     @extend %badge;
 
-    @include badge-layout(
-      $fontsize: 1rem
-    );
+    @include badge-layout($fontsize: 1rem);
 
     @include badge-style(
       $background: $badge-background,
       $color: isitlight($badge-background, $body-font-color, $light-text)
     );
+
     padding: 0.65rem;
     font-weight: $font-weight-semi-bold;
     border-radius: $global-radius;
     width: 1.5rem;
     height: 1.5rem;
 
-    &.alert {
-      @include badge-style(
-        $background: $alert-color,
-        $color: isitlight($alert-color, $body-font-color, $light-text)
-      );
-    }
+    @each $color in map-keys($theme-colors) {
+      &.#{$color} {
+        $color-name: map-get($theme-colors, $color);
 
-    &.success {
-      @include badge-style(
-        $background: $success-color,
-        $color: isitlight($success-color, $body-font-color, $light-text)
-      );
-    }
-
-    &.warning {
-      @include badge-style(
-        $background: $warning-color,
-        $color: isitlight($warning-color, $body-font-color, $light-text)
-      );
-    }
-
-    &.info {
-      @include badge-style(
-        $background: $info-color,
-        $color: isitlight($info-color, $body-font-color, $light-text)
-      );
+        @include badge-style(
+          $background: $color-name,
+          $color: isitlight($color-name, $body-font-color, $light-text)
+        );
+      }
     }
   }
 
