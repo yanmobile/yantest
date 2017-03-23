@@ -14,7 +14,7 @@ $button-margin: 0 0 1rem 0 !default;
 $button-style: solid !default;
 $button-background: $accent-color !default;
 $button-background-hover: scale-color($button-background, $lightness: -15%) !default;
-$button-color: auto !default;
+$button-color: isitlight($button-background, $body-font-color, $light-text) !default;
 $button-radius: $global-radius !default;
 $button-sizes: (
    tiny: 0.7,
@@ -45,6 +45,7 @@ $z-index-fab: 20 !default;
   }
 
   button, .button, input[type="submit"], input[type="button"] {
+    transition: background 0.5s ease;
 
     &.chunky {
       border-bottom: 3px solid scale-color($button-background, $lightness: -14%);
@@ -52,7 +53,7 @@ $z-index-fab: 20 !default;
 
       &:hover, &:focus {
         border-bottom-color: scale-color($button-background, $lightness: -24%);
-        color: isitlight($button-background, $body-font-color, $light-text);
+        color: isitlight($button-background-hover, $body-font-color, $light-text);
       }
     }
 
