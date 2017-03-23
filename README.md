@@ -582,7 +582,7 @@ git checkout -
 git checkout <remote>/<branch> <path-to-file-or-folder> 
 #example: git checkout uifw/master gulp/proxy.js 
 
-# revert file/folder to specific commit version
+# revert file/folder to specific local commit version
 git checkout <branch> <path-to-file-or-folder> 
 #example: git checkout master gulp/proxy.js 
 
