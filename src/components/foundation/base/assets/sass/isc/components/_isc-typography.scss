@@ -4,6 +4,7 @@
   Includes typographic styles for many common elements, and a few helper classes.
    - Body Copy
    - Headers
+   - Titles
    - Captions
    - Labels
    - Lists
@@ -101,14 +102,42 @@ $acronym-underline: 1px dotted #ddd !default;
 
 /* Typography Mixins */
 
-// @mixin title
-@mixin title(
+// @mixin page title
+@mixin page-title(
   $size: $page-title-font-size,
   $color: $page-title-color,
   $weight: $page-title-weight,
   $margin: $page-title-margin,
   $padding: $page-title-padding,
   $reduction: $page-title-font-reduction
+) {
+
+  font-size: $size - $reduction; // Mobile First
+  color: $color;
+  font-weight: $weight;
+  margin: $margin;
+  padding: $padding;
+
+  > a, * {
+    font-size: $size - $reduction; // Mobile First
+    display: block;
+
+    @include breakpoint(medium) {font-size: $size;} // Large Devices
+  }
+
+  @include breakpoint(medium) {font-size: $size;} // Large Devices
+
+  @content;
+}
+
+// @mixin title (arbitrary custom title element)
+@mixin title(
+  $size: inherit,
+  $color: $header-font-color,
+  $weight: $header-font-weight,
+  $margin: inherit,
+  $padding: 0,
+  $reduction: $h2-font-reduction
 ) {
 
   font-size: $size - $reduction; // Mobile First
@@ -268,7 +297,7 @@ $acronym-underline: 1px dotted #ddd !default;
     /* Titles */
     &.title {@include title;}
 
-    &.page-title {@include title;}
+    &.page-title {@include page-title;}
   }
 
   // Mobile First
@@ -342,6 +371,13 @@ $acronym-underline: 1px dotted #ddd !default;
           margin-right: $list-side-margin;
         }
       }
+    }
+
+    // Special List Style Rules
+    .block-list & {
+      margin: 0;
+
+      li {margin-bottom: 0;}
     }
 
     /* Inline-Lists */
