@@ -47,6 +47,11 @@ $z-index-fab: 20 !default;
   button, .button, input[type="submit"], input[type="button"] {
     transition: background 0.5s ease;
 
+    &:hover, &:focus {
+      background: $button-background-hover;
+      color: isitlight($button-background-hover, $body-font-color, $light-text);
+    }
+
     &.chunky {
       border-bottom: 3px solid scale-color($button-background, $lightness: -14%);
       box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 1px 0px;
@@ -98,7 +103,7 @@ $z-index-fab: 20 !default;
 
           &:hover, &:focus {
             border-bottom-color: scale-color($color-name, $lightness: -14%);
-            color: isitlight($button-background-hover, $body-font-color, $light-text);
+            color: $color;
           }
         }
 
