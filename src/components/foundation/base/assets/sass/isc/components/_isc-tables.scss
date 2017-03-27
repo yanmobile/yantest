@@ -25,6 +25,8 @@ $table-font-size: 0.875rem !default;
 $table-line-height: 1.4;
 $table-cell-padding: 0.65rem !default;
 
+$empty-message-background: $table-background !default;
+
 // Table Head
 $th-font-size: 0.875rem !default;
 $th-font-weight: $font-weight-bold !default;
@@ -405,6 +407,26 @@ $table-title-font-reduction: rem-calc(16) !default;
   }
 }
 
+// For easy customization of "no data" message
+@mixin empty-message(
+  $background: $empty-message-background,
+  $margin: 0 0 1rem 0,
+  $padding: 1.125rem,
+  $font-size: 1rem,
+  $font-style: italic
+) {
+
+  background: $background;
+  border-radius: $global-radius;
+  width: 100%;
+  margin: $margin;
+  padding: $padding;
+  font-size: $font-size;
+  font-style: $font-style;
+
+  @content;
+}
+
 @include exports(tables) {
   /*-------------- CLASSIC TABLES --------------*/
   table {
@@ -685,13 +707,7 @@ $table-title-font-reduction: rem-calc(16) !default;
 
     /* Empty Data Message */
     .empty-message {
-      background: $neutral-three;
-      margin-bottom: 1rem;
-      border-radius: $global-radius;
-      width: 100%;
-      padding: 1.125rem;
-      font-size: 1rem;
-      font-style: italic;
+      @include empty-message;
     }
   }
 

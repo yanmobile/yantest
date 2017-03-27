@@ -68,9 +68,9 @@
 
     <!--empty row -->
     <tr ng-if="!iscTblCtrl.tableRows.length">
-      <td colspan="{{iscTblCtrl.tableConfig.columns.length}}">
+      <td colspan="{{iscTblCtrl.tableConfig.columns.length}}" class="no-data">
         <p class="{{column.emptyClass || 'empty-message'}}">
-          {{(iscTblCtrl.tableConfig.emptyRowMessage || 'No content available.') | translate}}
+          {{(iscTblCtrl.tableConfig.emptyRowMessage || 'No Content Available.') | translate}}
         </p>
       </td>
     </tr>
