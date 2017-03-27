@@ -1,13 +1,70 @@
 /* Modals */
+
+// Modal Settings
+$modal-background: #fff !default;
+$modal-border: 0 !default;
+$modal-radius: 0px !default;
+$modal-shadow: none !default;
+$modal-zindex: 1000 !default;
+$modal-sizes: (
+  tiny: 300px,
+  small: 500px,
+  medium: 600px,
+  large: 900px,
+) !default;
+
+$modal-overlay-class: 'modal-overlay' !default;
+$modal-overlay-background: rgba(#333, 0.7) !default;
+$modal-zindex: 1000 !default;
+
+// Title Bar Settings
+$titlebar-center-width: 50% !default;
+$titlebar-side-width: (100% - $titlebar-center-width) / 2 !default;
+$titlebar-background: $primary-color !default;
+$titlebar-font-weight: $font-weight-semi-bold !default;
+$titlebar-color: isitlight($titlebar-background, $body-font-color, $light-text) !default;
+$titlebar-border: 1px solid smartscale($titlebar-background, 18.5%) !default;
+$titlebar-padding: 0.675rem 1rem !default;
+$titlebar-item-classes: (
+  center: 'center',
+  left: 'left',
+  right: 'right',
+  title: 'title',
+) !default;
+
+
 @include exports(modals) {
   .modal {
-    overflow: visible;
+    //overflow: visible;
+
+    @each $size in map-keys($modal-sizes) {
+      $width: map-get($modal-sizes, $size);
+      @if $size != medium {
+        .#{$size} > & { @include modal-layout($width); }
+      }
+    }
+
+    @include breakpoint(small) {
+      max-width: map-get($modal-sizes, small);
+      max-height: 100vh;
+    }
+
+    @include breakpoint(medium) {
+      max-width: map-get($modal-sizes, medium);
+      max-height: 90vh;
+    }
+
+    @include breakpoint(large) {
+      max-width: map-get($modal-sizes, large);
+      max-height: 90vh;
+    }
 
     .title-bar {
-      font-size: 1.25rem;
-      padding: 0.675rem 1rem;
+      @include title-bar-style($background: $titlebar-background, $color: $titlebar-color, $border: $titlebar-border, $padding: 0.675rem 1rem);
 
       .title {
+        font-size: 1.125rem;
+        font-weight: $titlebar-font-weight;
         margin-bottom: 0;
       }
     }
