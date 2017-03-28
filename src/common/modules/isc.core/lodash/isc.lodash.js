@@ -127,7 +127,7 @@
   function advancedGet( obj, path, defaultValue ) {
     var val = obj;
 
-    if ( isTypeOf( path, 'string' ) && _.includes( path, ':' ) ) {
+    if ( isTypeOf( path, 'string' ) && _.includes( path, ':' ) && !_.startsWith( path,  ':' ) ) {
       toPath( path ).forEach( function( part ) {
         if ( _.includes( part, ':' ) ) {
           part     = part.replace( reFixJson, '"$2": ' );
