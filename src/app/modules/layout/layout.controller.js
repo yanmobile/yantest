@@ -48,7 +48,8 @@
 
     function warnIfDeprecatedLayout( state ) {
       if ( state.layout ) {
-        log.warn( '[deprecated] "state.layout" property has been deprecated. Please use "state.data.layout" at the highest applicable state level to allow data propagation to descendant states.' );
+        log.warn( '[deprecated] "state.layout" property has been deprecated.' );
+        log.warn( 'Please use "state.data.layout" at the highest applicable state level to allow data propagation to descendant states.' );
         log.warn( 'state ... ' + state.state );
       }
     }
