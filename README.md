@@ -556,13 +556,11 @@ gulp deploy --appjson path/to/config.app.js #only app specific
     ```
    before each function of the “resolve” section.
    ```javascript
-    resolve       :  {
-         /* @ngInject */
+    resolve :  /* @ngInject */ {
          loadVersion: function( cmcVersionApi ) {
            return cmcVersionApi.load();
          },
 
-         /* @ngInject */
          loadObjectUidModel: function( loadVersion, cmcObjectUidApi ) {
            return cmcObjectUidApi.loadModel();
          }
