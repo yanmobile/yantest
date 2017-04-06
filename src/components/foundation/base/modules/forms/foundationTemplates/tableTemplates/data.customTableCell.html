@@ -2,8 +2,10 @@
   <span ng-if="column.customTemplate"
         ng-bind-html="column.display(row, column, fauxTblCtrl.config.evalContext)">
   </span>
+</bdi>
+<bdi>
   <span ng-if="column.customTemplateUrl"
         ng-init="model=row"
         ng-include="column.customTemplateUrl">
-</span>
+  </span>
 </bdi>
