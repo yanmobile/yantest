@@ -137,7 +137,7 @@
 
       it( 'should render a label on the field group', function() {
         var label = suite.element.find( '.form-label' ).first();
-        expect( label.html().trim() ).toEqual( 'Label for Field Group' );
+        expect( label.html().trim() ).toEqual( jasmine.stringMatching( 'Label for Field Group' ) );
       } );
 
       it( 'should hide the field with hideIfGroupEmpty if all other fields are hidden', function() {

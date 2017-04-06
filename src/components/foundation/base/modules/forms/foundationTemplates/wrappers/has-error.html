@@ -6,7 +6,9 @@
     <div ng-message="{{::name}}"
          class="has-error grid-content collapse"
          ng-repeat="(name, message) in ::options.validation.messages">
-      <label class="error-message">{{message(options.formControl.$viewValue, options.formControl.$modelValue, this)}}</label>
+      <label class="error-message">
+        <bdi>{{message(options.formControl.$viewValue, options.formControl.$modelValue, this)}}</bdi>
+      </label>
     </div>
     <div ng-messages-include="forms/foundationTemplates/validation.html"></div>
   </div>
