@@ -39,7 +39,7 @@
  * Usage: <textarea isc-text-area-autoExpand ng-model="someValue"></textarea>
  **/
 
-( function() {
+(function() {
   'use strict';
   // ----------------------------
   // injection
@@ -127,16 +127,18 @@
       var paddingRight = element.css( 'paddingRight' );
       var threshold    = Math.max( parseInt( element.css( 'paddingTop' ) || 0 ), 20 );
 
-      var $shadow = angular.element( '<div></div>' ).css( {
-        position  : 'absolute',
-        top       : -10000,
-        left      : -10000,
-        width     : element[0].offsetWidth - parseInt( paddingLeft || 0 ) - parseInt( paddingRight || 0 ),
-        fontSize  : element.css( 'fontSize' ),
-        fontFamily: element.css( 'fontFamily' ),
-        lineHeight: element.css( 'lineHeight' ),
-        resize    : 'none'
-      } );
+      var $shadow = angular.element( '<div></div>' ).css(
+        {
+          position  : 'absolute',
+          top       : -10000,
+          left      : 0, // left must be 0 or RTL display gets wonky
+          width     : element[0].offsetWidth - parseInt( paddingLeft || 0 ) - parseInt( paddingRight || 0 ),
+          fontSize  : element.css( 'fontSize' ),
+          fontFamily: element.css( 'fontFamily' ),
+          lineHeight: element.css( 'lineHeight' ),
+          resize    : 'none',
+          visibility: 'hidden'
+        } );
 
       angular.element( document.body ).append( $shadow ); // jshint ignore:line
 
@@ -188,4 +190,4 @@
 
   }//END CLASS
 
-} )();
+})();
