@@ -46,8 +46,9 @@
           break;
 
         case statusCode.NotFound:
+          //checks against undefined
           //if the current state is accessible by anonymous users, do not redirect the user to login page
-          if ( !_.includes( $state.current.roles, '*' ) ) {
+          if ( $state.current.roles && !_.includes( $state.current.roles, '*' ) ) {
             return handle404( response );
           }
       }
