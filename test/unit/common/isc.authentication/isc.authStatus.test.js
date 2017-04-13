@@ -4,7 +4,7 @@
   var suite;
 
   var mockResults = {
-    LoggedIn: 1
+    mock: 'Results'
   };
 
   var focus = makeEvent( 'focus' ),
@@ -41,7 +41,7 @@
       suite = window.createSuite( {
         $window                : $window,
         $rootScope             : $rootScope,
-        cookieStorage                : iscCookieManager,
+        cookieStorage          : iscCookieManager,
         iscAuthStatus          : iscAuthStatus,
         iscAuthStatusService   : iscAuthStatusService,
         iscSessionModel        : iscSessionModel,
@@ -54,14 +54,14 @@
         authStatusUrl: 'auth/status'
       } );
 
-      suite.cookieStorage.remove('browserIsLoggedOut');
-      suite.cookieStorage.remove('hashcode');
+      suite.cookieStorage.remove( 'browserIsLoggedOut' );
+      suite.cookieStorage.remove( 'hashcode' );
 
       spyOn( suite.cookieStorage, 'get' ).and.callThrough();
       spyOn( suite.cookieStorage, 'set' ).and.callThrough();
       spyOn( suite.iscAuthStatusService, 'checkAuthStatus' ).and.callThrough();
       spyOn( suite.$rootScope, '$emit' ).and.callThrough();
-
+      spyOn( $, 'ajax' );
     } ) );
 
     // -------------------------
@@ -72,7 +72,7 @@
       // logout is only called if the user is authenticated
       expect( suite.$rootScope.$emit ).not.toHaveBeenCalled();
 
-      spyOn(suite.iscSessionModel, 'isAuthenticated').and.returnValue(true);
+      spyOn( suite.iscSessionModel, 'isAuthenticated' ).and.returnValue( true );
       suite.$window.dispatchEvent( focus );
       expect( suite.$rootScope.$emit ).toHaveBeenCalledWith( suite.AUTH_EVENTS.logout );
     } );
@@ -101,9 +101,6 @@
 
       expect( suite.authStatusFocusCallbackWasCalled ).toBe( true );
 
-      function authStatusFocusCallback() {
-        suite.authStatusFocusCallbackWasCalled = true;
-      }
     } );
 
     it( 'should do nothing else if the call to auth/status fails', function() {
@@ -120,10 +117,6 @@
       expect( suite.cookieStorage.get ).toHaveBeenCalledWith( 'hashcode' );
       expect( suite.$rootScope.$emit ).not.toHaveBeenCalled();
       expect( suite.authStatusFocusCallbackWasCalled ).toBeUndefined();
-
-      function authStatusFocusCallback() {
-        suite.authStatusFocusCallbackWasCalled = true;
-      }
     } );
 
     // -------------------------
@@ -134,7 +127,45 @@
       expect( suite.$rootScope.$emit ).toHaveBeenCalledWith( suite.NAV_EVENTS.tabLoaded, mockResults );
     } );
 
+    // -------------------------
+    it( 'should not emit tabLoaded if the configured authStatusSuccessTest is falsy', function() {
+      suite.iscAuthStatus.configure( {
+        authStatusUrl        : 'auth/status',
+        authStatusSuccessTest: authStatusSuccessTestFail
+      } );
+
+      mockAuthStatusCall( 'success' );
+      suite.iscAuthStatusService.checkAuthStatus();
+
+      expect( suite.$rootScope.$emit ).not.toHaveBeenCalled();
+    } );
+
+    // -------------------------
+    it( 'should emit tabLoaded if the configured authStatusSuccessTest is truthy', function() {
+      suite.iscAuthStatus.configure( {
+        authStatusUrl        : 'auth/status',
+        authStatusSuccessTest: authStatusSuccessTestPass
+      } );
+
+      mockAuthStatusCall( 'success' );
+      suite.iscAuthStatusService.checkAuthStatus();
+
+      expect( suite.$rootScope.$emit ).toHaveBeenCalledWith( suite.NAV_EVENTS.tabLoaded, mockResults );
+    } );
+
   } );
+
+  function authStatusFocusCallback() {
+    suite.authStatusFocusCallbackWasCalled = true;
+  }
+
+  function authStatusSuccessTestFail( results ) {
+    return results.mock !== mockResults.mock;
+  }
+
+  function authStatusSuccessTestPass( results ) {
+    return results.mock === mockResults.mock;
+  }
 
   function makeEvent( eventName ) {
     var event = document.createEvent( 'CustomEvent' );
@@ -144,7 +175,7 @@
 
   function mockAuthStatusCall( status ) {
     // Mock the synchronous auth/status call
-    spyOn( $, 'ajax' ).and.callFake( function( config ) {
+    $.ajax.and.callFake( function( config ) {
       config[status]( mockResults );
     } );
   }
