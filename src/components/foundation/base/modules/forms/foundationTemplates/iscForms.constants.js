@@ -12,7 +12,8 @@
       collectionEditStarted   : 'iscFormsCollectionEditStarted',
       collectionEditSaved     : 'iscFormsCollectionEditSaved',
       collectionEditCanceled  : 'iscFormsCollectionEditCanceled',
-      collectionItemRemoved   : 'iscFormsCollectionItemRemoved'
+      collectionItemRemoved   : 'iscFormsCollectionItemRemoved',
+      collectionInfoEmitted   : 'iscFormsCollectionInfoEmitted'
     } );
 
 } )();
