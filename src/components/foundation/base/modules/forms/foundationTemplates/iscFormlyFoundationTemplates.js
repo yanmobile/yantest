@@ -727,7 +727,8 @@
               return api
                 .get( model, search )
                 .then( function( results ) {
-                  return $scope.selectOptions = ( apiResultsFilter ? apiResultsFilter( results ) : results );
+                  $scope.selectOptions = ( apiResultsFilter ? apiResultsFilter( results ) : results );
+                  return $scope.selectOptions;
                 } );
             }
           }
