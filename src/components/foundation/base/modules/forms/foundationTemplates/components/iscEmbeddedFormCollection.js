@@ -149,6 +149,7 @@
       _.extend( self, {
         cancel                    : cancel,
         editForm                  : editForm,
+        emitInfo                  : emitInfo,
         hasValidationError        : hasValidationError,
         isAddItemDisabled         : isAddItemDisabled,
         isSubmitDisabled          : isSubmitDisabled,
@@ -228,16 +229,15 @@
           emptyText  : _.get( self.options, 'data.collections.emptyMessage' ),
           hideHeader : _.get( self.options, 'data.collections.hideTableHeader' ),
           evalContext: $scope.$eval,
-          options    : {
-            allowReordering: allowReordering
-          },
-          callbacks  : {
+          options    : collectionOpts,
+          callbacks  : _.extend( {}, {
             editForm          : editForm,
+            emitInfo          : emitInfo,
             removeForm        : removeForm,
             moveUp            : moveUp,
             moveDown          : moveDown,
             hasValidationError: hasValidationError
-          }
+          }, _.get( self.options, 'data.collections.config.callbacks' ) )
         };
       }
 
@@ -631,7 +631,10 @@
 
           // Notify with event
           showSubform();
-          $scope.$emit( FORMS_EVENTS.collectionEditStarted, self.editModel );
+          $scope.$emit( FORMS_EVENTS.collectionEditStarted, {
+            key      : self.options.key,
+            editModel: self.editModel
+          } );
 
           // Defer the update until the formly-form has finished being initialized;
           // otherwise a race condition can prevent the broadcast message from being heard
@@ -642,12 +645,16 @@
       /**
        * @memberOf iscEmbeddedFormCollection
        */
-      function cancel() {
+      function cancel( depth ) {
         self.subformOptions.formState._validation.$submitted = false;
 
         // Notify with event
         hideSubform();
-        $scope.$emit( FORMS_EVENTS.collectionEditCanceled, self.editModel );
+        $scope.$emit( FORMS_EVENTS.collectionEditCanceled, {
+          key      : self.options.key,
+          editModel: self.editModel,
+          depth    : depth || 1
+        } );
       }
 
       /**
@@ -692,9 +699,25 @@
 
           // Notify with event
           hideSubform();
-          $scope.$emit( FORMS_EVENTS.collectionEditSaved, self.editModel );
+          $scope.$emit( FORMS_EVENTS.collectionEditSaved, {
+            key      : self.options.key,
+            editModel: self.editModel
+          } );
         }
         return isSubformValid;
+      }
+
+      /**
+       * @memberOf iscEmbeddedFormCollection
+       */
+      function emitInfo( row, data ) {
+        var index = _.indexOf( self.collectionModel, row );
+
+        $scope.$emit( FORMS_EVENTS.collectionInfoEmitted, {
+          key  : self.options.key,
+          data : data,
+          index: index
+        } );
       }
 
       /**
@@ -713,7 +736,11 @@
 
           // Notify with event
           showSubform();
-          $scope.$emit( FORMS_EVENTS.collectionEditStarted, self.editModel );
+          $scope.$emit( FORMS_EVENTS.collectionEditStarted, {
+            key      : self.options.key,
+            editModel: self.editModel,
+            index    : self.editIndex
+          } );
 
           // Defer the update until the formly-form has finished being initialized;
           // otherwise a race condition can prevent the broadcast message from being heard

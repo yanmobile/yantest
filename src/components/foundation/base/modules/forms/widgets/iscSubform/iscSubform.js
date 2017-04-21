@@ -96,7 +96,8 @@
       }
 
       function breadcrumbClick( index, onCancel ) {
-        var dirtyBreadcrumb;
+        var dirtyBreadcrumb,
+            breadcrumbCount = self.breadcrumbs.length - index - 1;
 
         for ( var i = index; i < self.breadcrumbs.length; i++ ) {
           var breadcrumb = self.breadcrumbs[i];
@@ -115,7 +116,7 @@
           onYes();
         }
         function onYes() {
-          onCancel();
+          onCancel( breadcrumbCount );
         }
       }
 
