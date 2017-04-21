@@ -32,7 +32,7 @@
         if ( activeElements.length && !activeElements[0].hasAttribute( 'zf-ignore-all-close' ) ) {
           if ( getParentsUntil( tar, 'zf-closable' ) === false ) {
             e.preventDefault();
-            // This line below is ONLY DIFFERENCE. It is needed to automatically close popup panels
+            // This line below is the ONLY DIFFERENCE. It is needed to automatically close zf-popups
             FoundationApi.publish( activeElements[0].id, ['toggle'] );
             FoundationApi.publish( activeElements[0].id, 'close' );
           }
