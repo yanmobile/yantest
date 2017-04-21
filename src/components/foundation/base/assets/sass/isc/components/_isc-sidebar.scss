@@ -24,7 +24,13 @@ $sidebar-active-background: $accent-color !default;
         margin: 0;
         color: isitlight($sidebar-background, $body-font-color, $light-text);
 
-        > a {
+        > div {
+          width     : 100%;
+          padding   : $menubar-item-padding;
+          font-size : $menubar-fontsize;
+        }
+
+        > a, div {
           color: isitlight($sidebar-background, $body-font-color, $light-text);
           font-weight: $font-weight-normal;
 
@@ -66,7 +72,7 @@ $sidebar-active-background: $accent-color !default;
       line-height: 1.375;
       margin: 0;
 
-      a {
+      a, div {
         color: $anchor-font-color;
         font-weight: $font-weight-normal;
         text-align: dir-check($global-left, $global-right);
