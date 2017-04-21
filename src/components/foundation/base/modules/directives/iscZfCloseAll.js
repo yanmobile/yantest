@@ -2,7 +2,7 @@
  * Created by hzou on 4/21/17.
  */
 
-(function() {
+( function() {
 
   angular.module( 'isc.directives' )
     .directive( 'iscZfCloseAll', iscZfCloseAll );
@@ -57,4 +57,4 @@
     }
   }
 
-})();
+} )();
