@@ -45,7 +45,7 @@
         url += ( '?orderBy=' + order );
       }
       return iscHttpapi.get( url ).then(
-        function( response ) {
+        function onSuccess( response ) {
           var codeTable    = applyResponseTransform( response ),
               tableToCache = ( codeTable && _.isArray( codeTable ) ) ? codeTable : [];
 
@@ -55,6 +55,14 @@
             tableToCache
           );
           return codeTable;
+        },
+        function onError() {
+          _.set(
+            codeTableCache,
+            name,
+            []
+          );
+          return [];
         }
       );
     }
