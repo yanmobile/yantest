@@ -37,6 +37,7 @@
     <div class="grid-block tbody">
       <div dir-paginate="row in fauxTblCtrl.data | itemsPerPage: fauxTblCtrl.config.pager.itemsPerPage || 100"
            current-page="fauxTblCtrl.currentPage"
+           total-items="fauxTblCtrl.resultsAvailable"
            pagination-id="fauxTblCtrl.paginationId"
            class="{{column.cssTRClass || 'grid-block tr'}}"
            ng-click="fauxTblCtrl.config.onRowClick(row)">

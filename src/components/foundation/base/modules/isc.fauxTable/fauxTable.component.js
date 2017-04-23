@@ -8,6 +8,16 @@
   /**
    * @ngdoc directive
    * @memberOf isc.fauxTable
+   *
+   * USAGE:
+   **
+   * //Client side paging below
+   * <faux-table config="$ctrl.config" data="$ctrl.data"></faux-table>
+   *
+   * //Serverside paging
+   * <faux-table config="$ctrl.config" data="$ctrl.data" results-available=$ctrl.resultsAvailable" server-paging="true"></faux-table>
+   *
+   *
    * @description
    * Configuration:
    *
@@ -43,7 +53,11 @@
         resultsAvailable: '<'
       },
       templateUrl : /* @ngInject */ function( $attrs ) {
-        return $attrs.templateUrl || 'isc.fauxTable/fauxTable.html';
+        if ( $attrs.templateUrl ) {
+          return $attrs.templateUrl;
+        } else {
+          return $attrs.serverPaging ? 'isc.fauxTable/fauxTableServerPaging.html' : 'isc.fauxTable/fauxTable.html';
+        }
       }
     } );
 
@@ -61,13 +75,16 @@
       getSort        : getSort,
       getEmptyMessage: getEmptyMessage,
 
-      changePageNumber: changePageNumber
+      changePageNumber: changePageNumber,
+      currentPage     : 1
     } );
 
     function changePageNumber( page ) {
       log.logFn( 'changePageNumber' );
       if ( _.get( self, 'config.pager.server' ) ) {
         self.config.pager.onPageChange( page, self.sortBy, self.sortReverse );
+      } else {
+        self.currentPage = page;
       }
     }
 
