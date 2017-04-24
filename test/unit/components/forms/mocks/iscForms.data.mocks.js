@@ -224,6 +224,7 @@ var mockComponentData = {
       }
     },
     "textarea"             : "more text",
+    "datePicker"           : "1990-12-11T00:00:00.000Z",
     "dateComponents"       : "1990-12-11 00:00:00",
     "dateComponentsPartial": {
       "day"  : "",
