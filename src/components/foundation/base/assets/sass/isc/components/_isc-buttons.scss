@@ -14,7 +14,7 @@ $button-margin: 0 0 1rem 0 !default;
 $button-style: solid !default;
 $button-background: $accent-color !default;
 $button-background-hover: scale-color($button-background, $lightness: -15%) !default;
-$button-color: auto !default;
+$button-color: isitlight($button-background, $body-font-color, $light-text) !default;
 $button-radius: $global-radius !default;
 $button-sizes: (
    tiny: 0.7,
@@ -45,6 +45,12 @@ $z-index-fab: 20 !default;
   }
 
   button, .button, input[type="submit"], input[type="button"] {
+    transition: background 0.5s ease;
+
+    &:hover, &:focus {
+      background: $button-background-hover;
+      color: isitlight($button-background-hover, $body-font-color, $light-text);
+    }
 
     &.chunky {
       border-bottom: 3px solid scale-color($button-background, $lightness: -14%);
@@ -52,7 +58,7 @@ $z-index-fab: 20 !default;
 
       &:hover, &:focus {
         border-bottom-color: scale-color($button-background, $lightness: -24%);
-        color: isitlight($button-background, $body-font-color, $light-text);
+        color: isitlight($button-background-hover, $body-font-color, $light-text);
       }
     }
 
@@ -65,6 +71,18 @@ $z-index-fab: 20 !default;
       }
     }
 
+    &:not(.fab) {
+      * {
+        vertical-align: bottom;
+      }
+    }
+
+    svg {
+      height: $button-font-size;
+      width: $button-font-size;
+      fill: isitlight($button-background, $body-font-color, $light-text);
+    }
+
     @each $color in map-keys($theme-colors) {
 
     &.#{$color} {
@@ -75,13 +93,17 @@ $z-index-fab: 20 !default;
           $color: isitlight($color-name, $body-font-color, $light-text)
         );
 
+        svg {
+          fill: isitlight($color-name, $body-font-color, $light-text);
+        }
+
         &.chunky {
           border-bottom: 3px solid scale-color($color-name, $lightness: -14%);
           box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 1px 0px;
 
           &:hover, &:focus {
             border-bottom-color: scale-color($color-name, $lightness: -14%);
-            color: isitlight($button-background-hover, $body-font-color, $light-text);
+            color: $color;
           }
         }
 
@@ -89,7 +111,6 @@ $z-index-fab: 20 !default;
 
           @include ltr() {
             &::after {
-              //@include css-triangle(6px, inherit, top);
               @include css-triangle(6px, isitlight($color-name, $body-font-color, $light-text), top);
               position: absolute;
               #{$global-right}: 0.7rem;
@@ -260,9 +281,9 @@ $z-index-fab: 20 !default;
       margin-bottom: 0;
 
       &:not([disabled]) {
-        &.md-raised,
-        &.md-fab {
-          &.md-focused {
+        &.raised,
+        &.fab {
+          &.focused {
             @include fab-shadow-bottom();
           }
           &:active {
@@ -275,12 +296,22 @@ $z-index-fab: 20 !default;
        display: block;
      }
 
+     svg {
+       height: 1.5rem;
+       width: 1.5rem;
+     }
+
     }
 
     &.mini {
       width: $button-fab-mini-width;
       height: $button-fab-mini-height;
       padding: $button-fab-padding/2;
+
+      svg {
+       height: 1rem;
+       width: 1rem;
+     }
     }
   }
 }

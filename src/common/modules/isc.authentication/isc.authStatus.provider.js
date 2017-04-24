@@ -28,6 +28,7 @@
     function configure( config ) {
       authConfig.authStatusUrl           = config.authStatusUrl;
       authConfig.authStatusFocusCallback = config.authStatusFocusCallback;
+      authConfig.authStatusSuccessTest   = config.authStatusSuccessTest;
 
       authConfig.useAuthStatus = !!authConfig.authStatusUrl;
     }

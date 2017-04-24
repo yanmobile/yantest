@@ -1,28 +1,42 @@
 # uifw
 
 ---
-## HealthShare UI Framework is intended to be used across multiple projects
+### HealthShare UI Framework is intended to be used across multiple projects
+
 *NOTE*: uifw is not a standalone project -- it only contains common framework code. To become a standalone project, it needs to be complemented with application specific code. see: [Getting started](#getting-started))
 
+## First-Time Git Setup
+```
+$ git config --global user.name "John Doe"
+$ git config --global user.email johndoe@intersystems.com
+```
 ---
-## prerequisites:
+## Prerequisites:
 1. Make sure you've read both [uifw-tools](https://github.com/intersystems/uifw-tools/blob/master/README.md) and [uifw](https://github.com/intersystems/uifw/blob/master/README.md) README.md files
 2. Make sure you've installed [uifw-tools] and its [prerequisites](https://github.com/intersystems/uifw-tools/blob/master/README.md#requirements)
 
-*Note* that if you are creating a modified build of your application, you should not modify these files. If you do, you risk them being overwritten on routine updates.
+**Note**: If you are creating a modified build of your application, **you should not modify these files.** If you do, you risk them being overwritten on routine updates.
+
 ---
+
+## Style Guide
+The [UIFW Style Guide](https://learning.intersystems.com/pluginfile.php/1654/mod_resource/content/5/www/index.html#/overview "UIFW Style Guide") contains demos and code snippets for all uifw components, documentation for framework theming and design patterns, and helpful design guidance and resources (**Note:** You must be logged in & VPN connected to access this content.)
+
+
 ## Training Videos
-Online training videos are internally network-shared here: [//iscinternal.com/isc/public/LearningServices/HealthShare/Henry Zou](//iscinternal.com/isc/public/LearningServices/HealthShare/Henry Zou)
+Online training videos are internally network-shared here: [//iscinternal.com/isc/public/LearningServices/HealthShare/Henry Zou]
+
 ---
+
 ## Getting Started
-*WARNING* the following instructions will fail if these [prerequisites](#prerequisites) were not satisfied.
+**WARNING**: The following instructions will fail if these [prerequisites](#prerequisites) were not satisfied.
 
 ### For framework developers
 ```bash
     #clone repo && switch to folder
-    git clone https://github.com/intersystems/uifw.git 
+    git clone https://github.com/intersystems/uifw.git
     cd uifw
-    
+
     #install npm dependencies
     slush isc:install
 ```    
@@ -57,10 +71,10 @@ gulp test:components
 gulp test:app    #only app specific
 ```
 
-Update framework: //make sure your workarea is clean 
+Update framework: //make sure your workarea is clean
 
 ```bash
-slush isc:updateUifw 
+slush isc:updateUifw
 #create PR on GitHub
 ```
 
@@ -81,12 +95,12 @@ gulp deploy --appjson path/to/config.app.js #only app specific
 ```
 ---
 ###File structure
-    
+
     |-- gulpfile.js //utilizes gulp tasks inside of ./gulp/ folder
     |-- gulp
     |   |__ config.app.js   // this file imports settings from config.common and config.components
     |   |__ config.common.js
-    |   |__ config.framework.js 
+    |   |__ config.framework.js
     |-- config.xml  //used by cordova
     |-- jsdocs
     |   |__ conf.json   //jsDocs configuration
@@ -114,7 +128,7 @@ gulp deploy --appjson path/to/config.app.js #only app specific
     |   |   |-- common
     |   |   |-- components
     |___|___|__ app     //application specific
-   
+
 
 ---
 ###gulp configs
@@ -124,7 +138,7 @@ gulp deploy --appjson path/to/config.app.js #only app specific
   * This *config structure* applies to ```gulp/config.app.js```, ```src/components/<edition path>/components.json```, and ```gulp/config.common.js```
   * The paths must be relative to the root of the application
   * Be sure to never reference files from another module or outside of their perspective section: *src/common*, *src/components*, and *src/app*.
-  * The automation scripts will load the config sections in this orders: 
+  * The automation scripts will load the config sections in this orders:
     1. gulp/config.common.js
     2. src/components/<edition path>/config.components.js
     3. gulp/config.app.js
@@ -148,12 +162,12 @@ gulp deploy --appjson path/to/config.app.js #only app specific
   },
   "customer"     : { // app specific. Used by customer to override application code
     "assets": {
-      "i18n": [ 
-        // default will replace the entire file, to change this add "_UifwMergeAlgorithm": "merge" to the json file 
+      "i18n": [
+        // default will replace the entire file, to change this add "_UifwMergeAlgorithm": "merge" to the json file
         // e.g., "customer/assets/i18n/**/*.json"
       ],
       "FDN" : [
-        // default will replace the entire file, to change this add "_UifwMergeAlgorithm": "merge" to the json file 
+        // default will replace the entire file, to change this add "_UifwMergeAlgorithm": "merge" to the json file
         // e.g., "customer/assets/FDN/**/*.json"
       ]
     }
@@ -184,7 +198,7 @@ gulp deploy --appjson path/to/config.app.js #only app specific
         // e.g., "src/app/assets/i18n/**/*.json"
       ],
       "images" : [
-        // This is where we specify image files. 
+        // This is where we specify image files.
         // They'll compressed and moved into "www/images/"
         // e.g., "src/components/foundation/base/assets/images/**/*",
         // e.g., "src/components/foundation/base/assets/vendors/leaflet/images/**/*"
@@ -245,55 +259,55 @@ gulp deploy --appjson path/to/config.app.js #only app specific
   }
 }
 ```
-        
+
 ---
 ###FAQs
 * **I am getting this error message ```slush: command not found```**
   * Make sure your environment satisfies all of the [prerequisites](#prerequisites) and [uifw-tools] is installed
-  
+
 * **This framework looks awesome, how do I create a fully functional application using this framework in a couple of minutes?**
   * We highly recommend leveraging our [uifw-tools] to facilitate the creation of your new application.
-   
+
 * **What are the differences between "src/app", "src/common" and "src/components"**
   * "src/common" is framework code and should only be updated directly by framework developers. It defines system wide behaviors such as session management, state authorization, page configuration, and etc.
-  * "src/components" is a framework code and should only be updated directly by framework and edition developers. It defines different UI-Components (bootstrap, foundation for apps, angular material) and the different editions (US, UK, Chinese) utilizing for the selected UI-Component. 
+  * "src/components" is a framework code and should only be updated directly by framework and edition developers. It defines different UI-Components (bootstrap, foundation for apps, angular material) and the different editions (US, UK, Chinese) utilizing for the selected UI-Component.
   * "src/app" is application code should only be updated by application developers.  It contains application specific logic and pages.
-  
+
 * **I want to include a new npm package to my application, where should I install it?**
   * Application specific npm packages should be installed under "src/app/" folder (don't install it in "src/common" and "src/components")
-   
+
 * **Now that I have npm package successfully installed in "src/app/" folder, how do I add it to the application?**
   * We use Gulp to automate our build tasks. Application specific gulp configuration can be found at "gulp/config.app.js". You'll need to specify the file path of your npm package in "vendor/js" json property which is line 3 of "gulp/config.app.js" file.
-  
+
 * **How do I add a new javascript package which is not available through npm?**
   * You'll need to paste your non-npm library js files in "src/app/assets/vendors/" folder. If this folder doesn't exist, create one.
   * You'll have to reference your js file in "gulp/config.app.js" configuration file under this key path: "module/assets/vendor/js" array.
-  
+
 * **How do I include a 3rd party css file in my application?**
   * The framework does not support *.css file extensions, you'll need to rename your *.css extension to *.scss (superset of css) and place your *.scss file in "src/app/assets/sass/" folder. Once your file is in the sass folder, add a reference to  "src/app/assets/sass/main.scss" file.
-  
+
 * **How do I include a module specific scss file?**
   * This is a built-in functionality. Any scss file added to your module, matching this glob pattern ```src/app/modules/**/*.scss```, will automatically be compiled, concatenated, and shipped as part of your ```app.min.css```.
-  
+
 * **How do I control what gets outputted in the console?**
   * Open up your "src/app/modules/app.config.js" file and add/remove channels in 'devlogWhitelist' and 'devlogBlacklist' arrays. Note: "\*" means all channels.
-  
+
 * **How do I change the REST API's hostname and Port number?**
-  1. You can change the hostname and PORT number inside of app config file located "src/app/modules/app.config.js" 
+  1. You can change the hostname and PORT number inside of app config file located "src/app/modules/app.config.js"
   2. You can use an alternate config file with ```gulp serve --config <any valid directory>/<anyFileName>.js```
-  
+
 * **How do I promote an application feature to the framework?** (Be sure your changes are in common/components folder)
   * **Scenario 1**: The code I want to promote to framework are all in their own commits
     * Create a new branch off uifw master ```git checkout -b <branch> uifw/master```
-    * Cherry-pick the feature commits. For each of your commits in reverse chronological order (oldest first) 
+    * Cherry-pick the feature commits. For each of your commits in reverse chronological order (oldest first)
         * ```git cherry-pick <commit-hash>```
             * if you have conflicts, resolve them first then continue ```git cherry-pick --continue```  
-        * Once you have all the source code, commit the changes (if needed). 
+        * Once you have all the source code, commit the changes (if needed).
     * Push the changes to uifw (not origin)  ```git push uifw <branch> ```
     * Create a Pull Request
   * **Scenario 2**: The code I want to promote to framework are committed but contains non-feature code
     * Create a new branch off uifw master ```git checkout -b <branch> uifw/master```
-    * Cherry-pick the feature commits. For each of your commits in reverse chronological order (oldest first) 
+    * Cherry-pick the feature commits. For each of your commits in reverse chronological order (oldest first)
         * ```git cherry-pick --no-ff --no-commit <commit-hash>```
             * if you have conflicts, resolve them first then continue ```git cherry-pick --continue```  
         * Remove all changes that's not part of your feature
@@ -315,12 +329,12 @@ gulp deploy --appjson path/to/config.app.js #only app specific
     * Once you have all the source code, commit the changes
     * Push the changes to uifw (not origin)  ```git push uifw <branch> ```
     * Create a Pull Request
-    
+
 * **I have an existing application and my framework is out of date. How can I upgrade my application's framework (cool slush way)?**
   1. Update your ```uifw-tools``` by executing ```slush isc:update```
   1. execute ```slush isc:updateUifw```
   1. create a PR to merge this to your project's master branch
-  
+
 * **I have an existing application and my framework is out of date. How can I upgrade my application's framework (the old fashion way)?**
   1. Ensure you have a local git remote ```uifw``` is pointing to "https://github.com/intersystems/uifw.git"
     1. execute ```git remote -v``` to check existing git remote repo mappings
@@ -336,23 +350,23 @@ gulp deploy --appjson path/to/config.app.js #only app specific
   7. commit your changes (if any)
   8. push to origin ```git push origin framework-update-<date>```
   9. create a PR to merge this to your project's master branch
-  
+
 * **How do I specify who is authorized to access my page (ui-router state)?**
   * Navigate to where you've defined the ui-router state for your landing page and update ```roles``` property.  For reference, see  **src/app/modules/login/login.module.js**
-  
+
 * **How do I specify a landing page for specific user role?**
   * Navigate to where you've defined the ui-router state for your landing page and add/update  ```landingPageFor``` property and include your user role as one of the array values. For reference, see  **src/app/modules/login/login.module.js**
-  
+
 * **How come when I successfully authenticated a user(Status Code 200 from REST API), nothing happens, I am still at the login page?**
   * That's because you haven't specified a landing page for the authenticated user role. You need to specifiy a landing page for your authenticated user's role. For reference, see  **src/app/modules/login/login.module.js**
-  
+
 * **I created a Pull-Request, but it won't let me merge it due to conflicts. How do I resolve this?**
   * merge the latest of origin master to your local branch  ```git pull origin master```
   * resolve conflicts
   * stage your changes ```git add <filename>```
   * commit your resolved changes  ```git commit -m '<your message>'```
   * Assume your branch is called "my-feature-branch". Push your changes to your tracked server branch  ```git push origin <my-feature-branch> ```
-  
+
 * **How do I specify a different edition (US/UK)?**
   * *note:* By default the code uses "base" edition, which is the US edition. Specific Edition config file will be merged with base edition. (using _.mergeWith() where it concatenates arrays)
   * Add a new edition config object in the "edition" array of ```gulp/config.app.js``` configuration
@@ -360,7 +374,7 @@ gulp deploy --appjson path/to/config.app.js #only app specific
 * **How do I add functionality to the faux-table directive?**
   * You can change the template by passing in an attribuite ```templateUrl```. When specifying the html attribute, be sure to use kebab-case as in ```template-url```.
   * You can pass in additional configuration properties by creating a config object and passing it in on the ```config``` attribute.
-  * Example html: 
+  * Example html:
   ```
   <faux-table template-url="path/to/the/file.html"
               config="ctrl.myConfigObj"></faux-table>
@@ -381,7 +395,7 @@ gulp deploy --appjson path/to/config.app.js #only app specific
 
 * **How do I add/exclude specific js in common or components?**
   * add glob patterns to ```gulp/config.app.js -> overrides/js/[common/component]``` configuration
- 
+
 * **How do I exclude specific html in common or components?**
   * add glob patterns to ```gulp/config.app.js -> overrides/html/[common/component]``` configuration
 
@@ -407,17 +421,17 @@ gulp deploy --appjson path/to/config.app.js #only app specific
         pattern : "/api/v1/admin/user",
         pathRewrite: {
           "/api/v1/admin/user": "/api/v1/admin" //removing "user" from url
-        }, 
+        },
         target  : "http://localhost:3030",
         logLevel: 'debug'
-      }, { // When requests are going to “http://localhost:3000/api/** they will be redirected to "http://devrefhspd:7162/healthshare/api/v1/**" 
+      }, { // When requests are going to “http://localhost:3000/api/** they will be redirected to "http://devrefhspd:7162/healthshare/api/v1/**"
         pattern : "/api",
         target  : "http://devrefhspd:7162/healthshare",
         logLevel: 'debug'
       }
     ];
     ```
-    * NOTE - in the proxy.js file, be sure to put a leading slash, e.g. 
+    * NOTE - in the proxy.js file, be sure to put a leading slash, e.g.
     ```"/public/api/v1"```
     but in the app.config.js file, omit the leading slash, e.g.
      ```"public/api/v1"```
@@ -428,22 +442,22 @@ gulp deploy --appjson path/to/config.app.js #only app specific
   // HTML
   {{ "my literal" | translate }}
   {{ ::"my literal" | translate }}
-  
+
   <translate>my literal</translate>
   <any translate="my literal"><any>
   <any ng-html-bind="'my literal' | translate"><any>
   <any config-item-translation-key="my literal"><any>
-  
+
   {{ "my {{literal}}" | translate: objWithLiteralKey }}
-  
+
   {{ foo ? "my literal" : baz | translate }}
   {{ foo ? bar : "my literal" | translate }}
   {{ foo ? "my literal" : "my literal2" | translate }}
-  
+
   {{ $ctrl.condition || "my literal" | translate }}
   {{ "my literal" || $ctrl.condition | translate }}
-  
-  
+
+
   //JavaScript
   var translateComment = /* i18nextract */"my literal"; //use this for any keys in config blocks
   var state = {
@@ -453,7 +467,7 @@ gulp deploy --appjson path/to/config.app.js #only app specific
   $translate('my literal');
   $filter('translate')('my literal');
   $translate(['my literal1', 'my literal2']);
-  
+
   ```
 
 * **Where are the extracted i18n output files from the previous question?**
@@ -464,11 +478,11 @@ gulp deploy --appjson path/to/config.app.js #only app specific
 
 * **The i18n extract folder has two files. What are the differences?**
   * ```en-us.json``` is the extract file where the key and the values are the same (in English)
-  * ```en-us-greek-text.json``` have all the keys in ```en-us.json``` file but the values have been altered to append "英" and prepend "文". 
-  These files can be used by developers to easily identify which string literals in their application are not translated. 
+  * ```en-us-greek-text.json``` have all the keys in ```en-us.json``` file but the values have been altered to append "英" and prepend "文".
+  These files can be used by developers to easily identify which string literals in their application are not translated.
   Visually verify the app, the fields missing "英" and "文" are the untranslated literals.. Make sure these files are copied:
       * copy ```en-us-greek-text.json``` to ```src/app/assets/i18n/en-us.json```
-  
+
 * **How do I contribute to i18n extraction patterns?**
   * You'll need to create RegExp for matching and capturing the translation literals and ask a UIFW developer to add it to UIFW for you.
 
@@ -500,7 +514,7 @@ gulp deploy --appjson path/to/config.app.js #only app specific
        ```  
 * **How do I dynamically set the page title based on ui-router state config?**
   * simply add a ```data.title``` property to your state config
-  
+
        ```javascript
          function getStates() {
            return {
@@ -509,8 +523,8 @@ gulp deploy --appjson path/to/config.app.js #only app specific
                state         : 'authenticated.dashboard',
                ...
                //unless explicitly overriden, ui-router's data object will be inherited by descendant states
-               data          : { 
-                  title : "Patient Dashboard" 
+               data          : {
+                  title : "Patient Dashboard"
                }
              }
            };
@@ -520,6 +534,39 @@ gulp deploy --appjson path/to/config.app.js #only app specific
 * **How do I format my JavaScript code to meet the coding guideline?**
   * execute ```gulp jsformat``` in the git project folder
 
+* **I am running “Deploy” operation and my client fails with a message such as “eProvider” not found
+  *This issue is typical to a client script that was “minified” and “uglified”. During the deploy process when we minify and uglify the scripts,
+   all the function’s arguments names are changed to a single letter.
+   If you had an injection of “$scope” for example, after minification, it will change to a single letter like “e”.
+
+   To address the issue you must instruct the tools which preparing the scripts to inject the correct “Angular” services and injectables into the
+   functions of the "resolve" section of a "state" definition.
+   To do so you need to add the following comment in various locations:
+   ```javascript
+     /* @ngInject */
+   ```
+
+   State definition with “resolve”:
+   ===============================
+   When you define “states” for the ui-route module, you have the option to define “resolves” functions.
+   These function also allow to inject “angular” injectable.
+   You will have to place
+   ```javascript
+   /* @ngInject */
+    ```
+   before each function of the “resolve” section.
+   ```javascript
+    resolve :  /* @ngInject */ {
+         loadVersion: function( cmcVersionApi ) {
+           return cmcVersionApi.load();
+         },
+
+         loadObjectUidModel: function( loadVersion, cmcObjectUidApi ) {
+           return cmcObjectUidApi.loadModel();
+         }
+     }
+   ```
+
 ---
 ###Git 101
 ```bash
@@ -528,6 +575,18 @@ git checkout <branch>
 
 # checkout last branch (good fo toggling between two branches)
 git checkout -
+
+# revert file/folder to specific remote server commit version
+git checkout <remote>/<branch> <path-to-file-or-folder> 
+#example: git checkout uifw/master gulp/proxy.js 
+
+# revert file/folder to specific local commit version
+git checkout <branch> <path-to-file-or-folder> 
+#example: git checkout master gulp/proxy.js 
+
+# revert file/folder to original commit version
+git checkout -- <path-to-file-or-folder> 
+#example: git checkout -- gulp/proxy.js
 
 # Check which branch you are currently on (current branch)
 git branch
@@ -605,7 +664,7 @@ Control + a
 
 # take you back to the beginning, or the far left, of the line where your cursor is
 Control + e
- 
+
 # clears the entirety of the line before the cursor
 Control + u
 
@@ -626,7 +685,7 @@ Escape + b
 ###Bash 101 (OS X only)
 ```bash
 # go to home (same as cd ~)
-cd 
+cd
 
 # go to last directory (good fo toggling between two directories)
 cd -

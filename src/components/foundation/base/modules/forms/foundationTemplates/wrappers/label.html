@@ -5,7 +5,7 @@
            ng-class="{'required':to.required}"
            ng-if="!!to.label"
            class="form-label {{options.data.labelClass || ''}}">
-      {{to.label | translate}}
+      <bdi>{{to.label | translate}}</bdi>
     </label>
   </isc-forms-help>
 

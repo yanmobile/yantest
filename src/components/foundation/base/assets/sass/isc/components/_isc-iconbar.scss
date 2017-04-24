@@ -61,6 +61,7 @@ $iconbar-icon-padding: 1.25rem 1rem !default;
     > li {
       border-bottom: 2px solid scale-color($background, $lightness: -20%);
       border-#{$global-right}: none;
+      margin-bottom: 0;
 
       @include bidirectional() {
         border-left: none;

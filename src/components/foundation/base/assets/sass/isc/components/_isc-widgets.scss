@@ -16,15 +16,15 @@ $widget-background: #fff !default;
 $widget-color: isitlight($widget-background, $body-font-color, $light-text) !default;
 $widget-border: 1px solid $app-border-color !default;
 $widget-radius: $global-radius !default;
-$widget-shadow: $card-shadow !default;
+$widget-shadow: $shadow-1dp !default;
 $widget-padding: $global-padding !default;
 $widget-margin: 1rem !default;
 $widget-divider-background: smartscale($widget-background, 7%) !default;
 $widget-footer-background: $neutral-color !default;
 
 // Widget Header
-$widget-header-background: $primary-color !default;
-$widget-header-padding: 0.75rem 0.75rem !default;
+$widget-header-background: #fff !default;
+$widget-header-padding: 0.75rem 0.5rem !default;
 $widget-header-icon-color: $gray-dark !default;
 
 // Widget Menu
@@ -144,8 +144,6 @@ $widget-menu-title-margin: 0.5rem !default;
   $border-color: $actionsheet-border-color,
   $background-hover: $widget-menu-background-hover
 ) {
-
-  margin-bottom: -(1rem);
 
   a {
     display: block;

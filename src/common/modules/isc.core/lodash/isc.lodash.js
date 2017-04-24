@@ -28,7 +28,8 @@
     getRemainingTime         : getRemainingTime,
     findNested               : findNested,
     sum                      : sum,
-    generateGettersAndSetters: generateGettersAndSetters
+    generateGettersAndSetters: generateGettersAndSetters,
+    getRelativeTime          : getRelativeTime
   } );
 
   function getAge( dob, format ) {
@@ -126,7 +127,7 @@
   function advancedGet( obj, path, defaultValue ) {
     var val = obj;
 
-    if ( isTypeOf( path, 'string' ) && _.includes( path, ':' ) ) {
+    if ( isTypeOf( path, 'string' ) && _.includes( path, ':' ) && !_.startsWith( path,  ':' ) ) {
       toPath( path ).forEach( function( part ) {
         if ( _.includes( part, ':' ) ) {
           part     = part.replace( reFixJson, '"$2": ' );
@@ -173,7 +174,7 @@
   // _.interpolate("I am {0}", [5])
   // => "I am 5
   function interpolate( template, scope, options ) {
-    options    = options || {};
+    options = options || {};
     return template.replace( /{([^{}]*)}/g,
       function( match, path ) {
         var value = _.get( scope, path, options.defaultValue );
@@ -312,6 +313,9 @@
     }
   }
 
+  function getRelativeTime( time ) {
+    return moment( time ).fromNow();
+  }
 
   //END CLASS
 } )();

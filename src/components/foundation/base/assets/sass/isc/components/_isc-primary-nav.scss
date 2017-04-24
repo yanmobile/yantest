@@ -280,23 +280,65 @@ $app-name-font-weight: $font-weight-normal !default;
         }
       }
     }
-
   }
 
   /* Primary Mobile Menu */
   #primary-mobile-nav {
-    background: $primary-nav-background;
+
+    .title-bar {
+      @include title-bar-style($background: $primary-nav-background, $color: $app-bar-link-color, $border: 0, $padding: 0.25rem 0.5rem);
+
+      .title {
+        font-size: 1rem;
+        font-weight: $titlebar-font-weight;
+        margin-bottom: 0;
+      }
+
+      a {
+        color: $app-bar-link-color;
+
+        &.close {
+          font-size: 1.5rem;
+          font-weight: $font-weight-normal;
+
+          .close-icon {
+            svg {
+              fill: $app-bar-link-color;
+              height: 1rem;
+              width: 1rem;
+            }
+          }
+        }
+      }
+    }
 
     .menu-bar {
+      margin: 0;
+
       li {
-        border-bottom: 1px solid darken($primary-nav-background, 10);
+        border-bottom: 1px solid $app-border-color;
+        margin: 0;
+        color: $anchor-font-color;
 
         a {
-          padding: 1rem;
+          padding: 0.75rem;
+          color: $anchor-font-color;
+          border-radius: 0;
 
-          &.close {
-            font-size: 1.5rem;
-            font-weight: $font-weight-normal;
+          svg {fill: $anchor-font-color;}
+          &:hover {background: scale-color($panel-background, $lightness: -3%);}
+
+          .nav-icon {
+            padding-right: 0.5rem;
+            line-height: 1;
+            vertical-align: middle;
+
+            svg {
+              height: 1.25rem;
+              width: 1.25rem;
+              fill: $anchor-font-color;
+              line-height: 1;
+            }
           }
         }
       }

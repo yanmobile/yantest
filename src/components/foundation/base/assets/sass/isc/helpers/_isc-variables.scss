@@ -156,6 +156,33 @@ $shadow-22dp: 0px 10px 14px -6px rgba(0, 0, 0, $shadow-key-umbra-opacity), 0px 2
 $shadow-23dp: 0px 11px 14px -7px rgba(0, 0, 0, $shadow-key-umbra-opacity), 0px 23px 36px 3px rgba(0, 0, 0, $shadow-key-penumbra-opacity), 0px 9px 44px 8px rgba(0, 0, 0, $shadow-ambient-shadow-opacity) !default;
 $shadow-24dp: 0px 11px 15px -7px rgba(0, 0, 0, $shadow-key-umbra-opacity), 0px 24px 38px 3px rgba(0, 0, 0, $shadow-key-penumbra-opacity), 0px 9px 46px 8px rgba(0, 0, 0, $shadow-ambient-shadow-opacity) !default;
 
+// Shadow Depth Map
+$shadow-depths: (
+  shadow-1dp: $shadow-1dp,
+  shadow-2dp: $shadow-2dp,
+  shadow-3dp: $shadow-3dp,
+  shadow-4dp: $shadow-4dp,
+  shadow-5dp: $shadow-5dp,
+  shadow-6dp: $shadow-6dp,
+  shadow-7dp: $shadow-7dp,
+  shadow-8dp: $shadow-8dp,
+  shadow-9dp: $shadow-9dp,
+  shadow-10dp: $shadow-10dp,
+  shadow-11dp: $shadow-11dp,
+  shadow-12dp: $shadow-12dp,
+  shadow-13dp: $shadow-13dp,
+  shadow-14dp: $shadow-14dp,
+  shadow-15dp: $shadow-15dp,
+  shadow-16dp: $shadow-16dp,
+  shadow-17dp: $shadow-17dp,
+  shadow-18dp: $shadow-18dp,
+  shadow-19dp: $shadow-19dp,
+  shadow-20dp: $shadow-20dp,
+  shadow-21dp: $shadow-21dp,
+  shadow-22dp: $shadow-22dp,
+  shadow-23dp: $shadow-23dp,
+  shadow-24dp: $shadow-24dp
+) !default;
 
 // Easing Curves
 //--------------------------------------------
@@ -224,7 +251,7 @@ $isc-components: (
   timeline: true,
   tooltip: true,
   typeahead: true,
-  typography: true,
+  isc-typography: true,
   utilities: true,
   widgets: true,
 ) !default;

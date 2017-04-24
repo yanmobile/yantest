@@ -1,11 +1,12 @@
 <ui-select isc-forms-ui-select-shim="{{limitToList}}"
+           display-field="{{displayField}}"
            theme="selectize"
            on-select="onSelect($model, $item)"
            ng-model="model[options.key]"
            tagging="onTag"
            tagging-label="false"
            tagging-tokens="['TAB','ENTER']"
-           reset-search-input="{{limitToList}}">
+           reset-search-input="false">
   <ui-select-match placeholder="{{to.placeholder}}"
                    allow-clear=true>
     {{ isObjectModel ? $select.selected[displayField] : $select.selected }}
