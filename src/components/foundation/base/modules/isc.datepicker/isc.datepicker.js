@@ -17,6 +17,7 @@
    *
    * The "config" object attribute accepts any attribute that moment-picker supports. See the moment-picker
    * documentation for the most current list of these.
+   * https://github.com/indrimuska/angular-moment-picker#options
    *
    *
    * Notes:

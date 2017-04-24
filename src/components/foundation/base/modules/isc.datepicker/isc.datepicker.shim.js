@@ -7,11 +7,11 @@
 
   angular
     .module( 'isc.datepicker' )
-    .directive( 'iscMomentPickerShim', iscMomentPickerShim );
+    .directive( 'iscDatepickerShim', iscDatepickerShim );
 
-  function iscMomentPickerShim( devlog, $timeout ) {
+  function iscDatepickerShim( devlog, $timeout ) {
 
-    var log = devlog.channel( 'iscMomentPickerShim' );
+    var log = devlog.channel( 'iscDatepickerShim' );
     log.logFn( 'LOADED' );
 
     var directive = {
