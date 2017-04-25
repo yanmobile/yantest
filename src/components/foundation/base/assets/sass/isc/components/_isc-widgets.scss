@@ -195,6 +195,8 @@ $widget-menu-title-margin: 0.5rem !default;
       }
 
       li {
+        margin: 0;
+        font-size: 0.875rem;
         a {padding: $padding * 1;}
         &:first-child a {border-top: 0;}
       }
