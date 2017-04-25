@@ -38,12 +38,14 @@
     describe( 'validation', function() {
       it( 'should validate the model using ngModelController', function() {
         var name        = 'myDate',
-            format      = 'l',
+            format      = 'LL',
             initialDate = moment( ngModel ),
             newDate     = moment( ngModel ).add( 1, 'day' );
 
         compile( {
-          format    : format,
+          config    : {
+            format: format
+          },
           name      : name,
           ngRequired: true
         } );
