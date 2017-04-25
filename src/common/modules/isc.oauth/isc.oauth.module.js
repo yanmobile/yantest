@@ -46,7 +46,7 @@
    *         }
    *        }
    * */
-  angular.module( 'isc.oauth', ['isc.common', 'angular-md5'] );
+  angular.module( 'isc.oauth', ['angular-md5'] );
 
 } )();
 
