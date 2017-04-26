@@ -23,7 +23,8 @@
       'isc.http',
       'isc.router',
       'isc.states',
-      'isc.breakpoints'
+      'isc.breakpoints',
+      'isc.oauth'
 
     ] );
 
