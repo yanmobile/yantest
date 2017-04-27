@@ -69,7 +69,8 @@
       createDirectives();
 
       var suite             = suiteInternal,
-          input             = suite.element.find( 'input' ),
+          // formlyConfig adds a hidden input to workaround Chrome's autocomplete
+          input             = suite.element.find( 'input' ).not( '[hidden]' ),
           textarea          = suite.element.find( 'textarea' ),
           theForm           = suiteForm.element.find( 'form' ),
           localButtonConfig = getButtonConfig( suiteForm );
