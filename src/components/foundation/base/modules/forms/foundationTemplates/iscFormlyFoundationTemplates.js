@@ -159,7 +159,7 @@
         // IE has an X icon in text inputs that clears the input, but it
         // only fires an 'input' event, not a 'change' event.
         // This causes an 'input' event to also trigger the 'change' event.
-        link: function( scope, element ) {
+        link          : function( scope, element ) {
           var input = element.find( 'input' );
           input.on( 'input', function() {
             input.trigger( 'change' );
@@ -299,6 +299,40 @@
         }
       } );
 
+      // Date picker (angular-moment-picker)
+      iscFormsTemplateService.registerType( {
+        name       : 'datePicker',
+        templateUrl: 'forms/foundationTemplates/templates/datePicker.html',
+        wrapper    : ['templateLabel', 'templateHasError'],
+        /* @ngInject */
+        controller : function( $scope ) {
+          if ( !_.get( $scope.model, $scope.options.key ) ) {
+            _.set( $scope.model, $scope.options.key, null );
+          }
+
+          var dateConfig   = _.get( $scope.options, 'data.date', {} ),
+              model        = _.get( $scope.model, $scope.options.key ),
+              modelOptions = _.get( $scope.options, 'modelOptions', {} );
+
+          // Need to use updateOn: 'blur' with moment-picker
+          // Need to allowInvalid in order for min-date and max-date validations to be visible over required
+          _.extend( modelOptions, {
+            updateOn    : 'blur',
+            allowInvalid: true
+          } );
+
+          _.extend( $scope, {
+            // Scope properties for validation message
+            minDate       : $scope.$eval( dateConfig.minDate ),
+            maxDate       : $scope.$eval( dateConfig.maxDate ),
+            // isc-datepicker properties
+            ngModel       : moment( model, dateConfig.format ),
+            ngModelOptions: modelOptions,
+            config        : dateConfig
+          } );
+        }
+      } );
+
       // Date components [ DD / MM / YYYY ]
       iscFormsTemplateService.registerType( {
         name          : 'dateComponents',
@@ -306,8 +340,8 @@
         wrapper       : ['templateLabel', 'templateHasError'],
         defaultOptions: {
           data: {
-            collections : {
-              tableCell : {
+            collections: {
+              tableCell: {
                 templateUrl: 'forms/foundationTemplates/tableTemplates/cell.date.html'
               }
             }
@@ -342,9 +376,9 @@
             }
           },
           data      : {
-            collections : {
-              tableCell : {
-                display  : function( row, column ) {
+            collections: {
+              tableCell: {
+                display : function( row, column ) {
                   // partialDate validator ensures we only have a day if we have a month,
                   // and only have a month if we have a year
                   var modelName = column.model,
@@ -369,7 +403,7 @@
 
                   return $sce.trustAsHtml( displayValue );
                 },
-                template : "{{ column.display(row, column.model) }}"
+                template: "{{ column.display(row, column.model) }}"
               }
             }
           }
@@ -409,7 +443,7 @@
         template      : '<span></span>',
         defaultOptions: {
           data: {
-            collections : {
+            collections: {
               tableCell: {
                 display: function( model, field, evalContext ) {
                   var template        = _.get( field, 'customTemplate' ),

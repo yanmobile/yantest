@@ -1,16 +1,26 @@
 <div ng-message="required">
   <label class="error-message"
-         ng-bind="'* {{to.label}} is required' | translate">
+         ng-bind="['*', to.label, ('is required' | translate)].join(' ')">
+  </label>
+</div>
+<div ng-message="minDate">
+  <label class="error-message"
+         ng-bind="[('Minimum date is' | translate), minDate].join(' ')">
+  </label>
+</div>
+<div ng-message="maxDate">
+  <label class="error-message"
+         ng-bind="[('Maximum date is' | translate), maxDate].join(' ')">
   </label>
 </div>
 <div ng-message="minlength">
   <label class="error-message"
-         ng-bind="'Minimum length is {{to.minlength}}' | translate ">
+         ng-bind="[('Minimum length is' | translate), to.minlength].join(' ')">
   </label>
 </div>
 <div ng-message="maxlength">
   <label class="error-message"
-         ng-bind="'Maximum length is {{to.maxlength}}' | translate">
+         ng-bind="[('Maximum length is' | translate), to.maxlength].join(' ')">
   </label>
 </div>
 <div ng-message="number">

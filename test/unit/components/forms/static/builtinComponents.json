@@ -208,6 +208,19 @@
           }
         },
         {
+          "key"             : "templates.datePicker",
+          "type"            : "datePicker",
+          "templateOptions" : {
+            "label" : "A datepicker widget",
+            "qdTag" : "datePicker"
+          },
+          "data"            : {
+            "date" : {
+              "format" : "YYYY-MM-DD"
+            }
+          }
+        },
+        {
           "key"             : "templates.dateComponents",
           "type"            : "dateComponents",
           "templateOptions" : {
@@ -227,16 +240,16 @@
           "key"             : "templates.typeahead.primitiveValue",
           "type"            : "typeahead",
           "templateOptions" : {
-            "label"   : "A typeahead widget, primitive values",
-            "qdTag"   : "typeaheadPrimitive",
+            "label"       : "A typeahead widget, primitive values",
+            "qdTag"       : "typeaheadPrimitive",
             "placeholder" : "Primitive typeahead",
-            "options" : [
+            "options"     : [
               "Typeahead 1",
               "Typeahead 2",
               "Typeahead 3"
             ]
           },
-          "data" : {
+          "data"            : {
             "userScript" : "typeaheadScriptPrimitive"
           }
         },
@@ -244,10 +257,10 @@
           "key"             : "templates.typeahead.objectValue",
           "type"            : "typeahead",
           "templateOptions" : {
-            "label"   : "A typeahead widget, object values",
-            "qdTag"   : "typeaheadObject",
+            "label"       : "A typeahead widget, object values",
+            "qdTag"       : "typeaheadObject",
             "placeholder" : "Object typeahead",
-            "options" : [
+            "options"     : [
               {
                 "displayField" : "Typeahead 1",
                 "value"        : "1"
@@ -263,7 +276,7 @@
             ]
           },
           "data"            : {
-            "userModel" : {
+            "userModel"   : {
               "api" : {
                 "minlength" : 0
               }
@@ -275,9 +288,9 @@
           "key"             : "templates.typeaheadWithScript",
           "type"            : "typeaheadWithScript",
           "templateOptions" : {
-            "label" : "A typeahead widget supporting user-defined scripts",
+            "label"       : "A typeahead widget supporting user-defined scripts",
             "placeholder" : "Script typeahead",
-            "qdTag" : "typeaheadWithScript"
+            "qdTag"       : "typeaheadWithScript"
           },
           "data"            : {
             "userScript"  : "typeaheadScript",
