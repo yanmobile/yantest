@@ -69,7 +69,12 @@
         routes    : routes
       },
       open     : true,
-      browser  : browser
+      browser  : browser,
+      ghostMode: {
+        clicks: false,
+        forms : false,
+        scroll: false
+      }
     };
 
     //usage `gulp server --port=2222`
