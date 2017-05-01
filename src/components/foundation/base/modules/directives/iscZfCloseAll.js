@@ -3,6 +3,8 @@
  */
 
 ( function() {
+  'use strict';
+
 
   angular.module( 'isc.directives' )
     .directive( 'iscZfCloseAll', iscZfCloseAll );
