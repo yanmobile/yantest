@@ -29,7 +29,8 @@
           return;
         }
 
-        var activeElements = document.querySelectorAll( '.is-active[zf-closable]' );
+
+        var activeElements = document.querySelectorAll( '.is-active[zf-closable]' ); //jshint ignore:line
 
         if ( activeElements.length && !activeElements[0].hasAttribute( 'zf-ignore-all-close' ) ) {
           if ( getParentsUntil( tar, 'zf-closable' ) === false ) {
@@ -47,7 +48,7 @@
      * http://gomakethings.com/climbing-up-and-down-the-dom-tree-with-vanilla-javascript/
      */
     function getParentsUntil( elem, parent ) {
-      for ( ; elem && elem !== document.body; elem = elem.parentNode ) {
+      for ( ; elem && elem !== document.body; elem = elem.parentNode ) {//jshint ignore:line
         if ( elem.hasAttribute( parent ) ) {
           if ( elem.classList.contains( 'is-active' ) ) {
             return elem;
