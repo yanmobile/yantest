@@ -10,8 +10,7 @@
       'isc.components',
       'isc.socket',
       'isc.templates',
-      'app.config',
-      'devtools'
+      'app.config'
     ] )
     .config( config )
     .run( run );
