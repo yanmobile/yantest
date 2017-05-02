@@ -49,8 +49,7 @@
       },
       'api'                 : {
         'path': 'api/v1'
-      },
-      useCachedHttpResponses: false //Used for working offline. see: https://www.npmjs.com/package/angular-http-backup
+      }
     };
   }
 
