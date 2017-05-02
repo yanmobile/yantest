@@ -17,6 +17,11 @@
       "from": "angular-filter@0.5.11",
       "resolved": "https://registry.npmjs.org/angular-filter/-/angular-filter-0.5.11.tgz"
     },
+    "angular-md5" : {
+      "version": "0.1.10",
+      "from": "angular-md5@0.1.10",
+      "resolved": "https://registry.npmjs.org/angular-md5/-/angular-md5-0.1.10.tgz"
+    },
     "angular-messages": {
       "version": "1.5.8",
       "from": "angular-messages@1.5.8",
