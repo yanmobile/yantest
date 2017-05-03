@@ -12,6 +12,11 @@
       "from": "angular-animate@1.5.8",
       "resolved": "https://registry.npmjs.org/angular-animate/-/angular-animate-1.5.8.tgz"
     },
+    "angular-dynamic-locale": {
+      "version": "0.1.32",
+      "from": "angular-dynamic-locale@0.1.32",
+      "resolved": "https://registry.npmjs.org/angular-dynamic-locale/-/angular-dynamic-locale-0.1.32.tgz"
+    },
     "angular-filter": {
       "version": "0.5.11",
       "from": "angular-filter@0.5.11",
