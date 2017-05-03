@@ -252,8 +252,6 @@
             formName   : formDefinition.name,
             formVersion: formState._formVersion,
             id         : formState._id,
-            author     : iscSessionModel.getCurrentUser(),
-            completedOn: moment().toISOString(),
             data       : formData
           }
         };
