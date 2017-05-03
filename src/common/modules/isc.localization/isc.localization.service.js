@@ -64,7 +64,7 @@
     function init() {
       log.logFn( 'init' );
 
-      // get the all the languages specified in the config
+      // get all the languages specified in the config
       appLanguages = _.get( iscCustomConfigService.getConfig(), 'languages', [] );
       log.debug( '...appLanguages', appLanguages );
 

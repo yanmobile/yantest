@@ -1,7 +1,7 @@
 (function() {
   'use strict';
 
-  fdescribe( 'iscLocalizationService', function() {
+  describe( 'iscLocalizationService', function() {
     var suite,
         configService,
         scope;
