@@ -8,6 +8,7 @@ module.exports = {
       "src/common/node_modules/socket.io-client/socket.io.js",
       "src/common/node_modules/angular/angular.js",
       "src/common/node_modules/angular-animate/angular-animate.js",
+      "src/common/node_modules/angular-dynamic-locale/dist/tmhDynamicLocale.js",
       "src/common/node_modules/angular-filter/dist/angular-filter.js",
       "src/common/node_modules/angular-messages/angular-messages.js",
       "src/common/node_modules/angular-translate/dist/angular-translate.js",
