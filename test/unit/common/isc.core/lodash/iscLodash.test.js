@@ -377,6 +377,70 @@
       } );
     } );
 
+    describe( '_.defaultsDeepArray(obj, [sources])', function() {
+      var objA = {
+        anArray  : [],  // expect []
+        anObject : {
+          aProperty: 'aValue' // expect 'aValue'
+        }
+      };
+
+      var objB = {
+        anArray      : [1], // expect [] -- overwritten
+        aDefaultArray: [],  // expect []
+        anObject     : {
+          aProperty      : 'aDifferentValue', // expect 'aValue' -- overwritten
+          aSecondProperty: 'aSecondValue'     // expect 'aSecondValue'
+        }
+      };
+
+      var defaultsDeep      = {
+            aNewArray: [1]
+          },
+          defaultsDeepArray = {
+            aNewArray: [1]
+          };
+
+      _.defaultsDeep( defaultsDeep, objA, objB );
+      _.defaultsDeepArray( defaultsDeepArray, objA, objB );
+
+      it( 'should not mutate the original sources', function() {
+        expect( objA.anObject.aSecondProperty ).toBeUndefined();
+        expect( objB.aNewArray ).toBeUndefined();
+      } );
+
+      it( 'should preserve empty arrays', function() {
+        // not desired output
+        expect( defaultsDeep.anArray ).toEqual( [1] );
+        // desired output
+        expect( defaultsDeepArray.anArray ).toEqual( [] );
+      } );
+
+      it( 'should preserve overridden properties on objects', function() {
+        // both have desired output
+        expect( defaultsDeep.anObject.aProperty ).toEqual( 'aValue' );
+        expect( defaultsDeepArray.anObject.aProperty ).toEqual( 'aValue' );
+      } );
+
+      it( 'should default undefined properties on objects', function() {
+        // both have desired output
+        expect( defaultsDeep.anObject.aSecondProperty ).toEqual( 'aSecondValue' );
+        expect( defaultsDeepArray.anObject.aSecondProperty ).toEqual( 'aSecondValue' );
+      } );
+
+      it( 'should merge in undefined arrays', function() {
+        // both have desired output
+        expect( defaultsDeep.aDefaultArray ).toEqual( [] );
+        expect( defaultsDeepArray.aDefaultArray ).toEqual( [] );
+      } );
+
+      it( 'should preserve new arrays that are undefined in source objects', function() {
+        // both have desired output
+        expect( defaultsDeep.aNewArray ).toEqual( [1] );
+        expect( defaultsDeepArray.aNewArray ).toEqual( [1] );
+      } );
+    } );
+
     describe( '_.sum(collection, iteratee, [customizer])', function() {
       it( 'should return NaN when array contains non-number value', function() {
         var array  = [1.5, 'NaN', 3.3, [], new Date()];
