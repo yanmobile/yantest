@@ -7,44 +7,35 @@
   'use strict';
 
   angular.module( 'isc.forms' )
-    .directive( 'iscFormsHelp', iscFormsHelp );
+    .component( 'iscFormsHelp', {
+      bindings    : {
+        helpContent: '<'
+      },
+      transclude  : true,
+      controllerAs: 'helpCtrl',
+      controller  : controller,
+      templateUrl : /* @ngInject */ function( $attrs ) {
+        return $attrs.templateUrl || 'forms/widgets/iscFormsHelp/iscFormsHelp.html';
+      }
+    } );
 
   /* @ngInject */
-  function iscFormsHelp( $sce ) {//jshint ignore:line
+  function controller( $sce, $translate ) {
+    var self = this;
 
-    var directive = {
-      restrict        : 'E',
-      transclude      : true,
-      replace         : true,
-      bindToController: true,
-      scope           : {
-        helpContent: '='
-      },
-      controllerAs    : 'helpCtrl',
-      controller      : controller,
-      templateUrl     : function( elem, attrs ) {
-        return attrs.templateUrl || 'forms/widgets/iscFormsHelp/iscFormsHelp.html';
-      }
-    };
+    _.extend( self, {
+      showHelp      : false,
+      toggleHelp    : toggleHelp,
+      getHelpContent: getHelpContent
+    } );
 
-    return directive;
+    function toggleHelp() {
+      self.showHelp = !self.showHelp;
+    }
 
-    function controller() {
-      var self = this;
-
-      _.extend( self, {
-        showHelp      : false,
-        toggleHelp    : toggleHelp,
-        getHelpContent: getHelpContent
-      } );
-
-      function toggleHelp() {
-        self.showHelp = !self.showHelp;
-      }
-
-      function getHelpContent() {
-        return $sce.trustAsHtml( self.helpContent );
-      }
+    function getHelpContent() {
+      return $sce.trustAsHtml( $translate.instant( self.helpContent ) );
     }
   }
+
 } )();
