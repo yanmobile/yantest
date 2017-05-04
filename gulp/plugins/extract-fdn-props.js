@@ -8,20 +8,27 @@ let through = require( 'through2' );
 
 
 module.exports = function extractTranslatedFdnProperties( opts ) {
+  // These are properties in FDN which are automatically translated by the forms engine
+
+  // Form-level properties
   const extractedFormProperties = [
     'name'
   ];
 
+  // Section-level properties
   const extractedSectionProperties = [
     'name'
   ];
 
+  // Field-level properties
   const extractedFieldProperties = [
     'templateOptions.label',
     'templateOptions.placeholder',
     'data.content',
     'data.details',
     'data.embeddedLabel'
+    // omitting helpText for now because it often contains marked up text
+    // also, helpText and other longer strings should probably be refactored into server-side resources delivered via an API
     // 'data.helpText'
   ];
 
