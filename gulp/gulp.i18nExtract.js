@@ -5,7 +5,10 @@
 
 var convert          = require( './i18n.xml.converter' );
 var angularTranslate = require( 'gulp-angular-translate-extract' );
+var gulpMergeJson    = require( 'gulp-merge-json' );
 var mergeJson        = require( './plugins/merge-json' );
+var extractFdnProps  = require( './plugins/extract-fdn-props' );
+var path             = require( 'path' );
 module.exports       = {
   init: init
 };
@@ -22,6 +25,12 @@ function init( gulp, plugins, config, _ ) {
   //tests: " ) | translate }}"
   //tests: " | translate }}"
   var pipeTranslateWithRightMustache = '\\s*\\)?\\s*\\|\\s*translate\\s*\\}\\}';
+
+  var generatedI18nFiles = [
+    path.join( _.get( config, 'app.dest.i18nExtract', '' ), 'en-us.lang.json' ),
+    path.join( _.get( config, 'app.dest.i18nExtract', '' ), 'en-us.fdn.json' )
+  ];
+
 
   var customRegex = {
     // {{ ($ctrl.condition || "my translation") | translate }} #html
@@ -60,8 +69,8 @@ function init( gulp, plugins, config, _ ) {
 
   };
 
-  gulp.task( 'i18nExtract', function(done) {
-
+  // Scrape templates and js files
+  gulp.task( 'i18nExtract:extractFiles', function( done ) {
     var files = _.concat(
       config.common.module.modules,
       config.common.module.js,
@@ -74,44 +83,81 @@ function init( gulp, plugins, config, _ ) {
       config.app.module.html,
       "!**/svg/*.html" );
 
-    extract( files, done );
-
+    return gulp
+      .src( files )
+      .pipe( angularTranslate( {
+        lang       : ['en-us'],
+        suffix     : '.lang.json',
+        customRegex: customRegex
+      } ) )
+      .pipe( gulp.dest( config.app.dest.i18nExtract ) )
+    // .pipe( plugins.filelog() );
   } );
 
-  function extract( files, done ) {
+  // Scrape FDN assets
+  gulp.task( 'i18nExtract:extractFdn', function( done ) {
+    var fdn = _.compact( _.concat(
+      config.common.module.assets.FDN,
+      config.component.module.assets.FDN,
+      config.app.module.assets.FDN ) );
+
+    return gulp
+      .src( fdn )
+      .pipe( extractFdnProps( {
+        lang  : 'en-us',
+        suffix: '.fdn.json'
+      } ) )
+      .pipe( gulp.dest( config.app.dest.i18nExtract ) )
+    // .pipe( plugins.filelog() );
+  } );
+
+  gulp.task( 'i18nExtract:combine', function( done ) {
+    var domain = _.get( config, "app.module.assets.i18nDomain" );
+
+    // Combine generated files
+    var json = gulp
+      .src( generatedI18nFiles )
+      .pipe( gulpMergeJson( 'en-us.json' ) )
+      .pipe( gulp.dest( config.app.dest.i18nExtract ) )
+    // .pipe( plugins.filelog() );
+
+    // Generate xml version
+    json
+      .pipe( convert( { domain: domain } ) )
+      .pipe( gulp.dest( config.app.dest.i18nXml ) )
+    // .pipe( plugins.filelog() );
+
+    // Generate greek-text version
+    return json
+      .pipe( mergeJson( 'en-us' + '-greek-text.json', {
+        parsers: {
+          "*": function wrap( source, replacer, key, sourceParent, replacerParent ) {
+            if ( _.isString( replacer ) ) {
+              sourceParent[key] = ("英" + replacer + "文");
+            }
+          }
+        }
+      } ) )
+      .pipe( gulp.dest( config.app.dest.i18nExtract ) )
+    // .pipe( plugins.filelog() );
+  } );
+
+  gulp.task( 'i18nExtract:clean', function( done ) {
+    // Delete temp files
+    plugins.del( generatedI18nFiles );
+
+    return done();
+  } );
+
+  return gulp.task( 'i18nExtract', function( done ) {
     if ( !_.get( config, "app.dest.i18nExtract" ) ) {
       throw new Error( 'Missing config.app.js key: dest.i18nExtract' );
     }
 
-    var domain = _.get( config, "app.module.assets.i18nDomain" );
-
-    var json = gulp
-      .src( files )
-      .pipe( angularTranslate( {
-        lang       : ['en-us'],
-        customRegex: customRegex
-      } ) )
-      .pipe( gulp.dest( config.app.dest.i18nExtract ) )
-
-      // .pipe( plugins.filelog() );
-
-    json.pipe( mergeJson( 'en-us' + '-greek-text.json', {
-      parsers: {
-        "*": function wrap( source, replacer, key, sourceParent, replacerParent ) {
-          if ( _.isString( replacer ) ) {
-            sourceParent[key] = ("英" + replacer + "文");
-          }
-        }
-      }
-    } ) )
-      .pipe( gulp.dest( config.app.dest.i18nExtract ) )
-
-      // .pipe( plugins.filelog() );
-
-    json.pipe( convert( { domain: domain } ) )
-      .pipe( gulp.dest( config.app.dest.i18nXml ) )
-      // .pipe( plugins.filelog() );
-
-    return done();
-  }
+    return plugins.seq(
+      ['i18nExtract:extractFiles', 'i18nExtract:extractFdn'],
+      'i18nExtract:combine',
+      'i18nExtract:clean',
+      done );
+  } );
 }
