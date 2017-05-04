@@ -14,6 +14,8 @@ module.exports       = {
 };
 
 function init( gulp, plugins, config, _ ) {
+  const i18nFilename = 'en-us';
+
   var anySpace                      = '\\s*';  //0 or more spaces
   var pipex2                        = '\\|\\|'; //two pipes
   var anything                      = '.+';  //1 or more non-space chars
@@ -27,8 +29,8 @@ function init( gulp, plugins, config, _ ) {
   var pipeTranslateWithRightMustache = '\\s*\\)?\\s*\\|\\s*translate\\s*\\}\\}';
 
   var generatedI18nFiles = [
-    path.join( _.get( config, 'app.dest.i18nExtract', '' ), 'en-us.lang.json' ),
-    path.join( _.get( config, 'app.dest.i18nExtract', '' ), 'en-us.fdn.json' )
+    path.join( _.get( config, 'app.dest.i18nExtract', '' ), i18nFilename + '.lang.json' ),
+    path.join( _.get( config, 'app.dest.i18nExtract', '' ), i18nFilename + '.fdn.json' )
   ];
 
 
@@ -86,7 +88,7 @@ function init( gulp, plugins, config, _ ) {
     return gulp
       .src( files )
       .pipe( angularTranslate( {
-        lang       : ['en-us'],
+        lang       : [i18nFilename],
         suffix     : '.lang.json',
         customRegex: customRegex
       } ) )
@@ -104,7 +106,7 @@ function init( gulp, plugins, config, _ ) {
     return gulp
       .src( fdn )
       .pipe( extractFdnProps( {
-        lang  : 'en-us',
+        lang  : i18nFilename,
         suffix: '.fdn.json'
       } ) )
       .pipe( gulp.dest( config.app.dest.i18nExtract ) )
@@ -117,7 +119,7 @@ function init( gulp, plugins, config, _ ) {
     // Combine generated files
     var json = gulp
       .src( generatedI18nFiles )
-      .pipe( gulpMergeJson( 'en-us.json' ) )
+      .pipe( gulpMergeJson( i18nFilename + '.json' ) )
       .pipe( gulp.dest( config.app.dest.i18nExtract ) )
     // .pipe( plugins.filelog() );
 
@@ -129,7 +131,7 @@ function init( gulp, plugins, config, _ ) {
 
     // Generate greek-text version
     return json
-      .pipe( mergeJson( 'en-us' + '-greek-text.json', {
+      .pipe( mergeJson( i18nFilename + '-greek-text.json', {
         parsers: {
           "*": function wrap( source, replacer, key, sourceParent, replacerParent ) {
             if ( _.isString( replacer ) ) {
