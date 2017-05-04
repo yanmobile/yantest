@@ -7,7 +7,7 @@ module.exports = {
   init: init
 };
 
-function init(gulp, plugins, config, _) {
+function init( gulp, plugins, config, _, util ) {
 
   gulp.task('mocks', function () {
     return gulp.src(config.app.module.assets.mocks)

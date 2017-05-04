@@ -9,7 +9,7 @@ module.exports = {
   init: init
 };
 
-function init(gulp, plugins, config, _, util) {
+function init( gulp, plugins, config, _, util ) {
   "use strict";
   var argv           = require( 'yargs' ).argv;
   var configOverride = argv.config;

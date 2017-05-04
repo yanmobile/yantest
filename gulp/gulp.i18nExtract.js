@@ -10,7 +10,7 @@ module.exports       = {
   init: init
 };
 
-function init( gulp, plugins, config, _ ) {
+function init( gulp, plugins, config, _, util ) {
   var anySpace                      = '\\s*';  //0 or more spaces
   var pipex2                        = '\\|\\|'; //two pipes
   var anything                      = '.+';  //1 or more non-space chars

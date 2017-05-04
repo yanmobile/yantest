@@ -7,11 +7,11 @@ module.exports = {
   init: init
 };
 
-function init(gulp, plugins, config, _, util) {
+function init( gulp, plugins, config, _, util ) {
 
   gulp.task('jshint:common', function () {
     return gulp.src(_.concat(config.common.module.modules, config.common.module.js))
-      .pipe(plugins.plumber())
+      .pipe(util.getPlumber())
       .pipe(plugins.jshint())
       .pipe(plugins.jscs())// enforce style guide
       .pipe(plugins.stylish.combineWithHintResults())   // combine with jshint results
@@ -20,7 +20,7 @@ function init(gulp, plugins, config, _, util) {
 
   gulp.task('jshint:components', function () {
     return gulp.src(_.concat(config.component.module.modules, config.component.module.js))
-      .pipe(plugins.plumber())
+      .pipe(util.getPlumber())
       .pipe(plugins.jshint())
       .pipe(plugins.jscs())// enforce style guide
       .pipe(plugins.stylish.combineWithHintResults())   // combine with jshint results
@@ -29,7 +29,7 @@ function init(gulp, plugins, config, _, util) {
 
   gulp.task('jshint:app', function () {
     return gulp.src(_.concat(config.app.module.modules, config.app.module.js))
-      .pipe(plugins.plumber())
+      .pipe(util.getPlumber())
       .pipe(plugins.jshint())
       .pipe(plugins.jscs())// enforce style guide
       .pipe(plugins.stylish.combineWithHintResults())   // combine with jshint results

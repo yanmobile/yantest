@@ -7,7 +7,7 @@ module.exports = {
   init: init
 };
 
-function init( gulp, plugins, config, _ ) {
+function init( gulp, plugins, config, _, util ) {
   gulp.task( 'sass', [], function() {
 
     // var cssmin       = require( 'gulp-cssmin' );  //minifies css
@@ -20,7 +20,7 @@ function init( gulp, plugins, config, _ ) {
 
     return gulp
       .src( config.app.module.scss )
-      .pipe( plugins.plumber() )
+      .pipe(util.getPlumber())
       .pipe( plugins.sourcemaps.init() )
       .pipe( inject( injectSrc, {
         starttag : '// <!-- inject:scss -->',
