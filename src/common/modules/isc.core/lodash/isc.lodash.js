@@ -29,7 +29,8 @@
     findNested               : findNested,
     sum                      : sum,
     generateGettersAndSetters: generateGettersAndSetters,
-    getRelativeTime          : getRelativeTime
+    getRelativeTime          : getRelativeTime,
+    defaultsDeepArray        : defaultsDeepArray
   } );
 
   function getAge( dob, format ) {
@@ -75,6 +76,67 @@
     var typeLength     = typeOfString.length - 9;
     var typeToken      = typeOfString.substr( typeStartIndex, typeLength );
     return typeToken.toLowerCase() === type.toLowerCase();
+  }
+
+  /**
+   * @description This is like _.defaultsDeep, except that it treats properties whose values are
+   * empty arrays as defined. _.defaultsDeep will overwrite an empty array with a populated array
+   * during recursion.
+   *
+   * Examples:
+   var objA = {
+        anArray  : [],
+        aNewArray: [1],
+        anObject : {
+          aProperty: 'aValue'
+        }
+      };
+
+   var objB = {
+        anArray      : [1],
+        aDefaultArray: [],
+        anObject     : {
+          aProperty      : 'aDifferentValue',
+          aSecondProperty: 'aSecondValue'
+        }
+      };
+
+   _.defaultsDeep(objA, objB);
+   // {"anArray":[1],"aNewArray":[1],"anObject":{"aProperty":"aValue","aSecondProperty":"aSecondValue"},"aDefaultArray":[]}
+
+   _.defaultsDeepArray(objA, objB);
+   // {"anArray":[], "aNewArray":[1],"anObject":{"aProperty":"aValue","aSecondProperty":"aSecondValue"},"aDefaultArray":[]}
+
+   * @returns {*}
+   */
+  function defaultsDeepArray() {
+    // Use _.assignWith and manually recurse instead of using _.mergeWith, because _.mergeWith mutates all its sources.
+    return _.assignWith.apply( null, _.toArray( arguments ).concat( comparer ) );
+
+    // The _.defaults behavior should set any properties that are not yet defined.
+    // The deep aspect means this should recurse on nested properties.
+    // The array aspect means that an empty array is considered defined and should not be overwritten
+    // (which is counter to how _.defaultsDeep works ootb).
+    function comparer( existingValue, incomingValue ) {
+      // Use the incoming value if the existing value is undefined
+      if ( existingValue === undefined ) {
+        return incomingValue;
+      }
+      // Use the existing value if it is an array.
+      // This is why _.defaultsDeep does not work for this use case.
+      else if ( _.isArray( existingValue ) ) {
+        return existingValue;
+      }
+      // Use the existing value if it is a primitive.
+      // This is necessary to effect the _.defaults behavior instead of the _.assign behavior.
+      else if ( !_.isObject( existingValue ) ) {
+        return existingValue;
+      }
+      // Otherwise, the existing value is an object, so recurse with _.assignWith and the comparer function.
+      else {
+        return _.assignWith( {}, existingValue, incomingValue, comparer );
+      }
+    }
   }
 
   //set object's own internal properties to null
