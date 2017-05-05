@@ -2,7 +2,10 @@ module.exports = {
   init: init
 };
 
-var watch = require( 'gulp-watch' );
+var watch    = require( 'gulp-watch' );
+var notify   = require( 'gulp-notify' );
+var cached   = require( 'gulp-cached' );
+var gutil    = require( 'gulp-util' );
 
 function init( gulp, plugins, config, _, util ) {
 
@@ -36,9 +39,39 @@ function init( gulp, plugins, config, _, util ) {
     'src/app/modules/**/*.html'                 : ['templates'],
     'test/unit/app/**/*.js'                     : ['test:app'],
     'src/app/modules/**/*.spec.js'              : ['test:app'],
-    'src/index.html'                            : ['html']
+    'src/index.html'                            : ['html'],
+    'gulp/**/*.js'                              : ['notify-restart'],
+    'gulpfile.js'                               : ['notify-restart'],
+    'package.json'                              : ['notify-restart']
   };
 
+
+  // ------------------------------------------------------------------------
+  // ----------------------------- notify-restart ---------------------------
+  // ------------------------------------------------------------------------
+  // This watch will notify the user when changes are made to the gulp files
+  gulp   // This is needed in order to initially cache files to prevent multiple non-changed notifications
+    .src( [ 'gulp/**/*.js', 'wallaby.config.*.js', 'package.json', 'gulpfile.js' ] )
+    .pipe( cached( 'notify-restart' ) )
+    .pipe( gutil.noop() );
+
+  gulp.task( 'notify-restart', function() {
+
+    return gulp
+      .src( [ 'gulp/**/*.js', 'wallaby.config.*.js', 'package.json', 'gulpfile.js' ] )
+      .pipe( cached( 'notify-restart' ) )
+      .pipe( notify( {
+        templateOptions: {
+          date: new Date()
+        },
+        title  : 'Restart Gulp',
+        message: 'You should manually restart Gulp because "<%= file.relative %>" was changed.'
+      } ) );
+
+  } );
+  // ------------------------------------------------------------------------
+  // ----------------------------- END notify-restart -----------------------
+  // ------------------------------------------------------------------------
 
   gulp.task( 'watch', function() {
     _.forEach( watchlist, watchItem );
