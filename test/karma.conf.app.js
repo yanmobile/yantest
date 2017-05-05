@@ -15,10 +15,11 @@
       autoWatch       : false,
       coverageReporter: {
         reporters: [
-          { type: "text" },
+          { type: "text-summary" },
           { type: "html", dir : 'coverage/app' }
         ]
       },
+      logLevel: "error",
       frameworks      : ['jasmine'],
 
       browsers: ['PhantomJS'],
