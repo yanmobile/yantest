@@ -7,7 +7,7 @@ module.exports = {
   init: init
 };
 
-function init( gulp, plugins, config, _ ) {
+function init( gulp, plugins, config, _, util ) {
   gulp.task( 'templates', function() {
 
     var tplCacheOpts = {
@@ -25,8 +25,8 @@ function init( gulp, plugins, config, _ ) {
 
     return gulp
       .src( templates )
-      .pipe( plugins.plumber() )
-      // // .pipe( plugins.filelog() )
+      .pipe(util.getPlumber())
+      // .pipe( plugins.filelog() )
       .pipe( plugins.simpleRename( function( path, file ) {
 
         var moduleLength      = 'modules/'.length;

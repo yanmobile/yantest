@@ -7,7 +7,7 @@ module.exports = {
   init: init
 };
 
-function init(gulp, plugins, config, _) {
+function init( gulp, plugins, config, _, util ) {
   return gulp.task('deploy', ['clean'], function () {
     return plugins.seq(['fonts', 'images', 'fdn', 'scripts:deploy', 'templates', 'i18n', 'sass', 'favicon'], 'html');
   });

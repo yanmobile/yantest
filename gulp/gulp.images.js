@@ -7,7 +7,7 @@ module.exports = {
   init: init
 };
 
-function init(gulp, plugins, config, _) {
+function init( gulp, plugins, config, _, util ) {
   gulp.task('images', function () {
     var srcImages = []
       .concat(config.common.module.assets.images)

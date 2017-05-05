@@ -4,7 +4,7 @@ module.exports = {
 
 var watch = require( 'gulp-watch' );
 
-function init( gulp, plugins, config, _ ) {
+function init( gulp, plugins, config, _, util ) {
 
   var watchlist = {
     'src/common/assets/images/**/*' : ['images'],

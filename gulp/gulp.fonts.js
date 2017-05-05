@@ -7,7 +7,7 @@ module.exports = {
   init: init
 };
 
-function init(gulp, plugins, config, _) {
+function init( gulp, plugins, config, _, util ) {
   gulp.task('fonts', function () {
     var typography = []
       .concat(config.common.vendor.fonts)

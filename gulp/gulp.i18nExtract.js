@@ -13,7 +13,7 @@ module.exports       = {
   init: init
 };
 
-function init( gulp, plugins, config, _ ) {
+function init( gulp, plugins, config, _, util ) {
   const i18nFilename = 'en-us';
 
   var anySpace                      = '\\s*';  //0 or more spaces

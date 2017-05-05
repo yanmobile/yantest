@@ -7,7 +7,7 @@ module.exports = {
   init: init
 };
 
-function init(gulp, plugins, config, _) {
+function init( gulp, plugins, config, _, util ) {
   gulp.task('build', ['clean', 'jshint'], function (done) {
     var tasks = ['fonts', 'images', 'fdn', 'templates', 'scripts', 'mocks', 'sass', 'favicon', 'i18n', 'version'];
     return plugins.seq(tasks, 'html', 'test', done);

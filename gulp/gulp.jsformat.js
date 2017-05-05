@@ -7,25 +7,25 @@ module.exports = {
   init: init
 };
 
-function init(gulp, plugins, config, _, util) {
+function init( gulp, plugins, config, _, util ) {
 
   gulp.task('jsformat:common', function () {
     return gulp.src(_.concat(config.common.module.modules, config.common.module.js), { base: "./" })
-      .pipe(plugins.plumber())
+      .pipe(util.getPlumber())
       .pipe(plugins.jscs({ fix: true }))// enforce style guide
       .pipe(gulp.dest("./"));
   });
 
   gulp.task('jsformat:components', function () {
     return gulp.src(_.concat(config.component.module.modules, config.component.module.js), { base: "./" })
-      .pipe(plugins.plumber())
+      .pipe(util.getPlumber())
       .pipe(plugins.jscs({ fix: true }))// enforce style guide
       .pipe(gulp.dest("./"));
   });
 
   gulp.task('jsformat:app', function () {
     return gulp.src(_.concat(config.app.module.modules, config.app.module.js), { base: "./" })
-      .pipe(plugins.plumber())
+      .pipe(util.getPlumber())
       .pipe(plugins.jscs({ fix: true }))// enforce style guide
       .pipe(gulp.dest("./"));
   });

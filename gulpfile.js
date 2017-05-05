@@ -42,7 +42,8 @@ var util = {
   getArg         : getArg,
   readJson       : readJson,
   readdir        : readdir,
-  fixRelativePath: fixRelativePath
+  fixRelativePath: fixRelativePath,
+  getPlumber     : getPlumber
 };
 
 var customAppJsonPath = getArg( "--appjson" );
@@ -170,4 +171,19 @@ function fixRelativePath( path ) {
     retPath = "./" + retPath;
   }
   return retPath;
+}
+
+function getPlumber() {
+  return plugins.plumber( {
+    errorHandler: function( err ) {
+      plugins.notify.onError( {
+        templateOptions: {
+          date: new Date()
+        },
+        title          : "Gulp error in " + err.plugin,
+        message        : err.formatted
+      } )( err );
+      this.emit( 'end' );
+    }
+  } );
 }

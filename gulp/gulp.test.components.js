@@ -27,7 +27,7 @@ function getSrc( config ) {
   } );
 }
 
-function init( gulp, plugins, config, _ ) {
+function init( gulp, plugins, config, _, util ) {
   'use strict';
   var src = getSrc( config );
 

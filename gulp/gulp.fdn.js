@@ -7,7 +7,7 @@ module.exports = {
   init: init
 };
 
-function init( gulp, plugins, config, _ ) {
+function init( gulp, plugins, config, _, util ) {
 
   /**
    * @description handles i18n source files. This will merge all i18n files with the same name into 1 output file to be consumed by the application.

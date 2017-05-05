@@ -7,7 +7,7 @@ module.exports = {
   init: init
 };
 
-function init(gulp, plugins, config, _) {
+function init( gulp, plugins, config, _, util ) {
 
   /*======================================
    =   Determine version info from git   =
