@@ -461,11 +461,16 @@
 
       // Embedded form
       iscFormsTemplateService.registerType( {
-          name       : 'embeddedForm',
-          templateUrl: 'forms/foundationTemplates/templates/embeddedForm.html',
-          wrapper    : ['templateLabel', 'templateHasError'],
+          name          : 'embeddedForm',
+          templateUrl   : 'forms/foundationTemplates/templates/embeddedForm.html',
+          wrapper       : ['templateLabel', 'templateHasError'],
+          defaultOptions: {
+            data: {
+              wrapperClass: 'formly-field-no-padding'
+            }
+          },
           /*@ngInject*/
-          controller : function( $scope ) {
+          controller    : function( $scope ) {
             var opts     = $scope.options,
                 subforms = $scope.formState._subforms;
 
@@ -641,10 +646,17 @@
       // }
 
       iscFormsTemplateService.registerType( {
-        name       : 'controlFlowOnly',
-        templateUrl: 'forms/foundationTemplates/templates/controlFlowOnly.html',
+        name          : 'controlFlowOnly',
+        templateUrl   : 'forms/foundationTemplates/templates/controlFlowOnly.html',
+        defaultOptions: {
+          data: {
+            controlFlowOnly : {
+              wrapperClass: 'formly-field-no-padding'
+            }
+          }
+        },
         /* @ngInject */
-        controller : function( $scope ) {
+        controller    : function( $scope ) {
           var stateKey  = 'controlFlowOnly',
               key       = $scope.options.key,
               data      = _.get( $scope.options, 'data.controlFlowOnly', {} ),

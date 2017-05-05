@@ -87,9 +87,9 @@ $form-label-font-weight: $font-weight-semi-bold !default;
 
 // Classes for data.layout columns
 $breakpoint-percentages : (
-  'medium' : $medium-up,
-  'large'  : $large-up,
-  'xlarge' : $xlarge-up
+        'medium' : $medium-up,
+        'large'  : $large-up,
+        'xlarge' : $xlarge-up
 );
 
 @each $breakpoint in map-keys($breakpoints) {
@@ -167,7 +167,10 @@ $breakpoint-percentages : (
   .formly-field-group, .form-section {
     .formly[role='form'] > [formly-field],formly-field {
       padding : 0;
-      > :not([is-field-group]) {
+      .formly-field-no-padding {
+        width: 100%;
+      }
+      > :not([is-field-group],.formly-field-no-padding) {
         padding : 0 2rem 0 0;
       }
       > [is-field-group] {
@@ -177,6 +180,7 @@ $breakpoint-percentages : (
       }
     }
   }
+
   // Selector class added to flag a div that is added by formly to the end of field groups.
   // This div is empty except for whitespace contents, and the div itself inherits padding
   // from the Foundation grid which accumulates, so this eliminates it.
@@ -288,7 +292,7 @@ $breakpoint-percentages : (
     @if $global-text-direction == rtl {
       background: $input-background url(image-triangle($select-arrow-color)) left 10px center no-repeat;
       background-size: 8px 8px;
-  	}
+    }
 
     @include bidirectional() {
       background: $input-background url(image-triangle($select-arrow-color)) left 10px center no-repeat;
@@ -475,13 +479,13 @@ $breakpoint-percentages : (
    * TO DO: Test styling of this component
   */
   ._720kb-datepicker-calendar._720kb-datepicker-open {
-      visibility: visible;
-      z-index: 9999;
-      overflow: visible !important;
-      display: block;
-      position: absolute;
-      z-index: 15;
-      margin-top: -12px;
+    visibility: visible;
+    z-index: 9999;
+    overflow: visible !important;
+    display: block;
+    position: absolute;
+    z-index: 15;
+    margin-top: -12px;
   }
 
   ._720kb-datepicker-calendar-header {
@@ -533,11 +537,11 @@ $breakpoint-percentages : (
 
   // Date-Picker Calendar Button
   .button.datepicker, button.datepicker, button.isc-form-datepicker-calendar {
-      margin: 0;
-      background-color: transparent;
-      border: none;
-      cursor: pointer;
-      padding: 0;
+    margin: 0;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
   }
 
   /* File Inputs */
