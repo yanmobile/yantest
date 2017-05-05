@@ -85,7 +85,9 @@ function init( gulp, plugins, config, _ ) {
       exclude   : excludedFiles,
       singleRun : true
     }, forceQuitWhenDone ? undefined : function( err ) {
-      console.log( '\n =========== ', plugins.gutil.colors.red.bold( 'Karma Tests failed' ), '=========== \n' );
+      if(err !== 0) {
+        console.log( '\n =========== ', plugins.gutil.colors.red.bold( 'Karma Tests failed' ), '=========== \n' );
+      }
       done();
     } );
 
