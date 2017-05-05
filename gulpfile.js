@@ -5,6 +5,7 @@ var _          = require( 'lodash' );
 var requiredir = require( 'require-dir' );
 
 var plugins = {
+  gutil        : require( 'gulp-util' ),
   cached       : require( 'gulp-cached' ),
   notify       : require( 'gulp-notify' ),
   plumber      : require( 'gulp-plumber' ),

@@ -10,14 +10,14 @@
         '**/*.html'
       ],
       // coverage reporter generates the coverage
-      reporters       : ['progress'],
       autoWatch       : false,
       coverageReporter: {
         reporters: [
-          { type: "text" },
+          { type: "text-summary" },
           { type: "html", dir : 'coverage/common' }
         ]
       },
+      logLevel  : "error",
       frameworks: ['jasmine'],
 
       browsers: ['PhantomJS'],
