@@ -24,7 +24,7 @@
 
     uiSelectConfig.theme = 'selectize';
 
-    _.defaults( appConfig, componentsConfig, coreConfig );
+    _.defaultsDeepArray( appConfig, componentsConfig, coreConfig );
 
     iscCustomConfigServiceProvider.loadConfig( appConfig );
     devlogProvider.loadConfig( appConfig );
