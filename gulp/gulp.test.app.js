@@ -70,7 +70,7 @@ function init( gulp, plugins, config, _ ) {
     // This is a way to force it to exit. This approach will also kill any other tasks in the gulp chain.
     // It should only be used when executing test task individually
     var forceQuitWhenDone = argv.single;
-    var reporters         = !argv.skipCoverage && reportCoverage ? ['progress', 'coverage'] : ['progress'];
+    var reporters         = !argv.skipCoverage && reportCoverage ? ['dots', 'coverage'] : ['dots'];
     reportCoverage        = false; //only report coverage on the first pass
 
     //since, karma doesn't use the same glob pattern to exclude as gulp.
@@ -84,11 +84,14 @@ function init( gulp, plugins, config, _ ) {
       files     : includedFiles,
       exclude   : excludedFiles,
       singleRun : true
-    }, forceQuitWhenDone ? undefined : done );
+    }, forceQuitWhenDone ? undefined : function( err ) {
+      console.log( '\n =========== ', plugins.gutil.colors.red.bold( 'Karma Tests failed' ), '=========== \n' );
+      done();
+    } );
 
     if ( forceQuitWhenDone ) {
       server.on( 'run_complete', function( browsers, results ) {
-        done( results.error ? 'There are test failures' : null );
+        done();
       } );
     }
 
