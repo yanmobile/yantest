@@ -84,11 +84,14 @@ function init( gulp, plugins, config, _ ) {
       files     : includedFiles,
       exclude   : excludedFiles,
       singleRun : true
-    }, forceQuitWhenDone ? undefined : done );
+    }, forceQuitWhenDone ? undefined : function( err ) {
+      console.log( '\n =========== ', plugins.gutil.colors.red.bold( 'Karma Tests failed' ), '=========== \n' );
+      done();
+    } );
 
     if ( forceQuitWhenDone ) {
       server.on( 'run_complete', function( browsers, results ) {
-        done( results.error ? 'There are test failures' : null );
+        done();
       } );
     }
 
