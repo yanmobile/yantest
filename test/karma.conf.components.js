@@ -17,6 +17,7 @@
           { type: "html", dir : 'coverage/component' }
         ]
       },
+      logLevel  : "error",
       browserNoActivityTimeout : 45000,
       frameworks: ['jasmine', 'fixture'],
 

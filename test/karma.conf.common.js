@@ -18,6 +18,7 @@
           { type: "html", dir : 'coverage/common' }
         ]
       },
+      logLevel  : "error",
       frameworks: ['jasmine'],
 
       browsers: ['PhantomJS'],
