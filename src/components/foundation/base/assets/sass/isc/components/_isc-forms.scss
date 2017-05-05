@@ -557,7 +557,7 @@ $breakpoint-percentages : (
     margin: $form-section-title-margin;
 
     // IE does not flow text properly if flex-basis is 100%
-    -ms-flex: 0 0 auto;
+    flex-basis: auto;
 
     p {
       font-size: 1rem;
