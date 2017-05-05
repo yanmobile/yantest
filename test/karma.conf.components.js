@@ -9,11 +9,10 @@
       files: [// Ignored through gulp-karma
         'src/**/*.html'
       ],
-      reporters       : ['progress'],
       autoWatch       : false,
       coverageReporter: {
         reporters: [
-          { type: "text" },
+          { type: "text-summary" },
           { type: "html", dir : 'coverage/component' }
         ]
       },

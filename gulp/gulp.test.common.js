@@ -45,7 +45,7 @@ function init( gulp, plugins, config, _, util ) {
   // run the common tests
   // --------------------------------
   gulp.task( 'test:common', function( done ) {
-    var reporters  = !argv.skipCoverage && reportCoverage ? ['progress', 'coverage'] : ['progress'];
+    var reporters  = !argv.skipCoverage && reportCoverage ? ['dots', 'coverage'] : ['dots'];
     reportCoverage = false; //only report coverage on the first pass
 
     var configPath = plugins.path.join( __dirname, "../test/karma.conf.common.js" );
