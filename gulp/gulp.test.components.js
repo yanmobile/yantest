@@ -59,7 +59,9 @@ function init( gulp, plugins, config, _, util ) {
       files     : srcFiles,
       singleRun : true
     }, function( err ) {
-      console.log( '\n =========== ', plugins.gutil.colors.red.bold( 'Karma Tests failed' ), '=========== \n' );
+      if(err !== 0) {
+        console.log( '\n =========== ', plugins.gutil.colors.red.bold( 'Karma Tests failed' ), '=========== \n' );
+      }
       done();
     } ).start();
 
