@@ -63,7 +63,7 @@
      */
     function getFormDefinition( formKey, formVersion ) {
       channel.debug( 'iscFormsApi.getFormDefinition' );
-      return iscHttpapi.get( _.compact( [formsUrl, formKey, formVersion] ).join( '/' ) );
+      return iscHttpapi.get( _.compact( [formsUrl, formKey, formVersion] ).join( '/' ), { showLoader : true } );
     }
 
     /**

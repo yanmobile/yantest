@@ -44,7 +44,7 @@
       if ( order ) {
         url += ( '?orderBy=' + order );
       }
-      return iscHttpapi.get( url ).then(
+      return iscHttpapi.get( url, { showLoader : true } ).then(
         function onSuccess( response ) {
           var codeTable    = applyResponseTransform( response ),
               tableToCache = ( codeTable && _.isArray( codeTable ) ) ? codeTable : [];
@@ -80,7 +80,7 @@
     function getAsyncBundle( names ) {
       var url = [bundleUrl, [names].join( ',' )].join( '/' );
 
-      return iscHttpapi.get( url ).then(
+      return iscHttpapi.get( url, { showLoader : true } ).then(
         function( response ) {
           _.forEach( _.get( response, 'TableResponses', [] ), function( singleResponse ) {
             var codeTable     = applyResponseTransform( singleResponse ),
