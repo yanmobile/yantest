@@ -41,7 +41,7 @@
      */
     function get( id, url ) {
       channel.debug( 'iscFormDataApi.get' );
-      return iscHttpapi.get( [url || formDataUrl, id].join( '/' ) );
+      return iscHttpapi.get( [url || formDataUrl, id].join( '/' ), { showLoader : true } );
     }
 
     /**
@@ -64,7 +64,7 @@
      */
     function post( form, url ) {
       channel.debug( 'iscFormDataApi.post' );
-      return iscHttpapi.post( url || formDataUrl, form );
+      return iscHttpapi.post( url || formDataUrl, form, { showLoader : true } );
     }
 
     /**
@@ -81,7 +81,7 @@
       if ( id === undefined ) {
         id = '_submit';
       }
-      return iscHttpapi.post( [url || formDataUrl, id].join( '/' ), form );
+      return iscHttpapi.post( [url || formDataUrl, id].join( '/' ), form, { showLoader : true } );
     }
 
     /**
