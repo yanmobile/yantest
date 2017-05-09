@@ -4,7 +4,6 @@
 
 (function() {
 
-
   describe( 'isc.fauxTable directive', function() {
     var suite;
 
@@ -237,6 +236,24 @@
 
       } );
 
+      it ('should reset the current page to 1 when sorting', function () {
+        compile();
+
+        spyOn( suite.$scope.config.pager, "onPageChange" ).and.callThrough();
+        var column                   = { model: "Source" };
+        suite.controller.sortBy      = column;
+        suite.controller.sortReverse = false;
+
+        suite.controller.changePageNumber( 2 );
+        suite.$scope.$digest();
+
+        expect( suite.controller.currentPage ).toBe( 2 );
+
+        suite.controller.sort( 'Date' );
+        suite.$scope.$digest();
+        expect( suite.controller.currentPage ).toBe( 1 );
+      });
+
     } );
 
     function getTableData() {
@@ -275,6 +292,7 @@
           server      : true,
           onPageChange: function( page, column, sortReverse ) {
             suite.$scope.data = getPage2Data();
+            suite.controller.currentPage = page;
           }
         },
         columns: [

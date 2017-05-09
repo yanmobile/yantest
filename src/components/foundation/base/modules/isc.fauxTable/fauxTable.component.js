@@ -47,6 +47,7 @@
     .component( 'fauxTable', {
       controller  : controller,
       controllerAs: 'fauxTblCtrl',
+      require     : 'angularUtils.directives.dirPagination',
       bindings    : {
         config          : '=',
         data            : '=',
@@ -62,7 +63,7 @@
     } );
 
   /* @ngInject */
-  function controller( $translate, $filter, devlog ) {
+  function controller( devlog, $translate, $filter, paginationService ) {
     var log = devlog.channel( 'fauxTable' );
 
     var self = this;
@@ -109,16 +110,28 @@
       if ( self.sortBy !== column ) {
         self.sortBy      = column;
         self.sortReverse = false;
-      } else { //asc => desc
+      }
+      else { //asc => desc
         self.sortReverse = !self.sortReverse;
       }
 
       if ( column.onSort ) {
         // call custom column sort
         column.onSort( self.data, column, self.sortReverse );
-      } else {
+      }
+      else {
         self.data = $filter( 'orderBy' )( self.data, column.model, self.sortReverse );
       }
+
+      // Always reset the current page to 1 when sorting
+      if ( _.get( self, 'config.pager.server' ) ) {
+        // server-side paging requires manually invoking dir-pagination's service
+        paginationService.setCurrentPage( self.paginationId, 1 );
+      }
+      else {
+        self.currentPage = 1;
+      }
+
     }
 
     /**
