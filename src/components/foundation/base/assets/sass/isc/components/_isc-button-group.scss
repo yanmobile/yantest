@@ -127,6 +127,7 @@ $child-selectors: '> a, > label, > button';
               border-color: $color-name;
               color: scale-color($color-name, $lightness: -15%);
               margin: 0;
+              height: 100%;
 
               // This is the button being hovered on
               &:hover {
