@@ -14,11 +14,8 @@
    * @param iscFormsValidationService
    * @returns {{restrict: string, replace: boolean, controllerAs: string, scope: {formDefinition: string, model: string, options: string, formConfig: string, validateFormApi: string, buttonConfig: string}, bindToController: boolean, controller: controller, templateUrl: function}}
    */
-  function iscFormInternal( $q,
-    $parse,
-    iscCustomConfigService,
-    iscNotificationService,
-    iscFormsValidationService ) {
+  function iscFormInternal( $q, $parse,
+    iscCustomConfigService, iscNotificationService, iscFormFieldLayoutService, iscFormsValidationService ) {
     var directive = {
       restrict        : 'E',
       replace         : true,
@@ -249,6 +246,9 @@
 
         // Sections
         _.forEach( self.formDefinition.form.sections, function( section ) {
+          // Need to add layout transformation to each section, in case layout is specified at the section level
+          iscFormFieldLayoutService.transformContainer( section );
+
           watchHideExp( section );
           watchExpProps( section );
         } );

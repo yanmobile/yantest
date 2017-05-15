@@ -1,0 +1,18 @@
+<h4 class="grid-container grid-block">
+  <div class="grid-block">
+    <bdi>{{ section.name | translate }}</bdi>
+  </div>
+
+  <div class="grid-block shrink">
+    <button ng-repeat="action in section.data.header.actions track by $index"
+            class="{{ action.className || '' }}"
+            type="button"
+            title="{{ action.name | translate }} {{ section.name | translate }}"
+            ng-if="subformCtrl.showAction( action, section )"
+            ng-click="subformCtrl.invokeAction( action.expression, section )">
+      <i class="fa {{ action.icon }}"
+         ng-if="!!action.icon"></i>
+      {{ action.name | translate }}
+    </button>
+  </div>
+</h4>

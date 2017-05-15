@@ -5,13 +5,14 @@
   <section-layout-wizard-steps context="subformCtrl.mainFormConfig">
   </section-layout-wizard-steps>
 
-  <h4><bdi>{{section.name | translate}}</bdi></h4>
+  <div>
+    <div ng-include="'forms/sectionLayouts/templates/sectionHeader.html'"></div>
 
-  <formly-form model="subformCtrl.model"
-               class="{{section.className}}"
-               options="subformCtrl.options"
-               form="subformCtrl.mainFormConfig.forms[$index]"
-               fields="section.fields">
-  </formly-form>
-
+    <formly-form model="subformCtrl.model"
+                 class="{{section.className}}"
+                 options="subformCtrl.options"
+                 form="subformCtrl.mainFormConfig.forms[$index]"
+                 fields="section.fields">
+    </formly-form>
+  </div>
 </div>
