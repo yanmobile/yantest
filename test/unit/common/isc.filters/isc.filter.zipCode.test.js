@@ -34,9 +34,16 @@
         expect( expected ).toBe( actual );
       } );
 
-      it( "should not change the input if it is not a 9 digit zip-code", function() {
+      it( "should not change the input if its length is less than 9", function() {
         var expected = '12345';
         var actual   = filter( '12345' );
+
+        expect( expected ).toBe( actual );
+      } );
+
+      it( "should not change the input if its length is greater than 9", function() {
+        var expected = '1234567890';
+        var actual   = filter( '1234567890' );
 
         expect( expected ).toBe( actual );
       } );
