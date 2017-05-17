@@ -26,7 +26,7 @@
       log.debug( '...input', input );
 
       if ( input && input.length === 9 ) {
-        return input.slice( 0, 5 ) + "-" + input.slice( 5 );
+        return input.slice( 0, 5 ) + '-' + input.slice( 5 );
       }
       else {
         return input;
