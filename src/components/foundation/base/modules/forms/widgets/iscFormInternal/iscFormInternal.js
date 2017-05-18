@@ -87,6 +87,11 @@
         iscNotificationService.init();
         initAutosaveConfig();
         watchSections();
+
+        var configuredInit = _.get( self.formConfig, 'init' );
+        if ( _.isFunction( configuredInit ) ) {
+          configuredInit.call( null, self );
+        }
       }
 
       /**

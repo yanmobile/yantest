@@ -40,11 +40,20 @@
     } ) );
 
     describe( 'configured form', function() {
+      var formConfig, buttonConfig;
+
       beforeEach( function() {
+        formConfig   = {
+          init: _.noop
+        };
+        buttonConfig = {};
+
+        spyOn( formConfig, 'init' ).and.callThrough();
+
         // Create an isc-form to get what would normally be passed to isc-form-internal
         suiteForm = createDirective( getConfiguredForm(), {
-          localFormConfig  : {},
-          localButtonConfig: {}
+          localFormConfig  : formConfig,
+          localButtonConfig: buttonConfig
         } );
         suiteMain.$httpBackend.flush();
 
@@ -53,6 +62,11 @@
         } );
 
         suiteInternal.controller = suiteInternal.$isolateScope.formInternalCtrl;
+      } );
+
+      //--------------------
+      it( 'should call the configured init function', function() {
+        expect( formConfig.init ).toHaveBeenCalled();
       } );
 
       //--------------------
