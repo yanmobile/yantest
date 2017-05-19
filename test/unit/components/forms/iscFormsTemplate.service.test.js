@@ -269,6 +269,33 @@
       } );
     } );
 
+    describe( 'registerBaseType', function() {
+      it( 'should register configuration options for init and scope', function() {
+        var baseTypeConfig = {
+          init : _.noop,
+          scope: {
+            customScopeFunction: _.noop
+          }
+        };
+
+        spyOn( baseTypeConfig, 'init' ).and.callThrough();
+        spyOn( baseTypeConfig.scope, 'customScopeFunction' ).and.callThrough();
+
+        // register the custom functions with the base formly type
+        suiteMain.iscFormsTemplateService.registerBaseType( baseTypeConfig );
+
+        // create a form that uses the custom function defined above
+        suite = createDirective( getMinimalForm( 'customBase' ) );
+        suiteMain.$httpBackend.flush();
+        suiteMain.$timeout.flush();
+
+        // init will always be called, if configured
+        expect( baseTypeConfig.init ).toHaveBeenCalled();
+        // custom scope functions will be called if referenced by FDN fields
+        expect( baseTypeConfig.scope.customScopeFunction ).toHaveBeenCalled();
+      } );
+    } );
+
     describe( 'loadCodeTables', function() {
       it( 'should load code tables in a form definition', function() {
         var mockFdn = {

@@ -61,6 +61,7 @@
     var config           = iscCustomConfigService.getConfig(),
         moduleConfig     = _.get( config, 'moduleApi', {} ),
         formsConfig      = _.get( config, 'forms', {} ),
+        baseCtrlConfig   = {},
         updateOnExcluded = formsConfig.updateOnExcluded,
         widgetLibrary    = [],
         functionLibrary  = {
@@ -380,12 +381,19 @@
 
     /**
      * @memberOf iscFormsTemplateService
+     * @description Defines the base controller instantiated for all formly fields. This is automatically called by
+     * the base framework, but may be called by an application with a config argument to extend the base functionality.
+     * @param {Object=} config - Accepts an optional init() function which is run when each base controller is instantiated,
+     * and an optional scope function which is extended into the base controller's scope.
      */
-    function registerBaseType() {
+    function registerBaseType( config ) {
+      _.merge( baseCtrlConfig, config );
+
       // Base type overrides
       formlyConfig.setType( {
-        name      : baseType,
-        controller: /* @ngInject */ function( $scope, iscNotificationService ) {
+        name       : baseType,
+        overwriteOk: true,
+        controller : /* @ngInject */ function controller( $scope, iscNotificationService ) {
           iscNotificationService.registerFieldScope( $scope );
 
           var formlyRootCtrl = getFormlyRoot( $scope );
@@ -477,9 +485,16 @@
 
             // HS validation
             hsValidation: hsValidation
-          } );
+
+            // Additional configured scope properties
+          }, baseCtrlConfig.scope );
 
           registerHideGroups( $scope );
+
+          // If an additional init function is configured, invoke it
+          if ( baseCtrlConfig.init && _.isFunction( baseCtrlConfig.init ) ) {
+            baseCtrlConfig.init.call( null, this );
+          }
 
           // Helper functions
           function getFormlyRoot( scope ) {
@@ -567,7 +582,7 @@
 
           function hasCustomValidator( validatorName ) {
             var customValidators = _.get( $scope, 'options.data.validators' );
-            return customValidators && !!_.includes( customValidators, validatorName );
+            return customValidators && _.includes( customValidators, validatorName );
           }
 
           function getDefaultViewValue() {
