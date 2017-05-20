@@ -565,7 +565,7 @@
           return true;
         }
 
-        var currentSize = self.collectionModel.length,
+        var currentSize = _.get( self.collectionModel, 'length', 0 ),
             maxSizeProp = _.get( self.config, 'model.maxSize' );
 
         if ( maxSizeProp !== undefined ) {
