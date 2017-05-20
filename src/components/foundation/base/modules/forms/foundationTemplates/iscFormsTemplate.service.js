@@ -105,6 +105,7 @@
       registerFormDefaults     : registerFormDefaults,
       registerGlobalLibrary    : registerGlobalLibrary,
       registerType             : registerType,
+      removeWrapper            : removeWrapper,
       registerWrapper          : formlyConfig.setWrapper
     };
 
@@ -691,6 +692,7 @@
      * @memberOf iscFormsTemplateService
      * @param wrapperName
      * @param templateName
+     * @description Adds wrapperName to the list of wrapper templates on templateName.
      */
     function appendWrapper( wrapperName, templateName ) {
       var template = getRegisteredType( templateName ),
@@ -700,6 +702,19 @@
         _.set( template, 'wrapper', wrappers );
         registerType( template );
       }
+    }
+
+    /**
+     * @memberOf iscFormsTemplateService
+     * @param wrapperName
+     * @param templateName
+     * @description Removes wrapperName from the list of wrapper templates on templateName.
+     */
+    function removeWrapper( wrapperName, templateName ) {
+      var template = getRegisteredType( templateName ),
+          wrappers = _.get( template, 'wrapper', [] );
+
+      _.pull( wrappers, wrapperName );
     }
 
     /**
