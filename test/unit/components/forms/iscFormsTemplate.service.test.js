@@ -269,6 +269,18 @@
       } );
     } );
 
+    describe( 'appendWrapper', function() {
+      it( "should remove a wrapper from the given template's wrapper array", function() {
+        var template = suiteMain.iscFormsTemplateService.getRegisteredType( 'input' );
+        expect( template.wrapper ).toContain( 'templateLabel' );
+
+        suiteMain.iscFormsTemplateService.removeWrapper( 'templateLabel', 'input' );
+
+        template = suiteMain.iscFormsTemplateService.getRegisteredType( 'input' );
+        expect( template.wrapper ).not.toContain( 'templateLabel' );
+      } );
+    } );
+
     describe( 'registerBaseType', function() {
       it( 'should register configuration options for init and scope', function() {
         var baseTypeConfig = {
