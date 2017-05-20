@@ -269,7 +269,7 @@
       } );
     } );
 
-    describe( 'appendWrapper', function() {
+    describe( 'removeWrapper', function() {
       it( "should remove a wrapper from the given template's wrapper array", function() {
         var template = suiteMain.iscFormsTemplateService.getRegisteredType( 'input' );
         expect( template.wrapper ).toContain( 'templateLabel' );
