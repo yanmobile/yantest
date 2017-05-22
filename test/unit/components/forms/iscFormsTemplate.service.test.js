@@ -29,7 +29,7 @@
 
     beforeEach( inject( function( $rootScope, $compile, $httpBackend, $timeout,
       formlyApiCheck, formlyConfig,
-      iscFormsTemplateService, iscFormsCodeTableApi ) {
+      iscFormsTemplateService, iscFormsTransformService, iscFormsCodeTableApi ) {
 
       formlyConfig.disableWarnings   = true;
       formlyApiCheck.config.disabled = true;
@@ -40,8 +40,9 @@
         $rootScope  : $rootScope,
         $compile    : $compile,
 
-        iscFormsTemplateService: iscFormsTemplateService,
-        iscFormsCodeTableApi   : iscFormsCodeTableApi
+        iscFormsTemplateService : iscFormsTemplateService,
+        iscFormsTransformService: iscFormsTransformService,
+        iscFormsCodeTableApi    : iscFormsCodeTableApi
       } );
       mockFormResponses( suiteMain.$httpBackend );
     } ) );
@@ -131,6 +132,9 @@
 
     describe( 'field groups', function() {
       beforeEach( function() {
+        suiteMain.iscFormsTransformService.configure( {
+          wrapFieldGroups: true
+        } );
         suite = createDirective( getMinimalForm( 'hideIfGroupEmpty' ) );
         suiteMain.$httpBackend.flush();
       } );
