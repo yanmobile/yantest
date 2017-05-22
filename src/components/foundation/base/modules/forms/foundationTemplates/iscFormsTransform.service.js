@@ -21,6 +21,7 @@
   function iscFormsTransformService( $translate,
     iscCustomConfigService, iscFormFieldLayoutService, formlyConfig ) {
     var config           = iscCustomConfigService.getConfig(),
+        transformConfig  = {},
         templateConfig   = {},
         formsConfig      = _.get( config, 'forms', {} ),
         updateOnExcluded = formsConfig.updateOnExcluded;
@@ -38,6 +39,7 @@
     };
 
     return {
+      configure                   : configure,
       initTransforms              : initTransforms,
       ensureBackwardsCompatibility: ensureBackwardsCompatibility
     };
@@ -57,6 +59,10 @@
       formlyConfig.extras.fieldTransform.push( transformLayouts );
       formlyConfig.extras.fieldTransform.push( translateLabels );
       formlyConfig.extras.fieldTransform.push( wrapFieldGroups );
+    }
+
+    function configure( config ) {
+      _.merge( transformConfig, config );
     }
 
     /**
@@ -233,22 +239,27 @@
      * @returns {Array}
      */
     function wrapFieldGroups( fields ) {
-      return forEachField( fields, function( field ) {
-        if ( field.fieldGroup ) {
-          if ( !_.get( field, 'elementAttributes["transclude-class"]' ) ) {
-            // Provides a selector class for the extra ng-transclude that formly adds to field groups
-            _.set( field, 'elementAttributes["transclude-class"]', 'formly-field-group-ng-transclude' );
-          }
+      if ( transformConfig.wrapFieldGroups ) {
+        return forEachField( fields, function( field ) {
+          if ( field.fieldGroup ) {
+            if ( !_.get( field, 'elementAttributes["transclude-class"]' ) ) {
+              // Provides a selector class for the extra ng-transclude that formly adds to field groups
+              _.set( field, 'elementAttributes["transclude-class"]', 'formly-field-group-ng-transclude' );
+            }
 
-          if ( _.get( field, 'templateOptions.label' ) ) {
-            var wrapper = field.wrapper || [];
-            wrapper.push( 'templateLabel' );
-            field.wrapper = _.uniq( wrapper );
-          }
+            if ( _.get( field, 'templateOptions.label' ) ) {
+              var wrapper = field.wrapper || [];
+              wrapper.push( 'templateLabel' );
+              field.wrapper = _.uniq( wrapper );
+            }
 
-          wrapFieldGroups( field.fieldGroup );
-        }
-      } );
+            wrapFieldGroups( field.fieldGroup );
+          }
+        } );
+      }
+      else {
+        return fields;
+      }
     }
 
     /**
