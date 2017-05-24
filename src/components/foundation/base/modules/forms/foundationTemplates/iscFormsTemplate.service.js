@@ -316,14 +316,36 @@
      * @returns {Object}
      */
     function getSectionForEmbeddedForm( field, subforms ) {
-      var embeddedSection = _.get( field, 'data.embeddedSection' ),
-          embeddedType    = _.get( field, 'data.embeddedType' ),
-          subform         = subforms[embeddedType],
-          sections        = _.get( subform, 'sections', [] ),
+      var embeddedSection  = _.get( field, 'data.embeddedSection' ),
+          embeddedType     = _.get( field, 'data.embeddedType' ),
+          embedAllSections = _.get( field, 'data.embedAllSections' ),
+          subform          = subforms[embeddedType],
+          sections         = _.get( subform, 'sections', [] ),
           section;
 
+      // If embedAllSections is specified, create a wrapper section that includes
+      // the fields from all sections in the linked form.
+      // This involves copying the fields from each section into a fieldGroup,
+      // labeling that fieldGroup with the section's name, then wrapping it all
+      // into a single section object to return.
+      if ( embedAllSections ) {
+        section = {
+          fields : []
+        };
+
+        _.forEach( sections, function( sectionToGroup ) {
+          var wrappedFieldGroup = {
+            templateOptions : {
+              label : sectionToGroup.name
+            },
+            fieldGroup      : sectionToGroup.fields
+          };
+          section.fields.push( wrappedFieldGroup );
+        } );
+      }
+
       // Section lookup can be either a 0-based index or a section name
-      if ( embeddedSection !== undefined ) {
+      else if ( embeddedSection !== undefined ) {
         if ( _.isNumber( embeddedSection ) ) {
           section = _.get( sections, embeddedSection );
         }
