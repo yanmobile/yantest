@@ -328,7 +328,7 @@
       // This involves copying the fields from each section into a fieldGroup,
       // labeling that fieldGroup with the section's name, then wrapping it all
       // into a single section object to return.
-      if (embedAllSections) {
+      if ( embedAllSections ) {
         section = {
           fields : []
         };
