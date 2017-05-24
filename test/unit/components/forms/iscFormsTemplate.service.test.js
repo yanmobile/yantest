@@ -29,7 +29,7 @@
 
     beforeEach( inject( function( $rootScope, $compile, $httpBackend, $timeout,
       formlyApiCheck, formlyConfig,
-      iscFormsTemplateService, iscFormsTransformService, iscFormsCodeTableApi ) {
+      iscFormsTemplateService, iscFormsTransformService, iscFormsApi, iscFormsCodeTableApi ) {
 
       formlyConfig.disableWarnings   = true;
       formlyApiCheck.config.disabled = true;
@@ -42,7 +42,8 @@
 
         iscFormsTemplateService : iscFormsTemplateService,
         iscFormsTransformService: iscFormsTransformService,
-        iscFormsCodeTableApi    : iscFormsCodeTableApi
+        iscFormsCodeTableApi    : iscFormsCodeTableApi,
+        iscFormsApi             : iscFormsApi
       } );
       mockFormResponses( suiteMain.$httpBackend );
     } ) );
@@ -404,6 +405,51 @@
         expect( date1.html() ).toEqual( expectDate1 );
         expect( date2.html() ).toEqual( expectDate2 );
         expect( date3.html() ).toEqual( expectDate3 );
+      } );
+    } );
+
+    describe( 'getSectionForEmbeddedForm', function() {
+      var subformDefs = {};
+
+      beforeEach( function() {
+        suiteMain.iscFormsApi.getFormDefinition('comprehensive')
+          .then( function( definition ) {
+            subformDefs.comprehensive = definition;
+          } );
+        suiteMain.$httpBackend.flush();
+      } );
+
+      it( 'should return the correct section(s) based on the field definition', function() {
+        var subform = subformDefs.comprehensive;
+
+        // Test this with an embedded form with multiple sections
+        expect( subform.sections.length ).toBeGreaterThan( 1 );
+
+        // If a section index is provided, that should be returned as the result
+        var fieldDef = {
+          data: {
+            embeddedType   : 'comprehensive',
+            embeddedSection: 1
+          }
+        };
+        expect( suiteMain.iscFormsTemplateService.getSectionForEmbeddedForm( fieldDef, subformDefs ) )
+          .toEqual( subform.sections[1] );
+
+        // If a section name is provided, that should be returned as the result
+        fieldDef.data.embeddedSection = subform.sections[3].name;
+        expect( suiteMain.iscFormsTemplateService.getSectionForEmbeddedForm( fieldDef, subformDefs ) )
+          .toEqual( subform.sections[3] );
+
+        // If no embeddedSection is provided, the entire subform should be returned as the result
+        // It will be a single section with each of the subform's sections returned as a fieldGroup
+        delete fieldDef.data.embeddedSection;
+        var result = suiteMain.iscFormsTemplateService.getSectionForEmbeddedForm(fieldDef, subformDefs);
+
+        expect( result.fields.length ).toBeGreaterThan( 1 );
+        for ( var i = 0; i < result.fields.length; i++ ) {
+          expect( result.fields[i].fieldGroup ).toEqual( subform.sections[i].fields );
+          expect( result.fields[i].templateOptions.label ).toEqual( subform.sections[i].name );
+        }
       } );
     } );
   } );

@@ -331,9 +331,26 @@
           section = _.find( sections, { name: embeddedSection } );
         }
       }
-      // If no section was provided, use the first one
+
+      // If no section was provided, create a wrapper section that includes
+      // the fields from all sections in the linked form.
+      // This involves copying the fields from each section into a fieldGroup,
+      // labeling that fieldGroup with the section's name, then wrapping it all
+      // into a single section object to return.
       else {
-        section = _.get( sections, '0' );
+        section = {
+          fields : []
+        };
+
+        _.forEach( sections, function( sectionToGroup ) {
+          var wrappedFieldGroup = {
+            templateOptions : {
+              label : sectionToGroup.name
+            },
+            fieldGroup : sectionToGroup.fields
+          };
+          section.fields.push( wrappedFieldGroup );
+        } );
       }
 
       return angular.copy( section ) || {};
