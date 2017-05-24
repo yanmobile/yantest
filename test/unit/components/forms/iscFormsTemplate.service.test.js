@@ -440,9 +440,14 @@
         expect( suiteMain.iscFormsTemplateService.getSectionForEmbeddedForm( fieldDef, subformDefs ) )
           .toEqual( subform.sections[3] );
 
-        // If no embeddedSection is provided, the entire subform should be returned as the result
-        // It will be a single section with each of the subform's sections returned as a fieldGroup
+        // If no section name or index is provided, the first section should be returned as the result
         delete fieldDef.data.embeddedSection;
+        expect( suiteMain.iscFormsTemplateService.getSectionForEmbeddedForm( fieldDef, subformDefs ) )
+          .toEqual( subform.sections[0] );
+
+        // If embedAllSections is provided, the entire subform should be returned as the result
+        // It will be a single section with each of the subform's sections returned as a fieldGroup
+        fieldDef.data.embedAllSections = true;
         var result = suiteMain.iscFormsTemplateService.getSectionForEmbeddedForm(fieldDef, subformDefs);
 
         expect( result.fields.length ).toBeGreaterThan( 1 );
