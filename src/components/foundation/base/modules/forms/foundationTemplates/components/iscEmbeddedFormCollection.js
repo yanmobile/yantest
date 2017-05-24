@@ -184,7 +184,7 @@
         // Fields
         var tableColumns = _.map( self.flattenedFields, function( field ) {
           return {
-            key        : _.capitalize( field.label ),
+            key        : field.label,
             model      : field.model,
             templateUrl: field.templateUrl,
             display    : field.display,
