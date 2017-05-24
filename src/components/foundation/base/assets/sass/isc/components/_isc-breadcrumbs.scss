@@ -43,7 +43,8 @@ $breadcrumb-color-inverse: $app-bar-link-color !default;
     }
 
     li {
-      float: #{$global-left};
+      float         : #{$global-left};
+      margin-bottom : 0;
 
       @include bidirectional() {
         float: right;
