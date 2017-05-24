@@ -347,7 +347,7 @@
             templateOptions : {
               label : sectionToGroup.name
             },
-            fieldGroup : sectionToGroup.fields
+            fieldGroup      : sectionToGroup.fields
           };
           section.fields.push( wrappedFieldGroup );
         } );
