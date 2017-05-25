@@ -49,10 +49,11 @@
       require         : 'ngModel',
       controllerAs    : 'efCollectionCtrl',
       scope           : {
-        id       : '@',
-        formState: '=',
-        config   : '=?',
-        options  : '='
+        id              : '@',
+        formState       : '=',
+        config          : '=?',
+        options         : '=',
+        additionalModels: '=?'
       },
       bindToController: true,
       controller      : controller,
