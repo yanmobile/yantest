@@ -127,7 +127,7 @@
        * If provided, call init function to populate additional dynamic data models
        */
       function populateAdditionalModels( fdnScript ) {
-        var args = [self.internalFormConfig.additionalModels, $stateParams, self.internalModel];
+        var args = [self.internalFormConfig.additionalModels, $stateParams, self.internalModel, self.options.formState];
         evalScript( fdnScript, args );
         evalScript( self.internalFormConfig.additionalModelInit, args );
 
