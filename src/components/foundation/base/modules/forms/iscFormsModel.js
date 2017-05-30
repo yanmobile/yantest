@@ -120,7 +120,9 @@
         } )
           .then( function( formDefinition ) {
             _.forEach( formDefinition.form.sections, function( section ) {
-              getEmbeddedForms( section.fields, formDefinition.subforms );
+              if ( !_.get( section, 'data.validation.bypass' ) ) {
+                getEmbeddedForms( section.fields, formDefinition.subforms );
+              }
             } );
 
             if ( cacheKey ) {
