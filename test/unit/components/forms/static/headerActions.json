@@ -1,0 +1,25 @@
+{
+  "name"       : "Form with Section Header Actions",
+  "sections"   : [
+    {
+      "data" : {
+        "header" : {
+          "actions" : [
+            {
+              "className"  : "custom-header-action",
+              "hide"       : "formState.lib.hideExpression()",
+              "expression" : "formState.lib.headerAction(formState)"
+            }
+          ]
+        }
+      },
+      "name"   : "Section 1",
+      "fields" : [
+        {
+          "key"  : "aField",
+          "type" : "input"
+        }
+      ]
+    }
+  ]
+}

@@ -20,6 +20,7 @@
     beforeEach( inject( function( $rootScope, $compile, $window, $httpBackend, $timeout,
       formlyApiCheck, formlyConfig,
       iscFormDataApi,
+      iscFormsTransformService,
       iscFormsTemplateService, iscNotificationService, iscFormsValidationService ) {
       formlyConfig.disableWarnings   = true;
       formlyApiCheck.config.disabled = true;
@@ -32,6 +33,7 @@
         $rootScope  : $rootScope,
 
         iscFormDataApi           : iscFormDataApi,
+        iscFormsTransformService : iscFormsTransformService,
         iscFormsTemplateService  : iscFormsTemplateService,
         iscNotificationService   : iscNotificationService,
         iscFormsValidationService: iscFormsValidationService
@@ -49,6 +51,7 @@
         buttonConfig = {};
 
         spyOn( formConfig, 'init' ).and.callThrough();
+        spyOn( suiteMain.iscFormsTransformService, 'transformSections' ).and.callThrough();
 
         // Create an isc-form to get what would normally be passed to isc-form-internal
         suiteForm = createDirective( getConfiguredForm(), {
@@ -67,6 +70,11 @@
       //--------------------
       it( 'should call the configured init function', function() {
         expect( formConfig.init ).toHaveBeenCalled();
+      } );
+
+      //--------------------
+      it( 'should run the section transforms', function() {
+        expect( suiteMain.iscFormsTransformService.transformSections ).toHaveBeenCalled();
       } );
 
       //--------------------
@@ -115,39 +123,24 @@
     //--------------------
     describe( 'simple1 - sectionLayout by mode', function() {
       it( 'should render edit mode as wizard', function() {
-        initForm( 'edit' );
+        initForm( 'edit', 'simple1' );
 
         var layout = suiteInternal.controller.mainFormConfig.layout;
         expect( layout ).toBe( 'wizard' );
       } );
 
       it( 'should render view mode as paged', function() {
-        initForm( 'view' );
+        initForm( 'view', 'simple1' );
 
         var layout = suiteInternal.controller.mainFormConfig.layout;
         expect( layout ).toBe( 'scrolling' );
       } );
-
-      function initForm( mode ) {
-        // Create an isc-form to get what would normally be passed to isc-form-internal
-        suiteForm = createDirective( getMinimalForm( {
-          formKey: 'simple1',
-          mode   : mode
-        } ) );
-        suiteMain.$httpBackend.flush();
-
-        suiteInternal = createDirective( getInternalForm(), {
-          formCtrl: suiteForm.controller
-        } );
-
-        suiteInternal.controller = suiteInternal.$isolateScope.formInternalCtrl;
-      }
     } );
 
     //--------------------
     describe( 'expressionProperties', function() {
       it( 'should work on sections and forms', function() {
-        initForm( 'edit' );
+        initForm( 'edit', 'expressionPropertiesTestForm' );
 
         var formName    = 'My Form',
             sectionName = 'My Section';
@@ -182,23 +175,22 @@
           expect( sectionNameElement.length ).toBe( 1 );
         }
       } );
-
-      function initForm( mode ) {
-        // Create an isc-form to get what would normally be passed to isc-form-internal
-        suiteForm = createDirective( getMinimalForm( {
-          formKey: 'expressionPropertiesTestForm',
-          mode   : mode
-        } ) );
-        suiteMain.$httpBackend.flush();
-
-        suiteInternal = createDirective( getInternalForm(), {
-          formCtrl: suiteForm.controller
-        } );
-
-        suiteInternal.controller = suiteInternal.$isolateScope.formInternalCtrl;
-      }
     } );
 
+    function initForm( mode, formKey ) {
+      // Create an isc-form to get what would normally be passed to isc-form-internal
+      suiteForm = createDirective( getMinimalForm( {
+        formKey: formKey,
+        mode   : mode
+      } ) );
+      suiteMain.$httpBackend.flush();
+
+      suiteInternal = createDirective( getInternalForm(), {
+        formCtrl: suiteForm.controller
+      } );
+
+      suiteInternal.controller = suiteInternal.$isolateScope.formInternalCtrl;
+    }
   } );
 
 
