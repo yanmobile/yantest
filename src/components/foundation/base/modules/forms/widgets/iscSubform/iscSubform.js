@@ -68,8 +68,10 @@
         breadcrumbClick: breadcrumbClick,
         formButtons    : getFormButtons(),
         showButton     : showButton,
-        showAction     : showAction,
-        invokeAction   : invokeAction
+
+        // header actions
+        showAction: showAction,
+        evalAction: evalAction
       } );
 
       function getFormButtons() {
@@ -85,23 +87,6 @@
 
       function showButton( button ) {
         return _.isFunction( button.hide ) ? !button.hide( self.mainFormConfig.buttonContext ) : !button.hide;
-      }
-
-      function showAction( action, section ) {
-        var modeMatches = !action.mode || self.options.formState._mode === action.mode,
-            hidden      = !action.hide || $scope.$eval( action.hide, {
-                section  : section,
-                formState: self.options.formState
-              } );
-
-        return modeMatches && !hidden;
-      }
-
-      function invokeAction( actionExpression, context ) {
-        $scope.$evalAsync( actionExpression, {
-          section  : context,
-          formState: self.options.formState
-        } );
       }
 
       function onClick( button ) {
@@ -197,6 +182,22 @@
         self.breadcrumbs.push( breadcrumb );
       } );
 
+      // Header actions
+      function showAction( action, section ) {
+        var modeMatches = !action.mode || self.options.formState._mode === action.mode,
+            hidden      = action.hide && evalAction( section )( action.hide );
+
+        return modeMatches && !hidden;
+      }
+
+      function evalAction( section ) {
+        return function( prop ) {
+          return $scope.$eval( prop, {
+            section  : section,
+            formState: self.options.formState
+          } );
+        };
+      }
     }
 
     function link( scope, element, attrs ) {

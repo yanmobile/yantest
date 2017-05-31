@@ -7,12 +7,12 @@
     <button ng-repeat="action in section.data.header.actions track by $index"
             class="{{ action.className || '' }}"
             type="button"
-            title="{{ action.name | translate }} {{ section.name | translate }}"
+            title="{{ subformCtrl.evalAction( section )( action.name ) | translate }}"
             ng-if="subformCtrl.showAction( action, section )"
-            ng-click="subformCtrl.invokeAction( action.expression, section )">
-      <i class="fa {{ action.icon }}"
+            ng-click="subformCtrl.evalAction( section )( action.expression )">
+      <i class="fa {{ subformCtrl.evalAction( section )( action.icon ) }}"
          ng-if="!!action.icon"></i>
-      {{ action.name | translate }}
+      {{ subformCtrl.evalAction( section )( action.name ) | translate }}
     </button>
   </div>
 </h4>

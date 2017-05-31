@@ -673,6 +673,55 @@
       } );
     } );
 
+    //--------------------
+    describe( 'iscSubform - section header actions', function() {
+      var buttonIsHidden = false;
+
+      var headerActionLibrary = {
+        hideExpression: function() {
+          return buttonIsHidden;
+        },
+        headerAction : _.noop
+      };
+
+      beforeEach( function() {
+        spyOn( headerActionLibrary, 'headerAction' ).and.callThrough();
+
+        createDirectives( getMinimalForm( {
+          formKey: 'headerActions',
+          mode   : 'edit'
+        } ), {
+          formConfig: {
+            library: headerActionLibrary
+          }
+        } );
+      } );
+
+      it( 'should render data.header.action buttons', function() {
+        var suite = suiteSubform,
+            headerButton;
+
+        // Button should exist and should not be hidden
+        selectHeaderButton();
+        expect( headerButton.length ).toBe( 1 );
+
+        // Clicking the button should invoke the action's expression
+        headerButton.click();
+        suite.$scope.$digest();
+        expect( headerActionLibrary.headerAction ).toHaveBeenCalled();
+
+        // Changing the hide expression should hide the button
+        buttonIsHidden = true;
+        suite.$scope.$digest();
+        selectHeaderButton();
+        expect( headerButton.length ).toBe( 0 );
+
+        function selectHeaderButton() {
+          headerButton = suiteSubform.element.find( '.custom-header-action' );
+        }
+      } );
+    } );
+
 
     function createDirectives( rootForm, config ) {
       config    = config || {};

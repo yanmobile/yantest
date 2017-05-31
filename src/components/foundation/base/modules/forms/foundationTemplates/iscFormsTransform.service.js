@@ -38,12 +38,17 @@
       "data.tableCellDisplay"         : "data.collections.tableCell.display"
     };
 
+    var sectionTransforms = [];
+
     return {
       configure                   : configure,
       initTransforms              : initTransforms,
-      ensureBackwardsCompatibility: ensureBackwardsCompatibility
-    };
+      ensureBackwardsCompatibility: ensureBackwardsCompatibility,
+      transformSections           : transformSections,
 
+      registerSectionTransform : registerSectionTransform,
+      registerFieldTransform   : registerFieldTransform
+    };
 
     function initTransforms( transformConfig ) {
       _.merge( templateConfig, transformConfig );
@@ -300,6 +305,41 @@
         var baseType = _.get( getRegisteredType( type ), 'extends' );
         return !!baseType && excludeUpdateOn( baseType );
       }
+    }
+
+    /**
+     * @memberOf iscFormsTransformService
+     * @description Allows runtime configuration of the transforms applied to a form's sections.
+     * A function registered in this way will be executed when *any* formly form is instantiated.
+     * This function takes a single argument {Array} sections and must return an array of sections.
+     * @param {Function} transformFunction
+     */
+    function registerSectionTransform( transformFunction ) {
+      sectionTransforms.push( transformFunction );
+    }
+
+    /**
+     * @memberOf iscFormsTransformService
+     * @description Allows runtime configuration of the field transforms applied to a formly form.
+     * A function registered in this way will be executed when *any* formly form is instantiated.
+     * This function takes a single argument {Array} fields and must return an array of fields.
+     * @param {Function} transformFunction
+     */
+    function registerFieldTransform( transformFunction ) {
+      formlyConfig.extras.fieldTransform.push( transformFunction );
+    }
+
+    /**
+     * @memberOf iscFormsTransformService
+     * @description This function is automatically called by the framework to transform sections of
+     * a form before rendering that form.
+     * @param {Array} sections
+     */
+    function transformSections( sections ) {
+      _.forEach( sectionTransforms, function( transform ) {
+        transform( sections );
+      } );
+      return sections;
     }
 
     /**

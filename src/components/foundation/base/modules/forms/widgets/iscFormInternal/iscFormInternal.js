@@ -15,7 +15,8 @@
    * @returns {{restrict: string, replace: boolean, controllerAs: string, scope: {formDefinition: string, model: string, options: string, formConfig: string, validateFormApi: string, buttonConfig: string}, bindToController: boolean, controller: controller, templateUrl: function}}
    */
   function iscFormInternal( $q, $parse,
-    iscCustomConfigService, iscNotificationService, iscFormFieldLayoutService, iscFormsValidationService ) {
+    iscCustomConfigService, iscNotificationService,
+    iscFormFieldLayoutService, iscFormsValidationService, iscFormsTransformService ) {
     var directive = {
       restrict        : 'E',
       replace         : true,
@@ -258,7 +259,7 @@
           watchExpProps( section );
         } );
 
-        self.sections       = self.formDefinition.form.sections;
+        self.sections       = iscFormsTransformService.transformSections( self.formDefinition.form.sections );
         self.currentSection = _.head( self.sections );
 
         self.mainFormConfig = {
